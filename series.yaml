@@ -352,7 +352,6 @@ series:
     block: export
     source: bundesbank
     key: BBDA1/M.DE.Y.EX.S.A.W1.A.V.ABA.A
-    params: {scale: 0.001}
     title: Warenexporte, nominal
     unit: Mrd. €
     frequency: M
@@ -364,7 +363,6 @@ series:
     block: export
     source: bundesbank
     key: BBDA1/M.DE.Y.IM.S.A.W1.A.V.ABA.A
-    params: {scale: 0.001}
     title: Warenimporte, nominal
     unit: Mrd. €
     frequency: M
@@ -376,7 +374,6 @@ series:
     block: export
     source: bundesbank
     key: BBDA1/M.DE.Y.EX.S.A.B0.A.V.ABA.A
-    params: {scale: 0.001}
     title: Warenexporte in die EU
     unit: Mrd. €
     frequency: M
@@ -388,7 +385,6 @@ series:
     block: export
     source: bundesbank
     key: BBDA1/M.DE.Y.EX.S.A.US.A.V.ABA.A
-    params: {scale: 0.001}
     title: Warenexporte in die USA
     unit: Mrd. €
     frequency: M
@@ -400,7 +396,6 @@ series:
     block: export
     source: bundesbank
     key: BBDA1/M.DE.Y.EX.S.A.S1.A.V.ABA.A
-    params: {scale: 0.001}
     title: Warenexporte nach Asien
     unit: Mrd. €
     frequency: M
