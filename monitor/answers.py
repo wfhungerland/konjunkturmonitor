@@ -128,7 +128,7 @@ def sentiment(q: dict, data: dict) -> dict:
     rel = "über" if v > 100.5 else ("unter" if v < 99.5 else "auf")
     head = f"Im {period(t, 'M')} lag die Stimmung in der Wirtschaft bei {num(v)} Punkten, {rel} dem langjährigen Durchschnitt von 100."
     more = [f"Im Vormonat: {num(p)} Punkte, die Stimmung hat sich also {'aufgehellt' if v > p + 0.2 else 'eingetrübt' if v < p - 0.2 else 'kaum verändert'}."]
-    verdict = "gut" if v >= 103 else ("eher gut" if v > 100.5 else "durchschnittlich" if v >= 99.5 else "gedämpft" if v >= 95 else "schlecht")
+    verdict = "gut" if v >= 103 else ("eher gut" if v > 100.5 else "durchschnittlich" if v >= 99.5 else "gedämpft" if v >= 90 else "schlecht")
     return {"value": round(float(v), 1), "unit": "Punkte", "signed": False, "period": period(t, "M"), "head": head, "more": more,
             "verdict": f"Stimmung {verdict}", "spark": q["series"], "ref": 100.0}
 

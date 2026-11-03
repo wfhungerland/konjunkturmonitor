@@ -146,7 +146,7 @@ function timeChart(el, c) {
   const L = baseLayout(el);
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, showlegend: traces.filter(t => t.showlegend !== false).length > 1,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
-    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true } });
+    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
   Plotly.newPlot(el, traces, L, CFG);
 }
 
@@ -191,7 +191,7 @@ function forecastChart(el, c) {
   const ya = yAxis(vals.concat([0]), "%");
   const L = baseLayout(el);
   Object.assign(L, { hovermode: "closest", xaxis: { type: "linear", range: [years[0] - 0.6, years[years.length - 1] + 0.6], tickmode: "array", tickvals: years, ticktext: years.map(String), fixedrange: true, showgrid: false, zeroline: false, tickfont: { size: 15 } },
-    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true },
+    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true, automargin: true },
     shapes: ya.zero ? [{ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } }] : [] });
   Plotly.newPlot(el, traces, L, CFG);
 }
