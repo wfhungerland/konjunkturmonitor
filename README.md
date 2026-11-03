@@ -25,13 +25,15 @@ Seite: https://wfhungerland.github.io/konjunkturmonitor/
 
 | Thema | Quelle |
 |---|---|
-| Wachstum | Eurostat `namq_10_gdp` |
-| Preise | Bundesbank `BBDP1` (VPI insgesamt und Bestandteile: Energie, Nahrungsmittel, Waren ohne Energie, Dienstleistungen ohne Miete, Wohnungsmiete), Eurostat `sts_inppd_m`; Einfuhrpreise der Bundesbank |
-| Arbeit | Bundesbank (BA-Reihen, saisonbereinigt), Eurostat `namq_10_pe`; Kurzarbeit-Äquivalente aus der BA-Statistik (`data/static`) |
-| Industrie | Bundesbank `BBDE1` (Produktion, Auftragseingang) |
-| Konsum | Bundesbank `BBDE1` (Einzelhandel), Eurostat `ei_bsco_m` (Verbrauchervertrauen) |
-| Export | Bundesbank `BBDA1` |
-| Stimmung | Eurostat, EU-Unternehmensumfragen (`ei_bssi_m_r2`, `ei_bsin_m_r2`, `ei_bsse_m_r2`, `ei_bsrt_m_r2`, `ei_bsbu_m_r2`) |
+| Wachstum | Eurostat `namq_10_gdp` (BIP, Beiträge, Verwendung, Deflatoren), `namq_10_an6` (Investitionen nach Anlagearten) |
+| Preise | Bundesbank `BBDP1` (VPI insgesamt, Kernrate, Bestandteile, HVPI, Außenhandelspreise), Eurostat `sts_inppd_m`; Inflationsbeiträge eigene Berechnung |
+| Arbeit | Bundesbank `BBDL1` (BA-Reihen, Erwerbstätige, SV-Beschäftigte), Eurostat `namq_10_pe`; Kurzarbeit-Äquivalente aus der BA-Statistik (`data/static`) |
+| Industrie und Bau | Bundesbank `BBDE1` (Produktion, Aufträge, Umsatz, Bau) |
+| Konsum | Bundesbank `BBDE1` (Einzelhandel, Gastgewerbe, Pkw-Zulassungen), Destatis GENESIS `45212-0005` (Sortimente), Eurostat `ei_bsco_m` |
+| Export | Bundesbank `BBDA1`, Eurostat `bop_c6_m` (Leistungsbilanz); Exportähnlichkeit eigene Berechnung aus UN Comtrade (`data/static`) |
+| Stimmung | Eurostat, EU-Unternehmensumfragen (`ei_bssi_m_r2`, `ei_bsin_m_r2`, `ei_bsin_q_r2`, `ei_bsse_m_r2`, `ei_bsrt_m_r2`, `ei_bsbu_m_r2`) |
+| Insolvenzen | Destatis GENESIS `52411`, `52311` |
+| Zinsen und Energie | Bundesbank `BBSIS` (Zinsstruktur), FRED (`MCOILBRENTEU` der U.S. EIA, `PNGASEUUSDM` des IWF) |
 | Prognosen | `data/static/prognosen.yaml`, nur veröffentlichte Werte mit Link |
 
 Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global, GfK-Detailreihen und Terminpreise. Die ifo-Zeitreihen setzen eine Anmeldung voraus. Die Stimmung kommt deshalb aus den offenen EU-Umfragen.
