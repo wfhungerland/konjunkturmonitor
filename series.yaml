@@ -163,11 +163,11 @@ series:
     block: wachstum
     source: eurostat
     key: namq_10_gdp
-    params: {geo: DE, na_item: B1GQ, unit: CLV_PCH_SM, s_adj: SCA}
-    title: BIP real, % gg. Vorjahresquartal
+    params: {geo: DE, na_item: B1GQ, unit: CLV_PCH_SM, s_adj: NSA}
+    title: BIP real, % gg. Vorjahresquartal (Ursprungswerte wie in der Destatis-Meldung)
     unit: "% gg. Vorjahresquartal"
     frequency: Q
-    adjustment: preis-, saison- und kalenderbereinigt
+    adjustment: preisbereinigt, nicht saison- und kalenderbereinigt
 
   - id: de_gdp_index
     block: wachstum
@@ -272,7 +272,7 @@ series:
     block: preise
     source: bundesbank
     key: BBDP1/M.DE.N.VPI.C.SVXR.I20.A
-    title: VPI Dienstleistungen ohne Wohnungsmieten, Index
+    title: VPI Dienstleistungen ohne tatsächliche und unterstellte Wohnungsmieten, Index
     unit: Index 2020=100
     frequency: M
     adjustment: nicht bereinigt
@@ -281,12 +281,12 @@ series:
     block: preise
     source: derived
     derive: {from: de_vpi_serv, op: yoy_pct}
-    title: VPI Dienstleistungen ohne Wohnungsmieten, % gg. Vorjahresmonat
+    title: VPI Dienstleistungen ohne tatsächliche und unterstellte Wohnungsmieten, % gg. Vorjahresmonat
     unit: "% gg. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi
-    label: Dienstleistungen ohne Miete
+    label: Dienstleistungen ohne Mieten
 
   - id: de_vpi_rent
     block: preise

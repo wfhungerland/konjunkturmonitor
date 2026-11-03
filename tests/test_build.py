@@ -15,11 +15,18 @@ def test_band_uses_2015_to_2019():
     assert b["lo"] == 36 and b["hi"] == 95
 
 
-def test_start_rows_pct3_and_relation():
+def test_start_rows_comparisons_and_tendency():
     idx = pd.date_range("2014-01-01", periods=150, freq="MS")
-    data = {"x": pd.Series([100 + i for i in range(150)], index=idx, dtype=float)}
-    rows = _start_rows({"start_table": [{"label": "X", "series": "x", "show": "pct3", "unit": "%", "topic": "t"}]}, data)
-    assert rows and rows[0]["value"] > 0 and rows[0]["rel"]
+    data = {"x": pd.Series([100 + i for i in range(150)], index=idx, dtype=float),
+            "r": pd.Series([2.0] * 149 + [2.5], index=idx, dtype=float),
+            "n": pd.Series([50.0] * 150, index=idx, dtype=float)}
+    cfg = {"start_table": [{"label": "X", "series": "x", "kind": "level", "unit": "Index", "topic": "t"},
+                           {"label": "R", "series": "r", "kind": "rate", "unit": "%", "up_bad": True, "topic": "t"},
+                           {"label": "N", "series": "n", "kind": "level", "seasonal": True, "unit": "Anzahl", "topic": "u"}]}
+    x, r, n = _start_rows(cfg, data, {}, {"t": "Thema"})
+    assert x["group"] == "Thema" and x["prev"] > 0 and x["yoy"] > 0 and x["m3"] > 0 and x["tendency"] == "up" and x["change_unit"] == "%"
+    assert abs(r["prev"] - 0.5) < 1e-9 and r["change_unit"] == "Pp" and r["tendency"] == "up"
+    assert n["prev"] is None and n["m3"] is None and n["yoy"] == 0 and n["tendency"] == "flat"
 
 
 def test_calendar_rules(tmp_path):

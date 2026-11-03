@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from .answers import answer, num
+from .answers import answer, num, overview
 
 ROOT = Path.cwd()
 
@@ -83,10 +83,10 @@ LAND_ABBR = {"01": "SH", "02": "HH", "03": "NI", "04": "HB", "05": "NW", "06": "
 
 
 def _seasonal(s: pd.Series, years: int | None) -> dict:
-    """Monatswerte, 12-Monats-Mittel und das übliche Niveau desselben Monats 2016 bis 2019."""
+    """Monatswerte, 12-Monats-Mittel und das übliche Niveau desselben Monats 2015 bis 2019."""
     s = s.dropna()
     ma12 = s.rolling(12).mean()
-    base = s[(s.index.year >= 2016) & (s.index.year <= 2019)]
+    base = s[(s.index >= NORM[0]) & (s.index < NORM[1])]
     norm_by_month = base.groupby(base.index.month).mean() if len(base) else pd.Series(dtype=float)
     norm = pd.Series([norm_by_month.get(d.month) for d in s.index], index=s.index, dtype=float)
     if years:
@@ -203,15 +203,35 @@ def _geo(root: Path) -> list[dict] | None:
 def _band(s: pd.Series) -> dict | None:
     """Spanne (Minimum bis Maximum) einer Reihe in den Jahren 2015 bis 2019 als Vergleichsmaßstab."""
     b = s.dropna()
-    b = b[(b.index >= "2015-01-01") & (b.index < "2020-01-01")]
+    b = b[(b.index >= NORM[0]) & (b.index < NORM[1])]
     if len(b) < 4:
         return None
     return {"lo": round(float(b.min()), 4), "hi": round(float(b.max()), 4), "mean": round(float(b.mean()), 4)}
 
 
-def _start_rows(cfg: dict, data: dict) -> list[dict]:
+NORM = ("2015-01-01", "2020-01-01")  # Vergleichszeitraum 2015 bis 2019: die fünf letzten vollen Jahre vor der Pandemie
+
+
+def _tendency(d: float | None, decimals: int) -> str | None:
+    """Richtung der jüngsten Veränderung: ▲ steigt, ▼ sinkt, ■ unverändert (in der angezeigten Genauigkeit)."""
+    if d is None or pd.isna(d):
+        return None
+    if round(abs(d), decimals) == 0:
+        return "flat"
+    return "up" if d > 0 else "down"
+
+
+def _start_rows(cfg: dict, data: dict, meta: dict | None = None, titles: dict | None = None) -> list[dict]:
+    """Kennzahlentabelle: Wert, drei feste Vergleiche (Vorperiode, Vorjahr, Dreimonatsvergleich), Verlauf und Tendenz.
+
+    kind rate: Wert ist eine Rate oder ein Saldo; Vergleiche als Differenz (Prozentpunkte oder Punkte).
+    kind level: Wert ist ein Niveau (Index, Anzahl, Euro); Vergleiche als prozentuale Veränderung,
+    mit change: diff als Differenz in change_unit. seasonal: true heißt nicht saisonbereinigt mit
+    deutlichem Saisonmuster; dann entfallen Vorperioden- und Dreimonatsvergleich.
+    """
     from .answers import period
 
+    meta, titles = meta or {}, titles or {}
     rows = []
     for r in cfg.get("start_table") or []:
         s = data.get(r["series"])
@@ -219,27 +239,41 @@ def _start_rows(cfg: dict, data: dict) -> list[dict]:
             continue
         s = s.dropna()
         q = s.index.to_series().diff().dt.days.median() > 60
-        freq = "Q" if q else "M"
-        show = r.get("show", "level")
-        if show == "change":
-            vals = s.diff()
-        elif show == "pct3":
-            vals = (s.rolling(3).mean() / s.rolling(3).mean().shift(3) - 1) * 100
-        elif show == "yoy":
-            vals = (s / s.shift(4 if q else 12) - 1) * 100
+        lag_y = 4 if q else 12
+        kind = r.get("kind", "rate")
+        scale = float(r.get("scale", 1))
+        cd = int(r.get("change_decimals", 1))
+        if kind == "rate":
+            diff = lambda a, b: a - b
+            cunit = r.get("change_unit") or ("Pp" if "%" in r.get("unit", "") or r.get("unit", "").startswith("Pp") else "Pkt.")
+        elif r.get("change") == "diff":
+            diff = lambda a, b: (a - b) * float(r.get("change_scale", 1))
+            cunit = r.get("change_unit", "")
         else:
-            vals = s
-        vals = vals.dropna()
-        if vals.empty:
-            continue
-        v, prev = float(vals.iloc[-1]), (float(vals.iloc[-2]) if len(vals) > 1 else None)
-        band = _band(vals)
-        rel = None
-        if band:
-            rel = "über der Spanne 2015 bis 2019" if v > band["hi"] else "unter der Spanne 2015 bis 2019" if v < band["lo"] else "innerhalb der Spanne 2015 bis 2019"
-        spark = vals[vals.index >= vals.index[-1] - pd.DateOffset(years=5)]
-        rows.append(dict(r, value=round(v, 4), prev=None if prev is None else round(prev, 4), period=period(vals.index[-1], freq),
-                         band=band, rel=rel, spark={"x": [d.strftime("%Y-%m-%d") for d in spark.index], "y": [round(float(x), 4) for x in spark]}))
+            diff = lambda a, b: (a / b - 1) * 100
+            cunit = "%"
+        prev = diff(s.iloc[-1], s.iloc[-2])
+        yoy = diff(s.iloc[-1], s.iloc[-1 - lag_y]) if len(s) > lag_y else None
+        m3 = None if q else diff(s.iloc[-3:].mean(), s.iloc[-6:-3].mean())
+        if r.get("mom_from") in data:
+            prev = float(data[r["mom_from"]].dropna().iloc[-1])
+        if r.get("yoy_from") in data:
+            yoy = float(data[r["yoy_from"]].dropna().iloc[-1])
+        if r.get("seasonal"):
+            prev = m3 = None
+        tend = _tendency(prev if prev is not None else yoy, cd)
+        spark = s[s.index >= s.index[-1] - pd.DateOffset(years=5)] * scale
+        rnd = lambda v: None if v is None or pd.isna(v) else round(float(v), 4)
+        rows.append(dict(r, group=titles.get(r.get("topic"), r.get("group", "")), value=rnd(s.iloc[-1] * scale),
+                         prev=rnd(prev), yoy=rnd(yoy), m3=rnd(m3), change_unit=cunit, freq="Q" if q else "M",
+                         period=period(s.index[-1], "Q" if q else "M"), date=s.index[-1].strftime("%Y-%m-%d"),
+                         tendency=tend, prev_label="Vorquartal" if q else "Vormonat",
+                         spark={"x": [d.strftime("%Y-%m-%d") for d in spark.index], "y": [round(float(x), 4) for x in spark]}))
+    newest = max((x["date"] for x in rows if x["freq"] == "M"), default=None)
+    for x in rows:  # ältere Stände kennzeichnen: Monatswerte, die zwei oder mehr Monate hinter dem jüngsten zurückliegen
+        if x["freq"] == "M" and newest:
+            lag = (pd.Timestamp(newest).to_period("M") - pd.Timestamp(x["date"]).to_period("M")).n
+            x["older"] = lag >= 2
     return rows
 
 
@@ -428,9 +462,10 @@ def build_payload(root: Path = ROOT) -> dict:
             no += 1
             c["no"] = no
     geo = _geo(root)
-    return {"layout": layout, "start": _start_rows(cfg, data), "geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
+    return {"layout": layout, "start": _start_rows(cfg, data, meta, {t["id"]: t["title"] for t in cfg["topics"]}), "geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
             "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "questions": questions, "topics": topics}
+            "questions": questions, "topics": topics, "overview": overview({q["id"]: q["answer"] for q in questions}),
+            "content_license": cfg["site"].get("license", "")}
 
 
 def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
@@ -442,12 +477,79 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
     write_all(payload, out)
     tpl = resources.files("monitor").joinpath("templates/index.html").read_text(encoding="utf-8")
     js = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
-    (out / "index.html").write_text(tpl.replace("/*__DATA__*/null", js), encoding="utf-8")
+    from html import escape
+    url = payload["site"].get("url", "")
+    desc = payload.get("overview") or payload["site"].get("claim", "")
+    html = (tpl.replace("/*__DATA__*/null", js).replace("/*__STATIC__*/", static_table(payload["start"]))
+            .replace("/*__OVERVIEW__*/", escape(payload.get("overview", ""))).replace("/*__DESC__*/", escape(desc, quote=True))
+            .replace("/*__URL__*/", escape(url, quote=True)).replace("/*__OGIMG__*/", escape(url + "vorschau.png", quote=True)))
+    (out / "index.html").write_text(html, encoding="utf-8")
+    preview_image(payload, out / "vorschau.png")
+    for page in ("impressum.html", "datenschutz.html"):
+        (out / page).write_text(resources.files("monitor").joinpath(f"templates/{page}").read_text(encoding="utf-8"), encoding="utf-8")
     (out / "data.json").write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     (out / ".nojekyll").write_text("", encoding="utf-8")
     plotly = resources.files("konjunkturwolf").joinpath("static/plotly.min.js")
     (out / "plotly.min.js").write_bytes(plotly.read_bytes())
     return out / "index.html"
+
+
+def _fmt(v, d=1, sign=False) -> str:
+    return num(float(v), d, sign=sign)
+
+
+def static_table(rows: list[dict]) -> str:
+    """Kernzahlen als schlichte HTML-Tabelle im Quelltext: lesbar ohne JavaScript, für Suchmaschinen und Vorschauen."""
+    from html import escape
+
+    if not rows:
+        return ""
+    out = ['<table class="stable"><thead><tr><th class="l">Kennzahl</th><th>Stand</th><th>Wert</th><th class="l">Einheit</th>'
+           '<th>ggü. Vorperiode</th><th>ggü. Vorjahr</th></tr></thead><tbody>']
+    for r in rows:
+        cd = int(r.get("change_decimals", 1))
+        ch = lambda v: "" if v is None else f"{_fmt(v, cd, True)} {r['change_unit']}"
+        out.append(f'<tr><td><a href="#{escape(r["topic"])}">{escape(r["label"])}</a></td><td class="p">{escape(r["period"])}</td>'
+                   f'<td class="v">{_fmt(r["value"], int(r.get("decimals", 1)))}</td><td class="u">{escape(r["unit"])}</td>'
+                   f'<td class="d">{escape(ch(r["prev"]))}</td><td class="d">{escape(ch(r["yoy"]))}</td></tr>')
+    return "".join(out) + "</tbody></table>"
+
+
+def preview_image(payload: dict, path: Path) -> None:
+    """Vorschaubild (1200 x 630) für Verweise in sozialen Netzen und Messengern: Titel, Stand und sechs Kernzahlen."""
+    from PIL import Image, ImageDraw, ImageFont
+
+    def font(size, bold=False):
+        for name in (["DejaVuSans-Bold.ttf", "LiberationSans-Bold.ttf"] if bold else ["DejaVuSans.ttf", "LiberationSans-Regular.ttf"]):
+            for d in ("/usr/share/fonts/truetype/dejavu/", "/usr/share/fonts/truetype/liberation/", ""):
+                try:
+                    return ImageFont.truetype(d + name, size)
+                except OSError:
+                    continue
+        return ImageFont.load_default(size)
+
+    img = Image.new("RGB", (1200, 630), "#ffffff")
+    d = ImageDraw.Draw(img)
+    d.rectangle([0, 0, 1200, 12], fill="#002060")
+    d.text((60, 50), "Konjunkturmonitor", font=font(54, True), fill="#002060")
+    d.text((60, 122), f"Wie steht es um die deutsche Wirtschaft?  Stand {payload['stand'][8:10]}.{payload['stand'][5:7]}.{payload['stand'][:4]}",
+           font=font(28), fill="#3f4752")
+    pick = [r for r in payload.get("start", []) if r["series"] in ("de_gdp_index", "de_cpi_yoy", "de_alq_sa", "de_ip", "de_esi", "de_insolv")][:6]
+    for k, r in enumerate(pick):
+        x, y = 60 + (k % 3) * 370, 210 + (k // 3) * 200
+        d.text((x, y), r["label"].split(" (")[0], font=font(26), fill="#3f4752")
+        if r["kind"] == "level" and r.get("prev") is not None and r["series"] != "de_insolv":
+            val, unit = _fmt(r["prev"], int(r.get("change_decimals", 1)), True) + " " + r["change_unit"], f"ggü. {r['prev_label']}"
+        elif r["series"] == "de_insolv" and r.get("yoy") is not None:
+            val, unit = _fmt(r["yoy"], 1, True) + " %", "ggü. Vorjahresmonat"
+        else:
+            val, unit = _fmt(r["value"], int(r.get("decimals", 1))) + (" %" if "%" in r["unit"] else ""), ""
+        d.text((x, y + 36), val, font=font(60, True), fill="#002060")
+        d.text((x, y + 108), r["period"], font=font(22), fill="#3f4752")
+        if unit:
+            d.text((x, y + 136), unit, font=font(22), fill="#3f4752")
+    d.text((60, 590), payload["site"].get("url", ""), font=font(22), fill="#3f4752")
+    img.save(path, optimize=True)
 
 
 __all__ = ["build_payload", "build_site", "num"]

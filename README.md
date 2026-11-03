@@ -45,7 +45,9 @@ Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global
 ## Darstellung
 
 Die Darstellung nach Tufte steuern Schalter im Bereich `layout` von `monitor.yaml`. Jeder lässt sich einzeln mit `false` zurücknehmen:
-`start_table` (Kennzahlentabelle statt Fragekarten), `minimal` (ohne Rahmen und Etiketten, Erläuterungen als Randnotiz), `direct_labels` (Beschriftung am Linienende), `small_multiples` (kleine Einzeldiagramme für Abbildungen mit `multiples: true`), `compare_band` (Spanne 2015 bis 2019), `uniform_years` (einheitliches Zeitfenster) und `lead_chart_only` (eine Leitgrafik je Thema, weitere aufklappbar).
+`start_table` (Kennzahlentabelle statt Fragekarten), `minimal` (ohne Rahmen und Etiketten, Erläuterungen als Randnotiz), `direct_labels` (Beschriftung am Linienende), `small_multiples` (kleine Einzeldiagramme für Abbildungen mit `multiples: true`), `compare_band` (Spanne 2015 bis 2019), `uniform_years` (einheitliches Zeitfenster), `lead_chart_only` (eine Leitgrafik je Thema, weitere aufklappbar), `overview` (zwei bis drei Sätze zur Gesamtlage) und `red_zero_line` (rote Nulllinie wie im Grafikstandard; ausgeschaltet bleibt Rot den Warnsignalen vorbehalten).
+
+Die Kennzahlentabelle zeigt je Zeile Wert, Vergleich zur Vorperiode, zum Vorjahr und den Dreimonatsvergleich sowie die Tendenz (▲ ▼ ■). `kind: rate` vergleicht als Differenz, `kind: level` prozentual; `up_bad: true` färbt einen Anstieg rot. Die Seite enthält die Kernzahlen auch als statisches HTML und ein Vorschaubild (`vorschau.png`). Impressum und Datenschutzerklärung liegen in `monitor/templates/`; die Angaben in eckigen Klammern sind vor der Veröffentlichung zu ergänzen. Eigene Texte und Abbildungen stehen unter CC BY 4.0.
 
 ## Downloads
 
