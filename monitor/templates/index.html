@@ -47,6 +47,12 @@
   .card .cap { color: var(--text); margin: 6px 0 4px; font-size: 13.5px; }
   .card .chart { width: 100%; aspect-ratio: 5 / 3; min-height: 260px; overflow: hidden; }
   .card .chart.square { aspect-ratio: 1 / 1; max-height: 520px; }
+  .tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; max-width: 330px; margin: 10px auto 4px; }
+  .tile { aspect-ratio: 1 / 1; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+          font: 13px/1.15 "Arial Narrow", Arial, sans-serif; border: 1px solid #e2e5e9; }
+  .tile b { font-size: 15px; }
+  .tlegend { display: flex; justify-content: center; gap: 10px; font: 12px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
+  .tlegend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -2px; margin-right: 3px; }
   .refs { max-width: 1180px; margin: 30px auto 0; padding: 0 16px; font-size: 14px; color: var(--muted); }
   footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px 40px; }
 </style>
@@ -196,6 +202,49 @@ function forecastChart(el, c) {
   Plotly.newPlot(el, traces, L, CFG);
 }
 
+// Saisonvergleich: Monate dünn, 12-Monats-Mittel dick, übliches Niveau vor Corona gestrichelt
+function seasonalChart(el, c) {
+  const vals = c.y.concat(c.norm).filter(v => v != null);
+  const xs = c.x, r = pad(xs[0], xs[xs.length - 1], "M");
+  const ya = yAxis(vals.concat([0]), c.unit === "Mrd. €" ? "Mrd. €" : c.unit === "Anzahl" ? "" : c.unit);
+  const xa = xAxis(r[0], r[1], el.clientWidth || 500);
+  const d = c.decimals;
+  const traces = [
+    { type: "scatter", mode: "lines", x: xs, y: c.y, name: "Monat", line: { color: PAL[1], width: 1 }, opacity: 0.6, hovertemplate: `%{y:,.${d}f}<extra>Monat</extra>` },
+    { type: "scatter", mode: "lines", x: xs, y: c.ma12, name: "Mittel aus 12 Monaten", line: { color: PAL[0], width: 3 }, hovertemplate: `%{y:,.${d}f}<extra>12-Monats-Mittel</extra>` },
+    { type: "scatter", mode: "lines", x: xs, y: c.norm, name: "Üblich vor Corona (2016–2019)", line: { color: "#7f7f7f", width: 1.5, dash: "dash" }, hovertemplate: `%{y:,.${d}f}<extra>Mittel desselben Monats 2016–2019</extra>` },
+  ];
+  const L = baseLayout(el);
+  Object.assign(L, { shapes: xa.shapes,
+    xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
+    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
+  Plotly.newPlot(el, traces, L, CFG);
+}
+// Kachelkarte: ein Quadrat je Land an seiner ungefähren Lage; lila mehr, blau weniger
+const TILE_POS = { SH: [0, 2], HB: [1, 1], HH: [1, 2], MV: [1, 3], NW: [2, 0], NI: [2, 1], ST: [2, 2], BE: [2, 3], BB: [2, 4],
+  RP: [3, 0], HE: [3, 1], TH: [3, 2], SN: [3, 3], SL: [4, 0], BW: [4, 1], BY: [4, 2] };
+function tileColor(v, m) {
+  const k = Math.min(1, Math.abs(v) / m), base = v >= 0 ? [81, 21, 74] : [0, 112, 192];
+  const c = base.map(x => Math.round(255 - (255 - x) * k * 0.85));
+  return { bg: `rgb(${c.join(",")})`, fg: k > 0.55 ? "#fff" : "#000" };
+}
+function tilesChart(el, c) {
+  const rows = c.tiles.rows, m = Math.max(10, ...rows.map(r => Math.abs(r.change)));
+  const grid = document.createElement("div"); grid.className = "tiles"; grid.setAttribute("role", "img");
+  grid.setAttribute("aria-label", rows.map(r => `${r.name} ${fmt(r.change, 0)} %`).join(", "));
+  rows.forEach(r => {
+    const p = TILE_POS[r.abbr]; if (!p) return;
+    const col = tileColor(r.change, m), d = document.createElement("div");
+    d.className = "tile"; d.style.gridRow = p[0] + 1; d.style.gridColumn = p[1] + 1; d.style.background = col.bg; d.style.color = col.fg;
+    d.title = `${r.name}: ${fmt(r.change, 1)} % (${r.sum12.toLocaleString("de-DE")} in zwölf Monaten)`;
+    d.innerHTML = `<b>${r.abbr}</b>${r.change > 0 ? "+" : ""}${fmt(r.change, 0)} %`;
+    grid.appendChild(d);
+  });
+  el.appendChild(grid);
+  const lo = tileColor(-m, m), hi = tileColor(m, m);
+  el.insertAdjacentHTML("beforeend", `<div class="tlegend"><span><i style="background:${lo.bg}"></i>weniger</span><span><i style="background:#fff;border:1px solid #ccc"></i>gleich</span><span><i style="background:${hi.bg}"></i>mehr</span></div>`);
+}
+
 function spark(d, ref) {
   const x = d.x.map(t => Date.parse(t)), y = d.y, w = 240, h = 34, p = 3;
   const lo = Math.min(...y, ref ?? Infinity), hi = Math.max(...y, ref ?? -Infinity);
@@ -207,10 +256,12 @@ function spark(d, ref) {
 
 function card(c, no) {
   const el = document.createElement("div"); el.className = "card"; el.id = `abb-${no}`;
-  const sub = c.type === "clock" || c.type === "forecast" ? "" : [c.freq === "Q" ? "Vierteljährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
-  const unit = c.type === "clock" ? "Saldo, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real" : (c.unit || "");
+  const sub = c.type === "clock" || c.type === "forecast" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
+    : [c.freq === "Q" ? "Vierteljährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
+  const unit = c.type === "clock" ? "Saldo, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real"
+    : c.type === "tiles" ? "Veränderung gegenüber den zwölf Monaten davor, %" : (c.unit || "");
   el.innerHTML = `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}<div class="unit">${esc(unit)}</div>`;
-  const ch = document.createElement("div"); ch.className = "chart" + (c.type === "clock" ? " square" : ""); el.appendChild(ch);
+  const ch = document.createElement("div"); ch.className = c.type === "tiles" ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); el.appendChild(ch);
   if (c.caption) el.insertAdjacentHTML("beforeend", `<div class="cap">${esc(c.caption)}</div>`);
   let src = (c.sources || []).join(", ");
   if (c.type === "forecast") src = c.forecasts.filter(f => f.latest).map(f => `<a href="${esc(f.source)}" target="_blank" rel="noopener">${esc(f.by)}, ${esc(f.round)}</a>`).join(" · ");
@@ -222,7 +273,8 @@ function card(c, no) {
 
 function render(ch) {
   const c = ch._c;
-  if (c.type === "clock") clockChart(ch, c); else if (c.type === "forecast") forecastChart(ch, c); else timeChart(ch, c);
+  if (c.type === "clock") clockChart(ch, c); else if (c.type === "forecast") forecastChart(ch, c);
+  else if (c.type === "seasonal") seasonalChart(ch, c); else if (c.type === "tiles") tilesChart(ch, c); else timeChart(ch, c);
 }
 
 function build() {
@@ -232,7 +284,7 @@ function build() {
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const grid = document.getElementById("grid"), nav = document.getElementById("nav"), topics = document.getElementById("topics");
   DATA.questions.forEach(q => {
-    const a = q.answer, val = (a.signed && a.value > 0 ? "+" : "") + fmt(a.value, a.unit === "Mrd. €" ? 1 : 1);
+    const a = q.answer, val = (a.signed && a.value > 0 ? "+" : "") + fmt(a.value, a.decimals ?? 1);
     grid.insertAdjacentHTML("beforeend", `<a class="q" href="#${q.topic}"><span class="ask">${esc(q.ask)}</span>
       <span class="big"><span class="num">${val}</span><span class="u">${esc(a.unit)}${a.label && a.unit !== "Mrd. €" ? " " + esc(a.label) : ""}</span><span class="verdict">${esc(a.verdict)}</span></span>
       <span class="head">${esc(a.head)}</span>${spark(a.spark_data, a.ref)}<span class="per">${esc(a.period)}</span></a>`);
@@ -247,7 +299,7 @@ function build() {
       + (q ? `<p class="answer">${esc(q.answer.head)}</p><ul class="more">${q.answer.more.map(m => `<li>${esc(m)}</li>`).join("")}</ul>`
         + `<div class="explain"><b>Was heißt das?</b> ${esc(q.explain)}</div>` : "");
     const wrap = document.createElement("div"); wrap.className = "charts"; sec.appendChild(wrap);
-    t.charts.forEach(c => { no += 1; const el = card(c, no); wrap.appendChild(el); const ch = el.querySelector(".chart"); obs ? obs.observe(ch) : render(ch); });
+    t.charts.forEach(c => { no += 1; const el = card(c, no); wrap.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : render(ch); });
     topics.appendChild(sec);
     nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
   });

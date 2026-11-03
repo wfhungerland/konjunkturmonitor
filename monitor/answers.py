@@ -55,8 +55,15 @@ def inflation(q: dict, data: dict) -> dict:
     if v < 0:
         head = f"Im {period(t, 'M')} waren die Preise um {num(abs(v))} % niedriger als ein Jahr zuvor."
     dirw = "gesunken" if v < p - 0.05 else ("gestiegen" if v > p + 0.05 else "gleich geblieben")
-    more = [f"Im Vormonat lag die Rate bei {num(p)} %, sie ist also {dirw}.",
-            "Die Europäische Zentralbank strebt 2 % an."]
+    more = [f"Im Vormonat lag die Rate bei {num(p)} %, sie ist also {dirw}."]
+    parts = []
+    for label, sid in (q.get("parts") or {}).items():
+        ps = data.get(sid)
+        if ps is not None and not ps.dropna().empty and ps.dropna().index[-1] == t:
+            parts.append(f"{label} {num(ps.dropna().iloc[-1], sign=True)} %")
+    if parts:
+        more.append("Gegenüber dem Vorjahresmonat: " + ", ".join(parts) + ".")
+    more.append("Die Europäische Zentralbank strebt 2 % an.")
     verdict = ("unter dem Ziel" if v < 1.5 else "nahe am Ziel" if v <= 2.5 else "über dem Ziel" if v <= 4 else "hoch")
     return {"value": round(float(v), 1), "unit": "%", "signed": False, "period": period(t, "M"), "head": head, "more": more,
             "verdict": verdict, "spark": q["series"], "ref": 2.0}
@@ -133,8 +140,39 @@ def sentiment(q: dict, data: dict) -> dict:
             "verdict": f"Stimmung {verdict}", "spark": q["series"], "ref": 100.0}
 
 
+def insolvency(q: dict, data: dict) -> dict:
+    s = _s(data, q["series"])
+    v, t = s.iloc[-1], s.index[-1]
+    mon = MONTHS[t.month - 1]
+    head = f"Im {period(t, 'M')} haben {num(v, 0)} Unternehmen Insolvenz beantragt."
+    more = []
+    ya = s.get(t - pd.DateOffset(years=1))
+    if ya is not None and ya > 0:
+        d = (v / ya - 1) * 100
+        more.append(f"Das sind {num(abs(d))} % {'mehr' if d >= 0 else 'weniger'} als im {mon} {t.year - 1}.")
+    base = s[(s.index.month == t.month) & (s.index.year >= 2016) & (s.index.year <= 2019)]
+    verdict = "Insolvenzen"
+    if len(base):
+        norm = base.mean()
+        d = (v / norm - 1) * 100
+        more.append(f"Vor Corona waren es in einem {mon} im Schnitt {num(norm, 0)} (2016 bis 2019); jetzt sind es {num(abs(d), 0)} % {'mehr' if d >= 0 else 'weniger'}.")
+        verdict = ("deutlich über Vorkrisenniveau" if d >= 20 else "über Vorkrisenniveau" if d >= 5
+                   else "auf Vorkrisenniveau" if d > -5 else "unter Vorkrisenniveau")
+    ytd = s[(s.index.year == t.year)]
+    prev = s[(s.index.year == t.year - 1) & (s.index.month <= t.month)]
+    if len(ytd) == t.month and len(prev) == t.month and prev.sum() > 0:
+        d = (ytd.sum() / prev.sum() - 1) * 100
+        more.append(f"Januar bis {mon} {t.year}: {num(ytd.sum(), 0)} Insolvenzen, {num(abs(d))} % {'mehr' if d >= 0 else 'weniger'} als ein Jahr zuvor.")
+    emp, cl = data.get(q.get("employees")), data.get(q.get("claims"))
+    if emp is not None and cl is not None and t in emp.index and t in cl.index:
+        more.append(f"Betroffen sind rund {num(emp[t], 0)} Beschäftigte; die Gläubiger erwarten Forderungen von {num(cl[t])} Mrd. €.")
+    more.append("Gezählt werden beantragte Verfahren nach Meldung der Amtsgerichte; die Zahlen kommen mit etwa drei Monaten Verzug.")
+    return {"value": round(float(v)), "unit": "Firmen", "signed": False, "period": period(t, "M"), "head": head, "more": more,
+            "verdict": verdict, "spark": q["series"], "decimals": 0}
+
+
 KINDS = {"growth": growth, "inflation": inflation, "unemployment": unemployment, "index_mom": index_mom,
-         "level_mom": level_mom, "sentiment": sentiment}
+         "level_mom": level_mom, "sentiment": sentiment, "insolvency": insolvency}
 
 
 def answer(q: dict, data: dict) -> dict | None:

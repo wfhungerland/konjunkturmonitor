@@ -12,6 +12,7 @@ blocks:
   - {id: konsum, title: Konsum, sheet: Konsum}
   - {id: export, title: Export, sheet: Export}
   - {id: stimmung, title: Stimmung, sheet: Stimmung}
+  - {id: insolvenzen, title: Insolvenzen, sheet: Insolvenzen}
 
 names:
   item:
@@ -21,12 +22,29 @@ names:
     P52_P53: Lager
     P6: Exporte
     P7: Importe
+  land:
+    "01": Schleswig-Holstein
+    "02": Hamburg
+    "03": Niedersachsen
+    "04": Bremen
+    "05": Nordrhein-Westfalen
+    "06": Hessen
+    "07": Rheinland-Pfalz
+    "08": Baden-Württemberg
+    "09": Bayern
+    "10": Saarland
+    "11": Berlin
+    "12": Brandenburg
+    "13": Mecklenburg-Vorpommern
+    "14": Sachsen
+    "15": Sachsen-Anhalt
+    "16": Thüringen
 
 charts:
   gdp_qoq: {title: "Wirtschaftsleistung, Veränderung gegenüber dem Vorquartal", decimals: 1}
   gdp_contrib: {title: "Woraus das Wachstum besteht", kind: stacked, decimals: 1}
   gdp_level: {title: "Wirtschaftsleistung, Niveau", decimals: 0}
-  cpi: {title: "Inflationsrate und Bestandteile", decimals: 1}
+  cpi: {title: "Inflationsrate (VPI) und Bestandteile", decimals: 1}
   pipeline_prices: {title: "Preise auf den Vorstufen", decimals: 1}
   labour: {title: "Arbeitslosenquote", decimals: 1}
   labour_flows: {title: "Arbeitslose und offene Stellen", decimals: 0}
@@ -41,6 +59,12 @@ charts:
   clock: {title: "Konjunkturuhr der Industrie", decimals: 1}
   employment: {title: "Erwerbstätige", decimals: 0}
   forecast: {title: "Prognosen für das Wachstum", decimals: 1}
+  insolv: {title: "Unternehmensinsolvenzen je Monat", decimals: 0}
+  insolv_emp: {title: "Von Insolvenzen betroffene Beschäftigte je Monat", decimals: 0}
+  insolv_claims: {title: "Voraussichtliche Forderungen der Gläubiger je Monat", decimals: 1}
+  insolv_land: {title: "Insolvenzen nach Ländern", decimals: 0}
+  gruend_land: {title: "Betriebsgründungen nach Ländern", decimals: 0}
+  aufgabe_land: {title: "Betriebsaufgaben nach Ländern", decimals: 0}
 
 series:
   # --- Wachstum ------------------------------------------------------------
@@ -106,53 +130,105 @@ series:
     chart: cpi
     label: Insgesamt
 
-  - id: de_hicp_core_yoy
+  - id: de_vpi_food
     block: preise
-    source: eurostat
-    key: prc_hicp_minr
-    params: {geo: DE, unit: RCH_A, coicop18: TOT_X_NRG_FOOD}
-    title: HVPI ohne Energie und Nahrungsmittel, % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.C2C011.I20.A
+    title: VPI Nahrungsmittel, Index
+    unit: Index 2020=100
     frequency: M
     adjustment: nicht bereinigt
-    chart: cpi
-    label: Ohne Energie und Nahrung (Kernrate, HVPI)
 
-  - id: de_hicp_energy_yoy
+  - id: de_vpi_food_yoy
     block: preise
-    source: eurostat
-    key: prc_hicp_minr
-    params: {geo: DE, unit: RCH_A, coicop18: NRG}
-    title: HVPI Energie, % gg. Vorjahresmonat
+    source: derived
+    derive: {from: de_vpi_food, op: yoy_pct}
+    title: VPI Nahrungsmittel, % gg. Vorjahresmonat
     unit: "% gg. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi
-    label: Energie (HVPI)
+    label: Nahrungsmittel
 
-  - id: de_hicp_food_yoy
+  - id: de_vpi_energy
     block: preise
-    source: eurostat
-    key: prc_hicp_minr
-    params: {geo: DE, unit: RCH_A, coicop18: FOOD}
-    title: HVPI Nahrungsmittel, Alkohol und Tabak, % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.NRGY00.I20.A
+    title: VPI Energie (Haushaltsenergie und Kraftstoffe), Index
+    unit: Index 2020=100
     frequency: M
     adjustment: nicht bereinigt
-    chart: cpi
-    label: Nahrung (HVPI)
 
-  - id: de_hicp_serv_yoy
+  - id: de_vpi_energy_yoy
     block: preise
-    source: eurostat
-    key: prc_hicp_minr
-    params: {geo: DE, unit: RCH_A, coicop18: SERV}
-    title: HVPI Dienstleistungen, % gg. Vorjahresmonat
+    source: derived
+    derive: {from: de_vpi_energy, op: yoy_pct}
+    title: VPI Energie (Haushaltsenergie und Kraftstoffe), % gg. Vorjahresmonat
     unit: "% gg. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi
-    label: Dienstleistungen (HVPI)
+    label: Energie
+
+  - id: de_vpi_goods
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.GOODS0MFXE.I20.A
+    title: VPI Gewerbliche Waren ohne Energie, Index
+    unit: Index 2020=100
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_vpi_goods_yoy
+    block: preise
+    source: derived
+    derive: {from: de_vpi_goods, op: yoy_pct}
+    title: VPI Gewerbliche Waren ohne Energie, % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi
+    label: Waren ohne Energie
+
+  - id: de_vpi_serv
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.SVXR.I20.A
+    title: VPI Dienstleistungen ohne Wohnungsmieten, Index
+    unit: Index 2020=100
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_vpi_serv_yoy
+    block: preise
+    source: derived
+    derive: {from: de_vpi_serv, op: yoy_pct}
+    title: VPI Dienstleistungen ohne Wohnungsmieten, % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi
+    label: Dienstleistungen ohne Miete
+
+  - id: de_vpi_rent
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.C2C041.I20.A
+    title: VPI Tatsächliche Wohnungsmiete (Nettokaltmiete), Index
+    unit: Index 2020=100
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_vpi_rent_yoy
+    block: preise
+    source: derived
+    derive: {from: de_vpi_rent, op: yoy_pct}
+    title: VPI Tatsächliche Wohnungsmiete (Nettokaltmiete), % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi
+    label: Wohnungsmiete
 
   - id: de_ppi
     block: preise
@@ -481,3 +557,87 @@ series:
     unit: Saldo
     frequency: M
     adjustment: saisonbereinigt
+
+  # --- Insolvenzen und Gewerbeanzeigen (Destatis GENESIS, Zugang erforderlich) ---
+  - id: de_insolv
+    block: insolvenzen
+    source: genesis
+    key: 52411-0010
+    params: {value_variable: ISV006, value_unit: number}
+    title: Beantragte Unternehmensinsolvenzen
+    unit: Anzahl
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: insolv
+    label: Unternehmensinsolvenzen
+
+  - id: de_insolv_emp
+    block: insolvenzen
+    source: genesis
+    key: 52411-0010
+    params: {value_variable: ERW020}
+    title: Von Unternehmensinsolvenzen betroffene Arbeitnehmer
+    unit: Personen
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: insolv_emp
+    label: Betroffene Beschäftigte
+
+  - id: de_insolv_claims
+    block: insolvenzen
+    source: genesis
+    key: 52411-0010
+    params: {value_variable: FOR002, scale: 0.000001}
+    title: Voraussichtliche Forderungen bei Unternehmensinsolvenzen
+    unit: Mrd. €
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: insolv_claims
+    label: Forderungen
+
+  - id: de_insolv_land
+    expand: {land: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"]}
+    block: insolvenzen
+    source: genesis
+    key: 52411-0110
+    params: {value_variable: ISV006, value_unit: number, filters: {DLAND: "{land}"}}
+    title: Unternehmensinsolvenzen {land_name}
+    unit: Anzahl
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: insolv_land
+    label: "{land_name}"
+
+  - id: de_gruend_land
+    expand: {land: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"]}
+    block: insolvenzen
+    source: genesis
+    key: 52311-0110
+    params: {value_variable: GEW009, filters: {DLAND: "{land}", GEWNG1: GEW-BTRGRH}}
+    title: Betriebsgründungen (Hauptniederlassung) {land_name}
+    unit: Anzahl
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: gruend_land
+    label: "{land_name}"
+    note: Neugründungen von Hauptniederlassungen mit größerer wirtschaftlicher Bedeutung (ohne Nebenerwerb und Übrige).
+
+  - id: de_aufgabe_land
+    expand: {land: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"]}
+    block: insolvenzen
+    source: genesis
+    key: 52311-0130
+    params: {value_variable: GEW010, filters: {DLAND: "{land}", GEWAU1: GEW-BTRAGH}}
+    title: Betriebsaufgaben (Hauptniederlassung) {land_name}
+    unit: Anzahl
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: aufgabe_land
+    label: "{land_name}"
+    note: Vollständige Aufgaben von Hauptniederlassungen mit größerer wirtschaftlicher Bedeutung (ohne Nebenerwerb und Übrige).

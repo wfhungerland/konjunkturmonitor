@@ -4,7 +4,7 @@
 
 site:
   title: Konjunkturmonitor
-  claim: "Wie geht es der deutschen Wirtschaft? Sieben Fragen, sieben Antworten, jeden Monat neu aus amtlichen und offenen Daten."
+  claim: "Wie geht es der deutschen Wirtschaft? Acht Fragen, acht Antworten, jeden Monat neu aus amtlichen und offenen Daten."
   author: "Hungerland, Wolf-Fabian"
   url: "https://wfhungerland.github.io/konjunkturmonitor/"
 
@@ -21,7 +21,8 @@ questions:
     ask: "Steigen die Preise?"
     kind: inflation
     series: de_cpi_yoy
-    explain: "Die Inflationsrate sagt, um wie viel Prozent ein typischer Einkauf teurer ist als vor einem Jahr. Die Europäische Zentralbank hält 2 % für angemessen."
+    parts: {Energie: de_vpi_energy_yoy, Nahrungsmittel: de_vpi_food_yoy, "Waren ohne Energie": de_vpi_goods_yoy, "Dienstleistungen ohne Miete": de_vpi_serv_yoy, Wohnungsmiete: de_vpi_rent_yoy}
+    explain: "Die Inflationsrate sagt, um wie viel Prozent ein typischer Einkauf teurer ist als vor einem Jahr. Gemessen wird sie mit dem Verbraucherpreisindex (VPI) des Statistischen Bundesamts. Die Europäische Zentralbank hält 2 % für angemessen."
     topic: preise
 
   - id: arbeit
@@ -62,6 +63,15 @@ questions:
     explain: "Jeden Monat fragt die EU-Kommission Unternehmen und Haushalte nach ihrer Lage und ihren Erwartungen. 100 ist der langjährige Durchschnitt; darüber ist die Stimmung besser als üblich."
     topic: stimmung
 
+  - id: insolvenzen
+    ask: "Gehen mehr Firmen pleite?"
+    kind: insolvency
+    series: de_insolv
+    employees: de_insolv_emp
+    claims: de_insolv_claims
+    explain: "Eine Insolvenz beantragt ein Unternehmen, wenn es seine Rechnungen nicht mehr bezahlen kann. Weil im Januar und im Sommer typischerweise mehr Anträge gestellt werden, vergleichen wir mit demselben Monat früherer Jahre."
+    topic: insolvenzen
+
 # Themen: je Frage ein Abschnitt mit Abbildungen. type: line (Standard), bars, stacked, clock, forecast, threshold.
 topics:
   - id: wachstum
@@ -72,7 +82,7 @@ topics:
   - id: preise
     title: Preise
     charts:
-      - {chart: cpi, years: 6, emphasis: de_cpi_yoy, ref: 2, caption: "Dicke Linie: Inflationsrate insgesamt. Dünne Linien: wie stark einzelne Bereiche teurer wurden. Gestrichelt: Ziel der EZB von 2 %."}
+      - {chart: cpi, years: 6, emphasis: de_cpi_yoy, ref: 2, caption: "Verbraucherpreisindex (VPI) des Statistischen Bundesamts. Dicke Linie: Inflationsrate insgesamt. Dünne Linien: wie stark einzelne Bereiche teurer wurden. Gestrichelt: 2 %, das Ziel der EZB (es bezieht sich auf den europäischen HVPI, der in Deutschland meist nahe am VPI liegt)."}
       - {chart: pipeline_prices, years: 6, caption: "Preise, bevor sie beim Verbraucher ankommen: Erzeuger verkaufen an Händler, Importeure kaufen im Ausland ein. Sie laufen der Inflation oft voraus."}
   - id: arbeit
     title: Arbeit
@@ -100,6 +110,15 @@ topics:
     charts:
       - {chart: clock, type: clock, x: de_ind_orderbooks, y: de_ind_prodexp, months: 24, caption: "Waagerecht: Wie bewerten Industrieunternehmen ihre Aufträge heute? Senkrecht: Was erwarten sie für die nächsten drei Monate? Beides als Abstand zum Durchschnitt 2005 bis 2019. Der Punkt wandert im Uhrzeigersinn durch die vier Phasen des Konjunkturzyklus."}
       - {chart: sentiment, years: 6, caption: "Saldo aus positiven und negativen Antworten je Bereich (EU-Umfragen)."}
+  - id: insolvenzen
+    title: Insolvenzen
+    charts:
+      - {chart: insolv, type: seasonal, series: de_insolv, years: 11, caption: "Dünn: einzelne Monate. Dick: Mittel aus zwölf Monaten, das gleicht die Jahreszeiten aus. Gestrichelt: das übliche Niveau vor Corona, also der Durchschnitt desselben Monats 2016 bis 2019."}
+      - {chart: insolv_land, type: tiles, prefix: de_insolv_land_, caption: "Veränderung der letzten zwölf Monate gegenüber den zwölf Monaten davor. Lila: mehr Insolvenzen, blau: weniger."}
+      - {chart: insolv_emp, type: seasonal, series: de_insolv_emp, years: 11, caption: "Beschäftigte in Unternehmen, die Insolvenz beantragt haben. Einzelne große Fälle schlagen stark aus, daher das Mittel aus zwölf Monaten (dick)."}
+      - {chart: insolv_claims, type: seasonal, series: de_insolv_claims, years: 11, caption: "Was die Gläubiger voraussichtlich verlieren können, in Milliarden Euro. Mittel aus zwölf Monaten dick."}
+      - {chart: gruend_land, type: tiles, prefix: de_gruend_land_, caption: "Gründungen von Betrieben mit größerer wirtschaftlicher Bedeutung (Hauptniederlassung), letzte zwölf Monate gegenüber den zwölf Monaten davor. Lila: mehr, blau: weniger."}
+      - {chart: aufgabe_land, type: tiles, prefix: de_aufgabe_land_, caption: "Vollständige Aufgaben solcher Betriebe, letzte zwölf Monate gegenüber den zwölf Monaten davor. Lila: mehr, blau: weniger."}
   - id: aussichten
     title: Aussichten
     ask: "Wie geht es weiter?"
