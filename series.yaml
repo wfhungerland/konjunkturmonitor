@@ -511,7 +511,7 @@ series:
     block: insolvenzen
     source: genesis
     key: 52411-0010
-    params: {value_variable: ISV006}
+    params: {value_variable: ISV006, value_unit: number}
     title: Beantragte Unternehmensinsolvenzen
     unit: Anzahl
     frequency: M
@@ -551,7 +551,7 @@ series:
     block: insolvenzen
     source: genesis
     key: 52411-0110
-    params: {value_variable: ISV006, filters: {DLAND: "{land}"}}
+    params: {value_variable: ISV006, value_unit: number, filters: {DLAND: "{land}"}}
     title: Unternehmensinsolvenzen {land_name}
     unit: Anzahl
     frequency: M
