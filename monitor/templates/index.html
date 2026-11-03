@@ -744,7 +744,7 @@ function build() {
       <span class="head">${esc(a.head)}</span>${spark(a.spark_data, a.ref)}<span class="per">${esc(a.period)}</span></a>`);
   });
   let no = 0, curPart = null;
-  const MAIN_NAV = (DATA.layout || {}).main_nav || ["wachstum", "preise", "arbeit", "industrie", "konsum"];
+  const MAIN_NAV = (DATA.layout || {}).main_nav || ["wachstum", "preise", "arbeit", "industrie", "konsum", "insolvenzen"];
   const navMore = document.createElement("div"); navMore.className = "navlist";
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     struktur: { no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
