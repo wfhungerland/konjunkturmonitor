@@ -142,6 +142,16 @@
   .calm td a { display: block; color: var(--text); margin-top: 2px; overflow-wrap: anywhere; hyphens: auto; }
   .calm td.today { background: #eef4fb; } .calm td.past a { color: #999; }
   .callinks { font: 13px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
+  .answer button.copy, .ctext button.copy { font: 12.5px "Arial Narrow", Arial, sans-serif; color: var(--accent); background: none; border: 1px solid #c9d3df; border-radius: 3px; padding: 0 6px; cursor: pointer; vertical-align: 1px; }
+  .card .ctext { font-size: 14.5px; margin: 6px 0 2px; }
+  .card .cap.notes { color: var(--muted); }
+  .heat td.k { text-align: right; } .heat td:not(.l) { text-align: right; } .heat th { text-align: right; } .heat th.l { text-align: left; }
+  .heat .sortnote { font-size: 11.5px; color: var(--muted); }
+  ol.callist { list-style: none; margin: 4px 0 8px; padding: 0; font: 14.5px/1.35 "Arial Narrow", Arial, sans-serif; }
+  ol.callist li { display: grid; grid-template-columns: 13em 1fr; gap: 4px 14px; padding: 6px 0; border-top: 1px solid #e6e6e6; }
+  ol.callist li.next { background: #eef4fb; padding: 8px 6px; }
+  ol.callist .cs { color: var(--muted); font-size: 13px; }
+  @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
   .refs { max-width: 1180px; margin: 30px auto 0; padding: 0 16px; font-size: 14px; color: var(--muted); }
   footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
@@ -229,9 +239,15 @@ function timeChart(el, c) {
       traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, showlegend: false, hoverinfo: "skip", line: { color: col, width: 1, shape: "spline" }, opacity: 0.45 });
       const m = ma3(s.y); traces.push({ type: "scatter", mode: "lines", x: s.x, y: m, name: s.label, line: { color: col, width: 3 },
         hovertemplate: `%{y:,.${c.decimals}f} (3-Monats-Mittel)<extra>${esc(s.label)}</extra>` });
+    } else if (c.forecast_after_bars && bars.length) { // Prognosejahre: nach dem letzten Ist-Wert der Balken gestrichelt
+      const lastBar = bars.map(b => b.x[b.x.length - 1]).sort().pop(), k = s.x.findIndex(x => x > lastBar);
+      const cut = k < 0 ? s.x.length : k;
+      traces.push({ type: "scatter", mode: "lines", x: s.x.slice(0, cut), y: s.y.slice(0, cut), name: s.label, line: { color: col, width: 3 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
+      if (k > 0) traces.push({ type: "scatter", mode: "lines+markers", x: s.x.slice(cut - 1), y: s.y.slice(cut - 1), name: s.label + ", Prognose", line: { color: col, width: 2, dash: "dot" }, marker: { size: 6, symbol: "circle-open" }, hovertemplate: `%{y:,.${c.decimals}f} (Prognose)<extra>${esc(s.label)}</extra>` });
     } else {
+      const grey = c.context_grey && !strong;
       traces.push({ type: "scatter", mode: s.x.length < 12 ? "lines+markers" : "lines", x: s.x, y: s.y, name: s.label,
-        line: { color: col, width: strong ? 3 : 1.6 }, marker: { size: 5 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
+        line: { color: grey ? "#a6a6a6" : col, width: strong ? 3 : grey ? 1.2 : 1.6 }, marker: { size: 5 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
     }
     all.push(...s.y.filter(v => v != null));
   });
@@ -249,12 +265,14 @@ function timeChart(el, c) {
   if (c.threshold != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.threshold, y1: c.threshold, line: { color: WARN, width: 1.5, dash: "dash" } });
   (c.recessions || []).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.25)", line: { width: 0 }, layer: "below" }));
   const LY = DATA.layout || {}, annotations = [];
+  (c.notes || []).forEach((n, k) => { shapes.push({ type: "line", xref: "x", yref: "paper", x0: n.date, x1: n.date, y0: 0, y1: 1, line: { color: "#595959", width: 1, dash: "dot" } });
+    annotations.push({ xref: "x", yref: "paper", x: n.date, y: 1, text: String(k + 1), showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 11, color: "#595959" } }); });
   if (c.band && LY.compare_band) {
     shapes.push({ type: "rect", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.band.lo, y1: c.band.hi, fillcolor: "rgba(120,120,120,0.10)", line: { width: 0 }, layer: "below" });
     annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.band.hi, text: "Spanne 2015–2019", showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 11, color: "#7f7f7f" } });
   }
   const named = traces.filter(t => t.showlegend !== false && t.type === "scatter");
-  const direct = LY.direct_labels && c.type !== "stacked" && !bars.length && named.length > 1 && named.length <= 4;
+  const direct = LY.direct_labels && c.type !== "stacked" && !bars.length && named.length > 1 && (named.length <= 4 || c.context_grey);
   let rMargin = 6;
   if (direct) { // Beschriftung rechts neben der Werteachse, vollständig, bei Bedarf zweizeilig und ohne Überlappung
     const wrap = s => { if (s.length <= 24) return [s]; const w = s.split(" "); let a = "", out = []; w.forEach(x => { if ((a + " " + x).trim().length > 24 && a) { out.push(a); a = x; } else a = (a + " " + x).trim(); }); out.push(a); return out; };
@@ -308,35 +326,24 @@ function multiplesChart(el, c) {
 // Wärmetabelle: Zeilen Branchen, Spalten Monate, Farbe nach Veränderung
 function heatChart(el, c) {
   const H = c.heat, m = 15, cell = v => { if (v == null) return `<td></td>`; const col = tileColor(Math.max(-m, Math.min(m, v)), m), r = Math.round(v); return `<td style="background:${col.bg};color:${col.fg}">${fmt(r === 0 ? 0 : r, 0)}</td>`; };
-  const head = H.cols.map(d => `<th>${MONTHS[+d.slice(5, 7) - 1].replace(".", "")}<br>${d.slice(2, 4)}</th>`).join("");
-  let html = `<table><thead><tr><th></th>${head}<th>3 Mon.</th><th>ggü. 2019</th></tr></thead><tbody>`;
+  const head = H.cols.map(d => `<th>${MONTHS[+d.slice(5, 7) - 1]}<br>${d.slice(0, 4)}</th>`).join("");
+  let html = `<table><thead><tr><th class="l">Branche<br><span class="sortnote">sortiert nach Dreimonatsvergleich ↓</span></th>${head}<th>Drei&shy;monats&shy;vergleich</th><th>ggü. 2019</th></tr></thead><tbody>`;
   H.rows.slice().reverse().forEach(r => { html += `<tr><td class="l">${esc(r.label)}</td>${H.cols.map(d => cell(r.values[d])).join("")}`
     + `<td class="k">${(r.m3 > 0 ? "+" : "") + fmt(r.m3, 1)}</td><td class="k">${r.level == null ? "" : (r.level > 0 ? "+" : "") + fmt(r.level, 0)}</td></tr>`; });
   el.innerHTML = `<div class="heat">${html}</tbody></table></div>`;
 }
 
-// Veröffentlichungskalender: Monatsraster, Termine je Tag
+// Veröffentlichungskalender: Liste der Tage mit Terminen, der nächste Termin hervorgehoben
 function calendarChart(el, c) {
-  const K = c.calendar, byDay = {};
+  const K = c.calendar, byDay = {}, today = new Date().toISOString().slice(0, 10);
   K.events.forEach(e => (byDay[e.date] = byDay[e.date] || []).push(e));
-  const today = new Date().toISOString().slice(0, 10);
-  let html = `<div class="cal">`;
-  K.months.forEach(mo => {
-    const [y, m] = mo.split("-").map(Number), first = new Date(Date.UTC(y, m - 1, 1)), days = new Date(Date.UTC(y, m, 0)).getUTCDate();
-    const names = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-    html += `<div class="calm"><h4>${names[m - 1]} ${y}</h4><table><thead><tr>${["Mo", "Di", "Mi", "Do", "Fr"].map(d => `<th>${d}</th>`).join("")}</tr></thead><tbody><tr>`;
-    let col = (first.getUTCDay() + 6) % 7; if (col > 4) col = -1;
-    for (let i = 0; i < Math.max(0, col); i++) html += "<td></td>";
-    let c0 = Math.max(0, col);
-    for (let d = 1; d <= days; d++) {
-      const dt = new Date(Date.UTC(y, m - 1, d)), wd = (dt.getUTCDay() + 6) % 7; if (wd > 4) continue;
-      if (wd === 0 && c0 > 0) { html += "</tr><tr>"; c0 = 0; }
-      const iso = dt.toISOString().slice(0, 10), ev = (byDay[iso] || []).filter(e => e.source !== "Bundesbank" || d <= 7 || true);
-      html += `<td class="${iso === today ? "today" : ""}${iso < today ? " past" : ""}"><b>${d}</b>${ev.map(e => `<a href="#${e.topic}">${esc(e.name)}</a>`).join("")}</td>`; c0++;
-    }
-    html += `</tr></tbody></table></div>`;
-  });
-  html += `</div><p class="callinks">Kalender der Quellen: ${K.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(" · ")}</p>`;
+  const days = Object.keys(byDay).sort().filter(d => d >= today), next = days[0];
+  const wd = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+  let html = `<ol class="callist">`;
+  days.forEach(d => { const dt = new Date(d + "T12:00:00Z");
+    html += `<li class="${d === next ? "next" : ""}"><span class="cd">${d === next ? "<b>Nächster Termin</b><br>" : ""}${wd[dt.getUTCDay()]}, ${dt.getUTCDate()}. ${MONTHS[dt.getUTCMonth()]} ${dt.getUTCFullYear()}</span>`
+      + `<span class="ce">${byDay[d].map(e => `<a href="#${e.topic}">${esc(e.name)}</a> <span class="cs">${esc(e.source)}</span>`).join("<br>")}</span></li>`; });
+  html += `</ol><p class="callinks">Kalender der Quellen: ${K.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(" · ")}</p>`;
   el.innerHTML = html;
 }
 
@@ -357,6 +364,8 @@ function clockChart(el, c) {
     annotations: [lab(-m * 0.96, m * 0.96, "Aufschwung", "left", "top"), lab(m * 0.96, m * 0.96, "Boom", "right", "top"),
       lab(m * 0.96, -m * 0.96, "Abschwung", "right", "bottom"), lab(-m * 0.96, -m * 0.96, "Rezession", "left", "bottom"),
       { x: k.x[last], y: k.y[last], text: `<b>${MONTHS[d.getMonth()]} ${d.getFullYear()}</b>`, showarrow: true, arrowhead: 0, ax: 30, ay: -24, font: { family: HS.font, size: 13, color: PAL[0] } },
+      ...k.t.map((tt, i) => ({ tt, i })).filter(o => o.i === 0 || o.tt.slice(5, 7) === "01").map(o => ({ x: k.x[o.i], y: k.y[o.i], text: o.i === 0 ? `Start ${MONTHS[+o.tt.slice(5, 7) - 1]} ${o.tt.slice(0, 4)}` : o.tt.slice(0, 4), showarrow: true, arrowhead: 0, arrowcolor: "#7f7f7f", ax: -26, ay: 18, font: { family: HS.font, size: 12, color: "#595959" } })),
+      ...[0.25, 0.5, 0.75].map(f => Math.max(1, Math.round(f * last))).map(i => ({ x: k.x[i], y: k.y[i], ax: k.x[i - 1], ay: k.y[i - 1], axref: "x", ayref: "y", xref: "x", yref: "y", showarrow: true, arrowhead: 2, arrowsize: 1.2, arrowwidth: 1.5, arrowcolor: "#6f8fb8", text: "" })),
       { x: m * 0.98, y: 0, text: "Lage besser →", showarrow: false, xanchor: "right", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#7f7f7f" } },
       { x: 0, y: m * 0.98, text: "Erwartungen besser ↑", showarrow: false, xanchor: "left", yanchor: "top", font: { family: HS.font, size: 12, color: "#7f7f7f" } }] });
   Plotly.newPlot(el, traces, L, CFG);
@@ -542,14 +551,18 @@ async function pngDownload(el, ch, c, no, sub, unit) {
 }
 
 function card(c, no) {
-  const el = document.createElement("div"); el.className = "card" + (c.type === "heat" || c.type === "calendar" ? " wide" : ""); el.id = `abb-${no}`;
+  const el = document.createElement("div"); el.className = "card" + (c.type === "heat" || c.type === "calendar" || c.context_grey ? " wide" : ""); el.id = `abb-${no}`;
   const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real"
     : c.type === "tiles" ? "Veränderung gegenüber denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : (c.unit || "");
   el.innerHTML = `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}<div class="unit">${esc(unit)}</div>`;
   const ch = document.createElement("div"); ch.className = ["tiles", "heat", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); el.appendChild(ch);
+  if (c.text) el.insertAdjacentHTML("beforeend", `<p class="ctext"><span>${esc(c.text)}</span> <button type="button" class="copy" title="Satz mit Quellenangabe kopieren">Kopieren</button></p>`);
   if (c.caption) el.insertAdjacentHTML("beforeend", `<div class="cap">${esc(c.caption)}</div>`);
+  const nts = (c.notes || []).map((n, k) => `${k + 1} ${esc(n.text)}`).concat((c.outliers || []).map(o => `${esc(o.label)} im ${MONTHS[+o.date.slice(5, 7) - 1]} ${o.date.slice(0, 4)}: ${(o.change > 0 ? "+" : "") + fmt(o.change, 1)} % zum Vormonat`));
+  if (nts.length) el.insertAdjacentHTML("beforeend", `<div class="cap notes"><b>Auffällige Ausschläge und Sondereffekte.</b> ${nts.join("; ")}.${(c.outliers || []).length ? " Automatisch markiert: Veränderung zum Vormonat mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019; die Ursache, etwa Großaufträge, Großprojekte oder die Lage von Ferientagen, nennt die Quelle." : ""}</div>`);
+  const cb = el.querySelector("button.copy"); if (cb) cb.onclick = () => copyText(c.text, cb, `Abb. ${no} ${c.title || ""}`);
   let src = (c.sources || []).join(", ");
   if (c.type === "forecast") src = c.forecasts.filter(f => f.latest).map(f => `<a href="${esc(f.source)}" target="_blank" rel="noopener">${esc(f.by)}, ${esc(f.round)}</a>`).join(" · ");
   else src = esc(src);
@@ -614,6 +627,14 @@ function startTable(box) {
   return true;
 }
 
+// Kopieren mit Quellenangabe, damit der Satz zitierfähig bleibt
+function copyText(txt, btn, what) {
+  const d = new Date(DATA.generated_at), S = DATA.site;
+  const full = `${txt} (Quelle: ${S.author.split(", ").reverse().join(" ")}, Konjunkturmonitor, ${what}, Stand ${d.toLocaleDateString("de-DE")}, ${S.url})`;
+  const done = () => { const o = btn.textContent; btn.textContent = "Kopiert"; setTimeout(() => btn.textContent = o, 1500); };
+  if (navigator.clipboard) navigator.clipboard.writeText(full).then(done, () => prompt("Text kopieren:", full)); else prompt("Text kopieren:", full);
+}
+
 function build() {
   const S = DATA.site;
   document.getElementById("claim").textContent = S.claim;
@@ -638,8 +659,9 @@ function build() {
     const q = t.question;
     if (!q && !t.charts.length) return;
     sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))}</h2>`
-      + (q ? `<div class="intro"><p class="answer">${esc(q.answer.head)}</p><ul class="more">${q.answer.more.map(m => `<li>${esc(m)}</li>`).join("")}</ul>`
+      + (q ? `<div class="intro"><p class="answer">${esc([q.answer.head, ...q.answer.more].join(" "))} <button type="button" class="copy" title="Absatz mit Quellenangabe kopieren">Kopieren</button></p>`
         + `<div class="explain"><b>${LY.minimal ? "Erläuterung." : "Was heißt das?"}</b> ${esc(q.explain)}</div></div>` : "");
+    const cpb = sec.querySelector(".answer button.copy"); if (cpb) cpb.onclick = () => copyText([q.answer.head, ...q.answer.more].join(" "), cpb, q.ask);
     const wrap = document.createElement("div"); wrap.className = "charts"; sec.appendChild(wrap);
     let target = wrap;
     t.charts.forEach((c, i) => {

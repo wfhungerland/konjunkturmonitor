@@ -1,0 +1,8 @@
+# Hinweise auf Sondereffekte je Abbildung, von Hand gepflegt.
+# Jeder Eintrag erscheint unter der Abbildung und als gepunktete Linie am Datum.
+# Nur belegte Ursachen eintragen, mit Quelle im Text (etwa Pressemitteilung von Destatis).
+# Format:
+#   - {chart: orders_split, date: 2026-05-01, text: "Großaufträge im sonstigen Fahrzeugbau (Destatis, PM vom 5.7.2026)"}
+# Zusätzlich markiert der Monitor auffällige Ausschläge automatisch (Veränderung zum Vormonat
+# mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019), ohne eine Ursache zu nennen.
+notes: []
