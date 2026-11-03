@@ -18,6 +18,8 @@ FONT = "Arial Narrow"
 GRID = "#BFBFBF"
 MUTED = "#576164"
 FRAME = "#E5E8E9"
+BAR_PALETTE = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"]  # kontrastreich für gestapelte Balken
+CONTENT_LICENSE = "Abbildung und Erläuterung: CC BY 4.0, Wolf-Fabian Hungerland, Konjunkturmonitor (https://creativecommons.org/licenses/by/4.0/deed.de)"
 
 # Geometrie des Folienmasters (EMU)
 SLIDE_W, SLIDE_H = 9144000, 5143500
@@ -175,7 +177,7 @@ def write_xlsx(c: dict, df: pd.DataFrame, plan: dict, path: Path, stand: str, ci
         info.set_column(1, 1, 110)
         for r, (k, v) in enumerate([("Abbildung", title), ("Zeitraum und Bereinigung", sub), ("Einheit", unit),
                                     ("Erläuterung", c.get("caption", "")), ("Quelle", source_line(c)),
-                                    ("Stand", stand), ("Zitiervorschlag", cite)]):
+                                    ("Stand", stand), ("Zitiervorschlag", cite), ("Lizenz", CONTENT_LICENSE)]):
             info.write(r, 0, k, wb.add_format({"bold": True, "font_name": FONT}))
             info.write(r, 1, v, wrap)
         sheet.activate()
@@ -207,7 +209,7 @@ def _xlsx_chart(wb, df: pd.DataFrame, plan: dict, c: dict):
         ch = wb.add_chart({"type": "column", "subtype": "stacked"}) if kind in ("stacked", "columns") else wb.add_chart({"type": "line"})
         for i, name in enumerate(plan.get("bars", []) if kind in ("stacked", "columns") else []):
             ch.add_series({"name": ["Daten", 3, col[name]], "categories": cats, "values": ref(col[name]),
-                           "fill": {"color": PALETTE[(i + 1) % len(PALETTE)]}, "gap": 40})
+                           "fill": {"color": BAR_PALETTE[i % len(BAR_PALETTE)]}, "gap": 40})
         target = ch
         if kind == "stacked" and plan.get("lines"):
             target = wb.add_chart({"type": "line"})
@@ -277,7 +279,7 @@ def _frame(slide, stand: str, number: int):
         shp.fill.fore_color.rgb = _rgb(color)
         shp.line.fill.background()
         shp.shadow.inherit = False
-    _text(slide, FOOT_L, "Konjunkturmonitor", 9, MUTED)
+    _text(slide, FOOT_L, "Konjunkturmonitor · CC BY 4.0, Wolf-Fabian Hungerland", 9, MUTED)
     _text(slide, FOOT_R, f"Letzte Aktualisierung: {stand}", 9, MUTED, align=PP_ALIGN.RIGHT)
     _text(slide, NUMBER, str(number), 9, MUTED, italic=True, align=PP_ALIGN.RIGHT)
 
@@ -385,7 +387,7 @@ def _color_series(chart, plan: dict):
             name = s.name
             if name in bars:
                 s.format.fill.solid()
-                s.format.fill.fore_color.rgb = _rgb(PALETTE[(bi + 1) % len(PALETTE)])
+                s.format.fill.fore_color.rgb = _rgb(BAR_PALETTE[bi % len(BAR_PALETTE)])
                 bi += 1
                 continue
             ln = s.format.line

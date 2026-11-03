@@ -157,12 +157,12 @@ def insolvency(q: dict, data: dict) -> dict:
     if ya is not None and ya > 0:
         d = (v / ya - 1) * 100
         more.append(f"Das sind {num(abs(d))} % {'mehr' if d >= 0 else 'weniger'} als im {mon} {t.year - 1}.")
-    base = s[(s.index.month == t.month) & (s.index.year >= 2016) & (s.index.year <= 2019)]
+    base = s[(s.index.month == t.month) & (s.index.year >= 2015) & (s.index.year <= 2019)]
     verdict = "Insolvenzen"
     if len(base):
         norm = base.mean()
         d = (v / norm - 1) * 100
-        more.append(f"Vor der Pandemie (2016 bis 2019) waren es in einem {mon} durchschnittlich {num(norm, 0)}; der aktuelle Wert liegt {num(abs(d), 0)} % {'darüber' if d >= 0 else 'darunter'}.")
+        more.append(f"Vor der Pandemie (2015 bis 2019) waren es in einem {mon} durchschnittlich {num(norm, 0)}; der aktuelle Wert liegt {num(abs(d), 0)} % {'darüber' if d >= 0 else 'darunter'}.")
         verdict = ("deutlich über Vorkrisenniveau" if d >= 20 else "über Vorkrisenniveau" if d >= 5
                    else "auf Vorkrisenniveau" if d > -5 else "unter Vorkrisenniveau")
     ytd = s[(s.index.year == t.year)]
@@ -178,7 +178,47 @@ def insolvency(q: dict, data: dict) -> dict:
             "verdict": verdict, "spark": q["series"], "decimals": 0}
 
 
-KINDS = {"growth": growth, "inflation": inflation, "unemployment": unemployment, "index_mom": index_mom,
+def level(q: dict, data: dict) -> dict:
+    """Niveau einer Monatsreihe (Zins, Preis) mit Vergleich zum Vormonat und zum Vorjahresmonat."""
+    s = _s(data, q["series"])
+    v, p, t = s.iloc[-1], s.iloc[-2], s.index[-1]
+    unit, d = q.get("unit", ""), int(q.get("decimals", 1))
+    rate = "%" in unit
+    ch = (lambda a, b: f"{num(a - b, 2 if d >= 2 else 1, sign=True)} Prozentpunkte") if rate else (lambda a, b: f"{num((a / b - 1) * 100, sign=True)} %")
+    head = f"Im {period(t, 'M')} lag {q['name']} bei {num(v, d)} {unit}."
+    more = [f"Gegenüber dem Vormonat: {ch(v, p)}."]
+    ya = s[s.index <= t - pd.DateOffset(months=12)]
+    if not ya.empty:
+        more.append(f"Gegenüber dem Vorjahresmonat: {ch(v, ya.iloc[-1])}.")
+    for extra in q.get("also") or []:
+        e = data.get(extra["series"])
+        if e is not None and not e.dropna().empty:
+            e = e.dropna()
+            more.append(f"{extra['label']} im {period(e.index[-1], 'M')}: {num(e.iloc[-1], int(extra.get('decimals', 1)))} {extra.get('unit', '')}.".replace(" .", "."))
+    dy = (v - ya.iloc[-1]) if not ya.empty else 0
+    verdict = "steigt" if dy > 0 else "sinkt" if dy < 0 else "stabil"
+    return {"value": round(float(v), d), "unit": unit, "signed": False, "period": period(t, "M"), "head": head, "more": more,
+            "verdict": verdict, "spark": q["series"], "decimals": d}
+
+
+def overview(answers: dict) -> str:
+    """Zwei bis drei Sätze zur Gesamtlage aus den Antworten zu Wachstum, Preisen und Arbeitsmarkt."""
+    out = []
+    g, i, a = answers.get("wachstum"), answers.get("preise"), answers.get("arbeit")
+    if g:
+        out.append(g["head"])
+    if i:
+        out.append(f"Die Inflationsrate betrug im {i['period']} {num(i['value'])} %.")
+    if a:
+        when = f"im {a['period']} " if not i or a["period"] != i["period"] else ""
+        out.append(f"Die Arbeitslosenquote lag {when}bei {num(a['value'])} %.")
+    s = answers.get("stimmung")
+    if s and len(out) < 3:
+        out.append(f"Das Wirtschaftsklima ist {s['verdict'].replace('Klima ', '')}.")
+    return " ".join(out)
+
+
+KINDS = {"level": level, "growth": growth, "inflation": inflation, "unemployment": unemployment, "index_mom": index_mom,
          "level_mom": level_mom, "sentiment": sentiment, "insolvency": insolvency}
 
 
