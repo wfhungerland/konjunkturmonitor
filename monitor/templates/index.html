@@ -11,6 +11,7 @@
 <meta property="og:image" content="/*__OGIMG__*/">
 <meta property="og:url" content="/*__URL__*/">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="Konjunkturmonitor: neue Zahlen" href="feed.xml">
 <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.de">
 <script src="plotly.min.js"></script>
 <style>
@@ -157,6 +158,9 @@
   .parthead p { text-transform: none; letter-spacing: 0; font-weight: normal; color: var(--muted); font-size: 14.5px; margin: 4px 0 0; }
   .navpart { color: var(--muted); font-size: 13px; margin-left: 6px; }
   ul.missing { padding-left: 18px; } ul.missing li { margin-bottom: 6px; }
+  .news { font: 14.5px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin: 0 0 8px; max-width: 60em; }
+  .news b { color: var(--dark); }
+  sup.rev { color: var(--muted); font-weight: normal; margin-left: 1px; cursor: help; }
   .refs { max-width: 1180px; margin: 30px auto 0; padding: 0 16px; font-size: 14px; color: var(--muted); }
   footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
@@ -167,6 +171,7 @@
 <main>
   <p class="claim" id="claim"></p>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
+  <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
   <div id="starttable">/*__STATIC__*/</div>
   <div id="topics"></div>
@@ -184,6 +189,7 @@
     <li><b>Keine abrufbare Zeitreihe:</b> Unterbeschäftigung der Bundesagentur für Arbeit (nur in Monatsberichten), Finanzlage und Beitragssätze der Sozialversicherung (Projektionen der Träger), Investitionshemmnisse aus Unternehmensumfragen, Zerlegung des Produktionspotenzials in Arbeit, Kapital und Produktivität (in AMECO nicht als Reihe abrufbar), Beiträge der Branchen zum Auftragseingang (Gewichte nicht veröffentlicht).</li>
   </ul>
   <p id="deck"></p>
+  <p id="reuse"></p>
   <p id="cite"></p>
 </section>
 <footer>Konjunkturmonitor · Wolf-Fabian Hungerland · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · Texte und Abbildungen: <a href="https://creativecommons.org/licenses/by/4.0/deed.de" rel="license">CC BY 4.0</a></footer>
@@ -625,7 +631,7 @@ function startTable(box) {
     if (r.group !== grp) { grp = r.group; html += `<tr class="grp"><td colspan="9"><a href="#${r.topic}">${esc(grp)}</a></td></tr>`; }
     const d = r.decimals ?? 1; older = older || r.older;
     const cmp = `<span>${esc(r.period)}${r.older ? "¹" : ""}</span>` + [[r.prev_label, r.prev], ["Vorjahr", r.yoy], ["3 Monate", r.m3]].filter(x => x[1] != null).map(x => `<span>${x[0]} ${ch(x[1], r)}</span>`).join("");
-    html += `<tr class="row" data-href="#${r.topic}"><td class="k"><a href="#${r.topic}">${esc(r.label)}</a></td><td class="p${r.older ? " old" : ""}">${esc(r.period)}${r.older ? "¹" : ""}</td><td class="v">${fmt(r.value, d)}</td>`
+    html += `<tr class="row" data-href="#${r.topic}"><td class="k"><a href="#${r.topic}">${esc(r.label)}</a></td><td class="p${r.older ? " old" : ""}">${esc(r.period)}${r.older ? "¹" : ""}</td><td class="v">${fmt(r.value, d)}${r.revised ? `<sup class="rev" title="revidiert; zuerst veröffentlicht: ${fmt(r.revised.from, d)} (Stand ${r.revised.stand})">r</sup>` : ""}</td>`
       + `<td class="u">${esc(r.unit)}<span class="mob"></span></td><td class="d">${ch(r.prev, r)}</td><td class="d">${ch(r.yoy, r)}</td><td class="d">${ch(r.m3, r)}</td>`
       + `<td class="s">${sp(r)}</td><td class="t">${tendHtml(r.tendency, r.up_bad)}</td><td class="cmp">${cmp}${r.older ? "<span>älterer Stand</span>" : ""}</td></tr>`;
   });
@@ -633,7 +639,8 @@ function startTable(box) {
     + `<p class="tnote">Vorperiode und Dreimonatsvergleich saison- und kalenderbereinigt, soweit die Quelle bereinigte Werte bietet; Vorjahresvergleich aus saison- und kalenderbereinigten Werten; bei Preisen, Insolvenzen und beim BIP nach Ursprungswerten, wie in den Meldungen der Statistikämter. `
     + `Bei Raten und Salden ist die Veränderung eine Differenz in Prozentpunkten (Pp) oder Punkten (Pkt.), sonst eine Veränderung in Prozent. Dreimonatsvergleich: die letzten drei Monate gegenüber den drei Monaten davor. `
     + `Tendenz zur Vorperiode: <span class="up-ok">▲</span> gestiegen, <span class="down">▼</span> gesunken, <span class="flat">■</span> unverändert; <span class="up-bad">▲</span> rot, wo ein Anstieg ungünstig ist (Preise, Arbeitslosigkeit, Insolvenzen).`
-    + `${older ? " ¹ Älterer Stand: Die Quelle meldet diese Zahl später als die übrigen Monatswerte." : ""}</p>`;
+    + `${older ? " ¹ Älterer Stand: Die Quelle meldet diese Zahl später als die übrigen Monatswerte." : ""}`
+    + `${rows.some(r => r.revised) ? " r Revidiert: Die Quelle hat den Wert für diesen Zeitraum seit der ersten Veröffentlichung geändert; der erste Wert steht im Tooltip und im Archiv." : ""}</p>`;
   box.querySelectorAll("tr.row").forEach(tr => tr.addEventListener("click", e => { if (e.target.closest("a")) return; location.hash = tr.dataset.href; }));
   return true;
 }
@@ -649,8 +656,13 @@ function copyText(txt, btn, what) {
 function build() {
   const S = DATA.site;
   document.getElementById("claim").textContent = S.claim;
+  const nw = document.getElementById("news");
+  if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
   const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) ov.textContent = DATA.overview; else ov.remove();
   const d = new Date(DATA.generated_at); document.getElementById("stand").textContent = "Stand: " + d.toLocaleDateString("de-DE");
+  const AS = DATA.all_series || {};
+  document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${AS.xlsx}" download>Excel</a> · <a href="${AS.csv}" download>CSV</a>` : "",
+    `<a href="dl/kernzahlen_archiv.csv" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
   if (DATA.deck) document.getElementById("deck").innerHTML = `<a href="${DATA.deck}" download>Alle Abbildungen als PowerPoint</a>`;
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const LY = DATA.layout || {};

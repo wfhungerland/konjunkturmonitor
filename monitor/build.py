@@ -588,8 +588,21 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
     out.mkdir(parents=True, exist_ok=True)
     payload = build_payload(root)
     from .downloads import write_all
+    from .reuse import mark_revisions, news, update_archive, write_all_series, write_feed
 
     write_all(payload, out)
+    data, _ = load_observations(root)
+    meta, _ = _series_meta(root / "series.yaml")
+    stand_de = f"{payload['stand'][8:10]}.{payload['stand'][5:7]}.{payload['stand'][:4]}"
+    cite = f"{payload['site']['author']} ({payload['stand'][:4]}): Konjunkturmonitor. Stand {stand_de}. {payload['site']['url']}"
+    payload["all_series"] = write_all_series(data, meta, root, out, stand_de, cite)
+    arch = update_archive(root, payload["start"], payload["stand"])
+    mark_revisions(payload["start"], arch)
+    items = news(arch, payload["stand"])
+    payload["news"] = [i for i in items if i["stand"] == payload["stand"]]
+    write_feed(items, payload["start"], payload["site"], out)
+    (out / "dl").mkdir(exist_ok=True)
+    arch.to_csv(out / "dl" / "kernzahlen_archiv.csv", sep=";", decimal=",", index=False, encoding="utf-8-sig")
     tpl = resources.files("monitor").joinpath("templates/index.html").read_text(encoding="utf-8")
     js = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     from html import escape

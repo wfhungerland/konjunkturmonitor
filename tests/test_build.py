@@ -53,3 +53,17 @@ def test_chart_text_and_outliers():
         {"id": "b", "label": "Konsum", "style": "bar", "x": ["2026-07-01"], "y": [0.2]},
         {"id": "t", "label": "BIP", "style": "line", "x": ["2026-07-01"], "y": [-0.04]}]}
     assert chart_text(s) == "BIP im 3. Quartal 2026: 0,0 %. Beiträge in Prozentpunkten: Konsum +0,2."
+
+
+def test_archive_revisions_and_news(tmp_path):
+    from monitor.reuse import mark_revisions, news, update_archive
+    r1 = [{"series": "x", "label": "X", "date": "2026-08-01", "period": "August 2026", "value": 1.0, "decimals": 1}]
+    update_archive(tmp_path, r1, "2026-10-01")
+    r2 = [{"series": "x", "label": "X", "date": "2026-09-01", "period": "September 2026", "value": 2.0, "decimals": 1}]
+    arch = update_archive(tmp_path, r2, "2026-11-01")
+    assert [n["period"] for n in news(arch, "2026-11-01")] == ["September 2026"]
+    r3 = [{"series": "x", "label": "X", "date": "2026-09-01", "period": "September 2026", "value": 2.3, "decimals": 1}]
+    arch = update_archive(tmp_path, r3, "2026-11-02")
+    mark_revisions(r3, arch)
+    assert r3[0]["revised"] == {"from": 2.0, "stand": "2026-11-01"}
+    assert len(arch) == 3

@@ -59,6 +59,10 @@ Die Seite gliedert sich in Teil I Konjunktur (Monats- und Quartalszahlen), Teil 
 
 Zu jeder Abbildung erzeugt der Lauf Excel (Daten, Diagramm, Info), eine PowerPoint-Folie mit bearbeitbarem Diagramm und CSV (`site/dl/`); das PNG entsteht im Browser. Die Folie übernimmt Format und Aufteilung des vorgegebenen Folienmasters (16:9, grauer Rahmen, Übertitel, Titel, Quellenzeile), aber ohne Logo und Behördenkennzeichnung.
 
+### Gesamtdownload, Archiv und Feed
+
+`dl/konjunkturmonitor_alle_reihen.xlsx` und `.csv` enthalten alle Reihen mit Verzeichnis (Titel, Einheit, Bereinigung, Quelle, Lizenz, Abruf-URL). Jeder Lauf schreibt die Kernzahlen der Tabelle mit Stand und Zeitraum nach `data/archive/kernzahlen.csv`; der Workflow committet die Datei. Weicht ein Wert später für denselben Zeitraum vom zuerst veröffentlichten ab, markiert die Tabelle ihn mit „r“. Neu erschienene Zeiträume stehen als „Heute neu“ über der Tabelle und im Feed `feed.xml` (RSS 2.0).
+
 ## Technik
 
 Datenabruf, Katalogformat und Pipeline kommen aus [konjunkturwolf](https://github.com/wfhungerland/konjunkturwolf) (Paketabhängigkeit). Dieses Repo enthält nur Katalog (`series.yaml`), Inhalte (`monitor.yaml`), statische Daten und die Seite (`monitor/`).
