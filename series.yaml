@@ -16,6 +16,10 @@ blocks:
   - {id: bau, title: Bau, sheet: Bau}
   - {id: finanzen, title: Finanzen, sheet: Finanzen}
   - {id: struktur, title: Struktur, sheet: Struktur}
+  - {id: einkommen, title: Einkommen, sheet: Einkommen}
+  - {id: welt, title: Weltwirtschaft, sheet: Welt}
+  - {id: staat, title: Staatsfinanzen, sheet: Staat}
+  - {id: dienstleistungen, title: Dienstleistungen, sheet: Dienstleistungen}
 
 names:
   item:
@@ -143,6 +147,20 @@ charts:
   insolv_land: {title: "Insolvenzen nach Ländern", decimals: 0}
   gruend_land: {title: "Betriebsgründungen nach Ländern", decimals: 0}
   aufgabe_land: {title: "Betriebsaufgaben nach Ländern", decimals: 0}
+  maut: {title: "Lkw-Maut-Fahrleistungsindex", decimals: 1}
+  kurzarbeit: {title: "Kurzarbeit aus konjunkturellen Gründen", decimals: 0}
+  sv_yoy: {title: "Sozialversicherungspflichtige Beschäftigung nach Bereichen", decimals: 1}
+  orders_heat: {title: "Auftragseingang nach Branchen", decimals: 1}
+  services: {title: "Produktion der Dienstleister", decimals: 1}
+  hh_income: {title: "Real verfügbares Einkommen je Einwohner", decimals: 1}
+  saving: {title: "Sparquote der privaten Haushalte", decimals: 1}
+  profit_share: {title: "Gewinnquote der Unternehmen", decimals: 1}
+  world_gdp: {title: "Wachstum großer Wirtschaftsräume", decimals: 1}
+  uncertainty: {title: "Wirtschaftspolitische Unsicherheit", decimals: 0}
+  gov_balance: {title: "Finanzierungssaldo des Staates", decimals: 1}
+  gov_spend: {title: "Zinsausgaben und Investitionen des Staates", decimals: 1}
+  gov_debt: {title: "Schuldenstand des Staates", decimals: 1}
+  migration_groups: {title: "Nettozuwanderung nach Staatsangehörigkeit", decimals: 0}
 
 series:
   # --- Wachstum ------------------------------------------------------------
@@ -396,6 +414,8 @@ series:
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     start: "1991-01-01"
     note: Personen, nicht Vollzeitäquivalente; jüngste Monate vorläufig.
+    chart: kurzarbeit
+    label: "Kurzarbeiter"
 
   - id: de_ka_fte_ratio
     block: arbeit
@@ -1786,3 +1806,434 @@ series:
     label: "{cit_name}"
     license: "OECD, CC BY 4.0"
     note: "OECD Corporate Tax Statistics, kombinierter tariflicher Steuersatz (CIT_C), Regelsatz (ST). Abruf über die OECD-SDMX-Schnittstelle am 3.11.2026."
+
+  # --- Paket 3: Inhalte aus offenen Quellen -------------------------------------------------
+  - id: de_maut
+    block: wachstum
+    source: bundesbank
+    key: BBDE1/M.DE.Y.UC01.P2XH49800.W.C.I21.A
+    title: "Lkw-Maut-Fahrleistungsindex (Autobahnen, Fahrzeuge ab vier Achsen)"
+    unit: Index 2021=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    start: "2008-01-01"
+    chart: maut
+    label: "Lkw-Maut-Fahrleistung"
+
+  - id: de_ilo
+    block: arbeit
+    source: eurostat
+    key: ei_lmhr_m
+    params: {geo: DE, indic: LM-UN-T-TOT, s_adj: SA, unit: PC_ACT}
+    title: "Erwerbslosenquote nach dem Konzept der ILO"
+    unit: "% der Erwerbspersonen"
+    frequency: M
+    adjustment: saisonbereinigt
+    start: "2005-01-01"
+    chart: labour
+    label: "Erwerbslosenquote (ILO)"
+
+  - id: de_sv_tot
+    block: arbeit
+    source: bundesbank
+    key: BBDL1/M.DE.N.EMP.EBA000.A0000.A00.D00.0.ABA.A
+    title: "Sozialversicherungspflichtig Beschäftigte: Insgesamt"
+    unit: Personen
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+
+  - id: de_sv_tot_yoy
+    block: arbeit
+    source: derived
+    derive: {from: de_sv_tot, op: yoy_pct}
+    title: "Sozialversicherungspflichtig Beschäftigte: Insgesamt, % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: sv_yoy
+    label: "Insgesamt"
+
+  - id: de_sv_ind
+    block: arbeit
+    source: bundesbank
+    key: BBDL1/M.DE.N.EMP.EBA000.A0000.A00.D00.0S1.ABA.A
+    title: "Sozialversicherungspflichtig Beschäftigte: Produzierendes Gewerbe (sekundärer Sektor)"
+    unit: Personen
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+
+  - id: de_sv_ind_yoy
+    block: arbeit
+    source: derived
+    derive: {from: de_sv_ind, op: yoy_pct}
+    title: "Sozialversicherungspflichtig Beschäftigte: Produzierendes Gewerbe (sekundärer Sektor), % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: sv_yoy
+    label: "Produzierendes Gewerbe (sekundärer Sektor)"
+
+  - id: de_sv_dl
+    block: arbeit
+    source: bundesbank
+    key: BBDL1/M.DE.N.EMP.EBA000.A0000.A00.D00.0S3.ABA.A
+    title: "Sozialversicherungspflichtig Beschäftigte: Dienstleistungen ohne Leiharbeit"
+    unit: Personen
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+
+  - id: de_sv_dl_yoy
+    block: arbeit
+    source: derived
+    derive: {from: de_sv_dl, op: yoy_pct}
+    title: "Sozialversicherungspflichtig Beschäftigte: Dienstleistungen ohne Leiharbeit, % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: sv_yoy
+    label: "Dienstleistungen ohne Leiharbeit"
+
+  - id: de_sv_aue
+    block: arbeit
+    source: bundesbank
+    key: BBDL1/M.DE.N.EMP.EBA000.A0000.A00.D00.1N1.ABA.A
+    title: "Sozialversicherungspflichtig Beschäftigte: Leiharbeit (Arbeitnehmerüberlassung)"
+    unit: Personen
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+
+  - id: de_sv_aue_yoy
+    block: arbeit
+    source: derived
+    derive: {from: de_sv_aue, op: yoy_pct}
+    title: "Sozialversicherungspflichtig Beschäftigte: Leiharbeit (Arbeitnehmerüberlassung), % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: sv_yoy
+    label: "Leiharbeit (Arbeitnehmerüberlassung)"
+
+  - id: de_orders_wz
+    expand: {wz: ["20", "21", "24", "25", "26", "27", "28", "29", "30"]}
+    block: industrie
+    source: bundesbank
+    key: "BBDE1/M.DE.Y.AEA1.N2C{wz}0000.F.C.I21.A"
+    title: "Auftragseingang: {wz_name}"
+    unit: Index 2021=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    start: "2015-01-01"
+    chart: orders_heat
+    label: "{wz_name}"
+
+  - id: de_services_prod
+    block: dienstleistungen
+    source: bundesbank
+    key: BBDE1/M.DE.Y.BAA1.P2XHIJLMN.A.C.I15.A
+    title: "Produktion ausgewählter Dienstleistungsbereiche und Gastgewerbe (H, I, J, L, M, N)"
+    unit: Index 2015=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    start: "2015-01-01"
+    chart: services
+    label: "Dienstleister insgesamt"
+
+  - id: de_services_m
+    block: dienstleistungen
+    source: bundesbank
+    key: BBDE1/M.DE.Y.BAA1.N2M000000.A.C.I15.A
+    title: "Produktion: freiberufliche, wissenschaftliche und technische Dienstleistungen"
+    unit: Index 2015=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    start: "2015-01-01"
+    chart: services
+    label: "Freiberufliche und technische Dienste"
+
+  - id: de_services_n
+    block: dienstleistungen
+    source: bundesbank
+    key: BBDE1/M.DE.Y.BAA1.N2N000000.A.C.I15.A
+    title: "Produktion: sonstige wirtschaftliche Dienstleistungen"
+    unit: Index 2015=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    start: "2015-01-01"
+    chart: services
+    label: "Sonstige Unternehmensdienste"
+
+  - id: de_hh_income
+    block: einkommen
+    source: eurostat
+    key: nasq_10_ki
+    params: {geo: DE, na_item: B6G_R_HAB_2010, sector: S14_S15, s_adj: SCA, unit: PC}
+    title: "Real verfügbares Einkommen der privaten Haushalte je Einwohner"
+    unit: Index 2010=100
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    start: "2005-01-01"
+    chart: hh_income
+    label: "Einkommen je Einwohner, real"
+
+  - id: de_saving
+    block: einkommen
+    source: eurostat
+    key: nasq_10_ki
+    params: {geo: DE, na_item: SRG_S14_S15, sector: S14_S15, s_adj: SCA, unit: PC}
+    title: "Bruttosparquote der privaten Haushalte"
+    unit: "% des verfügbaren Einkommens"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2005-01-01"
+    chart: saving
+    label: "Sparquote"
+
+  - id: de_profit_share
+    block: einkommen
+    source: eurostat
+    key: nasq_10_ki
+    params: {geo: DE, na_item: B2G_B3G_RAT_S11, sector: S11, s_adj: SCA, unit: PC}
+    title: "Bruttogewinnquote der nichtfinanziellen Kapitalgesellschaften"
+    unit: "% der Bruttowertschöpfung"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2005-01-01"
+    chart: profit_share
+    label: "Gewinnquote"
+
+  - id: de_gdp_yoy_world
+    block: welt
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: DE, na_item: B1GQ, unit: CLV_PCH_SM, s_adj: SCA}
+    title: "BIP real Deutschland, % gg. Vorjahresquartal (saison- und kalenderbereinigt)"
+    unit: "% gg. Vorjahresquartal"
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    start: "2010-01-01"
+    chart: world_gdp
+    label: "Deutschland"
+
+  - id: ea_gdp_yoy
+    block: welt
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: EA20, na_item: B1GQ, unit: CLV_PCH_SM, s_adj: SCA}
+    title: "BIP real Euroraum, % gg. Vorjahresquartal"
+    unit: "% gg. Vorjahresquartal"
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    start: "2010-01-01"
+    chart: world_gdp
+    label: "Euroraum"
+
+  - id: us_gdp
+    block: welt
+    source: fred
+    key: GDPC1
+    params: {source_name: "U.S. Bureau of Economic Analysis über FRED"}
+    title: "BIP real USA, Mrd. US-Dollar (verkettet, Jahresrate)"
+    unit: Mrd. US-Dollar
+    frequency: Q
+    adjustment: preis- und saisonbereinigt
+    start: "2009-01-01"
+
+  - id: us_gdp_yoy
+    block: welt
+    source: derived
+    derive: {from: us_gdp, op: yoy_pct}
+    title: "BIP real USA, % gg. Vorjahresquartal"
+    unit: "% gg. Vorjahresquartal"
+    frequency: Q
+    adjustment: preis- und saisonbereinigt
+    chart: world_gdp
+    label: "USA"
+
+  - id: epu_europe
+    block: welt
+    source: fred
+    key: EUEPUINDXM
+    params: {source_name: "Baker, Bloom und Davis, Economic Policy Uncertainty (über FRED)"}
+    title: "Index der wirtschaftspolitischen Unsicherheit, Europa"
+    unit: Index
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: uncertainty
+    label: "Europa"
+    license: "Economic Policy Uncertainty Index (Baker, Bloom und Davis), www.policyuncertainty.com; Nutzung mit Quellenangabe"
+
+  - id: epu_global
+    block: welt
+    source: fred
+    key: GEPUCURRENT
+    params: {source_name: "Baker, Bloom und Davis, Economic Policy Uncertainty (über FRED)"}
+    title: "Index der wirtschaftspolitischen Unsicherheit, Welt (BIP-gewichtet)"
+    unit: Index
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: uncertainty
+    label: "Welt"
+    license: "Economic Policy Uncertainty Index (Baker, Bloom und Davis), www.policyuncertainty.com; Nutzung mit Quellenangabe"
+
+  - id: de_gov_b9
+    block: staat
+    source: eurostat
+    key: gov_10q_ggnfa
+    params: {geo: DE, sector: S13, unit: PC_GDP, s_adj: SCA, na_item: B9}
+    title: "Finanzierungssaldo des Staates"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2005-01-01"
+    chart: gov_balance
+    label: "Finanzierungssaldo"
+
+  - id: de_gov_interest
+    block: staat
+    source: eurostat
+    key: gov_10q_ggnfa
+    params: {geo: DE, sector: S13, unit: PC_GDP, s_adj: SCA, na_item: D41PAY}
+    title: "Zinsausgaben des Staates"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2005-01-01"
+    chart: gov_spend
+    label: "Zinsausgaben"
+
+  - id: de_gov_inv
+    block: staat
+    source: eurostat
+    key: gov_10q_ggnfa
+    params: {geo: DE, sector: S13, unit: PC_GDP, s_adj: SCA, na_item: P51G}
+    title: "Bruttoanlageinvestitionen des Staates"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2005-01-01"
+    chart: gov_spend
+    label: "Investitionen"
+
+  - id: de_gov_debt
+    block: staat
+    source: eurostat
+    key: gov_10q_ggdebt
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschuldenstand des Staates (Maastricht-Abgrenzung)"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    chart: gov_debt
+    label: "Schuldenstand"
+
+  - id: de_imm_de
+    block: struktur
+    source: eurostat
+    key: migr_imm1ctz
+    params: {geo: DE, citizen: DE, age: TOTAL, agedef: COMPLET, sex: T, unit: NR}
+    title: "Zuzüge, Deutsche"
+    unit: Personen
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2008-01-01"
+    stale_after_months: 36
+
+  - id: de_emi_de
+    block: struktur
+    source: eurostat
+    key: migr_emi1ctz
+    params: {geo: DE, citizen: DE, age: TOTAL, agedef: COMPLET, sex: T, unit: NR}
+    title: "Fortzüge, Deutsche"
+    unit: Personen
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2008-01-01"
+    stale_after_months: 36
+
+  - id: de_netmig_de
+    block: struktur
+    source: derived
+    derive: {from: de_imm_de, minus: de_emi_de, op: diff}
+    title: "Nettozuwanderung, Deutsche"
+    unit: Personen
+    frequency: A
+    adjustment: Jahreswerte
+    chart: migration_groups
+    label: "Deutsche"
+
+  - id: de_imm_eu
+    block: struktur
+    source: eurostat
+    key: migr_imm1ctz
+    params: {geo: DE, citizen: EU27_2020_FOR, age: TOTAL, agedef: COMPLET, sex: T, unit: NR}
+    title: "Zuzüge, EU-Ausländer"
+    unit: Personen
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2008-01-01"
+    stale_after_months: 36
+
+  - id: de_emi_eu
+    block: struktur
+    source: eurostat
+    key: migr_emi1ctz
+    params: {geo: DE, citizen: EU27_2020_FOR, age: TOTAL, agedef: COMPLET, sex: T, unit: NR}
+    title: "Fortzüge, EU-Ausländer"
+    unit: Personen
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2008-01-01"
+    stale_after_months: 36
+
+  - id: de_netmig_eu
+    block: struktur
+    source: derived
+    derive: {from: de_imm_eu, minus: de_emi_eu, op: diff}
+    title: "Nettozuwanderung, EU-Ausländer"
+    unit: Personen
+    frequency: A
+    adjustment: Jahreswerte
+    chart: migration_groups
+    label: "EU-Ausländer"
+
+  - id: de_imm_neu
+    block: struktur
+    source: eurostat
+    key: migr_imm1ctz
+    params: {geo: DE, citizen: NEU27_2020_FOR, age: TOTAL, agedef: COMPLET, sex: T, unit: NR}
+    title: "Zuzüge, Nicht-EU-Ausländer"
+    unit: Personen
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2008-01-01"
+    stale_after_months: 36
+
+  - id: de_emi_neu
+    block: struktur
+    source: eurostat
+    key: migr_emi1ctz
+    params: {geo: DE, citizen: NEU27_2020_FOR, age: TOTAL, agedef: COMPLET, sex: T, unit: NR}
+    title: "Fortzüge, Nicht-EU-Ausländer"
+    unit: Personen
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2008-01-01"
+    stale_after_months: 36
+
+  - id: de_netmig_neu
+    block: struktur
+    source: derived
+    derive: {from: de_imm_neu, minus: de_emi_neu, op: diff}
+    title: "Nettozuwanderung, Nicht-EU-Ausländer"
+    unit: Personen
+    frequency: A
+    adjustment: Jahreswerte
+    chart: migration_groups
+    label: "Nicht-EU-Ausländer"

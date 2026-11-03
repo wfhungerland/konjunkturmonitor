@@ -18,7 +18,7 @@ ROOT = Path.cwd()
 SOURCE_NAMES = {"bundesbank": "Deutsche Bundesbank", "eurostat": "Eurostat", "ecb": "EZB", "static": "BA-Statistik (aufbereitet)",
                 "derived": "eigene Berechnung"}
 SOURCE_LICENSES = {"bundesbank": "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)", "eurostat": "CC BY 4.0 (Eurostat)",
-                   "ecb": "Wiederverwendung mit Quellenangabe (EZB)", "static": "Statistik der Bundesagentur für Arbeit, mit Quellenangabe"}
+                   "ecb": "Wiederverwendung mit Quellenangabe (EZB)", "fred": "Nutzungsbedingungen der Originalquelle laut FRED, mit Quellenangabe", "static": "Statistik der Bundesagentur für Arbeit, mit Quellenangabe"}
 
 
 _META: dict = {}
@@ -343,7 +343,7 @@ def chart_text(c: dict) -> str:
     from .answers import MONTHS
     typ, d = c.get("type"), int(c.get("decimals", 1))
     unit = (c.get("unit") or "").split(",")[0]
-    u = "%" if unit.startswith("%") else "Prozentpunkte" if unit.startswith("Pp") else "Punkte" if unit.startswith("Saldo") else "" if unit.startswith("Index") else unit
+    u = unit if unit.startswith(("% des", "% der")) else "%" if unit.startswith("%") else "Prozentpunkte" if unit.startswith("Pp") else "Punkte" if unit.startswith("Saldo") else "" if unit.startswith("Index") else unit
     fmtv = lambda v: f"{num(v, d)} {u}".strip()
     from .answers import num as _num
 
@@ -497,8 +497,9 @@ def build_payload(root: Path = ROOT) -> dict:
                 h = _heat(c, data, meta)
                 if not h:
                     continue
+                what = "Auftragseingang" if "order" in c["chart"] else "Produktionsindex"
                 entry.update(heat=h, unit="% gegenüber Vorjahresmonat", freq="M", adjustment="saison- und kalenderbereinigt (Bundesbank)",
-                             sources=["Deutsche Bundesbank (Produktionsindex des Statistischen Bundesamts)"], licenses=[SOURCE_LICENSES["bundesbank"]])
+                             sources=[f"Deutsche Bundesbank ({what} des Statistischen Bundesamts)"], licenses=[SOURCE_LICENSES["bundesbank"]])
             elif typ == "since":
                 specs = [s for s in meta.values() if s.chart_id == c["chart"] and s.id in data]
                 base = pd.Timestamp(c["base"])

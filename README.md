@@ -49,6 +49,12 @@ Die Darstellung nach Tufte steuern Schalter im Bereich `layout` von `monitor.yam
 
 Die Kennzahlentabelle zeigt je Zeile Wert, Vergleich zur Vorperiode, zum Vorjahr und den Dreimonatsvergleich sowie die Tendenz (▲ ▼ ■). `kind: rate` vergleicht als Differenz, `kind: level` prozentual; `up_bad: true` färbt einen Anstieg rot. Die Seite enthält die Kernzahlen auch als statisches HTML und ein Vorschaubild (`vorschau.png`). Impressum und Datenschutzerklärung liegen in `monitor/templates/`. Eigene Texte und Abbildungen stehen unter CC BY 4.0.
 
+### Quellenweg und Lizenzgrenzen
+
+Alle Reihen werden bei jedem Lauf direkt bei der Quelle abgerufen: Bundesbank (SDMX-REST), Eurostat (JSON-API), Destatis (GENESIS-Webservice, Zugang über Repository-Secrets), FRED (CSV). Statische Reihen in `data/static` (AMECO, OECD-Steuersätze, Kartengrenzen, Kalenderregeln, Hinweise auf Sondereffekte) werden von Hand aktualisiert; der Abrufstand steht jeweils im Katalog (`note`). Nicht aufgenommen sind Daten, deren Weiterverbreitung eine Lizenz erfordert (ifo, ZEW, S&P Global PMI, GfK/NIM, HDE, IAB-Barometer, IWH-Insolvenztrend, EEX-Terminpreise, RWI/ISL-Containerindex), und Größen ohne abrufbare Zeitreihe (Unterbeschäftigung der BA, Finanzlage der Sozialversicherung, Investitionshemmnisse, Zerlegung des Produktionspotenzials). Die Seite nennt diese Lücken im Abschnitt „Was fehlt und warum“.
+
+Die Seite gliedert sich in Teil I Konjunktur (Monats- und Quartalszahlen), Teil II Struktur (Jahreszahlen und Staatsfinanzen) und Termine; die Zuordnung steht je Abschnitt in `monitor.yaml` (`part`).
+
 ## Downloads
 
 Zu jeder Abbildung erzeugt der Lauf Excel (Daten, Diagramm, Info), eine PowerPoint-Folie mit bearbeitbarem Diagramm und CSV (`site/dl/`); das PNG entsteht im Browser. Die Folie übernimmt Format und Aufteilung des vorgegebenen Folienmasters (16:9, grauer Rahmen, Übertitel, Titel, Quellenzeile), aber ohne Logo und Behördenkennzeichnung.

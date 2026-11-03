@@ -152,6 +152,11 @@
   ol.callist li.next { background: #eef4fb; padding: 8px 6px; }
   ol.callist .cs { color: var(--muted); font-size: 13px; }
   @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
+  .parthead { margin: 56px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 15px "Arial Narrow", Arial, sans-serif; color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
+  .parthead span { color: var(--muted); margin-right: 6px; }
+  .parthead p { text-transform: none; letter-spacing: 0; font-weight: normal; color: var(--muted); font-size: 14.5px; margin: 4px 0 0; }
+  .navpart { color: var(--muted); font-size: 13px; margin-left: 6px; }
+  ul.missing { padding-left: 18px; } ul.missing li { margin-bottom: 6px; }
   .refs { max-width: 1180px; margin: 30px auto 0; padding: 0 16px; font-size: 14px; color: var(--muted); }
   footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
@@ -172,6 +177,12 @@
   <p><b>Vergleichszeitraum.</b> Wo der Monitor ein „übliches“ Niveau angibt, ist es der Durchschnitt der Jahre 2015 bis 2019: die fünf letzten vollen Jahre vor der Pandemie, nach der Euro-Schuldenkrise und vor dem Energiepreisschock 2022. Ausnahme ist die Konjunkturuhr; sie misst den Abstand zum langjährigen Mittel 2005 bis 2019, weil die Phasen eines Konjunkturzyklus nur über mehrere Zyklen bestimmt werden können.</p>
   <p><b>Farben und Zeichen.</b> ▲ gestiegen, ▼ gesunken, ■ unverändert in der angezeigten Genauigkeit. Rot ist Warnsignalen vorbehalten: einem Anstieg, wo er ungünstig ist (Inflation, Arbeitslosigkeit, Insolvenzen), und Schwellenwerten. Blau, Violett und Grün unterscheiden nur Reihen und tragen keine Wertung.</p>
   <p><b>Lizenz.</b> Texte und eigene Abbildungen stehen unter <a href="https://creativecommons.org/licenses/by/4.0/deed.de" rel="license">CC BY 4.0</a>; Namensnennung: Wolf-Fabian Hungerland, Konjunkturmonitor. Die Daten unterliegen den Lizenzen der Quellen, die bei jeder Abbildung stehen.</p>
+  <h3 id="fehlt">Was fehlt und warum</h3>
+  <p>Der Monitor zeigt nur Daten, die frei abrufbar sind und weiterverbreitet werden dürfen. Einige verbreitete Indikatoren fehlen deshalb:</p>
+  <ul class="missing">
+    <li><b>Lizenz erforderlich:</b> ifo-Geschäftsklima und ifo-Exporterwartungen (<a href="https://www.ifo.de/">ifo Institut</a>), ZEW-Konjunkturerwartungen (<a href="https://www.zew.de/">ZEW</a>), Einkaufsmanagerindizes (<a href="https://www.pmi.spglobal.com/">S&amp;P Global</a>), GfK-Konsumklima (<a href="https://www.nim.org/">NIM</a>), HDE-Konsumbarometer (<a href="https://einzelhandel.de/">HDE</a>), IAB-Arbeitsmarktbarometer (<a href="https://iab.de/">IAB</a>), IWH-Insolvenztrend (<a href="https://www.iwh-halle.de/">IWH</a>), Terminpreise für Strom und Gas (<a href="https://www.eex.com/">EEX</a>), Containerumschlag-Index (<a href="https://www.rwi-essen.de/">RWI/ISL</a>). Die Stimmung der Unternehmen und Verbraucher bilden stattdessen die frei verfügbaren Umfragen der EU-Kommission ab.</li>
+    <li><b>Keine abrufbare Zeitreihe:</b> Unterbeschäftigung der Bundesagentur für Arbeit (nur in Monatsberichten), Finanzlage und Beitragssätze der Sozialversicherung (Projektionen der Träger), Investitionshemmnisse aus Unternehmensumfragen, Zerlegung des Produktionspotenzials in Arbeit, Kapital und Produktivität (in AMECO nicht als Reihe abrufbar), Beiträge der Branchen zum Auftragseingang (Gewichte nicht veröffentlicht).</li>
+  </ul>
   <p id="deck"></p>
   <p id="cite"></p>
 </section>
@@ -652,7 +663,10 @@ function build() {
       <span class="big"><span class="num">${val}</span><span class="u">${esc(a.unit)}${a.label && a.unit !== "Mrd. €" ? " " + esc(a.label) : ""}</span><span class="verdict">${esc(a.verdict)}</span></span>
       <span class="head">${esc(a.head)}</span>${spark(a.spark_data, a.ref)}<span class="per">${esc(a.period)}</span></a>`);
   });
-  let no = 0;
+  let no = 0, curPart = null;
+  const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
+    struktur: { no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
+    service: { no: "Service", title: "Termine", text: "Wann die nächsten Zahlen erscheinen." } };
   const obs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { obs.unobserve(e.target); render(e.target); } }), { rootMargin: "300px" }) : null;
   DATA.topics.forEach(t => {
     const sec = document.createElement("section"); sec.className = "topic"; sec.id = t.id;
@@ -673,6 +687,10 @@ function build() {
       no += 1; const el = card(c, c.no ?? no); target.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : render(ch);
     });
     if (LY.lead_chart_only && wrap.children.length === 1) wrap.classList.add("single");
+    const part = t.part || "konjunktur";
+    if (part !== curPart) { curPart = part; const P = PARTS[part];
+      topics.insertAdjacentHTML("beforeend", `<div class="parthead" id="teil-${part}"><span>${esc(P.no)}</span> ${esc(P.title)}<p>${esc(P.text)}</p></div>`);
+      nav.insertAdjacentHTML("beforeend", `<span class="navpart">${esc(P.title)}:</span>`); }
     topics.appendChild(sec);
     nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
   });
