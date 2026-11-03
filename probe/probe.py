@@ -83,35 +83,16 @@ def gen_tables(sel):
     except Exception as e:
         print("Fehler", r.status_code, r.text[:300])
 
-# 1 Preise
-gen_vars("61111-0006", "ohne|Energie|Dienstleist|Waren|Nahrungsm|Kern")
-gen_vars("61111-0007", "Energie|Dienstleist|Waren|Nahrungsm", startyear="2020")
-bbk_titles("BBDP1", "M.DE.....", "Ausfuhr|Export|Terms|Kern|ohne Energie|Dienstleistungen insgesamt|Waren insgesamt")
-euro("prc_hicp_manr", geo="DE", coicop="CP00")
-# 2 BIP-Verwendung
-euro("namq_10_an6", geo="DE", unit="CLV_PCH_PRE", s_adj="SCA")
-euro("namq_10_gdp", geo="DE", na_item="B1GQ", s_adj="SCA")
-# 3/4/5 Industrie, Bau, Handel, Gastgewerbe, Pkw
-bbk_titles("BBDE1", "M.DE.Y.....", "Vorleistung|Investitionsg|Konsumg|Euro|Großauftr|Umsatz|Bau|Wohnungsbau|Einzelhandel|Lebensmittel|Internet|Versand|Gastgewerbe|Pkw|Zulassung|Produzierendes Gewerbe|Industrie", 200)
-bbk_titles("BBDE1", "M.DE.N.....", "Pkw|Zulassung|Gastgewerbe", 30)
-euro("ei_bsbu_m_r2", geo="DE")
-# 6 Arbeitsmarkt
-bbk_titles("BBDL1", "M.DE.Y....", "Erwerbst|sozialversicherungs", 40)
-# 7 Außenhandel
-bbk_flows("Zahlungsbilanz|Leistungsbilanz|Aktien|Wertpapier|Rohstoff|Öl")
-bbk_titles("BBFB1", "M.....", "Leistungsbilanz", 20)
-# 8 Umfragen
-euro("ei_bsin_q_r2", geo="DE")
-euro("ei_bsse_m_r2", geo="DE")
-euro("ei_bsrt_m_r2", geo="DE")
-euro("ei_bssi_m_r2", geo="DE")
-# 9 Finanzen: DAX, Öl
-bbk_titles("BBSSY", "M.....", "DAX|Aktien", 20)
-bbk_titles("BBEX3", "M.....", "Öl|Brent", 20)
-for u in ["https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILBRENTEU", "https://www.eia.gov/dnav/pet/hist_xls/RBRTEm.xls"]:
-    try:
-        r = S.get(u, timeout=60); print(u, r.status_code, r.text[:120].replace("\n", " | "))
-    except Exception as e: print(u, "Fehler", e)
-# 5 GENESIS Handel/Gastgewerbe/Kfz
-for sel in ["45212*", "45213*", "46251*", "13321*"]:
-    gen_tables(sel)
+
+for k in ["M.DE.Y.GUA1.....", "M.DE.Y.KAA1.....", "M.DE.Y.UAA1.....", "M.DE.Y.UAB1.....", "M.DE.Y.UAB5....."]:
+    bbk_titles("BBDE1", k, ".", 60)
+bbk_titles("BBDE1", "M.DE.Y.....", "Umsatz", 80)
+bbk_titles("BBDP1", "M.DE.N.HVPI.C.A00000..", ".", 10)
+euro("bop_c6_m", geo="DE", partner="WRL_REST", bop_item="CA", stk_flow="BAL", currency="MIO_EUR")
+hdr("namq_10_gdp units")
+r = S.get("https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp",
+          params={"format": "JSON", "lang": "en", "lastTimePeriod": 1, "geo": "DE", "na_item": "B1GQ", "s_adj": "SCA"}, timeout=120)
+print(list(r.json()["dimension"]["unit"]["category"]["label"].keys()))
+gen_vars("45212-0005", None, startyear="2026")
+for sid in ["MCOILBRENTEU", "PNGASEUUSDM"]:
+    r = S.get(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}", timeout=60); print(sid, r.status_code, r.text[-120:].replace("\n", " | "))
