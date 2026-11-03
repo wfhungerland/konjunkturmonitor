@@ -1,0 +1,488 @@
+# Reihen-Katalog des Konjunkturmonitors (Format von konjunkturwolf, gleiche Pipeline).
+# Nur Deutschland, nur offene Quellen: Bundesbank, Eurostat, EZB; Kurzarbeit-Äquivalente aus der BA-Statistik (statisch).
+
+defaults:
+  start: "2005-01-01"
+
+blocks:
+  - {id: wachstum, title: Wachstum, sheet: Wachstum}
+  - {id: preise, title: Preise, sheet: Preise}
+  - {id: arbeit, title: Arbeit, sheet: Arbeit}
+  - {id: industrie, title: Industrie, sheet: Industrie}
+  - {id: konsum, title: Konsum, sheet: Konsum}
+  - {id: export, title: Export, sheet: Export}
+  - {id: stimmung, title: Stimmung, sheet: Stimmung}
+
+names:
+  item:
+    P31_S14_S15: Konsum der Haushalte
+    P3_S13: Konsum des Staates
+    P51G: Investitionen
+    P52_P53: Lager
+    P6: Exporte
+    P7: Importe
+
+charts:
+  gdp_qoq: {title: "Wirtschaftsleistung, Veränderung gegenüber dem Vorquartal", decimals: 1}
+  gdp_contrib: {title: "Woraus das Wachstum besteht", kind: stacked, decimals: 1}
+  gdp_level: {title: "Wirtschaftsleistung, Niveau", decimals: 0}
+  cpi: {title: "Inflationsrate und Bestandteile", decimals: 1}
+  pipeline_prices: {title: "Preise auf den Vorstufen", decimals: 1}
+  labour: {title: "Arbeitslosenquote", decimals: 1}
+  labour_flows: {title: "Arbeitslose und offene Stellen", decimals: 0}
+  sahm: {title: "Rezessionssignal", decimals: 2}
+  industry: {title: "Produktion und Aufträge der Industrie", decimals: 0}
+  orders_split: {title: "Aufträge aus dem Inland und aus dem Ausland", decimals: 0}
+  retail: {title: "Einzelhandel, real", decimals: 0}
+  consumer: {title: "Verbrauchervertrauen", decimals: 1}
+  trade: {title: "Warenhandel", decimals: 0}
+  trade_region: {title: "Exporte nach Regionen", decimals: 0}
+  sentiment: {title: "Stimmung nach Bereichen", decimals: 1}
+  clock: {title: "Konjunkturuhr der Industrie", decimals: 1}
+  employment: {title: "Erwerbstätige", decimals: 0}
+  forecast: {title: "Prognosen für das Wachstum", decimals: 1}
+
+series:
+  # --- Wachstum ------------------------------------------------------------
+  - id: de_gdp_qoq
+    block: wachstum
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: DE, na_item: B1GQ, unit: CLV_PCH_PRE, s_adj: SCA}
+    title: BIP real, % gg. Vorquartal
+    unit: "% gg. Vorquartal"
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    chart: gdp_qoq
+    label: BIP
+    style: bar
+
+  - id: de_gdp_yoy
+    block: wachstum
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: DE, na_item: B1GQ, unit: CLV_PCH_SM, s_adj: SCA}
+    title: BIP real, % gg. Vorjahresquartal
+    unit: "% gg. Vorjahresquartal"
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+
+  - id: de_gdp_index
+    block: wachstum
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: DE, na_item: B1GQ, unit: CLV_I20, s_adj: SCA}
+    title: BIP real, Index 2020 = 100
+    unit: Index 2020=100
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    chart: gdp_level
+    label: BIP
+
+  - id: de_gdp_contrib
+    expand: {item: [P31_S14_S15, P3_S13, P51G, P52_P53, P6, P7]}
+    block: wachstum
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: DE, na_item: "{item}", unit: CON_PPCH_PRE, s_adj: SCA}
+    title: Wachstumsbeitrag {item_name}
+    unit: Pp gg. Vorquartal
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    chart: gdp_contrib
+    label: "{item_name}"
+    style: bar
+    note: Beitrag zur Veränderung des realen BIP gegenüber dem Vorquartal in Prozentpunkten (Eurostat). Wegen der Verkettung weicht die Summe leicht von der BIP-Rate ab.
+
+  # --- Preise --------------------------------------------------------------
+  - id: de_cpi_yoy
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.A00000.VGJ.LV
+    title: Verbraucherpreise (VPI), % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi
+    label: Insgesamt
+
+  - id: de_hicp_core_yoy
+    block: preise
+    source: eurostat
+    key: prc_hicp_minr
+    params: {geo: DE, unit: RCH_A, coicop18: TOT_X_NRG_FOOD}
+    title: HVPI ohne Energie und Nahrungsmittel, % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi
+    label: Ohne Energie und Nahrung (Kernrate, HVPI)
+
+  - id: de_hicp_energy_yoy
+    block: preise
+    source: eurostat
+    key: prc_hicp_minr
+    params: {geo: DE, unit: RCH_A, coicop18: NRG}
+    title: HVPI Energie, % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi
+    label: Energie (HVPI)
+
+  - id: de_hicp_food_yoy
+    block: preise
+    source: eurostat
+    key: prc_hicp_minr
+    params: {geo: DE, unit: RCH_A, coicop18: FOOD}
+    title: HVPI Nahrungsmittel, Alkohol und Tabak, % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi
+    label: Nahrung (HVPI)
+
+  - id: de_hicp_serv_yoy
+    block: preise
+    source: eurostat
+    key: prc_hicp_minr
+    params: {geo: DE, unit: RCH_A, coicop18: SERV}
+    title: HVPI Dienstleistungen, % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi
+    label: Dienstleistungen (HVPI)
+
+  - id: de_ppi
+    block: preise
+    source: eurostat
+    key: sts_inppd_m
+    params: {geo: DE, indic_bt: PRC_PRR_DOM, nace_r2: B-E36, s_adj: NSA, unit: I21}
+    title: Erzeugerpreise gewerblicher Produkte (Inlandsabsatz), Index
+    unit: Index 2021=100
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_ppi_yoy
+    block: preise
+    source: derived
+    derive: {from: de_ppi, op: yoy_pct}
+    title: Erzeugerpreise, % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: pipeline_prices
+    label: Erzeugerpreise
+
+  - id: de_import_prices
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.Y.APE1.G.GP19SA000000.I21.A
+    title: Einfuhrpreise, Index
+    unit: Index 2021=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+
+  - id: de_import_prices_yoy
+    block: preise
+    source: derived
+    derive: {from: de_import_prices, op: yoy_pct}
+    title: Einfuhrpreise, % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: pipeline_prices
+    label: Einfuhrpreise
+
+  # --- Arbeit --------------------------------------------------------------
+  - id: de_alq_sa
+    block: arbeit
+    source: bundesbank
+    key: BBDL1/M.DE.Y.UNE.UBA000.A0000.A01.D00.0.R00.A
+    title: Arbeitslosenquote (BA, registriert)
+    unit: "% der zivilen Erwerbspersonen"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    start: "1991-01-01"
+    chart: labour
+    label: Arbeitslosenquote
+
+  - id: de_alo_sa
+    block: arbeit
+    source: bundesbank
+    key: BBDL1/M.DE.Y.UNE.UBA000.A0000.A01.D00.0.ABA.A
+    title: Registrierte Arbeitslose (BA)
+    unit: Tsd. Personen
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    start: "1991-01-01"
+    chart: labour_flows
+    label: Arbeitslose
+
+  - id: de_vac_sa
+    block: arbeit
+    source: bundesbank
+    key: BBDL1/M.DE.Y.VAC.VBA000.A0000.A00.D00.0.ABA.A
+    title: Gemeldete Arbeitsstellen (BA)
+    unit: Tsd. Personen
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    start: "1991-01-01"
+    chart: labour_flows
+    label: Offene Stellen (gemeldet)
+
+  - id: de_ka_sa
+    block: arbeit
+    source: bundesbank
+    key: BBDL1/M.DE.Y.LMP.LKA100.A0000.A02.D00.0.ABA.A
+    title: Kurzarbeiter, konjunkturell (§ 96 SGB III)
+    unit: Personen
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    start: "1991-01-01"
+    note: Personen, nicht Vollzeitäquivalente; jüngste Monate vorläufig.
+
+  - id: de_ka_fte_ratio
+    block: arbeit
+    source: static
+    key: ba_ka_fte_ratio
+    title: Arbeitsausfall je Kurzarbeiter (Anteil der Arbeitszeit)
+    unit: Anteil
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1991-01-01"
+    stale_after_months: 24
+    note: Aus der BA-Statistik der realisierten Kurzarbeit, gewichtet mit den Klassenmitten der Ausfallklassen.
+
+  - id: de_sahm
+    block: arbeit
+    source: derived
+    derive: {from: de_alq_sa, op: sahm, part: min, with: {level: de_alo_sa, vac: de_vac_sa, ka: de_ka_sa, ka_ratio: de_ka_fte_ratio}}
+    title: Rezessionssignal (Michaillat und Saez, mit Kurzarbeit)
+    unit: Pp
+    frequency: M
+    adjustment: saison- und kalenderbereinigt
+    chart: sahm
+    label: Signal
+
+  - id: de_employment
+    block: arbeit
+    source: eurostat
+    key: namq_10_pe
+    params: {geo: DE, na_item: EMP_DC, unit: THS_PER, s_adj: SCA}
+    title: Erwerbstätige (Inland)
+    unit: Tsd. Personen
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    chart: employment
+    label: Erwerbstätige
+
+  # --- Industrie -----------------------------------------------------------
+  - id: de_ip
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.BAA1.A2P300000.G.C.I21.A
+    title: Produktion der Industrie
+    unit: Index 2021=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: industry
+    label: Produktion
+
+  - id: de_orders
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.AEA1.A2P300000.F.C.I21.A
+    title: Auftragseingang der Industrie, real
+    unit: Index 2021=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: industry
+    label: Aufträge
+
+  - id: de_orders_dom
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.AEB1.A2P300000.F.C.I21.A
+    title: Auftragseingang der Industrie aus dem Inland, real
+    unit: Index 2021=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: orders_split
+    label: Inland
+
+  - id: de_orders_for
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.AEB5.A2P300000.F.C.I21.A
+    title: Auftragseingang der Industrie aus dem Ausland, real
+    unit: Index 2021=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: orders_split
+    label: Ausland
+
+  # --- Konsum --------------------------------------------------------------
+  - id: de_retail
+    block: konsum
+    source: bundesbank
+    key: BBDE1/M.DE.Y.GUA1.N2G470000.A.C.I21.A
+    title: Umsatz im Einzelhandel (ohne Kfz), real
+    unit: Index 2021=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: retail
+    label: Einzelhandel
+
+  - id: de_consumer_conf
+    block: konsum
+    source: eurostat
+    key: ei_bsco_m
+    params: {geo: DE, indic: BS-CSMCI, s_adj: SA, unit: BAL}
+    title: Verbrauchervertrauen (EU-Verbraucherumfrage), Saldo
+    unit: Saldo
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: consumer
+    label: Verbrauchervertrauen
+
+  # --- Export --------------------------------------------------------------
+  - id: de_exports
+    block: export
+    source: bundesbank
+    key: BBDA1/M.DE.Y.EX.S.A.W1.A.V.ABA.A
+    params: {scale: 0.001}
+    title: Warenexporte, nominal
+    unit: Mrd. €
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: trade
+    label: Exporte
+
+  - id: de_imports
+    block: export
+    source: bundesbank
+    key: BBDA1/M.DE.Y.IM.S.A.W1.A.V.ABA.A
+    params: {scale: 0.001}
+    title: Warenimporte, nominal
+    unit: Mrd. €
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: trade
+    label: Importe
+
+  - id: de_exports_eu
+    block: export
+    source: bundesbank
+    key: BBDA1/M.DE.Y.EX.S.A.B0.A.V.ABA.A
+    params: {scale: 0.001}
+    title: Warenexporte in die EU
+    unit: Mrd. €
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: trade_region
+    label: EU
+
+  - id: de_exports_us
+    block: export
+    source: bundesbank
+    key: BBDA1/M.DE.Y.EX.S.A.US.A.V.ABA.A
+    params: {scale: 0.001}
+    title: Warenexporte in die USA
+    unit: Mrd. €
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: trade_region
+    label: USA
+
+  - id: de_exports_asia
+    block: export
+    source: bundesbank
+    key: BBDA1/M.DE.Y.EX.S.A.S1.A.V.ABA.A
+    params: {scale: 0.001}
+    title: Warenexporte nach Asien
+    unit: Mrd. €
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: trade_region
+    label: Asien
+
+  # --- Stimmung (EU-Umfragen, offen) -----------------------------------------
+  - id: de_esi
+    block: stimmung
+    source: eurostat
+    key: ei_bssi_m_r2
+    params: {geo: DE, indic: BS-ESI-I, s_adj: SA}
+    title: Wirtschaftliche Einschätzung (ESI), 100 = langjähriger Durchschnitt
+    unit: Index
+    frequency: M
+    adjustment: saisonbereinigt
+
+  - id: de_conf_industry
+    block: stimmung
+    source: eurostat
+    key: ei_bsin_m_r2
+    params: {geo: DE, indic: BS-ICI, s_adj: SA, unit: BAL}
+    title: Vertrauen in der Industrie, Saldo
+    unit: Saldo
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sentiment
+    label: Industrie
+
+  - id: de_conf_services
+    block: stimmung
+    source: eurostat
+    key: ei_bsse_m_r2
+    params: {geo: DE, indic: BS-SCI, s_adj: SA, unit: BAL}
+    title: Vertrauen bei Dienstleistern, Saldo
+    unit: Saldo
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sentiment
+    label: Dienstleister
+
+  - id: de_conf_retail
+    block: stimmung
+    source: eurostat
+    key: ei_bsrt_m_r2
+    params: {geo: DE, indic: BS-RCI, s_adj: SA, unit: BAL}
+    title: Vertrauen im Einzelhandel, Saldo
+    unit: Saldo
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sentiment
+    label: Einzelhandel
+
+  - id: de_conf_construction
+    block: stimmung
+    source: eurostat
+    key: ei_bsbu_m_r2
+    params: {geo: DE, indic: BS-CCI, s_adj: SA, unit: BAL}
+    title: Vertrauen am Bau, Saldo
+    unit: Saldo
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sentiment
+    label: Bau
+
+  - id: de_ind_orderbooks
+    block: stimmung
+    source: eurostat
+    key: ei_bsin_m_r2
+    params: {geo: DE, indic: BS-IOB, s_adj: SA, unit: BAL}
+    title: Industrie, Einschätzung des Auftragsbestands (Lage), Saldo
+    unit: Saldo
+    frequency: M
+    adjustment: saisonbereinigt
+
+  - id: de_ind_prodexp
+    block: stimmung
+    source: eurostat
+    key: ei_bsin_m_r2
+    params: {geo: DE, indic: BS-IPE, s_adj: SA, unit: BAL}
+    title: Industrie, Produktionserwartungen (nächste 3 Monate), Saldo
+    unit: Saldo
+    frequency: M
+    adjustment: saisonbereinigt
