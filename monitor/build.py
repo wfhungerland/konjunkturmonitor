@@ -333,6 +333,112 @@ def _calendar(root: Path, start: pd.Timestamp, months: int = 2) -> dict | None:
             "events": sorted(events, key=lambda e: e["date"]), "links": cfg.get("links") or []}
 
 
+def _per(x: str, freq: str) -> str:
+    from .answers import period
+    return period(pd.Timestamp(x), freq) if freq in ("M", "Q") else (x[:4] if freq == "A" else f"Woche bis {x[8:10]}.{x[5:7]}.{x[:4]}")
+
+
+def chart_text(c: dict) -> str:
+    """Kopierfertiger Satz zum jüngsten Stand einer Abbildung (Werte, Zeitraum, Vergleich zum Vorjahr)."""
+    from .answers import MONTHS
+    typ, d = c.get("type"), int(c.get("decimals", 1))
+    unit = (c.get("unit") or "").split(",")[0]
+    u = "%" if unit.startswith("%") else "Prozentpunkte" if unit.startswith("Pp") else "Punkte" if unit.startswith("Saldo") else "" if unit.startswith("Index") else unit
+    fmtv = lambda v: f"{num(v, d)} {u}".strip()
+    from .answers import num as _num
+
+    def num(v, dd=1, sign=False):  # gerundete Null ohne Vorzeichen
+        v = round(float(v), dd)
+        return _num(0.0 if v == 0 else v, dd, sign)
+    try:
+        if typ == "tiles":
+            rows = sorted(c["tiles"]["rows"], key=lambda r: r["change"])
+            return (f"{c['tiles']['span']} gegenüber demselben Zeitraum ein Jahr zuvor: am stärksten gestiegen in {rows[-1]['name']} "
+                    f"({num(rows[-1]['change'], 1, True)} %), am stärksten gesunken oder am wenigsten gestiegen in {rows[0]['name']} ({num(rows[0]['change'], 1, True)} %).")
+        if typ == "heat":
+            rows = c["heat"]["rows"]
+            return (f"Im Dreimonatsvergleich am stärksten gestiegen: {rows[-1]['label']} ({num(rows[-1]['m3'], 1, True)} %); "
+                    f"am schwächsten: {rows[0]['label']} ({num(rows[0]['m3'], 1, True)} %).")
+        if typ == "clock":
+            k = c["clock"]
+            x, y, t0 = k["x"][-1], k["y"][-1], pd.Timestamp(k["t"][-1])
+            phase = "Boom" if x >= 0 and y >= 0 else "Abschwung" if x >= 0 else "Aufschwung" if y >= 0 else "Rezession"
+            return (f"Im {MONTHS[t0.month - 1]} {t0.year} lag die Industrie im Feld „{phase}“: Auftragslage {num(x, 1, True)} Punkte, "
+                    f"Produktionserwartungen {num(y, 1, True)} Punkte gegenüber dem Mittel 2005 bis 2019.")
+        if typ == "seasonal":
+            i = max(k for k, v in enumerate(c["y"]) if v is not None)
+            s = f"Im {_per(c['x'][i], 'M')}: {num(c['y'][i], d)}"
+            if c["ma12"][i] is not None and c["norm"][i] is not None:
+                s += f"; Mittel der letzten zwölf Monate {num(c['ma12'][i], d)}, übliches Niveau desselben Monats 2015 bis 2019 {num(c['norm'][i], d)}"
+            return s + "."
+        if typ == "latest":
+            b = c["bars"]
+            return f"{c.get('bar_name', 'Zuletzt')} ({_per(b[0]['period'], c.get('freq', 'Q'))}): " + "; ".join(f"{x['label']} {num(x['value'], d, True)}" for x in b) + "."
+        if typ in ("calendar", "forecast") or not c.get("series"):
+            return ""
+        series = [s for s in c["series"] if s.get("y")]
+        if typ == "stacked":
+            last = max(s["x"][-1] for s in series)
+            bars = [s for s in series if s.get("style") == "bar" and s["x"][-1] == last]
+            tot = [s for s in series if s.get("style") != "bar" and s["x"][-1] == last]
+            head = f"{tot[0]['label']} im {_per(last, c.get('freq', 'M'))}: {num(tot[0]['y'][-1], d, True)} %. " if tot else ""
+            return head + "Beiträge in Prozentpunkten: " + "; ".join(f"{s['label']} {num(s['y'][-1], d, True)}" for s in bars) + "."
+        if c.get("emphasis"):
+            series = [s for s in series if s["id"] == c["emphasis"]] or series
+        series = series[:6]
+        last = max(s["x"][-1] for s in series)
+        parts = []
+        for s in series:
+            if s["x"][-1] != last:
+                continue
+            v = s["y"][-1]
+            lag = {"M": 12, "Q": 4, "A": 1, "D": 52}.get(s.get("freq", "M"), 12)
+            yago = s["y"][-1 - lag] if len(s["y"]) > lag else None
+            add = ""
+            if yago is not None and c.get("type") != "stacked" and s.get("style") != "bar":
+                if unit.startswith(("%", "Pp", "Saldo")) or "Saldo" in unit:
+                    add = f" ({num(v - yago, d, True)} {'Prozentpunkte' if unit.startswith(('%', 'Pp')) else 'Punkte'} gegenüber dem Vorjahr)"
+                elif yago:
+                    add = f" ({num((v / yago - 1) * 100, 1, True)} % gegenüber dem Vorjahr)"
+            parts.append(f"{s['label']} {fmtv(v)}{add}")
+        return f"Stand {_per(last, c.get('freq', 'M'))}: " + "; ".join(parts) + "." if parts else ""
+    except (KeyError, IndexError, ValueError, TypeError):
+        return ""
+
+
+def _notes(root: Path) -> dict:
+    """Von Hand gepflegte Hinweise auf Sondereffekte je Abbildung (data/static/hinweise.yaml)."""
+    path = root / "data" / "static" / "hinweise.yaml"
+    if not path.exists():
+        return {}
+    out = {}
+    for n in (yaml.safe_load(path.read_text(encoding="utf-8")) or {}).get("notes") or []:
+        out.setdefault(n["chart"], []).append({"date": str(n["date"]), "text": n["text"]})
+    return out
+
+
+def _outliers(c: dict) -> list[dict]:
+    """Auffällige Ausschläge der letzten 24 Monate: Veränderung zum Vormonat mehr als drei Standardabweichungen
+    (gemessen 2015 bis 2019) vom üblichen Wert entfernt. Ursache wird nicht automatisch bestimmt."""
+    out = []
+    for s in c.get("series") or []:
+        if s.get("freq") != "M" or s.get("style") == "bar" or len(s["y"]) < 30:
+            continue
+        x = pd.Series(s["y"], index=pd.to_datetime(s["x"]), dtype=float).dropna()
+        if (x <= 0).any():
+            continue
+        ch = x.pct_change() * 100
+        ref = ch[(ch.index >= NORM[0]) & (ch.index < NORM[1])]
+        ref = ref if len(ref) >= 24 else ch.iloc[:-24]
+        if len(ref) < 24 or ref.std() == 0:
+            continue
+        z = (ch - ref.mean()) / ref.std()
+        for dt, zz in z.iloc[-24:].items():
+            if abs(zz) > 3:
+                out.append({"date": dt.strftime("%Y-%m-%d"), "label": s["label"], "change": round(float(ch[dt]), 1)})
+    return out[-4:]
+
+
 def build_payload(root: Path = ROOT) -> dict:
     cfg = yaml.safe_load((root / "monitor.yaml").read_text(encoding="utf-8"))
     layout = cfg.get("layout") or {}
@@ -426,8 +532,9 @@ def build_payload(root: Path = ROOT) -> dict:
                 for s in specs:
                     if s.id not in data:
                         continue
-                    series.append(dict(id=s.id, label=s.label or s.title, unit=s.unit, freq=s.frequency,
-                                       style=getattr(s, "style", None) or "line", **_xy(data[s.id], c.get("years"))))
+                    xy = _xy(data[s.id] * float(c.get("scale", 1)), c.get("years"))
+                    series.append(dict(id=s.id, label=s.label or s.title, unit=c.get("unit", s.unit), freq=s.frequency,
+                                       style=getattr(s, "style", None) or "line", **xy))
                 if c.get("total") and c["total"] in data:
                     s = meta[c["total"]]
                     series.append(dict(id=s.id, label="BIP insgesamt", unit=s.unit, freq=s.frequency, style="line",
@@ -456,6 +563,13 @@ def build_payload(root: Path = ROOT) -> dict:
             charts.append(entry)
         q = next((x for x in questions if x.get("topic") == t["id"]), None)
         topics.append(dict(t, charts=charts, question=q))
+    notes = _notes(root)
+    for tp in topics:
+        for c in tp["charts"]:
+            c["text"] = chart_text(c)
+            c["notes"] = notes.get(c["chart"], [])
+            if c.get("ma3") or c.get("outliers"):
+                c["outliers"] = _outliers(c)
     no = 0
     for t in topics:
         for c in t["charts"]:

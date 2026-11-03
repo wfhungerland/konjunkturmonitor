@@ -24,7 +24,7 @@ names:
     P51G: Investitionen
     P52_P53: Lager
     P6: Exporte
-    P7: Importe
+    P7: Importe (negativ gerechnet)
   wz:
     "10": "Nahrungs- und Futtermittel"
     "11": "Getränke"
