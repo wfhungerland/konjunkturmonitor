@@ -459,7 +459,7 @@ series:
     block: stimmung
     source: eurostat
     key: ei_bsbu_m_r2
-    params: {geo: DE, indic: BS-CCI, s_adj: SA, unit: BAL}
+    params: {geo: DE, indic: BS-CCI, s_adj: SA}
     title: Vertrauen am Bau, Saldo
     unit: Saldo
     frequency: M
