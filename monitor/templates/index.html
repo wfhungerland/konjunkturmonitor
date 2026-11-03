@@ -147,9 +147,10 @@
   .calm td.today { background: #eef4fb; } .calm td.past a { color: #999; }
   .callinks { font: 13px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
   .answer button.copy, .ctext button.copy { font: 12.5px "Arial Narrow", Arial, sans-serif; color: var(--accent); background: none; border: 1px solid #c9d3df; border-radius: 3px; padding: 0 6px; cursor: pointer; vertical-align: 1px; }
+  .card .cask { font: bold 16px/1.3 "Palatino Linotype", Palatino, "Book Antiqua", serif; margin: 2px 0 2px; }
   .card .ctext { font: 15.5px/1.45 "Palatino Linotype", Palatino, "Book Antiqua", serif; margin: 2px 0 8px; color: var(--text); }
   .chartbox { position: relative; }
-  .notebox { width: fit-content; max-width: 62%; margin: 2px 0 4px auto; background: #fff; border: 1px solid #bfbfbf; border-radius: 3px; padding: 4px 7px; font: 12px/1.35 "Arial Narrow", Arial, sans-serif; color: #404040; }
+  .notebox { width: fit-content; max-width: 62%; margin: 2px 0 4px auto; background: #f2f3f4; border: 0; border-radius: 4px; padding: 8px 12px; font: 13.5px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--text); }
   @media (max-width: 600px) { .notebox { max-width: none; margin: 4px 0; } }
   .totop { font: 13px "Arial Narrow", Arial, sans-serif; font-weight: normal; margin-left: 8px; vertical-align: middle; }
   .fab { position: fixed; right: 14px; bottom: 14px; z-index: 6; background: var(--dark); color: #fff; font: 13px "Arial Narrow", Arial, sans-serif; padding: 6px 10px; border-radius: 16px; opacity: .85; }
@@ -167,6 +168,11 @@
   .parthead { margin: 56px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 15px "Arial Narrow", Arial, sans-serif; color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
   .parthead span { color: var(--muted); margin-right: 6px; }
   .parthead p { text-transform: none; letter-spacing: 0; font-weight: normal; color: var(--muted); font-size: 14.5px; margin: 4px 0 0; }
+  details.moretable > summary { cursor: pointer; font: 14px "Arial Narrow", Arial, sans-serif; color: var(--accent); margin: 2px 0 8px; }
+  nav details.navmore { position: relative; }
+  nav details.navmore > summary { cursor: pointer; color: var(--accent); list-style: none; } nav details.navmore > summary::after { content: " ▾"; }
+  nav .navlist { position: absolute; right: 0; top: 1.6em; background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 8px 12px; display: grid; grid-template-columns: repeat(2, max-content); gap: 4px 18px; box-shadow: 0 4px 12px rgba(0,0,0,.08); z-index: 10; }
+  @media (max-width: 600px) { nav .navlist { left: auto; right: -8px; grid-template-columns: max-content; } }
   .navpart { color: var(--muted); font-size: 13px; margin-left: 6px; }
   ul.missing { padding-left: 18px; } ul.missing li { margin-bottom: 6px; }
   .news { font: 14.5px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin: 0 0 8px; max-width: 60em; }
@@ -224,6 +230,8 @@ const shortUnit = u => u.startsWith("%") ? "%" : u.startsWith("Pp") || u.startsW
 // Wert mit Einheit; Salden (Anteil positiver minus negativer Antworten, in Prozentpunkten) stets mit Vorzeichen
 const fmtU = (v, d, unit, bare) => { v = +v.toFixed(d); if (v === 0) v = 0; const u = shortUnit(unit || ""), sg = (unit || "").startsWith("Saldo") && v > 0 ? "+" : ""; return sg + fmt(v, d) + (u && (!bare || u.length <= 3) ? "\u202f" + u : ""); };
 const unitLabel = u => (u || "").startsWith("Saldo") ? "Saldo in Prozentpunkten (Anteil positiver minus Anteil negativer Antworten)" + u.slice(5) : (u || "");
+// Kurzform des Zeitraums an der Endbeschriftung: 26q3, 26m09, 2025, 26w44
+const periodCode = (x, f) => f === "A" ? x.slice(0, 4) : f === "Q" ? `${x.slice(2, 4)}q${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}` : f === "D" ? `${x.slice(2, 4)}w${String(Math.ceil(((Date.parse(x) - Date.parse(x.slice(0, 4) + "-01-01")) / 864e5 + 1) / 7)).padStart(2, "0")}` : `${x.slice(2, 4)}m${x.slice(5, 7)}`;
 const perShort = (x, f) => f === "A" ? x.slice(0, 4) : f === "Q" ? `${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}. Q. ${x.slice(0, 4)}` : f === "D" ? `${+x.slice(8, 10)}. ${MONTHS[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : `${MONTHS[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`;
 
 function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 2.5, 5, 10].map(m => m * p).find(s => s >= raw); }
@@ -312,15 +320,17 @@ function timeChart(el, c) {
   let rMargin = 6;
   if (direct) { // Beschriftung rechts neben der Werteachse, vollständig, bei Bedarf zweizeilig und ohne Überlappung
     const wrap = s => { if (s.length <= 24) return [s]; const w = s.split(" "); let a = "", out = []; w.forEach(x => { if ((a + " " + x).trim().length > 24 && a) { out.push(a); a = x; } else a = (a + " " + x).trim(); }); out.push(a); return out; };
+    const sgn = /gg\.|gegenüber|Veränderung|^Pp|^Saldo/.test(c.unit || "") || ya.zero;
     const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const td = tendOf(tr.y, c.decimals ?? 1), arrow = td ? ` <span style="color:${tendColor(td, isBad(c, tr.meta))}">${{ up: "▲", down: "▼", flat: "■" }[td]}</span>` : "";
-      const lines = tr.y[i] == null ? [] : wrap(tr.name).concat([`${fmtU(tr.y[i], c.decimals ?? 1, c.unit)} · ${perShort(tr.x[i], c.freq)}`]); return { tr, i, y: tr.y[i], lines, arrow }; }).filter(e => e.y != null).sort((a, b) => a.y - b.y);
+      const v = tr.y[i], val = (sgn && +v.toFixed(c.decimals ?? 1) > 0 ? "+" : "") + fmtU(v, c.decimals ?? 1, c.unit);
+      const lines = v == null ? [] : [`${tr.name} ${val} in ${periodCode(tr.x[i], c.freq)}`]; return { tr, i, y: v, lines, arrow }; }).filter(e => e.y != null).sort((a, b) => a.y - b.y);
     const span = ya.range[1] - ya.range[0], px = span / Math.max(140, (el.clientHeight || 300) - 70);
     for (let k = 1; k < ends.length; k++) { const need = ((ends[k - 1].lines.length + ends[k].lines.length) * 7.5 + 4) * px; if (ends[k].y - ends[k - 1].y < need) ends[k].y = ends[k - 1].y + need; }
     const over = ends.length ? ends[ends.length - 1].y + ends[ends.length - 1].lines.length * 7.5 * px - ya.range[1] : 0;  // oben hinausgeschoben: alle nach unten
     if (over > 0) ends.forEach(e => e.y -= over);
     const tickW = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;
     ends.forEach(e => annotations.push({ xref: "paper", x: 1, y: e.y, text: e.lines.map(esc).join("<br>") + e.arrow, showarrow: false, xanchor: "left", xshift: tickW, yanchor: "middle", align: "left", font: { family: HS.font, size: 12, color: e.tr.line.color } }));
-    rMargin = tickW + Math.min(170, 7 * Math.max(...ends.flatMap(e => e.lines.map(l => l.length)))) + 8;
+    rMargin = tickW + Math.min(320, 6.4 * Math.max(...ends.flatMap(e => e.lines.map(l => l.length))) + 14) + 8;
   }
   // Jahresmittel je Jahresband (eine Leitreihe mit Monats- oder Quartalswerten). Unten, wo die Linien unten verlaufen oben;
   // entfällt, wenn das Jahresband zu schmal für die Zahl ist.
@@ -333,14 +343,19 @@ function timeChart(el, c) {
       const a0 = Math.max(t0, Date.parse(`${y}-01-01`)), a1 = Math.min(t1, Date.parse(`${+y + 1}-01-01`));
       const txt = "ø" + fmtU(v.reduce((p, q) => p + q, 0) / v.length, dm, c.unit, true);
       if ((a1 - a0) / 864e5 * pxd < txt.length * 6.2 + 10) return;
-      const inYear = traces.filter(tr => tr.type === "scatter").flatMap(tr => tr.x.map((x, i) => x.slice(0, 4) === y ? tr.y[i] : null)).filter(q => q != null).map(pos);
+      const mid = (a0 + a1) / 2, half = (txt.length * 3.4 + 6) / pxd * 864e5;
+      const inYear = traces.filter(tr => tr.type === "scatter" && (tr.opacity == null || tr.opacity > 0.5)).flatMap(tr => tr.x.map((x, i) => Math.abs(Date.parse(x) - mid) <= half ? tr.y[i] : null)).filter(q => q != null).map(pos);
       const low = inYear.filter(q => q < 0.16).length, high = inYear.filter(q => q > 0.84).length;
       const top = low > 0 && high <= low;
       annotations.push({ xref: "x", yref: "paper", x: new Date((a0 + a1) / 2).toISOString().slice(0, 10), y: top ? 0.98 : 0.02, yanchor: top ? "top" : "bottom", showarrow: false, text: txt,
         font: { family: HS.font, size: 11, color: "#595959" }, bordercolor: "#a6a6a6", borderwidth: 1, borderpad: 2, bgcolor: "rgba(255,255,255,0.9)" }); });
   }
+  const card0 = el.closest(".card"), uEl = card0 && card0.querySelector(".unit");
+  const tickW0 = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;  // Einheit rechtsbündig über den Achsenzahlen
+  if (uEl && uEl.textContent) { annotations.push({ xref: "paper", yref: "paper", x: 1, y: 1, xanchor: "right", yanchor: "bottom", xshift: tickW0, yshift: 6, showarrow: false, align: "right",
+    text: esc(uEl.textContent), font: { family: HS.font, size: 12, color: "#3f4752" } }); uEl.style.display = "none"; }
   const L = baseLayout(el);
-  L.margin = Object.assign({}, L.margin, { r: rMargin });
+  L.margin = Object.assign({}, L.margin, { r: Math.max(rMargin, tickW0), t: Math.max(L.margin.t, 34) });
   const nb = el.parentNode && el.parentNode.querySelector(".notebox"); if (nb) nb.style.marginRight = (rMargin + 6) + "px";  // Kasten oben rechts über der Zeichenfläche
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
@@ -607,24 +622,32 @@ async function pngDownload(el, ch, c, no, sub, unit) {
   const a = document.createElement("a"); a.download = `abb${String(no).padStart(2, "0")}_${c.chart}.png`; a.href = cv.toDataURL("image/png"); a.click();
 }
 
+// Satz zur Abbildung samt nächstem Termin; html: mit Link zum Kalender
+function chartSentence(c, html) {
+  let s = html ? esc(c.text || "") : (c.text || "");
+  if (c.next_update) { const nd = new Date(c.next_update.date + "T12:00:00Z"), names = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+    const d = `${nd.getUTCDate()}. ${names[nd.getUTCMonth()]} ${nd.getUTCFullYear()}`;
+    s += (s ? " " : "") + `Neue Zahlen erscheinen voraussichtlich am ${d}` + (html ? ` (<a href="#abb-${c.next_update.calendar}">Kalender</a>).` : "."); }
+  return s;
+}
+
 function card(c, no) {
   const el = document.createElement("div"); el.className = "card" + (c.type === "heat" || c.type === "calendar" || c.context_grey ? " wide" : "") + (c.type === "calendar" ? " calcard" : ""); el.id = `abb-${no}`;
   const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Prozentpunkten, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real"
     : c.type === "tiles" ? "Veränderung gegenüber denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
-  el.innerHTML = `${c.text ? `<p class="ctext">${esc(c.text)}</p>` : ""}<h3>Abb. ${no} ${esc(c.title || "")}</h3>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}<div class="unit">${esc(unit)}</div>`;
+  const lead = c._lead;  // Leitgrafik: Frage und Satz stehen schon in der Antwort des Abschnitts
+  el.innerHTML = `${!lead && c.ask ? `<h4 class="cask">${esc(c.ask)}</h4>` : ""}${!lead && (c.text || c.next_update) ? `<p class="ctext">${chartSentence(c, true)}</p>` : ""}`
+    + `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}${c.caption ? `<div class="cap">${esc(c.caption)}</div>` : ""}<div class="unit">${esc(unit)}</div>`;
   const box = document.createElement("div"); box.className = "chartbox"; el.appendChild(box);
   const ch = document.createElement("div"); ch.className = ["tiles", "heat", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   const nts = (c.notes || []).map((n, k) => `${k + 1} ${esc(n.text)}`).concat((c.outliers || []).map(o => `${esc(o.label)} im ${MONTHS[+o.date.slice(5, 7) - 1]} ${o.date.slice(0, 4)}: ${(o.change > 0 ? "+" : "") + fmt(o.change, 1)} % zum Vormonat${(c.notes || []).length ? "" : " (automatisch markiert)"}`));
   if (nts.length) box.insertAdjacentHTML("afterbegin", `<div class="notebox" title="Automatisch markiert: Veränderung zum Vormonat mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019. Die Ursache nennt die Quelle."><b>Auffällige Ausschläge und Sondereffekte</b><br>${nts.join("<br>")}</div>`);
-  if (c.caption) el.insertAdjacentHTML("beforeend", `<div class="cap">${esc(c.caption)}</div>`);
   let src = (c.sources || []).join(", ");
   if (c.type === "forecast") src = c.forecasts.filter(f => f.latest).map(f => `<a href="${esc(f.source)}" target="_blank" rel="noopener">${esc(f.by)}, ${esc(f.round)}</a>`).join(" · ");
   else src = esc(src);
   el.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}</div>`);
-  if (c.next_update) { const nd = new Date(c.next_update.date + "T12:00:00Z");
-    el.insertAdjacentHTML("beforeend", `<div class="nextup">Nächste Aktualisierung voraussichtlich ${["So.", "Mo.", "Di.", "Mi.", "Do.", "Fr.", "Sa."][nd.getUTCDay()]} ${nd.getUTCDate()}. ${MONTHS[nd.getUTCMonth()]} ${nd.getUTCFullYear()} (${esc(c.next_update.name)}) · <a href="#abb-${c.next_update.calendar}">Kalender</a></div>`); }
   const f = c.files || {}, acts = [];
   if (f.xlsx) acts.push(`<a href="${f.xlsx}" download>Excel</a>`);
   if (f.pptx) acts.push(`<a href="${f.pptx}" download>PowerPoint</a>`);
@@ -666,17 +689,21 @@ function startTable(box) {
     const path = y.map((v, i) => `${i ? "L" : "M"}${X(x[i]).toFixed(1)},${Y(v).toFixed(1)}`).join("");
     return `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><path d="${path}" fill="none" stroke="#002060" stroke-width="1.2"/><circle cx="${X(x[x.length - 1]).toFixed(1)}" cy="${Y(y[y.length - 1]).toFixed(1)}" r="2.2" fill="#002060"/></svg>`; };
   const ch = (v, r) => v == null ? "" : (v > 0 ? "+" : "") + fmt(Math.abs(v) < 0.5 * 10 ** -(r.change_decimals ?? 1) ? 0 : v, r.change_decimals ?? 1) + "\u202f" + esc(r.change_unit);
-  let html = `<table class="stable"><thead><tr><th class="l">Kennzahl</th><th>Stand</th><th>Wert</th><th class="l">Einheit</th><th>ggü. Vor&shy;periode</th><th>ggü. Vorjahr</th><th>Drei&shy;monats&shy;vergleich</th><th class="l">Verlauf fünf Jahre</th><th>Ten&shy;denz</th></tr></thead><tbody>`;
-  let grp = null, older = false;
-  rows.forEach(r => {
+  const head = `<thead><tr><th class="l">Kennzahl</th><th>Stand</th><th>Wert</th><th class="l">Einheit</th><th>ggü. Vor&shy;periode</th><th>ggü. Vorjahr</th><th>Drei&shy;monats&shy;vergleich</th><th class="l">Verlauf fünf Jahre</th><th>Ten&shy;denz</th></tr></thead>`;
+  let grp = null, older = false, html = `<table class="stable">${head}<tbody>`;
+  const rowHtml = r => {
     if (r.group !== grp) { grp = r.group; html += `<tr class="grp"><td colspan="9"><a href="#${r.topic}">${esc(grp)}</a></td></tr>`; }
     const d = r.decimals ?? 1; older = older || r.older;
     const cmp = `<span>${esc(r.period)}${r.older ? "¹" : ""}</span>` + [[r.prev_label, r.prev], ["Vorjahr", r.yoy], ["3 Monate", r.m3]].filter(x => x[1] != null).map(x => `<span>${x[0]} ${ch(x[1], r)}</span>`).join("");
     html += `<tr class="row" data-href="#${r.topic}"><td class="k"><a href="#${r.topic}">${esc(r.label)}</a></td><td class="p${r.older ? " old" : ""}">${esc(r.period)}${r.older ? "¹" : ""}</td><td class="v">${fmt(r.value, d)}${r.revised ? `<sup class="rev" title="revidiert; zuerst veröffentlicht: ${fmt(r.revised.from, d)} (Stand ${r.revised.stand})">r</sup>` : ""}</td>`
       + `<td class="u">${esc(r.unit)}<span class="mob"></span></td><td class="d">${ch(r.prev, r)}</td><td class="d">${ch(r.yoy, r)}</td><td class="d">${ch(r.m3, r)}</td>`
       + `<td class="s">${sp(r)}</td><td class="t">${tendHtml(r.tendency, r.up_bad)}</td><td class="cmp">${cmp}${r.older ? "<span>älterer Stand</span>" : ""}</td></tr>`;
-  });
-  box.innerHTML = html + "</tbody></table>"
+  };
+  rows.filter(r => !r.more).forEach(rowHtml);
+  html += "</tbody></table>";
+  const more = rows.filter(r => r.more);
+  if (more.length) { grp = null; html += `<details class="moretable"><summary>Weitere Kennzahlen (${more.length}): ${more.map(r => esc(r.label.split(" (")[0])).join(", ")}</summary><table class="stable">${head}<tbody>`; more.forEach(rowHtml); html += "</tbody></table></details>"; }
+  box.innerHTML = html
     + `<p class="tnote">Vorperiode und Dreimonatsvergleich saison- und kalenderbereinigt, soweit die Quelle bereinigte Werte bietet; Vorjahresvergleich aus saison- und kalenderbereinigten Werten; bei Preisen, Insolvenzen und beim BIP nach Ursprungswerten, wie in den Meldungen der Statistikämter. `
     + `Bei Raten und Salden ist die Veränderung eine Differenz in Prozentpunkten (Pp) oder Punkten (Pkt.), sonst eine Veränderung in Prozent. Dreimonatsvergleich: die letzten drei Monate gegenüber den drei Monaten davor. `
     + `Tendenz zur Vorperiode: <span class="up-ok">▲</span> gestiegen, <span class="down">▼</span> gesunken, <span class="flat">■</span> unverändert; <span class="up-bad">▲</span> rot, wo ein Anstieg ungünstig ist (Preise, Arbeitslosigkeit, Insolvenzen).`
@@ -717,6 +744,8 @@ function build() {
       <span class="head">${esc(a.head)}</span>${spark(a.spark_data, a.ref)}<span class="per">${esc(a.period)}</span></a>`);
   });
   let no = 0, curPart = null;
+  const MAIN_NAV = (DATA.layout || {}).main_nav || ["wachstum", "preise", "arbeit", "industrie", "konsum", "insolvenzen"];
+  const navMore = document.createElement("div"); navMore.className = "navlist";
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     struktur: { no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
     service: { no: "Service", title: "Termine", text: "Wann die nächsten Zahlen erscheinen." } };
@@ -726,10 +755,11 @@ function build() {
     const q = t.question;
     if (!q && !t.charts.length) return;
     sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))} <a class="totop" href="#top" title="Zur Übersicht">↑ Übersicht</a></h2>`
-      + (q ? `<div class="intro"><p class="answer">${esc([q.answer.head, ...q.answer.more].join(" "))} <button type="button" class="copy" title="Absatz mit Quellenangabe kopieren">Kopieren</button></p>`
-        + `<div class="explain"><span class="ico" aria-label="Erläuterung" role="img">ℹ️</span>${esc(q.explain)}</div></div>` : "");
+      + (q || t.charts[0] ? `<div class="intro"><p class="answer">${esc(q ? [q.answer.head, ...q.answer.more].join(" ") : "")} ${t.charts[0] ? chartSentence(t.charts[0], true) : ""} <button type="button" class="copy" title="Absatz mit Quellenangabe kopieren">Kopieren</button></p>`
+        + (q ? `<div class="explain"><span class="ico" aria-label="Erläuterung" role="img">❓</span>${esc(q.explain)}</div>` : "") + `</div>` : "");
+    if (t.charts[0]) t.charts[0]._lead = true;
     // Kopieren: Antwort und die Sätze aller Abbildungen des Abschnitts als ein zusammenhängender Text
-    const allText = () => [q ? [q.answer.head, ...q.answer.more].join(" ") : "", ...t.charts.filter(x => x.text).map(x => `${x.text} (Abb. ${x.no})`)].filter(Boolean).join(" ");
+    const allText = () => [q ? [q.answer.head, ...q.answer.more].join(" ") : "", ...t.charts.map((x, i) => { const s = chartSentence(x, false); return s ? (i ? `${x.ask ? x.ask + " " : ""}${s} (Abb. ${x.no})` : `${s} (Abb. ${x.no})`) : ""; })].filter(Boolean).join(" ");
     const cpb = sec.querySelector(".answer button.copy");
     if (cpb) { cpb.textContent = "Abschnitt kopieren"; cpb.title = "Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren"; cpb.onclick = () => copyText(allText(), cpb, t.title); }
     else if (t.charts.some(x => x.text)) { sec.insertAdjacentHTML("beforeend", `<p class="answer"><button type="button" class="copy">Abschnitt kopieren</button></p>`); const b2 = sec.querySelector(".answer button.copy"); b2.onclick = () => copyText(allText(), b2, t.title); }
@@ -749,9 +779,11 @@ function build() {
       topics.insertAdjacentHTML("beforeend", `<div class="parthead" id="teil-${part}"><span>${esc(P.no)}</span> ${esc(P.title)}<p>${esc(P.text)}</p></div>`);
     }
     topics.appendChild(sec);
-    nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
+    (MAIN_NAV.includes(t.id) ? nav : navMore).insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
   });
-  nav.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen</a>`);
+  const dd = document.createElement("details"); dd.className = "navmore"; dd.innerHTML = "<summary>Alle Themen</summary>"; dd.appendChild(navMore); nav.appendChild(dd);
+  navMore.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen und Downloads</a>`);
+  navMore.querySelectorAll("a").forEach(a => a.addEventListener("click", () => dd.open = false));
   nav.insertAdjacentHTML("afterbegin", `<a href="#top"><b>Übersicht</b></a>`);
   document.body.insertAdjacentHTML("beforeend", `<a class="fab" href="#top" aria-label="Zur Übersicht">↑ Übersicht</a>`);
 }

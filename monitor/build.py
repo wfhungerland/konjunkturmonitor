@@ -15,9 +15,9 @@ from .answers import answer, num, overview
 
 ROOT = Path.cwd()
 
-SOURCE_NAMES = {"bundesbank": "Deutsche Bundesbank", "eurostat": "Eurostat", "ecb": "EZB", "static": "BA-Statistik (aufbereitet)",
+SOURCE_NAMES = {"bundesbank": "Deutsche Bundesbank", "eurostat": "Eurostat", "genesis": "Statistisches Bundesamt (GENESIS)", "fred": "FRED (Federal Reserve Bank of St. Louis)", "ecb": "EZB", "static": "BA-Statistik (aufbereitet)",
                 "derived": "eigene Berechnung"}
-SOURCE_LICENSES = {"bundesbank": "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)", "eurostat": "CC BY 4.0 (Eurostat)",
+SOURCE_LICENSES = {"genesis": "Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt)", "bundesbank": "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)", "eurostat": "CC BY 4.0 (Eurostat)",
                    "ecb": "Wiederverwendung mit Quellenangabe (EZB)", "fred": "Nutzungsbedingungen der Originalquelle laut FRED, mit Quellenangabe", "static": "Statistik der Bundesagentur für Arbeit, mit Quellenangabe"}
 
 
@@ -393,12 +393,27 @@ def chart_text(c: dict) -> str:
             last = max(s["x"][-1] for s in series)
             bars = [s for s in series if s.get("style") == "bar" and s["x"][-1] == last]
             tot = [s for s in series if s.get("style") != "bar" and s["x"][-1] == last]
-            head = f"{_when(last, c.get('freq', 'M'))} betrug die Rate ({tot[0]['label']}) {num(tot[0]['y'][-1], d, True)} %. " if tot else ""
-            return head + "Dazu trugen bei (in Prozentpunkten): " + ", ".join(f"{s['label']} {num(s['y'][-1], d, True)}" for s in bars) + "."
+            what = f" zur Rate von {num(tot[0]['y'][-1], d, True)} %" if tot else ""
+            return f"{_when(last, c.get('freq', 'M'))} trugen{what} bei (in Prozentpunkten): " + ", ".join(f"{s['label']} {num(s['y'][-1], d, True)}" for s in bars) + "."
         if c.get("emphasis"):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         series = series[:6]
         last = max(s["x"][-1] for s in series)
+        when = _when(last, c.get("freq", "M"))
+        if unit.startswith("Index"):  # Indexstände sind nicht berichtenswert: Veränderung gegenüber dem Vorjahr
+            parts = []
+            for s in series:
+                if s["x"][-1] != last:
+                    continue
+                lag = {"M": 12, "Q": 4, "A": 1, "D": 52}.get(s.get("freq", "M"), 12)
+                if len(s["y"]) <= lag or not s["y"][-1 - lag]:
+                    continue
+                ch = (s["y"][-1] / s["y"][-1 - lag] - 1) * 100
+                parts.append(f"{s['label']} um {num(abs(ch), 1)} % {'höher' if ch >= 0 else 'niedriger'}")
+            if not parts:
+                return ""
+            joined = parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " und " + parts[-1]
+            return f"{when} lag{'en die Werte' if len(parts) > 1 else ' der Wert'} für {joined} als ein Jahr zuvor."
         parts = []
         for s in series:
             if s["x"][-1] != last:
@@ -416,7 +431,7 @@ def chart_text(c: dict) -> str:
         if not parts:
             return ""
         joined = parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " und " + parts[-1]
-        return f"{_when(last, c.get('freq', 'M'))} lag{'en die Werte' if len(parts) > 1 else ' der Wert'} für {joined}."
+        return f"{when} lag{'en die Werte' if len(parts) > 1 else ' der Wert'} für {joined}."
     except (KeyError, IndexError, ValueError, TypeError):
         return ""
 
