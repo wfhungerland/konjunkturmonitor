@@ -84,11 +84,9 @@ def gen_tables(sel):
         print("Fehler", r.status_code, r.text[:300])
 
 
-bbk_titles("BBDP1", "M.DE.N.EPG.....", ".", 60)
-bbk_titles("BBDP1", "M.DE.N.APE1.....", ".", 60)
-bbk_titles("BBDL1", "M.DE.Y.......", "Unterbesch|Kurzarb|Stellen", 30)
-euro("ei_bsin_m_r2", geo="DE")
-euro("ei_bsco_m", geo="DE")
+bbk_titles("BBDP1", "M.DE..EPG....", ".", 80)
+bbk_titles("BBDP1", "M.DE..APE1....", ".", 80)
+bbk_titles("BBDP1", "M.DE.....", "Großhandel|Erzeugerpreise landw|Baupreis|Tarif", 30)
 
 # Karte
 import json, sys
@@ -108,18 +106,22 @@ if gj is None:
     r = requests.get("https://sgx.geodatenzentrum.de/wfs_vg2500?service=WFS&request=GetCapabilities", timeout=60)
     print(r.text[:3000]); raise SystemExit(0)
 print("Attribute:", gj["features"][0]["properties"])
-out = []
+by = {}
 for f in gj["features"]:
     p = f["properties"]
-    if str(p.get("gf", 4)) != "4" and len(gj["features"]) > 16:
-        continue
+    code = str(p.get("ars"))[:2]
+    if code not in by or str(p.get("gf")) == "4":
+        by[code] = f
+print("gf je Land:", {k: v["properties"].get("gf") for k, v in by.items()})
+out = []
+def rnd(c):
+    if isinstance(c[0], (float, int)):
+        return [round(c[0], 3), round(c[1], 3)]
+    return [rnd(x) for x in c]
+for code, f in sorted(by.items()):
     g = shape(f["geometry"]).simplify(0.008, preserve_topology=True)
-    def rnd(c):
-        if isinstance(c[0], (float, int)):
-            return [round(c[0], 3), round(c[1], 3)]
-        return [rnd(x) for x in c]
     m = mapping(g)
-    out.append({"code": str(p.get("ars") or p.get("ags") or p.get("rs"))[:2], "name": p.get("gen"), "type": m["type"], "coordinates": rnd(m["coordinates"])})
+    out.append({"code": code, "name": f["properties"].get("gen"), "type": m["type"], "coordinates": rnd(m["coordinates"])})
 s = json.dumps(out, separators=(",", ":"))
 print("LEN", len(s), "N", len(out))
 for i in range(0, len(s), 4000):
