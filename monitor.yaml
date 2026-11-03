@@ -36,7 +36,7 @@ start_table:
   - {label: "Auftragseingang der Industrie", series: de_orders, kind: level, unit: "Index 2021 = 100", topic: industrie}
   - {label: "Produktion im Baugewerbe", series: de_bau_prod, kind: level, unit: "Index 2021 = 100", topic: bau}
   - {label: "Einzelhandelsumsatz, real", series: de_retail, kind: level, unit: "Index 2021 = 100", topic: konsum}
-  - {label: "Verbrauchervertrauen", series: de_consumer_conf, kind: rate, unit: "Saldo", topic: konsum}
+  - {label: "Verbrauchervertrauen", series: de_consumer_conf, kind: rate, unit: "Saldo in Pp", topic: konsum}
   - {label: "Warenexporte, nominal", series: de_exports, kind: level, unit: "Mrd. €", topic: export}
   - {label: "Wirtschaftsklima (ESI)", series: de_esi, kind: rate, unit: "Punkte", topic: stimmung}
   - {label: "Unternehmensinsolvenzen", series: de_insolv, kind: level, decimals: 0, unit: "Anträge", seasonal: true, up_bad: true, topic: insolvenzen}

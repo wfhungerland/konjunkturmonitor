@@ -116,7 +116,7 @@ def index_mom(q: dict, data: dict) -> dict:
                     f"{num(o3, sign=True)} % im Dreimonatsvergleich.")
     if q.get("mood") and q["mood"] in data:
         m = _s(data, q["mood"])
-        more.append(f"Das Verbrauchervertrauen lag im {period(m.index[-1], 'M')} bei {num(m.iloc[-1])} Punkten "
+        more.append(f"Das Verbrauchervertrauen lag im {period(m.index[-1], 'M')} bei einem Saldo von {num(m.iloc[-1], sign=True)} Prozentpunkten "
                     f"({'besser' if m.iloc[-1] > m.iloc[-2] else 'schlechter' if m.iloc[-1] < m.iloc[-2] else 'so'} als im Vormonat).")
     verdict = "steigt" if three >= 1 else ("sinkt" if three <= -1 else "stabil")
     return {"value": round(float(mom), 1), "unit": "%", "signed": True, "period": period(t, "M"), "head": head, "more": more,

@@ -245,7 +245,7 @@ def _start_rows(cfg: dict, data: dict, meta: dict | None = None, titles: dict | 
         cd = int(r.get("change_decimals", 1))
         if kind == "rate":
             diff = lambda a, b: a - b
-            cunit = r.get("change_unit") or ("Pp" if "%" in r.get("unit", "") or r.get("unit", "").startswith("Pp") else "Pkt.")
+            cunit = r.get("change_unit") or ("Pp" if "%" in r.get("unit", "") or r.get("unit", "").startswith(("Pp", "Saldo")) else "Pkt.")
         elif r.get("change") == "diff":
             diff = lambda a, b: (a - b) * float(r.get("change_scale", 1))
             cunit = r.get("change_unit", "")
@@ -346,8 +346,8 @@ def chart_text(c: dict) -> str:
     from .answers import MONTHS
     typ, d = c.get("type"), int(c.get("decimals", 1))
     unit = (c.get("unit") or "").split(",")[0]
-    u = unit if unit.startswith(("% des", "% der")) else "%" if unit.startswith("%") else "Prozentpunkte" if unit.startswith("Pp") else "Punkte" if unit.startswith("Saldo") else "" if unit.startswith("Index") else unit
-    fmtv = lambda v: f"{num(v, d)} {u}".strip()
+    u = unit if unit.startswith(("% des", "% der")) else "%" if unit.startswith("%") else "Prozentpunkte" if unit.startswith("Pp") else "Prozentpunkte" if unit.startswith("Saldo") else "" if unit.startswith("Index") else unit
+    fmtv = lambda v: f"{num(v, d, unit.startswith('Saldo'))} {u}".strip()
     from .answers import num as _num
 
     def num(v, dd=1, sign=False):  # gerundete Null ohne Vorzeichen
@@ -366,8 +366,8 @@ def chart_text(c: dict) -> str:
             k = c["clock"]
             x, y, t0 = k["x"][-1], k["y"][-1], pd.Timestamp(k["t"][-1])
             phase = "Boom" if x >= 0 and y >= 0 else "Abschwung" if x >= 0 else "Aufschwung" if y >= 0 else "Rezession"
-            return (f"Im {MONTHS[t0.month - 1]} {t0.year} lag die Industrie im Feld „{phase}“: Auftragslage {num(x, 1, True)} Punkte, "
-                    f"Produktionserwartungen {num(y, 1, True)} Punkte gegenüber dem Mittel 2005 bis 2019.")
+            return (f"Im {MONTHS[t0.month - 1]} {t0.year} lag die Industrie im Feld „{phase}“: Auftragslage {num(x, 1, True)} Prozentpunkte, "
+                    f"Produktionserwartungen {num(y, 1, True)} Prozentpunkte gegenüber dem Mittel 2005 bis 2019 (Salden).")
         if typ == "seasonal":
             i = max(k for k, v in enumerate(c["y"]) if v is not None)
             s = f"Im {_per(c['x'][i], 'M')}: {num(c['y'][i], d)}"
@@ -400,7 +400,7 @@ def chart_text(c: dict) -> str:
             add = ""
             if yago is not None and c.get("type") != "stacked" and s.get("style") != "bar":
                 if unit.startswith(("%", "Pp", "Saldo")) or "Saldo" in unit:
-                    add = f" ({num(v - yago, d, True)} {'Prozentpunkte' if unit.startswith(('%', 'Pp')) else 'Punkte'} gegenüber dem Vorjahr)"
+                    add = f" ({num(v - yago, d, True)} {'Punkte' if unit.startswith('Punkte') else 'Prozentpunkte'} gegenüber dem Vorjahr)"
                 elif yago:
                     add = f" ({num((v / yago - 1) * 100, 1, True)} % gegenüber dem Vorjahr)"
             parts.append(f"{s['label']} {fmtv(v)}{add}")
