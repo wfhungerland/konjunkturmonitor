@@ -46,13 +46,13 @@ def test_chart_text_and_outliers():
     y[-5] = 140.0
     c = {"type": "line", "unit": "Index 2021=100", "decimals": 1, "freq": "M",
          "series": [{"id": "a", "label": "Aufträge", "freq": "M", "x": x, "y": y}]}
-    assert chart_text(c).startswith("Stand Juni 2026: Aufträge ")
+    assert chart_text(c).startswith("Im Juni 2026 lag der Wert für Aufträge bei ")
     out = _outliers(c)
     assert out and out[0]["date"] == x[-5]
     s = {"type": "stacked", "unit": "Pp", "decimals": 1, "freq": "Q", "series": [
         {"id": "b", "label": "Konsum", "style": "bar", "x": ["2026-07-01"], "y": [0.2]},
         {"id": "t", "label": "BIP", "style": "line", "x": ["2026-07-01"], "y": [-0.04]}]}
-    assert chart_text(s) == "BIP im 3. Quartal 2026: 0,0 %. Beiträge in Prozentpunkten: Konsum +0,2."
+    assert chart_text(s) == "Im 3. Quartal 2026 betrug die Rate (BIP) 0,0 %. Dazu trugen bei (in Prozentpunkten): Konsum +0,2."
 
 
 def test_archive_revisions_and_news(tmp_path):

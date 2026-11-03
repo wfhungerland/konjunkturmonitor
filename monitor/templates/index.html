@@ -113,7 +113,7 @@
   body.minimal .card { border: 0; border-radius: 0; padding: 4px 0 8px; background: transparent; }
   body.minimal .q { border-color: #e5e5e5; }
   body.minimal .verdict { background: none; padding: 0; color: var(--muted); font-style: italic; }
-  body.minimal .explain, .card .cap.info { background: #f2f3f4; border-left: 0; padding: 8px 12px; border-radius: 4px; color: var(--text); font: 14px/1.45 "Arial Narrow", Arial, sans-serif; }
+  body.minimal .explain { background: #f2f3f4; border-left: 0; padding: 8px 12px; border-radius: 4px; color: var(--text); font: 14px/1.45 "Arial Narrow", Arial, sans-serif; }
   .explain .ico, .card .cap .ico { margin-right: 4px; }
   body.minimal .explain b { color: var(--muted); }
   @media (min-width: 1100px) {
@@ -147,7 +147,13 @@
   .calm td.today { background: #eef4fb; } .calm td.past a { color: #999; }
   .callinks { font: 13px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
   .answer button.copy, .ctext button.copy { font: 12.5px "Arial Narrow", Arial, sans-serif; color: var(--accent); background: none; border: 1px solid #c9d3df; border-radius: 3px; padding: 0 6px; cursor: pointer; vertical-align: 1px; }
-  .card .ctext { font-size: 14.5px; margin: 6px 0 2px; }
+  .card .ctext { font: 15.5px/1.45 "Palatino Linotype", Palatino, "Book Antiqua", serif; margin: 2px 0 8px; color: var(--text); }
+  .chartbox { position: relative; }
+  .notebox { width: fit-content; max-width: 62%; margin: 2px 0 4px auto; background: #fff; border: 1px solid #bfbfbf; border-radius: 3px; padding: 4px 7px; font: 12px/1.35 "Arial Narrow", Arial, sans-serif; color: #404040; }
+  @media (max-width: 600px) { .notebox { max-width: none; margin: 4px 0; } }
+  .totop { font: 13px "Arial Narrow", Arial, sans-serif; font-weight: normal; margin-left: 8px; vertical-align: middle; }
+  .fab { position: fixed; right: 14px; bottom: 14px; z-index: 6; background: var(--dark); color: #fff; font: 13px "Arial Narrow", Arial, sans-serif; padding: 6px 10px; border-radius: 16px; opacity: .85; }
+  .fab:hover { opacity: 1; text-decoration: none; }
   .card .cap.notes { color: var(--muted); }
   .heat td.k { text-align: right; } .heat td:not(.l) { text-align: right; } .heat th { text-align: right; } .heat th.l { text-align: left; }
   .heat .sortnote { font-size: 11.5px; color: var(--muted); }
@@ -172,7 +178,7 @@
 </style>
 </head>
 <body>
-<header><div class="bar"><h1>Konjunkturmonitor</h1><span class="stand" id="stand"></span><nav id="nav"></nav></div></header>
+<header id="top"><div class="bar"><h1>Konjunkturmonitor</h1><span class="stand" id="stand"></span><nav id="nav"></nav></div></header>
 <main>
   <p class="claim" id="claim"></p>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
@@ -206,6 +212,9 @@ const HS = { band: "rgba(193,229,245,0.15)", gridH: "#BFBFBF", gridV: "#F2F2F2",
 // Balken (etwa Wachstumsbeiträge): benachbarte Farben mit deutlichem Kontrast
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (▲) und Schwellen
+const isBad = (c, sid) => c.up_bad === true || (Array.isArray(c.up_bad) && c.up_bad.includes(sid));
+const tendOf = (y, d) => { const v = y.filter(q => q != null); if (v.length < 2) return null; const a = v[v.length - 1], b = v[v.length - 2]; return Math.round(Math.abs(a - b) * 10 ** d) === 0 ? "flat" : a > b ? "up" : "down"; };
+const tendColor = (t, bad) => t === "up" ? (bad ? "#C00000" : "#0070C0") : t === "down" ? "#0070C0" : "#7f7f7f";
 const tendHtml = (t, upBad) => !t ? "" : t === "flat" ? `<span class="flat" title="unverändert">■</span>` : t === "up" ? `<span class="${upBad ? "up-bad" : "up-ok"}" title="gestiegen">▲</span>` : `<span class="down" title="gesunken">▼</span>`;
 const MONTHS = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."];
 const TOUCH = matchMedia("(pointer: coarse)").matches;
@@ -225,7 +234,8 @@ function yAxis(vals, unit, extra) {
   if (lo === hi) { lo -= 1; hi += 1; }
   const st = niceStep(hi - lo, 4), d = decs(st), a = Math.floor(lo / st) * st, b = Math.ceil(hi / st) * st;
   const tv = [], tt = [];
-  for (let v = a; v <= b + st / 1000; v += st) { const r = +v.toFixed(d); tv.push(r); tt.push(fmt(r, d)); }
+  const signed = (a < 0 && b > 0) || /gg\.|gegenüber|Veränderung|Beiträge|^Pp|^Saldo/.test(unit || "");  // Vorzeichen bei Veränderungen, Salden und Achsen über null
+  for (let v = a; v <= b + st / 1000; v += st) { const r = +v.toFixed(d); tv.push(r); tt.push((signed && r > 0 ? "+" : "") + fmt(r === 0 ? 0 : r, d)); }
   return { range: [a - st / 3, b + st / 3], tickvals: tv, ticktext: tt, zero: a < 0 && b > 0 };
 }
 // Zeitachse: Jahreszahl mittig unter dem Jahr, Gitterlinie an der Jahresgrenze, Jahresbänder
@@ -262,17 +272,17 @@ function timeChart(el, c) {
     const col = c.type === "stacked" ? "#000" : PAL[i % PAL.length];
     const strong = !c.emphasis || c.emphasis === s.id;
     if (c.ma3) {
-      traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, showlegend: false, hoverinfo: "skip", line: { color: col, width: 1, shape: "spline" }, opacity: 0.45 });
-      const m = ma3(s.y); traces.push({ type: "scatter", mode: "lines", x: s.x, y: m, name: s.label, line: { color: col, width: 3 },
+      traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, meta: s.id, showlegend: false, hoverinfo: "skip", line: { color: col, width: 1, shape: "spline" }, opacity: 0.45 });
+      const m = ma3(s.y); traces.push({ type: "scatter", mode: "lines", x: s.x, y: m, name: s.label, meta: s.id, line: { color: col, width: 3 },
         hovertemplate: `%{y:,.${c.decimals}f} (3-Monats-Mittel)<extra>${esc(s.label)}</extra>` });
     } else if (c.forecast_after_bars && bars.length) { // Prognosejahre: nach dem letzten Ist-Wert der Balken gestrichelt
       const lastBar = bars.map(b => b.x[b.x.length - 1]).sort().pop(), k = s.x.findIndex(x => x > lastBar);
       const cut = k < 0 ? s.x.length : k;
-      traces.push({ type: "scatter", mode: "lines", x: s.x.slice(0, cut), y: s.y.slice(0, cut), name: s.label, line: { color: col, width: 3 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
+      traces.push({ type: "scatter", mode: "lines", x: s.x.slice(0, cut), y: s.y.slice(0, cut), name: s.label, meta: s.id, line: { color: col, width: 3 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
       if (k > 0) traces.push({ type: "scatter", mode: "lines+markers", x: s.x.slice(cut - 1), y: s.y.slice(cut - 1), name: s.label + ", Prognose", line: { color: col, width: 2, dash: "dot" }, marker: { size: 6, symbol: "circle-open" }, hovertemplate: `%{y:,.${c.decimals}f} (Prognose)<extra>${esc(s.label)}</extra>` });
     } else {
       const grey = c.context_grey && !strong;
-      traces.push({ type: "scatter", mode: s.x.length < 12 ? "lines+markers" : "lines", x: s.x, y: s.y, name: s.label,
+      traces.push({ type: "scatter", mode: s.x.length < 12 ? "lines+markers" : "lines", x: s.x, y: s.y, name: s.label, meta: s.id,
         line: { color: grey ? "#a6a6a6" : col, width: strong ? 3 : grey ? 1.2 : 1.6 }, marker: { size: 5 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
     }
     all.push(...s.y.filter(v => v != null));
@@ -302,13 +312,14 @@ function timeChart(el, c) {
   let rMargin = 6;
   if (direct) { // Beschriftung rechts neben der Werteachse, vollständig, bei Bedarf zweizeilig und ohne Überlappung
     const wrap = s => { if (s.length <= 24) return [s]; const w = s.split(" "); let a = "", out = []; w.forEach(x => { if ((a + " " + x).trim().length > 24 && a) { out.push(a); a = x; } else a = (a + " " + x).trim(); }); out.push(a); return out; };
-    const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const lines = tr.y[i] == null ? [] : wrap(tr.name).concat([`${fmtU(tr.y[i], c.decimals ?? 1, c.unit)} · ${perShort(tr.x[i], c.freq)}`]); return { tr, i, y: tr.y[i], lines }; }).filter(e => e.y != null).sort((a, b) => a.y - b.y);
+    const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const td = tendOf(tr.y, c.decimals ?? 1), arrow = td ? ` <span style="color:${tendColor(td, isBad(c, tr.meta))}">${{ up: "▲", down: "▼", flat: "■" }[td]}</span>` : "";
+      const lines = tr.y[i] == null ? [] : wrap(tr.name).concat([`${fmtU(tr.y[i], c.decimals ?? 1, c.unit)} · ${perShort(tr.x[i], c.freq)}`]); return { tr, i, y: tr.y[i], lines, arrow }; }).filter(e => e.y != null).sort((a, b) => a.y - b.y);
     const span = ya.range[1] - ya.range[0], px = span / Math.max(140, (el.clientHeight || 300) - 70);
     for (let k = 1; k < ends.length; k++) { const need = ((ends[k - 1].lines.length + ends[k].lines.length) * 7.5 + 4) * px; if (ends[k].y - ends[k - 1].y < need) ends[k].y = ends[k - 1].y + need; }
     const over = ends.length ? ends[ends.length - 1].y + ends[ends.length - 1].lines.length * 7.5 * px - ya.range[1] : 0;  // oben hinausgeschoben: alle nach unten
     if (over > 0) ends.forEach(e => e.y -= over);
     const tickW = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;
-    ends.forEach(e => annotations.push({ xref: "paper", x: 1, y: e.y, text: e.lines.map(esc).join("<br>"), showarrow: false, xanchor: "left", xshift: tickW, yanchor: "middle", align: "left", font: { family: HS.font, size: 12, color: e.tr.line.color } }));
+    ends.forEach(e => annotations.push({ xref: "paper", x: 1, y: e.y, text: e.lines.map(esc).join("<br>") + e.arrow, showarrow: false, xanchor: "left", xshift: tickW, yanchor: "middle", align: "left", font: { family: HS.font, size: 12, color: e.tr.line.color } }));
     rMargin = tickW + Math.min(170, 7 * Math.max(...ends.flatMap(e => e.lines.map(l => l.length)))) + 8;
   }
   // Jahresmittel je Jahresband (eine Leitreihe mit Monats- oder Quartalswerten). Unten, wo die Linien unten verlaufen oben;
@@ -330,6 +341,7 @@ function timeChart(el, c) {
   }
   const L = baseLayout(el);
   L.margin = Object.assign({}, L.margin, { r: rMargin });
+  const nb = el.parentNode && el.parentNode.querySelector(".notebox"); if (nb) nb.style.marginRight = (rMargin + 6) + "px";  // Kasten oben rechts über der Zeichenfläche
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
     yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
@@ -352,7 +364,7 @@ function multiplesChart(el, c) {
     const vals = ok.map(p => p[0]), d = c.decimals, tend = vals.length > 1 ? (Math.round(Math.abs(vals[vals.length - 1] - vals[vals.length - 2]) * 10 ** d) === 0 ? "flat" : vals[vals.length - 1] > vals[vals.length - 2] ? "up" : "down") : null;
     const box = document.createElement("div");
     if (k === 0 && empty) { box.style.gridColumn = `span ${1 + empty}`; box.classList.add("span-m"); }
-    const head = last ? ` ${fmtU(last[0], d, c.unit)} ${tendHtml(tend, c.up_bad)}<br><span class="mtsub">${per(last[1])} · ø3M ${fmtU(avg(vals.slice(-3)), d, c.unit)} · ø12M ${fmtU(avg(vals.slice(-12)), d, c.unit)}</span>` : "";
+    const head = last ? ` ${fmtU(last[0], d, c.unit)} ${tendHtml(tend, isBad(c, s.id))}<br><span class="mtsub">${per(last[1])} · ø3M ${fmtU(avg(vals.slice(-3)), d, c.unit)} · ø12M ${fmtU(avg(vals.slice(-12)), d, c.unit)}</span>` : "";
     box.innerHTML = `<p class="mt"><b>${esc(s.label)}</b>${head}</p>`;
     const m = document.createElement("div"); m.className = "mini"; box.appendChild(m); grid.appendChild(box);
     const traces = c.series.filter(o => o !== s).map(o => ({ type: "scatter", mode: "lines", x: o.x, y: o.y, line: { color: "#d0d0d0", width: 1 }, hoverinfo: "skip" }));
@@ -363,7 +375,7 @@ function multiplesChart(el, c) {
     const L = baseLayout(m);
     Object.assign(L, { margin: { l: 2, r: 2, t: 4, b: 18 }, showlegend: false, shapes, hovermode: "closest", font: { family: HS.font, size: 11 },
       xaxis: { type: "date", range: r, tickmode: "array", tickvals: [r[0], r[1]], ticktext: [r[0].slice(0, 4), r[1].slice(0, 4)], showgrid: false, zeroline: false, fixedrange: true },
-      yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.tickvals.map(v => fmt(v, decs(ya.tickvals[1] - ya.tickvals[0]))), showticklabels: true, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
+      yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showticklabels: true, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
     Plotly.newPlot(m, traces, L, CFG);
   });
 }
@@ -601,13 +613,12 @@ function card(c, no) {
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Prozentpunkten, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real"
     : c.type === "tiles" ? "Veränderung gegenüber denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
-  el.innerHTML = `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}<div class="unit">${esc(unit)}</div>`;
-  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); el.appendChild(ch);
-  if (c.text) el.insertAdjacentHTML("beforeend", `<p class="ctext"><span>${esc(c.text)}</span> <button type="button" class="copy" title="Satz mit Quellenangabe kopieren">Kopieren</button></p>`);
-  if (c.caption) el.insertAdjacentHTML("beforeend", `<div class="cap info"><span class="ico" aria-label="Erläuterung" role="img">💡</span>${esc(c.caption)}</div>`);
-  const nts = (c.notes || []).map((n, k) => `${k + 1} ${esc(n.text)}`).concat((c.outliers || []).map(o => `${esc(o.label)} im ${MONTHS[+o.date.slice(5, 7) - 1]} ${o.date.slice(0, 4)}: ${(o.change > 0 ? "+" : "") + fmt(o.change, 1)} % zum Vormonat`));
-  if (nts.length) el.insertAdjacentHTML("beforeend", `<div class="cap notes"><b>Auffällige Ausschläge und Sondereffekte.</b> ${nts.join("; ")}.${(c.outliers || []).length ? " Automatisch markiert: Veränderung zum Vormonat mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019; die Ursache, etwa Großaufträge, Großprojekte oder die Lage von Ferientagen, nennt die Quelle." : ""}</div>`);
-  const cb = el.querySelector("button.copy"); if (cb) cb.onclick = () => copyText(c.text, cb, `Abb. ${no} ${c.title || ""}`);
+  el.innerHTML = `${c.text ? `<p class="ctext">${esc(c.text)}</p>` : ""}<h3>Abb. ${no} ${esc(c.title || "")}</h3>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}<div class="unit">${esc(unit)}</div>`;
+  const box = document.createElement("div"); box.className = "chartbox"; el.appendChild(box);
+  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
+  const nts = (c.notes || []).map((n, k) => `${k + 1} ${esc(n.text)}`).concat((c.outliers || []).map(o => `${esc(o.label)} im ${MONTHS[+o.date.slice(5, 7) - 1]} ${o.date.slice(0, 4)}: ${(o.change > 0 ? "+" : "") + fmt(o.change, 1)} % zum Vormonat${(c.notes || []).length ? "" : " (automatisch markiert)"}`));
+  if (nts.length) box.insertAdjacentHTML("afterbegin", `<div class="notebox" title="Automatisch markiert: Veränderung zum Vormonat mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019. Die Ursache nennt die Quelle."><b>Auffällige Ausschläge und Sondereffekte</b><br>${nts.join("<br>")}</div>`);
+  if (c.caption) el.insertAdjacentHTML("beforeend", `<div class="cap">${esc(c.caption)}</div>`);
   let src = (c.sources || []).join(", ");
   if (c.type === "forecast") src = c.forecasts.filter(f => f.latest).map(f => `<a href="${esc(f.source)}" target="_blank" rel="noopener">${esc(f.by)}, ${esc(f.round)}</a>`).join(" · ");
   else src = esc(src);
@@ -714,10 +725,14 @@ function build() {
     const sec = document.createElement("section"); sec.className = "topic"; sec.id = t.id;
     const q = t.question;
     if (!q && !t.charts.length) return;
-    sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))}</h2>`
+    sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))} <a class="totop" href="#top" title="Zur Übersicht">↑ Übersicht</a></h2>`
       + (q ? `<div class="intro"><p class="answer">${esc([q.answer.head, ...q.answer.more].join(" "))} <button type="button" class="copy" title="Absatz mit Quellenangabe kopieren">Kopieren</button></p>`
-        + `<div class="explain"><span class="ico" aria-label="Erläuterung" role="img">💡</span>${esc(q.explain)}</div></div>` : "");
-    const cpb = sec.querySelector(".answer button.copy"); if (cpb) cpb.onclick = () => copyText([q.answer.head, ...q.answer.more].join(" "), cpb, q.ask);
+        + `<div class="explain"><span class="ico" aria-label="Erläuterung" role="img">ℹ️</span>${esc(q.explain)}</div></div>` : "");
+    // Kopieren: Antwort und die Sätze aller Abbildungen des Abschnitts als ein zusammenhängender Text
+    const allText = () => [q ? [q.answer.head, ...q.answer.more].join(" ") : "", ...t.charts.filter(x => x.text).map(x => `${x.text} (Abb. ${x.no})`)].filter(Boolean).join(" ");
+    const cpb = sec.querySelector(".answer button.copy");
+    if (cpb) { cpb.textContent = "Abschnitt kopieren"; cpb.title = "Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren"; cpb.onclick = () => copyText(allText(), cpb, t.title); }
+    else if (t.charts.some(x => x.text)) { sec.insertAdjacentHTML("beforeend", `<p class="answer"><button type="button" class="copy">Abschnitt kopieren</button></p>`); const b2 = sec.querySelector(".answer button.copy"); b2.onclick = () => copyText(allText(), b2, t.title); }
     const wrap = document.createElement("div"); wrap.className = "charts"; sec.appendChild(wrap);
     let target = wrap;
     t.charts.forEach((c, i) => {
@@ -732,11 +747,13 @@ function build() {
     const part = t.part || "konjunktur";
     if (part !== curPart) { curPart = part; const P = PARTS[part];
       topics.insertAdjacentHTML("beforeend", `<div class="parthead" id="teil-${part}"><span>${esc(P.no)}</span> ${esc(P.title)}<p>${esc(P.text)}</p></div>`);
-      nav.insertAdjacentHTML("beforeend", `<span class="navpart">${esc(P.title)}:</span>`); }
+    }
     topics.appendChild(sec);
     nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
   });
   nav.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen</a>`);
+  nav.insertAdjacentHTML("afterbegin", `<a href="#top"><b>Übersicht</b></a>`);
+  document.body.insertAdjacentHTML("beforeend", `<a class="fab" href="#top" aria-label="Zur Übersicht">↑ Übersicht</a>`);
 }
 build();
 function openHash() { const el = location.hash && document.querySelector(location.hash); const d = el && el.closest("details"); if (d) d.open = true; }
