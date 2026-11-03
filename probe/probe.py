@@ -84,17 +84,10 @@ def gen_tables(sel):
         print("Fehler", r.status_code, r.text[:300])
 
 
-hdr("AMECO voll")
-for ds, code in [("OVGDP", "DEU.1.0.0.0.OVGDP"), ("OVGD", "DEU.1.1.0.0.OVGD")]:
-    r = S.get(f"https://api.db.nomics.world/v22/series/AMECO/{ds}/{code}", params={"observations": 1}, timeout=60)
-    d = r.json()["series"]["docs"][0]
-    print("CSV", ds, ";".join(f"{p}:{v}" for p, v in zip(d["period"], d["value"])))
-    print("Stand", ds, d.get("indexed_at"), r.json().get("dataset", {}).get("indexed_at"))
-hdr("OECD voll")
-rr = S.get("https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_TAX_CIT@DF_CIT,/DEU+FRA+ITA+USA+GBR+JPN+ESP+NLD+POL+AUT.A.CIT_C.......", params={"startPeriod": "1995", "format": "csvfile"}, timeout=60)
+rr = S.get("https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_TAX_CIT@DF_CIT,/DEU+FRA+ITA+USA+GBR+JPN+ESP+NLD+POL+AUT.A.CIT_C.ST......", params={"startPeriod": "1995", "format": "csvfile"}, timeout=60)
 print(rr.status_code)
 d = pd.read_csv(io.StringIO(rr.text), dtype=str)
 print(d.groupby(["REF_AREA", "TARGETING", "SECTOR"]).size())
-p = d.groupby(["REF_AREA", "TIME_PERIOD"])["OBS_VALUE"].first().unstack(0)
+p = d.groupby(["REF_AREA", "TIME_PERIOD"])["OBS_VALUE"].agg(lambda s: "|".join(s)).unstack(0)
 for y, row in p.iterrows():
     print("CIT", y, ";".join(f"{k}:{v}" for k, v in row.items()))
