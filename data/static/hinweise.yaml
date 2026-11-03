@@ -5,4 +5,9 @@
 #   - {chart: orders_split, date: 2026-05-01, text: "Großaufträge im sonstigen Fahrzeugbau (Destatis, PM vom 5.7.2026)"}
 # Zusätzlich markiert der Monitor auffällige Ausschläge automatisch (Veränderung zum Vormonat
 # mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019), ohne eine Ursache zu nennen.
-notes: []
+notes:
+  - {chart: industry, date: 2025-06-01, text: "Juni 2025: hohes Volumen an Großaufträgen im sonstigen Fahrzeugbau; dort im Juli 2025 Rückgang um 38,6 % (Destatis, Pressemitteilung Nr. 323/2025)"}
+  - {chart: industry, date: 2025-12-01, text: "Dezember 2025: Aufträge +7,8 % zum Vormonat, gestützt durch Großaufträge (Destatis, Pressemitteilung Nr. 041/2026)"}
+  - {chart: industry, date: 2026-07-01, text: "Juli 2026: Aufträge +2,5 % zum Vormonat, ohne Großaufträge −1,4 %; Großaufträge im sonstigen Fahrzeugbau (Destatis, Pressemitteilung Nr. 313/2026 vom 4.9.2026)"}
+  - {chart: bau_orders, date: 2026-06-01, text: "Juni 2026: Aufträge +6,0 % zum Vormonat, mehrere Großaufträge (Destatis, Pressemitteilung Nr. 304/2026)"}
+  - {chart: bau_orders, date: 2026-08-01, text: "August 2026: Aufträge +23,0 % zum Vormonat wegen mehrerer Großaufträge, stärkster Anstieg seit 1991 (Destatis, Pressemitteilung Nr. 375/2026 vom 23.10.2026)"}

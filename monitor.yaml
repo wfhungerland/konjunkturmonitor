@@ -137,6 +137,7 @@ topics:
     charts:
       - {chart: gdp_contrib, type: stacked, total: de_gdp_qoq, years: 4, caption: "Balken: Beiträge der Verwendungskomponenten zum Wachstum in Prozentpunkten. Linie: Wachstum insgesamt. Importe gehen mit negativem Vorzeichen ein, da sie im Ausland erzeugt werden."}
       - {chart: wai, years: 3, ref: 0, caption: "Der Aktivitätsindex der Bundesbank schätzt aus wöchentlichen Daten (etwa Lkw-Maut, Stromverbrauch, Suchanfragen), wie stark die Wirtschaftsleistung in den letzten 13 Wochen gegenüber den 13 Wochen davor gewachsen ist. Er liegt früher vor als das BIP, ist aber eine Schätzung."}
+      - {chart: maut, years: 6, ma3: true, caption: "Fahrleistung mautpflichtiger Lkw ab vier Achsen auf Autobahnen, ermittelt aus den Mautdaten. Der Index liegt wenige Tage nach Monatsende vor und folgt eng der Industrieproduktion, weil diese Lkw vor allem Vorleistungen und Waren transportieren. Gleitendes Dreimonatsmittel."}
       - {chart: gdp_level, years: 12, caption: "Wirtschaftsleistung, preisbereinigt, 2020 = 100. Der Einbruch 2020 geht auf die Corona-Pandemie zurück."}
       - {chart: gdp_use, type: latest, years: 2, caption: "Balken: Veränderung im letzten Quartal, preisbereinigt. Raute: das Quartal davor. Investitionen aufgeteilt in Ausrüstungen (Maschinen, Fahrzeuge, Waffensysteme), Bauten und sonstige Anlagen (vor allem Software und Forschung)."}
   - id: preise
@@ -156,6 +157,8 @@ topics:
       - {chart: labour_flows, years: 12, caption: "Steigt die Arbeitslosigkeit, während die Zahl offener Stellen sinkt, deutet dies auf eine Abkühlung des Arbeitsmarkts hin."}
       - {chart: employment_m, years: 6, caption: "Erwerbstätige umfassen auch Selbständige und Beamte; sozialversicherungspflichtig Beschäftigte sind der größte Teil davon."}
       - {chart: sahm, years: 20, type: threshold, threshold: 0.25, caption: "Eigene Berechnung nach Michaillat und Saez (2025). Das Signal ist der kleinere von zwei Werten. Erstens: Arbeitslosenquote einschließlich Kurzarbeit (in Vollzeitäquivalenten), gleitendes Dreimonatsmittel, minus ihr Tief der letzten zwölf Monate. Zweitens: Hoch der Quote offener Stellen in den letzten zwölf Monaten minus ihr aktuelles Dreimonatsmittel. Das Signal steigt also nur, wenn die Arbeitslosigkeit zunimmt und zugleich die offenen Stellen abnehmen. Die Schwelle von 0,25 Prozentpunkten ist eigene Wahl für Deutschland; Michaillat und Saez nennen für die USA 0,29. Graue Flächen: Rezessionen nach der Datierung des Sachverständigenrats. Jede Rezession seit 2001 überschritt die Schwelle, teils mit erheblicher Verzögerung. Literatur: Michaillat, P. und Saez, E. (2025), Has the Recession Started?, Oxford Bulletin of Economics and Statistics; Sahm, C. (2019), Direct Stimulus Payments to Individuals, Brookings Institution."}
+      - {chart: kurzarbeit, years: 12, scale: 0.001, unit: "Tsd. Personen", decimals: 0, caption: "Beschäftigte in Kurzarbeit aus wirtschaftlichen Gründen (§ 96 SGB III), in Tausend. Kurzarbeit hält Beschäftigte im Betrieb, wenn Aufträge vorübergehend fehlen; sie steigt in Abschwüngen früher als die Arbeitslosigkeit. Die jüngsten Monate beruhen auf Hochrechnungen der Bundesagentur für Arbeit."}
+      - {chart: sv_yoy, years: 6, caption: "Sozialversicherungspflichtig Beschäftigte nach Bereichen, Veränderung gegenüber dem Vorjahresmonat. Leiharbeit reagiert als Erstes auf eine schwächere Nachfrage, weil Betriebe zuerst ausgeliehene Kräfte abbauen."}
   - id: industrie
     title: Industrie
     charts:
@@ -163,6 +166,7 @@ topics:
       - {chart: orders_split, years: 6, ma3: true, caption: "Auftragseingang nach Herkunft, gleitendes Dreimonatsmittel. Großaufträge, etwa für Flugzeuge, Schiffe oder Rüstungsgüter, führen zu einzelnen starken Ausschlägen."}
       - {chart: orders_euro, years: 6, ma3: true, caption: "Aufträge aus dem Ausland, getrennt nach Euroraum und übriger Welt, gleitendes Dreimonatsmittel."}
       - {chart: branch_heat, type: heat, months: 12, caption: "Produktion je Branche gegenüber dem Vorjahresmonat; violett: Zunahme, blau: Abnahme. Sortiert nach dem Dreimonatsvergleich (letzte drei Monate gegenüber den drei Monaten davor). Rechts: Niveau gegenüber dem Durchschnitt 2019."}
+      - {chart: orders_heat, type: heat, months: 12, caption: "Auftragseingang je Branche gegenüber dem Vorjahresmonat, preisbereinigt; violett: Zunahme, blau: Abnahme. Sortiert nach dem Dreimonatsvergleich. Rechts: Niveau gegenüber dem Durchschnitt 2019. Großaufträge, vor allem im sonstigen Fahrzeugbau, verzerren einzelne Monate."}
       - {chart: prod_groups, years: 6, ma3: true, caption: "Vorleistungsgüter werden weiterverarbeitet (etwa Stahl, Chemie), Investitionsgüter sind vor allem Maschinen und Fahrzeuge, Konsumgüter werden von privaten Haushalten gekauft. Gleitendes Dreimonatsmittel."}
       - {chart: sales, years: 6, ma3: true, caption: "Umsatz der Industrie in jeweiligen Preisen, also nicht preisbereinigt. Gleitendes Dreimonatsmittel."}
   - id: bau
@@ -171,6 +175,11 @@ topics:
     charts:
       - {chart: bau_orders, years: 6, ma3: true, caption: "Aufträge im Bauhauptgewerbe, preisbereinigt. Einzelne Großprojekte führen zu starken Ausschlägen; dick: gleitendes Dreimonatsmittel."}
       - {chart: bau_prod, years: 6, ma3: true, caption: "Bauproduktion. Das Ausbaugewerbe umfasst Installation, Elektrik und Innenausbau. Gleitendes Dreimonatsmittel."}
+  - id: dienstleistungen
+    title: Dienstleistungen
+    ask: "Wie entwickeln sich die Dienstleister?"
+    charts:
+      - {chart: services, years: 6, ma3: true, caption: "Preisbereinigte Produktion ausgewählter Dienstleistungsbereiche: Verkehr und Lagerei, Gastgewerbe, Information und Kommunikation, Grundstücks- und Wohnungswesen, freiberufliche und technische sowie sonstige Unternehmensdienste. Handel, Finanzen und Staat sind nicht enthalten. Dienstleister erzeugen gut zwei Drittel der Wertschöpfung, werden aber monatlich nur lückenhaft erfasst. Gleitendes Dreimonatsmittel."}
   - id: konsum
     title: Konsum
     charts:
@@ -179,6 +188,13 @@ topics:
       - {chart: hospitality, years: 6, ma3: true, caption: "Umsatz von Restaurants und Hotels, preisbereinigt, gleitendes Dreimonatsmittel."}
       - {chart: cars, years: 6, ma3: true, caption: "Neu zugelassene Pkw privater Halter in Tausend je Monat, gleitendes Dreimonatsmittel. Ein Indikator für die Bereitschaft der Haushalte zu größeren Anschaffungen."}
       - {chart: consumer, years: 12, caption: "Saldo aus positiven und negativen Antworten der Haushalte. Werte unter null bedeuten, dass negative Einschätzungen überwiegen."}
+  - id: einkommen
+    title: Einkommen
+    ask: "Wie entwickeln sich Einkommen und Verteilung?"
+    charts:
+      - {chart: hh_income, years: 12, caption: "Verfügbares Einkommen der privaten Haushalte je Einwohner, also Löhne, Gewinne, Vermögenseinkommen und Sozialleistungen nach Steuern und Abgaben, bereinigt um die Preisentwicklung des Konsums. 2010 = 100."}
+      - {chart: saving, years: 12, caption: "Anteil des verfügbaren Einkommens, den die Haushalte nicht für Konsum ausgeben. Eine steigende Sparquote dämpft den Konsum, oft aus Vorsicht in unsicheren Zeiten."}
+      - {chart: profit_share, years: 12, caption: "Bruttobetriebsüberschuss der nichtfinanziellen Unternehmen in Prozent ihrer Wertschöpfung. Steigt die Gewinnquote, entfällt ein größerer Teil der Wertschöpfung auf Gewinne und ein kleinerer auf Löhne."}
   - id: export
     title: Export
     charts:
@@ -187,6 +203,12 @@ topics:
       - {chart: trade_prices, years: 6, caption: "Terms of Trade: Ausfuhrpreise im Verhältnis zu den Einfuhrpreisen. Steigen sie, kann Deutschland mit derselben Exportmenge mehr Importe finanzieren."}
       - {chart: balances, years: 6, caption: "Saldo der Leistungsbilanz (Waren, Dienstleistungen, Primär- und Sekundäreinkommen) je Monat, nicht saisonbereinigt."}
       - {chart: esi, emphasis: esi_chn, caption: "Ähnlichkeit der Warenstruktur der Exporte eines Landes mit derjenigen Deutschlands: 0 bedeutet keine Überschneidung, 100 eine identische Struktur (Finger und Kreinin 1979, je Warengruppe zählt der kleinere Anteil). Hohe Werte bedeuten, dass beide Länder auf den Weltmärkten mit ähnlichen Waren konkurrieren. Hervorgehoben: China."}
+  - id: welt
+    title: Welt
+    ask: "Wie entwickelt sich die Weltwirtschaft?"
+    charts:
+      - {chart: world_gdp, years: 8, ref: 0, caption: "Reales BIP gegenüber dem Vorjahresquartal. Der Euroraum nimmt rund 37 % der deutschen Warenexporte auf, die USA rund 10 %."}
+      - {chart: uncertainty, years: 8, caption: "Index der wirtschaftspolitischen Unsicherheit nach Baker, Bloom und Davis, ermittelt aus der Häufigkeit einschlägiger Begriffe in Zeitungsartikeln; Mittel 1997 bis 2015 = 100. Hohe Unsicherheit lässt Unternehmen Investitionen aufschieben."}
   - id: stimmung
     title: Stimmung
     charts:
@@ -213,8 +235,14 @@ topics:
     charts:
       - {chart: oil, years: 6, caption: "Preis je Barrel (159 Liter) Rohöl der Nordseesorte Brent, Monatsmittel."}
       - {chart: gas, years: 6, caption: "Großhandelspreis für Erdgas in Europa (Handelsplatz TTF), Monatsmittel. MMBtu ist eine Energiemenge von rund 293 Kilowattstunden."}
+  - id: aussichten
+    title: Aussichten
+    ask: "Was erwarten die Prognosen?"
+    charts:
+      - {chart: forecast, type: forecast, caption: "Jeder Punkt steht für eine Prognose des realen BIP-Wachstums im jeweiligen Jahr. Hervorgehoben: Bundesregierung. Hohle Punkte: frühere Prognoserunde."}
   - id: struktur
     title: Struktur
+    part: struktur
     ask: "Wie steht es um die Grundlagen des Wachstums?"
     charts:
       - {chart: potential, years: 30, forecast_after_bars: true, caption: "Das Produktionspotenzial ist die Wirtschaftsleistung, die bei normaler Auslastung von Arbeitskräften und Maschinen möglich wäre. Es lässt sich nicht beobachten, sondern wird geschätzt, hier von der Europäischen Kommission (AMECO, Frühjahrsprognose 2026) aus Arbeitsvolumen, Kapitalbestand und Produktivität. Wächst das BIP (Balken) schneller als das Potenzial (Linie), steigt die Auslastung; die Differenz der Niveaus heißt Produktionslücke. Ist sie positiv, droht eher Inflation, ist sie negativ, sind Kapazitäten ungenutzt. Gestrichelt: Prognosejahre."}
@@ -222,14 +250,19 @@ topics:
       - {chart: inv_ratio, years: 30, caption: "Bruttoanlageinvestitionen (Maschinen, Bauten, Software und Forschung) in Prozent des BIP, Deutschland im Vergleich zur Europäischen Union."}
       - {chart: emp_sector, type: since, base: "2022-04-01", unit: "Tsd. Personen, Veränderung seit dem 2. Quartal 2022", bar_name: "Veränderung seit 2. Quartal 2022", caption: "Veränderung der Zahl der Erwerbstätigen je Wirtschaftsbereich seit dem 2. Quartal 2022, in Tausend. Zeigt die Verschiebung von der Industrie zu den Dienstleistungen."}
       - {chart: migration, years: 30, scale: 0.000001, unit: "Mio. Personen", decimals: 2, caption: "Zuzüge minus Fortzüge über die Grenzen Deutschlands in Millionen Personen, einschließlich statistischer Anpassung. Die Zuwanderung trägt seit 2011 maßgeblich zum Wachstum der Erwerbsbevölkerung bei; 2015 und 2022 prägen die Fluchtbewegungen aus Syrien und der Ukraine."}
+      - {chart: migration_groups, years: 20, scale: 0.001, unit: "Tsd. Personen", decimals: 0, ref: 0, caption: "Zuzüge minus Fortzüge nach Staatsangehörigkeit, in Tausend. Deutsche wandern seit Jahren netto ab; die Zuwanderung aus Staaten außerhalb der EU prägen Fluchtbewegungen, die aus der EU vor allem Arbeitsmigration. Ohne statistische Anpassung, deshalb weicht die Summe von Abb. zur Nettozuwanderung ab."}
       - {chart: cit, years: 30, emphasis: cit_deu, context_grey: true, caption: "Tarifliche Gesamtsteuerbelastung von Kapitalgesellschaften (Körperschaftsteuer einschließlich Zuschläge und Steuern nachgeordneter Ebenen, in Deutschland Gewerbesteuer), nach OECD. Hervorgehoben: Deutschland; grau: Vergleichsländer."}
+  - id: staat
+    title: Staat
+    part: struktur
+    ask: "Wie stehen die öffentlichen Finanzen da?"
+    charts:
+      - {chart: gov_balance, years: 12, caption: "Einnahmen minus Ausgaben von Bund, Ländern, Gemeinden und Sozialversicherung in Prozent des BIP, vierteljährlich, saisonbereinigt. Negative Werte bedeuten ein Defizit."}
+      - {chart: gov_spend, years: 25, caption: "Zinsausgaben und Bruttoanlageinvestitionen des Staates in Prozent des BIP, Jahreswerte. Steigende Zinsen engen den Spielraum für Investitionen ein."}
+      - {chart: gov_debt, years: 12, caption: "Bruttoschulden des Staates in der Abgrenzung des Maastricht-Vertrags in Prozent des BIP. Der Referenzwert der EU liegt bei 60 %."}
   - id: kalender
     title: Kalender
+    part: service
     ask: "Wann erscheinen die nächsten Zahlen?"
     charts:
-      - {chart: calendar, type: calendar, months: 2, title: "Veröffentlichungskalender", caption: "Termine geschätzt nach dem üblichen Veröffentlichungsrhythmus der Quellen. Verbindlich sind die verlinkten Kalender der Quellen."}
-  - id: aussichten
-    title: Aussichten
-    ask: "Was erwarten die Prognosen?"
-    charts:
-      - {chart: forecast, type: forecast, caption: "Jeder Punkt steht für eine Prognose des realen BIP-Wachstums im jeweiligen Jahr. Hervorgehoben: Bundesregierung. Hohle Punkte: frühere Prognoserunde."}
+      - {chart: calendar, type: calendar, weeks: 12, title: "Veröffentlichungskalender: die nächsten zwölf Wochen", caption: "Termine geschätzt nach dem üblichen Veröffentlichungsrhythmus der Quellen. Verbindlich sind die verlinkten Kalender der Quellen."}

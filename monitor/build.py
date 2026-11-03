@@ -18,7 +18,7 @@ ROOT = Path.cwd()
 SOURCE_NAMES = {"bundesbank": "Deutsche Bundesbank", "eurostat": "Eurostat", "ecb": "EZB", "static": "BA-Statistik (aufbereitet)",
                 "derived": "eigene Berechnung"}
 SOURCE_LICENSES = {"bundesbank": "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)", "eurostat": "CC BY 4.0 (Eurostat)",
-                   "ecb": "Wiederverwendung mit Quellenangabe (EZB)", "static": "Statistik der Bundesagentur für Arbeit, mit Quellenangabe"}
+                   "ecb": "Wiederverwendung mit Quellenangabe (EZB)", "fred": "Nutzungsbedingungen der Originalquelle laut FRED, mit Quellenangabe", "static": "Statistik der Bundesagentur für Arbeit, mit Quellenangabe"}
 
 
 _META: dict = {}
@@ -305,7 +305,7 @@ def _workdays(year: int, month: int) -> list:
     return [d for d in days if d.month == month and d.weekday() < 5 and (d.month, d.day) not in fixed]
 
 
-def _calendar(root: Path, start: pd.Timestamp, months: int = 2) -> dict | None:
+def _calendar(root: Path, start: pd.Timestamp, months: int = 2, weeks: int | None = None) -> dict | None:
     path = root / "data" / "static" / "kalender.yaml"
     if not path.exists():
         return None
@@ -327,7 +327,10 @@ def _calendar(root: Path, start: pd.Timestamp, months: int = 2) -> dict | None:
             elif "weekday" in r:
                 dates = [d for d in pd.date_range(f"{y}-{m:02d}-01", periods=31) if d.month == m and d.weekday() == r["weekday"]]
             for d in dates:
-                events.append({"date": d.strftime("%Y-%m-%d"), "name": it["name"], "source": it.get("source", ""), "topic": it.get("topic")})
+                if weeks and not (start.normalize() <= d < start.normalize() + pd.Timedelta(weeks=weeks)):
+                    continue
+                events.append({"date": d.strftime("%Y-%m-%d"), "name": it["name"], "source": it.get("source", ""), "topic": it.get("topic"),
+                               "charts": it.get("charts") or []})
     first = start.replace(day=1)
     return {"months": [(first + pd.DateOffset(months=k)).strftime("%Y-%m") for k in range(months)],
             "events": sorted(events, key=lambda e: e["date"]), "links": cfg.get("links") or []}
@@ -343,7 +346,7 @@ def chart_text(c: dict) -> str:
     from .answers import MONTHS
     typ, d = c.get("type"), int(c.get("decimals", 1))
     unit = (c.get("unit") or "").split(",")[0]
-    u = "%" if unit.startswith("%") else "Prozentpunkte" if unit.startswith("Pp") else "Punkte" if unit.startswith("Saldo") else "" if unit.startswith("Index") else unit
+    u = unit if unit.startswith(("% des", "% der")) else "%" if unit.startswith("%") else "Prozentpunkte" if unit.startswith("Pp") else "Punkte" if unit.startswith("Saldo") else "" if unit.startswith("Index") else unit
     fmtv = lambda v: f"{num(v, d)} {u}".strip()
     from .answers import num as _num
 
@@ -497,8 +500,9 @@ def build_payload(root: Path = ROOT) -> dict:
                 h = _heat(c, data, meta)
                 if not h:
                     continue
+                what = "Auftragseingang" if "order" in c["chart"] else "Produktionsindex"
                 entry.update(heat=h, unit="% gegenüber Vorjahresmonat", freq="M", adjustment="saison- und kalenderbereinigt (Bundesbank)",
-                             sources=["Deutsche Bundesbank (Produktionsindex des Statistischen Bundesamts)"], licenses=[SOURCE_LICENSES["bundesbank"]])
+                             sources=[f"Deutsche Bundesbank ({what} des Statistischen Bundesamts)"], licenses=[SOURCE_LICENSES["bundesbank"]])
             elif typ == "since":
                 specs = [s for s in meta.values() if s.chart_id == c["chart"] and s.id in data]
                 base = pd.Timestamp(c["base"])
@@ -517,7 +521,8 @@ def build_payload(root: Path = ROOT) -> dict:
                              unit=c.get("unit", m.unit), sources=sorted({_source_name(s) for s in specs}), licenses=sorted({_license(s) for s in specs}),
                              series=[dict(id=s.id, label=s.label, unit=s.unit, freq=s.frequency, style="line", **_xy(data[s.id], 12)) for s in specs])
             elif typ == "calendar":
-                cal = _calendar(root, pd.Timestamp(datetime.now(timezone.utc).date()), int(c.get("months", 2)))
+                weeks = int(c.get("weeks", 12))
+                cal = _calendar(root, pd.Timestamp(datetime.now(timezone.utc).date()), weeks // 4 + 2, weeks)
                 if not cal:
                     continue
                 entry.update(calendar=cal, sources=["Eigene Zusammenstellung nach dem üblichen Veröffentlichungsrhythmus der Quellen"], licenses=[])
@@ -575,6 +580,18 @@ def build_payload(root: Path = ROOT) -> dict:
         for c in t["charts"]:
             no += 1
             c["no"] = no
+    # Nächste voraussichtliche Aktualisierung je Abbildung und Verweise vom Kalender auf die Abbildungen
+    numbers = {c["chart"]: c["no"] for t in topics for c in t["charts"]}
+    cal = next((c["calendar"] for t in topics for c in t["charts"] if c.get("type") == "calendar"), None)
+    if cal:
+        cal_id = next(c["no"] for t in topics for c in t["charts"] if c.get("type") == "calendar")
+        for e in cal["events"]:
+            e["figs"] = [numbers[k] for k in e.get("charts", []) if k in numbers]
+        for t in topics:
+            for c in t["charts"]:
+                e = next((e for e in cal["events"] if c["chart"] in e.get("charts", [])), None)
+                if e:
+                    c["next_update"] = {"date": e["date"], "name": e["name"], "calendar": cal_id}
     geo = _geo(root)
     return {"layout": layout, "start": _start_rows(cfg, data, meta, {t["id"]: t["title"] for t in cfg["topics"]}), "geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
             "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -587,8 +604,21 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
     out.mkdir(parents=True, exist_ok=True)
     payload = build_payload(root)
     from .downloads import write_all
+    from .reuse import mark_revisions, news, update_archive, write_all_series, write_feed
 
     write_all(payload, out)
+    data, _ = load_observations(root)
+    meta, _ = _series_meta(root / "series.yaml")
+    stand_de = f"{payload['stand'][8:10]}.{payload['stand'][5:7]}.{payload['stand'][:4]}"
+    cite = f"{payload['site']['author']} ({payload['stand'][:4]}): Konjunkturmonitor. Stand {stand_de}. {payload['site']['url']}"
+    payload["all_series"] = write_all_series(data, meta, root, out, stand_de, cite)
+    arch = update_archive(root, payload["start"], payload["stand"])
+    mark_revisions(payload["start"], arch)
+    items = news(arch, payload["stand"])
+    payload["news"] = [i for i in items if i["stand"] == payload["stand"]]
+    write_feed(items, payload["start"], payload["site"], out)
+    (out / "dl").mkdir(exist_ok=True)
+    arch.to_csv(out / "dl" / "kernzahlen_archiv.csv", sep=";", decimal=",", index=False, encoding="utf-8-sig")
     tpl = resources.files("monitor").joinpath("templates/index.html").read_text(encoding="utf-8")
     js = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     from html import escape

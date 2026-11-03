@@ -11,6 +11,7 @@
 <meta property="og:image" content="/*__OGIMG__*/">
 <meta property="og:url" content="/*__URL__*/">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="Konjunkturmonitor: neue Zahlen" href="feed.xml">
 <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.de">
 <script src="plotly.min.js"></script>
 <style>
@@ -54,7 +55,9 @@
   .card .acts { font: 13px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin-top: 6px; }
   .card .acts a, .card .acts button { color: var(--link, #0b4f8a); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
   .card .acts a:hover, .card .acts button:hover { text-decoration: underline; }
-  .card .cap { color: var(--text); margin: 6px 0 4px; font-size: 13.5px; }
+  .card .cap { color: var(--text); margin: 6px 0 4px; font-size: 13.5px; background: #f2f3f4; padding: 6px 10px; border-radius: 4px; }
+  .card .cap.notes { background: #f7f7f7; }
+  .card .nextup { font: 13px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin-top: 4px; }
   .card .chart { width: 100%; aspect-ratio: 5 / 3; min-height: 260px; overflow: hidden; }
   .charts.single { grid-template-columns: minmax(0, 1fr); }
   .charts.single .card .chart { aspect-ratio: 5 / 2; max-height: 440px; }
@@ -110,7 +113,7 @@
   body.minimal .card { border: 0; border-radius: 0; padding: 4px 0 8px; background: transparent; }
   body.minimal .q { border-color: #e5e5e5; }
   body.minimal .verdict { background: none; padding: 0; color: var(--muted); font-style: italic; }
-  body.minimal .explain { background: none; border-left: 0; padding: 0; color: var(--muted); font-size: 14px; }
+  body.minimal .explain { background: #f2f3f4; border-left: 0; padding: 8px 12px; border-radius: 4px; color: var(--text); font-size: 14px; }
   body.minimal .explain b { color: var(--muted); }
   @media (min-width: 1100px) {
     body.minimal .intro { display: grid; grid-template-columns: minmax(0, 48em) minmax(0, 1fr); column-gap: 32px; }
@@ -125,7 +128,7 @@
   @media (max-width: 600px) { .multiples { grid-template-columns: repeat(2, minmax(0, 1fr)); } .multiples > div { grid-column: auto !important; } .multiples > div.span-m { grid-column: 1 / -1 !important; } }
   .multiples .mini { height: 150px; }
   .multiples .mt { font: 13px/1.3 "Arial Narrow", Arial, sans-serif; margin: 0; }
-  .multiples .mt span { color: var(--muted); }
+  .multiples .mt span.mtsub { color: var(--muted); }
   .heat { overflow-x: auto; }
   .card.wide { grid-column: 1 / -1; }
   .heat table { border-collapse: collapse; font: 12.5px/1.2 "Arial Narrow", Arial, sans-serif; width: 100%; }
@@ -147,11 +150,21 @@
   .card .cap.notes { color: var(--muted); }
   .heat td.k { text-align: right; } .heat td:not(.l) { text-align: right; } .heat th { text-align: right; } .heat th.l { text-align: left; }
   .heat .sortnote { font-size: 11.5px; color: var(--muted); }
+  .card.calcard { max-width: 800px; }
+  ol.callist .cf { color: var(--muted); font-size: 13px; }
   ol.callist { list-style: none; margin: 4px 0 8px; padding: 0; font: 14.5px/1.35 "Arial Narrow", Arial, sans-serif; }
   ol.callist li { display: grid; grid-template-columns: 13em 1fr; gap: 4px 14px; padding: 6px 0; border-top: 1px solid #e6e6e6; }
   ol.callist li.next { background: #eef4fb; padding: 8px 6px; }
   ol.callist .cs { color: var(--muted); font-size: 13px; }
   @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
+  .parthead { margin: 56px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 15px "Arial Narrow", Arial, sans-serif; color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
+  .parthead span { color: var(--muted); margin-right: 6px; }
+  .parthead p { text-transform: none; letter-spacing: 0; font-weight: normal; color: var(--muted); font-size: 14.5px; margin: 4px 0 0; }
+  .navpart { color: var(--muted); font-size: 13px; margin-left: 6px; }
+  ul.missing { padding-left: 18px; } ul.missing li { margin-bottom: 6px; }
+  .news { font: 14.5px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin: 0 0 8px; max-width: 60em; }
+  .news b { color: var(--dark); }
+  sup.rev { color: var(--muted); font-weight: normal; margin-left: 1px; cursor: help; }
   .refs { max-width: 1180px; margin: 30px auto 0; padding: 0 16px; font-size: 14px; color: var(--muted); }
   footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
@@ -162,6 +175,7 @@
 <main>
   <p class="claim" id="claim"></p>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
+  <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
   <div id="starttable">/*__STATIC__*/</div>
   <div id="topics"></div>
@@ -172,7 +186,14 @@
   <p><b>Vergleichszeitraum.</b> Wo der Monitor ein „übliches“ Niveau angibt, ist es der Durchschnitt der Jahre 2015 bis 2019: die fünf letzten vollen Jahre vor der Pandemie, nach der Euro-Schuldenkrise und vor dem Energiepreisschock 2022. Ausnahme ist die Konjunkturuhr; sie misst den Abstand zum langjährigen Mittel 2005 bis 2019, weil die Phasen eines Konjunkturzyklus nur über mehrere Zyklen bestimmt werden können.</p>
   <p><b>Farben und Zeichen.</b> ▲ gestiegen, ▼ gesunken, ■ unverändert in der angezeigten Genauigkeit. Rot ist Warnsignalen vorbehalten: einem Anstieg, wo er ungünstig ist (Inflation, Arbeitslosigkeit, Insolvenzen), und Schwellenwerten. Blau, Violett und Grün unterscheiden nur Reihen und tragen keine Wertung.</p>
   <p><b>Lizenz.</b> Texte und eigene Abbildungen stehen unter <a href="https://creativecommons.org/licenses/by/4.0/deed.de" rel="license">CC BY 4.0</a>; Namensnennung: Wolf-Fabian Hungerland, Konjunkturmonitor. Die Daten unterliegen den Lizenzen der Quellen, die bei jeder Abbildung stehen.</p>
+  <h3 id="fehlt">Was fehlt und warum</h3>
+  <p>Der Monitor zeigt nur Daten, die frei abrufbar sind und weiterverbreitet werden dürfen. Einige verbreitete Indikatoren fehlen deshalb:</p>
+  <ul class="missing">
+    <li><b>Lizenz erforderlich:</b> ifo-Geschäftsklima und ifo-Exporterwartungen (<a href="https://www.ifo.de/">ifo Institut</a>), ZEW-Konjunkturerwartungen (<a href="https://www.zew.de/">ZEW</a>), Einkaufsmanagerindizes (<a href="https://www.pmi.spglobal.com/">S&amp;P Global</a>), GfK-Konsumklima (<a href="https://www.nim.org/">NIM</a>), HDE-Konsumbarometer (<a href="https://einzelhandel.de/">HDE</a>), IAB-Arbeitsmarktbarometer (<a href="https://iab.de/">IAB</a>), IWH-Insolvenztrend (<a href="https://www.iwh-halle.de/">IWH</a>), Terminpreise für Strom und Gas (<a href="https://www.eex.com/">EEX</a>), Containerumschlag-Index (<a href="https://www.rwi-essen.de/">RWI/ISL</a>). Die Stimmung der Unternehmen und Verbraucher bilden stattdessen die frei verfügbaren Umfragen der EU-Kommission ab.</li>
+    <li><b>Keine abrufbare Zeitreihe:</b> Unterbeschäftigung der Bundesagentur für Arbeit (nur in Monatsberichten), Finanzlage und Beitragssätze der Sozialversicherung (Projektionen der Träger), Investitionshemmnisse aus Unternehmensumfragen, Zerlegung des Produktionspotenzials in Arbeit, Kapital und Produktivität (in AMECO nicht als Reihe abrufbar), Beiträge der Branchen zum Auftragseingang (Gewichte nicht veröffentlicht).</li>
+  </ul>
   <p id="deck"></p>
+  <p id="reuse"></p>
   <p id="cite"></p>
 </section>
 <footer>Konjunkturmonitor · Wolf-Fabian Hungerland · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · Texte und Abbildungen: <a href="https://creativecommons.org/licenses/by/4.0/deed.de" rel="license">CC BY 4.0</a></footer>
@@ -271,6 +292,16 @@ function timeChart(el, c) {
     shapes.push({ type: "rect", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.band.lo, y1: c.band.hi, fillcolor: "rgba(120,120,120,0.10)", line: { width: 0 }, layer: "below" });
     annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.band.hi, text: "Spanne 2015–2019", showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 11, color: "#7f7f7f" } });
   }
+  // Jahresmittel unten im Jahresband (wo sinnvoll: eine Leitreihe mit Monats- oder Quartalswerten)
+  const lead = c.type === "stacked" ? null : c.series.find(s => s.id === c.emphasis) || (lines.length === 1 && !bars.length ? lines[0] : null);
+  if (lead && c.year_means !== false && (c.freq === "M" || c.freq === "Q") && xa.tickvals.length <= 13) {
+    const by = {}; lead.x.forEach((x, i) => { if (lead.y[i] != null) (by[x.slice(0, 4)] = by[x.slice(0, 4)] || []).push(lead.y[i]); });
+    const dm = c.decimals ?? 1;
+    Object.entries(by).forEach(([y, v]) => { if (v.length < (c.freq === "M" ? 3 : 2)) return;
+      const mid = new Date((Date.parse(`${y}-01-01` < r[0] ? r[0] : `${y}-01-01`) + Date.parse(`${+y + 1}-01-01` > r[1] ? r[1] : `${+y + 1}-01-01`)) / 2).toISOString().slice(0, 10);
+      annotations.push({ xref: "x", yref: "paper", x: mid, y: 0.02, yanchor: "bottom", showarrow: false, text: "ø" + fmt(v.reduce((a, b) => a + b, 0) / v.length, dm),
+        font: { family: HS.font, size: 11, color: "#595959" }, bordercolor: "#a6a6a6", borderwidth: 1, borderpad: 2, bgcolor: "rgba(255,255,255,0.85)" }); });
+  }
   const named = traces.filter(t => t.showlegend !== false && t.type === "scatter");
   const direct = LY.direct_labels && c.type !== "stacked" && !bars.length && named.length > 1 && (named.length <= 4 || c.context_grey);
   let rMargin = 6;
@@ -307,7 +338,7 @@ function multiplesChart(el, c) {
     const vals = ok.map(p => p[0]), d = c.decimals, tend = vals.length > 1 ? (Math.round(Math.abs(vals[vals.length - 1] - vals[vals.length - 2]) * 10 ** d) === 0 ? "flat" : vals[vals.length - 1] > vals[vals.length - 2] ? "up" : "down") : null;
     const box = document.createElement("div");
     if (k === 0 && empty) { box.style.gridColumn = `span ${1 + empty}`; box.classList.add("span-m"); }
-    const head = last ? ` ${fmt(last[0], d)}${u ? " " + u : ""} ${tendHtml(tend, c.up_bad)}<br><span>${per(last[1])} · ø3M ${fmt(avg(vals.slice(-3)), d)} · ø12M ${fmt(avg(vals.slice(-12)), d)}</span>` : "";
+    const head = last ? ` ${fmt(last[0], d)}${u ? " " + u : ""} ${tendHtml(tend, c.up_bad)}<br><span class="mtsub">${per(last[1])} · ø3M ${fmt(avg(vals.slice(-3)), d)}${u ? " " + u : ""} · ø12M ${fmt(avg(vals.slice(-12)), d)}${u ? " " + u : ""}</span>` : "";
     box.innerHTML = `<p class="mt"><b>${esc(s.label)}</b>${head}</p>`;
     const m = document.createElement("div"); m.className = "mini"; box.appendChild(m); grid.appendChild(box);
     const traces = c.series.filter(o => o !== s).map(o => ({ type: "scatter", mode: "lines", x: o.x, y: o.y, line: { color: "#d0d0d0", width: 1 }, hoverinfo: "skip" }));
@@ -342,7 +373,7 @@ function calendarChart(el, c) {
   let html = `<ol class="callist">`;
   days.forEach(d => { const dt = new Date(d + "T12:00:00Z");
     html += `<li class="${d === next ? "next" : ""}"><span class="cd">${d === next ? "<b>Nächster Termin</b><br>" : ""}${wd[dt.getUTCDay()]}, ${dt.getUTCDate()}. ${MONTHS[dt.getUTCMonth()]} ${dt.getUTCFullYear()}</span>`
-      + `<span class="ce">${byDay[d].map(e => `<a href="#${e.topic}">${esc(e.name)}</a> <span class="cs">${esc(e.source)}</span>`).join("<br>")}</span></li>`; });
+      + `<span class="ce">${byDay[d].map(e => `<a href="#${e.topic}">${esc(e.name)}</a> <span class="cs">${esc(e.source)}</span>${(e.figs || []).length ? ` <span class="cf">→ ${e.figs.map(n => `<a href="#abb-${n}">Abb. ${n}</a>`).join(", ")}</span>` : ""}`).join("<br>")}</span></li>`; });
   html += `</ol><p class="callinks">Kalender der Quellen: ${K.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(" · ")}</p>`;
   el.innerHTML = html;
 }
@@ -551,7 +582,7 @@ async function pngDownload(el, ch, c, no, sub, unit) {
 }
 
 function card(c, no) {
-  const el = document.createElement("div"); el.className = "card" + (c.type === "heat" || c.type === "calendar" || c.context_grey ? " wide" : ""); el.id = `abb-${no}`;
+  const el = document.createElement("div"); el.className = "card" + (c.type === "heat" || c.type === "calendar" || c.context_grey ? " wide" : "") + (c.type === "calendar" ? " calcard" : ""); el.id = `abb-${no}`;
   const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real"
@@ -567,6 +598,8 @@ function card(c, no) {
   if (c.type === "forecast") src = c.forecasts.filter(f => f.latest).map(f => `<a href="${esc(f.source)}" target="_blank" rel="noopener">${esc(f.by)}, ${esc(f.round)}</a>`).join(" · ");
   else src = esc(src);
   el.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}</div>`);
+  if (c.next_update) { const nd = new Date(c.next_update.date + "T12:00:00Z");
+    el.insertAdjacentHTML("beforeend", `<div class="nextup">Nächste Aktualisierung voraussichtlich ${["So.", "Mo.", "Di.", "Mi.", "Do.", "Fr.", "Sa."][nd.getUTCDay()]} ${nd.getUTCDate()}. ${MONTHS[nd.getUTCMonth()]} ${nd.getUTCFullYear()} (${esc(c.next_update.name)}) · <a href="#abb-${c.next_update.calendar}">Kalender</a></div>`); }
   const f = c.files || {}, acts = [];
   if (f.xlsx) acts.push(`<a href="${f.xlsx}" download>Excel</a>`);
   if (f.pptx) acts.push(`<a href="${f.pptx}" download>PowerPoint</a>`);
@@ -614,7 +647,7 @@ function startTable(box) {
     if (r.group !== grp) { grp = r.group; html += `<tr class="grp"><td colspan="9"><a href="#${r.topic}">${esc(grp)}</a></td></tr>`; }
     const d = r.decimals ?? 1; older = older || r.older;
     const cmp = `<span>${esc(r.period)}${r.older ? "¹" : ""}</span>` + [[r.prev_label, r.prev], ["Vorjahr", r.yoy], ["3 Monate", r.m3]].filter(x => x[1] != null).map(x => `<span>${x[0]} ${ch(x[1], r)}</span>`).join("");
-    html += `<tr class="row" data-href="#${r.topic}"><td class="k"><a href="#${r.topic}">${esc(r.label)}</a></td><td class="p${r.older ? " old" : ""}">${esc(r.period)}${r.older ? "¹" : ""}</td><td class="v">${fmt(r.value, d)}</td>`
+    html += `<tr class="row" data-href="#${r.topic}"><td class="k"><a href="#${r.topic}">${esc(r.label)}</a></td><td class="p${r.older ? " old" : ""}">${esc(r.period)}${r.older ? "¹" : ""}</td><td class="v">${fmt(r.value, d)}${r.revised ? `<sup class="rev" title="revidiert; zuerst veröffentlicht: ${fmt(r.revised.from, d)} (Stand ${r.revised.stand})">r</sup>` : ""}</td>`
       + `<td class="u">${esc(r.unit)}<span class="mob"></span></td><td class="d">${ch(r.prev, r)}</td><td class="d">${ch(r.yoy, r)}</td><td class="d">${ch(r.m3, r)}</td>`
       + `<td class="s">${sp(r)}</td><td class="t">${tendHtml(r.tendency, r.up_bad)}</td><td class="cmp">${cmp}${r.older ? "<span>älterer Stand</span>" : ""}</td></tr>`;
   });
@@ -622,7 +655,8 @@ function startTable(box) {
     + `<p class="tnote">Vorperiode und Dreimonatsvergleich saison- und kalenderbereinigt, soweit die Quelle bereinigte Werte bietet; Vorjahresvergleich aus saison- und kalenderbereinigten Werten; bei Preisen, Insolvenzen und beim BIP nach Ursprungswerten, wie in den Meldungen der Statistikämter. `
     + `Bei Raten und Salden ist die Veränderung eine Differenz in Prozentpunkten (Pp) oder Punkten (Pkt.), sonst eine Veränderung in Prozent. Dreimonatsvergleich: die letzten drei Monate gegenüber den drei Monaten davor. `
     + `Tendenz zur Vorperiode: <span class="up-ok">▲</span> gestiegen, <span class="down">▼</span> gesunken, <span class="flat">■</span> unverändert; <span class="up-bad">▲</span> rot, wo ein Anstieg ungünstig ist (Preise, Arbeitslosigkeit, Insolvenzen).`
-    + `${older ? " ¹ Älterer Stand: Die Quelle meldet diese Zahl später als die übrigen Monatswerte." : ""}</p>`;
+    + `${older ? " ¹ Älterer Stand: Die Quelle meldet diese Zahl später als die übrigen Monatswerte." : ""}`
+    + `${rows.some(r => r.revised) ? " r Revidiert: Die Quelle hat den Wert für diesen Zeitraum seit der ersten Veröffentlichung geändert; der erste Wert steht im Tooltip und im Archiv." : ""}</p>`;
   box.querySelectorAll("tr.row").forEach(tr => tr.addEventListener("click", e => { if (e.target.closest("a")) return; location.hash = tr.dataset.href; }));
   return true;
 }
@@ -638,8 +672,13 @@ function copyText(txt, btn, what) {
 function build() {
   const S = DATA.site;
   document.getElementById("claim").textContent = S.claim;
+  const nw = document.getElementById("news");
+  if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
   const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) ov.textContent = DATA.overview; else ov.remove();
   const d = new Date(DATA.generated_at); document.getElementById("stand").textContent = "Stand: " + d.toLocaleDateString("de-DE");
+  const AS = DATA.all_series || {};
+  document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${AS.xlsx}" download>Excel</a> · <a href="${AS.csv}" download>CSV</a>` : "",
+    `<a href="dl/kernzahlen_archiv.csv" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
   if (DATA.deck) document.getElementById("deck").innerHTML = `<a href="${DATA.deck}" download>Alle Abbildungen als PowerPoint</a>`;
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const LY = DATA.layout || {};
@@ -652,7 +691,10 @@ function build() {
       <span class="big"><span class="num">${val}</span><span class="u">${esc(a.unit)}${a.label && a.unit !== "Mrd. €" ? " " + esc(a.label) : ""}</span><span class="verdict">${esc(a.verdict)}</span></span>
       <span class="head">${esc(a.head)}</span>${spark(a.spark_data, a.ref)}<span class="per">${esc(a.period)}</span></a>`);
   });
-  let no = 0;
+  let no = 0, curPart = null;
+  const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
+    struktur: { no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
+    service: { no: "Service", title: "Termine", text: "Wann die nächsten Zahlen erscheinen." } };
   const obs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { obs.unobserve(e.target); render(e.target); } }), { rootMargin: "300px" }) : null;
   DATA.topics.forEach(t => {
     const sec = document.createElement("section"); sec.className = "topic"; sec.id = t.id;
@@ -673,6 +715,10 @@ function build() {
       no += 1; const el = card(c, c.no ?? no); target.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : render(ch);
     });
     if (LY.lead_chart_only && wrap.children.length === 1) wrap.classList.add("single");
+    const part = t.part || "konjunktur";
+    if (part !== curPart) { curPart = part; const P = PARTS[part];
+      topics.insertAdjacentHTML("beforeend", `<div class="parthead" id="teil-${part}"><span>${esc(P.no)}</span> ${esc(P.title)}<p>${esc(P.text)}</p></div>`);
+      nav.insertAdjacentHTML("beforeend", `<span class="navpart">${esc(P.title)}:</span>`); }
     topics.appendChild(sec);
     nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
   });
