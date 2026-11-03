@@ -1058,7 +1058,7 @@ series:
     block: konsum
     source: genesis
     key: 45212-0005
-    params: {value_variable: UMS110, filters: {PREIS1: REAL, BERI01: X13JDKSB, WZ08B5: "WZ08-4711-01"}}
+    params: {value_variable: UMS103, filters: {WERTE4: REAL, WERT01: X13JDKSB, WZ08E5: "WZ08-4711-01"}, query: {classifyingvariable1: WZ08E5, classifyingkey1: "WZ08-4711-01", classifyingvariable2: WERTE4, classifyingkey2: REAL, classifyingvariable3: WERT01, classifyingkey3: X13JDKSB}}
     title: "Einzelhandel Lebensmittel, real"
     unit: "Index 2021=100"
     frequency: M
@@ -1071,7 +1071,7 @@ series:
     block: konsum
     source: genesis
     key: 45212-0005
-    params: {value_variable: UMS110, filters: {PREIS1: REAL, BERI01: X13JDKSB, WZ08B5: "WZ08-4719-01"}}
+    params: {value_variable: UMS103, filters: {WERTE4: REAL, WERT01: X13JDKSB, WZ08E5: "WZ08-4719-01"}, query: {classifyingvariable1: WZ08E5, classifyingkey1: "WZ08-4719-01", classifyingvariable2: WERTE4, classifyingkey2: REAL, classifyingvariable3: WERT01, classifyingkey3: X13JDKSB}}
     title: "Einzelhandel Nicht-Lebensmittel, real"
     unit: "Index 2021=100"
     frequency: M
@@ -1084,7 +1084,7 @@ series:
     block: konsum
     source: genesis
     key: 45212-0005
-    params: {value_variable: UMS110, filters: {PREIS1: REAL, BERI01: X13JDKSB, WZ08B5: "WZ08-4791"}}
+    params: {value_variable: UMS103, filters: {WERTE4: REAL, WERT01: X13JDKSB, WZ08E5: "WZ08-4791"}, query: {classifyingvariable1: WZ08E5, classifyingkey1: "WZ08-4791", classifyingvariable2: WERTE4, classifyingkey2: REAL, classifyingvariable3: WERT01, classifyingkey3: X13JDKSB}}
     title: "Einzelhandel Versand- und Internethandel, real"
     unit: "Index 2021=100"
     frequency: M
