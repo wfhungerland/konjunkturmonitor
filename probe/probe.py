@@ -84,50 +84,54 @@ def gen_tables(sel):
         print("Fehler", r.status_code, r.text[:300])
 
 
-bbk_titles("BBDE1", "M.DE.Y.BAA1..G.C.I21.A", ".", 120)
-hdr("BBK Dataflows XML")
-r = S.get(f"{BBK}/metadata/dataflow/BBK", headers={"Accept": "application/xml"}, timeout=120)
-print("status", r.status_code, len(r.text))
-for m in re.finditer(r'<structure:Dataflow[^>]*id="([^"]+)".*?<common:Name xml:lang="de">([^<]*)</common:Name>', r.text, re.S):
-    if re.search("ktivit|öchentl|WAI|Woche", m.group(2) + m.group(1), re.I): print(m.group(1), "|", m.group(2))
-print("Anzahl Flows:", len(re.findall("<structure:Dataflow ", r.text)))
-for fl in ["BBWAI", "BBDW1", "BBEE1", "BBKRT"]:
-    rr = S.get(f"{BBK}/data/{fl}", params={"format": "sdmx_csv", "lastNObservations": 1, "lang": "de"}, timeout=60)
-    print(fl, rr.status_code, rr.text[:300].replace("\n", " | "))
-
-hdr("Destatis Terminvorschau")
-for u in ["https://www.destatis.de/DE/Presse/Termine/_inhalt.html", "https://www.destatis.de/SiteGlobals/Forms/Suche/Termine/DE/Terminsuche_Formular.html"]:
+UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) konjunkturmonitor"}
+def page(u, pat=None, n=1500):
     try:
-        rr = S.get(u, timeout=60, headers={"User-Agent": "Mozilla/5.0 konjunkturmonitor"})
+        rr = S.get(u, timeout=60, headers=UA)
+        links = re.findall(r'href="([^"]+)"', rr.text)
+        print(u, rr.status_code, len(rr.text))
+        hits = [l for l in links if pat and re.search(pat, l, re.I)]
+        print("  Links:", hits[:25])
+        return rr
+    except Exception as e:
+        print(u, "Fehler", e)
+hdr("WAI")
+for u in ["https://www.bundesbank.de/de/statistiken/konjunktur-und-preise/woechentlicher-aktivitaetsindex",
+          "https://www.bundesbank.de/de/statistiken/konjunktur-und-preise/wai",
+          "https://www.bundesbank.de/en/statistics/economic-activity-and-prices/weekly-activity-index"]:
+    page(u, r"xlsx|csv|\.xls|wai|aktivit")
+hdr("Kalender")
+for u in ["https://www.destatis.de/DE/Presse/Termine/Wochenvorschau/_inhalt.html",
+          "https://www.destatis.de/SiteGlobals/Functions/RSSFeed/DE/RSSNewsfeed/Termine.xml",
+          "https://www.destatis.de/DE/Service/Termine/_inhalt.html",
+          "https://www.bundesbank.de/de/statistiken/statistischer-veroeffentlichungskalender",
+          "https://statistik.arbeitsagentur.de/DE/Navigation/Footer/Top-Produkte/Veroeffentlichungskalender-Nav.html"]:
+    rr = page(u, r"ics|ical|termin|kalender|rss|xml")
+    if rr is not None and rr.ok:
         txt = re.sub(r"<[^>]+>", " ", rr.text); txt = re.sub(r"\s+", " ", txt)
-        i = txt.find("Termin")
-        print(u, rr.status_code, len(rr.text)); print(txt[i:i+2500])
-        print("ICS-Links:", re.findall(r'href="([^"]*(?:ics|ical|rss)[^"]*)"', rr.text)[:10])
-    except Exception as e: print(u, "Fehler", e)
-hdr("Eurostat Kalender")
-for u in ["https://ec.europa.eu/eurostat/api/dissemination/catalogue/rss/en/statistics-update.rss",
-          "https://ec.europa.eu/eurostat/o/calendars/eventsJson?theme=0&category=0"]:
-    try:
-        rr = S.get(u, timeout=60); print(u, rr.status_code, rr.text[:600].replace("\n", " "))
-    except Exception as e: print(u, "Fehler", e)
-
-hdr("DBnomics AMECO")
-for u in ["https://api.db.nomics.world/v22/series/AMECO/OVGD/DEU.1.1.0.0.OVGD?observations=1",
-          "https://api.db.nomics.world/v22/series/AMECO/OVGDP?dimensions=%7B%22geo%22%3A%5B%22deu%22%5D%7D&observations=1&limit=5",
-          "https://api.db.nomics.world/v22/datasets/AMECO?q=potential&limit=20"]:
-    try:
-        rr = S.get(u, timeout=60); print(u, rr.status_code, rr.text[:1500].replace("\n", " "))
-    except Exception as e: print(u, "Fehler", e)
-
-hdr("OECD Körperschaftsteuer")
-for u in ["https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_TAX_CIT@DF_CIT,/DEU+FRA+ITA+USA+GBR+JPN.......?startPeriod=2020&format=csvfile",
-          "https://sdmx.oecd.org/public/rest/dataflow/OECD.CTP.TPS/all"]:
-    try:
-        rr = S.get(u, timeout=60); print(u, rr.status_code, rr.text[:1500].replace("\n", " | "))
-    except Exception as e: print(u, "Fehler", e)
-
-euro("namq_10_a10_e", geo="DE", unit="THS_PER", s_adj="SCA", na_item="EMP_DC")
-euro("namq_10_lp_ulc", geo="DE", s_adj="SCA")
-euro("demo_gind", geo="DE", indic_de="CNMIGRAT")
-euro("nama_10_gdp", geo="DE", na_item="P51G", unit="PC_GDP")
-gen_tables("13321*")
+        m = re.search(r"\d{1,2}\.\d{1,2}\.20\d\d", txt)
+        print("  Text:", txt[max(0, (m.start() if m else 0) - 200):(m.start() if m else 0) + 1500])
+r = S.get("https://ec.europa.eu/eurostat/o/calendars/eventsJson", params={"start": "2026-11-01", "end": "2026-12-31", "theme": 0, "category": 0}, timeout=60)
+print("Eurostat Kalender", r.status_code, r.text[:1500])
+hdr("AMECO")
+r = S.get("https://api.db.nomics.world/v22/series/AMECO/OVGDP", params={"dimensions": json.dumps({"geo": ["deu"]}), "observations": 1, "limit": 20}, timeout=60)
+j = r.json()
+for s in j.get("series", {}).get("docs", []):
+    print(s.get("series_code"), "|", s.get("series_name"), "|", list(zip(s.get("period", [])[-25:], s.get("value", [])[-25:])))
+r = S.get("https://api.db.nomics.world/v22/series/AMECO/OVGD", params={"dimensions": json.dumps({"geo": ["deu"]}), "observations": 1, "limit": 20}, timeout=60)
+for s in r.json().get("series", {}).get("docs", []):
+    print(s.get("series_code"), "|", s.get("series_name"), "|", list(zip(s.get("period", [])[-12:], s.get("value", [])[-12:])))
+hdr("OECD CIT")
+r = S.get("https://sdmx.oecd.org/public/rest/dataflow/OECD.CTP.TPS/DSD_TAX_CIT@DF_CIT/latest", params={"references": "all"}, timeout=60)
+print(r.status_code); dims = re.findall(r'<structure:Dimension id="([^"]+)"[^>]*position="(\d+)"', r.text); print(dims)
+for key in ["DEU+FRA+ITA+USA+GBR+JPN+ESP+NLD.........", "DEU+FRA+ITA+USA+GBR+JPN+ESP+NLD........"]:
+    rr = S.get(f"https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_TAX_CIT@DF_CIT,/{key}", params={"startPeriod": "2000", "format": "csvfile"}, timeout=60)
+    print(key, rr.status_code, len(rr.text))
+    if rr.ok:
+        d = pd.read_csv(io.StringIO(rr.text), dtype=str)
+        print(list(d.columns))
+        for c in d.columns:
+            if d[c].nunique() < 15: print("  ", c, d[c].unique()[:15])
+        cols = [c for c in d.columns if c in ("REF_AREA", "TIME_PERIOD", "OBS_VALUE") or "MEASURE" in c or "TAX" in c]
+        print(d[cols][d["TIME_PERIOD"].isin(["2000", "2010", "2025", "2026"])].head(80).to_string())
+        break
