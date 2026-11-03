@@ -12,6 +12,7 @@ blocks:
   - {id: konsum, title: Konsum, sheet: Konsum}
   - {id: export, title: Export, sheet: Export}
   - {id: stimmung, title: Stimmung, sheet: Stimmung}
+  - {id: insolvenzen, title: Insolvenzen, sheet: Insolvenzen}
 
 names:
   item:
@@ -21,6 +22,23 @@ names:
     P52_P53: Lager
     P6: Exporte
     P7: Importe
+  land:
+    "01": Schleswig-Holstein
+    "02": Hamburg
+    "03": Niedersachsen
+    "04": Bremen
+    "05": Nordrhein-Westfalen
+    "06": Hessen
+    "07": Rheinland-Pfalz
+    "08": Baden-Württemberg
+    "09": Bayern
+    "10": Saarland
+    "11": Berlin
+    "12": Brandenburg
+    "13": Mecklenburg-Vorpommern
+    "14": Sachsen
+    "15": Sachsen-Anhalt
+    "16": Thüringen
 
 charts:
   gdp_qoq: {title: "Wirtschaftsleistung, Veränderung gegenüber dem Vorquartal", decimals: 1}
@@ -41,6 +59,12 @@ charts:
   clock: {title: "Konjunkturuhr der Industrie", decimals: 1}
   employment: {title: "Erwerbstätige", decimals: 0}
   forecast: {title: "Prognosen für das Wachstum", decimals: 1}
+  insolv: {title: "Unternehmensinsolvenzen je Monat", decimals: 0}
+  insolv_emp: {title: "Von Insolvenzen betroffene Beschäftigte je Monat", decimals: 0}
+  insolv_claims: {title: "Voraussichtliche Forderungen der Gläubiger je Monat", decimals: 1}
+  insolv_land: {title: "Insolvenzen nach Ländern", decimals: 0}
+  gruend_land: {title: "Betriebsgründungen nach Ländern", decimals: 0}
+  aufgabe_land: {title: "Betriebsaufgaben nach Ländern", decimals: 0}
 
 series:
   # --- Wachstum ------------------------------------------------------------
@@ -481,3 +505,87 @@ series:
     unit: Saldo
     frequency: M
     adjustment: saisonbereinigt
+
+  # --- Insolvenzen und Gewerbeanzeigen (Destatis GENESIS, Zugang erforderlich) ---
+  - id: de_insolv
+    block: insolvenzen
+    source: genesis
+    key: 52411-0010
+    params: {value_variable: ISV006}
+    title: Beantragte Unternehmensinsolvenzen
+    unit: Anzahl
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: insolv
+    label: Unternehmensinsolvenzen
+
+  - id: de_insolv_emp
+    block: insolvenzen
+    source: genesis
+    key: 52411-0010
+    params: {value_variable: ERW020}
+    title: Von Unternehmensinsolvenzen betroffene Arbeitnehmer
+    unit: Personen
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: insolv_emp
+    label: Betroffene Beschäftigte
+
+  - id: de_insolv_claims
+    block: insolvenzen
+    source: genesis
+    key: 52411-0010
+    params: {value_variable: FOR002, scale: 0.000001}
+    title: Voraussichtliche Forderungen bei Unternehmensinsolvenzen
+    unit: Mrd. €
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: insolv_claims
+    label: Forderungen
+
+  - id: de_insolv_land
+    expand: {land: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"]}
+    block: insolvenzen
+    source: genesis
+    key: 52411-0110
+    params: {value_variable: ISV006, filters: {DLAND: "{land}"}}
+    title: Unternehmensinsolvenzen {land_name}
+    unit: Anzahl
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: insolv_land
+    label: "{land_name}"
+
+  - id: de_gruend_land
+    expand: {land: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"]}
+    block: insolvenzen
+    source: genesis
+    key: 52311-0110
+    params: {value_variable: GEW009, filters: {DLAND: "{land}", GEWNG1: GEW-BTRGRH}}
+    title: Betriebsgründungen (Hauptniederlassung) {land_name}
+    unit: Anzahl
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: gruend_land
+    label: "{land_name}"
+    note: Neugründungen von Hauptniederlassungen mit größerer wirtschaftlicher Bedeutung (ohne Nebenerwerb und Übrige).
+
+  - id: de_aufgabe_land
+    expand: {land: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"]}
+    block: insolvenzen
+    source: genesis
+    key: 52311-0130
+    params: {value_variable: GEW010, filters: {DLAND: "{land}", GEWAG1: GEW-BTRAGH}}
+    title: Betriebsaufgaben (Hauptniederlassung) {land_name}
+    unit: Anzahl
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: aufgabe_land
+    label: "{land_name}"
+    note: Vollständige Aufgaben von Hauptniederlassungen mit größerer wirtschaftlicher Bedeutung (ohne Nebenerwerb und Übrige).

@@ -54,6 +54,45 @@ def _clock(cfg: dict, data: dict) -> dict | None:
             "t": [d.strftime("%Y-%m-%d") for d in dev.index]}
 
 
+LAND_ABBR = {"01": "SH", "02": "HH", "03": "NI", "04": "HB", "05": "NW", "06": "HE", "07": "RP", "08": "BW", "09": "BY", "10": "SL",
+             "11": "BE", "12": "BB", "13": "MV", "14": "SN", "15": "ST", "16": "TH"}
+
+
+def _seasonal(s: pd.Series, years: int | None) -> dict:
+    """Monatswerte, 12-Monats-Mittel und das übliche Niveau desselben Monats 2016 bis 2019."""
+    s = s.dropna()
+    ma12 = s.rolling(12).mean()
+    base = s[(s.index.year >= 2016) & (s.index.year <= 2019)]
+    norm_by_month = base.groupby(base.index.month).mean() if len(base) else pd.Series(dtype=float)
+    norm = pd.Series([norm_by_month.get(d.month) for d in s.index], index=s.index, dtype=float)
+    if years:
+        cut = s.index[-1] - pd.DateOffset(years=years)
+        s, ma12, norm = s[s.index >= cut], ma12[ma12.index >= cut], norm[norm.index >= cut]
+    r = lambda v: None if pd.isna(v) else round(float(v), 4)
+    return {"x": [d.strftime("%Y-%m-%d") for d in s.index], "y": [r(v) for v in s], "ma12": [r(v) for v in ma12], "norm": [r(v) for v in norm]}
+
+
+def _tiles(prefix: str, data: dict, meta: dict) -> dict | None:
+    """Veränderung der letzten zwölf Monate gegenüber den zwölf Monaten davor, je Land."""
+    rows, last = [], None
+    for code, abbr in LAND_ABBR.items():
+        s = data.get(f"{prefix}{code}")
+        if s is None or len(s.dropna()) < 24:
+            continue
+        s = s.dropna()
+        a, b = s.iloc[-12:].sum(), s.iloc[-24:-12].sum()
+        if b <= 0:
+            continue
+        last = s.index[-1] if last is None else max(last, s.index[-1])
+        rows.append({"code": code, "abbr": abbr, "name": meta[f"{prefix}{code}"].label, "change": round((a / b - 1) * 100, 1), "sum12": int(a)})
+    if not rows:
+        return None
+    from .answers import MONTHS
+    lo = last - pd.DateOffset(months=11)
+    span = f"{MONTHS[lo.month - 1]} {lo.year} bis {MONTHS[last.month - 1]} {last.year}"
+    return {"rows": rows, "span": span}
+
+
 def _forecasts(root: Path) -> list[dict]:
     """Prognosen je Herausgeber und Runde; die jüngste Runde je Herausgeber ist als latest markiert."""
     path = root / "data" / "static" / "prognosen.yaml"
@@ -92,6 +131,20 @@ def build_payload(root: Path = ROOT) -> dict:
                 entry["licenses"] = [SOURCE_LICENSES["eurostat"]]
                 if not entry["clock"]:
                     continue
+            elif typ == "seasonal":
+                sid = c["series"]
+                if sid not in data:
+                    continue
+                m = meta[sid]
+                entry.update(_seasonal(data[sid], c.get("years")), unit=m.unit, freq=m.frequency, adjustment=m.adjustment,
+                             label=m.label, sources=["Statistisches Bundesamt (GENESIS)"],
+                             licenses=["Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt)"])
+            elif typ == "tiles":
+                tiles = _tiles(c["prefix"], data, meta)
+                if not tiles:
+                    continue
+                entry.update(tiles=tiles, sources=["Statistisches Bundesamt (GENESIS)"],
+                             licenses=["Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt)"])
             elif typ == "forecast":
                 entry["forecasts"] = _forecasts(root)
                 entry["sources"] = sorted({f"{f['by']} ({f['round']})" for f in entry["forecasts"]})
