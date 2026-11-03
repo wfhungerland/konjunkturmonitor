@@ -55,8 +55,15 @@ def inflation(q: dict, data: dict) -> dict:
     if v < 0:
         head = f"Im {period(t, 'M')} waren die Preise um {num(abs(v))} % niedriger als ein Jahr zuvor."
     dirw = "gesunken" if v < p - 0.05 else ("gestiegen" if v > p + 0.05 else "gleich geblieben")
-    more = [f"Im Vormonat lag die Rate bei {num(p)} %, sie ist also {dirw}.",
-            "Die Europäische Zentralbank strebt 2 % an."]
+    more = [f"Im Vormonat lag die Rate bei {num(p)} %, sie ist also {dirw}."]
+    parts = []
+    for label, sid in (q.get("parts") or {}).items():
+        ps = data.get(sid)
+        if ps is not None and not ps.dropna().empty and ps.dropna().index[-1] == t:
+            parts.append(f"{label} {num(ps.dropna().iloc[-1], sign=True)} %")
+    if parts:
+        more.append("Gegenüber dem Vorjahresmonat: " + ", ".join(parts) + ".")
+    more.append("Die Europäische Zentralbank strebt 2 % an.")
     verdict = ("unter dem Ziel" if v < 1.5 else "nahe am Ziel" if v <= 2.5 else "über dem Ziel" if v <= 4 else "hoch")
     return {"value": round(float(v), 1), "unit": "%", "signed": False, "period": period(t, "M"), "head": head, "more": more,
             "verdict": verdict, "spark": q["series"], "ref": 2.0}

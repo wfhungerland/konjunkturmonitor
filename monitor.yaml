@@ -21,7 +21,8 @@ questions:
     ask: "Steigen die Preise?"
     kind: inflation
     series: de_cpi_yoy
-    explain: "Die Inflationsrate sagt, um wie viel Prozent ein typischer Einkauf teurer ist als vor einem Jahr. Die Europäische Zentralbank hält 2 % für angemessen."
+    parts: {Energie: de_vpi_energy_yoy, Nahrungsmittel: de_vpi_food_yoy, "Waren ohne Energie": de_vpi_goods_yoy, "Dienstleistungen ohne Miete": de_vpi_serv_yoy, Wohnungsmiete: de_vpi_rent_yoy}
+    explain: "Die Inflationsrate sagt, um wie viel Prozent ein typischer Einkauf teurer ist als vor einem Jahr. Gemessen wird sie mit dem Verbraucherpreisindex (VPI) des Statistischen Bundesamts. Die Europäische Zentralbank hält 2 % für angemessen."
     topic: preise
 
   - id: arbeit
@@ -81,7 +82,7 @@ topics:
   - id: preise
     title: Preise
     charts:
-      - {chart: cpi, years: 6, emphasis: de_cpi_yoy, ref: 2, caption: "Dicke Linie: Inflationsrate insgesamt. Dünne Linien: wie stark einzelne Bereiche teurer wurden. Gestrichelt: Ziel der EZB von 2 %."}
+      - {chart: cpi, years: 6, emphasis: de_cpi_yoy, ref: 2, caption: "Verbraucherpreisindex (VPI) des Statistischen Bundesamts. Dicke Linie: Inflationsrate insgesamt. Dünne Linien: wie stark einzelne Bereiche teurer wurden. Gestrichelt: 2 %, das Ziel der EZB (es bezieht sich auf den europäischen HVPI, der in Deutschland meist nahe am VPI liegt)."}
       - {chart: pipeline_prices, years: 6, caption: "Preise, bevor sie beim Verbraucher ankommen: Erzeuger verkaufen an Händler, Importeure kaufen im Ausland ein. Sie laufen der Inflation oft voraus."}
   - id: arbeit
     title: Arbeit

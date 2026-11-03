@@ -44,7 +44,7 @@ charts:
   gdp_qoq: {title: "Wirtschaftsleistung, Veränderung gegenüber dem Vorquartal", decimals: 1}
   gdp_contrib: {title: "Woraus das Wachstum besteht", kind: stacked, decimals: 1}
   gdp_level: {title: "Wirtschaftsleistung, Niveau", decimals: 0}
-  cpi: {title: "Inflationsrate und Bestandteile", decimals: 1}
+  cpi: {title: "Inflationsrate (VPI) und Bestandteile", decimals: 1}
   pipeline_prices: {title: "Preise auf den Vorstufen", decimals: 1}
   labour: {title: "Arbeitslosenquote", decimals: 1}
   labour_flows: {title: "Arbeitslose und offene Stellen", decimals: 0}
@@ -130,53 +130,105 @@ series:
     chart: cpi
     label: Insgesamt
 
-  - id: de_hicp_core_yoy
+  - id: de_vpi_food
     block: preise
-    source: eurostat
-    key: prc_hicp_minr
-    params: {geo: DE, unit: RCH_A, coicop18: TOT_X_NRG_FOOD}
-    title: HVPI ohne Energie und Nahrungsmittel, % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.C2C011.I20.A
+    title: VPI Nahrungsmittel, Index
+    unit: Index 2020=100
     frequency: M
     adjustment: nicht bereinigt
-    chart: cpi
-    label: Ohne Energie und Nahrung (Kernrate, HVPI)
 
-  - id: de_hicp_energy_yoy
+  - id: de_vpi_food_yoy
     block: preise
-    source: eurostat
-    key: prc_hicp_minr
-    params: {geo: DE, unit: RCH_A, coicop18: NRG}
-    title: HVPI Energie, % gg. Vorjahresmonat
+    source: derived
+    derive: {from: de_vpi_food, op: yoy_pct}
+    title: VPI Nahrungsmittel, % gg. Vorjahresmonat
     unit: "% gg. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi
-    label: Energie (HVPI)
+    label: Nahrungsmittel
 
-  - id: de_hicp_food_yoy
+  - id: de_vpi_energy
     block: preise
-    source: eurostat
-    key: prc_hicp_minr
-    params: {geo: DE, unit: RCH_A, coicop18: FOOD}
-    title: HVPI Nahrungsmittel, Alkohol und Tabak, % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.NRGY00.I20.A
+    title: VPI Energie (Haushaltsenergie und Kraftstoffe), Index
+    unit: Index 2020=100
     frequency: M
     adjustment: nicht bereinigt
-    chart: cpi
-    label: Nahrung (HVPI)
 
-  - id: de_hicp_serv_yoy
+  - id: de_vpi_energy_yoy
     block: preise
-    source: eurostat
-    key: prc_hicp_minr
-    params: {geo: DE, unit: RCH_A, coicop18: SERV}
-    title: HVPI Dienstleistungen, % gg. Vorjahresmonat
+    source: derived
+    derive: {from: de_vpi_energy, op: yoy_pct}
+    title: VPI Energie (Haushaltsenergie und Kraftstoffe), % gg. Vorjahresmonat
     unit: "% gg. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi
-    label: Dienstleistungen (HVPI)
+    label: Energie
+
+  - id: de_vpi_goods
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.GOODS0MFXE.I20.A
+    title: VPI Gewerbliche Waren ohne Energie, Index
+    unit: Index 2020=100
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_vpi_goods_yoy
+    block: preise
+    source: derived
+    derive: {from: de_vpi_goods, op: yoy_pct}
+    title: VPI Gewerbliche Waren ohne Energie, % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi
+    label: Waren ohne Energie
+
+  - id: de_vpi_serv
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.SVXR.I20.A
+    title: VPI Dienstleistungen ohne Wohnungsmieten, Index
+    unit: Index 2020=100
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_vpi_serv_yoy
+    block: preise
+    source: derived
+    derive: {from: de_vpi_serv, op: yoy_pct}
+    title: VPI Dienstleistungen ohne Wohnungsmieten, % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi
+    label: Dienstleistungen ohne Miete
+
+  - id: de_vpi_rent
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.C2C041.I20.A
+    title: VPI Tatsächliche Wohnungsmiete (Nettokaltmiete), Index
+    unit: Index 2020=100
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_vpi_rent_yoy
+    block: preise
+    source: derived
+    derive: {from: de_vpi_rent, op: yoy_pct}
+    title: VPI Tatsächliche Wohnungsmiete (Nettokaltmiete), % gg. Vorjahresmonat
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi
+    label: Wohnungsmiete
 
   - id: de_ppi
     block: preise

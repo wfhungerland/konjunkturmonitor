@@ -26,7 +26,7 @@ Seite: https://wfhungerland.github.io/konjunkturmonitor/
 | Thema | Quelle |
 |---|---|
 | Wachstum | Eurostat `namq_10_gdp` |
-| Preise | Bundesbank (VPI), Eurostat `prc_hicp_minr`, `sts_inppd_m`; Einfuhrpreise der Bundesbank |
+| Preise | Bundesbank `BBDP1` (VPI insgesamt und Bestandteile: Energie, Nahrungsmittel, Waren ohne Energie, Dienstleistungen ohne Miete, Wohnungsmiete), Eurostat `sts_inppd_m`; Einfuhrpreise der Bundesbank |
 | Arbeit | Bundesbank (BA-Reihen, saisonbereinigt), Eurostat `namq_10_pe`; Kurzarbeit-Äquivalente aus der BA-Statistik (`data/static`) |
 | Industrie | Bundesbank `BBDE1` (Produktion, Auftragseingang) |
 | Konsum | Bundesbank `BBDE1` (Einzelhandel), Eurostat `ei_bsco_m` (Verbrauchervertrauen) |
