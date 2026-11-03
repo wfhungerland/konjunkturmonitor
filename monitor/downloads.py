@@ -1,0 +1,636 @@
+"""Downloads je Abbildung: Excel (Daten und Diagramm), PowerPoint-Folie (bearbeitbares Diagramm), CSV.
+
+Die Folie folgt der Geometrie des vorgegebenen Folienmasters (16:9, grauer Rahmen, weiße Fläche,
+Übertitel, Titel, Inhaltsbereich, Quellenzeile, Fußzeile), ohne Logo und ohne Behördenkennzeichnung.
+Diagramme nach dem Grafikstandard: Werteachse rechts, feine graue Gitterlinien, Legende oben links,
+keine Überschrift im Diagramm, Arial Narrow, Hausfarben.
+"""
+from __future__ import annotations
+
+import copy
+from datetime import datetime
+from pathlib import Path
+
+import pandas as pd
+
+PALETTE = ["#002060", "#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#47D359"]
+FONT = "Arial Narrow"
+GRID = "#BFBFBF"
+MUTED = "#576164"
+FRAME = "#E5E8E9"
+
+# Geometrie des Folienmasters (EMU)
+SLIDE_W, SLIDE_H = 9144000, 5143500
+WHITE = (360000, 360000, 8424000, 4219591)
+OVERTITLE = (360000, 400000, 7900000, 195343)
+TITLE = (360000, 600000, 8423954, 420000)
+SUB = (360000, 1030000, 8423954, 230000)
+UNIT = (360000, 1240000, 8423954, 200000)
+CHART = (360000, 1419622, 8424000, 3020000)
+SOURCE = (420000, 4440000, 8300000, 130000)
+FOOT_L = (360000, 4700000, 4000000, 300000)
+FOOT_R = (5400000, 4759833, 3384000, 215444)
+NUMBER = (8280000, 420000, 432000, 116100)
+
+
+# ---------------------------------------------------------------------------
+# Tabelle je Abbildung
+# ---------------------------------------------------------------------------
+def _ma3(y: list) -> list:
+    s = pd.Series(y, dtype=float)
+    return s.rolling(3).mean().round(4).tolist()
+
+
+def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
+    """Breite Tabelle und Beschreibung, wie die Abbildung zu zeichnen ist.
+
+    plan: kind (line, stacked, threshold, hbar, scatter, columns, tiles), lines/bars (Spaltennamen),
+    thin (nur dünn zu zeichnende Spalten), emphasis, dashed.
+    """
+    typ = c.get("type", "line")
+    if typ in ("line", "threshold", "stacked") and c.get("series"):
+        cols, thin, bars, lines = {}, [], [], []
+        for s in c["series"]:
+            x = pd.to_datetime(s["x"])
+            if c.get("ma3") and s.get("style") != "bar":
+                cols[s["label"] + " (Monatswert)"] = pd.Series(s["y"], index=x)
+                cols[s["label"]] = pd.Series(_ma3(s["y"]), index=x)
+                thin.append(s["label"] + " (Monatswert)")
+                lines.append(s["label"])
+            else:
+                cols[s["label"]] = pd.Series(s["y"], index=x)
+                (bars if s.get("style") == "bar" else lines).append(s["label"])
+        df = pd.DataFrame(cols).sort_index()
+        dashed = []
+        for key, label in (("ref", "Referenz"), ("threshold", "Schwelle")):
+            if c.get(key) is not None:
+                name = f"{label} ({str(c[key]).replace('.', ',')})"
+                df[name] = c[key]
+                lines.append(name)
+                dashed.append(name)
+        df.index.name = "Datum"
+        emph = next((s["label"] for s in c["series"] if s["id"] == c.get("emphasis")), None)
+        kind = "stacked" if bars and typ == "stacked" else ("columns" if bars and not lines else "line")
+        if bars and lines and typ != "stacked":
+            kind = "stacked"
+        return df.reset_index(), {"kind": kind, "bars": bars, "lines": lines + thin, "thin": thin, "emphasis": emph, "dashed": dashed}
+    if typ == "latest" and c.get("bars"):
+        df = pd.DataFrame({"Bereich": [b["label"] for b in c["bars"]],
+                           "Letztes Quartal": [b["value"] for b in c["bars"]],
+                           "Quartal davor": [b["prev"] for b in c["bars"]]})
+        return df.iloc[::-1].reset_index(drop=True), {"kind": "hbar"}
+    if typ == "seasonal":
+        x = pd.to_datetime(c["x"])
+        df = pd.DataFrame({"Monatswert": c["y"], "Gleitendes Zwölfmonatsmittel": c["ma12"],
+                           "Vorkrisenniveau (Mittel desselben Monats 2016 bis 2019)": c["norm"]}, index=x)
+        df.index.name = "Datum"
+        return df.reset_index(), {"kind": "line", "lines": list(df.columns[0:]), "thin": ["Monatswert"],
+                                  "emphasis": "Gleitendes Zwölfmonatsmittel", "dashed": ["Vorkrisenniveau (Mittel desselben Monats 2016 bis 2019)"]}
+    if typ == "clock" and c.get("clock"):
+        k = c["clock"]
+        df = pd.DataFrame({"Monat": k["t"], "Lage (Auftragsbestand)": k["x"], "Erwartungen (Produktion)": k["y"]})
+        return df, {"kind": "scatter"}
+    if typ == "forecast" and c.get("forecasts"):
+        latest = [f for f in c["forecasts"] if f.get("latest")]
+        years = sorted({y for f in latest for y in f["values"]})
+        df = pd.DataFrame({"Herausgeber": [f"{f['by']} ({f['round']})" for f in latest],
+                           **{str(y): [f["values"].get(y) for f in latest] for y in years}})
+        return df, {"kind": "columns_cat"}
+    if typ == "tiles" and c.get("tiles"):
+        rows = c["tiles"]["rows"]
+        df = pd.DataFrame({"Land": [r["name"] for r in rows], "Kürzel": [r["abbr"] for r in rows],
+                           f"Summe {c['tiles']['span']}": [r["sum"] for r in rows],
+                           "Veränderung gegenüber Vorjahreszeitraum, %": [r["change"] for r in rows]})
+        if c.get("tiles6"):
+            m6 = {r["abbr"]: r["change"] for r in c["tiles6"]["rows"]}
+            df[f"Veränderung, letzte 6 Monate ({c['tiles6']['span']}), %"] = df["Kürzel"].map(m6)
+        return df, {"kind": "tiles"}
+    return pd.DataFrame(), {"kind": "none"}
+
+
+def header_lines(c: dict) -> tuple[str, str]:
+    typ = c.get("type")
+    if typ in ("clock", "forecast"):
+        sub = ""
+    elif typ == "tiles":
+        sub = "Summe " + c["tiles"]["span"] if c.get("tiles") else ""
+    else:
+        freq = {"Q": "Vierteljährlich", "A": "Jährlich"}.get(c.get("freq"), "Monatlich")
+        sub = " · ".join(x for x in (freq, c.get("adjustment")) if x)
+    unit = {"clock": "Saldo, Abstand zum Mittel 2005 bis 2019", "forecast": "% gegenüber Vorjahr, BIP real",
+            "tiles": "Veränderung gegenüber demselben Zeitraum ein Jahr zuvor, %"}.get(typ, c.get("unit") or "")
+    return sub, unit
+
+
+def source_line(c: dict) -> str:
+    src = "Quelle: " + ", ".join(c.get("sources") or [])
+    if c.get("licenses"):
+        src += ". Lizenz: " + "; ".join(c["licenses"])
+    if c.get("type") == "tiles" and GEO:
+        src += ". Ländergrenzen: © GeoBasis-DE / BKG (VG2500), dl-de/by-2-0"
+    return src
+
+
+# ---------------------------------------------------------------------------
+# Excel
+# ---------------------------------------------------------------------------
+def write_xlsx(c: dict, df: pd.DataFrame, plan: dict, path: Path, stand: str, cite: str) -> None:
+    title = f"Abb. {c['no']} {c.get('title', '')}"
+    sub, unit = header_lines(c)
+    with pd.ExcelWriter(path, engine="xlsxwriter", datetime_format="yyyy-mm-dd") as xw:
+        wb = xw.book
+        bold = wb.add_format({"bold": True, "font_name": FONT, "font_size": 12})
+        norm = wb.add_format({"font_name": FONT, "font_color": MUTED})
+        wrap = wb.add_format({"font_name": FONT, "text_wrap": True, "valign": "top"})
+        sheet = wb.add_worksheet("Abbildung")
+        sheet.hide_gridlines(2)
+        sheet.write(0, 0, title, bold)
+        sheet.write(1, 0, " · ".join(x for x in (sub, unit) if x), norm)
+        sheet.write(24, 0, c.get("caption", ""), norm)
+        sheet.write(25, 0, source_line(c), norm)
+        df.to_excel(xw, sheet_name="Daten", index=False, startrow=3)
+        ws = xw.sheets["Daten"]
+        ws.write(0, 0, title, bold)
+        ws.write(1, 0, source_line(c), norm)
+        ws.set_column(0, 0, 16)
+        ws.set_column(1, max(1, len(df.columns) - 1), 18)
+        chart = _xlsx_chart(wb, df, plan, c)
+        if chart is not None:
+            sheet.insert_chart(3, 0, chart)
+        info = wb.add_worksheet("Info")
+        info.set_column(0, 0, 22)
+        info.set_column(1, 1, 110)
+        for r, (k, v) in enumerate([("Abbildung", title), ("Zeitraum und Bereinigung", sub), ("Einheit", unit),
+                                    ("Erläuterung", c.get("caption", "")), ("Quelle", source_line(c)),
+                                    ("Stand", stand), ("Zitiervorschlag", cite)]):
+            info.write(r, 0, k, wb.add_format({"bold": True, "font_name": FONT}))
+            info.write(r, 1, v, wrap)
+        sheet.activate()
+
+
+def _xlsx_chart(wb, df: pd.DataFrame, plan: dict, c: dict):
+    n = len(df)
+    if not n or plan["kind"] in ("none", "tiles"):
+        return None
+    axis_font = {"name": FONT, "size": 9}
+    dec = "General"
+    col = {name: j for j, name in enumerate(df.columns)}
+
+    def ref(j):
+        return ["Daten", 4, j, 3 + n, j]
+
+    cats = ["Daten", 4, 0, 3 + n, 0]
+    kind = plan["kind"]
+    if kind == "scatter":
+        ch = wb.add_chart({"type": "scatter", "subtype": "straight_with_markers"})
+        ch.add_series({"name": "Verlauf", "categories": ref(1), "values": ref(2), "line": {"color": PALETTE[0], "width": 1.5},
+                       "marker": {"type": "circle", "size": 4, "fill": {"color": PALETTE[0]}, "border": {"color": PALETTE[0]}}})
+    elif kind in ("hbar", "columns_cat"):
+        ch = wb.add_chart({"type": "bar" if kind == "hbar" else "column"})
+        for i, name in enumerate(df.columns[1:]):
+            ch.add_series({"name": ["Daten", 3, i + 1], "categories": cats, "values": ref(i + 1),
+                           "fill": {"color": PALETTE[i % len(PALETTE)]}, "gap": 60})
+    else:
+        ch = wb.add_chart({"type": "column", "subtype": "stacked"}) if kind in ("stacked", "columns") else wb.add_chart({"type": "line"})
+        for i, name in enumerate(plan.get("bars", []) if kind in ("stacked", "columns") else []):
+            ch.add_series({"name": ["Daten", 3, col[name]], "categories": cats, "values": ref(col[name]),
+                           "fill": {"color": PALETTE[(i + 1) % len(PALETTE)]}, "gap": 40})
+        target = ch
+        if kind == "stacked" and plan.get("lines"):
+            target = wb.add_chart({"type": "line"})
+        for i, name in enumerate(n_ for n_ in plan.get("lines", []) if n_ not in plan.get("thin", [])):
+            color = "#000000" if kind == "stacked" else PALETTE[i % len(PALETTE)]
+            width = 2.25 if (plan.get("emphasis") in (None, name)) else 1.25
+            line = {"color": "#C00000" if name in plan.get("dashed", []) and name.startswith("Schwelle") else color, "width": width}
+            if name in plan.get("dashed", []):
+                line.update(dash_type="dash", width=1.25, color=PALETTE[1] if name.startswith("Referenz") else line["color"])
+            target.add_series({"name": ["Daten", 3, col[name]], "categories": cats, "values": ref(col[name]),
+                               "line": line, "marker": {"type": "none"}})
+        for i, name in enumerate(plan.get("thin", [])):
+            target.add_series({"name": ["Daten", 3, col[name]], "categories": cats, "values": ref(col[name]),
+                               "line": {"color": PALETTE[i % len(PALETTE)], "width": 0.75, "transparency": 50}, "marker": {"type": "none"}})
+        if target is not ch:
+            ch.combine(target)
+        ch.show_blanks_as("gap")
+    x_opts = {"num_font": {**axis_font, "rotation": 0}, "line": {"none": True}, "major_tick_mark": "none", "label_position": "low"}
+    if kind in ("line", "stacked", "columns"):
+        x_opts.update(date_axis=True, num_format="yyyy", major_unit=1, major_unit_type="years")
+    if kind not in ("hbar",):
+        x_opts["crossing"] = "max"
+    ch.set_x_axis(x_opts)
+    ch.set_y_axis({"num_font": axis_font, "line": {"none": True}, "major_tick_mark": "none", "num_format": dec,
+                   "major_gridlines": {"visible": True, "line": {"color": GRID, "width": 0.25}}})
+    ch.set_legend({"position": "top", "font": axis_font, "delete_series": list(range(len(df.columns) - 1 - len(plan.get("thin", [])), len(df.columns) - 1)) if plan.get("thin") else []})
+    ch.set_chartarea({"border": {"none": True}})
+    ch.set_plotarea({"border": {"none": True}})
+    ch.set_size({"width": 760, "height": 420})
+    return ch
+
+
+# ---------------------------------------------------------------------------
+# PowerPoint
+# ---------------------------------------------------------------------------
+def _rgb(hexcolor: str):
+    from pptx.dml.color import RGBColor
+
+    return RGBColor.from_string(hexcolor.lstrip("#").upper())
+
+
+def _text(slide, box, text, size, color="#000000", bold=False, align=None, font="Arial", italic=False):
+    from pptx.util import Pt
+
+    tb = slide.shapes.add_textbox(*box)
+    tf = tb.text_frame
+    tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
+    tf.word_wrap = True
+    p = tf.paragraphs[0]
+    if align is not None:
+        p.alignment = align
+    r = p.add_run()
+    r.text = text
+    r.font.size, r.font.bold, r.font.italic, r.font.name = Pt(size), bold, italic, font
+    r.font.color.rgb = _rgb(color)
+    return tb
+
+
+def _frame(slide, stand: str, number: int):
+    from pptx.enum.shapes import MSO_SHAPE
+    from pptx.enum.text import PP_ALIGN
+
+    bg = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, SLIDE_W, SLIDE_H)
+    white = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, *WHITE)
+    for shp, color in ((bg, FRAME), (white, "#FFFFFF")):
+        shp.fill.solid()
+        shp.fill.fore_color.rgb = _rgb(color)
+        shp.line.fill.background()
+        shp.shadow.inherit = False
+    _text(slide, FOOT_L, "Konjunkturmonitor", 9, MUTED)
+    _text(slide, FOOT_R, f"Letzte Aktualisierung: {stand}", 9, MUTED, align=PP_ALIGN.RIGHT)
+    _text(slide, NUMBER, str(number), 9, MUTED, italic=True, align=PP_ALIGN.RIGHT)
+
+
+def _style_chart(chart, c: dict, plan: dict):
+    from pptx.enum.chart import XL_LEGEND_POSITION, XL_TICK_LABEL_POSITION, XL_TICK_MARK
+    from pptx.util import Pt
+
+    chart.font.name, chart.font.size = FONT, Pt(10)
+    chart.has_title = False
+    chart.has_legend = plan["kind"] not in ("scatter",) and len(chart.plots[0].series) + sum(len(p.series) for p in chart.plots[1:]) > 1
+    if chart.has_legend:
+        chart.legend.position = XL_LEGEND_POSITION.TOP
+        chart.legend.include_in_layout = False
+        chart.legend.font.size = Pt(10)
+    va = chart.value_axis
+    va.has_major_gridlines = True
+    va.major_gridlines.format.line.color.rgb = _rgb(GRID)
+    va.major_gridlines.format.line.width = Pt(0.25)
+    va.format.line.fill.background()
+    va.major_tick_mark = XL_TICK_MARK.NONE
+    va.tick_labels.number_format = "General"  # keine überflüssigen Nachkommastellen
+    va.tick_labels.number_format_is_linked = False
+    if plan["kind"] != "hbar":
+        from pptx.enum.chart import XL_AXIS_CROSSES
+        va.crosses = XL_AXIS_CROSSES.MAXIMUM  # Werteachse rechts (wie XlsxWriter: crosses=max am valAx)
+        ns = "{http://schemas.openxmlformats.org/drawingml/2006/chart}"
+        for ax in chart._chartSpace.iter(ns + "valAx"):
+            pos = ax.find(ns + "axPos")
+            if pos is not None:
+                pos.set("val", "r")
+    try:
+        ca = chart.category_axis
+        ca.format.line.fill.background()
+        ca.major_tick_mark = XL_TICK_MARK.NONE
+        ca.tick_label_position = XL_TICK_LABEL_POSITION.LOW
+    except Exception:
+        pass
+    plot = chart.plots[0]
+    el = chart._chartSpace.chart
+    disp = el.find("{http://schemas.openxmlformats.org/drawingml/2006/chart}dispBlanksAs")
+    if disp is not None:
+        disp.set("val", "gap")
+
+
+def _date_axis_years(chart, freq: str):
+    """Kategorienachse als Datumsachse mit Jahresbeschriftung."""
+    from lxml import etree
+
+    ns = "{http://schemas.openxmlformats.org/drawingml/2006/chart}"
+    for ax in chart._chartSpace.iter(ns + "dateAx"):
+        for tag, val in (("baseTimeUnit", "months"), ("majorUnit", "1"), ("majorTimeUnit", "years")):
+            e = ax.find(ns + tag)
+            if e is None:
+                e = etree.SubElement(ax, ns + tag)
+            e.set("val", val)
+        nf = ax.find(ns + "numFmt")
+        if nf is not None:
+            nf.set("formatCode", "yyyy")
+            nf.set("sourceLinked", "0")
+
+
+def _line_overlay(chart, names: list[str]):
+    """Linien-Reihen eines gestapelten Säulendiagramms in ein überlagertes Liniendiagramm verschieben."""
+    from lxml import etree
+
+    ns = "{http://schemas.openxmlformats.org/drawingml/2006/chart}"
+    plot_area = chart._chartSpace.find(f"{ns}chart/{ns}plotArea")
+    bar = plot_area.find(ns + "barChart")
+    sers = [s for s in bar.findall(ns + "ser") if s.find(f"{ns}tx//{ns}v") is not None and s.find(f"{ns}tx//{ns}v").text in names]
+    if not sers:
+        return
+    line = etree.SubElement(plot_area, ns + "lineChart")
+    etree.SubElement(line, ns + "grouping").set("val", "standard")
+    etree.SubElement(line, ns + "varyColors").set("val", "0")
+    for s in sers:
+        bar.remove(s)
+        for tag in ("invertIfNegative",):
+            e = s.find(ns + tag)
+            if e is not None:
+                s.remove(e)
+        mk = etree.SubElement(s, ns + "marker")
+        etree.SubElement(mk, ns + "symbol").set("val", "none")
+        # Reihenfolge: marker muss vor cat/val stehen
+        cat = s.find(ns + "cat")
+        if cat is not None:
+            s.remove(mk)
+            cat.addprevious(mk)
+        line.append(s)
+    etree.SubElement(line, ns + "marker").set("val", "1")
+    for ax_id in bar.findall(ns + "axId"):
+        line.append(copy.deepcopy(ax_id))
+    # Linie hinter die Achsen-Definitionen, aber nach dem Säulendiagramm
+    plot_area.remove(line)
+    bar.addnext(line)
+
+
+def _color_series(chart, plan: dict):
+    from pptx.util import Pt
+
+    bars, thin = plan.get("bars", []), plan.get("thin", [])
+    bi = li = ti = 0
+    for plot in chart.plots:
+        for s in plot.series:
+            name = s.name
+            if name in bars:
+                s.format.fill.solid()
+                s.format.fill.fore_color.rgb = _rgb(PALETTE[(bi + 1) % len(PALETTE)])
+                bi += 1
+                continue
+            ln = s.format.line
+            if name in thin:
+                ln.color.rgb = _rgb(PALETTE[ti % len(PALETTE)])
+                ln.width = Pt(0.75)
+                ti += 1
+                continue
+            if name in plan.get("dashed", []):
+                ln.color.rgb = _rgb("#C00000" if name.startswith("Schwelle") else PALETTE[1])
+                ln.dash_style = 4  # MSO_LINE.DASH
+                ln.width = Pt(1.25)
+                continue
+            color = "#000000" if plan["kind"] == "stacked" else PALETTE[li % len(PALETTE)]
+            ln.color.rgb = _rgb(color)
+            ln.width = Pt(2.25 if plan.get("emphasis") in (None, name) else 1.25)
+            li += 1
+            try:
+                s.smooth = False
+                s.marker.style = None
+                from pptx.enum.chart import XL_MARKER_STYLE
+                s.marker.style = XL_MARKER_STYLE.NONE
+            except Exception:
+                pass
+
+
+def _hide_legend_entries(chart, names: list[str]):
+    from lxml import etree
+
+    if not names or not chart.has_legend:
+        return
+    ns = "{http://schemas.openxmlformats.org/drawingml/2006/chart}"
+    legend = chart._chartSpace.find(f"{ns}chart/{ns}legend")
+    idx = 0
+    for plot in chart.plots:
+        for s in plot.series:
+            if s.name in names:
+                le = etree.Element(ns + "legendEntry")
+                etree.SubElement(le, ns + "idx").set("val", str(s.index))
+                etree.SubElement(le, ns + "delete").set("val", "1")
+                legend.find(ns + "legendPos").addnext(le)
+            idx += 1
+
+
+def add_slide(prs, c: dict, df: pd.DataFrame, plan: dict, stand: str, number: int) -> None:
+    from pptx.chart.data import CategoryChartData, XyChartData
+    from pptx.enum.chart import XL_CHART_TYPE
+    from pptx.enum.text import PP_ALIGN
+
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    _frame(slide, stand, number)
+    sub, unit = header_lines(c)
+    _text(slide, OVERTITLE, f"Abb. {c['no']} · {c.get('topic_title', '')}", 10, MUTED)
+    _text(slide, TITLE, c.get("title", ""), 22, "#000000", font="Arial")
+    if sub:
+        _text(slide, SUB, sub, 11, MUTED)
+    _text(slide, UNIT, unit, 10, "#000000", align=PP_ALIGN.RIGHT)
+    _text(slide, SOURCE, source_line(c), 8, MUTED)
+    if c.get("caption"):
+        slide.notes_slide.notes_text_frame.text = c["caption"]
+    kind = plan["kind"]
+    if df.empty or kind == "none":
+        return
+    if kind == "tiles":
+        _tiles(slide, c)
+        return
+    if kind == "scatter":
+        data = XyChartData()
+        s = data.add_series("Verlauf")
+        for x, y in zip(df.iloc[:, 1], df.iloc[:, 2]):
+            s.add_data_point(x, y)
+        gf = slide.shapes.add_chart(XL_CHART_TYPE.XY_SCATTER_LINES, *CHART, data)
+        chart = gf.chart
+        _style_chart(chart, c, plan)
+        ser = chart.plots[0].series[0]
+        ser.format.line.color.rgb = _rgb(PALETTE[0])
+        return
+    data = CategoryChartData()
+    first = df.columns[0]
+    is_date = first == "Datum"
+    data.categories = list(pd.to_datetime(df[first]).dt.date) if is_date else list(df[first])
+    if kind in ("hbar", "columns_cat"):
+        cols = list(df.columns[1:])
+    else:
+        cols = [*plan.get("bars", []), *[n for n in plan.get("lines", []) if n not in plan.get("thin", [])], *plan.get("thin", [])]
+    for name in cols:
+        data.add_series(name, [None if pd.isna(v) else float(v) for v in df[name]])
+    ctype = {"hbar": XL_CHART_TYPE.BAR_CLUSTERED, "columns_cat": XL_CHART_TYPE.COLUMN_CLUSTERED,
+             "stacked": XL_CHART_TYPE.COLUMN_STACKED, "columns": XL_CHART_TYPE.COLUMN_STACKED}.get(kind, XL_CHART_TYPE.LINE)
+    gf = slide.shapes.add_chart(ctype, *CHART, data)
+    chart = gf.chart
+    if kind == "stacked":
+        _line_overlay(chart, [n for n in cols if n not in plan.get("bars", [])])
+    _style_chart(chart, c, plan)
+    if kind in ("hbar", "columns_cat"):
+        for i, s in enumerate(chart.plots[0].series):
+            s.format.fill.solid()
+            s.format.fill.fore_color.rgb = _rgb(PALETTE[i % len(PALETTE)])
+        chart.plots[0].gap_width = 60
+    else:
+        if kind in ("stacked", "columns"):
+            chart.plots[0].gap_width = 40
+            chart.plots[0].overlap = 100
+        _color_series(chart, plan)
+        if is_date:
+            _date_axis_years(chart, c.get("freq", "M"))
+        _hide_legend_entries(chart, plan.get("thin", []))
+
+
+TILE_POS = {"SH": (0, 2), "HB": (1, 1), "HH": (1, 2), "MV": (1, 3), "NW": (2, 0), "NI": (2, 1), "ST": (2, 2), "BE": (2, 3),
+            "BB": (2, 4), "RP": (3, 0), "HE": (3, 1), "TH": (3, 2), "SN": (3, 3), "SL": (4, 0), "BW": (4, 1), "BY": (4, 2)}
+
+
+def _tile_color(v: float, m: float) -> tuple[str, str]:
+    k = min(1.0, abs(v) / m)
+    base = (81, 21, 74) if v >= 0 else (0, 112, 192)
+    rgb = [round(255 - (255 - x) * k * 0.85) for x in base]
+    return "#%02X%02X%02X" % tuple(rgb), ("#FFFFFF" if k > 0.55 else "#000000")
+
+
+GEO: list | None = None
+LABEL_OFFSET = {"HB": (-0.85, 0.45), "HH": (0.63, 1.0), "BE": (1.05, 0.25), "SL": (-0.45, -0.35)}
+
+
+def _pct0(v: float) -> str:
+    r = round(v)
+    return ("+" if r > 0 else "") + (f"{abs(r)}" if r >= 0 else f"−{abs(r)}") + " %"
+
+
+def _map(slide, c: dict) -> None:
+    """Länderkarte als bearbeitbare Freiformen (BKG VG2500), Beschriftung je Land."""
+    import math
+    from pptx.enum.text import PP_ALIGN
+    from pptx.util import Pt
+
+    rows = {r["abbr"]: r for r in c["tiles"]["rows"]}
+    m = max([10.0, *[abs(r["change"]) for r in rows.values()]])
+    k = math.cos(math.radians(51.2))
+    w_units, h_units = (15.2 - 5.7) * k + 1.9, 55.2 - 47.2
+    scale = min(CHART[2] / w_units, (CHART[3] - 150000) / h_units)
+    ox = CHART[0] + (CHART[2] - w_units * scale) / 2 + 0.9 * scale
+    oy = CHART[1]
+    X = lambda lon: ox + (lon - 5.7) * k * scale
+    Y = lambda lat: oy + (55.2 - lat) * scale
+    for f in sorted(GEO, key=lambda g: g["abbr"] == "BE"):
+        r = rows.get(f["abbr"])
+        bg, _ = _tile_color(r["change"], m) if r else ("#EEEEEE", "#000000")
+        for ring in f["rings"]:
+            pts = [(int(X(lo)), int(Y(la))) for lo, la in ring]
+            fb = slide.shapes.build_freeform(*pts[0])
+            fb.add_line_segments(pts[1:], close=True)
+            shp = fb.convert_to_shape()
+            shp.fill.solid()
+            shp.fill.fore_color.rgb = _rgb(bg)
+            shp.line.color.rgb = _rgb("#FFFFFF")
+            shp.line.width = Pt(0.5)
+            shp.shadow.inherit = False
+    for f in GEO:
+        r = rows.get(f["abbr"])
+        if not r:
+            continue
+        lx, ly = X(f["label"][0]), Y(f["label"][1])
+        _, fg = _tile_color(r["change"], m)
+        off = LABEL_OFFSET.get(f["abbr"])
+        if off:
+            tx, ty = lx + off[0] * scale, ly - off[1] * scale
+            ln = slide.shapes.add_connector(1, int(lx), int(ly), int(tx), int(ty))
+            ln.line.color.rgb = _rgb("#555555")
+            ln.line.width = Pt(0.5)
+            lx, ly, fg = tx, ty, "#000000"
+        box = slide.shapes.add_textbox(int(lx - 300000), int(ly - 120000), 600000, 260000)
+        tf = box.text_frame
+        tf.margin_left = tf.margin_right = tf.margin_top = tf.margin_bottom = 0
+        for i, (txt, b) in enumerate(((r["abbr"], True), (_pct0(r["change"]), False))):
+            p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
+            p.alignment = PP_ALIGN.CENTER
+            run = p.add_run()
+            run.text = txt
+            run.font.size, run.font.bold, run.font.name = Pt(9), b, FONT
+            run.font.color.rgb = _rgb(fg)
+
+
+def _tiles(slide, c: dict):
+    if GEO:
+        return _map(slide, c)
+    from pptx.enum.shapes import MSO_SHAPE
+    from pptx.enum.text import PP_ALIGN
+    from pptx.util import Pt
+
+    rows = c["tiles"]["rows"]
+    m = max([10.0, *[abs(r["change"]) for r in rows]])
+    size, gap = 560000, 50000
+    x0 = CHART[0] + (CHART[2] - 5 * size - 4 * gap) // 2
+    y0 = CHART[1] + 40000
+    for r in rows:
+        pos = TILE_POS.get(r["abbr"])
+        if not pos:
+            continue
+        bg, fg = _tile_color(r["change"], m)
+        shp = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, x0 + pos[1] * (size + gap), y0 + pos[0] * (size + gap), size, size)
+        shp.fill.solid()
+        shp.fill.fore_color.rgb = _rgb(bg)
+        shp.line.fill.background()
+        shp.shadow.inherit = False
+        tf = shp.text_frame
+        tf.margin_left = tf.margin_right = 0
+        sign = "+" if r["change"] > 0 else ""
+        for i, (txt, sz, b) in enumerate(((r["abbr"], 12, True), (f"{sign}{r['change']:.0f} %".replace(".", ","), 10, False))):
+            p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
+            p.alignment = PP_ALIGN.CENTER
+            run = p.add_run()
+            run.text = txt
+            run.font.size, run.font.bold, run.font.name = Pt(sz), b, FONT
+            run.font.color.rgb = _rgb(fg)
+
+
+def new_presentation():
+    from pptx import Presentation
+
+    prs = Presentation()
+    prs.slide_width, prs.slide_height = SLIDE_W, SLIDE_H
+    return prs
+
+
+# ---------------------------------------------------------------------------
+# Alles zusammen
+# ---------------------------------------------------------------------------
+def write_all(payload: dict, out: Path) -> None:
+    global GEO
+    GEO = payload.get("geo")
+    folder = out / "dl"
+    folder.mkdir(parents=True, exist_ok=True)
+    stand = datetime.fromisoformat(payload["generated_at"]).strftime("%d.%m.%Y")
+    site = payload["site"]
+    cite = f"{site['author']} ({stand[-4:]}): Konjunkturmonitor. Stand {stand}. {site['url']}"
+    deck = new_presentation()
+    number = 0
+    for t in payload["topics"]:
+        for c in t["charts"]:
+            number += 1
+            c["topic_title"] = t.get("title", "")
+            df, plan = chart_table(c)
+            stem = f"abb{c['no']:02d}_{c['chart']}"
+            files = {}
+            if not df.empty:
+                csv = df.copy()
+                if "Datum" in csv:
+                    csv["Datum"] = pd.to_datetime(csv["Datum"]).dt.strftime("%Y-%m-%d")
+                csv.to_csv(folder / f"{stem}.csv", sep=";", decimal=",", index=False, encoding="utf-8-sig")
+                files["csv"] = f"dl/{stem}.csv"
+                write_xlsx(c, df, plan, folder / f"{stem}.xlsx", stand, cite)
+                files["xlsx"] = f"dl/{stem}.xlsx"
+            prs = new_presentation()
+            add_slide(prs, c, df, plan, stand, 1)
+            prs.save(folder / f"{stem}.pptx")
+            files["pptx"] = f"dl/{stem}.pptx"
+            add_slide(deck, c, df, plan, stand, number)
+            c["files"] = files
+            c.pop("topic_title", None)
+    deck.save(folder / "konjunkturmonitor_alle_abbildungen.pptx")
+    payload["deck"] = "dl/konjunkturmonitor_alle_abbildungen.pptx"

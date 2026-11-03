@@ -148,25 +148,56 @@ def _contrib(cfg: dict, data: dict) -> dict | None:
         return None
     w, *_ = np.linalg.lstsq(fit[ids].to_numpy(), fit[total_id].to_numpy(), rcond=None)
     weights = dict(zip(ids, w))
-    prev = df.shift(12)
-    yoy = (df[total_id] / prev[total_id] - 1) * 100
-    out, used = {}, pd.Series(0.0, index=df.index)
-    for label, group in parts.items():
-        group = group if isinstance(group, list) else [group]
-        c = sum(weights[g] * (df[g] - prev[g]) for g in group) / prev[total_id] * 100
-        out[label] = c
-        used = used + c
-    out["Rest"] = yoy - used
     years = cfg.get("years", 3)
-    keep = yoy.dropna().index
-    keep = keep[keep >= keep[-1] - pd.DateOffset(years=years)]
-    r = lambda s: [round(float(v), 3) for v in s.loc[keep]]
-    x = [d.strftime("%Y-%m-%d") for d in keep]
-    series = [dict(id=f"contrib_{i}", label=k, unit="Pp", freq="M", style="bar", x=x, y=r(v)) for i, (k, v) in enumerate(out.items())]
-    series.append(dict(id="contrib_total", label="Inflationsrate", unit="%", freq="M", style="line", x=x, y=r(yoy)))
+
+    def contributions(lag: int, total_label: str) -> list[dict]:
+        prev = df.shift(lag)
+        rate = (df[total_id] / prev[total_id] - 1) * 100
+        out, used = {}, pd.Series(0.0, index=df.index)
+        for label, group in parts.items():
+            group = group if isinstance(group, list) else [group]
+            c = sum(weights[g] * (df[g] - prev[g]) for g in group) / prev[total_id] * 100
+            out[label] = c
+            used = used + c
+        out["Rest"] = rate - used
+        keep = rate.dropna().index
+        keep = keep[keep >= keep[-1] - pd.DateOffset(years=years)]
+        r = lambda s: [round(float(v), 3) for v in s.loc[keep]]
+        x = [d.strftime("%Y-%m-%d") for d in keep]
+        series = [dict(id=f"contrib_{lag}_{i}", label=k, unit="Pp", freq="M", style="bar", x=x, y=r(v)) for i, (k, v) in enumerate(out.items())]
+        series.append(dict(id=f"contrib_{lag}_total", label=total_label, unit="%", freq="M", style="line", x=x, y=r(rate)))
+        return series
+
+    series = contributions(12, "Inflationsrate")
+    series_mom = contributions(1, "Veränderung gegenüber dem Vormonat")
     fitted = fit[ids].to_numpy() @ w
     err = float(np.max(np.abs(fitted - fit[total_id].to_numpy())))
-    return {"series": series, "weights": {k: round(float(v), 4) for k, v in weights.items()}, "fit_max_abs": round(err, 3)}
+    return {"series": series, "series_mom": series_mom, "weights": {k: round(float(v), 4) for k, v in weights.items()}, "fit_max_abs": round(err, 3)}
+
+
+def _geo(root: Path) -> list[dict] | None:
+    """Ländergrenzen (BKG VG2500, vereinfacht) mit Beschriftungspunkt je Land (Schwerpunkt der größten Teilfläche)."""
+    path = root / "data" / "static" / "vg2500_laender.json"
+    if not path.exists():
+        return None
+    out = []
+    for f in json.loads(path.read_text(encoding="utf-8")):
+        polys = f["coordinates"] if f["type"] == "MultiPolygon" else [f["coordinates"]]
+
+        def area_centroid(ring):
+            a = cx = cy = 0.0
+            for (x0, y0), (x1, y1) in zip(ring, ring[1:] + ring[:1]):
+                cr = x0 * y1 - x1 * y0
+                a += cr
+                cx += (x0 + x1) * cr
+                cy += (y0 + y1) * cr
+            a /= 2
+            return abs(a), (cx / (6 * a), cy / (6 * a)) if a else ring[0]
+
+        best = max((area_centroid(p[0]) for p in polys), key=lambda r: r[0])
+        out.append({"code": f["code"], "abbr": LAND_ABBR.get(f["code"], f["code"]), "rings": [r for p in polys for r in p],
+                    "outer": len(polys), "label": [round(best[1][0], 3), round(best[1][1], 3)]})
+    return out
 
 
 def build_payload(root: Path = ROOT) -> dict:
@@ -213,7 +244,9 @@ def build_payload(root: Path = ROOT) -> dict:
                 res = _contrib(c, data)
                 if not res:
                     continue
-                entry.update(series=res["series"], unit="%, Beiträge in Prozentpunkten", freq="M", adjustment="nicht bereinigt",
+                entry.update(series=res["series"], unit="% gegenüber Vorjahresmonat, Beiträge in Prozentpunkten", freq="M", adjustment="nicht bereinigt",
+                             alt={"label": "gegenüber Vormonat", "base": "gegenüber Vorjahresmonat", "series": res["series_mom"],
+                                  "unit": "% gegenüber Vormonat, Beiträge in Prozentpunkten"},
                              weights=res["weights"], sources=["Deutsche Bundesbank (VPI des Statistischen Bundesamts)", "eigene Berechnung"],
                              licenses=[SOURCE_LICENSES["bundesbank"]], type="stacked")
                 print(f"Inflationsbeiträge: Gewichte {res['weights']}, größte Abweichung der Identität {res['fit_max_abs']} Indexpunkte")
@@ -253,7 +286,14 @@ def build_payload(root: Path = ROOT) -> dict:
             charts.append(entry)
         q = next((x for x in questions if x.get("topic") == t["id"]), None)
         topics.append(dict(t, charts=charts, question=q))
-    return {"site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    no = 0
+    for t in topics:
+        for c in t["charts"]:
+            no += 1
+            c["no"] = no
+    geo = _geo(root)
+    return {"geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
+            "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "questions": questions, "topics": topics}
 
 
@@ -261,6 +301,9 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
     out = out or root / "site"
     out.mkdir(parents=True, exist_ok=True)
     payload = build_payload(root)
+    from .downloads import write_all
+
+    write_all(payload, out)
     tpl = resources.files("monitor").joinpath("templates/index.html").read_text(encoding="utf-8")
     js = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     (out / "index.html").write_text(tpl.replace("/*__DATA__*/null", js), encoding="utf-8")

@@ -69,6 +69,8 @@ charts:
   cpi_core: {title: "Kernrate und Vergleich mit dem HVPI", decimals: 1}
   cpi_contrib: {title: "Woraus die Inflationsrate besteht", decimals: 1}
   deflator: {title: "Preise in der Gesamtrechnung", decimals: 1}
+  pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}
+  price_exp: {title: "Preiserwartungen von Unternehmen und Verbrauchern", decimals: 0}
   gdp_use: {title: "Verwendung der Wirtschaftsleistung im letzten Quartal", decimals: 1}
   prod_groups: {title: "Produktion nach Gütergruppen", decimals: 0}
   orders_euro: {title: "Aufträge aus dem Euroraum und von außerhalb", decimals: 0}
@@ -1357,4 +1359,124 @@ series:
     chart: gas
     label: "Erdgas Europa (TTF)"
     license: "IWF-Daten, Wiederverwendung mit Quellenangabe"
+
+  - id: de_ppi_xe
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.Y.EPG.G.GP19SA001500.I21.A
+    title: "Erzeugerpreise ohne Energie, Index"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+
+  - id: de_ppi_xe_yoy
+    block: preise
+    source: derived
+    derive: {from: de_ppi_xe, op: yoy_pct}
+    title: "Erzeugerpreise ohne Energie, % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: pipeline_core
+    label: "Erzeugerpreise ohne Energie"
+
+  - id: de_imp_xe
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.Y.APE1.G.GP19SA002000.I21.A
+    title: "Einfuhrpreise ohne Energie, Index"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+
+  - id: de_imp_xe_yoy
+    block: preise
+    source: derived
+    derive: {from: de_imp_xe, op: yoy_pct}
+    title: "Einfuhrpreise ohne Energie, % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: pipeline_core
+    label: "Einfuhrpreise ohne Energie"
+
+  - id: de_agri
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.N.EPL.L.L1A00000000.I20.A
+    title: "Erzeugerpreise landwirtschaftlicher Produkte, Index"
+    unit: "Index 2020=100"
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_agri_yoy
+    block: preise
+    source: derived
+    derive: {from: de_agri, op: yoy_pct}
+    title: "Erzeugerpreise landwirtschaftlicher Produkte, % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: pipeline_core
+    label: "Landwirtschaftliche Erzeugerpreise"
+
+  - id: de_pexp_ind
+    block: preise
+    source: eurostat
+    key: ei_bsin_m_r2
+    params: {geo: DE, indic: BS-ISPE, s_adj: SA, unit: BAL}
+    title: "Industrie: erwartete Verkaufspreise, Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: price_exp
+    label: "Industrie"
+
+  - id: de_pexp_serv
+    block: preise
+    source: eurostat
+    key: ei_bsse_m_r2
+    params: {geo: DE, indic: BS-PE3M, s_adj: SA, unit: BAL}
+    title: "Dienstleister: erwartete Preise, Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: price_exp
+    label: "Dienstleister"
+
+  - id: de_pexp_retail
+    block: preise
+    source: eurostat
+    key: ei_bsrt_m_r2
+    params: {geo: DE, indic: BS-RPE, s_adj: SA, unit: BAL}
+    title: "Einzelhandel: erwartete Preise, Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: price_exp
+    label: "Einzelhandel"
+
+  - id: de_pexp_bau
+    block: preise
+    source: eurostat
+    key: ei_bsbu_m_r2
+    params: {geo: DE, indic: BS-CPE-BAL, s_adj: SA}
+    title: "Bau: erwartete Preise, Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: price_exp
+    label: "Bau"
+
+  - id: de_pexp_cons
+    block: preise
+    source: eurostat
+    key: ei_bsco_m
+    params: {geo: DE, indic: BS-PT-NY, s_adj: SA, unit: BAL}
+    title: "Verbraucher: erwartete Preisentwicklung in zwölf Monaten, Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: price_exp
+    label: "Verbraucher (zwölf Monate)"
 

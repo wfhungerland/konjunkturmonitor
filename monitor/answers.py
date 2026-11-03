@@ -82,7 +82,7 @@ def unemployment(q: dict, data: dict) -> dict:
     v, t = s.iloc[-1], s.index[-1]
     year_ago = s[s.index <= t - pd.DateOffset(months=12)]
     people = lvl.iloc[-1] / 1000
-    head = f"Im {period(t, 'M')} waren rund {num(people, 2)} Millionen Menschen arbeitslos gemeldet, {num(v)} % aller Erwerbspersonen."
+    head = f"Im {period(t, 'M')} waren rund {num(people, 2)} Millionen Menschen arbeitslos gemeldet; die Quote betrug {num(v)} %."
     more = []
     verdict = "stabil"
     if not year_ago.empty:
@@ -104,11 +104,11 @@ def index_mom(q: dict, data: dict) -> dict:
     s = _s(data, q["series"])
     t = s.index[-1]
     mom, three = _mom_3m(s)
-    what = {"industrie": ("die Industrie", "hergestellt"), "konsum": ("der Einzelhandel", "verkauft")}.get(q["id"], ("die Branche", "umgesetzt"))
+    what = {"industrie": ("die Industrie", "produziert"), "konsum": ("der Einzelhandel", "abgesetzt")}.get(q["id"], ("die Branche", "umgesetzt"))
     head = (f"Im {period(t, 'M')} hat {what[0]} {num(abs(mom))} % {'mehr' if mom >= 0 else 'weniger'} {what[1]} "
             f"als {prev_word(t - pd.DateOffset(months=1), 'M')}.")
     more = [f"Die letzten drei Monate zusammen: {num(three, sign=True)} % gegenüber den drei Monaten davor. "
-            "Dieser Vergleich ist ruhiger als der einzelne Monat."]
+            "Dieser Vergleich schwankt weniger als der einzelne Monat."]
     if q.get("orders") and q["orders"] in data:
         o = _s(data, q["orders"])
         om, o3 = _mom_3m(o)
@@ -118,7 +118,7 @@ def index_mom(q: dict, data: dict) -> dict:
         m = _s(data, q["mood"])
         more.append(f"Das Verbrauchervertrauen lag im {period(m.index[-1], 'M')} bei {num(m.iloc[-1])} Punkten "
                     f"({'besser' if m.iloc[-1] > m.iloc[-2] else 'schlechter' if m.iloc[-1] < m.iloc[-2] else 'so'} als im Vormonat).")
-    verdict = "zieht an" if three >= 1 else ("schwächelt" if three <= -1 else "seitwärts")
+    verdict = "steigt" if three >= 1 else ("sinkt" if three <= -1 else "stabil")
     return {"value": round(float(mom), 1), "unit": "%", "signed": True, "period": period(t, "M"), "head": head, "more": more,
             "verdict": verdict, "spark": q["series"], "label": "zum Vormonat"}
 
@@ -127,11 +127,11 @@ def level_mom(q: dict, data: dict) -> dict:
     s = _s(data, q["series"])
     t = s.index[-1]
     mom, three = _mom_3m(s)
-    head = (f"Im {period(t, 'M')} hat Deutschland Waren für {num(s.iloc[-1])} Mrd. € ins Ausland verkauft, "
+    head = (f"Im {period(t, 'M')} exportierte Deutschland Waren im Wert von {num(s.iloc[-1])} Mrd. €, "
             f"{num(abs(mom))} % {'mehr' if mom >= 0 else 'weniger'} als im Vormonat.")
     more = [f"Die letzten drei Monate zusammen: {num(three, sign=True)} % gegenüber den drei Monaten davor.",
             "Die Werte sind nominal, also nicht um Preisänderungen bereinigt."]
-    verdict = "zieht an" if three >= 1 else ("schwächelt" if three <= -1 else "seitwärts")
+    verdict = "steigt" if three >= 1 else ("sinkt" if three <= -1 else "stabil")
     return {"value": round(float(s.iloc[-1]), 1), "unit": "Mrd. €", "signed": False, "period": period(t, "M"), "head": head,
             "more": more, "verdict": verdict, "spark": q["series"], "label": f"{num(mom, sign=True)} % zum Vormonat"}
 
@@ -140,18 +140,18 @@ def sentiment(q: dict, data: dict) -> dict:
     s = _s(data, q["series"])
     v, p, t = s.iloc[-1], s.iloc[-2], s.index[-1]
     rel = "über" if v > 100.5 else ("unter" if v < 99.5 else "auf")
-    head = f"Im {period(t, 'M')} lag die Stimmung in der Wirtschaft bei {num(v)} Punkten, {rel} dem langjährigen Durchschnitt von 100."
+    head = f"Im {period(t, 'M')} lag der Wirtschaftsklimaindikator bei {num(v)} Punkten und damit {rel} dem langjährigen Durchschnitt von 100."
     more = [f"Im Vormonat: {num(p)} Punkte, die Stimmung hat sich also {'aufgehellt' if v > p + 0.2 else 'eingetrübt' if v < p - 0.2 else 'kaum verändert'}."]
-    verdict = "gut" if v >= 103 else ("eher gut" if v > 100.5 else "durchschnittlich" if v >= 99.5 else "gedämpft" if v >= 90 else "schlecht")
+    verdict = "überdurchschnittlich" if v >= 103 else ("leicht überdurchschnittlich" if v > 100.5 else "durchschnittlich" if v >= 99.5 else "unterdurchschnittlich" if v >= 90 else "deutlich unterdurchschnittlich")
     return {"value": round(float(v), 1), "unit": "Punkte", "signed": False, "period": period(t, "M"), "head": head, "more": more,
-            "verdict": f"Stimmung {verdict}", "spark": q["series"], "ref": 100.0}
+            "verdict": f"Klima {verdict}", "spark": q["series"], "ref": 100.0}
 
 
 def insolvency(q: dict, data: dict) -> dict:
     s = _s(data, q["series"])
     v, t = s.iloc[-1], s.index[-1]
     mon = MONTHS[t.month - 1]
-    head = f"Im {period(t, 'M')} haben {num(v, 0)} Unternehmen Insolvenz beantragt."
+    head = f"Im {period(t, 'M')} beantragten {num(v, 0)} Unternehmen ein Insolvenzverfahren."
     more = []
     ya = s.get(t - pd.DateOffset(years=1))
     if ya is not None and ya > 0:
@@ -162,7 +162,7 @@ def insolvency(q: dict, data: dict) -> dict:
     if len(base):
         norm = base.mean()
         d = (v / norm - 1) * 100
-        more.append(f"Vor Corona waren es in einem {mon} im Schnitt {num(norm, 0)} (2016 bis 2019); jetzt sind es {num(abs(d), 0)} % {'mehr' if d >= 0 else 'weniger'}.")
+        more.append(f"Vor der Pandemie (2016 bis 2019) waren es in einem {mon} durchschnittlich {num(norm, 0)}; der aktuelle Wert liegt {num(abs(d), 0)} % {'darüber' if d >= 0 else 'darunter'}.")
         verdict = ("deutlich über Vorkrisenniveau" if d >= 20 else "über Vorkrisenniveau" if d >= 5
                    else "auf Vorkrisenniveau" if d > -5 else "unter Vorkrisenniveau")
     ytd = s[(s.index.year == t.year)]
@@ -172,9 +172,9 @@ def insolvency(q: dict, data: dict) -> dict:
         more.append(f"Januar bis {mon} {t.year}: {num(ytd.sum(), 0)} Insolvenzen, {num(abs(d))} % {'mehr' if d >= 0 else 'weniger'} als ein Jahr zuvor.")
     emp, cl = data.get(q.get("employees")), data.get(q.get("claims"))
     if emp is not None and cl is not None and t in emp.index and t in cl.index:
-        more.append(f"Betroffen sind rund {num(emp[t], 0)} Beschäftigte; die Gläubiger erwarten Forderungen von {num(cl[t])} Mrd. €.")
-    more.append("Gezählt werden beantragte Verfahren nach Meldung der Amtsgerichte; die Zahlen kommen mit etwa drei Monaten Verzug.")
-    return {"value": round(float(v)), "unit": "Firmen", "signed": False, "period": period(t, "M"), "head": head, "more": more,
+        more.append(f"Betroffen waren rund {num(emp[t], 0)} Beschäftigte; die voraussichtlichen Forderungen der Gläubiger beliefen sich auf {num(cl[t])} Mrd. €.")
+    more.append("Erfasst werden beantragte Verfahren nach Meldung der Amtsgerichte; die Daten erscheinen mit rund drei Monaten Verzögerung.")
+    return {"value": round(float(v)), "unit": "Unternehmen", "signed": False, "period": period(t, "M"), "head": head, "more": more,
             "verdict": verdict, "spark": q["series"], "decimals": 0}
 
 
