@@ -265,4 +265,4 @@ topics:
     part: service
     ask: "Wann erscheinen die nächsten Zahlen?"
     charts:
-      - {chart: calendar, type: calendar, months: 2, title: "Veröffentlichungskalender", caption: "Termine geschätzt nach dem üblichen Veröffentlichungsrhythmus der Quellen. Verbindlich sind die verlinkten Kalender der Quellen."}
+      - {chart: calendar, type: calendar, weeks: 12, title: "Veröffentlichungskalender: die nächsten zwölf Wochen", caption: "Termine geschätzt nach dem üblichen Veröffentlichungsrhythmus der Quellen. Verbindlich sind die verlinkten Kalender der Quellen."}
