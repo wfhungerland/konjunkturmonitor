@@ -55,8 +55,8 @@
   .card .acts { font: 13px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin-top: 6px; }
   .card .acts a, .card .acts button { color: var(--link, #0b4f8a); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
   .card .acts a:hover, .card .acts button:hover { text-decoration: underline; }
-  .card .cap { color: var(--text); margin: 6px 0 4px; font-size: 13.5px; background: #f2f3f4; padding: 6px 10px; border-radius: 4px; }
-  .card .cap.notes { background: #f7f7f7; }
+  .card .cap { color: var(--text); margin: 6px 0 4px; font-size: 13.5px; }
+  .card .cap.notes { color: var(--muted); }
   .card .nextup { font: 13px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin-top: 4px; }
   .card .chart { width: 100%; aspect-ratio: 5 / 3; min-height: 260px; overflow: hidden; }
   .charts.single { grid-template-columns: minmax(0, 1fr); }
@@ -113,7 +113,8 @@
   body.minimal .card { border: 0; border-radius: 0; padding: 4px 0 8px; background: transparent; }
   body.minimal .q { border-color: #e5e5e5; }
   body.minimal .verdict { background: none; padding: 0; color: var(--muted); font-style: italic; }
-  body.minimal .explain { background: #f2f3f4; border-left: 0; padding: 8px 12px; border-radius: 4px; color: var(--text); font-size: 14px; }
+  body.minimal .explain, .card .cap.info { background: #f2f3f4; border-left: 0; padding: 8px 12px; border-radius: 4px; color: var(--text); font: 14px/1.45 "Arial Narrow", Arial, sans-serif; }
+  .explain .ico, .card .cap .ico { margin-right: 4px; }
   body.minimal .explain b { color: var(--muted); }
   @media (min-width: 1100px) {
     body.minimal .intro { display: grid; grid-template-columns: minmax(0, 48em) minmax(0, 1fr); column-gap: 32px; }
@@ -210,7 +211,11 @@ const MONTHS = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", 
 const TOUCH = matchMedia("(pointer: coarse)").matches;
 const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const fmt = (v, d = 1) => (v < 0 ? "−" : "") + Math.abs(v).toLocaleString("de-DE", { minimumFractionDigits: d, maximumFractionDigits: d });
-const shortUnit = u => u.startsWith("%") ? "%" : u.startsWith("Pp") ? "Pp" : u.startsWith("Index") ? "" : u.startsWith("Tsd") ? "Tsd." : u;
+const shortUnit = u => u.startsWith("%") ? "%" : u.startsWith("Pp") || u.startsWith("Saldo") ? "Pp" : u.startsWith("Index") ? "" : u.startsWith("Tsd") ? "Tsd." : u.startsWith("Punkte") ? "Pkt." : u;
+// Wert mit Einheit; Salden (Anteil positiver minus negativer Antworten, in Prozentpunkten) stets mit Vorzeichen
+const fmtU = (v, d, unit, bare) => { v = +v.toFixed(d); if (v === 0) v = 0; const u = shortUnit(unit || ""), sg = (unit || "").startsWith("Saldo") && v > 0 ? "+" : ""; return sg + fmt(v, d) + (u && (!bare || u.length <= 3) ? "\u202f" + u : ""); };
+const unitLabel = u => (u || "").startsWith("Saldo") ? "Saldo in Prozentpunkten (Anteil positiver minus Anteil negativer Antworten)" + u.slice(5) : (u || "");
+const perShort = (x, f) => f === "A" ? x.slice(0, 4) : f === "Q" ? `${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}. Q. ${x.slice(0, 4)}` : f === "D" ? `${+x.slice(8, 10)}. ${MONTHS[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : `${MONTHS[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`;
 
 function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 2.5, 5, 10].map(m => m * p).find(s => s >= raw); }
 function decs(step) { return step >= 1 ? 0 : step >= 0.1 ? 1 : 2; }
@@ -292,27 +297,36 @@ function timeChart(el, c) {
     shapes.push({ type: "rect", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.band.lo, y1: c.band.hi, fillcolor: "rgba(120,120,120,0.10)", line: { width: 0 }, layer: "below" });
     annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.band.hi, text: "Spanne 2015–2019", showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 11, color: "#7f7f7f" } });
   }
-  // Jahresmittel unten im Jahresband (wo sinnvoll: eine Leitreihe mit Monats- oder Quartalswerten)
-  const lead = c.type === "stacked" ? null : c.series.find(s => s.id === c.emphasis) || (lines.length === 1 && !bars.length ? lines[0] : null);
-  if (lead && c.year_means !== false && (c.freq === "M" || c.freq === "Q") && xa.tickvals.length <= 13) {
-    const by = {}; lead.x.forEach((x, i) => { if (lead.y[i] != null) (by[x.slice(0, 4)] = by[x.slice(0, 4)] || []).push(lead.y[i]); });
-    const dm = c.decimals ?? 1;
-    Object.entries(by).forEach(([y, v]) => { if (v.length < (c.freq === "M" ? 3 : 2)) return;
-      const mid = new Date((Date.parse(`${y}-01-01` < r[0] ? r[0] : `${y}-01-01`) + Date.parse(`${+y + 1}-01-01` > r[1] ? r[1] : `${+y + 1}-01-01`)) / 2).toISOString().slice(0, 10);
-      annotations.push({ xref: "x", yref: "paper", x: mid, y: 0.02, yanchor: "bottom", showarrow: false, text: "ø" + fmt(v.reduce((a, b) => a + b, 0) / v.length, dm),
-        font: { family: HS.font, size: 11, color: "#595959" }, bordercolor: "#a6a6a6", borderwidth: 1, borderpad: 2, bgcolor: "rgba(255,255,255,0.85)" }); });
-  }
   const named = traces.filter(t => t.showlegend !== false && t.type === "scatter");
   const direct = LY.direct_labels && c.type !== "stacked" && !bars.length && named.length > 1 && (named.length <= 4 || c.context_grey);
   let rMargin = 6;
   if (direct) { // Beschriftung rechts neben der Werteachse, vollständig, bei Bedarf zweizeilig und ohne Überlappung
     const wrap = s => { if (s.length <= 24) return [s]; const w = s.split(" "); let a = "", out = []; w.forEach(x => { if ((a + " " + x).trim().length > 24 && a) { out.push(a); a = x; } else a = (a + " " + x).trim(); }); out.push(a); return out; };
-    const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const lines = wrap(tr.name); return { tr, i, y: tr.y[i], lines }; }).filter(e => e.y != null).sort((a, b) => a.y - b.y);
-    const span = ya.range[1] - ya.range[0], px = span / Math.max(160, (el.clientHeight || 300) - 50);
-    for (let k = 1; k < ends.length; k++) { const need = (ends[k - 1].lines.length + ends[k].lines.length) * 7.5 * px; if (ends[k].y - ends[k - 1].y < need) ends[k].y = ends[k - 1].y + need; }
+    const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const lines = tr.y[i] == null ? [] : wrap(tr.name).concat([`${fmtU(tr.y[i], c.decimals ?? 1, c.unit)} · ${perShort(tr.x[i], c.freq)}`]); return { tr, i, y: tr.y[i], lines }; }).filter(e => e.y != null).sort((a, b) => a.y - b.y);
+    const span = ya.range[1] - ya.range[0], px = span / Math.max(140, (el.clientHeight || 300) - 70);
+    for (let k = 1; k < ends.length; k++) { const need = ((ends[k - 1].lines.length + ends[k].lines.length) * 7.5 + 4) * px; if (ends[k].y - ends[k - 1].y < need) ends[k].y = ends[k - 1].y + need; }
+    const over = ends.length ? ends[ends.length - 1].y + ends[ends.length - 1].lines.length * 7.5 * px - ya.range[1] : 0;  // oben hinausgeschoben: alle nach unten
+    if (over > 0) ends.forEach(e => e.y -= over);
     const tickW = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;
     ends.forEach(e => annotations.push({ xref: "paper", x: 1, y: e.y, text: e.lines.map(esc).join("<br>"), showarrow: false, xanchor: "left", xshift: tickW, yanchor: "middle", align: "left", font: { family: HS.font, size: 12, color: e.tr.line.color } }));
     rMargin = tickW + Math.min(170, 7 * Math.max(...ends.flatMap(e => e.lines.map(l => l.length)))) + 8;
+  }
+  // Jahresmittel je Jahresband (eine Leitreihe mit Monats- oder Quartalswerten). Unten, wo die Linien unten verlaufen oben;
+  // entfällt, wenn das Jahresband zu schmal für die Zahl ist.
+  const lead = c.type === "stacked" ? null : c.series.find(s => s.id === c.emphasis) || (lines.length === 1 && !bars.length ? lines[0] : null);
+  if (lead && c.year_means !== false && (c.freq === "M" || c.freq === "Q")) {
+    const plotW = Math.max(120, (el.clientWidth || 500) - rMargin - 50), t0 = Date.parse(r[0]), t1 = Date.parse(r[1]), pxd = plotW / ((t1 - t0) / 864e5);
+    const pos = v => (v - ya.range[0]) / (ya.range[1] - ya.range[0]), dm = c.decimals ?? 1;
+    const by = {}; lead.x.forEach((x, i) => { if (lead.y[i] != null) (by[x.slice(0, 4)] = by[x.slice(0, 4)] || []).push(lead.y[i]); });
+    Object.entries(by).forEach(([y, v]) => { if (v.length < (c.freq === "M" ? 3 : 2)) return;
+      const a0 = Math.max(t0, Date.parse(`${y}-01-01`)), a1 = Math.min(t1, Date.parse(`${+y + 1}-01-01`));
+      const txt = "ø" + fmtU(v.reduce((p, q) => p + q, 0) / v.length, dm, c.unit, true);
+      if ((a1 - a0) / 864e5 * pxd < txt.length * 6.2 + 10) return;
+      const inYear = traces.filter(tr => tr.type === "scatter").flatMap(tr => tr.x.map((x, i) => x.slice(0, 4) === y ? tr.y[i] : null)).filter(q => q != null).map(pos);
+      const low = inYear.filter(q => q < 0.16).length, high = inYear.filter(q => q > 0.84).length;
+      const top = low > 0 && high <= low;
+      annotations.push({ xref: "x", yref: "paper", x: new Date((a0 + a1) / 2).toISOString().slice(0, 10), y: top ? 0.98 : 0.02, yanchor: top ? "top" : "bottom", showarrow: false, text: txt,
+        font: { family: HS.font, size: 11, color: "#595959" }, bordercolor: "#a6a6a6", borderwidth: 1, borderpad: 2, bgcolor: "rgba(255,255,255,0.9)" }); });
   }
   const L = baseLayout(el);
   L.margin = Object.assign({}, L.margin, { r: rMargin });
@@ -338,7 +352,7 @@ function multiplesChart(el, c) {
     const vals = ok.map(p => p[0]), d = c.decimals, tend = vals.length > 1 ? (Math.round(Math.abs(vals[vals.length - 1] - vals[vals.length - 2]) * 10 ** d) === 0 ? "flat" : vals[vals.length - 1] > vals[vals.length - 2] ? "up" : "down") : null;
     const box = document.createElement("div");
     if (k === 0 && empty) { box.style.gridColumn = `span ${1 + empty}`; box.classList.add("span-m"); }
-    const head = last ? ` ${fmt(last[0], d)}${u ? " " + u : ""} ${tendHtml(tend, c.up_bad)}<br><span class="mtsub">${per(last[1])} · ø3M ${fmt(avg(vals.slice(-3)), d)}${u ? " " + u : ""} · ø12M ${fmt(avg(vals.slice(-12)), d)}${u ? " " + u : ""}</span>` : "";
+    const head = last ? ` ${fmtU(last[0], d, c.unit)} ${tendHtml(tend, c.up_bad)}<br><span class="mtsub">${per(last[1])} · ø3M ${fmtU(avg(vals.slice(-3)), d, c.unit)} · ø12M ${fmtU(avg(vals.slice(-12)), d, c.unit)}</span>` : "";
     box.innerHTML = `<p class="mt"><b>${esc(s.label)}</b>${head}</p>`;
     const m = document.createElement("div"); m.className = "mini"; box.appendChild(m); grid.appendChild(box);
     const traces = c.series.filter(o => o !== s).map(o => ({ type: "scatter", mode: "lines", x: o.x, y: o.y, line: { color: "#d0d0d0", width: 1 }, hoverinfo: "skip" }));
@@ -585,12 +599,12 @@ function card(c, no) {
   const el = document.createElement("div"); el.className = "card" + (c.type === "heat" || c.type === "calendar" || c.context_grey ? " wide" : "") + (c.type === "calendar" ? " calcard" : ""); el.id = `abb-${no}`;
   const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
-  const unit = c.type === "clock" ? "Saldo, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real"
-    : c.type === "tiles" ? "Veränderung gegenüber denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : (c.unit || "");
+  const unit = c.type === "clock" ? "Saldo in Prozentpunkten, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real"
+    : c.type === "tiles" ? "Veränderung gegenüber denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
   el.innerHTML = `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}<div class="unit">${esc(unit)}</div>`;
   const ch = document.createElement("div"); ch.className = ["tiles", "heat", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); el.appendChild(ch);
   if (c.text) el.insertAdjacentHTML("beforeend", `<p class="ctext"><span>${esc(c.text)}</span> <button type="button" class="copy" title="Satz mit Quellenangabe kopieren">Kopieren</button></p>`);
-  if (c.caption) el.insertAdjacentHTML("beforeend", `<div class="cap">${esc(c.caption)}</div>`);
+  if (c.caption) el.insertAdjacentHTML("beforeend", `<div class="cap info"><span class="ico" aria-label="Erläuterung" role="img">💡</span>${esc(c.caption)}</div>`);
   const nts = (c.notes || []).map((n, k) => `${k + 1} ${esc(n.text)}`).concat((c.outliers || []).map(o => `${esc(o.label)} im ${MONTHS[+o.date.slice(5, 7) - 1]} ${o.date.slice(0, 4)}: ${(o.change > 0 ? "+" : "") + fmt(o.change, 1)} % zum Vormonat`));
   if (nts.length) el.insertAdjacentHTML("beforeend", `<div class="cap notes"><b>Auffällige Ausschläge und Sondereffekte.</b> ${nts.join("; ")}.${(c.outliers || []).length ? " Automatisch markiert: Veränderung zum Vormonat mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019; die Ursache, etwa Großaufträge, Großprojekte oder die Lage von Ferientagen, nennt die Quelle." : ""}</div>`);
   const cb = el.querySelector("button.copy"); if (cb) cb.onclick = () => copyText(c.text, cb, `Abb. ${no} ${c.title || ""}`);
@@ -702,7 +716,7 @@ function build() {
     if (!q && !t.charts.length) return;
     sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))}</h2>`
       + (q ? `<div class="intro"><p class="answer">${esc([q.answer.head, ...q.answer.more].join(" "))} <button type="button" class="copy" title="Absatz mit Quellenangabe kopieren">Kopieren</button></p>`
-        + `<div class="explain"><b>${LY.minimal ? "Erläuterung." : "Was heißt das?"}</b> ${esc(q.explain)}</div></div>` : "");
+        + `<div class="explain"><span class="ico" aria-label="Erläuterung" role="img">💡</span>${esc(q.explain)}</div></div>` : "");
     const cpb = sec.querySelector(".answer button.copy"); if (cpb) cpb.onclick = () => copyText([q.answer.head, ...q.answer.more].join(" "), cpb, q.ask);
     const wrap = document.createElement("div"); wrap.className = "charts"; sec.appendChild(wrap);
     let target = wrap;
