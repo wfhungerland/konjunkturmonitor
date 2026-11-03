@@ -580,7 +580,7 @@ series:
     block: insolvenzen
     source: genesis
     key: 52311-0130
-    params: {value_variable: GEW010, filters: {DLAND: "{land}", GEWAG1: GEW-BTRAGH}}
+    params: {value_variable: GEW010, filters: {DLAND: "{land}", GEWAU1: GEW-BTRAGH}}
     title: Betriebsaufgaben (Hauptniederlassung) {land_name}
     unit: Anzahl
     frequency: M
