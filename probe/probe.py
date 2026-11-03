@@ -84,54 +84,17 @@ def gen_tables(sel):
         print("Fehler", r.status_code, r.text[:300])
 
 
-UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) konjunkturmonitor"}
-def page(u, pat=None, n=1500):
-    try:
-        rr = S.get(u, timeout=60, headers=UA)
-        links = re.findall(r'href="([^"]+)"', rr.text)
-        print(u, rr.status_code, len(rr.text))
-        hits = [l for l in links if pat and re.search(pat, l, re.I)]
-        print("  Links:", hits[:25])
-        return rr
-    except Exception as e:
-        print(u, "Fehler", e)
-hdr("WAI")
-for u in ["https://www.bundesbank.de/de/statistiken/konjunktur-und-preise/woechentlicher-aktivitaetsindex",
-          "https://www.bundesbank.de/de/statistiken/konjunktur-und-preise/wai",
-          "https://www.bundesbank.de/en/statistics/economic-activity-and-prices/weekly-activity-index"]:
-    page(u, r"xlsx|csv|\.xls|wai|aktivit")
-hdr("Kalender")
-for u in ["https://www.destatis.de/DE/Presse/Termine/Wochenvorschau/_inhalt.html",
-          "https://www.destatis.de/SiteGlobals/Functions/RSSFeed/DE/RSSNewsfeed/Termine.xml",
-          "https://www.destatis.de/DE/Service/Termine/_inhalt.html",
-          "https://www.bundesbank.de/de/statistiken/statistischer-veroeffentlichungskalender",
-          "https://statistik.arbeitsagentur.de/DE/Navigation/Footer/Top-Produkte/Veroeffentlichungskalender-Nav.html"]:
-    rr = page(u, r"ics|ical|termin|kalender|rss|xml")
-    if rr is not None and rr.ok:
-        txt = re.sub(r"<[^>]+>", " ", rr.text); txt = re.sub(r"\s+", " ", txt)
-        m = re.search(r"\d{1,2}\.\d{1,2}\.20\d\d", txt)
-        print("  Text:", txt[max(0, (m.start() if m else 0) - 200):(m.start() if m else 0) + 1500])
-r = S.get("https://ec.europa.eu/eurostat/o/calendars/eventsJson", params={"start": "2026-11-01", "end": "2026-12-31", "theme": 0, "category": 0}, timeout=60)
-print("Eurostat Kalender", r.status_code, r.text[:1500])
-hdr("AMECO")
-r = S.get("https://api.db.nomics.world/v22/series/AMECO/OVGDP", params={"dimensions": json.dumps({"geo": ["deu"]}), "observations": 1, "limit": 20}, timeout=60)
-j = r.json()
-for s in j.get("series", {}).get("docs", []):
-    print(s.get("series_code"), "|", s.get("series_name"), "|", list(zip(s.get("period", [])[-25:], s.get("value", [])[-25:])))
-r = S.get("https://api.db.nomics.world/v22/series/AMECO/OVGD", params={"dimensions": json.dumps({"geo": ["deu"]}), "observations": 1, "limit": 20}, timeout=60)
-for s in r.json().get("series", {}).get("docs", []):
-    print(s.get("series_code"), "|", s.get("series_name"), "|", list(zip(s.get("period", [])[-12:], s.get("value", [])[-12:])))
-hdr("OECD CIT")
-r = S.get("https://sdmx.oecd.org/public/rest/dataflow/OECD.CTP.TPS/DSD_TAX_CIT@DF_CIT/latest", params={"references": "all"}, timeout=60)
-print(r.status_code); dims = re.findall(r'<structure:Dimension id="([^"]+)"[^>]*position="(\d+)"', r.text); print(dims)
-for key in ["DEU+FRA+ITA+USA+GBR+JPN+ESP+NLD.........", "DEU+FRA+ITA+USA+GBR+JPN+ESP+NLD........"]:
-    rr = S.get(f"https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_TAX_CIT@DF_CIT,/{key}", params={"startPeriod": "2000", "format": "csvfile"}, timeout=60)
-    print(key, rr.status_code, len(rr.text))
-    if rr.ok:
-        d = pd.read_csv(io.StringIO(rr.text), dtype=str)
-        print(list(d.columns))
-        for c in d.columns:
-            if d[c].nunique() < 15: print("  ", c, d[c].unique()[:15])
-        cols = [c for c in d.columns if c in ("REF_AREA", "TIME_PERIOD", "OBS_VALUE") or "MEASURE" in c or "TAX" in c]
-        print(d[cols][d["TIME_PERIOD"].isin(["2000", "2010", "2025", "2026"])].head(80).to_string())
-        break
+hdr("AMECO voll")
+for ds, code in [("OVGDP", "DEU.1.0.0.0.OVGDP"), ("OVGD", "DEU.1.1.0.0.OVGD")]:
+    r = S.get(f"https://api.db.nomics.world/v22/series/AMECO/{ds}/{code}", params={"observations": 1}, timeout=60)
+    d = r.json()["series"]["docs"][0]
+    print("CSV", ds, ";".join(f"{p}:{v}" for p, v in zip(d["period"], d["value"])))
+    print("Stand", ds, d.get("indexed_at"), r.json().get("dataset", {}).get("indexed_at"))
+hdr("OECD voll")
+rr = S.get("https://sdmx.oecd.org/public/rest/data/OECD.CTP.TPS,DSD_TAX_CIT@DF_CIT,/DEU+FRA+ITA+USA+GBR+JPN+ESP+NLD+POL+AUT.A.CIT_C.......", params={"startPeriod": "1995", "format": "csvfile"}, timeout=60)
+print(rr.status_code)
+d = pd.read_csv(io.StringIO(rr.text), dtype=str)
+print(d.groupby(["REF_AREA", "TARGETING", "SECTOR"]).size())
+p = d.groupby(["REF_AREA", "TIME_PERIOD"])["OBS_VALUE"].first().unstack(0)
+for y, row in p.iterrows():
+    print("CIT", y, ";".join(f"{k}:{v}" for k, v in row.items()))
