@@ -15,6 +15,7 @@ blocks:
   - {id: insolvenzen, title: Insolvenzen, sheet: Insolvenzen}
   - {id: bau, title: Bau, sheet: Bau}
   - {id: finanzen, title: Finanzen, sheet: Finanzen}
+  - {id: struktur, title: Struktur, sheet: Struktur}
 
 names:
   item:
@@ -24,6 +25,45 @@ names:
     P52_P53: Lager
     P6: Exporte
     P7: Importe
+  wz:
+    "10": "Nahrungs- und Futtermittel"
+    "11": "Getränke"
+    "12": "Tabak"
+    "13": "Textilien"
+    "14": "Bekleidung"
+    "15": "Leder und Schuhe"
+    "16": "Holzwaren"
+    "17": "Papier und Pappe"
+    "18": "Druckerzeugnisse"
+    "19": "Kokerei und Mineralöl"
+    "20": "Chemie"
+    "21": "Pharma"
+    "22": "Gummi und Kunststoff"
+    "23": "Glas, Keramik, Steine und Erden"
+    "24": "Metallerzeugung"
+    "25": "Metallerzeugnisse"
+    "26": "Elektronik und Optik"
+    "27": "Elektrische Ausrüstungen"
+    "28": "Maschinenbau"
+    "29": "Kraftwagen und -teile"
+    "30": "Sonstiger Fahrzeugbau"
+    "31": "Möbel"
+    "32": "Sonstige Waren"
+    "33": "Reparatur und Installation"
+  geo:
+    DE: Deutschland
+    EU27_2020: Europäische Union
+  cit:
+    deu: Deutschland
+    fra: Frankreich
+    ita: Italien
+    esp: Spanien
+    nld: Niederlande
+    pol: Polen
+    aut: Österreich
+    gbr: Vereinigtes Königreich
+    usa: USA
+    jpn: Japan
   asset:
     N11MG: Ausrüstungen
     N11KG: Bauten
@@ -69,6 +109,14 @@ charts:
   cpi_core: {title: "Kernrate und Vergleich mit dem HVPI", decimals: 1}
   cpi_contrib: {title: "Woraus die Inflationsrate besteht", decimals: 1}
   deflator: {title: "Preise in der Gesamtrechnung", decimals: 1}
+  branch_heat: {title: "Produktion nach Branchen", decimals: 1}
+  wai: {title: "Wöchentlicher Aktivitätsindex", decimals: 1}
+  potential: {title: "Wachstum und Produktionspotenzial", decimals: 1}
+  productivity: {title: "Arbeitsproduktivität", decimals: 0}
+  inv_ratio: {title: "Investitionsquote", decimals: 1}
+  emp_sector: {title: "Erwerbstätige nach Wirtschaftsbereichen", decimals: 0}
+  migration: {title: "Nettozuwanderung", decimals: 0}
+  cit: {title: "Steuersätze auf Unternehmensgewinne", decimals: 1}
   pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}
   price_exp: {title: "Preiserwartungen von Unternehmen und Verbrauchern", decimals: 0}
   gdp_use: {title: "Verwendung der Wirtschaftsleistung im letzten Quartal", decimals: 1}
@@ -1480,3 +1528,261 @@ series:
     chart: price_exp
     label: "Verbraucher (zwölf Monate)"
 
+  - id: de_prod_wz
+    expand: {wz: ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33"]}
+    block: industrie
+    source: bundesbank
+    key: "BBDE1/M.DE.Y.BAA1.N2C{wz}0000.G.C.I21.A"
+    title: "Produktion: {wz_name}"
+    unit: Index 2021=100
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    start: "2015-01-01"
+    chart: branch_heat
+    label: "{wz} {wz_name}"
+
+  - id: de_wai
+    block: wachstum
+    source: bundesbank
+    key: BBDE1/W.DE.Y.WAI.A2N400000.A.N.R00.A
+    title: "Wöchentlicher Aktivitätsindex der Bundesbank"
+    unit: "%"
+    frequency: D
+    adjustment: "Wochenwerte (Bundesbank)"
+    start: "2019-01-01"
+    stale_after_months: 2
+    chart: wai
+    label: "Aktivitätsindex"
+    note: "Geschätzte Wachstumsrate des BIP der letzten 13 Wochen gegenüber den 13 Wochen davor, aus hochfrequenten Indikatoren."
+
+  - id: de_gdp_a
+    block: struktur
+    source: eurostat
+    key: nama_10_gdp
+    params: {geo: DE, na_item: B1GQ, unit: CLV_PCH_PRE}
+    title: "BIP real, % gg. Vorjahr (Jahreswerte)"
+    unit: "% gg. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1996-01-01"
+    chart: potential
+    label: "BIP-Wachstum"
+    style: bar
+
+  - id: de_potential
+    block: struktur
+    source: static
+    key: ameco_potential_de
+    params: {source_name: "Europäische Kommission, AMECO (über DBnomics), eigene Berechnung"}
+    title: "Wachstum des Produktionspotenzials (AMECO)"
+    unit: "% gg. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1996-01-01"
+    stale_after_months: 24
+    chart: potential
+    label: "Produktionspotenzial"
+    license: "Europäische Kommission, AMECO: Wiederverwendung mit Quellenangabe"
+    note: "Veränderung des Produktionspotenzials (AMECO-Reihe OVGDP) gegenüber dem Vorjahr; AMECO-Stand Frühjahr 2026, abgerufen über DBnomics am 3.11.2026. Aktualisierung zweimal jährlich von Hand."
+
+  - id: de_lp_hour
+    block: struktur
+    source: eurostat
+    key: namq_10_lp_ulc
+    params: {geo: DE, na_item: RLPR_HW, unit: I20, s_adj: SCA}
+    title: "Arbeitsproduktivität je Erwerbstätigenstunde, real"
+    unit: "Index 2020=100"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2000-01-01"
+    chart: productivity
+    label: "je Stunde"
+
+  - id: de_lp_person
+    block: struktur
+    source: eurostat
+    key: namq_10_lp_ulc
+    params: {geo: DE, na_item: RLPR_PER, unit: I20, s_adj: SCA}
+    title: "Arbeitsproduktivität je Erwerbstätigen, real"
+    unit: "Index 2020=100"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2000-01-01"
+    chart: productivity
+    label: "je Erwerbstätigen"
+
+  - id: inv_ratio
+    expand: {geo: [DE, EU27_2020]}
+    block: struktur
+    source: eurostat
+    key: nama_10_gdp
+    params: {geo: "{geo}", na_item: P51G, unit: PC_GDP}
+    title: "Bruttoanlageinvestitionen in % des BIP ({geo_name})"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: nominal
+    start: "1995-01-01"
+    chart: inv_ratio
+    label: "{geo_name}"
+
+  - id: emp_sector_a
+    block: struktur
+    source: eurostat
+    key: namq_10_a10_e
+    params: {geo: DE, na_item: EMP_DC, unit: THS_PER, s_adj: SCA, nace_r2: "A"}
+    title: "Erwerbstätige: Land- und Forstwirtschaft"
+    unit: "Tsd. Personen"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: emp_sector
+    label: "Land- und Forstwirtschaft"
+
+  - id: emp_sector_be
+    block: struktur
+    source: eurostat
+    key: namq_10_a10_e
+    params: {geo: DE, na_item: EMP_DC, unit: THS_PER, s_adj: SCA, nace_r2: "B-E"}
+    title: "Erwerbstätige: Industrie (ohne Bau)"
+    unit: "Tsd. Personen"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: emp_sector
+    label: "Industrie (ohne Bau)"
+
+  - id: emp_sector_f
+    block: struktur
+    source: eurostat
+    key: namq_10_a10_e
+    params: {geo: DE, na_item: EMP_DC, unit: THS_PER, s_adj: SCA, nace_r2: "F"}
+    title: "Erwerbstätige: Baugewerbe"
+    unit: "Tsd. Personen"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: emp_sector
+    label: "Baugewerbe"
+
+  - id: emp_sector_gi
+    block: struktur
+    source: eurostat
+    key: namq_10_a10_e
+    params: {geo: DE, na_item: EMP_DC, unit: THS_PER, s_adj: SCA, nace_r2: "G-I"}
+    title: "Erwerbstätige: Handel, Verkehr, Gastgewerbe"
+    unit: "Tsd. Personen"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: emp_sector
+    label: "Handel, Verkehr, Gastgewerbe"
+
+  - id: emp_sector_j
+    block: struktur
+    source: eurostat
+    key: namq_10_a10_e
+    params: {geo: DE, na_item: EMP_DC, unit: THS_PER, s_adj: SCA, nace_r2: "J"}
+    title: "Erwerbstätige: Information und Kommunikation"
+    unit: "Tsd. Personen"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: emp_sector
+    label: "Information und Kommunikation"
+
+  - id: emp_sector_k
+    block: struktur
+    source: eurostat
+    key: namq_10_a10_e
+    params: {geo: DE, na_item: EMP_DC, unit: THS_PER, s_adj: SCA, nace_r2: "K"}
+    title: "Erwerbstätige: Finanzen und Versicherungen"
+    unit: "Tsd. Personen"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: emp_sector
+    label: "Finanzen und Versicherungen"
+
+  - id: emp_sector_l
+    block: struktur
+    source: eurostat
+    key: namq_10_a10_e
+    params: {geo: DE, na_item: EMP_DC, unit: THS_PER, s_adj: SCA, nace_r2: "L"}
+    title: "Erwerbstätige: Grundstücks- und Wohnungswesen"
+    unit: "Tsd. Personen"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: emp_sector
+    label: "Grundstücks- und Wohnungswesen"
+
+  - id: emp_sector_mn
+    block: struktur
+    source: eurostat
+    key: namq_10_a10_e
+    params: {geo: DE, na_item: EMP_DC, unit: THS_PER, s_adj: SCA, nace_r2: "M_N"}
+    title: "Erwerbstätige: Unternehmensdienstleister"
+    unit: "Tsd. Personen"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: emp_sector
+    label: "Unternehmensdienstleister"
+
+  - id: emp_sector_oq
+    block: struktur
+    source: eurostat
+    key: namq_10_a10_e
+    params: {geo: DE, na_item: EMP_DC, unit: THS_PER, s_adj: SCA, nace_r2: "O-Q"}
+    title: "Erwerbstätige: Öffentliche Dienstleister, Erziehung, Gesundheit"
+    unit: "Tsd. Personen"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: emp_sector
+    label: "Öffentliche Dienstleister, Erziehung, Gesundheit"
+
+  - id: emp_sector_ru
+    block: struktur
+    source: eurostat
+    key: namq_10_a10_e
+    params: {geo: DE, na_item: EMP_DC, unit: THS_PER, s_adj: SCA, nace_r2: "R-U"}
+    title: "Erwerbstätige: Sonstige Dienstleister"
+    unit: "Tsd. Personen"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: emp_sector
+    label: "Sonstige Dienstleister"
+
+  - id: de_migration
+    block: struktur
+    source: eurostat
+    key: demo_gind
+    params: {geo: DE, indic_de: CNMIGRAT}
+    title: "Nettozuwanderung (einschließlich statistischer Anpassung)"
+    unit: "Personen"
+    frequency: A
+    adjustment: "Jahreswerte"
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: migration
+    label: "Nettozuwanderung"
+    style: bar
+
+  - id: cit
+    expand: {cit: [deu, fra, ita, esp, nld, pol, aut, gbr, usa, jpn]}
+    block: struktur
+    source: static
+    key: "oecd_cit_{cit}"
+    params: {source_name: "OECD, Corporate Tax Statistics"}
+    title: "Tariflicher Gesamtsteuersatz auf Unternehmensgewinne, {cit_name}"
+    unit: "%"
+    frequency: A
+    adjustment: "Regelsatz, Zentralstaat und nachgeordnete Ebenen"
+    start: "2000-01-01"
+    stale_after_months: 36
+    chart: cit
+    label: "{cit_name}"
+    license: "OECD, CC BY 4.0"
+    note: "OECD Corporate Tax Statistics, kombinierter tariflicher Steuersatz (CIT_C), Regelsatz (ST). Abruf über die OECD-SDMX-Schnittstelle am 3.11.2026."

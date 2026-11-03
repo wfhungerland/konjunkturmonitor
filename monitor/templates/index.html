@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Konjunkturmonitor</title>
-<meta name="description" content="Wie geht es der deutschen Wirtschaft? Sieben Fragen, sieben Antworten aus amtlichen und offenen Daten.">
+<meta name="description" content="Konjunkturmonitor: die wichtigsten Kennzahlen zur deutschen Wirtschaft mit kurzer Einordnung, aus amtlichen und frei zugänglichen Daten.">
 <script src="plotly.min.js"></script>
 <style>
   :root { --bg: #f7f7f5; --card: #fff; --text: #1d232b; --muted: #5d6673; --line: #e2e5e9; --accent: #164a8c; --dark: #002060; }
@@ -49,6 +49,11 @@
   .card .acts a:hover, .card .acts button:hover { text-decoration: underline; }
   .card .cap { color: var(--text); margin: 6px 0 4px; font-size: 13.5px; }
   .card .chart { width: 100%; aspect-ratio: 5 / 3; min-height: 260px; overflow: hidden; }
+  .charts.single { grid-template-columns: minmax(0, 1fr); }
+  .charts.single .card .chart { aspect-ratio: 5 / 2; max-height: 440px; }
+  .charts.single .card .chart.square { aspect-ratio: 1 / 1; max-height: 520px; }
+  @media (max-width: 700px) { .charts.single .card .chart { aspect-ratio: 5 / 3; } }
+  .card .chart.multi { aspect-ratio: auto; min-height: 0; overflow: visible; }
   .card .chart.square { aspect-ratio: 1 / 1; max-height: 520px; }
   .seg { display: flex; justify-content: center; gap: 0; margin: 8px 0 0; }
   .seg button { font: inherit; font-size: 13px; padding: 3px 10px; border: 1px solid #0070C0; background: #fff; color: #0070C0; cursor: pointer; }
@@ -60,6 +65,49 @@
   .tile b { font-size: 15px; }
   .tlegend { display: flex; justify-content: center; gap: 10px; font: 12px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
   .tlegend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -2px; margin-right: 3px; }
+  /* Tufte-Darstellung, über DATA.layout schaltbar */
+  .stable { width: 100%; border-collapse: collapse; font: 15px/1.35 "Arial Narrow", Arial, sans-serif; margin: 6px 0 10px; }
+  .stable th { text-align: left; font-weight: normal; color: var(--muted); border-bottom: 1px solid #999; padding: 4px 8px 4px 0; font-size: 13px; }
+  .stable td { padding: 3px 8px 3px 0; border-bottom: 1px solid #eee; vertical-align: middle; }
+  .stable tr.grp td { border-bottom: 0; padding-top: 12px; font: bold 13px "Arial Narrow", Arial, sans-serif; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .stable td.v { text-align: right; font-variant-numeric: tabular-nums; font-weight: bold; color: var(--dark); white-space: nowrap; }
+  .stable td.d { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+  .stable td.u, .stable td.p, .stable td.r { color: var(--muted); font-size: 13.5px; white-space: nowrap; }
+  .stable td.s svg { width: 150px; height: 22px; display: block; }
+  .stable a { color: inherit; }
+  @media (max-width: 760px) { .stable td.p, .stable th.p, .stable td.r, .stable th.r { display: none; } .stable td.s svg { width: 90px; } }
+  body.minimal { background: #fff; }
+  body.minimal header { border-bottom-color: #ddd; }
+  body.minimal .card { border: 0; border-radius: 0; padding: 4px 0 8px; background: transparent; }
+  body.minimal .q { border-color: #e5e5e5; }
+  body.minimal .verdict { background: none; padding: 0; color: var(--muted); font-style: italic; }
+  body.minimal .explain { background: none; border-left: 0; padding: 0; color: var(--muted); font-size: 14px; }
+  body.minimal .explain b { color: var(--muted); }
+  @media (min-width: 1100px) {
+    body.minimal .intro { display: grid; grid-template-columns: minmax(0, 48em) minmax(0, 1fr); column-gap: 32px; }
+    body.minimal .intro .explain { grid-column: 2; grid-row: 1 / span 3; margin-top: 6px; }
+  }
+  details.morecharts { margin-top: 10px; }
+  details.morecharts > summary { cursor: pointer; font: 15px "Arial Narrow", Arial, sans-serif; color: var(--accent); margin: 4px 0 10px; }
+  .multiples { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px 14px; }
+  .multiples .mini { height: 150px; }
+  .multiples .mt { font: 13px "Arial Narrow", Arial, sans-serif; margin: 0; }
+  .heat { overflow-x: auto; }
+  .card.wide { grid-column: 1 / -1; }
+  .heat table { border-collapse: collapse; font: 12.5px/1.2 "Arial Narrow", Arial, sans-serif; width: 100%; }
+  .heat th { font-weight: normal; color: var(--muted); padding: 2px 3px; text-align: center; white-space: nowrap; }
+  .heat td { padding: 2px 3px; text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .heat td.l { text-align: left; padding-right: 8px; }
+  .heat td.k { font-weight: bold; border-left: 1px solid #ccc; }
+  .cal { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+  .calm h4 { margin: 4px 0 4px; font-size: 15px; }
+  .calm table { width: 100%; border-collapse: collapse; table-layout: fixed; font: 12px/1.25 "Arial Narrow", Arial, sans-serif; }
+  .calm th { color: var(--muted); font-weight: normal; text-align: left; padding: 2px 4px; }
+  .calm td { vertical-align: top; border-top: 1px solid #e3e3e3; padding: 3px 4px 6px; height: 54px; }
+  .calm td b { display: block; color: var(--muted); font-weight: normal; }
+  .calm td a { display: block; color: var(--text); margin-top: 2px; overflow-wrap: anywhere; hyphens: auto; }
+  .calm td.today { background: #eef4fb; } .calm td.past a { color: #999; }
+  .callinks { font: 13px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
   .refs { max-width: 1180px; margin: 30px auto 0; padding: 0 16px; font-size: 14px; color: var(--muted); }
   footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px 40px; }
 </style>
@@ -69,6 +117,7 @@
 <main>
   <p class="claim" id="claim"></p>
   <div class="grid" id="grid"></div>
+  <div id="starttable"></div>
   <div id="topics"></div>
 </main>
 <section class="refs" id="quellen">
@@ -150,18 +199,93 @@ function timeChart(el, c) {
   }
   const xs = c.series.flatMap(s => s.x).sort(), freq = c.freq;
   const r = pad(xs[0], xs[xs.length - 1], freq);
-  const ya = yAxis(all, c.unit, [c.ref, c.threshold].filter(v => v != null));
+  const ya = yAxis(all, c.unit, [c.ref, c.threshold, ...((c.band && (DATA.layout || {}).compare_band) ? [c.band.lo, c.band.hi] : [])].filter(v => v != null));
   const xa = xAxis(r[0], r[1], el.clientWidth || 500);
   const shapes = xa.shapes.slice();
   if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
   if (c.ref != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1.5, dash: "dash" } });
   if (c.threshold != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.threshold, y1: c.threshold, line: { color: "#C00000", width: 1.5, dash: "dash" } });
   (c.recessions || []).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.25)", line: { width: 0 }, layer: "below" }));
+  const LY = DATA.layout || {}, annotations = [];
+  if (c.band && LY.compare_band) {
+    shapes.push({ type: "rect", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.band.lo, y1: c.band.hi, fillcolor: "rgba(120,120,120,0.10)", line: { width: 0 }, layer: "below" });
+    annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.band.hi, text: "Spanne 2015–2019", showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 11, color: "#7f7f7f" } });
+  }
+  const named = traces.filter(t => t.showlegend !== false && t.type === "scatter");
+  const direct = LY.direct_labels && c.type !== "stacked" && !bars.length && named.length > 1 && named.length <= 4;
+  if (direct) { // Beschriftung am Linienende, kurz gefasst und ohne Überlappung
+    const short = s => { s = s.replace(/\s*\(.*\)\s*$/, ""); if (s.length <= 26) return s; const c = s.slice(0, 26); return c.slice(0, c.lastIndexOf(" ") > 10 ? c.lastIndexOf(" ") : 26) + " …"; };
+    const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; return { tr, i, y: tr.y[i] }; }).filter(e => e.y != null).sort((a, b) => a.y - b.y);
+    const lo0 = Math.min(...all), hi0 = Math.max(...all), gap = (hi0 - lo0 || 1) * 21 / Math.max(160, (el.clientHeight || 300) * 0.78);
+    for (let k = 1; k < ends.length; k++) if (ends[k].y - ends[k - 1].y < gap) ends[k].y = ends[k - 1].y + gap;
+    ends.forEach(e => annotations.push({ x: e.tr.x[e.i], y: e.y, text: esc(short(e.tr.name)), showarrow: false, xanchor: "left", xshift: 5, yanchor: "middle", font: { family: HS.font, size: 12, color: e.tr.line.color } }));
+    const len = Math.max(...ends.map(e => short(e.tr.name).length));
+    r[1] = new Date(Date.parse(r[1]) + (Date.parse(r[1]) - Date.parse(r[0])) * Math.min(0.45, 0.012 * len + 0.03)).toISOString().slice(0, 10);
+  }
   const L = baseLayout(el);
-  Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, showlegend: traces.filter(t => t.showlegend !== false).length > 1,
+  Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
     yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
   Plotly.newPlot(el, traces, L, CFG);
+}
+
+// Small Multiples: je Reihe ein kleines Diagramm auf gleicher Skala, die übrigen Reihen grau als Kontext
+function multiplesChart(el, c) {
+  el.classList.add("multi");
+  const all = c.series.flatMap(s => s.y.filter(v => v != null)).concat(c.ref != null ? [c.ref] : []);
+  const ya = yAxis(all, c.unit, []);
+  const xs = c.series.flatMap(s => s.x).sort(), r = pad(xs[0], xs[xs.length - 1], c.freq);
+  const grid = document.createElement("div"); grid.className = "multiples"; el.appendChild(grid);
+  c.series.forEach((s, k) => {
+    const box = document.createElement("div"), last = s.y.filter(v => v != null).slice(-1)[0];
+    box.innerHTML = `<p class="mt"><b>${esc(s.label)}</b> ${last != null ? fmt(last, c.decimals) : ""}</p>`;
+    const m = document.createElement("div"); m.className = "mini"; box.appendChild(m); grid.appendChild(box);
+    const traces = c.series.filter(o => o !== s).map(o => ({ type: "scatter", mode: "lines", x: o.x, y: o.y, line: { color: "#d0d0d0", width: 1 }, hoverinfo: "skip" }));
+    traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, line: { color: PAL[0], width: 2 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
+    const xa = xAxis(r[0], r[1], 180), shapes = xa.shapes.filter(sh => sh.type === "rect");
+    if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
+    if (c.ref != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1, dash: "dash" } });
+    const L = baseLayout(m);
+    Object.assign(L, { margin: { l: 2, r: 2, t: 4, b: 18 }, showlegend: false, shapes, hovermode: "closest", font: { family: HS.font, size: 11 },
+      xaxis: { type: "date", range: r, tickmode: "array", tickvals: [r[0], r[1]], ticktext: [r[0].slice(0, 4), r[1].slice(0, 4)], showgrid: false, zeroline: false, fixedrange: true },
+      yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.tickvals.map(v => fmt(v, decs(ya.tickvals[1] - ya.tickvals[0]))), showticklabels: k % 3 === 2 || k === c.series.length - 1, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
+    Plotly.newPlot(m, traces, L, CFG);
+  });
+}
+
+// Wärmetabelle: Zeilen Branchen, Spalten Monate, Farbe nach Veränderung
+function heatChart(el, c) {
+  const H = c.heat, m = 15, cell = v => { if (v == null) return `<td></td>`; const col = tileColor(Math.max(-m, Math.min(m, v)), m), r = Math.round(v); return `<td style="background:${col.bg};color:${col.fg}">${fmt(r === 0 ? 0 : r, 0)}</td>`; };
+  const head = H.cols.map(d => `<th>${MONTHS[+d.slice(5, 7) - 1].replace(".", "")}<br>${d.slice(2, 4)}</th>`).join("");
+  let html = `<table><thead><tr><th></th>${head}<th>3 Mon.</th><th>ggü. 2019</th></tr></thead><tbody>`;
+  H.rows.slice().reverse().forEach(r => { html += `<tr><td class="l">${esc(r.label)}</td>${H.cols.map(d => cell(r.values[d])).join("")}`
+    + `<td class="k">${(r.m3 > 0 ? "+" : "") + fmt(r.m3, 1)}</td><td class="k">${r.level == null ? "" : (r.level > 0 ? "+" : "") + fmt(r.level, 0)}</td></tr>`; });
+  el.innerHTML = `<div class="heat">${html}</tbody></table></div>`;
+}
+
+// Veröffentlichungskalender: Monatsraster, Termine je Tag
+function calendarChart(el, c) {
+  const K = c.calendar, byDay = {};
+  K.events.forEach(e => (byDay[e.date] = byDay[e.date] || []).push(e));
+  const today = new Date().toISOString().slice(0, 10);
+  let html = `<div class="cal">`;
+  K.months.forEach(mo => {
+    const [y, m] = mo.split("-").map(Number), first = new Date(Date.UTC(y, m - 1, 1)), days = new Date(Date.UTC(y, m, 0)).getUTCDate();
+    const names = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+    html += `<div class="calm"><h4>${names[m - 1]} ${y}</h4><table><thead><tr>${["Mo", "Di", "Mi", "Do", "Fr"].map(d => `<th>${d}</th>`).join("")}</tr></thead><tbody><tr>`;
+    let col = (first.getUTCDay() + 6) % 7; if (col > 4) col = -1;
+    for (let i = 0; i < Math.max(0, col); i++) html += "<td></td>";
+    let c0 = Math.max(0, col);
+    for (let d = 1; d <= days; d++) {
+      const dt = new Date(Date.UTC(y, m - 1, d)), wd = (dt.getUTCDay() + 6) % 7; if (wd > 4) continue;
+      if (wd === 0 && c0 > 0) { html += "</tr><tr>"; c0 = 0; }
+      const iso = dt.toISOString().slice(0, 10), ev = (byDay[iso] || []).filter(e => e.source !== "Bundesbank" || d <= 7 || true);
+      html += `<td class="${iso === today ? "today" : ""}${iso < today ? " past" : ""}"><b>${d}</b>${ev.map(e => `<a href="#${e.topic}">${esc(e.name)}</a>`).join("")}</td>`; c0++;
+    }
+    html += `</tr></tbody></table></div>`;
+  });
+  html += `</div><p class="callinks">Kalender der Quellen: ${K.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(" · ")}</p>`;
+  el.innerHTML = html;
 }
 
 // Konjunkturuhr: Lage (waagerecht) gegen Erwartungen (senkrecht), Spur der letzten Monate
@@ -236,11 +360,12 @@ function latestChart(el, c) {
     { type: "bar", orientation: "h", y: lab, x: b.map(x => x.value), marker: { color: b.map(x => x.value >= 0 ? PAL[0] : "#C00000") }, name: "Letztes Quartal",
       text: b.map(x => (x.value > 0 ? "+" : "") + fmt(x.value, c.decimals)), textposition: "outside", cliponaxis: false,
       customdata: b.map(per), hovertemplate: `%{x:,.${c.decimals}f} (%{customdata})<extra>%{y}</extra>` },
-    { type: "scatter", mode: "markers", y: lab, x: b.map(x => x.prev), marker: { symbol: "diamond", size: 9, color: PAL[2] }, name: "Quartal davor",
-      hovertemplate: `%{x:,.${c.decimals}f} (davor)<extra>%{y}</extra>` }];
+    ...(b.some(x => x.prev != null) ? [{ type: "scatter", mode: "markers", y: lab, x: b.map(x => x.prev), marker: { symbol: "diamond", size: 9, color: PAL[2] }, name: "Quartal davor",
+      hovertemplate: `%{x:,.${c.decimals}f} (davor)<extra>%{y}</extra>` }] : [])];
+  if (c.bar_name) traces[0].name = c.bar_name;
   const all = b.flatMap(x => [x.value, x.prev]).filter(v => v != null), lo = Math.min(0, ...all), hi = Math.max(0, ...all), padv = (hi - lo) * 0.18 || 1;
   const L = baseLayout(el);
-  Object.assign(L, { height: Math.max(220, 34 * b.length + 70), showlegend: true, bargap: 0.35, hovermode: "closest",
+  Object.assign(L, { height: Math.max(220, 34 * b.length + 70), showlegend: traces.length > 1, bargap: 0.35, hovermode: "closest",
     xaxis: { range: [lo - padv, hi + padv], zeroline: true, zerolinecolor: HS.zero, showgrid: true, gridcolor: HS.gridH, fixedrange: true, ticksuffix: "" },
     yaxis: { automargin: true, fixedrange: true, ticks: "" } });
   el.style.height = L.height + "px";
@@ -338,7 +463,10 @@ async function pngDownload(el, ch, c, no, sub, unit) {
     const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(clone));
     img = new Image(); img.src = url; await img.decode(); plotH = 560;
   } else if (c.type === "tiles") plotH = 5 * 74 + 60;
-  else { const url = await Plotly.toImage(ch, { format: "png", width: W - 2 * pad, height: plotH, scale: S }); img = new Image(); img.src = url; await img.decode(); }
+  else { let src_el = ch;
+    if (ch.classList.contains("multi")) { src_el = document.createElement("div"); src_el.style.cssText = "position:absolute;left:-9999px;width:1100px;height:520px"; document.body.appendChild(src_el); timeChart(src_el, c); }
+    const url = await Plotly.toImage(src_el, { format: "png", width: W - 2 * pad, height: plotH, scale: S });
+    if (src_el !== ch) { Plotly.purge(src_el); src_el.remove(); } img = new Image(); img.src = url; await img.decode(); }
   const cv = document.createElement("canvas"), x = cv.getContext("2d");
   const wrap = (txt, maxW, f) => { x.font = f; const out = []; let line = ""; (txt || "").split(" ").forEach(w => { const tst = line ? line + " " + w : w; if (x.measureText(tst).width > maxW && line) { out.push(line); line = w; } else line = tst; }); if (line) out.push(line); return out; };
   const cap = wrap(c.caption, W - 2 * pad, `15px ${font}`), src = wrap(el.querySelector(".src").textContent, W - 2 * pad, `13px ${font}`);
@@ -362,13 +490,13 @@ async function pngDownload(el, ch, c, no, sub, unit) {
 }
 
 function card(c, no) {
-  const el = document.createElement("div"); el.className = "card"; el.id = `abb-${no}`;
-  const sub = c.type === "clock" || c.type === "forecast" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
-    : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
+  const el = document.createElement("div"); el.className = "card" + (c.type === "heat" || c.type === "calendar" ? " wide" : ""); el.id = `abb-${no}`;
+  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
+    : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real"
-    : c.type === "tiles" ? "Veränderung gegenüber denselben 12 Monaten ein Jahr zuvor, %" : (c.unit || "");
+    : c.type === "tiles" ? "Veränderung gegenüber denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : (c.unit || "");
   el.innerHTML = `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}<div class="unit">${esc(unit)}</div>`;
-  const ch = document.createElement("div"); ch.className = c.type === "tiles" ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); el.appendChild(ch);
+  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); el.appendChild(ch);
   if (c.caption) el.insertAdjacentHTML("beforeend", `<div class="cap">${esc(c.caption)}</div>`);
   let src = (c.sources || []).join(", ");
   if (c.type === "forecast") src = c.forecasts.filter(f => f.latest).map(f => `<a href="${esc(f.source)}" target="_blank" rel="noopener">${esc(f.by)}, ${esc(f.round)}</a>`).join(" · ");
@@ -377,10 +505,10 @@ function card(c, no) {
   const f = c.files || {}, acts = [];
   if (f.xlsx) acts.push(`<a href="${f.xlsx}" download>Excel</a>`);
   if (f.pptx) acts.push(`<a href="${f.pptx}" download>PowerPoint</a>`);
-  acts.push(`<button type="button" class="png">PNG</button>`);
+  if (c.type !== "heat" && c.type !== "calendar") acts.push(`<button type="button" class="png">PNG</button>`);
   if (f.csv) acts.push(`<a href="${f.csv}" download>CSV</a>`);
   el.insertAdjacentHTML("beforeend", `<div class="acts" aria-label="Herunterladen">Herunterladen: ${acts.join(" · ")}</div>`);
-  el.querySelector("button.png").onclick = () => pngDownload(el, ch, c, no, sub, unit);
+  const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
   ch._c = c;
   return el;
 }
@@ -400,7 +528,31 @@ function render(ch) {
   }
   if (c.type === "clock") clockChart(ch, c); else if (c.type === "forecast") forecastChart(ch, c);
   else if (c.type === "latest") latestChart(ch, c);
-  else if (c.type === "seasonal") seasonalChart(ch, c); else if (c.type === "tiles") tilesChart(ch, c); else timeChart(ch, c);
+  else if (c.type === "heat") heatChart(ch, c);
+  else if (c.type === "calendar") calendarChart(ch, c);
+  else if (c.type === "seasonal") seasonalChart(ch, c); else if (c.type === "tiles") tilesChart(ch, c);
+  else if (c.multiples && (DATA.layout || {}).small_multiples && c.series && c.series.length > 2) multiplesChart(ch, c);
+  else timeChart(ch, c);
+}
+
+function startTable(box) {
+  const rows = DATA.start || []; if (!rows.length) return false;
+  const sp = r => { const d = r.spark, x = d.x.map(t => Date.parse(t)), y = d.y, w = 150, h = 22, p = 2, b = r.band;
+    const vals = y.concat(b ? [b.lo, b.hi] : []), lo = Math.min(...vals), hi = Math.max(...vals);
+    const X = v => p + (v - x[0]) / (x[x.length - 1] - x[0] || 1) * (w - 2 * p), Y = v => h - p - (v - lo) / (hi - lo || 1) * (h - 2 * p);
+    const band = b ? `<rect x="${p}" width="${w - 2 * p}" y="${Y(b.hi).toFixed(1)}" height="${Math.max(0.8, Y(b.lo) - Y(b.hi)).toFixed(1)}" fill="#e8e8e8"/>` : "";
+    const path = y.map((v, i) => `${i ? "L" : "M"}${X(x[i]).toFixed(1)},${Y(v).toFixed(1)}`).join("");
+    return `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true">${band}<path d="${path}" fill="none" stroke="#002060" stroke-width="1.2"/><circle cx="${X(x[x.length - 1]).toFixed(1)}" cy="${Y(y[y.length - 1]).toFixed(1)}" r="2.2" fill="#c00000"/></svg>`; };
+  let html = `<table class="stable"><thead><tr><th>Kennzahl</th><th class="v">Wert</th><th class="d">davor</th><th>Einheit</th><th>Verlauf fünf Jahre (grau: Spanne 2015–2019)</th><th class="r">ggü. Spanne 2015–2019</th><th class="p">Stand</th></tr></thead><tbody>`;
+  let grp = null;
+  rows.forEach(r => {
+    if (r.group !== grp) { grp = r.group; html += `<tr class="grp"><td colspan="7">${esc(grp)}</td></tr>`; }
+    const d = r.decimals ?? 1, sg = r.show !== "level" ? (v => (v > 0 ? "+" : "") + fmt(v, d)) : (v => fmt(v, d));
+    html += `<tr><td><a href="#${r.topic}">${esc(r.label)}</a></td><td class="v">${sg(r.value)}</td><td class="d">${r.prev != null ? sg(r.prev) : ""}</td>`
+      + `<td class="u">${esc(r.unit)}</td><td class="s">${sp(r)}</td><td class="r">${esc((r.rel || "").replace(" der Spanne 2015 bis 2019", ""))}</td><td class="p">${esc(r.period)}</td></tr>`;
+  });
+  box.innerHTML = html + "</tbody></table>";
+  return true;
 }
 
 function build() {
@@ -409,8 +561,11 @@ function build() {
   const d = new Date(DATA.generated_at); document.getElementById("stand").textContent = "Stand: " + d.toLocaleDateString("de-DE");
   if (DATA.deck) document.getElementById("deck").innerHTML = `<a href="${DATA.deck}" download>Alle Abbildungen als PowerPoint</a>`;
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
+  const LY = DATA.layout || {};
+  if (LY.minimal) document.body.classList.add("minimal");
   const grid = document.getElementById("grid"), nav = document.getElementById("nav"), topics = document.getElementById("topics");
-  DATA.questions.forEach(q => {
+  if (LY.start_table && startTable(document.getElementById("starttable"))) grid.style.display = "none";
+  else DATA.questions.forEach(q => {
     const a = q.answer, val = (a.signed && a.value > 0 ? "+" : "") + fmt(a.value, a.decimals ?? 1);
     grid.insertAdjacentHTML("beforeend", `<a class="q" href="#${q.topic}"><span class="ask">${esc(q.ask)}</span>
       <span class="big"><span class="num">${val}</span><span class="u">${esc(a.unit)}${a.label && a.unit !== "Mrd. €" ? " " + esc(a.label) : ""}</span><span class="verdict">${esc(a.verdict)}</span></span>
@@ -423,16 +578,27 @@ function build() {
     const q = t.question;
     if (!q && !t.charts.length) return;
     sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))}</h2>`
-      + (q ? `<p class="answer">${esc(q.answer.head)}</p><ul class="more">${q.answer.more.map(m => `<li>${esc(m)}</li>`).join("")}</ul>`
-        + `<div class="explain"><b>Was heißt das?</b> ${esc(q.explain)}</div>` : "");
+      + (q ? `<div class="intro"><p class="answer">${esc(q.answer.head)}</p><ul class="more">${q.answer.more.map(m => `<li>${esc(m)}</li>`).join("")}</ul>`
+        + `<div class="explain"><b>${LY.minimal ? "Erläuterung." : "Was heißt das?"}</b> ${esc(q.explain)}</div></div>` : "");
     const wrap = document.createElement("div"); wrap.className = "charts"; sec.appendChild(wrap);
-    t.charts.forEach(c => { no += 1; const el = card(c, c.no ?? no); wrap.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : render(ch); });
+    let target = wrap;
+    t.charts.forEach((c, i) => {
+      if (i === 1 && LY.lead_chart_only && t.charts.length > 1) {
+        const det = document.createElement("details"); det.className = "morecharts";
+        det.innerHTML = `<summary>Weitere Abbildungen (${t.charts.length - 1})</summary>`;
+        target = document.createElement("div"); target.className = "charts"; det.appendChild(target); sec.appendChild(det);
+      }
+      no += 1; const el = card(c, c.no ?? no); target.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : render(ch);
+    });
+    if (LY.lead_chart_only && wrap.children.length === 1) wrap.classList.add("single");
     topics.appendChild(sec);
     nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
   });
   nav.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen</a>`);
 }
 build();
+function openHash() { const el = location.hash && document.querySelector(location.hash); const d = el && el.closest("details"); if (d) d.open = true; }
+addEventListener("hashchange", openHash); openHash();
 </script>
 </body>
 </html>
