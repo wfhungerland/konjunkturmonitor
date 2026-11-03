@@ -2097,26 +2097,28 @@ series:
   - id: de_gov_interest
     block: staat
     source: eurostat
-    key: gov_10q_ggnfa
-    params: {geo: DE, sector: S13, unit: PC_GDP, s_adj: SCA, na_item: D41PAY}
+    key: gov_10a_main
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: D41PAY}
     title: "Zinsausgaben des Staates"
     unit: "% des BIP"
-    frequency: Q
-    adjustment: saison- und kalenderbereinigt
-    start: "2005-01-01"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2000-01-01"
+    stale_after_months: 24
     chart: gov_spend
     label: "Zinsausgaben"
 
   - id: de_gov_inv
     block: staat
     source: eurostat
-    key: gov_10q_ggnfa
-    params: {geo: DE, sector: S13, unit: PC_GDP, s_adj: SCA, na_item: P51G}
+    key: gov_10a_main
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: P51G}
     title: "Bruttoanlageinvestitionen des Staates"
     unit: "% des BIP"
-    frequency: Q
-    adjustment: saison- und kalenderbereinigt
-    start: "2005-01-01"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2000-01-01"
+    stale_after_months: 24
     chart: gov_spend
     label: "Investitionen"
 

@@ -258,7 +258,7 @@ topics:
     ask: "Wie stehen die öffentlichen Finanzen da?"
     charts:
       - {chart: gov_balance, years: 12, caption: "Einnahmen minus Ausgaben von Bund, Ländern, Gemeinden und Sozialversicherung in Prozent des BIP, vierteljährlich, saisonbereinigt. Negative Werte bedeuten ein Defizit."}
-      - {chart: gov_spend, years: 12, caption: "Zinsausgaben und Bruttoanlageinvestitionen des Staates in Prozent des BIP. Steigende Zinsen engen den Spielraum für Investitionen ein."}
+      - {chart: gov_spend, years: 25, caption: "Zinsausgaben und Bruttoanlageinvestitionen des Staates in Prozent des BIP, Jahreswerte. Steigende Zinsen engen den Spielraum für Investitionen ein."}
       - {chart: gov_debt, years: 12, caption: "Bruttoschulden des Staates in der Abgrenzung des Maastricht-Vertrags in Prozent des BIP. Der Referenzwert der EU liegt bei 60 %."}
   - id: kalender
     title: Kalender
