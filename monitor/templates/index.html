@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Konjunkturmonitor</title>
+<meta name="description" content="Wie geht es der deutschen Wirtschaft? Sieben Fragen, sieben Antworten aus amtlichen und offenen Daten.">
+<script src="plotly.min.js"></script>
+<style>
+  :root { --bg: #f7f7f5; --card: #fff; --text: #1d232b; --muted: #5d6673; --line: #e2e5e9; --accent: #164a8c; --dark: #002060; }
+  * { box-sizing: border-box; }
+  html, body { max-width: 100%; overflow-x: hidden; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 "Palatino Linotype", Palatino, "Book Antiqua", serif; }
+  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+  header { background: var(--card); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; }
+  .bar { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
+  .bar h1 { font-size: 19px; margin: 0; }
+  .bar .stand { color: var(--muted); font-size: 13px; }
+  nav { display: flex; flex-wrap: wrap; gap: 4px 12px; font: 14px "Arial Narrow", Arial, sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 8px 16px 40px; }
+  .claim { font-size: 21px; margin: 18px 0 18px; max-width: 46em; }
+  /* Startseite: sieben Fragen */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .q { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 6px; color: inherit; }
+  .q:hover { border-color: var(--accent); text-decoration: none; }
+  .q .ask { font-size: 17px; font-weight: bold; }
+  .q .big { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .q .num { font: bold 34px/1 "Arial Narrow", Arial, sans-serif; color: var(--dark); }
+  .q .u { font: 15px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
+  .verdict { display: inline-block; font: 13px "Arial Narrow", Arial, sans-serif; color: var(--dark); background: #e6eef8; border-radius: 10px; padding: 1px 8px; }
+  .q .head { font-size: 14.5px; }
+  .q .per { font: 12px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
+  .q svg { width: 100%; height: 34px; }
+  /* Themen */
+  section.topic { margin-top: 44px; scroll-margin-top: 60px; }
+  section.topic > h2 { font-size: 26px; margin: 0 0 4px; }
+  .answer { font-size: 18px; margin: 4px 0 6px; max-width: 48em; }
+  .more { color: var(--text); margin: 0 0 8px; padding-left: 18px; max-width: 48em; }
+  .explain { background: var(--card); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 8px 0 14px; max-width: 48em; font-size: 15px; }
+  .explain b { font-family: "Arial Narrow", Arial, sans-serif; color: var(--accent); }
+  .charts { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+  @media (max-width: 900px) { .charts { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px 8px; min-width: 0; }
+  .card h3 { font-size: 16px; margin: 0 0 2px; }
+  .card .sub, .card .unit, .card .cap, .card .src { font: 13px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); }
+  .card .unit { text-align: right; margin-top: 2px; }
+  .card .cap { color: var(--text); margin: 6px 0 4px; font-size: 13.5px; }
+  .card .chart { width: 100%; aspect-ratio: 5 / 3; min-height: 260px; overflow: hidden; }
+  .card .chart.square { aspect-ratio: 1 / 1; max-height: 520px; }
+  .refs { max-width: 1180px; margin: 30px auto 0; padding: 0 16px; font-size: 14px; color: var(--muted); }
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px 40px; }
+</style>
+</head>
+<body>
+<header><div class="bar"><h1>Konjunkturmonitor</h1><span class="stand" id="stand"></span><nav id="nav"></nav></div></header>
+<main>
+  <p class="claim" id="claim"></p>
+  <div class="grid" id="grid"></div>
+  <div id="topics"></div>
+</main>
+<section class="refs" id="quellen">
+  <h2>Quellen und Hinweise</h2>
+  <p>Alle Zahlen stammen aus offenen, amtlichen Quellen: Deutsche Bundesbank (saisonbereinigte Reihen von Statistischem Bundesamt und Bundesagentur für Arbeit), Eurostat (Volkswirtschaftliche Gesamtrechnungen, Verbraucherpreise, EU-Unternehmens- und Verbraucherumfragen) und Statistik der Bundesagentur für Arbeit. Prognosen stammen aus den verlinkten Veröffentlichungen. Die Texte sind eigene Erläuterungen und keine amtliche Bewertung.</p>
+  <p id="cite"></p>
+</section>
+<footer>Konjunkturmonitor · Wolf-Fabian Hungerland</footer>
+<script>
+const DATA = /*__DATA__*/null;
+// Grafikstandard: Farben, Jahresbänder, Gitter, Nulllinie, Schrift
+const PAL = ["#002060", "#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#47D359"];
+const HS = { band: "rgba(193,229,245,0.3)", gridH: "#BFBFBF", gridV: "#F2F2F2", zero: "#FF0000", font: "Arial Narrow, Arial, sans-serif" };
+const MONTHS = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."];
+const TOUCH = matchMedia("(pointer: coarse)").matches;
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (v, d = 1) => (v < 0 ? "−" : "") + Math.abs(v).toLocaleString("de-DE", { minimumFractionDigits: d, maximumFractionDigits: d });
+const shortUnit = u => u.startsWith("%") ? "%" : u.startsWith("Pp") ? "Pp" : u.startsWith("Index") ? "" : u.startsWith("Tsd") ? "Tsd." : u;
+
+function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 2.5, 5, 10].map(m => m * p).find(s => s >= raw); }
+function decs(step) { return step >= 1 ? 0 : step >= 0.1 ? 1 : 2; }
+// Werteachse rechts: runde Stufen, je eine Drittel Stufe Luft, Einheit an der obersten Zahl
+function yAxis(vals, unit, extra) {
+  let lo = Math.min(...vals, ...(extra || [])), hi = Math.max(...vals, ...(extra || []));
+  if (lo === hi) { lo -= 1; hi += 1; }
+  const st = niceStep(hi - lo, 4), d = decs(st), a = Math.floor(lo / st) * st, b = Math.ceil(hi / st) * st;
+  const tv = [], tt = [];
+  for (let v = a; v <= b + st / 1000; v += st) { const r = +v.toFixed(d); tv.push(r); tt.push(fmt(r, d)); }
+  const u = shortUnit(unit); if (u) tt[tt.length - 1] += " " + u;
+  return { range: [a - st / 3, b + st / 3], tickvals: tv, ticktext: tt, zero: a < 0 && b > 0 };
+}
+// Zeitachse: Jahreszahl mittig unter dem Jahr, Gitterlinie an der Jahresgrenze, Jahresbänder
+function xAxis(x0, x1, width) {
+  const y0 = +x0.slice(0, 4), y1 = +x1.slice(0, 4), n = y1 - y0 + 1;
+  const every = [1, 2, 5, 10].find(k => n / k <= Math.max(3, Math.floor(width / 46))) || 10;
+  const tv = [], tt = [], shapes = [];
+  for (let y = y0; y <= y1; y++) {
+    const a = `${y}-01-01`, b = `${y + 1}-01-01`, lo = a < x0 ? x0 : a, hi = b > x1 ? x1 : b;
+    if (y % every === 0) { tv.push(new Date((Date.parse(lo) + Date.parse(hi)) / 2).toISOString().slice(0, 10)); tt.push(String(y)); }
+    if (y > y0) shapes.push({ type: "line", xref: "x", yref: "paper", x0: a, x1: a, y0: 0, y1: 1, line: { color: HS.gridV, width: 1 }, layer: "below" });
+    if ((y - y0) % 2 === 0) shapes.push({ type: "rect", xref: "x", yref: "paper", x0: lo, x1: hi, y0: 0, y1: 1, fillcolor: HS.band, line: { width: 0 }, layer: "below" });
+  }
+  return { tickvals: tv, ticktext: tt, shapes };
+}
+function ma3(y) { return y.map((v, i) => i < 2 ? null : (y[i] + y[i - 1] + y[i - 2]) / 3); }
+function baseLayout(el) {
+  return { margin: { l: 6, r: 6, t: 26, b: 24 }, paper_bgcolor: "#fff", plot_bgcolor: "#fff", separators: ",.",
+    font: { family: HS.font, size: 13, color: "#000" }, hovermode: TOUCH ? "closest" : "x unified",
+    legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { size: 12 } }, dragmode: false };
+}
+const CFG = { displayModeBar: false, responsive: true };
+function pad(x0, x1, freq) { // Rand: halbe Periode Luft
+  const d = freq === "Q" ? 45 : freq === "A" ? 182 : 15;
+  return [new Date(Date.parse(x0) - d * 864e5).toISOString().slice(0, 10), new Date(Date.parse(x1) + d * 864e5).toISOString().slice(0, 10)];
+}
+
+function timeChart(el, c) {
+  const traces = [], all = [];
+  const lines = c.series.filter(s => s.style !== "bar"), bars = c.series.filter(s => s.style === "bar");
+  bars.forEach((s, i) => { traces.push({ type: "bar", x: s.x, y: s.y, name: s.label, marker: { color: PAL[(i + 1) % PAL.length], line: { width: 0 } },
+    hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` }); all.push(...s.y); });
+  lines.forEach((s, i) => {
+    const col = c.type === "stacked" ? "#000" : PAL[i % PAL.length];
+    const strong = !c.emphasis || c.emphasis === s.id;
+    if (c.ma3) {
+      traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, showlegend: false, hoverinfo: "skip", line: { color: col, width: 1, shape: "spline" }, opacity: 0.45 });
+      const m = ma3(s.y); traces.push({ type: "scatter", mode: "lines", x: s.x, y: m, name: s.label, line: { color: col, width: 3 },
+        hovertemplate: `%{y:,.${c.decimals}f} (3-Monats-Mittel)<extra>${esc(s.label)}</extra>` });
+    } else {
+      traces.push({ type: "scatter", mode: s.x.length < 12 ? "lines+markers" : "lines", x: s.x, y: s.y, name: s.label,
+        line: { color: col, width: strong ? 3 : 1.6 }, marker: { size: 5 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
+    }
+    all.push(...s.y.filter(v => v != null));
+  });
+  if (c.type === "stacked") { // Summe positiver und negativer Beiträge je Periode für die Achse
+    const xs = [...new Set(bars.flatMap(s => s.x))];
+    xs.forEach(x => { let p = 0, n = 0; bars.forEach(s => { const i = s.x.indexOf(x); if (i >= 0) { const v = s.y[i]; if (v > 0) p += v; else n += v; } }); all.push(p, n); });
+  }
+  const xs = c.series.flatMap(s => s.x).sort(), freq = c.freq;
+  const r = pad(xs[0], xs[xs.length - 1], freq);
+  const ya = yAxis(all, c.unit, [c.ref, c.threshold].filter(v => v != null));
+  const xa = xAxis(r[0], r[1], el.clientWidth || 500);
+  const shapes = xa.shapes.slice();
+  if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
+  if (c.ref != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1.5, dash: "dash" } });
+  if (c.threshold != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.threshold, y1: c.threshold, line: { color: "#C00000", width: 1.5, dash: "dash" } });
+  (c.recessions || []).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.25)", line: { width: 0 }, layer: "below" }));
+  const L = baseLayout(el);
+  Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, showlegend: traces.filter(t => t.showlegend !== false).length > 1,
+    xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
+    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true } });
+  Plotly.newPlot(el, traces, L, CFG);
+}
+
+// Konjunkturuhr: Lage (waagerecht) gegen Erwartungen (senkrecht), Spur der letzten Monate
+function clockChart(el, c) {
+  const k = c.clock, n = k.x.length, m = Math.max(...k.x.map(Math.abs), ...k.y.map(Math.abs)) * 1.15;
+  const lab = (x, y, t, ax, ay) => ({ x, y, text: t, showarrow: false, xanchor: ax, yanchor: ay, font: { family: HS.font, size: 14, color: "#7f7f7f" } });
+  const last = n - 1, d = new Date(k.t[last]);
+  const traces = [
+    { type: "scatter", mode: "lines", x: k.x, y: k.y, line: { color: "#9db7d6", width: 2, shape: "spline" }, hoverinfo: "skip", showlegend: false },
+    { type: "scatter", mode: "markers", x: k.x, y: k.y, marker: { color: k.x.map((_, i) => i / last), colorscale: [[0, "#C1E5F5"], [1, PAL[0]]], size: k.x.map((_, i) => i === last ? 14 : 6) },
+      customdata: k.t.map(t => `${MONTHS[+t.slice(5, 7) - 1]} ${t.slice(0, 4)}`), hovertemplate: "%{customdata}<br>Lage %{x:+.1f} · Erwartungen %{y:+.1f}<extra></extra>", showlegend: false },
+  ];
+  const L = baseLayout(el);
+  Object.assign(L, { margin: { l: 6, r: 6, t: 8, b: 6 }, hovermode: "closest", showlegend: false,
+    xaxis: { range: [-m, m], zeroline: true, zerolinecolor: "#7f7f7f", showgrid: false, showticklabels: false, fixedrange: true },
+    yaxis: { range: [-m, m], zeroline: true, zerolinecolor: "#7f7f7f", showgrid: false, showticklabels: false, fixedrange: true, scaleanchor: "x" },
+    annotations: [lab(-m * 0.96, m * 0.96, "Aufschwung", "left", "top"), lab(m * 0.96, m * 0.96, "Boom", "right", "top"),
+      lab(m * 0.96, -m * 0.96, "Abschwung", "right", "bottom"), lab(-m * 0.96, -m * 0.96, "Rezession", "left", "bottom"),
+      { x: k.x[last], y: k.y[last], text: `<b>${MONTHS[d.getMonth()]} ${d.getFullYear()}</b>`, showarrow: true, arrowhead: 0, ax: 30, ay: -24, font: { family: HS.font, size: 13, color: PAL[0] } },
+      { x: m * 0.98, y: 0, text: "Lage besser →", showarrow: false, xanchor: "right", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#7f7f7f" } },
+      { x: 0, y: m * 0.98, text: "Erwartungen besser ↑", showarrow: false, xanchor: "left", yanchor: "top", font: { family: HS.font, size: 12, color: "#7f7f7f" } }] });
+  Plotly.newPlot(el, traces, L, CFG);
+}
+
+// Prognosespektrum: je Jahr ein Punkt je Herausgeber, Bundesregierung hervorgehoben, frühere Runden hohl
+function forecastChart(el, c) {
+  const F = c.forecasts, years = [...new Set(F.flatMap(f => Object.keys(f.values).map(Number)))].sort();
+  const by = [...new Set(F.map(f => f.by))];
+  const traces = [];
+  by.forEach((b, i) => {
+    const col = b === "Bundesregierung" ? PAL[0] : PAL[(i + 1) % PAL.length];
+    F.filter(f => f.by === b).forEach(f => {
+      const ys = years.filter(y => f.values[y] != null);
+      const off = (i - (by.length - 1) / 2) * 0.16;  // je Herausgeber leicht versetzt, damit gleiche Werte sichtbar bleiben
+      traces.push({ type: "scatter", mode: "markers", x: ys.map(y => y + off), y: ys.map(y => f.values[y]), name: f.latest ? b : `${b}, ${f.round}`,
+        marker: { size: f.latest ? 15 : 11, color: f.latest ? col : "#fff", line: { color: col, width: 2 }, symbol: "circle" },
+        hovertemplate: `%{y:,.1f} %<extra>${esc(b)}: ${esc(f.round)}</extra>`, showlegend: f.latest });
+    });
+  });
+  const vals = F.flatMap(f => Object.values(f.values));
+  const ya = yAxis(vals.concat([0]), "%");
+  const L = baseLayout(el);
+  Object.assign(L, { hovermode: "closest", xaxis: { type: "linear", range: [years[0] - 0.6, years[years.length - 1] + 0.6], tickmode: "array", tickvals: years, ticktext: years.map(String), fixedrange: true, showgrid: false, zeroline: false, tickfont: { size: 15 } },
+    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true },
+    shapes: ya.zero ? [{ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } }] : [] });
+  Plotly.newPlot(el, traces, L, CFG);
+}
+
+function spark(d, ref) {
+  const x = d.x.map(t => Date.parse(t)), y = d.y, w = 240, h = 34, p = 3;
+  const lo = Math.min(...y, ref ?? Infinity), hi = Math.max(...y, ref ?? -Infinity);
+  const X = v => p + (v - x[0]) / (x[x.length - 1] - x[0] || 1) * (w - 2 * p), Y = v => h - p - (v - lo) / (hi - lo || 1) * (h - 2 * p);
+  const path = y.map((v, i) => `${i ? "L" : "M"}${X(x[i]).toFixed(1)},${Y(v).toFixed(1)}`).join("");
+  const r = ref != null ? `<line x1="${p}" x2="${w - p}" y1="${Y(ref)}" y2="${Y(ref)}" stroke="#0070C0" stroke-dasharray="3 3" stroke-width="1"/>` : "";
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">${r}<path d="${path}" fill="none" stroke="#002060" stroke-width="1.6" stroke-linejoin="round"/><circle cx="${X(x[x.length - 1])}" cy="${Y(y[y.length - 1])}" r="3" fill="#c00000"/></svg>`;
+}
+
+function card(c, no) {
+  const el = document.createElement("div"); el.className = "card"; el.id = `abb-${no}`;
+  const sub = c.type === "clock" || c.type === "forecast" ? "" : [c.freq === "Q" ? "Vierteljährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
+  const unit = c.type === "clock" ? "Saldo, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real" : (c.unit || "");
+  el.innerHTML = `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}<div class="unit">${esc(unit)}</div>`;
+  const ch = document.createElement("div"); ch.className = "chart" + (c.type === "clock" ? " square" : ""); el.appendChild(ch);
+  if (c.caption) el.insertAdjacentHTML("beforeend", `<div class="cap">${esc(c.caption)}</div>`);
+  let src = (c.sources || []).join(", ");
+  if (c.type === "forecast") src = c.forecasts.filter(f => f.latest).map(f => `<a href="${esc(f.source)}" target="_blank" rel="noopener">${esc(f.by)}, ${esc(f.round)}</a>`).join(" · ");
+  else src = esc(src);
+  el.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}</div>`);
+  ch._c = c;
+  return el;
+}
+
+function render(ch) {
+  const c = ch._c;
+  if (c.type === "clock") clockChart(ch, c); else if (c.type === "forecast") forecastChart(ch, c); else timeChart(ch, c);
+}
+
+function build() {
+  const S = DATA.site;
+  document.getElementById("claim").textContent = S.claim;
+  const d = new Date(DATA.generated_at); document.getElementById("stand").textContent = "Stand: " + d.toLocaleDateString("de-DE");
+  document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
+  const grid = document.getElementById("grid"), nav = document.getElementById("nav"), topics = document.getElementById("topics");
+  DATA.questions.forEach(q => {
+    const a = q.answer, val = (a.signed && a.value > 0 ? "+" : "") + fmt(a.value, a.unit === "Mrd. €" ? 1 : 1);
+    grid.insertAdjacentHTML("beforeend", `<a class="q" href="#${q.topic}"><span class="ask">${esc(q.ask)}</span>
+      <span class="big"><span class="num">${val}</span><span class="u">${esc(a.unit)}${a.label && a.unit !== "Mrd. €" ? " " + esc(a.label) : ""}</span><span class="verdict">${esc(a.verdict)}</span></span>
+      <span class="head">${esc(a.head)}</span>${spark(a.spark_data, a.ref)}<span class="per">${esc(a.period)}</span></a>`);
+  });
+  let no = 0;
+  const obs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { obs.unobserve(e.target); render(e.target); } }), { rootMargin: "300px" }) : null;
+  DATA.topics.forEach(t => {
+    const sec = document.createElement("section"); sec.className = "topic"; sec.id = t.id;
+    const q = t.question;
+    if (!q && !t.charts.length) return;
+    sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))}</h2>`
+      + (q ? `<p class="answer">${esc(q.answer.head)}</p><ul class="more">${q.answer.more.map(m => `<li>${esc(m)}</li>`).join("")}</ul>`
+        + `<div class="explain"><b>Was heißt das?</b> ${esc(q.explain)}</div>` : "");
+    const wrap = document.createElement("div"); wrap.className = "charts"; sec.appendChild(wrap);
+    t.charts.forEach(c => { no += 1; const el = card(c, no); wrap.appendChild(el); const ch = el.querySelector(".chart"); obs ? obs.observe(ch) : render(ch); });
+    topics.appendChild(sec);
+    nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
+  });
+  nav.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen</a>`);
+}
+build();
+</script>
+</body>
+</html>

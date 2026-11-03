@@ -1,0 +1,107 @@
+# Konjunkturmonitor: Inhalt der Seite.
+# Jede Frage bekommt eine Antwort aus den Daten (Satz, Zahl, Vergleich) und eine Erklärung in Alltagssprache.
+# Die Zahlen kommen aus series.yaml (Katalog im Format von konjunkturwolf), die Sätze baut monitor/answers.py.
+
+site:
+  title: Konjunkturmonitor
+  claim: "Wie geht es der deutschen Wirtschaft? Sieben Fragen, sieben Antworten, jeden Monat neu aus amtlichen und offenen Daten."
+  author: "Hungerland, Wolf-Fabian"
+  url: "https://wfhungerland.github.io/konjunkturmonitor/"
+
+questions:
+  - id: wachstum
+    ask: "Wächst die Wirtschaft?"
+    kind: growth
+    series: de_gdp_qoq
+    yoy: de_gdp_yoy
+    explain: "Das Bruttoinlandsprodukt (BIP) ist der Wert aller Waren und Dienstleistungen, die in Deutschland hergestellt werden. Wächst es, wird mehr hergestellt und verdient."
+    topic: wachstum
+
+  - id: preise
+    ask: "Steigen die Preise?"
+    kind: inflation
+    series: de_cpi_yoy
+    explain: "Die Inflationsrate sagt, um wie viel Prozent ein typischer Einkauf teurer ist als vor einem Jahr. Die Europäische Zentralbank hält 2 % für angemessen."
+    topic: preise
+
+  - id: arbeit
+    ask: "Gibt es genug Arbeit?"
+    kind: unemployment
+    series: de_alq_sa
+    level: de_alo_sa
+    explain: "Die Arbeitslosenquote ist der Anteil der Menschen, die Arbeit suchen und bei der Arbeitsagentur gemeldet sind, an allen, die arbeiten oder arbeiten wollen."
+    topic: arbeit
+
+  - id: industrie
+    ask: "Läuft die Industrie?"
+    kind: index_mom
+    series: de_ip
+    orders: de_orders
+    explain: "Die Produktion zeigt, wie viel Fabriken herstellen. Die Aufträge zeigen, wie viel bestellt wird, und kündigen die Produktion der nächsten Monate an."
+    topic: industrie
+
+  - id: konsum
+    ask: "Kaufen die Leute ein?"
+    kind: index_mom
+    series: de_retail
+    mood: de_consumer_conf
+    explain: "Der Umsatz im Einzelhandel misst, wie viel die Geschäfte verkaufen, bereinigt um Preissteigerungen. Das Verbrauchervertrauen fragt, wie Haushalte ihre Lage einschätzen."
+    topic: konsum
+
+  - id: export
+    ask: "Läuft der Export?"
+    kind: level_mom
+    series: de_exports
+    explain: "Exporte sind Waren, die Deutschland ins Ausland verkauft. Fast die Hälfte der Wirtschaftsleistung hängt am Handel mit anderen Ländern."
+    topic: export
+
+  - id: stimmung
+    ask: "Was erwarten die Unternehmen?"
+    kind: sentiment
+    series: de_esi
+    explain: "Jeden Monat fragt die EU-Kommission Unternehmen und Haushalte nach ihrer Lage und ihren Erwartungen. 100 ist der langjährige Durchschnitt; darüber ist die Stimmung besser als üblich."
+    topic: stimmung
+
+# Themen: je Frage ein Abschnitt mit Abbildungen. type: line (Standard), bars, stacked, clock, forecast, threshold.
+topics:
+  - id: wachstum
+    title: Wachstum
+    charts:
+      - {chart: gdp_contrib, type: stacked, total: de_gdp_qoq, years: 4, caption: "Balken: Was zum Wachstum beigetragen hat, in Prozentpunkten. Linie: das Wachstum insgesamt. Importe zählen negativ, weil sie im Ausland hergestellt werden."}
+      - {chart: gdp_level, years: 12, caption: "Wirtschaftsleistung, preisbereinigt, 2020 = 100. Der Einbruch 2020 ist die Corona-Krise."}
+  - id: preise
+    title: Preise
+    charts:
+      - {chart: cpi, years: 6, emphasis: de_cpi_yoy, ref: 2, caption: "Dicke Linie: Inflationsrate insgesamt. Dünne Linien: wie stark einzelne Bereiche teurer wurden. Gestrichelt: Ziel der EZB von 2 %."}
+      - {chart: pipeline_prices, years: 6, caption: "Preise, bevor sie beim Verbraucher ankommen: Erzeuger verkaufen an Händler, Importeure kaufen im Ausland ein. Sie laufen der Inflation oft voraus."}
+  - id: arbeit
+    title: Arbeit
+    charts:
+      - {chart: labour, years: 12}
+      - {chart: labour_flows, years: 12, caption: "Steigen die Arbeitslosen und sinken zugleich die offenen Stellen, kühlt der Arbeitsmarkt ab."}
+      - {chart: sahm, years: 20, type: threshold, threshold: 0.25, caption: "Das Signal steigt nur, wenn die Arbeitslosigkeit zunimmt und zugleich die offenen Stellen abnehmen (Michaillat und Saez 2025; Kurzarbeit eingerechnet). Über der roten Linie lag bisher jede Rezession seit 2001, allerdings oft erst spät."}
+  - id: industrie
+    title: Industrie
+    charts:
+      - {chart: industry, years: 6, ma3: true, caption: "Dünn: einzelne Monate. Dick: Mittel aus drei Monaten, das ist ruhiger. Aufträge kündigen die Produktion an."}
+      - {chart: orders_split, years: 6, ma3: true, caption: "Woher die Aufträge kommen, Mittel aus drei Monaten."}
+  - id: konsum
+    title: Konsum
+    charts:
+      - {chart: retail, years: 6, ma3: true}
+      - {chart: consumer, years: 12, caption: "Saldo aus positiven und negativen Antworten der Haushalte. Unter null überwiegen die Pessimisten."}
+  - id: export
+    title: Export
+    charts:
+      - {chart: trade, years: 6, ma3: true, caption: "Warenexporte und -importe in Milliarden Euro je Monat, Mittel aus drei Monaten."}
+      - {chart: trade_region, years: 6, ma3: true, caption: "Die wichtigsten Kundenregionen, Mittel aus drei Monaten."}
+  - id: stimmung
+    title: Stimmung
+    charts:
+      - {chart: clock, type: clock, x: de_ind_orderbooks, y: de_ind_prodexp, months: 24, caption: "Waagerecht: Wie bewerten Industrieunternehmen ihre Aufträge heute? Senkrecht: Was erwarten sie für die nächsten drei Monate? Beides als Abstand zum Durchschnitt 2005 bis 2019. Der Punkt wandert im Uhrzeigersinn durch die vier Phasen des Konjunkturzyklus."}
+      - {chart: sentiment, years: 6, caption: "Saldo aus positiven und negativen Antworten je Bereich (EU-Umfragen)."}
+  - id: aussichten
+    title: Aussichten
+    ask: "Wie geht es weiter?"
+    charts:
+      - {chart: forecast, type: forecast, caption: "Jeder Punkt ist eine Prognose für das Wachstum des Jahres. Hervorgehoben: die Bundesregierung. Hohle Punkte: frühere Runde."}
