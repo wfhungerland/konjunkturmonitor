@@ -146,18 +146,18 @@ topics:
       - {chart: cpi, multiples: true, up_bad: true, years: 6, emphasis: de_cpi_yoy, ref: 2, caption: "Verbraucherpreisindex (VPI) des Statistischen Bundesamts. Dicke Linie: Inflationsrate insgesamt. Dünne Linien: Teuerung einzelner Bereiche. Gestrichelt: 2 %, das Ziel der EZB (es bezieht sich auf den europäischen HVPI, der in Deutschland meist nahe am VPI liegt). „Dienstleistungen ohne Mieten“ schließt tatsächliche und unterstellte Wohnungsmieten aus und weicht deshalb von der Rate für Dienstleistungen insgesamt ab, die das Statistische Bundesamt meldet."}
       - {chart: cpi_contrib, type: contrib, total: de_vpi, years: 3, parts: {Energie: de_vpi_energy, Nahrungsmittel: de_vpi_food, "Waren ohne Energie": de_vpi_goods, "Dienstleistungen und Miete": [de_vpi_serv, de_vpi_rent]}, caption: "Anteil der Bereiche an der Inflationsrate in Prozentpunkten; umschaltbar zwischen Vorjahres- und Vormonatsvergleich. Eigene Berechnung: Gewichte der Bereiche aus den VPI-Teilindizes seit 2020 geschätzt; Rest gleicht Rundung und nicht getrennt erfasste Teile aus."}
       - {chart: cpi_core, years: 6, up_bad: true, emphasis: de_vpi_core_yoy, ref: 2, caption: "Die Kernrate klammert die stark schwankenden Preise für Energie und Nahrungsmittel aus und zeigt den zugrunde liegenden Preistrend. Der HVPI ist die europäische Messung, auf die sich das Ziel der EZB bezieht."}
-      - {chart: deflator, years: 8, caption: "Deflatoren der Volkswirtschaftlichen Gesamtrechnungen: Preisentwicklung aller im Inland erzeugten Güter (BIP-Deflator) und des privaten Konsums."}
+      - {chart: deflator, up_bad: true, years: 8, caption: "Deflatoren der Volkswirtschaftlichen Gesamtrechnungen: Preisentwicklung aller im Inland erzeugten Güter (BIP-Deflator) und des privaten Konsums."}
       - {chart: pipeline_prices, years: 6, up_bad: true, caption: "Preise auf vorgelagerten Stufen: Erzeugerpreise im Inlandsabsatz und Einfuhrpreise. Sie laufen den Verbraucherpreisen häufig voraus."}
-      - {chart: pipeline_core, years: 6, caption: "Vorstufenpreise ohne Energie zeigen, ob sich Kostensteigerungen über Energie hinaus ausbreiten. Agrarpreise wirken mit Verzögerung auf die Nahrungsmittelpreise."}
+      - {chart: pipeline_core, up_bad: true, years: 6, caption: "Vorstufenpreise ohne Energie zeigen, ob sich Kostensteigerungen über Energie hinaus ausbreiten. Agrarpreise wirken mit Verzögerung auf die Nahrungsmittelpreise."}
       - {chart: price_exp, multiples: true, up_bad: true, years: 6, caption: "Saldo aus Anteilen der Befragten, die steigende beziehungsweise sinkende Preise erwarten (EU-Umfragen). Unternehmen: nächste drei Monate; Verbraucher: nächste zwölf Monate."}
   - id: arbeit
     title: Arbeit
     charts:
-      - {chart: labour, years: 12}
-      - {chart: labour_flows, years: 12, caption: "Steigt die Arbeitslosigkeit, während die Zahl offener Stellen sinkt, deutet dies auf eine Abkühlung des Arbeitsmarkts hin."}
+      - {chart: labour, up_bad: [de_alq_sa, de_ilo], years: 12}
+      - {chart: labour_flows, up_bad: [de_alo_sa], years: 12, caption: "Steigt die Arbeitslosigkeit, während die Zahl offener Stellen sinkt, deutet dies auf eine Abkühlung des Arbeitsmarkts hin."}
       - {chart: employment_m, years: 6, caption: "Erwerbstätige umfassen auch Selbständige und Beamte; sozialversicherungspflichtig Beschäftigte sind der größte Teil davon."}
-      - {chart: sahm, years: 20, type: threshold, threshold: 0.25, caption: "Eigene Berechnung nach Michaillat und Saez (2025). Das Signal ist der kleinere von zwei Werten. Erstens: Arbeitslosenquote einschließlich Kurzarbeit (in Vollzeitäquivalenten), gleitendes Dreimonatsmittel, minus ihr Tief der letzten zwölf Monate. Zweitens: Hoch der Quote offener Stellen in den letzten zwölf Monaten minus ihr aktuelles Dreimonatsmittel. Das Signal steigt also nur, wenn die Arbeitslosigkeit zunimmt und zugleich die offenen Stellen abnehmen. Die Schwelle von 0,25 Prozentpunkten ist eigene Wahl für Deutschland; Michaillat und Saez nennen für die USA 0,29. Graue Flächen: Rezessionen nach der Datierung des Sachverständigenrats. Jede Rezession seit 2001 überschritt die Schwelle, teils mit erheblicher Verzögerung. Literatur: Michaillat, P. und Saez, E. (2025), Has the Recession Started?, Oxford Bulletin of Economics and Statistics; Sahm, C. (2019), Direct Stimulus Payments to Individuals, Brookings Institution."}
-      - {chart: kurzarbeit, years: 12, scale: 0.001, unit: "Tsd. Personen", decimals: 0, caption: "Beschäftigte in Kurzarbeit aus wirtschaftlichen Gründen (§ 96 SGB III), in Tausend. Kurzarbeit hält Beschäftigte im Betrieb, wenn Aufträge vorübergehend fehlen; sie steigt in Abschwüngen früher als die Arbeitslosigkeit. Die jüngsten Monate beruhen auf Hochrechnungen der Bundesagentur für Arbeit."}
+      - {chart: sahm, up_bad: true, years: 20, type: threshold, threshold: 0.25, caption: "Eigene Berechnung nach Michaillat und Saez (2025). Das Signal ist der kleinere von zwei Werten. Erstens: Arbeitslosenquote einschließlich Kurzarbeit (in Vollzeitäquivalenten), gleitendes Dreimonatsmittel, minus ihr Tief der letzten zwölf Monate. Zweitens: Hoch der Quote offener Stellen in den letzten zwölf Monaten minus ihr aktuelles Dreimonatsmittel. Das Signal steigt also nur, wenn die Arbeitslosigkeit zunimmt und zugleich die offenen Stellen abnehmen. Die Schwelle von 0,25 Prozentpunkten ist eigene Wahl für Deutschland; Michaillat und Saez nennen für die USA 0,29. Graue Flächen: Rezessionen nach der Datierung des Sachverständigenrats. Jede Rezession seit 2001 überschritt die Schwelle, teils mit erheblicher Verzögerung. Literatur: Michaillat, P. und Saez, E. (2025), Has the Recession Started?, Oxford Bulletin of Economics and Statistics; Sahm, C. (2019), Direct Stimulus Payments to Individuals, Brookings Institution."}
+      - {chart: kurzarbeit, up_bad: true, years: 12, scale: 0.001, unit: "Tsd. Personen", decimals: 0, caption: "Beschäftigte in Kurzarbeit aus wirtschaftlichen Gründen (§ 96 SGB III), in Tausend. Kurzarbeit hält Beschäftigte im Betrieb, wenn Aufträge vorübergehend fehlen; sie steigt in Abschwüngen früher als die Arbeitslosigkeit. Die jüngsten Monate beruhen auf Hochrechnungen der Bundesagentur für Arbeit."}
       - {chart: sv_yoy, years: 6, caption: "Sozialversicherungspflichtig Beschäftigte nach Bereichen, Veränderung gegenüber dem Vorjahresmonat. Leiharbeit reagiert als Erstes auf eine schwächere Nachfrage, weil Betriebe zuerst ausgeliehene Kräfte abbauen."}
   - id: industrie
     title: Industrie
@@ -208,7 +208,7 @@ topics:
     ask: "Wie entwickelt sich die Weltwirtschaft?"
     charts:
       - {chart: world_gdp, years: 8, ref: 0, caption: "Reales BIP gegenüber dem Vorjahresquartal. Der Euroraum nimmt rund 37 % der deutschen Warenexporte auf, die USA rund 10 %."}
-      - {chart: uncertainty, years: 8, caption: "Index der wirtschaftspolitischen Unsicherheit nach Baker, Bloom und Davis, ermittelt aus der Häufigkeit einschlägiger Begriffe in Zeitungsartikeln; Mittel 1997 bis 2015 = 100. Hohe Unsicherheit lässt Unternehmen Investitionen aufschieben."}
+      - {chart: uncertainty, up_bad: true, years: 8, caption: "Index der wirtschaftspolitischen Unsicherheit nach Baker, Bloom und Davis, ermittelt aus der Häufigkeit einschlägiger Begriffe in Zeitungsartikeln; Mittel 1997 bis 2015 = 100. Hohe Unsicherheit lässt Unternehmen Investitionen aufschieben."}
   - id: stimmung
     title: Stimmung
     charts:
@@ -259,7 +259,7 @@ topics:
     charts:
       - {chart: gov_balance, years: 12, caption: "Einnahmen minus Ausgaben von Bund, Ländern, Gemeinden und Sozialversicherung in Prozent des BIP, vierteljährlich, saisonbereinigt. Negative Werte bedeuten ein Defizit."}
       - {chart: gov_spend, years: 25, caption: "Zinsausgaben und Bruttoanlageinvestitionen des Staates in Prozent des BIP, Jahreswerte. Steigende Zinsen engen den Spielraum für Investitionen ein."}
-      - {chart: gov_debt, years: 12, caption: "Bruttoschulden des Staates in der Abgrenzung des Maastricht-Vertrags in Prozent des BIP. Der Referenzwert der EU liegt bei 60 %."}
+      - {chart: gov_debt, up_bad: true, years: 12, caption: "Bruttoschulden des Staates in der Abgrenzung des Maastricht-Vertrags in Prozent des BIP. Der Referenzwert der EU liegt bei 60 %."}
   - id: kalender
     title: Kalender
     part: service

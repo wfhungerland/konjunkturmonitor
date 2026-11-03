@@ -341,6 +341,15 @@ def _per(x: str, freq: str) -> str:
     return period(pd.Timestamp(x), freq) if freq in ("M", "Q") else (x[:4] if freq == "A" else f"Woche bis {x[8:10]}.{x[5:7]}.{x[:4]}")
 
 
+def _when(x: str, freq: str) -> str:
+    """Zeitangabe am Satzanfang: „Im September 2026“, „Im 3. Quartal 2026“, „Im Jahr 2025“, „In der Woche bis …“."""
+    if freq == "A":
+        return f"Im Jahr {x[:4]}"
+    if freq == "D":
+        return f"In der Woche bis zum {int(x[8:10])}.{int(x[5:7])}.{x[:4]}"
+    return f"Im {_per(x, freq)}"
+
+
 def chart_text(c: dict) -> str:
     """Kopierfertiger Satz zum jüngsten Stand einer Abbildung (Werte, Zeitraum, Vergleich zum Vorjahr)."""
     from .answers import MONTHS
@@ -370,13 +379,13 @@ def chart_text(c: dict) -> str:
                     f"Produktionserwartungen {num(y, 1, True)} Prozentpunkte gegenüber dem Mittel 2005 bis 2019 (Salden).")
         if typ == "seasonal":
             i = max(k for k, v in enumerate(c["y"]) if v is not None)
-            s = f"Im {_per(c['x'][i], 'M')}: {num(c['y'][i], d)}"
+            s = f"Im {_per(c['x'][i], 'M')} lag der Wert bei {num(c['y'][i], d)}"
             if c["ma12"][i] is not None and c["norm"][i] is not None:
-                s += f"; Mittel der letzten zwölf Monate {num(c['ma12'][i], d)}, übliches Niveau desselben Monats 2015 bis 2019 {num(c['norm'][i], d)}"
+                s += f", im Mittel der letzten zwölf Monate bei {num(c['ma12'][i], d)}; üblich waren in diesem Monat 2015 bis 2019 im Schnitt {num(c['norm'][i], d)}"
             return s + "."
         if typ == "latest":
             b = c["bars"]
-            return f"{c.get('bar_name', 'Zuletzt')} ({_per(b[0]['period'], c.get('freq', 'Q'))}): " + "; ".join(f"{x['label']} {num(x['value'], d, True)}" for x in b) + "."
+            return f"{c.get('bar_name', 'Veränderung')}, Stand {_per(b[0]['period'], c.get('freq', 'Q'))}: " + ", ".join(f"{x['label']} {num(x['value'], d, True)}" for x in b) + "."
         if typ in ("calendar", "forecast") or not c.get("series"):
             return ""
         series = [s for s in c["series"] if s.get("y")]
@@ -384,8 +393,8 @@ def chart_text(c: dict) -> str:
             last = max(s["x"][-1] for s in series)
             bars = [s for s in series if s.get("style") == "bar" and s["x"][-1] == last]
             tot = [s for s in series if s.get("style") != "bar" and s["x"][-1] == last]
-            head = f"{tot[0]['label']} im {_per(last, c.get('freq', 'M'))}: {num(tot[0]['y'][-1], d, True)} %. " if tot else ""
-            return head + "Beiträge in Prozentpunkten: " + "; ".join(f"{s['label']} {num(s['y'][-1], d, True)}" for s in bars) + "."
+            head = f"{_when(last, c.get('freq', 'M'))} betrug die Rate ({tot[0]['label']}) {num(tot[0]['y'][-1], d, True)} %. " if tot else ""
+            return head + "Dazu trugen bei (in Prozentpunkten): " + ", ".join(f"{s['label']} {num(s['y'][-1], d, True)}" for s in bars) + "."
         if c.get("emphasis"):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         series = series[:6]
@@ -403,8 +412,11 @@ def chart_text(c: dict) -> str:
                     add = f" ({num(v - yago, d, True)} {'Punkte' if unit.startswith('Punkte') else 'Prozentpunkte'} gegenüber dem Vorjahr)"
                 elif yago:
                     add = f" ({num((v / yago - 1) * 100, 1, True)} % gegenüber dem Vorjahr)"
-            parts.append(f"{s['label']} {fmtv(v)}{add}")
-        return f"Stand {_per(last, c.get('freq', 'M'))}: " + "; ".join(parts) + "." if parts else ""
+            parts.append(f"{s['label']} bei {fmtv(v)}{add}")
+        if not parts:
+            return ""
+        joined = parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " und " + parts[-1]
+        return f"{_when(last, c.get('freq', 'M'))} lag{'en die Werte' if len(parts) > 1 else ' der Wert'} für {joined}."
     except (KeyError, IndexError, ValueError, TypeError):
         return ""
 
