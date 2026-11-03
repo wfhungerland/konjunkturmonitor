@@ -34,10 +34,18 @@ Seite: https://wfhungerland.github.io/konjunkturmonitor/
 | Stimmung | Eurostat, EU-Unternehmensumfragen (`ei_bssi_m_r2`, `ei_bsin_m_r2`, `ei_bsin_q_r2`, `ei_bsse_m_r2`, `ei_bsrt_m_r2`, `ei_bsbu_m_r2`) |
 | Insolvenzen | Destatis GENESIS `52411`, `52311` |
 | Zinsen und Energie | Bundesbank `BBSIS` (Zinsstruktur), FRED (`MCOILBRENTEU` der U.S. EIA, `PNGASEUUSDM` des IWF) |
+| Aktivitätsindex | Bundesbank `BBDE1` (Wochenreihe WAI) |
+| Struktur | Eurostat (`nama_10_gdp`, `namq_10_lp_ulc`, `namq_10_a10_e`, `demo_gind`); AMECO-Produktionspotenzial (über DBnomics) und OECD-Körperschaftsteuersätze als statische Dateien, von Hand zu aktualisieren |
+| Kalender | `data/static/kalender.yaml`: Termine nach dem üblichen Rhythmus der Quellen, geschätzt |
 | Prognosen | `data/static/prognosen.yaml`, nur veröffentlichte Werte mit Link |
 | Karten | Ländergrenzen © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung 2.0, vereinfacht (`data/static/vg2500_laender.json`) |
 
 Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global, GfK-Detailreihen und Terminpreise. Die ifo-Zeitreihen setzen eine Anmeldung voraus. Die Stimmung kommt deshalb aus den offenen EU-Umfragen.
+
+## Darstellung
+
+Die Darstellung nach Tufte steuern Schalter im Bereich `layout` von `monitor.yaml`. Jeder lässt sich einzeln mit `false` zurücknehmen:
+`start_table` (Kennzahlentabelle statt Fragekarten), `minimal` (ohne Rahmen und Etiketten, Erläuterungen als Randnotiz), `direct_labels` (Beschriftung am Linienende), `small_multiples` (kleine Einzeldiagramme für Abbildungen mit `multiples: true`), `compare_band` (Spanne 2015 bis 2019), `uniform_years` (einheitliches Zeitfenster) und `lead_chart_only` (eine Leitgrafik je Thema, weitere aufklappbar).
 
 ## Downloads
 

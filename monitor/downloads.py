@@ -76,8 +76,10 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
         return df.reset_index(), {"kind": kind, "bars": bars, "lines": lines + thin, "thin": thin, "emphasis": emph, "dashed": dashed}
     if typ == "latest" and c.get("bars"):
         df = pd.DataFrame({"Bereich": [b["label"] for b in c["bars"]],
-                           "Letztes Quartal": [b["value"] for b in c["bars"]],
+                           c.get("bar_name", "Letztes Quartal"): [b["value"] for b in c["bars"]],
                            "Quartal davor": [b["prev"] for b in c["bars"]]})
+        if df["Quartal davor"].isna().all():
+            df = df.drop(columns="Quartal davor")
         return df.iloc[::-1].reset_index(drop=True), {"kind": "hbar"}
     if typ == "seasonal":
         x = pd.to_datetime(c["x"])
@@ -96,6 +98,17 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
         df = pd.DataFrame({"Herausgeber": [f"{f['by']} ({f['round']})" for f in latest],
                            **{str(y): [f["values"].get(y) for f in latest] for y in years}})
         return df, {"kind": "columns_cat"}
+    if typ == "calendar" and c.get("calendar"):
+        ev = c["calendar"]["events"]
+        df = pd.DataFrame({"Datum (geschätzt)": [e["date"] for e in ev], "Veröffentlichung": [e["name"] for e in ev], "Quelle": [e["source"] for e in ev]})
+        return df, {"kind": "list"}
+    if typ == "heat" and c.get("heat"):
+        h = c["heat"]
+        df = pd.DataFrame({"Branche": [r["label"] for r in h["rows"]],
+                           **{pd.to_datetime(d).strftime("%m/%Y"): [r["values"].get(d) for r in h["rows"]] for d in h["cols"]},
+                           "Dreimonatsvergleich, %": [r["m3"] for r in h["rows"]],
+                           "Niveau gegenüber 2019, %": [r["level"] for r in h["rows"]]})
+        return df.iloc[::-1].reset_index(drop=True), {"kind": "table"}
     if typ == "tiles" and c.get("tiles"):
         rows = c["tiles"]["rows"]
         df = pd.DataFrame({"Land": [r["name"] for r in rows], "Kürzel": [r["abbr"] for r in rows],
@@ -115,7 +128,7 @@ def header_lines(c: dict) -> tuple[str, str]:
     elif typ == "tiles":
         sub = "Summe " + c["tiles"]["span"] if c.get("tiles") else ""
     else:
-        freq = {"Q": "Vierteljährlich", "A": "Jährlich"}.get(c.get("freq"), "Monatlich")
+        freq = {"Q": "Vierteljährlich", "A": "Jährlich", "D": "Wöchentlich"}.get(c.get("freq"), "Monatlich")
         sub = " · ".join(x for x in (freq, c.get("adjustment")) if x)
     unit = {"clock": "Saldo, Abstand zum Mittel 2005 bis 2019", "forecast": "% gegenüber Vorjahr, BIP real",
             "tiles": "Veränderung gegenüber demselben Zeitraum ein Jahr zuvor, %"}.get(typ, c.get("unit") or "")
@@ -170,7 +183,7 @@ def write_xlsx(c: dict, df: pd.DataFrame, plan: dict, path: Path, stand: str, ci
 
 def _xlsx_chart(wb, df: pd.DataFrame, plan: dict, c: dict):
     n = len(df)
-    if not n or plan["kind"] in ("none", "tiles"):
+    if not n or plan["kind"] in ("none", "tiles", "table", "list"):
         return None
     axis_font = {"name": FONT, "size": 9}
     dec = "General"
@@ -439,6 +452,11 @@ def add_slide(prs, c: dict, df: pd.DataFrame, plan: dict, stand: str, number: in
     if kind == "tiles":
         _tiles(slide, c)
         return
+    if kind == "table":
+        _table(slide, df)
+        return
+    if kind == "list":
+        return
     if kind == "scatter":
         data = XyChartData()
         s = data.add_series("Verlauf")
@@ -587,6 +605,48 @@ def _tiles(slide, c: dict):
             run.text = txt
             run.font.size, run.font.bold, run.font.name = Pt(sz), b, FONT
             run.font.color.rgb = _rgb(fg)
+
+
+def _table(slide, df: pd.DataFrame) -> None:
+    """Tabelle mit Farbskala (violett Zunahme, blau Abnahme) für Wärmetabellen."""
+    from pptx.util import Pt
+
+    rows, cols = len(df) + 1, len(df.columns)
+    shape = slide.shapes.add_table(rows, cols, CHART[0], CHART[1], CHART[2], min(CHART[3], 110000 * rows))
+    tbl = shape.table
+    tbl.columns[0].width = 1900000
+    for j in range(1, cols):
+        tbl.columns[j].width = int((CHART[2] - 1900000) / (cols - 1))
+    for j, name in enumerate(df.columns):
+        cell = tbl.cell(0, j)
+        cell.text = str(name).replace(", %", "")
+    for i, row in enumerate(df.itertuples(index=False), start=1):
+        for j, v in enumerate(row):
+            cell = tbl.cell(i, j)
+            if j == 0:
+                cell.text = str(v)
+            elif v is None or pd.isna(v):
+                cell.text = ""
+            else:
+                cell.text = f"{v:.0f}".replace("-", "−") if j < cols - 2 else f"{v:+.1f}".replace(".", ",").replace("-", "−")
+                if j < cols - 2:
+                    bg, fg = _tile_color(max(-15, min(15, float(v))), 15)
+                    cell.fill.solid()
+                    cell.fill.fore_color.rgb = _rgb(bg)
+                    cell.text_frame.paragraphs[0].runs[0].font.color.rgb = _rgb(fg)
+    for i in range(rows):
+        for j in range(cols):
+            cell = tbl.cell(i, j)
+            cell.margin_left = cell.margin_right = 20000
+            cell.margin_top = cell.margin_bottom = 0
+            if i == 0 or j == 0 or not (1 <= j < cols - 2):
+                cell.fill.solid()
+                cell.fill.fore_color.rgb = _rgb("#FFFFFF")
+            for p in cell.text_frame.paragraphs:
+                for r in p.runs:
+                    r.font.size, r.font.name = Pt(7), FONT
+                    if i == 0 or not (1 <= j < cols - 2):
+                        r.font.color.rgb = _rgb("#000000")
 
 
 def new_presentation():
