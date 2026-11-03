@@ -84,15 +84,12 @@ def gen_tables(sel):
         print("Fehler", r.status_code, r.text[:300])
 
 
-for k in ["M.DE.Y.GUA1.....", "M.DE.Y.KAA1.....", "M.DE.Y.UAA1.....", "M.DE.Y.UAB1.....", "M.DE.Y.UAB5....."]:
-    bbk_titles("BBDE1", k, ".", 60)
-bbk_titles("BBDE1", "M.DE.Y.....", "Umsatz", 80)
-bbk_titles("BBDP1", "M.DE.N.HVPI.C.A00000..", ".", 10)
-euro("bop_c6_m", geo="DE", partner="WRL_REST", bop_item="CA", stk_flow="BAL", currency="MIO_EUR")
-hdr("namq_10_gdp units")
-r = S.get("https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp",
-          params={"format": "JSON", "lang": "en", "lastTimePeriod": 1, "geo": "DE", "na_item": "B1GQ", "s_adj": "SCA"}, timeout=120)
-print(list(r.json()["dimension"]["unit"]["category"]["label"].keys()))
-gen_vars("45212-0005", None, startyear="2026")
-for sid in ["MCOILBRENTEU", "PNGASEUUSDM"]:
-    r = S.get(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}", timeout=60); print(sid, r.status_code, r.text[-120:].replace("\n", " | "))
+hdr("45212-0005 Variablen")
+r = S.post(f"{GENESIS_BASE}/data/tablefile", timeout=300, headers=AUTH,
+           data={"name": "45212-0005", "area": "all", "compress": "false", "format": "ffcsv", "language": "de", "startyear": "2026"})
+t = genesis_text(r.content).lstrip("\ufeff")
+lines = t.splitlines()
+i = next(k for k, l in enumerate(lines[:60]) if l.count(";") >= 3 and re.search(r"(^|;)\"?(time|zeit)\"?(;|$)", l.lower()))
+df = pd.read_csv(io.StringIO("\n".join(lines[i:])), sep=";", dtype=str, keep_default_na=False)
+for c in [c for c in df.columns if c.endswith("_variable_code") or c == "value_variable_code" or c == "value_unit"]:
+    print(c, sorted(df[c].unique())[:10])

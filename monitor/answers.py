@@ -56,6 +56,13 @@ def inflation(q: dict, data: dict) -> dict:
         head = f"Im {period(t, 'M')} waren die Preise um {num(abs(v))} % niedriger als ein Jahr zuvor."
     dirw = "gesunken" if v < p - 0.05 else ("gestiegen" if v > p + 0.05 else "gleich geblieben")
     more = [f"Im Vormonat lag die Rate bei {num(p)} %, sie ist also {dirw}."]
+    idx = data.get(q.get("index"))
+    if idx is not None and len(idx.dropna()) > 1 and idx.dropna().index[-1] == t:
+        i = idx.dropna()
+        more.append(f"Gegenüber dem Vormonat: {num((i.iloc[-1] / i.iloc[-2] - 1) * 100, sign=True)} %.")
+    core = data.get(q.get("core"))
+    if core is not None and not core.dropna().empty and core.dropna().index[-1] == t:
+        more.append(f"Ohne Energie und Nahrungsmittel (Kernrate): {num(core.dropna().iloc[-1])} %.")
     parts = []
     for label, sid in (q.get("parts") or {}).items():
         ps = data.get(sid)

@@ -13,6 +13,8 @@ blocks:
   - {id: export, title: Export, sheet: Export}
   - {id: stimmung, title: Stimmung, sheet: Stimmung}
   - {id: insolvenzen, title: Insolvenzen, sheet: Insolvenzen}
+  - {id: bau, title: Bau, sheet: Bau}
+  - {id: finanzen, title: Finanzen, sheet: Finanzen}
 
 names:
   item:
@@ -22,6 +24,10 @@ names:
     P52_P53: Lager
     P6: Exporte
     P7: Importe
+  asset:
+    N11MG: Ausrüstungen
+    N11KG: Bauten
+    N117G: Sonstige Anlagen
   land:
     "01": Schleswig-Holstein
     "02": Hamburg
@@ -55,10 +61,32 @@ charts:
   consumer: {title: "Verbrauchervertrauen", decimals: 1}
   trade: {title: "Warenhandel", decimals: 0}
   trade_region: {title: "Exporte nach Regionen", decimals: 0}
+  esi: {title: "Exportähnlichkeit mit Deutschland", decimals: 0}
   sentiment: {title: "Stimmung nach Bereichen", decimals: 1}
   clock: {title: "Konjunkturuhr der Industrie", decimals: 1}
   employment: {title: "Erwerbstätige", decimals: 0}
   forecast: {title: "Prognosen für das Wachstum", decimals: 1}
+  cpi_core: {title: "Kernrate und Vergleich mit dem HVPI", decimals: 1}
+  cpi_contrib: {title: "Woraus die Inflationsrate besteht", decimals: 1}
+  deflator: {title: "Preise in der Gesamtrechnung", decimals: 1}
+  gdp_use: {title: "Verwendung der Wirtschaftsleistung im letzten Quartal", decimals: 1}
+  prod_groups: {title: "Produktion nach Gütergruppen", decimals: 0}
+  orders_euro: {title: "Aufträge aus dem Euroraum und von außerhalb", decimals: 0}
+  sales: {title: "Umsatz der Industrie, nominal", decimals: 0}
+  bau_orders: {title: "Aufträge im Bauhauptgewerbe", decimals: 0}
+  bau_prod: {title: "Produktion im Baugewerbe", decimals: 0}
+  retail_split: {title: "Einzelhandel nach Sortimenten, real", decimals: 0}
+  hospitality: {title: "Gastgewerbe, real", decimals: 0}
+  cars: {title: "Neue Pkw privater Halter", decimals: 0}
+  employment_m: {title: "Erwerbstätige und sozialversicherungspflichtig Beschäftigte", decimals: 0}
+  balances: {title: "Leistungsbilanzsaldo", decimals: 0}
+  trade_prices: {title: "Außenhandelspreise", decimals: 1}
+  capacity: {title: "Kapazitätsauslastung der Industrie", decimals: 1}
+  sector_now: {title: "Lage nach Bereichen", decimals: 0}
+  sector_next: {title: "Erwartungen nach Bereichen", decimals: 0}
+  yields: {title: "Zinsen für Bundesanleihen", decimals: 1}
+  oil: {title: "Ölpreis", decimals: 0}
+  gas: {title: "Erdgaspreis in Europa", decimals: 0}
   insolv: {title: "Unternehmensinsolvenzen je Monat", decimals: 0}
   insolv_emp: {title: "Von Insolvenzen betroffene Beschäftigte je Monat", decimals: 0}
   insolv_claims: {title: "Voraussichtliche Forderungen der Gläubiger je Monat", decimals: 1}
@@ -480,6 +508,102 @@ series:
     label: Asien
 
   # --- Stimmung (EU-Umfragen, offen) -----------------------------------------
+  - id: esi_chn
+    block: export
+    source: static
+    key: esi_chn
+    params: {source_name: "Eigene Berechnung aus UN Comtrade"}
+    title: "Exportähnlichkeit Deutschland–China (Finger-Kreinin, HS-Kapitel)"
+    unit: "Index 0–100"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: esi
+    label: "China"
+    start: "1995-01-01"
+    stale_after_months: 60
+    license: "UN Comtrade: Nutzungsbedingungen der Vereinten Nationen; Quellenangabe erforderlich"
+    note: "Summe über alle HS-Kapitel (ohne 98 und 99) des kleineren Anteils an den Warenexporten in die Welt; Meldungen der Exportländer."
+
+  - id: esi_usa
+    block: export
+    source: static
+    key: esi_usa
+    params: {source_name: "Eigene Berechnung aus UN Comtrade"}
+    title: "Exportähnlichkeit Deutschland–USA (Finger-Kreinin, HS-Kapitel)"
+    unit: "Index 0–100"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: esi
+    label: "USA"
+    start: "1995-01-01"
+    stale_after_months: 60
+    license: "UN Comtrade: Nutzungsbedingungen der Vereinten Nationen; Quellenangabe erforderlich"
+    note: "Summe über alle HS-Kapitel (ohne 98 und 99) des kleineren Anteils an den Warenexporten in die Welt; Meldungen der Exportländer."
+
+  - id: esi_jpn
+    block: export
+    source: static
+    key: esi_jpn
+    params: {source_name: "Eigene Berechnung aus UN Comtrade"}
+    title: "Exportähnlichkeit Deutschland–Japan (Finger-Kreinin, HS-Kapitel)"
+    unit: "Index 0–100"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: esi
+    label: "Japan"
+    start: "1995-01-01"
+    stale_after_months: 60
+    license: "UN Comtrade: Nutzungsbedingungen der Vereinten Nationen; Quellenangabe erforderlich"
+    note: "Summe über alle HS-Kapitel (ohne 98 und 99) des kleineren Anteils an den Warenexporten in die Welt; Meldungen der Exportländer."
+
+  - id: esi_kor
+    block: export
+    source: static
+    key: esi_kor
+    params: {source_name: "Eigene Berechnung aus UN Comtrade"}
+    title: "Exportähnlichkeit Deutschland–Südkorea (Finger-Kreinin, HS-Kapitel)"
+    unit: "Index 0–100"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: esi
+    label: "Südkorea"
+    start: "1995-01-01"
+    stale_after_months: 60
+    license: "UN Comtrade: Nutzungsbedingungen der Vereinten Nationen; Quellenangabe erforderlich"
+    note: "Summe über alle HS-Kapitel (ohne 98 und 99) des kleineren Anteils an den Warenexporten in die Welt; Meldungen der Exportländer."
+
+  - id: esi_fra
+    block: export
+    source: static
+    key: esi_fra
+    params: {source_name: "Eigene Berechnung aus UN Comtrade"}
+    title: "Exportähnlichkeit Deutschland–Frankreich (Finger-Kreinin, HS-Kapitel)"
+    unit: "Index 0–100"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: esi
+    label: "Frankreich"
+    start: "1995-01-01"
+    stale_after_months: 60
+    license: "UN Comtrade: Nutzungsbedingungen der Vereinten Nationen; Quellenangabe erforderlich"
+    note: "Summe über alle HS-Kapitel (ohne 98 und 99) des kleineren Anteils an den Warenexporten in die Welt; Meldungen der Exportländer."
+
+  - id: esi_ita
+    block: export
+    source: static
+    key: esi_ita
+    params: {source_name: "Eigene Berechnung aus UN Comtrade"}
+    title: "Exportähnlichkeit Deutschland–Italien (Finger-Kreinin, HS-Kapitel)"
+    unit: "Index 0–100"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: esi
+    label: "Italien"
+    start: "1995-01-01"
+    stale_after_months: 60
+    license: "UN Comtrade: Nutzungsbedingungen der Vereinten Nationen; Quellenangabe erforderlich"
+    note: "Summe über alle HS-Kapitel (ohne 98 und 99) des kleineren Anteils an den Warenexporten in die Welt; Meldungen der Exportländer."
+
   - id: de_esi
     block: stimmung
     source: eurostat
@@ -530,7 +654,7 @@ series:
     block: stimmung
     source: eurostat
     key: ei_bsbu_m_r2
-    params: {geo: DE, indic: BS-CCI, s_adj: SA}
+    params: {geo: DE, indic: BS-CCI-BAL, s_adj: SA}
     title: Vertrauen am Bau, Saldo
     unit: Saldo
     frequency: M
@@ -641,3 +765,596 @@ series:
     chart: aufgabe_land
     label: "{land_name}"
     note: Vollständige Aufgaben von Hauptniederlassungen mit größerer wirtschaftlicher Bedeutung (ohne Nebenerwerb und Übrige).
+
+  - id: de_vpi
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.A00000.I20.A
+    title: "Verbraucherpreisindex insgesamt"
+    unit: "Index 2020=100"
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_vpi_core
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.Y.VPI.C.XE0110.I20.A
+    title: "VPI ohne Energie und Nahrungsmittel, Index"
+    unit: "Index 2020=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+
+  - id: de_vpi_core_yoy
+    block: preise
+    source: derived
+    derive: {from: de_vpi_core, op: yoy_pct}
+    title: "VPI ohne Energie und Nahrungsmittel (Kernrate), % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: cpi_core
+    label: "Kernrate (VPI ohne Energie und Nahrungsmittel)"
+
+  - id: de_vpi_yoy_cmp
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.N.VPI.C.A00000.VGJ.LV
+    title: "VPI insgesamt, % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi_core
+    label: "VPI insgesamt"
+
+  - id: de_hicp_yoy
+    block: preise
+    source: bundesbank
+    key: BBDP1/M.DE.N.HVPI.C.A00000.VGJ.LV
+    title: "HVPI insgesamt, % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: cpi_core
+    label: "HVPI (europäische Messung)"
+
+  - id: de_defl_gdp
+    block: preise
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: DE, na_item: B1GQ, unit: PD_PCH_SM_NAC, s_adj: SCA}
+    title: "BIP-Deflator, % gg. Vorjahresquartal"
+    unit: "% gg. Vorjahresquartal"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    chart: deflator
+    label: "BIP-Deflator"
+
+  - id: de_defl_cons
+    block: preise
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: DE, na_item: P31_S14_S15, unit: PD_PCH_SM_NAC, s_adj: SCA}
+    title: "Deflator Konsum der Haushalte, % gg. Vorjahresquartal"
+    unit: "% gg. Vorjahresquartal"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    chart: deflator
+    label: "Konsum der Haushalte"
+
+  - id: de_use
+    expand: {item: [P31_S14_S15, P3_S13, P6, P7]}
+    block: wachstum
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: DE, na_item: "{item}", unit: CLV_PCH_PRE, s_adj: SCA}
+    title: "{item_name}, real, % gg. Vorquartal"
+    unit: "% gg. Vorquartal"
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    chart: gdp_use
+    label: "{item_name}"
+
+  - id: de_inv
+    expand: {asset: [N11MG, N11KG, N117G]}
+    block: wachstum
+    source: eurostat
+    key: namq_10_an6
+    params: {geo: DE, asset10: "{asset}", unit: CLV_PCH_PRE, s_adj: SCA}
+    title: "Investitionen in {asset_name}, real, % gg. Vorquartal"
+    unit: "% gg. Vorquartal"
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    chart: gdp_use
+    label: "Investitionen: {asset_name}"
+
+  - id: de_prod_vorl
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.BAA1.A2P310000.G.C.I21.A
+    title: "Produktion Vorleistungsgüter"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: prod_groups
+    label: "Vorleistungsgüter"
+
+  - id: de_prod_inve
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.BAA1.A2P320000.G.C.I21.A
+    title: "Produktion Investitionsgüter"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: prod_groups
+    label: "Investitionsgüter"
+
+  - id: de_prod_kons
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.BAA1.A2P350000.G.C.I21.A
+    title: "Produktion Konsumgüter"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: prod_groups
+    label: "Konsumgüter"
+
+  - id: de_orders_euro
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.AED1.A2P300000.F.C.I21.A
+    title: "Auftragseingang Industrie aus dem Euroraum, real"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: orders_euro
+    label: "Euroraum"
+
+  - id: de_orders_noneuro
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.AED5.A2P300000.F.C.I21.A
+    title: "Auftragseingang Industrie von außerhalb des Euroraums, real"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: orders_euro
+    label: "Außerhalb des Euroraums"
+
+  - id: de_orders_xbig
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.AEM1.A2P300000.F.C.I21.A
+    title: "Auftragseingang Industrie ohne Großaufträge, real"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: industry
+    label: "Aufträge ohne Großaufträge"
+
+  - id: de_sales
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.GUA1.A2P300000.F.V.I21.A
+    title: "Umsatz der Industrie, Insgesamt, nominal"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: sales
+    label: "Insgesamt"
+
+  - id: de_sales_dom
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.GUB1.A2P300000.F.V.I21.A
+    title: "Umsatz der Industrie, Inland, nominal"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: sales
+    label: "Inland"
+
+  - id: de_sales_for
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.GUB5.A2P300000.F.V.I21.A
+    title: "Umsatz der Industrie, Ausland, nominal"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: sales
+    label: "Ausland"
+
+  - id: de_sales_inv
+    block: industrie
+    source: bundesbank
+    key: BBDE1/M.DE.Y.GUA1.A2P320000.F.V.I21.A
+    title: "Umsatz der Industrie, Investitionsgüter, nominal"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: sales
+    label: "Investitionsgüter"
+
+  - id: de_bau_orders_total
+    block: bau
+    source: bundesbank
+    key: BBDE1/M.DE.Y.AEA1.P2XF00000.B2.C.I21.A
+    title: "Auftragseingang Bauhauptgewerbe, Insgesamt, real"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: bau_orders
+    label: "Insgesamt"
+
+  - id: de_bau_orders_wohn
+    block: bau
+    source: bundesbank
+    key: BBDE1/M.DE.Y.AEA1.P2XF22000.B2.C.I21.A
+    title: "Auftragseingang Bauhauptgewerbe, Wohnungsbau, real"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: bau_orders
+    label: "Wohnungsbau"
+
+  - id: de_bau_orders_hoch
+    block: bau
+    source: bundesbank
+    key: BBDE1/M.DE.Y.AEA1.P2XF20000.B2.C.I21.A
+    title: "Auftragseingang Bauhauptgewerbe, Hochbau ohne Wohnungsbau, real"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: bau_orders
+    label: "Hochbau ohne Wohnungsbau"
+
+  - id: de_bau_orders_tief
+    block: bau
+    source: bundesbank
+    key: BBDE1/M.DE.Y.AEA1.P2XF04000.B2.C.I21.A
+    title: "Auftragseingang Bauhauptgewerbe, Tiefbau, real"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: bau_orders
+    label: "Tiefbau"
+
+  - id: de_bau_prod
+    block: bau
+    source: bundesbank
+    key: BBDE1/M.DE.Y.BAA1.N2F000000.G.C.I21.A
+    title: "Produktion im Baugewerbe insgesamt"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: bau_prod
+    label: "Baugewerbe insgesamt"
+
+  - id: de_bau_prod_main
+    block: bau
+    source: bundesbank
+    key: BBDE1/M.DE.Y.BAA1.A2R410050.G.C.I21.A
+    title: "Produktion im Hoch- und Tiefbau"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: bau_prod
+    label: "Hoch- und Tiefbau"
+
+  - id: de_bau_prod_ausbau
+    block: bau
+    source: bundesbank
+    key: BBDE1/M.DE.Y.BAA1.N2F430000.G.C.I21.A
+    title: "Produktion im Ausbaugewerbe"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: bau_prod
+    label: "Ausbau und Installation"
+
+  - id: de_retail_food
+    block: konsum
+    source: genesis
+    key: 45212-0005
+    params: {value_variable: UMS110, filters: {PREIS1: REAL, BERI01: X13JDKSB, WZ08B5: "WZ08-4711-01"}}
+    title: "Einzelhandel Lebensmittel, real"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: kalender- und saisonbereinigt (Destatis)
+    chart: retail_split
+    label: "Lebensmittel"
+    start: "2015-01-01"
+
+  - id: de_retail_nonfood
+    block: konsum
+    source: genesis
+    key: 45212-0005
+    params: {value_variable: UMS110, filters: {PREIS1: REAL, BERI01: X13JDKSB, WZ08B5: "WZ08-4719-01"}}
+    title: "Einzelhandel Nicht-Lebensmittel, real"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: kalender- und saisonbereinigt (Destatis)
+    chart: retail_split
+    label: "Nicht-Lebensmittel"
+    start: "2015-01-01"
+
+  - id: de_retail_online
+    block: konsum
+    source: genesis
+    key: 45212-0005
+    params: {value_variable: UMS110, filters: {PREIS1: REAL, BERI01: X13JDKSB, WZ08B5: "WZ08-4791"}}
+    title: "Einzelhandel Versand- und Internethandel, real"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: kalender- und saisonbereinigt (Destatis)
+    chart: retail_split
+    label: "Versand- und Internethandel"
+    start: "2015-01-01"
+
+  - id: de_hospitality
+    block: konsum
+    source: bundesbank
+    key: BBDE1/M.DE.Y.BAA1.N2I000000.A.C.I15.A
+    title: "Gastgewerbe, Umsatz real"
+    unit: "Index 2015=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: hospitality
+    label: "Gastgewerbe"
+
+  - id: de_cars_private
+    block: konsum
+    source: bundesbank
+    key: BBDE1/M.DE.Y.KAA1.P2XC29050.KFZ.N.ABA.A
+    params: {scale: 0.001}
+    title: "Pkw-Neuzulassungen privater Halter"
+    unit: "Tausend"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: cars
+    label: "Private Halter"
+
+  - id: de_emp_m
+    block: arbeit
+    source: bundesbank
+    key: BBDL1/M.DE.Y.EMP.EAA000.A0000.A00.D10.0.ABA.A
+    title: "Erwerbstätige (Inland)"
+    unit: "Tsd. Personen"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: employment_m
+    label: "Erwerbstätige"
+
+  - id: de_svb_m
+    block: arbeit
+    source: bundesbank
+    key: BBDL1/M.DE.Y.EMP.EBA000.A0000.A00.D00.0.ABA.A
+    title: "Sozialversicherungspflichtig Beschäftigte"
+    unit: "Tsd. Personen"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: employment_m
+    label: "Sozialversicherungspflichtig Beschäftigte"
+
+  - id: de_ca
+    block: export
+    source: eurostat
+    key: bop_c6_m
+    params: {geo: DE, partner: WRL_REST, bop_item: CA, stk_flow: BAL, currency: MIO_EUR, sector10: S1, sectpart: S1}
+    title: "Leistungsbilanzsaldo"
+    unit: "Mio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: balances
+    label: "Leistungsbilanz"
+    style: bar
+
+  - id: de_trade_bal
+    block: export
+    source: derived
+    derive: {from: de_exports, minus: de_imports, op: diff}
+    title: "Warenhandelssaldo"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: trade
+    label: "Saldo (Exporte minus Importe)"
+
+  - id: de_export_prices
+    block: export
+    source: bundesbank
+    key: BBDP1/M.DE.N.APA1.G.GP19SA000000.I21.A
+    title: "Ausfuhrpreise, Index"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_export_prices_yoy
+    block: export
+    source: derived
+    derive: {from: de_export_prices, op: yoy_pct}
+    title: "Ausfuhrpreise, % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: trade_prices
+    label: "Ausfuhrpreise"
+
+  - id: de_tot
+    block: export
+    source: bundesbank
+    key: BBDP1/M.DE.Y.APT1.G.GP19SA000000.I21.A
+    title: "Terms of Trade, Index"
+    unit: "Index 2021=100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+
+  - id: de_tot_yoy
+    block: export
+    source: derived
+    derive: {from: de_tot, op: yoy_pct}
+    title: "Terms of Trade, % gg. Vorjahresmonat"
+    unit: "% gg. Vorjahresmonat"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt (Bundesbank)
+    chart: trade_prices
+    label: "Terms of Trade (Ausfuhr- zu Einfuhrpreisen)"
+
+  - id: de_capacity
+    block: stimmung
+    source: eurostat
+    key: ei_bsin_q_r2
+    params: {geo: DE, indic: BS-ICU-PC, s_adj: SA}
+    title: "Kapazitätsauslastung der Industrie"
+    unit: "% der Kapazität"
+    frequency: Q
+    adjustment: saisonbereinigt
+    chart: capacity
+    label: "Kapazitätsauslastung"
+
+  - id: de_now_serv
+    block: stimmung
+    source: eurostat
+    key: ei_bsse_m_r2
+    params: {geo: DE, indic: BS-SABC, s_adj: SA, unit: BAL}
+    title: "Dienstleister: Geschäftslage der letzten drei Monate, Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sector_now
+    label: "Dienstleister"
+
+  - id: de_now_retail
+    block: stimmung
+    source: eurostat
+    key: ei_bsrt_m_r2
+    params: {geo: DE, indic: BS-RPBS, s_adj: SA, unit: BAL}
+    title: "Einzelhandel: Geschäfte der letzten drei Monate, Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sector_now
+    label: "Einzelhandel"
+
+  - id: de_now_bau
+    block: stimmung
+    source: eurostat
+    key: ei_bsbu_m_r2
+    params: {geo: DE, indic: BS-CTA-BAL, s_adj: SA}
+    title: "Bau: Bautätigkeit der letzten drei Monate, Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sector_now
+    label: "Bau"
+
+  - id: de_now_ind
+    block: stimmung
+    source: eurostat
+    key: ei_bsin_m_r2
+    params: {geo: DE, indic: BS-IOB, s_adj: SA, unit: BAL}
+    title: "Industrie: Auftragsbestand heute, Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sector_now
+    label: "Industrie"
+
+  - id: de_next_serv
+    block: stimmung
+    source: eurostat
+    key: ei_bsse_m_r2
+    params: {geo: DE, indic: BS-SAEM, s_adj: SA, unit: BAL}
+    title: "Dienstleister: erwartete Nachfrage (nächste drei Monate), Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sector_next
+    label: "Dienstleister"
+
+  - id: de_next_retail
+    block: stimmung
+    source: eurostat
+    key: ei_bsrt_m_r2
+    params: {geo: DE, indic: BS-REBS, s_adj: SA, unit: BAL}
+    title: "Einzelhandel: erwartete Geschäfte (nächste drei Monate), Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sector_next
+    label: "Einzelhandel"
+
+  - id: de_next_bau
+    block: stimmung
+    source: eurostat
+    key: ei_bsbu_m_r2
+    params: {geo: DE, indic: BS-CEME-BAL, s_adj: SA}
+    title: "Bau: Beschäftigungspläne (nächste drei Monate), Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sector_next
+    label: "Bau (Beschäftigungspläne)"
+
+  - id: de_next_ind
+    block: stimmung
+    source: eurostat
+    key: ei_bsin_m_r2
+    params: {geo: DE, indic: BS-IPE, s_adj: SA, unit: BAL}
+    title: "Industrie: Produktionserwartungen (nächste drei Monate), Saldo"
+    unit: "Saldo"
+    frequency: M
+    adjustment: saisonbereinigt
+    chart: sector_next
+    label: "Industrie"
+
+  - id: de_bund10
+    block: finanzen
+    source: bundesbank
+    key: BBSIS/M.I.ZST.ZI.EUR.S1311.B.A604.R10XX.R.A.A._Z._Z.A
+    title: "Rendite Bundeswertpapiere, Restlaufzeit 10 Jahre"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: yields
+    label: "10 Jahre"
+
+  - id: de_bund2
+    block: finanzen
+    source: bundesbank
+    key: BBSIS/M.I.ZST.ZI.EUR.S1311.B.A604.R02XX.R.A.A._Z._Z.A
+    title: "Rendite Bundeswertpapiere, Restlaufzeit 2 Jahre"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: yields
+    label: "2 Jahre"
+
+  - id: w_brent
+    block: finanzen
+    source: fred
+    key: MCOILBRENTEU
+    params: {source_name: "U.S. Energy Information Administration über FRED"}
+    title: "Rohöl Brent, Monatsmittel"
+    unit: "US-Dollar je Barrel"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: oil
+    label: "Brent"
+    license: "Gemeinfrei (U.S. EIA); Quellenangabe"
+
+  - id: w_gas_eu
+    block: finanzen
+    source: fred
+    key: PNGASEUUSDM
+    params: {source_name: "IWF, Primary Commodity Prices, über FRED"}
+    title: "Erdgas Europa, Monatsmittel"
+    unit: "US-Dollar je MMBtu"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: gas
+    label: "Erdgas Europa (TTF)"
+    license: "IWF-Daten, Wiederverwendung mit Quellenangabe"
+

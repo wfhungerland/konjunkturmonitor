@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from importlib import resources
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import yaml
 
@@ -18,6 +19,29 @@ SOURCE_NAMES = {"bundesbank": "Deutsche Bundesbank", "eurostat": "Eurostat", "ec
                 "derived": "eigene Berechnung"}
 SOURCE_LICENSES = {"bundesbank": "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)", "eurostat": "CC BY 4.0 (Eurostat)",
                    "ecb": "Wiederverwendung mit Quellenangabe (EZB)", "static": "Statistik der Bundesagentur für Arbeit, mit Quellenangabe"}
+
+
+_META: dict = {}
+
+
+def _base(s):
+    """Für abgeleitete Reihen die Ausgangsreihe (Quelle und Lizenz kommen von dort)."""
+    seen = 0
+    while s.source == "derived" and (s.derive or {}).get("from") in _META and seen < 5:
+        s, seen = _META[s.derive["from"]], seen + 1
+    return s
+
+
+def _source_name(s) -> str:
+    """Quellenname je Reihe; statische Reihen können ihn in params.source_name setzen."""
+    b = _base(s)
+    name = (b.params or {}).get("source_name") or SOURCE_NAMES.get(b.source, b.source)
+    return f"{name} (eigene Berechnung)" if s.source == "derived" and b is not s else name
+
+
+def _license(s) -> str:
+    b = _base(s)
+    return b.license or SOURCE_LICENSES.get(b.source, "")
 
 
 def load_observations(root: Path = ROOT) -> tuple[dict[str, pd.Series], str]:
@@ -72,25 +96,25 @@ def _seasonal(s: pd.Series, years: int | None) -> dict:
     return {"x": [d.strftime("%Y-%m-%d") for d in s.index], "y": [r(v) for v in s], "ma12": [r(v) for v in ma12], "norm": [r(v) for v in norm]}
 
 
-def _tiles(prefix: str, data: dict, meta: dict) -> dict | None:
-    """Veränderung der letzten zwölf Monate gegenüber den zwölf Monaten davor, je Land."""
+def _tiles(prefix: str, data: dict, meta: dict, months: int = 12) -> dict | None:
+    """Veränderung der letzten `months` Monate gegenüber demselben Zeitraum ein Jahr zuvor, je Land."""
     rows, last = [], None
     for code, abbr in LAND_ABBR.items():
         s = data.get(f"{prefix}{code}")
         if s is None or len(s.dropna()) < 24:
             continue
         s = s.dropna()
-        a, b = s.iloc[-12:].sum(), s.iloc[-24:-12].sum()
+        a, b = s.iloc[-months:].sum(), s.iloc[-12 - months:-12].sum()
         if b <= 0:
             continue
         last = s.index[-1] if last is None else max(last, s.index[-1])
-        rows.append({"code": code, "abbr": abbr, "name": meta[f"{prefix}{code}"].label, "change": round((a / b - 1) * 100, 1), "sum12": int(a)})
+        rows.append({"code": code, "abbr": abbr, "name": meta[f"{prefix}{code}"].label, "change": round((a / b - 1) * 100, 1), "sum": int(a)})
     if not rows:
         return None
     from .answers import MONTHS
-    lo = last - pd.DateOffset(months=11)
+    lo = last - pd.DateOffset(months=months - 1)
     span = f"{MONTHS[lo.month - 1]} {lo.year} bis {MONTHS[last.month - 1]} {last.year}"
-    return {"rows": rows, "span": span}
+    return {"rows": rows, "span": span, "months": months}
 
 
 def _forecasts(root: Path) -> list[dict]:
@@ -107,10 +131,50 @@ def _forecasts(root: Path) -> list[dict]:
     return sorted((dict(r, latest=r["date"] == newest[r["by"]]) for r in rows), key=lambda r: r["date"])
 
 
+def _contrib(cfg: dict, data: dict) -> dict | None:
+    """Beiträge zur Inflationsrate aus Teilindizes (2020 = 100).
+
+    Gewichte w_i aus der Laspeyres-Identität I_gesamt = Summe w_i * I_i über die Monate ab 2020 geschätzt
+    (kleinste Quadrate); Beitrag_i = w_i * (I_i,t - I_i,t-12) / I_gesamt,t-12 * 100. Der Rest gleicht
+    Rundung und nicht erfasste Teile aus, damit die Balken die veröffentlichte Rate ergeben.
+    """
+    total_id, parts = cfg["total"], cfg["parts"]
+    ids = [sid for group in parts.values() for sid in (group if isinstance(group, list) else [group])]
+    if total_id not in data or any(sid not in data for sid in ids):
+        return None
+    df = pd.concat({sid: data[sid] for sid in [total_id, *ids]}, axis=1).dropna()
+    fit = df[df.index >= "2020-01-01"]
+    if len(fit) < 24:
+        return None
+    w, *_ = np.linalg.lstsq(fit[ids].to_numpy(), fit[total_id].to_numpy(), rcond=None)
+    weights = dict(zip(ids, w))
+    prev = df.shift(12)
+    yoy = (df[total_id] / prev[total_id] - 1) * 100
+    out, used = {}, pd.Series(0.0, index=df.index)
+    for label, group in parts.items():
+        group = group if isinstance(group, list) else [group]
+        c = sum(weights[g] * (df[g] - prev[g]) for g in group) / prev[total_id] * 100
+        out[label] = c
+        used = used + c
+    out["Rest"] = yoy - used
+    years = cfg.get("years", 3)
+    keep = yoy.dropna().index
+    keep = keep[keep >= keep[-1] - pd.DateOffset(years=years)]
+    r = lambda s: [round(float(v), 3) for v in s.loc[keep]]
+    x = [d.strftime("%Y-%m-%d") for d in keep]
+    series = [dict(id=f"contrib_{i}", label=k, unit="Pp", freq="M", style="bar", x=x, y=r(v)) for i, (k, v) in enumerate(out.items())]
+    series.append(dict(id="contrib_total", label="Inflationsrate", unit="%", freq="M", style="line", x=x, y=r(yoy)))
+    fitted = fit[ids].to_numpy() @ w
+    err = float(np.max(np.abs(fitted - fit[total_id].to_numpy())))
+    return {"series": series, "weights": {k: round(float(v), 4) for k, v in weights.items()}, "fit_max_abs": round(err, 3)}
+
+
 def build_payload(root: Path = ROOT) -> dict:
     cfg = yaml.safe_load((root / "monitor.yaml").read_text(encoding="utf-8"))
     data, stand = load_observations(root)
     meta, charts_cfg = _series_meta(root / "series.yaml")
+    _META.clear()
+    _META.update(meta)
     questions = []
     for q in cfg["questions"]:
         a = answer(q, data)
@@ -140,11 +204,19 @@ def build_payload(root: Path = ROOT) -> dict:
                              label=m.label, sources=["Statistisches Bundesamt (GENESIS)"],
                              licenses=["Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt)"])
             elif typ == "tiles":
-                tiles = _tiles(c["prefix"], data, meta)
-                if not tiles:
+                windows = {m: _tiles(c["prefix"], data, meta, m) for m in (12, 6)}
+                if not windows[12]:
                     continue
-                entry.update(tiles=tiles, sources=["Statistisches Bundesamt (GENESIS)"],
+                entry.update(tiles=windows[12], tiles6=windows[6], sources=["Statistisches Bundesamt (GENESIS)"],
                              licenses=["Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt)"])
+            elif typ == "contrib":
+                res = _contrib(c, data)
+                if not res:
+                    continue
+                entry.update(series=res["series"], unit="%, Beiträge in Prozentpunkten", freq="M", adjustment="nicht bereinigt",
+                             weights=res["weights"], sources=["Deutsche Bundesbank (VPI des Statistischen Bundesamts)", "eigene Berechnung"],
+                             licenses=[SOURCE_LICENSES["bundesbank"]], type="stacked")
+                print(f"Inflationsbeiträge: Gewichte {res['weights']}, größte Abweichung der Identität {res['fit_max_abs']} Indexpunkte")
             elif typ == "forecast":
                 entry["forecasts"] = _forecasts(root)
                 entry["sources"] = sorted({f"{f['by']} ({f['round']})" for f in entry["forecasts"]})
@@ -168,9 +240,12 @@ def build_payload(root: Path = ROOT) -> dict:
                 entry["unit"] = series[0]["unit"]
                 entry["freq"] = series[0]["freq"]
                 entry["adjustment"] = meta[series[0]["id"]].adjustment
-                srcs = {meta[x["id"]].source for x in series}
-                entry["sources"] = sorted({SOURCE_NAMES.get(x, x) for x in srcs})
-                entry["licenses"] = sorted({SOURCE_LICENSES[x] for x in srcs if x in SOURCE_LICENSES})
+                specs_used = [meta[x["id"]] for x in series]
+                entry["sources"] = sorted({_source_name(s) for s in specs_used})
+                entry["licenses"] = sorted({lic for s in specs_used if (lic := _license(s))})
+                if typ == "latest":
+                    entry["bars"] = [dict(label=s["label"], value=s["y"][-1], prev=s["y"][-2] if len(s["y"]) > 1 else None,
+                                          period=s["x"][-1]) for s in series]
                 if typ == "threshold":
                     rec = root / "data" / "static" / "svr_recessions.csv"
                     if rec.exists():

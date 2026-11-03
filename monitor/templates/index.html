@@ -47,6 +47,10 @@
   .card .cap { color: var(--text); margin: 6px 0 4px; font-size: 13.5px; }
   .card .chart { width: 100%; aspect-ratio: 5 / 3; min-height: 260px; overflow: hidden; }
   .card .chart.square { aspect-ratio: 1 / 1; max-height: 520px; }
+  .seg { display: flex; justify-content: center; gap: 0; margin: 8px 0 0; }
+  .seg button { font: inherit; font-size: 13px; padding: 3px 10px; border: 1px solid #0070C0; background: #fff; color: #0070C0; cursor: pointer; }
+  .seg button:first-child { border-radius: 4px 0 0 4px; } .seg button:last-child { border-radius: 0 4px 4px 0; border-left: 0; }
+  .seg button[aria-pressed="true"] { background: #0070C0; color: #fff; }
   .tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; max-width: 330px; margin: 10px auto 4px; }
   .tile { aspect-ratio: 1 / 1; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center;
           font: 13px/1.15 "Arial Narrow", Arial, sans-serif; border: 1px solid #e2e5e9; }
@@ -220,6 +224,25 @@ function seasonalChart(el, c) {
     yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
   Plotly.newPlot(el, traces, L, CFG);
 }
+// Letzter Wert je Reihe als waagerechte Balken, Raute: Wert der Vorperiode
+function latestChart(el, c) {
+  const b = c.bars.slice().reverse(), lab = b.map(x => x.label);
+  const per = x => { const d = new Date(x.period); return c.freq === "Q" ? `${Math.floor(d.getMonth() / 3) + 1}. Q. ${d.getFullYear()}` : d.toLocaleDateString("de-DE", { month: "short", year: "numeric" }); };
+  const traces = [
+    { type: "bar", orientation: "h", y: lab, x: b.map(x => x.value), marker: { color: b.map(x => x.value >= 0 ? PAL[0] : "#C00000") }, name: "Letztes Quartal",
+      text: b.map(x => (x.value > 0 ? "+" : "") + fmt(x.value, c.decimals)), textposition: "outside", cliponaxis: false,
+      customdata: b.map(per), hovertemplate: `%{x:,.${c.decimals}f} (%{customdata})<extra>%{y}</extra>` },
+    { type: "scatter", mode: "markers", y: lab, x: b.map(x => x.prev), marker: { symbol: "diamond", size: 9, color: PAL[2] }, name: "Quartal davor",
+      hovertemplate: `%{x:,.${c.decimals}f} (davor)<extra>%{y}</extra>` }];
+  const all = b.flatMap(x => [x.value, x.prev]).filter(v => v != null), lo = Math.min(0, ...all), hi = Math.max(0, ...all), padv = (hi - lo) * 0.18 || 1;
+  const L = baseLayout(el);
+  Object.assign(L, { height: Math.max(220, 34 * b.length + 70), showlegend: true, bargap: 0.35, hovermode: "closest",
+    xaxis: { range: [lo - padv, hi + padv], zeroline: true, zerolinecolor: HS.zero, showgrid: true, gridcolor: HS.gridH, fixedrange: true, ticksuffix: "" },
+    yaxis: { automargin: true, fixedrange: true, ticks: "" } });
+  el.style.height = L.height + "px";
+  Plotly.newPlot(el, traces, L, CFG);
+}
+
 // Kachelkarte: ein Quadrat je Land an seiner ungefähren Lage; lila mehr, blau weniger
 const TILE_POS = { SH: [0, 2], HB: [1, 1], HH: [1, 2], MV: [1, 3], NW: [2, 0], NI: [2, 1], ST: [2, 2], BE: [2, 3], BB: [2, 4],
   RP: [3, 0], HE: [3, 1], TH: [3, 2], SN: [3, 3], SL: [4, 0], BW: [4, 1], BY: [4, 2] };
@@ -229,20 +252,40 @@ function tileColor(v, m) {
   return { bg: `rgb(${c.join(",")})`, fg: k > 0.55 ? "#fff" : "#000" };
 }
 function tilesChart(el, c) {
-  const rows = c.tiles.rows, m = Math.max(10, ...rows.map(r => Math.abs(r.change)));
-  const grid = document.createElement("div"); grid.className = "tiles"; grid.setAttribute("role", "img");
-  grid.setAttribute("aria-label", rows.map(r => `${r.name} ${fmt(r.change, 0)} %`).join(", "));
-  rows.forEach(r => {
-    const p = TILE_POS[r.abbr]; if (!p) return;
-    const col = tileColor(r.change, m), d = document.createElement("div");
-    d.className = "tile"; d.style.gridRow = p[0] + 1; d.style.gridColumn = p[1] + 1; d.style.background = col.bg; d.style.color = col.fg;
-    d.title = `${r.name}: ${fmt(r.change, 1)} % (${r.sum12.toLocaleString("de-DE")} in zwölf Monaten)`;
-    d.innerHTML = `<b>${r.abbr}</b>${r.change > 0 ? "+" : ""}${fmt(r.change, 0)} %`;
-    grid.appendChild(d);
-  });
-  el.appendChild(grid);
-  const lo = tileColor(-m, m), hi = tileColor(m, m);
-  el.insertAdjacentHTML("beforeend", `<div class="tlegend"><span><i style="background:${lo.bg}"></i>weniger</span><span><i style="background:#fff;border:1px solid #ccc"></i>gleich</span><span><i style="background:${hi.bg}"></i>mehr</span></div>`);
+  const sets = [c.tiles, c.tiles6].filter(Boolean);
+  const box = document.createElement("div"); el.appendChild(box);
+  const draw = w => {
+    box.innerHTML = "";
+    const rows = w.rows, m = Math.max(10, ...rows.map(r => Math.abs(r.change)));
+    const grid = document.createElement("div"); grid.className = "tiles"; grid.setAttribute("role", "img");
+    grid.setAttribute("aria-label", rows.map(r => `${r.name} ${fmt(r.change, 0)} %`).join(", "));
+    rows.forEach(r => {
+      const p = TILE_POS[r.abbr]; if (!p) return;
+      const col = tileColor(r.change, m), d = document.createElement("div");
+      d.className = "tile"; d.style.gridRow = p[0] + 1; d.style.gridColumn = p[1] + 1; d.style.background = col.bg; d.style.color = col.fg;
+      d.title = `${r.name}: ${fmt(r.change, 1)} % (${r.sum.toLocaleString("de-DE")} in ${w.months} Monaten)`;
+      d.innerHTML = `<b>${r.abbr}</b>${r.change > 0 ? "+" : ""}${fmt(r.change, 0)} %`;
+      grid.appendChild(d);
+    });
+    box.appendChild(grid);
+    const lo = tileColor(-m, m), hi = tileColor(m, m);
+    box.insertAdjacentHTML("beforeend", `<div class="tlegend"><span><i style="background:${lo.bg}"></i>weniger</span><span><i style="background:#fff;border:1px solid #ccc"></i>gleich</span><span><i style="background:${hi.bg}"></i>mehr</span></div>`);
+    const card = el.closest(".card");
+    if (card) {
+      card.querySelector(".sub").textContent = "Summe " + w.span;
+      card.querySelector(".unit").textContent = `Veränderung gegenüber denselben ${w.months} Monaten ein Jahr zuvor, %`;
+    }
+  };
+  if (sets.length > 1) {
+    const seg = document.createElement("div"); seg.className = "seg"; seg.setAttribute("role", "group"); seg.setAttribute("aria-label", "Zeitraum");
+    sets.forEach((w, i) => {
+      const b = document.createElement("button"); b.type = "button"; b.textContent = `${w.months} Monate`; b.setAttribute("aria-pressed", i === 0);
+      b.onclick = () => { seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); draw(w); };
+      seg.appendChild(b);
+    });
+    el.insertBefore(seg, box);
+  }
+  draw(sets[0]);
 }
 
 function spark(d, ref) {
@@ -257,9 +300,9 @@ function spark(d, ref) {
 function card(c, no) {
   const el = document.createElement("div"); el.className = "card"; el.id = `abb-${no}`;
   const sub = c.type === "clock" || c.type === "forecast" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
-    : [c.freq === "Q" ? "Vierteljährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
+    : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real"
-    : c.type === "tiles" ? "Veränderung gegenüber den zwölf Monaten davor, %" : (c.unit || "");
+    : c.type === "tiles" ? "Veränderung gegenüber denselben 12 Monaten ein Jahr zuvor, %" : (c.unit || "");
   el.innerHTML = `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}<div class="unit">${esc(unit)}</div>`;
   const ch = document.createElement("div"); ch.className = c.type === "tiles" ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); el.appendChild(ch);
   if (c.caption) el.insertAdjacentHTML("beforeend", `<div class="cap">${esc(c.caption)}</div>`);
@@ -274,6 +317,7 @@ function card(c, no) {
 function render(ch) {
   const c = ch._c;
   if (c.type === "clock") clockChart(ch, c); else if (c.type === "forecast") forecastChart(ch, c);
+  else if (c.type === "latest") latestChart(ch, c);
   else if (c.type === "seasonal") seasonalChart(ch, c); else if (c.type === "tiles") tilesChart(ch, c); else timeChart(ch, c);
 }
 
