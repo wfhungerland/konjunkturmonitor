@@ -35,8 +35,13 @@ Seite: https://wfhungerland.github.io/konjunkturmonitor/
 | Insolvenzen | Destatis GENESIS `52411`, `52311` |
 | Zinsen und Energie | Bundesbank `BBSIS` (Zinsstruktur), FRED (`MCOILBRENTEU` der U.S. EIA, `PNGASEUUSDM` des IWF) |
 | Prognosen | `data/static/prognosen.yaml`, nur veröffentlichte Werte mit Link |
+| Karten | Ländergrenzen © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung 2.0, vereinfacht (`data/static/vg2500_laender.json`) |
 
 Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global, GfK-Detailreihen und Terminpreise. Die ifo-Zeitreihen setzen eine Anmeldung voraus. Die Stimmung kommt deshalb aus den offenen EU-Umfragen.
+
+## Downloads
+
+Zu jeder Abbildung erzeugt der Lauf Excel (Daten, Diagramm, Info), eine PowerPoint-Folie mit bearbeitbarem Diagramm und CSV (`site/dl/`); das PNG entsteht im Browser. Die Folie übernimmt Format und Aufteilung des vorgegebenen Folienmasters (16:9, grauer Rahmen, Übertitel, Titel, Quellenzeile), aber ohne Logo und Behördenkennzeichnung.
 
 ## Technik
 

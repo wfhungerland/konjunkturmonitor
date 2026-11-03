@@ -27,7 +27,7 @@ def test_inflation_target_wording():
 def test_index_three_month_comparison():
     data = {"ip": s([100, 100, 100, 101, 102, 103])}
     a = answer({"id": "industrie", "kind": "index_mom", "series": "ip"}, data)
-    assert "1,0 % mehr hergestellt" in a["head"] and a["verdict"] == "zieht an"
+    assert "1,0 % mehr produziert" in a["head"] and a["verdict"] == "steigt"
 
 
 def test_missing_series_gives_none():

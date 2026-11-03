@@ -44,6 +44,9 @@
   .card h3 { font-size: 16px; margin: 0 0 2px; }
   .card .sub, .card .unit, .card .cap, .card .src { font: 13px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); }
   .card .unit { text-align: right; margin-top: 2px; }
+  .card .acts { font: 13px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin-top: 6px; }
+  .card .acts a, .card .acts button { color: var(--link, #0b4f8a); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+  .card .acts a:hover, .card .acts button:hover { text-decoration: underline; }
   .card .cap { color: var(--text); margin: 6px 0 4px; font-size: 13.5px; }
   .card .chart { width: 100%; aspect-ratio: 5 / 3; min-height: 260px; overflow: hidden; }
   .card .chart.square { aspect-ratio: 1 / 1; max-height: 520px; }
@@ -71,6 +74,7 @@
 <section class="refs" id="quellen">
   <h2>Quellen und Hinweise</h2>
   <p>Alle Zahlen stammen aus offenen, amtlichen Quellen: Deutsche Bundesbank (saisonbereinigte Reihen von Statistischem Bundesamt und Bundesagentur für Arbeit), Eurostat (Volkswirtschaftliche Gesamtrechnungen, Verbraucherpreise, EU-Unternehmens- und Verbraucherumfragen) und Statistik der Bundesagentur für Arbeit. Prognosen stammen aus den verlinkten Veröffentlichungen. Die Texte sind eigene Erläuterungen und keine amtliche Bewertung.</p>
+  <p id="deck"></p>
   <p id="cite"></p>
 </section>
 <footer>Konjunkturmonitor · Wolf-Fabian Hungerland</footer>
@@ -251,25 +255,52 @@ function tileColor(v, m) {
   const c = base.map(x => Math.round(255 - (255 - x) * k * 0.85));
   return { bg: `rgb(${c.join(",")})`, fg: k > 0.55 ? "#fff" : "#000" };
 }
+// Länderkarte (BKG VG2500): Fläche je Land nach Veränderungsrate eingefärbt, violett mehr, blau weniger
+const LABEL_OFFSET = { HB: [-0.85, 0.45], HH: [0.63, 1.0], BE: [1.05, 0.25], SL: [-0.45, -0.35] };
+const pct0 = v => { const r = Math.round(v); return (r > 0 ? "+" : "") + fmt(r === 0 ? 0 : r, 0) + " %"; };
+function geoSvg(w, m) {
+  const G = DATA.geo, k = Math.cos(51.2 * Math.PI / 180), X = lon => (lon - 5.7) * k, Y = lat => 55.2 - lat;
+  const W = (15.2 - 5.7) * k, H = 55.2 - 47.2, ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg"); svg.setAttribute("viewBox", `${-0.9} 0 ${W + 1.9} ${H}`); svg.setAttribute("role", "img");
+  svg.setAttribute("style", "width:100%;max-width:420px;height:auto;display:block;margin:8px auto 0;font-family:'Arial Narrow',Arial,sans-serif");
+  const rows = Object.fromEntries(w.rows.map(r => [r.abbr, r]));
+  svg.setAttribute("aria-label", w.rows.map(r => `${r.name} ${fmt(r.change, 0)} %`).join(", "));
+  G.forEach(f => {
+    const r = rows[f.abbr], col = r ? tileColor(r.change, m) : { bg: "#eee", fg: "#000" };
+    const d = f.rings.map(ring => "M" + ring.map(([lo, la]) => `${X(lo).toFixed(3)},${Y(la).toFixed(3)}`).join("L") + "Z").join("");
+    const p = document.createElementNS(ns, "path"); p.setAttribute("d", d); p.setAttribute("fill", col.bg); p.setAttribute("fill-rule", "evenodd");
+    p.setAttribute("stroke", "#fff"); p.setAttribute("stroke-width", "0.03"); p.setAttribute("stroke-linejoin", "round");
+    const tt = document.createElementNS(ns, "title"); tt.textContent = r ? `${r.name}: ${fmt(r.change, 1)} % (${r.sum.toLocaleString("de-DE")} in ${w.months} Monaten)` : f.abbr;
+    p.appendChild(tt); svg.appendChild(p);
+  });
+  G.forEach(f => {
+    const r = rows[f.abbr]; if (!r) return;
+    let [lx, ly] = [X(f.label[0]), Y(f.label[1])]; const off = LABEL_OFFSET[f.abbr], col = tileColor(r.change, m);
+    let fg = col.fg;
+    if (off) { const tx = lx + off[0], ty = ly - off[1]; const l = document.createElementNS(ns, "line");
+      Object.entries({ x1: lx, y1: ly, x2: tx, y2: ty, stroke: "#555", "stroke-width": 0.02 }).forEach(([a, v]) => l.setAttribute(a, v)); svg.appendChild(l); lx = tx; ly = ty; fg = "#000"; }
+    const t = document.createElementNS(ns, "text"); t.setAttribute("x", lx); t.setAttribute("y", ly); t.setAttribute("text-anchor", "middle"); t.setAttribute("fill", fg);
+    t.setAttribute("font-size", "0.3"); t.innerHTML = `<tspan font-weight="bold">${r.abbr}</tspan><tspan x="${lx}" dy="0.32">${pct0(r.change)}</tspan>`;
+    svg.appendChild(t);
+  });
+  return svg;
+}
 function tilesChart(el, c) {
   const sets = [c.tiles, c.tiles6].filter(Boolean);
   const box = document.createElement("div"); el.appendChild(box);
   const draw = w => {
-    box.innerHTML = "";
-    const rows = w.rows, m = Math.max(10, ...rows.map(r => Math.abs(r.change)));
-    const grid = document.createElement("div"); grid.className = "tiles"; grid.setAttribute("role", "img");
-    grid.setAttribute("aria-label", rows.map(r => `${r.name} ${fmt(r.change, 0)} %`).join(", "));
-    rows.forEach(r => {
-      const p = TILE_POS[r.abbr]; if (!p) return;
-      const col = tileColor(r.change, m), d = document.createElement("div");
-      d.className = "tile"; d.style.gridRow = p[0] + 1; d.style.gridColumn = p[1] + 1; d.style.background = col.bg; d.style.color = col.fg;
-      d.title = `${r.name}: ${fmt(r.change, 1)} % (${r.sum.toLocaleString("de-DE")} in ${w.months} Monaten)`;
-      d.innerHTML = `<b>${r.abbr}</b>${r.change > 0 ? "+" : ""}${fmt(r.change, 0)} %`;
-      grid.appendChild(d);
-    });
-    box.appendChild(grid);
+    box.innerHTML = ""; el._w = w;
+    const m = Math.max(10, ...w.rows.map(r => Math.abs(r.change)));
+    if (DATA.geo) box.appendChild(geoSvg(w, m));
+    else {
+      const grid = document.createElement("div"); grid.className = "tiles";
+      w.rows.forEach(r => { const p = TILE_POS[r.abbr]; if (!p) return; const col = tileColor(r.change, m), d = document.createElement("div");
+        d.className = "tile"; d.style.gridRow = p[0] + 1; d.style.gridColumn = p[1] + 1; d.style.background = col.bg; d.style.color = col.fg;
+        d.innerHTML = `<b>${r.abbr}</b>${pct0(r.change)}`; grid.appendChild(d); });
+      box.appendChild(grid);
+    }
     const lo = tileColor(-m, m), hi = tileColor(m, m);
-    box.insertAdjacentHTML("beforeend", `<div class="tlegend"><span><i style="background:${lo.bg}"></i>weniger</span><span><i style="background:#fff;border:1px solid #ccc"></i>gleich</span><span><i style="background:${hi.bg}"></i>mehr</span></div>`);
+    box.insertAdjacentHTML("beforeend", `<div class="tlegend"><span><i style="background:${lo.bg}"></i>Abnahme</span><span><i style="background:#fff;border:1px solid #ccc"></i>unverändert</span><span><i style="background:${hi.bg}"></i>Zunahme</span></div>`);
     const card = el.closest(".card");
     if (card) {
       card.querySelector(".sub").textContent = "Summe " + w.span;
@@ -297,6 +328,39 @@ function spark(d, ref) {
   return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">${r}<path d="${path}" fill="none" stroke="#002060" stroke-width="1.6" stroke-linejoin="round"/><circle cx="${X(x[x.length - 1])}" cy="${Y(y[y.length - 1])}" r="3" fill="#c00000"/></svg>`;
 }
 
+// PNG: Abbildung mit Kopf (Abb., Titel, Zeitraum, Einheit) und Fuß (Erläuterung, Quelle), 2-fache Auflösung
+async function pngDownload(el, ch, c, no, sub, unit) {
+  render(ch);
+  const W = 1200, S = 2, pad = 24, font = '"Arial Narrow", Arial, sans-serif';
+  let img = null, plotH = 520;
+  if (c.type === "tiles" && DATA.geo) {
+    const svg = ch.querySelector("svg"), clone = svg.cloneNode(true); clone.setAttribute("width", 520); clone.setAttribute("height", 560); clone.removeAttribute("style");
+    const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(clone));
+    img = new Image(); img.src = url; await img.decode(); plotH = 560;
+  } else if (c.type === "tiles") plotH = 5 * 74 + 60;
+  else { const url = await Plotly.toImage(ch, { format: "png", width: W - 2 * pad, height: plotH, scale: S }); img = new Image(); img.src = url; await img.decode(); }
+  const cv = document.createElement("canvas"), x = cv.getContext("2d");
+  const wrap = (txt, maxW, f) => { x.font = f; const out = []; let line = ""; (txt || "").split(" ").forEach(w => { const tst = line ? line + " " + w : w; if (x.measureText(tst).width > maxW && line) { out.push(line); line = w; } else line = tst; }); if (line) out.push(line); return out; };
+  const cap = wrap(c.caption, W - 2 * pad, `15px ${font}`), src = wrap(el.querySelector(".src").textContent, W - 2 * pad, `13px ${font}`);
+  const H = 110 + plotH + 16 + cap.length * 20 + src.length * 18 + 24;
+  cv.width = W * S; cv.height = H * S; x.scale(S, S); x.fillStyle = "#fff"; x.fillRect(0, 0, W, H); x.textBaseline = "top";
+  x.fillStyle = "#000"; x.font = `bold 22px Georgia, serif`; x.fillText(`Abb. ${no} ${c.title || ""}`, pad, 18);
+  x.fillStyle = "#555"; x.font = `15px ${font}`; if (sub) x.fillText(sub, pad, 52);
+  x.textAlign = "right"; x.fillText(unit, W - pad, 80); x.textAlign = "left";
+  if (img && c.type === "tiles") x.drawImage(img, (W - 520) / 2, 104, 520, plotH);
+  else if (img) x.drawImage(img, pad, 104, W - 2 * pad, plotH);
+  else {
+    const rows = (ch._w || c.tiles).rows, m = Math.max(10, ...rows.map(r => Math.abs(r.change))), sz = 68, gp = 6, x0 = (W - 5 * sz - 4 * gp) / 2;
+    rows.forEach(r => { const p = TILE_POS[r.abbr]; if (!p) return; const col = tileColor(r.change, m); x.fillStyle = col.bg;
+      x.fillRect(x0 + p[1] * (sz + gp), 110 + p[0] * (sz + gp), sz, sz); x.fillStyle = col.fg; x.textAlign = "center";
+      x.font = `bold 16px ${font}`; x.fillText(r.abbr, x0 + p[1] * (sz + gp) + sz / 2, 110 + p[0] * (sz + gp) + 16);
+      x.font = `14px ${font}`; x.fillText(pct0(r.change), x0 + p[1] * (sz + gp) + sz / 2, 110 + p[0] * (sz + gp) + 38); x.textAlign = "left"; });
+  }
+  let y = 104 + plotH + 12; x.fillStyle = "#000"; x.font = `15px ${font}`; cap.forEach(l => { x.fillText(l, pad, y); y += 20; });
+  x.fillStyle = "#555"; x.font = `13px ${font}`; src.forEach(l => { x.fillText(l, pad, y); y += 18; });
+  const a = document.createElement("a"); a.download = `abb${String(no).padStart(2, "0")}_${c.chart}.png`; a.href = cv.toDataURL("image/png"); a.click();
+}
+
 function card(c, no) {
   const el = document.createElement("div"); el.className = "card"; el.id = `abb-${no}`;
   const sub = c.type === "clock" || c.type === "forecast" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
@@ -309,13 +373,31 @@ function card(c, no) {
   let src = (c.sources || []).join(", ");
   if (c.type === "forecast") src = c.forecasts.filter(f => f.latest).map(f => `<a href="${esc(f.source)}" target="_blank" rel="noopener">${esc(f.by)}, ${esc(f.round)}</a>`).join(" · ");
   else src = esc(src);
-  el.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}</div>`);
+  el.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}</div>`);
+  const f = c.files || {}, acts = [];
+  if (f.xlsx) acts.push(`<a href="${f.xlsx}" download>Excel</a>`);
+  if (f.pptx) acts.push(`<a href="${f.pptx}" download>PowerPoint</a>`);
+  acts.push(`<button type="button" class="png">PNG</button>`);
+  if (f.csv) acts.push(`<a href="${f.csv}" download>CSV</a>`);
+  el.insertAdjacentHTML("beforeend", `<div class="acts" aria-label="Herunterladen">Herunterladen: ${acts.join(" · ")}</div>`);
+  el.querySelector("button.png").onclick = () => pngDownload(el, ch, c, no, sub, unit);
   ch._c = c;
   return el;
 }
 
 function render(ch) {
+  if (ch.dataset.done) return;
+  ch.dataset.done = 1;
   const c = ch._c;
+  if (c.alt && !ch._seg) { // Umschalter, etwa Vorjahres- und Vormonatsvergleich der Inflationsbeiträge
+    const base = { series: c.series, unit: c.unit, label: c.alt.base }, seg = document.createElement("div");
+    seg.className = "seg"; seg.setAttribute("role", "group");
+    [base, c.alt].forEach((v, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = v.label; b.setAttribute("aria-pressed", i === 0);
+      b.onclick = () => { seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); c.series = v.series; c.unit = v.unit;
+        const card = ch.closest(".card"); if (card) card.querySelector(".unit").textContent = v.unit; Plotly.purge(ch); timeChart(ch, c); };
+      seg.appendChild(b); });
+    ch.parentNode.insertBefore(seg, ch); ch._seg = seg;
+  }
   if (c.type === "clock") clockChart(ch, c); else if (c.type === "forecast") forecastChart(ch, c);
   else if (c.type === "latest") latestChart(ch, c);
   else if (c.type === "seasonal") seasonalChart(ch, c); else if (c.type === "tiles") tilesChart(ch, c); else timeChart(ch, c);
@@ -325,6 +407,7 @@ function build() {
   const S = DATA.site;
   document.getElementById("claim").textContent = S.claim;
   const d = new Date(DATA.generated_at); document.getElementById("stand").textContent = "Stand: " + d.toLocaleDateString("de-DE");
+  if (DATA.deck) document.getElementById("deck").innerHTML = `<a href="${DATA.deck}" download>Alle Abbildungen als PowerPoint</a>`;
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const grid = document.getElementById("grid"), nav = document.getElementById("nav"), topics = document.getElementById("topics");
   DATA.questions.forEach(q => {
@@ -343,7 +426,7 @@ function build() {
       + (q ? `<p class="answer">${esc(q.answer.head)}</p><ul class="more">${q.answer.more.map(m => `<li>${esc(m)}</li>`).join("")}</ul>`
         + `<div class="explain"><b>Was heißt das?</b> ${esc(q.explain)}</div>` : "");
     const wrap = document.createElement("div"); wrap.className = "charts"; sec.appendChild(wrap);
-    t.charts.forEach(c => { no += 1; const el = card(c, no); wrap.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : render(ch); });
+    t.charts.forEach(c => { no += 1; const el = card(c, c.no ?? no); wrap.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : render(ch); });
     topics.appendChild(sec);
     nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
   });
