@@ -99,7 +99,7 @@
     .stable thead { display: none; }
     .stable, .stable tbody { display: block; }
     .stable tr.grp { display: block; } .stable tr.grp td { display: block; padding: 14px 0 2px; }
-    .stable tr.row { display: grid; grid-template-columns: 1fr auto auto; grid-template-areas: "k v t" "u u s" "c c c"; gap: 0 10px; padding: 8px 0; border-bottom: 1px solid #e5e5e5; }
+    .stable tr.row { display: grid; grid-template-columns: 1fr auto auto; grid-template-areas: "k v t" "c c s"; gap: 0 10px; padding: 8px 0; border-bottom: 1px solid #e5e5e5; }
     .stable tr.row td { border: 0; padding: 0; }
     .stable td.k { grid-area: k; font-size: 16px; } .stable td.v { grid-area: v; font-size: 17px; } .stable td.t { grid-area: t; }
     .stable td.u { grid-area: u; white-space: normal; } .stable td.s { grid-area: s; justify-self: end; } .stable td.s svg { width: 110px; }
@@ -178,6 +178,10 @@
   .news { font: 14.5px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin: 0 0 8px; max-width: 60em; }
   .news b { color: var(--dark); }
   sup.rev { color: var(--muted); font-weight: normal; margin-left: 1px; cursor: help; }
+  .stable td.k .ku { display: block; font-size: 12px; color: var(--muted); line-height: 1.2; }
+  .stable small.cu { font-size: 11px; color: #8a929c; }
+  details.fold { margin: 6px 0; } details.fold > summary { cursor: pointer; color: var(--accent); font: 14.5px "Arial Narrow", Arial, sans-serif; }
+  details.fold[open] > summary { margin-bottom: 4px; }
   .refs { max-width: 1180px; margin: 30px auto 0; padding: 0 16px; font-size: 14px; color: var(--muted); }
   footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
@@ -195,16 +199,22 @@
 </main>
 <section class="refs" id="quellen">
   <h2>Quellen und Hinweise</h2>
-  <p>Alle Zahlen stammen aus offenen, amtlichen Quellen: Deutsche Bundesbank (saisonbereinigte Reihen von Statistischem Bundesamt und Bundesagentur für Arbeit), Eurostat (Volkswirtschaftliche Gesamtrechnungen, Verbraucherpreise, EU-Unternehmens- und Verbraucherumfragen) und Statistik der Bundesagentur für Arbeit. Prognosen stammen aus den verlinkten Veröffentlichungen. Die Texte sind eigene Erläuterungen und keine amtliche Bewertung.</p>
+  <details class="fold"><summary>Methodik, Vergleichszeitraum und Zeichen</summary>
   <p><b>Vergleichszeitraum.</b> Wo der Monitor ein „übliches“ Niveau angibt, ist es der Durchschnitt der Jahre 2015 bis 2019: die fünf letzten vollen Jahre vor der Pandemie, nach der Euro-Schuldenkrise und vor dem Energiepreisschock 2022. Ausnahme ist die Konjunkturuhr; sie misst den Abstand zum langjährigen Mittel 2005 bis 2019, weil die Phasen eines Konjunkturzyklus nur über mehrere Zyklen bestimmt werden können.</p>
   <p><b>Farben und Zeichen.</b> ▲ gestiegen, ▼ gesunken, ■ unverändert in der angezeigten Genauigkeit. Rot ist Warnsignalen vorbehalten: einem Anstieg, wo er ungünstig ist (Inflation, Arbeitslosigkeit, Insolvenzen), und Schwellenwerten. Blau, Violett und Grün unterscheiden nur Reihen und tragen keine Wertung.</p>
+  </details>
+  <details class="fold"><summary>Datenquellen und Lizenzen</summary>
+  <p>Alle Zahlen stammen aus offenen, amtlichen Quellen: Deutsche Bundesbank (saisonbereinigte Reihen von Statistischem Bundesamt und Bundesagentur für Arbeit), Eurostat (Volkswirtschaftliche Gesamtrechnungen, Verbraucherpreise, EU-Unternehmens- und Verbraucherumfragen) und Statistik der Bundesagentur für Arbeit. Prognosen stammen aus den verlinkten Veröffentlichungen. Die Texte sind eigene Erläuterungen und keine amtliche Bewertung.</p>
   <p><b>Lizenz.</b> Texte und eigene Abbildungen stehen unter <a href="https://creativecommons.org/licenses/by/4.0/deed.de" rel="license">CC BY 4.0</a>; Namensnennung: Wolf-Fabian Hungerland, Konjunkturmonitor. Die Daten unterliegen den Lizenzen der Quellen, die bei jeder Abbildung stehen.</p>
-  <h3 id="fehlt">Was fehlt und warum</h3>
+  </details>
+  <details class="fold" id="fehlt"><summary>Warum fehlen bekannte Indikatoren (ifo, ZEW und andere)?</summary>
+  
   <p>Der Monitor zeigt nur Daten, die frei abrufbar sind und weiterverbreitet werden dürfen. Einige verbreitete Indikatoren fehlen deshalb:</p>
   <ul class="missing">
     <li><b>Lizenz erforderlich:</b> ifo-Geschäftsklima und ifo-Exporterwartungen (<a href="https://www.ifo.de/">ifo Institut</a>), ZEW-Konjunkturerwartungen (<a href="https://www.zew.de/">ZEW</a>), Einkaufsmanagerindizes (<a href="https://www.pmi.spglobal.com/">S&amp;P Global</a>), GfK-Konsumklima (<a href="https://www.nim.org/">NIM</a>), HDE-Konsumbarometer (<a href="https://einzelhandel.de/">HDE</a>), IAB-Arbeitsmarktbarometer (<a href="https://iab.de/">IAB</a>), IWH-Insolvenztrend (<a href="https://www.iwh-halle.de/">IWH</a>), Terminpreise für Strom und Gas (<a href="https://www.eex.com/">EEX</a>), Containerumschlag-Index (<a href="https://www.rwi-essen.de/">RWI/ISL</a>). Die Stimmung der Unternehmen und Verbraucher bilden stattdessen die frei verfügbaren Umfragen der EU-Kommission ab.</li>
     <li><b>Keine abrufbare Zeitreihe:</b> Unterbeschäftigung der Bundesagentur für Arbeit (nur in Monatsberichten), Finanzlage und Beitragssätze der Sozialversicherung (Projektionen der Träger), Investitionshemmnisse aus Unternehmensumfragen, Zerlegung des Produktionspotenzials in Arbeit, Kapital und Produktivität (in AMECO nicht als Reihe abrufbar), Beiträge der Branchen zum Auftragseingang (Gewichte nicht veröffentlicht).</li>
   </ul>
+  </details>
   <p id="deck"></p>
   <p id="reuse"></p>
   <p id="cite"></p>
@@ -649,11 +659,11 @@ function card(c, no) {
   else src = esc(src);
   el.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}</div>`);
   const f = c.files || {}, acts = [];
-  if (f.xlsx) acts.push(`<a href="${f.xlsx}" download>Excel</a>`);
-  if (f.pptx) acts.push(`<a href="${f.pptx}" download>PowerPoint</a>`);
-  if (c.type !== "heat" && c.type !== "calendar") acts.push(`<button type="button" class="png">PNG</button>`);
-  if (f.csv) acts.push(`<a href="${f.csv}" download>CSV</a>`);
-  el.insertAdjacentHTML("beforeend", `<div class="acts" aria-label="Herunterladen">Herunterladen: ${acts.join(" · ")}</div>`);
+  if (f.xlsx) acts.push(`<a href="${f.xlsx}" download title="Excel mit Daten und Diagramm">▦ XLSX</a>`);
+  if (f.pptx) acts.push(`<a href="${f.pptx}" download title="PowerPoint-Folie">▭ PPTX</a>`);
+  if (c.type !== "heat" && c.type !== "calendar") acts.push(`<button type="button" class="png" title="Bild">▨ PNG</button>`);
+  if (f.csv) acts.push(`<a href="${f.csv}" download title="Daten als CSV">▤ CSV</a>`);
+  el.insertAdjacentHTML("beforeend", `<div class="acts" aria-label="Herunterladen">${acts.join(" | ")}</div>`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
   ch._c = c;
   return el;
@@ -687,16 +697,19 @@ function startTable(box) {
     const lo = Math.min(...y), hi = Math.max(...y);
     const X = v => p + (v - x[0]) / (x[x.length - 1] - x[0] || 1) * (w - 2 * p), Y = v => h - p - (v - lo) / (hi - lo || 1) * (h - 2 * p);
     const path = y.map((v, i) => `${i ? "L" : "M"}${X(x[i]).toFixed(1)},${Y(v).toFixed(1)}`).join("");
-    return `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><path d="${path}" fill="none" stroke="#002060" stroke-width="1.2"/><circle cx="${X(x[x.length - 1]).toFixed(1)}" cy="${Y(y[y.length - 1]).toFixed(1)}" r="2.2" fill="#002060"/></svg>`; };
-  const ch = (v, r) => v == null ? "" : (v > 0 ? "+" : "") + fmt(Math.abs(v) < 0.5 * 10 ** -(r.change_decimals ?? 1) ? 0 : v, r.change_decimals ?? 1) + "\u202f" + esc(r.change_unit);
-  const head = `<thead><tr><th class="l">Kennzahl</th><th>Stand</th><th>Wert</th><th class="l">Einheit</th><th>ggü. Vor&shy;periode</th><th>ggü. Vorjahr</th><th>Drei&shy;monats&shy;vergleich</th><th class="l">Verlauf fünf Jahre</th><th>Ten&shy;denz</th></tr></thead>`;
+    const iHi = y.indexOf(hi), iLo = y.indexOf(lo), dot = (i, col, rr) => `<circle cx="${X(x[i]).toFixed(1)}" cy="${Y(y[i]).toFixed(1)}" r="${rr}" fill="${col}"/>`;
+    const zero = lo < 0 && hi > 0 ? `<line x1="${p}" x2="${w - p}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="#b0b0b0" stroke-width="0.6"/>` : "";
+    return `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true">${zero}<path d="${path}" fill="none" stroke="#002060" stroke-width="1.1"/>${dot(iHi, "#0070C0", 1.8)}${dot(iLo, "#00B0F0", 1.8)}${dot(y.length - 1, "#000", 2.2)}</svg>`; };
+  const ch = (v, r) => { if (v == null) return ""; const z = Math.abs(v) < 0.5 * 10 ** -(r.change_decimals ?? 1) ? 0 : v; return (z > 0 ? "+" : "") + fmt(z, r.change_decimals ?? 1) + `<small class="cu">\u202f${esc(r.change_unit)}</small>`; };
+  const pshort = r => { const y = r.date.slice(0, 4), m = +r.date.slice(5, 7); return r.freq === "Q" ? `Q${Math.floor((m - 1) / 3) + 1} ${y}` : `${MONTHS[m - 1]} ${y}`; };
+  const head = `<thead><tr><th class="l">Kennzahl</th><th>Stand</th><th>Wert</th><th>Δ Vor&shy;periode</th><th>Δ Vorjahr</th><th>Δ 3 Monate</th><th class="l">Verlauf fünf Jahre</th><th>Ten&shy;denz</th></tr></thead>`;
   let grp = null, older = false, html = `<table class="stable">${head}<tbody>`;
   const rowHtml = r => {
-    if (r.group !== grp) { grp = r.group; html += `<tr class="grp"><td colspan="9"><a href="#${r.topic}">${esc(grp)}</a></td></tr>`; }
+    if (r.group !== grp) { grp = r.group; html += `<tr class="grp"><td colspan="8"><a href="#${r.topic}">${esc(grp)}</a></td></tr>`; }
     const d = r.decimals ?? 1; older = older || r.older;
-    const cmp = `<span>${esc(r.period)}${r.older ? "¹" : ""}</span>` + [[r.prev_label, r.prev], ["Vorjahr", r.yoy], ["3 Monate", r.m3]].filter(x => x[1] != null).map(x => `<span>${x[0]} ${ch(x[1], r)}</span>`).join("");
-    html += `<tr class="row" data-href="#${r.topic}"><td class="k"><a href="#${r.topic}">${esc(r.label)}</a></td><td class="p${r.older ? " old" : ""}">${esc(r.period)}${r.older ? "¹" : ""}</td><td class="v">${fmt(r.value, d)}${r.revised ? `<sup class="rev" title="revidiert; zuerst veröffentlicht: ${fmt(r.revised.from, d)} (Stand ${r.revised.stand})">r</sup>` : ""}</td>`
-      + `<td class="u">${esc(r.unit)}<span class="mob"></span></td><td class="d">${ch(r.prev, r)}</td><td class="d">${ch(r.yoy, r)}</td><td class="d">${ch(r.m3, r)}</td>`
+    const cmp = `<span>${pshort(r)}${r.older ? "¹" : ""}</span>` + [[r.prev_label, r.prev], ["Vorjahr", r.yoy], ["3 Monate", r.m3]].filter(x => x[1] != null).map(x => `<span>${x[0]} ${ch(x[1], r)}</span>`).join("");
+    html += `<tr class="row" data-href="#${r.topic}"><td class="k"><a href="#${r.topic}">${esc(r.label)}</a><span class="ku">${esc(r.unit)}</span></td><td class="p${r.older ? " old" : ""}" title="${esc(r.period)}">${pshort(r)}${r.older ? "¹" : ""}</td><td class="v">${fmt(r.value, d)}${r.revised ? `<sup class="rev" title="revidiert; zuerst veröffentlicht: ${fmt(r.revised.from, d)} (Stand ${r.revised.stand})">r</sup>` : ""}</td>`
+      + `<td class="d">${ch(r.prev, r)}</td><td class="d">${ch(r.yoy, r)}</td><td class="d">${ch(r.m3, r)}</td>`
       + `<td class="s">${sp(r)}</td><td class="t">${tendHtml(r.tendency, r.up_bad)}</td><td class="cmp">${cmp}${r.older ? "<span>älterer Stand</span>" : ""}</td></tr>`;
   };
   rows.filter(r => !r.more).forEach(rowHtml);
@@ -704,11 +717,11 @@ function startTable(box) {
   const more = rows.filter(r => r.more);
   if (more.length) { grp = null; html += `<details class="moretable"><summary>Weitere Kennzahlen (${more.length}): ${more.map(r => esc(r.label.split(" (")[0])).join(", ")}</summary><table class="stable">${head}<tbody>`; more.forEach(rowHtml); html += "</tbody></table></details>"; }
   box.innerHTML = html
-    + `<p class="tnote">Vorperiode und Dreimonatsvergleich saison- und kalenderbereinigt, soweit die Quelle bereinigte Werte bietet; Vorjahresvergleich aus saison- und kalenderbereinigten Werten; bei Preisen, Insolvenzen und beim BIP nach Ursprungswerten, wie in den Meldungen der Statistikämter. `
+    + `<details class="fold"><summary>Lesehilfe zur Tabelle</summary><p class="tnote">Vorperiode und Dreimonatsvergleich saison- und kalenderbereinigt, soweit die Quelle bereinigte Werte bietet; Vorjahresvergleich aus saison- und kalenderbereinigten Werten; bei Preisen, Insolvenzen und beim BIP nach Ursprungswerten, wie in den Meldungen der Statistikämter. `
     + `Bei Raten und Salden ist die Veränderung eine Differenz in Prozentpunkten (Pp) oder Punkten (Pkt.), sonst eine Veränderung in Prozent. Dreimonatsvergleich: die letzten drei Monate gegenüber den drei Monaten davor. `
     + `Tendenz zur Vorperiode: <span class="up-ok">▲</span> gestiegen, <span class="down">▼</span> gesunken, <span class="flat">■</span> unverändert; <span class="up-bad">▲</span> rot, wo ein Anstieg ungünstig ist (Preise, Arbeitslosigkeit, Insolvenzen).`
     + `${older ? " ¹ Älterer Stand: Die Quelle meldet diese Zahl später als die übrigen Monatswerte." : ""}`
-    + `${rows.some(r => r.revised) ? " r Revidiert: Die Quelle hat den Wert für diesen Zeitraum seit der ersten Veröffentlichung geändert; der erste Wert steht im Tooltip und im Archiv." : ""}</p>`;
+    + `${rows.some(r => r.revised) ? " r Revidiert: Die Quelle hat den Wert für diesen Zeitraum seit der ersten Veröffentlichung geändert; der erste Wert steht im Tooltip und im Archiv." : ""}</p></details>`;
   box.querySelectorAll("tr.row").forEach(tr => tr.addEventListener("click", e => { if (e.target.closest("a")) return; location.hash = tr.dataset.href; }));
   return true;
 }
