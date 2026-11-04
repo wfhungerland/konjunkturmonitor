@@ -28,7 +28,7 @@ names:
     P51G: Investitionen
     P52_P53: Lager
     P6: Exporte
-    P7: Importe (negativ gerechnet)
+    P7: Importe
   wz:
     "10": "Nahrungs- und Futtermittel"
     "11": "Getränke"
@@ -438,7 +438,7 @@ series:
     frequency: M
     adjustment: saison- und kalenderbereinigt
     chart: sahm
-    label: Signal
+    label: Rezessionssignal
 
   - id: de_employment
     block: arbeit
@@ -863,7 +863,7 @@ series:
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     chart: cpi_core
-    label: "Kernrate (VPI ohne Energie und Nahrungsmittel)"
+    label: "Kernrate"
 
   - id: de_vpi_yoy_cmp
     block: preise
@@ -885,7 +885,7 @@ series:
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi_core
-    label: "HVPI (europäische Messung)"
+    label: "HVPI"
 
   - id: de_defl_gdp
     block: preise
@@ -1206,7 +1206,7 @@ series:
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     chart: employment_m
-    label: "Sozialversicherungspflichtig Beschäftigte"
+    label: "SV-Beschäftigte"
 
   - id: de_ca
     block: export
@@ -1230,7 +1230,7 @@ series:
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     chart: trade
-    label: "Saldo (Exporte minus Importe)"
+    label: "Handelssaldo"
 
   - id: de_export_prices
     block: export
@@ -1270,7 +1270,7 @@ series:
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     chart: trade_prices
-    label: "Terms of Trade (Ausfuhr- zu Einfuhrpreisen)"
+    label: "Terms of Trade"
 
   - id: de_capacity
     block: stimmung
@@ -1486,7 +1486,7 @@ series:
     frequency: M
     adjustment: nicht bereinigt
     chart: pipeline_core
-    label: "Landwirtschaftliche Erzeugerpreise"
+    label: "Agrarpreise"
 
   - id: de_pexp_ind
     block: preise
@@ -1873,7 +1873,7 @@ series:
     frequency: M
     adjustment: nicht bereinigt
     chart: sv_yoy
-    label: "Produzierendes Gewerbe (sekundärer Sektor)"
+    label: "Produzierendes Gewerbe"
 
   - id: de_sv_dl
     block: arbeit
@@ -1915,7 +1915,7 @@ series:
     frequency: M
     adjustment: nicht bereinigt
     chart: sv_yoy
-    label: "Leiharbeit (Arbeitnehmerüberlassung)"
+    label: "Leiharbeit"
 
   - id: de_orders_wz
     expand: {wz: ["20", "21", "24", "25", "26", "27", "28", "29", "30"]}
@@ -1952,7 +1952,7 @@ series:
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     start: "2015-01-01"
     chart: services
-    label: "Freiberufliche und technische Dienste"
+    label: "Freiberufler, Technik"
 
   - id: de_services_n
     block: dienstleistungen

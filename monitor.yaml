@@ -136,7 +136,7 @@ topics:
   - id: wachstum
     title: Wachstum
     charts:
-      - {chart: gdp_contrib, ask: "Welche Nachfrage trägt das Wachstum?", type: stacked, total: de_gdp_qoq, years: 4, caption: "Balken: Beiträge der Verwendungskomponenten zum Wachstum in Prozentpunkten. Linie: Wachstum insgesamt. Importe gehen mit negativem Vorzeichen ein, da sie im Ausland erzeugt werden."}
+      - {chart: gdp_contrib, ask: "Welche Nachfrage trägt das Wachstum?", type: stacked, total: de_gdp_qoq, years: 3, keep_years: true, caption: "Balken: Beiträge der Verwendungskomponenten zum Wachstum in Prozentpunkten. Linie: Wachstum insgesamt. Importe gehen mit negativem Vorzeichen ein, da sie im Ausland erzeugt werden."}
       - {chart: wai, ask: "Was zeigen die Wochendaten zur Wirtschaftsleistung?", years: 3, ref: 0, caption: "Der Aktivitätsindex der Bundesbank schätzt aus wöchentlichen Daten (etwa Lkw-Maut, Stromverbrauch, Suchanfragen), wie stark die Wirtschaftsleistung in den letzten 13 Wochen gegenüber den 13 Wochen davor gewachsen ist. Er liegt früher vor als das BIP, ist aber eine Schätzung."}
       - {chart: maut, ask: "Wie viel fahren die Lkw auf den Autobahnen?", years: 6, ma3: true, caption: "Fahrleistung mautpflichtiger Lkw ab vier Achsen auf Autobahnen, ermittelt aus den Mautdaten. Der Index liegt wenige Tage nach Monatsende vor und folgt eng der Industrieproduktion, weil diese Lkw vor allem Vorleistungen und Waren transportieren. Gleitendes Dreimonatsmittel."}
       - {chart: gdp_level, ask: "Wo steht die Wirtschaftsleistung im längeren Vergleich?", years: 12, caption: "Wirtschaftsleistung, preisbereinigt, 2020 = 100. Der Einbruch 2020 geht auf die Corona-Pandemie zurück."}

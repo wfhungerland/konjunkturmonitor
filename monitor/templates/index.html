@@ -362,13 +362,15 @@ function timeChart(el, c) {
   }
   const card0 = el.closest(".card"), uEl = card0 && card0.querySelector(".unit");
   const tickW0 = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;  // Einheit rechtsbündig über den Achsenzahlen
-  if (uEl && uEl.textContent) { annotations.push({ xref: "paper", yref: "paper", x: 1, y: 1, xanchor: "right", yanchor: "bottom", xshift: tickW0, yshift: 6, showarrow: false, align: "right",
+  const legendShown = !direct && traces.filter(tr => tr.showlegend !== false).length > 1;  // mit Legende bleibt die Einheit über der Grafik
+  if (uEl && uEl.textContent && !legendShown) { annotations.push({ xref: "paper", yref: "paper", x: 1, y: 1, xanchor: "right", yanchor: "bottom", xshift: tickW0, yshift: 6, showarrow: false, align: "right",
     text: esc(uEl.textContent), font: { family: HS.font, size: 12, color: "#3f4752" } }); uEl.style.display = "none"; }
   const L = baseLayout(el);
   L.margin = Object.assign({}, L.margin, { r: Math.max(rMargin, tickW0), t: Math.max(L.margin.t, 34) });
+  const xa2 = xAxis(r[0], r[1], Math.max(120, (el.clientWidth || 500) - Math.max(rMargin, tickW0) - 10));  // Jahreszahlen nach der tatsächlichen Zeichenbreite
   const nb = el.parentNode && el.parentNode.querySelector(".notebox"); if (nb) nb.style.marginRight = (rMargin + 6) + "px";  // Kasten oben rechts über der Zeichenfläche
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
-    xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
+    xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa2.tickvals, ticktext: xa2.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
     yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
   Plotly.newPlot(el, traces, L, CFG);
 }
@@ -632,6 +634,7 @@ async function pngDownload(el, ch, c, no, sub, unit) {
   const a = document.createElement("a"); a.download = `abb${String(no).padStart(2, "0")}_${c.chart}.png`; a.href = cv.toDataURL("image/png"); a.click();
 }
 
+const sidsOf = c => Array.isArray(c.series) ? c.series.map(s => s.id) : c.series ? [c.series] : [];
 // Satz zur Abbildung samt nächstem Termin; html: mit Link zum Kalender
 function chartSentence(c, html) {
   let s = html ? esc(c.text || "") : (c.text || "");
@@ -768,11 +771,12 @@ function build() {
     const q = t.question;
     if (!q && !t.charts.length) return;
     sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))} <a class="totop" href="#top" title="Zur Übersicht">↑ Übersicht</a></h2>`
-      + (q || t.charts[0] ? `<div class="intro"><p class="answer">${esc(q ? [q.answer.head, ...q.answer.more].join(" ") : "")} ${t.charts[0] ? chartSentence(t.charts[0], true) : ""} <button type="button" class="copy" title="Absatz mit Quellenangabe kopieren">Kopieren</button></p>`
+      + (q || t.charts[0] ? `<div class="intro"><p class="answer">${esc(q ? [q.answer.head, ...q.answer.more].join(" ") : "")} ${t.charts[0] ? chartSentence(q && sidsOf(t.charts[0]).includes(q.series) ? Object.assign({}, t.charts[0], { text: "" }) : t.charts[0], true) : ""} <button type="button" class="copy" title="Absatz mit Quellenangabe kopieren">Kopieren</button></p>`
         + (q ? `<div class="explain"><span class="ico" aria-label="Erläuterung" role="img">❓</span>${esc(q.explain)}</div>` : "") + `</div>` : "");
     if (t.charts[0]) t.charts[0]._lead = true;
     // Kopieren: Antwort und die Sätze aller Abbildungen des Abschnitts als ein zusammenhängender Text
-    const allText = () => [q ? [q.answer.head, ...q.answer.more].join(" ") : "", ...t.charts.map((x, i) => { const s = chartSentence(x, false); return s ? (i ? `${x.ask ? x.ask + " " : ""}${s} (Abb. ${x.no})` : `${s} (Abb. ${x.no})`) : ""; })].filter(Boolean).join(" ");
+    const dup = x => q && sidsOf(x).includes(q.series);  // Leitgrafik wiederholt die Antwort
+    const allText = () => [q ? [q.answer.head, ...q.answer.more].join(" ") : "", ...t.charts.map((x, i) => { const s = chartSentence(!i && dup(x) ? Object.assign({}, x, { text: "" }) : x, false); return s ? (i ? `${x.ask ? x.ask + " " : ""}${s} (Abb. ${x.no})` : `${s} (Abb. ${x.no})`) : ""; })].filter(Boolean).join(" ");
     const cpb = sec.querySelector(".answer button.copy");
     if (cpb) { cpb.textContent = "Abschnitt kopieren"; cpb.title = "Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren"; cpb.onclick = () => copyText(allText(), cpb, t.title); }
     else if (t.charts.some(x => x.text)) { sec.insertAdjacentHTML("beforeend", `<p class="answer"><button type="button" class="copy">Abschnitt kopieren</button></p>`); const b2 = sec.querySelector(".answer button.copy"); b2.onclick = () => copyText(allText(), b2, t.title); }
