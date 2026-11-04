@@ -368,7 +368,7 @@ def _last_x(c: dict) -> str | None:
     """Jüngster Zeitpunkt mit Wert in einer Abbildung."""
     if c.get("type") == "seasonal":
         return max((x for x, y in zip(c["x"], c["y"]) if y is not None), default=None)
-    if c.get("type") == "heat":
+    if c.get("type") in ("heat", "heatbars"):
         return c["heat"]["cols"][-1]
     if c.get("type") == "clock":
         return c["clock"]["t"][-1]
@@ -430,16 +430,21 @@ def chart_sentences(c: dict) -> list[str]:
             low = rows[0]
             out.append(f"{w['span']}: Am {'stärksten gesunken' if low['change'] < 0 else 'wenigsten gestiegen'} ist die {what} in {low['name']} mit {num(low['change'], 1, True)} %.")
             return out
+        if typ == "heatbars":
+            rows = c["heat"]["rows"]
+            per = _per(c["heat"]["cols"][-1], "M")
+            lv = sorted([r for r in rows if r.get("level") is not None], key=lambda r: r["level"])
+            if not lv:
+                return []
+            below = sum(1 for r in lv if r["level"] < 0)
+            return [f"Im {per} lagen {below} von {len(lv)} Branchen unter ihrem Durchschnitt des Jahres 2019, dem letzten vollen Jahr vor der Pandemie.",
+                    f"Am weitesten über dem Stand von 2019 lag im {per} die Branche „{lv[-1]['label']}“ ({num(lv[-1]['level'], 1, True)} %), am weitesten darunter „{lv[0]['label']}“ ({num(lv[0]['level'], 1, True)} %)."]
         if typ == "heat":
             rows = c["heat"]["rows"]
             last = c["heat"]["cols"][-1]
             per = _per(last, "M")
             out = [f"In den drei Monaten bis {per} wuchs die Branche „{rows[-1]['label']}“ am stärksten: {num(rows[-1]['m3'], 1, True)} % ggü. den drei Monaten davor.",
                    f"In den drei Monaten bis {per} entwickelte sich die Branche „{rows[0]['label']}“ am schwächsten: {num(rows[0]['m3'], 1, True)} % ggü. den drei Monaten davor."]
-            lv = [r for r in rows if r.get("level") is not None]
-            if lv:
-                below = sum(1 for r in lv if r["level"] < 0)
-                out.append(f"Im {per} lagen {below} von {len(lv)} Branchen unter ihrem Durchschnitt des Jahres 2019, dem letzten vollen Jahr vor der Pandemie.")
             return out
         if typ == "clock":
             k = c["clock"]
@@ -746,6 +751,13 @@ def build_payload(root: Path = ROOT) -> dict:
                     entry["recessions"] = pd.read_csv(rec).to_dict("records")
                     entry["recessions_on"] = typ == "threshold"
             charts.append(entry)
+            if typ == "heat":  # Balken zur Wärmetabelle als eigene Abbildung
+                what = "Auftragseingang" if "order" in c["chart"] else "Produktion"
+                charts.append(dict(entry, chart=c["chart"] + "_bars", type="heatbars", ask=c.get("bars_ask") or f"Welche Branchen haben bei {'den Aufträgen' if 'order' in c['chart'] else 'der Produktion'} zugelegt, welche liegen unter 2019?",
+                                   title=f"{what} nach Branchen: Dreimonatsvergleich und Niveau ggü. 2019", unit="%",
+                                   caption=f"{what} je Branche als Balken, umschaltbar. Dreimonatsvergleich: letzte drei Monate ggü. den drei Monaten davor, saisonbereinigt. "
+                                           "Niveau ggü. 2019: jüngster Monat ggü. dem Durchschnitt 2019, dem letzten vollen Jahr vor der Pandemie und vor dem Energiepreisschock 2022; "
+                                           "der Vergleich zeigt, welche Branchen ihr Vorkrisenniveau wieder erreicht haben. Orange: Zunahme, blau: Abnahme."))
         q = next((x for x in questions if x.get("topic") == t["id"]), None)
         topics.append(dict(t, charts=charts, question=q))
     notes = _notes(root)

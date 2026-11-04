@@ -137,11 +137,11 @@
   .multiples .mt span.mtsub { color: var(--muted); }
   .heat { overflow-x: auto; }
   .card.wide { grid-column: 1 / -1; }
-  .heat table { border-collapse: collapse; font: 12.5px/1.2 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; width: 100%; }
+  .heat table { border-collapse: separate; border-spacing: 2px 3px; font: 12.5px/1.2 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; width: 100%; }
   .heat th { font-weight: normal; color: var(--muted); padding: 2px 3px; text-align: center; white-space: nowrap; }
-  .heat td { padding: 2px 3px; text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .heat td { padding: 3px 5px; text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .heat td.l { text-align: left; padding-right: 8px; }
-  .heat td.k { border-left: 1px solid #ccc; }
+  .heat td.k { border-left: 0; padding-left: 14px; }
   .cal { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
   .calm h4 { margin: 4px 0 4px; font-size: 15px; }
   .calm table { width: 100%; border-collapse: collapse; table-layout: fixed; font: 12px/1.25 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
@@ -219,9 +219,11 @@
   .cside .capbox b, .cside .notebox b { display: block; margin-bottom: 2px; }
   .cside .notebox[hidden] { display: none; }
   .cside .btn { align-self: flex-start; }
-  .tlist { list-style: none; padding: 0; margin: 10px auto 4px; max-width: 540px; columns: 2; column-gap: 32px; font-size: 13.5px; }
+  .tilebox { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 36px; }
+  .tilebox > svg { flex: 0 1 400px; margin: 8px 0 0 !important; }
+  .tside { flex: 0 1 260px; } .tside .tlegend { justify-content: flex-start; margin-bottom: 6px; }
+  .tlist { list-style: none; padding: 0; margin: 4px 0; columns: 1; font-size: 13.5px; }
   .tlist li { display: flex; justify-content: space-between; gap: 8px; break-inside: avoid; white-space: nowrap; }
-  @media (max-width: 480px) { .tlist { columns: 1; max-width: 300px; } }
   @media print {
     header, nav, .fab, .totop, details.dl, .rawtoggle, .btn, button.copy, button.copy1, .seg, .navmore { display: none !important; }
     body { background: #fff; font-size: 11pt; }
@@ -482,7 +484,12 @@ function heatChart(el, c) {
   H.rows.slice().reverse().forEach(r => { html += `<tr><td class="l">${esc(r.label)}</td>${H.cols.map(d => cell(r.values[d])).join("")}`
     + `<td class="k">${sg(r.m3)}</td><td class="k">${r.level == null ? "" : sg(r.level)}</td></tr>`; });
   el.innerHTML = `<div class="heat">${html}</tbody></table></div>`;
-  // Balken: Dreimonatsvergleich oder Niveau ggü. 2019, umschaltbar
+}
+
+// Balken zur Wärmetabelle: Dreimonatsvergleich oder Niveau ggü. 2019, umschaltbar
+function heatbarsChart(el, c) {
+  el.innerHTML = "";
+  const H = c.heat, m = 15, sg = v => (v > 0 ? "+" : "") + fmt(v, 1);
   const last = H.cols[H.cols.length - 1], per = perLong(last, "M");
   const views = [{ key: "m3", label: "Dreimonatsvergleich", note: `Letzte drei Monate bis ${per} ggü. den drei Monaten davor, in %.` },
     { key: "level", label: "ggü. 2019", note: `Niveau im ${per} ggü. dem Durchschnitt 2019, in %. 2019 ist das letzte volle Jahr vor der Pandemie und vor dem Energiepreisschock 2022; der Vergleich zeigt, welche Branchen ihr Vorkrisenniveau wieder erreicht haben.` }];
@@ -656,7 +663,7 @@ function tilesChart(el, c) {
   const sets = [c.tiles, c.tiles6].filter(Boolean);
   const box = document.createElement("div"); el.appendChild(box);
   const draw = w => {
-    box.innerHTML = ""; el._w = w;
+    box.innerHTML = ""; el._w = w; box.className = "tilebox";
     const m = Math.max(10, ...w.rows.map(r => Math.abs(r.change)));
     if (DATA.geo) box.appendChild(geoSvg(w, m));
     else {
@@ -667,12 +674,13 @@ function tilesChart(el, c) {
       box.appendChild(grid);
     }
     const lo = tileColor(-m, m), hi = tileColor(m, m);
-    box.insertAdjacentHTML("beforeend", `<ol class="tlist">${w.rows.slice().sort((p, q) => q.change - p.change).map(r => `<li><span>${esc(r.name)}</span><span style="color:${r.change >= 0 ? "#B45309" : "#0070C0"}">${pct0(r.change)}</span></li>`).join("")}</ol>`);
-    box.insertAdjacentHTML("beforeend", `<div class="tlegend"><span><i style="background:${lo.bg}"></i>Abnahme</span><span><i style="background:#fff;border:1px solid #ccc"></i>unverändert</span><span><i style="background:${hi.bg}"></i>Zunahme</span></div>`);
+    const leg = document.createElement("div"); leg.className = "tside"; box.appendChild(leg);
+    leg.insertAdjacentHTML("beforeend", `<div class="tlegend"><span><i style="background:${tileColor(-m, m).bg}"></i>Abnahme</span><span><i style="background:#fff;border:1px solid #ccc"></i>unverändert</span><span><i style="background:${tileColor(m, m).bg}"></i>Zunahme</span></div>`);
+    leg.insertAdjacentHTML("beforeend", `<ol class="tlist">${w.rows.slice().sort((p, q) => q.change - p.change).map(r => `<li><span>${esc(r.name)}</span><span style="color:${r.change >= 0 ? "#B45309" : "#0070C0"}">${pct0(r.change)}</span></li>`).join("")}</ol>`);
     const card = el.closest(".card");
     if (card) {
       card.querySelector(".sub").textContent = "Summe " + w.span;
-      card.querySelector(".unit").textContent = `Veränderung gegenüber denselben ${w.months} Monaten ein Jahr zuvor, %`;
+      card.querySelector(".unit").textContent = `Veränderung ggü. denselben ${w.months} Monaten ein Jahr zuvor, %`;
     }
   };
   if (sets.length > 1) {
@@ -763,7 +771,7 @@ function card(c, no) {
   const main = document.createElement("div"); main.className = "cmain"; body.appendChild(main);
   main.insertAdjacentHTML("beforeend", `<div class="unit">${esc(unit)}</div>`);
   const box = document.createElement("div"); box.className = "chartbox"; main.appendChild(box);
-  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
+  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
   const side = document.createElement("aside"); side.className = "cside"; body.appendChild(side);
   const capx = (c.caption || "") + ((c.notes || []).length ? " Über „Ausschläge und Sondereffekte“ erscheinen nummerierte, gepunktete Linien an den betroffenen Monaten." : "");
@@ -804,7 +812,7 @@ function card(c, no) {
   const f = c.files || {}, acts = [], u = x => encodeURI(x);
   if (f.xlsx) acts.push(`<a href="${u(f.xlsx)}" download>XLSX</a>`);
   if (f.pptx) acts.push(`<a href="${u(f.pptx)}" download>PPTX</a>`);
-  if (c.type !== "heat" && c.type !== "calendar") acts.push(`<button type="button" class="png">PNG</button>`);
+  if (!["heat", "heatbars", "calendar"].includes(c.type)) acts.push(`<button type="button" class="png">PNG</button>`);
   if (f.csv) acts.push(`<a href="${u(f.csv)}" download>CSV</a>`);
   tools.insertAdjacentHTML("beforeend", `<details class="dl"><summary title="Herunterladen">⤓ Download</summary><div class="dlmenu">${acts.join("")}</div></details>`);
   ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `Abb. ${no} ${c.title || ""}. ${c.text || ""}`);
@@ -829,6 +837,7 @@ function render(ch) {
   if (c.type === "clock") clockChart(ch, c); else if (c.type === "forecast") forecastChart(ch, c);
   else if (c.type === "latest") latestChart(ch, c);
   else if (c.type === "heat") heatChart(ch, c);
+  else if (c.type === "heatbars") heatbarsChart(ch, c);
   else if (c.type === "calendar") calendarChart(ch, c);
   else if (c.type === "seasonal") seasonalChart(ch, c); else if (c.type === "tiles") tilesChart(ch, c);
   else if (c.multiples && (DATA.layout || {}).small_multiples && c.series && c.series.length > 2) multiplesChart(ch, c);
