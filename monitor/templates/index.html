@@ -574,8 +574,9 @@ function forecastChart(el, c) {
   const L = baseLayout(el);
   Object.assign(L, { margin: { l: 6, r: 6, t: 30, b: 28 }, hovermode: "x unified", showlegend: true,
     legend: { orientation: "h", x: 0, y: -0.12, yanchor: "top", font: { size: 12 }, title: { text: "Weitere Prognosen per Klick ein- und ausblenden:", side: "top", font: { size: 12 } } },
-    shapes: ya.zero ? [{ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } }] : [],
-    xaxis: { type: "category", showgrid: false, zeroline: false, fixedrange: true, ticks: "" },
+    shapes: xs.map((_, i) => i % 2 ? null : { type: "rect", xref: "x", yref: "paper", x0: i - 0.5, x1: i + 0.5, y0: 0, y1: 1, fillcolor: HS.band, line: { width: 0 }, layer: "below" }).filter(Boolean)
+      .concat(ya.zero ? [{ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } }] : []),
+    xaxis: { type: "category", range: [-0.5, xs.length - 0.5], showgrid: false, zeroline: false, fixedrange: true, ticks: "" },
     yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true, automargin: true } });
   el.style.aspectRatio = "auto"; el.style.height = (el.clientWidth < 600 ? 360 : 420) + "px";
   Plotly.newPlot(el, traces, L, CFG);
