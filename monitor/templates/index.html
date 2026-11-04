@@ -205,7 +205,7 @@
   .dlmenu { position: absolute; z-index: 4; background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 6px 10px; display: grid; gap: 4px; min-width: 90px; box-shadow: 0 4px 12px rgba(0,0,0,.08); font-size: 14px; }
   .dlmenu a, .dlmenu button { color: var(--accent); background: none; border: 0; padding: 0; font: inherit; text-align: left; cursor: pointer; }
   .tools { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: flex-start; margin-top: 6px; }
-  .btn, details.dl > summary { font: 13px/1.5 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); background: #fff; border: 1px solid #c9d3df; border-radius: 4px; padding: 1px 9px; cursor: pointer; }
+  .btn, a.btn, details.dl > summary { font: 13px/1.5 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); background: #fff; border: 1px solid #c9d3df; border-radius: 4px; padding: 1px 9px; cursor: pointer; }
   .btn[aria-pressed="true"] { background: #eef4fb; }
   .rawtoggle { margin: 0; }
   .card .ctext .sent, .answer .sent { display: inline; }
@@ -925,7 +925,7 @@ function build() {
   const d = new Date(DATA.generated_at); document.getElementById("stand").textContent = "Stand: " + d.toLocaleDateString("de-DE");
   const AS = DATA.all_series || {};
   document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${encodeURI(AS.xlsx)}" download>Excel</a> · <a href="${encodeURI(AS.csv)}" download>CSV</a>` : "",
-    `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
+    `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, DATA.page_docx ? `<a href="${encodeURI(DATA.page_docx)}" download>Ganze Seite als Word-Datei zum Bearbeiten</a>` : "", `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
   if (DATA.deck) document.getElementById("deck").innerHTML = `<a href="${encodeURI(DATA.deck)}" download>Alle Abbildungen als PowerPoint</a>`;
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const LY = DATA.layout || {};
@@ -987,6 +987,7 @@ function build() {
   ex.onclick = () => { const open = ex.textContent.startsWith("Alle Abbildungen aus"); document.querySelectorAll("details.morecharts").forEach(d => d.open = open);
     ex.textContent = open ? "Alle Abbildungen einklappen" : "Alle Abbildungen ausklappen"; };
   document.querySelector("header .bar").appendChild(ex);
+  if (DATA.page_docx) document.querySelector("header .bar").insertAdjacentHTML("beforeend", `<a class="btn" href="${encodeURI(DATA.page_docx)}" download title="Ganze Seite samt aufgeklappter Teile als Word-Datei, zum Bearbeiten mit Änderungsverfolgung">⤓ Word</a>`);
   document.body.insertAdjacentHTML("beforeend", `<a class="fab" href="#top" aria-label="Zur Übersicht">↑ Übersicht</a>`);
 }
 build();

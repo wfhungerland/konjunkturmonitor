@@ -838,6 +838,11 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
         fh.write(arch_name[:-4] + "\n")
         arch.to_csv(fh, sep=";", decimal=",", index=False)
     payload["archive_file"] = "dl/" + arch_name
+    from .worddoc import write_page_docx
+    payload["page_docx"] = write_page_docx(payload, out)
+    cache = root / ".cache"  # für die Bildschirmfotos der Abbildungen (monitor.shots), nicht im Repo
+    cache.mkdir(exist_ok=True)
+    (cache / "payload.json").write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     tpl = resources.files("monitor").joinpath("templates/index.html").read_text(encoding="utf-8")
     js = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     from html import escape
