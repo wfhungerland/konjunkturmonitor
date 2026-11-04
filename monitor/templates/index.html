@@ -178,7 +178,18 @@
   nav details.navmore { position: relative; }
   nav details.navmore > summary { cursor: pointer; color: var(--accent); list-style: none; } nav details.navmore > summary::after { content: " ▾"; }
   nav .navlist { position: absolute; right: 0; top: 1.6em; background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 8px 12px; display: grid; grid-template-columns: repeat(2, max-content); gap: 4px 18px; box-shadow: 0 4px 12px rgba(0,0,0,.08); z-index: 10; }
-  @media (max-width: 600px) { nav .navlist { left: auto; right: -8px; grid-template-columns: max-content; } }
+  .expandall .short { display: none; }
+  @media (max-width: 600px) {
+    /* Handy: Kopfzeile in zwei Zeilen, Themen als waagerecht wischbare Zeile */
+    .bar { padding: 6px 10px 4px; gap: 2px 6px; align-items: center; }
+    .bar h1 { font-size: 15px; } .bar .stand { font-size: 11px; } .bar .stand .sl { display: none; }
+    header .btn { font-size: 12px; padding: 0 5px; } .expandall { margin-left: auto; }
+    .expandall .long { display: none; } .expandall .short { display: inline; }
+    nav { order: 5; width: 100%; flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; scrollbar-width: none; padding-bottom: 2px; }
+    nav::-webkit-scrollbar { display: none; }
+    nav details.navmore { position: static; }
+    nav .navlist { position: fixed; top: 54px; right: 8px; left: auto; grid-template-columns: max-content; max-height: 70vh; overflow-y: auto; }
+  }
   .navpart { color: var(--muted); font-size: 13px; margin-left: 6px; }
   ul.missing { padding-left: 18px; } ul.missing li { margin-bottom: 6px; }
   .news { font: 14.5px/1.4 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); margin: 0 0 8px; max-width: 60em; }
@@ -922,7 +933,7 @@ function build() {
   const nw = document.getElementById("news");
   if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
   const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
-  const d = new Date(DATA.generated_at); document.getElementById("stand").textContent = "Stand: " + d.toLocaleDateString("de-DE");
+  const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `<span class="sl">Stand: </span>${d.toLocaleDateString("de-DE")}`;
   const AS = DATA.all_series || {};
   document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${encodeURI(AS.xlsx)}" download>Excel</a> · <a href="${encodeURI(AS.csv)}" download>CSV</a>` : "",
     `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
@@ -984,9 +995,10 @@ function build() {
   navMore.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen und Downloads</a>`);
   navMore.querySelectorAll("a").forEach(a => a.addEventListener("click", () => dd.open = false));
   nav.insertAdjacentHTML("afterbegin", `<a href="#top"><b>Übersicht</b></a>`);
-  const ex = document.createElement("button"); ex.type = "button"; ex.className = "btn expandall"; ex.textContent = "Alle Abbildungen ausklappen";
-  ex.onclick = () => { const open = ex.textContent.startsWith("Alle Abbildungen aus"); document.querySelectorAll("details.morecharts").forEach(d => d.open = open);
-    ex.textContent = open ? "Alle Abbildungen einklappen" : "Alle Abbildungen ausklappen"; };
+  const ex = document.createElement("button"); ex.type = "button"; ex.className = "btn expandall"; let opened = false;
+  const exLab = () => ex.innerHTML = `<span class="long">Alle Abbildungen ${opened ? "einklappen" : "ausklappen"}</span><span class="short">${opened ? "Einklappen" : "Ausklappen"}</span>`;
+  exLab(); ex.title = "Alle Abbildungen aus- oder einklappen";
+  ex.onclick = () => { opened = !opened; document.querySelectorAll("details.morecharts").forEach(d => d.open = opened); exLab(); };
   document.querySelector("header .bar").appendChild(ex);
   if (DATA.page_docx) document.querySelector("header .bar").insertAdjacentHTML("beforeend", `<a class="btn" href="${encodeURI(DATA.page_docx)}" download title="Ganze Seite samt aufgeklappter Teile als Word-Datei, zum Bearbeiten mit Änderungsverfolgung">⤓ Word</a>`);
   document.body.insertAdjacentHTML("beforeend", `<a class="fab" href="#top" aria-label="Zur Übersicht">↑ Übersicht</a>`);
