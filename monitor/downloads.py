@@ -137,7 +137,7 @@ def header_lines(c: dict) -> tuple[str, str]:
     elif typ == "tiles":
         sub = "Summe " + c["tiles"]["span"] if c.get("tiles") else ""
     else:
-        freq = {"Q": "Vierteljährlich", "A": "Jährlich", "D": "Wöchentlich"}.get(c.get("freq"), "Monatlich")
+        freq = {"Q": "Vierteljährlich", "A": "Jährlich", "D": "Wöchentlich", "B": "Täglich (Arbeitstage)"}.get(c.get("freq"), "Monatlich")
         sub = " · ".join(x for x in (freq, c.get("adjustment")) if x)
     unit = {"clock": "Saldo in Prozentpunkten, Abstand zum Mittel 2005 bis 2019", "forecast": "% gegenüber Vorjahr, BIP real",
             "tiles": "Veränderung gegenüber demselben Zeitraum ein Jahr zuvor, %"}.get(typ, ("Saldo in Prozentpunkten (Anteil positiver minus Anteil negativer Antworten)" + c["unit"][5:]) if (c.get("unit") or "").startswith("Saldo") else c.get("unit") or "")

@@ -305,8 +305,8 @@ const fmtU = (v, d, unit, bare) => { v = +v.toFixed(d); if (v === 0) v = 0; cons
 const unitLabel = u => (u || "").startsWith("Saldo") ? "Saldo in Pp (Anteil positiver minus Anteil negativer Antworten)" + u.slice(5).replace(/^ in Pp/, "") : (u || "");
 const MONTHS_L = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 // Zeitraum ausgeschrieben: „Oktober 2026“, „3. Quartal 2026“, „2025“, „Woche bis 4. November 2026“; perIn mit Präposition
-const perLong = (x, f) => f === "A" ? x.slice(0, 4) : f === "Q" ? `${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}. Quartal ${x.slice(0, 4)}` : f === "D" ? `Woche bis ${+x.slice(8, 10)}. ${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : `${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`;
-const perIn = (x, f) => (f === "A" ? "im Jahr " : f === "D" ? "in der " : "im ") + perLong(x, f);
+const perLong = (x, f) => f === "B" ? `${+x.slice(8, 10)}. ${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : f === "A" ? x.slice(0, 4) : f === "Q" ? `${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}. Quartal ${x.slice(0, 4)}` : f === "D" ? `Woche bis ${+x.slice(8, 10)}. ${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : `${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`;
+const perIn = (x, f) => (f === "A" ? "im Jahr " : f === "D" ? "in der " : f === "B" ? "am " : "im ") + perLong(x, f);
 // Kurzform des Zeitraums an der Endbeschriftung: 26q3, 26m09, 2025, 26w44
 const periodCode = (x, f) => f === "A" ? x.slice(0, 4) : f === "Q" ? `${x.slice(2, 4)}q${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}` : f === "D" ? `${x.slice(2, 4)}w${String(Math.ceil(((Date.parse(x) - Date.parse(x.slice(0, 4) + "-01-01")) / 864e5 + 1) / 7)).padStart(2, "0")}` : `${x.slice(2, 4)}m${x.slice(5, 7)}`;
 const perShort = (x, f) => f === "A" ? x.slice(0, 4) : f === "Q" ? `${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}. Q. ${x.slice(0, 4)}` : f === "D" ? `${+x.slice(8, 10)}. ${MONTHS[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : `${MONTHS[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`;
@@ -460,19 +460,21 @@ function timeChart(el, c) {
 function multiplesChart(el, c) {
   el.classList.add("multi");
   const all = c.series.flatMap(s => s.y.filter(v => v != null)).concat(c.ref != null ? [c.ref] : []);
-  const ya = yAxis(all, c.unit, []);
+  const ya0 = yAxis(all, c.unit, []);
   const xs = c.series.flatMap(s => s.x).sort(), r = pad(xs[0], xs[xs.length - 1], c.freq);
+  const nM = k => c.freq === "B" ? Math.round(k * 21) : k;  // Arbeitstage je Monat
   const cols = (el.clientWidth || 600) < 560 ? 1 : 2;  // alle Felder gleich breit; ein überzähliges Feld steht allein in der letzten Zeile
   const grid = document.createElement("div"); grid.className = "multiples"; grid.style.setProperty("--cols", cols); el.appendChild(grid);
   const avg = a => a.reduce((p, v) => p + v, 0) / a.length;
   c.series.forEach((s, k) => {
     const ok = s.y.map((v, i) => [v, s.x[i]]).filter(p => p[0] != null), last = ok.length ? ok[ok.length - 1] : null;
-    const vals = ok.map(p => p[0]), d = c.decimals, tend = tendOf(vals, d);
+    const vals = ok.map(p => p[0]), d = c.decimals, tend = tendOf(vals, d), un = c.own_scale ? s.unit : c.unit;
+    const ya = c.own_scale ? yAxis(s.y.filter(v => v != null), un, []) : ya0;
     const box = document.createElement("div");
-    const head = last ? ` ${fmtU(last[0], d, c.unit)} ${tendHtml(tend, isBad(c, s.id))} ${esc(perIn(last[1], c.freq))}<br><span class="mtsub">Mittel der letzten 3 Monate ${fmtU(avg(vals.slice(-3)), d, c.unit)}, der letzten 12 Monate ${fmtU(avg(vals.slice(-12)), d, c.unit)}</span>` : "";
+    const head = last ? ` ${fmtU(last[0], d, un)} ${tendHtml(tend, isBad(c, s.id))} ${esc(perIn(last[1], c.freq))}<br><span class="mtsub">Mittel der letzten 3 Monate ${fmtU(avg(vals.slice(-nM(3))), d, un)}, der letzten 12 Monate ${fmtU(avg(vals.slice(-nM(12))), d, un)}</span>` : "";
     box.innerHTML = `<p class="mt"><b>${esc(s.label)}</b>${head}</p>`;
     const m = document.createElement("div"); m.className = "mini"; box.appendChild(m); grid.appendChild(box);
-    const traces = c.series.filter(o => o !== s).map(o => ({ type: "scatter", mode: "lines", x: o.x, y: o.y, line: { color: "#d0d0d0", width: 1 }, hoverinfo: "skip" }));
+    const traces = c.own_scale ? [] : c.series.filter(o => o !== s).map(o => ({ type: "scatter", mode: "lines", x: o.x, y: o.y, line: { color: "#d0d0d0", width: 1 }, hoverinfo: "skip" }));
     traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, line: { color: PAL[0], width: 2 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
     const w = Math.max(160, (el.clientWidth || 600) / cols - 50), xa = xAxis(r[0], r[1], w), shapes = xa.shapes.filter(sh => sh.type === "rect");
     if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
@@ -767,7 +769,7 @@ function bindCopies(root, arr, what) { root.querySelectorAll("button.copy1").for
 function card(c, no) {
   const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = `abb-${no}`;
   const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
-    : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
+    : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? "Täglich (Arbeitstage)" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Pp, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% ggü. Vorjahr"
     : c.type === "tiles" ? "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
   const lead = c._lead;  // Leitgrafik: Frage und Satz stehen schon in der Antwort des Abschnitts

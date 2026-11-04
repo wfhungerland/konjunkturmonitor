@@ -53,7 +53,7 @@ def write_all_series(data: dict, meta: dict, root: Path, out: Path, stand: str, 
                                       "Blatt Verzeichnis: Metadaten je Reihe. Blätter Monat, Quartal, Jahr, Woche: Werte breit, eine Spalte je Reihe."]})
         info.to_excel(xw, sheet_name="Info", index=False)
         idx.to_excel(xw, sheet_name="Verzeichnis", index=False)
-        for freq, name in (("M", "Monat"), ("Q", "Quartal"), ("A", "Jahr"), ("D", "Woche")):
+        for freq, name in (("M", "Monat"), ("Q", "Quartal"), ("A", "Jahr"), ("D", "Tag und Woche")):
             ids = idx.loc[idx["Frequenz"] == freq, "Reihe"].tolist()
             if not ids:
                 continue
