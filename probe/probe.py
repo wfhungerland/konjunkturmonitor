@@ -10,7 +10,6 @@ AUTH = {"username": os.environ["GENESIS_USER"], "password": os.environ["GENESIS_
 
 def hdr(t): print("\n" + "=" * 20, t, flush=True)
 
-def bbk_titles(flow, key, pat, limit=80):
 def gen_vars(name, pat=None, startyear="2025"):
     hdr(f"GENESIS {name} ~ {pat}")
     try:
