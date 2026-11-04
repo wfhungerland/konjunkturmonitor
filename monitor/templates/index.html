@@ -15,7 +15,7 @@
 <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.de">
 <script src="plotly.min.js"></script>
 <style>
-  :root { --bg: #f7f7f5; --card: #fff; --text: #1d232b; --muted: #3f4752; --line: #e2e5e9; --accent: #164a8c; --dark: #002060; }
+  :root { --bg: #f7f7f5; --card: #fff; --text: #000; --muted: #000; --line: #e2e5e9; --accent: #164a8c; --dark: #002060; }
   * { box-sizing: border-box; }
   html, body { max-width: 100%; overflow-x: hidden; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
@@ -26,7 +26,6 @@
   .bar .stand { color: var(--muted); font-size: 13px; }
   nav { display: flex; flex-wrap: wrap; gap: 4px 12px; font: 14px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
   main { max-width: 1180px; margin: 0 auto; padding: 8px 16px 40px; }
-  .claim { font-size: 21px; margin: 18px 0 18px; max-width: 46em; }
   /* Startseite: sieben Fragen */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
   .q { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 6px; color: inherit; }
@@ -90,8 +89,11 @@
   .stable td.u, .stable td.p { color: var(--muted); font-size: 13.5px; white-space: nowrap; }
   .stable td.p { text-align: right; }
   .stable td.p.old { font-style: italic; }
-  .stable td.t { text-align: center; font-size: 14px; }
-  .stable td.s svg { width: 130px; height: 22px; display: block; }
+  .stable td.t { font-size: 14px; }
+  .stable td.s { width: 140px; padding-right: 4px; } .stable td.s svg { width: 130px; height: 22px; display: block; }
+  .spk { display: inline-block; position: relative; } .spk small { display: flex; justify-content: space-between; gap: 6px; white-space: nowrap; font-size: 10.5px; line-height: 1.1; color: #000; }
+  .stable td.v, .stable td.d { width: 6.2em; padding-right: 14px; }
+  .stable td.t { width: 1.6em; text-align: left; padding-left: 0; }
   .stable a { color: inherit; }
   .tnote { font: 13px/1.4 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); margin: 0 0 8px; max-width: 60em; }
   .up-bad { color: #C00000; } .up-ok, .down { color: #0070C0; } .flat { color: #7f7f7f; }
@@ -124,10 +126,10 @@
   details.morecharts > summary { cursor: pointer; font: 15px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); margin: 4px 0 10px; }
   details.morecharts > summary .list { display: block; color: var(--muted); font-size: 13.5px; margin: 2px 0 0 1.1em; }
   details.morecharts[open] > summary .list { display: none; }
-  @media (max-width: 700px) { .card .chart { aspect-ratio: auto; height: 300px; min-height: 0; } .charts.single .card .chart { aspect-ratio: auto; height: 300px; } .card .chart.square { height: auto; aspect-ratio: 1 / 1; } .card .chart.multi { height: auto; } .claim { font-size: 18px; } section.topic > h2 { font-size: 22px; } }
+  @media (max-width: 700px) { .card .chart { aspect-ratio: auto; height: 300px; min-height: 0; } .charts.single .card .chart { aspect-ratio: auto; height: 300px; } .card .chart.square { height: auto; aspect-ratio: 1 / 1; } .card .chart.multi { height: auto; } section.topic > h2 { font-size: 22px; } }
   .multiples { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 10px 16px; }
-  @media (max-width: 600px) { .multiples { grid-template-columns: repeat(2, minmax(0, 1fr)); } .multiples > div { grid-column: auto !important; } .multiples > div.span-m { grid-column: 1 / -1 !important; } }
-  .multiples .mini { height: 150px; }
+  .multiples { gap: 14px 22px; }
+  .multiples .mini { height: 170px; }
   .multiples .mt { font: 13px/1.3 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; margin: 0; }
   .multiples .mt span.mtsub { color: var(--muted); }
   .heat { overflow-x: auto; }
@@ -136,7 +138,7 @@
   .heat th { font-weight: normal; color: var(--muted); padding: 2px 3px; text-align: center; white-space: nowrap; }
   .heat td { padding: 2px 3px; text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .heat td.l { text-align: left; padding-right: 8px; }
-  .heat td.k { font-weight: bold; border-left: 1px solid #ccc; }
+  .heat td.k { border-left: 1px solid #ccc; }
   .cal { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
   .calm h4 { margin: 4px 0 4px; font-size: 15px; }
   .calm table { width: 100%; border-collapse: collapse; table-layout: fixed; font: 12px/1.25 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
@@ -164,6 +166,8 @@
   ol.callist li { display: grid; grid-template-columns: 13em 1fr; gap: 4px 14px; padding: 6px 0; border-top: 1px solid #e6e6e6; }
   ol.callist li.next { background: #eef4fb; padding: 8px 6px; }
   ol.callist .cs { color: var(--muted); font-size: 13px; }
+  ol.callist sup.e { font-size: 10px; margin-left: 1px; }
+  .expandall { margin-left: auto; }
   @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
   .parthead { margin: 56px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 15px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
   .parthead span { color: var(--muted); margin-right: 6px; }
@@ -190,19 +194,32 @@
   .kpi .kv { font-size: 30px; font-weight: 600; color: var(--dark); line-height: 1.15; }
   .kpi .kv span { font-size: 18px; vertical-align: 3px; }
   .kpi .kw, .kpi .ks { font-size: 13.5px; color: #595959; }
-  .kpi svg { width: 100%; height: 44px; margin-top: 4px; }
+  .kpi svg { width: 100%; height: 44px; margin-top: 4px; } .kpi .spk { display: block; }
   details.alltable > summary { cursor: pointer; color: var(--accent); font-size: 15px; margin: 4px 0 8px; }
   details.capfold > summary { cursor: pointer; color: var(--accent); font-size: 14px; margin: 2px 0; }
-  details.dl { display: inline-block; margin-top: 6px; position: relative; }
-  details.dl > summary { cursor: pointer; list-style: none; font-size: 18px; color: var(--accent); width: 28px; text-align: center; border: 1px solid #c9d3df; border-radius: 4px; }
+  details.dl { display: inline-block; position: relative; }
+  details.dl > summary { list-style: none; }
   details.dl > summary::-webkit-details-marker { display: none; }
-  .dlmenu { position: absolute; z-index: 4; background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 6px 10px; display: grid; gap: 4px; min-width: 210px; box-shadow: 0 4px 12px rgba(0,0,0,.08); font-size: 14px; }
+  .dlmenu { position: absolute; z-index: 4; background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 6px 10px; display: grid; gap: 4px; min-width: 90px; box-shadow: 0 4px 12px rgba(0,0,0,.08); font-size: 14px; }
   .dlmenu a, .dlmenu button { color: var(--accent); background: none; border: 0; padding: 0; font: inherit; text-align: left; cursor: pointer; }
-  .rawtoggle { font-size: 13px; color: var(--accent); background: none; border: 1px solid #c9d3df; border-radius: 4px; padding: 1px 8px; margin: 6px 8px 0 0; cursor: pointer; }
+  .tools { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: flex-start; margin-top: 6px; }
+  .btn, details.dl > summary { font: 13px/1.5 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); background: #fff; border: 1px solid #c9d3df; border-radius: 4px; padding: 1px 9px; cursor: pointer; }
+  .btn[aria-pressed="true"] { background: #eef4fb; }
+  .rawtoggle { margin: 0; }
+  .card .ctext .sent, .answer .sent { display: inline; }
+  button.copy1 { font: 12px/1 "Source Sans 3", "Segoe UI", system-ui, sans-serif; color: var(--accent); background: none; border: 0; padding: 0 2px; margin: 0 2px 0 1px; cursor: pointer; vertical-align: 1px; opacity: .75; }
+  button.copy1:hover { opacity: 1; }
+  .cbody { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 22px; margin-top: 4px; }
+  @media (min-width: 980px) { .cbody { grid-template-columns: minmax(0, 1fr) 290px; } .card.full .cbody { grid-template-columns: minmax(0, 1fr); } .card.full .cside { max-width: 52em; } }
+  .cside { font: 14px/1.45 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; display: flex; flex-direction: column; gap: 8px; }
+  .cside .capbox, .cside .notebox { background: #f2f3f4; border-radius: 4px; padding: 9px 12px; margin: 0; max-width: none; width: auto; }
+  .cside .capbox b, .cside .notebox b { display: block; margin-bottom: 2px; }
+  .cside .notebox[hidden] { display: none; }
+  .cside .btn { align-self: flex-start; }
   .tlist { list-style: none; padding: 0; margin: 10px auto 4px; max-width: 360px; columns: 2; column-gap: 24px; font-size: 13.5px; }
   .tlist li { display: flex; justify-content: space-between; gap: 8px; break-inside: avoid; }
   @media print {
-    header, nav, .fab, .totop, details.dl, .rawtoggle, button.copy, .seg, .navmore { display: none !important; }
+    header, nav, .fab, .totop, details.dl, .rawtoggle, .btn, button.copy, button.copy1, .seg, .navmore { display: none !important; }
     body { background: #fff; font-size: 11pt; }
     main, .refs { max-width: none; padding: 0; }
     section.topic { break-before: page; margin-top: 0; }
@@ -220,7 +237,6 @@
 <body>
 <header id="top"><div class="bar"><h1>Konjunkturmonitor</h1><span class="stand" id="stand"></span><nav id="nav"></nav></div></header>
 <main>
-  <p class="claim" id="claim"></p>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
   <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
@@ -265,11 +281,15 @@ const tendHtml = (t, upBad) => !t ? "" : t === "flat" ? `<span class="flat" titl
 const MONTHS = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."];
 const TOUCH = matchMedia("(pointer: coarse)").matches;
 const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const fmt = (v, d = 1) => (v < 0 ? "−" : "") + Math.abs(v).toLocaleString("de-DE", { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmt = (v, d = 1) => (v < 0 ? "-" : "") + Math.abs(v).toLocaleString("de-DE", { minimumFractionDigits: d, maximumFractionDigits: d });
 const shortUnit = u => u.startsWith("%") ? "%" : u.startsWith("Pp") || u.startsWith("Saldo") ? "Pp" : u.startsWith("Index") ? "" : u.startsWith("Tsd") ? "Tsd." : u.startsWith("Punkte") ? "Pkt." : u;
 // Wert mit Einheit; Salden (Anteil positiver minus negativer Antworten, in Prozentpunkten) stets mit Vorzeichen
 const fmtU = (v, d, unit, bare) => { v = +v.toFixed(d); if (v === 0) v = 0; const u = shortUnit(unit || ""), sg = (unit || "").startsWith("Saldo") && v > 0 ? "+" : ""; return sg + fmt(v, d) + (u && (!bare || u.length <= 3) ? "\u202f" + u : ""); };
-const unitLabel = u => (u || "").startsWith("Saldo") ? "Saldo in Prozentpunkten (Anteil positiver minus Anteil negativer Antworten)" + u.slice(5) : (u || "");
+const unitLabel = u => (u || "").startsWith("Saldo") ? "Saldo in Pp (Anteil positiver minus Anteil negativer Antworten)" + u.slice(5).replace(/^ in Pp/, "") : (u || "");
+const MONTHS_L = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+// Zeitraum ausgeschrieben: „Oktober 2026“, „3. Quartal 2026“, „2025“, „Woche bis 4. November 2026“; perIn mit Präposition
+const perLong = (x, f) => f === "A" ? x.slice(0, 4) : f === "Q" ? `${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}. Quartal ${x.slice(0, 4)}` : f === "D" ? `Woche bis ${+x.slice(8, 10)}. ${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : `${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`;
+const perIn = (x, f) => (f === "A" ? "im Jahr " : f === "D" ? "in der " : "im ") + perLong(x, f);
 // Kurzform des Zeitraums an der Endbeschriftung: 26q3, 26m09, 2025, 26w44
 const periodCode = (x, f) => f === "A" ? x.slice(0, 4) : f === "Q" ? `${x.slice(2, 4)}q${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}` : f === "D" ? `${x.slice(2, 4)}w${String(Math.ceil(((Date.parse(x) - Date.parse(x.slice(0, 4) + "-01-01")) / 864e5 + 1) / 7)).padStart(2, "0")}` : `${x.slice(2, 4)}m${x.slice(5, 7)}`;
 const perShort = (x, f) => f === "A" ? x.slice(0, 4) : f === "Q" ? `${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}. Q. ${x.slice(0, 4)}` : f === "D" ? `${+x.slice(8, 10)}. ${MONTHS[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : `${MONTHS[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`;
@@ -299,6 +319,8 @@ function xAxis(x0, x1, width) {
   }
   return { tickvals: tv, ticktext: tt, shapes };
 }
+// Rezessionen nach SVR, die ins Zeitfenster der Abbildung fallen
+const recIn = (c, r) => (c.recessions || []).filter(rc => rc.trough >= r[0] && rc.peak <= r[1]);
 function ma3(y) { return y.map((v, i) => i < 2 ? null : (y[i] + y[i - 1] + y[i - 2]) / 3); }
 function baseLayout(el) {
   return { margin: { l: 6, r: 6, t: 26, b: 24 }, paper_bgcolor: "#fff", plot_bgcolor: "#fff", separators: ",.",
@@ -320,7 +342,7 @@ function timeChart(el, c) {
     const col = c.type === "stacked" ? "#000" : PAL[i % PAL.length];
     const many = !c.emphasis && lines.length >= 5, strong = many ? i === 0 : (!c.emphasis || c.emphasis === s.id);
     if (c.ma3) {
-      if (c._raw) traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, meta: s.id, showlegend: false, hoverinfo: "skip", line: { color: col, width: 1, shape: "spline" }, opacity: 0.45 });
+      if (c._raw ?? true) traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, meta: s.id, showlegend: false, hoverinfo: "skip", line: { color: col, width: 1, shape: "spline" }, opacity: 0.45 });
       const m = ma3(s.y); traces.push({ type: "scatter", mode: "lines", x: s.x, y: m, name: s.label, meta: s.id, line: { color: col, width: 3 },
         hovertemplate: `%{y:,.${c.decimals}f} (3-Monats-Mittel)<extra>${esc(s.label)}</extra>` });
     } else if (c.forecast_after_bars && bars.length) { // Prognosejahre: nach dem letzten Ist-Wert der Balken gestrichelt
@@ -347,7 +369,7 @@ function timeChart(el, c) {
   if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
   if (c.ref != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1.5, dash: "dash" } });
   if (c.threshold != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.threshold, y1: c.threshold, line: { color: WARN, width: 1.5, dash: "dash" } });
-  (c.recessions || []).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.25)", line: { width: 0 }, layer: "below" }));
+  if (c._rec ?? c.recessions_on) recIn(c, r).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak < r[0] ? r[0] : rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.22)", line: { width: 0 }, layer: "below" }));
   const LY = DATA.layout || {}, annotations = [];
   (c.notes || []).forEach((n, k) => { shapes.push({ type: "line", xref: "x", yref: "paper", x0: n.date, x1: n.date, y0: 0, y1: 1, line: { color: "#595959", width: 1, dash: "dot" } });
     annotations.push({ xref: "x", yref: "paper", x: n.date, y: 1, text: String(k + 1), showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" } }); });
@@ -358,19 +380,28 @@ function timeChart(el, c) {
   const named = traces.filter(t => t.showlegend !== false && t.type === "scatter");
   const direct = LY.direct_labels && c.type !== "stacked" && !bars.length && named.length > 1 && (named.length <= 4 || c.context_grey);
   let rMargin = 6;
-  if (direct) { // Beschriftung rechts neben der Werteachse, vollständig, bei Bedarf zweizeilig und ohne Überlappung
-    const wrap = s => { if (s.length <= 24) return [s]; const w = s.split(" "); let a = "", out = []; w.forEach(x => { if ((a + " " + x).trim().length > 24 && a) { out.push(a); a = x; } else a = (a + " " + x).trim(); }); out.push(a); return out; };
-    const sgn = /gg\.|gegenüber|Veränderung|^Pp|^Saldo/.test(c.unit || "") || ya.zero;
-    const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const td = tendOf(tr.y, c.decimals ?? 1), arrow = td ? ` <span style="color:${tendColor(td, isBad(c, tr.meta))}">${{ up: "▲", down: "▼", flat: "■" }[td]}</span>` : "";
-      const v = tr.y[i], f0 = fmtU(v, c.decimals ?? 1, c.unit), val = (sgn && +v.toFixed(c.decimals ?? 1) > 0 && !f0.startsWith("+") ? "+" : "") + f0;
-      const lines = v == null ? [] : [`${tr.name} ${val} in ${periodCode(tr.x[i], c.freq)}`]; return { tr, i, y: v, lines, arrow }; }).filter(e => e.y != null).sort((a, b) => a.y - b.y);
-    const span = ya.range[1] - ya.range[0], px = span / Math.max(140, (el.clientHeight || 300) - 70);
-    for (let k = 1; k < ends.length; k++) { const need = ((ends[k - 1].lines.length + ends[k].lines.length) * 7.5 + 4) * px; if (ends[k].y - ends[k - 1].y < need) ends[k].y = ends[k - 1].y + need; }
-    const over = ends.length ? ends[ends.length - 1].y + ends[ends.length - 1].lines.length * 7.5 * px - ya.range[1] : 0;  // oben hinausgeschoben: alle nach unten
-    if (over > 0) ends.forEach(e => e.y -= over);
-    const tickW = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;
-    ends.forEach(e => annotations.push({ xref: "paper", x: 1, y: e.y, text: e.lines.map(esc).join("<br>") + e.arrow, showarrow: false, xanchor: "left", xshift: tickW, yanchor: "middle", align: "left", font: { family: HS.font, size: 12, color: e.tr.line.color } }));
-    rMargin = tickW + Math.min(320, 6.4 * Math.max(...ends.flatMap(e => e.lines.map(l => l.length))) + 14) + 8;
+  if (direct) { // Beschriftung in der Zeichenfläche links über dem Linienende, bei Bedarf mit Bezugslinie und ohne Überlappung
+    const sgn = /ggü\.|gegenüber|Veränderung|^Pp|^Saldo/.test(c.unit || "") || ya.zero;
+    const plotH = Math.max(140, (el.clientHeight || 300) - 34 - 24), pyOf = v => (1 - (v - ya.range[0]) / (ya.range[1] - ya.range[0])) * plotH;
+    const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const v = tr.y[i]; if (v == null) return null;
+      const td = tendOf(tr.y, c.decimals ?? 1), arrow = td ? ` <span style="color:${tendColor(td, isBad(c, tr.meta))}">${{ up: "▲", down: "▼", flat: "■" }[td]}</span>` : "";
+      const f0 = fmtU(v, c.decimals ?? 1, c.unit), val = (sgn && +v.toFixed(c.decimals ?? 1) > 0 && !f0.startsWith("+") ? "+" : "") + f0;
+      return { tr, i, y: v, py: pyOf(v), text: `${esc(tr.name)} ${esc(val)}${arrow} ${esc(perIn(tr.x[i], c.freq))}` }; }).filter(Boolean).sort((p, q) => p.py - q.py);
+    // Freie Fläche suchen: über oder unter allen Linien im Bereich, den die Beschriftungen waagerecht einnehmen
+    const plotW = Math.max(160, (el.clientWidth || 500) - 50), t0 = Date.parse(r[0]), t1 = Date.parse(r[1]);
+    const txtW = Math.max(...ends.map(e => e.text.replace(/<[^>]+>/g, "").length)) * 6.4 + 16, tFrom = t1 - txtW / plotW * (t1 - t0);
+    const inWin = traces.filter(tr => tr.type === "scatter" && tr.x).flatMap(tr => tr.x.map((x, i) => Date.parse(x) >= tFrom ? tr.y[i] : null)).filter(v => v != null).map(pyOf);
+    const topPx = Math.min(...inWin, plotH), botPx = Math.max(...inWin, 0), need = ends.length * 16 + 6;
+    if (topPx - 6 >= need) ends.forEach((e, k) => e.ly = topPx - 6 - (ends.length - 1 - k) * 16 - 8);
+    else if (plotH - botPx - 6 >= need) ends.forEach((e, k) => e.ly = botPx + 6 + k * 16 + 8);
+    else {
+      ends.forEach(e => e.ly = e.py - 13);
+      for (let k = 1; k < ends.length; k++) if (ends[k].ly - ends[k - 1].ly < 16) ends[k].ly = ends[k - 1].ly + 16;
+      const over = ends.length ? ends[ends.length - 1].ly - (plotH - 8) : 0; if (over > 0) ends.forEach(e => e.ly -= over);
+      const under = ends.length ? 8 - ends[0].ly : 0; if (under > 0) ends.forEach(e => e.ly += under);
+    }
+    ends.forEach(e => annotations.push({ xref: "x", yref: "y", x: e.tr.x[e.i], y: e.y, ax: -8, ay: e.ly - e.py, showarrow: true, arrowhead: 0, arrowwidth: 0.8, arrowcolor: e.tr.line.color, standoff: 3,
+      text: e.text, xanchor: "right", yanchor: "middle", align: "right", bgcolor: "rgba(255,255,255,0.85)", borderpad: 1, font: { family: HS.font, size: 12, color: e.tr.line.color } }));
   }
   // Jahresmittel je Jahresband (eine Leitreihe mit Monats- oder Quartalswerten). Unten, wo die Linien unten verlaufen oben;
   // entfällt, wenn das Jahresband zu schmal für die Zahl ist.
@@ -398,7 +429,6 @@ function timeChart(el, c) {
   const L = baseLayout(el);
   L.margin = Object.assign({}, L.margin, { r: Math.max(rMargin, tickW0), t: Math.max(L.margin.t, 34) });
   const xa2 = xAxis(r[0], r[1], Math.max(120, (el.clientWidth || 500) - Math.max(rMargin, tickW0) - 10));  // Jahreszahlen nach der tatsächlichen Zeichenbreite
-  const nb = el.parentNode && el.parentNode.querySelector(".notebox"); if (nb) nb.style.marginRight = (rMargin + 6) + "px";  // Kasten oben rechts über der Zeichenfläche
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa2.tickvals, ticktext: xa2.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
     yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
@@ -412,26 +442,25 @@ function multiplesChart(el, c) {
   const all = c.series.flatMap(s => s.y.filter(v => v != null)).concat(c.ref != null ? [c.ref] : []);
   const ya = yAxis(all, c.unit, []);
   const xs = c.series.flatMap(s => s.x).sort(), r = pad(xs[0], xs[xs.length - 1], c.freq);
-  const n = c.series.length, maxC = Math.max(2, Math.min(4, Math.floor((el.clientWidth || 600) / 210)));
-  const cols = [maxC, maxC - 1, maxC - 2].filter(k => k >= 2).sort((a, b) => ((a - n % a) % a) - ((b - n % b) % b) || b - a)[0] || 2, empty = n % cols ? cols - n % cols : 0;
+  const cols = (el.clientWidth || 600) < 560 ? 1 : 2;  // alle Felder gleich breit; ein überzähliges Feld steht allein in der letzten Zeile
   const grid = document.createElement("div"); grid.className = "multiples"; grid.style.setProperty("--cols", cols); el.appendChild(grid);
-  const u = shortUnit(c.unit), per = x => `${MONTHS[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`, avg = a => a.reduce((p, v) => p + v, 0) / a.length;
+  const avg = a => a.reduce((p, v) => p + v, 0) / a.length;
   c.series.forEach((s, k) => {
     const ok = s.y.map((v, i) => [v, s.x[i]]).filter(p => p[0] != null), last = ok.length ? ok[ok.length - 1] : null;
-    const vals = ok.map(p => p[0]), d = c.decimals, tend = vals.length > 1 ? (Math.round(Math.abs(vals[vals.length - 1] - vals[vals.length - 2]) * 10 ** d) === 0 ? "flat" : vals[vals.length - 1] > vals[vals.length - 2] ? "up" : "down") : null;
+    const vals = ok.map(p => p[0]), d = c.decimals, tend = tendOf(vals, d);
     const box = document.createElement("div");
-    if (k === 0 && empty) { box.style.gridColumn = `span ${1 + empty}`; box.classList.add("span-m"); }
-    const head = last ? ` ${fmtU(last[0], d, c.unit)} ${tendHtml(tend, isBad(c, s.id))}<br><span class="mtsub">${per(last[1])} · ø3M ${fmtU(avg(vals.slice(-3)), d, c.unit)} · ø12M ${fmtU(avg(vals.slice(-12)), d, c.unit)}</span>` : "";
+    const head = last ? ` ${fmtU(last[0], d, c.unit)} ${tendHtml(tend, isBad(c, s.id))} ${esc(perIn(last[1], c.freq))}<br><span class="mtsub">Mittel der letzten 3 Monate ${fmtU(avg(vals.slice(-3)), d, c.unit)}, der letzten 12 Monate ${fmtU(avg(vals.slice(-12)), d, c.unit)}</span>` : "";
     box.innerHTML = `<p class="mt"><b>${esc(s.label)}</b>${head}</p>`;
     const m = document.createElement("div"); m.className = "mini"; box.appendChild(m); grid.appendChild(box);
     const traces = c.series.filter(o => o !== s).map(o => ({ type: "scatter", mode: "lines", x: o.x, y: o.y, line: { color: "#d0d0d0", width: 1 }, hoverinfo: "skip" }));
     traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, line: { color: PAL[0], width: 2 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
-    const xa = xAxis(r[0], r[1], 180), shapes = xa.shapes.filter(sh => sh.type === "rect");
+    const w = Math.max(160, (el.clientWidth || 600) / cols - 50), xa = xAxis(r[0], r[1], w), shapes = xa.shapes.filter(sh => sh.type === "rect");
     if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
     if (c.ref != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1, dash: "dash" } });
+    if (c._rec ?? c.recessions_on) recIn(c, r).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak < r[0] ? r[0] : rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.22)", line: { width: 0 }, layer: "below" }));
     const L = baseLayout(m);
-    Object.assign(L, { margin: { l: 2, r: 2, t: 4, b: 18 }, showlegend: false, shapes, hovermode: "closest", font: { family: HS.font, size: 12 },
-      xaxis: { type: "date", range: r, tickmode: "array", tickvals: [r[0], r[1]], ticktext: [r[0].slice(0, 4), r[1].slice(0, 4)], showgrid: false, zeroline: false, fixedrange: true },
+    Object.assign(L, { margin: { l: 2, r: 2, t: 4, b: 20 }, showlegend: false, shapes, hovermode: "closest", font: { family: HS.font, size: 12 },
+      xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, fixedrange: true, ticks: "" },
       yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showticklabels: true, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
     Plotly.newPlot(m, traces, L, CFG);
   });
@@ -441,10 +470,31 @@ function multiplesChart(el, c) {
 function heatChart(el, c) {
   const H = c.heat, m = 15, cell = v => { if (v == null) return `<td></td>`; const col = tileColor(Math.max(-m, Math.min(m, v)), m), r = Math.round(v); return `<td style="background:${col.bg};color:${col.fg}">${fmt(r === 0 ? 0 : r, 0)}</td>`; };
   const head = H.cols.map(d => `<th>${MONTHS[+d.slice(5, 7) - 1]}<br>${d.slice(0, 4)}</th>`).join("");
+  const sg = v => (v > 0 ? "+" : "") + fmt(v, 1);
   let html = `<table><thead><tr><th class="l">Branche<br><span class="sortnote">sortiert nach Dreimonatsvergleich ↓</span></th>${head}<th>Drei&shy;monats&shy;vergleich</th><th>ggü. 2019</th></tr></thead><tbody>`;
   H.rows.slice().reverse().forEach(r => { html += `<tr><td class="l">${esc(r.label)}</td>${H.cols.map(d => cell(r.values[d])).join("")}`
-    + `<td class="k">${(r.m3 > 0 ? "+" : "") + fmt(r.m3, 1)}</td><td class="k">${r.level == null ? "" : (r.level > 0 ? "+" : "") + fmt(r.level, 0)}</td></tr>`; });
+    + `<td class="k">${sg(r.m3)}</td><td class="k">${r.level == null ? "" : sg(r.level)}</td></tr>`; });
   el.innerHTML = `<div class="heat">${html}</tbody></table></div>`;
+  // Balken: Dreimonatsvergleich oder Niveau ggü. 2019, umschaltbar
+  const last = H.cols[H.cols.length - 1], per = perLong(last, "M");
+  const views = [{ key: "m3", label: "Dreimonatsvergleich", note: `Letzte drei Monate bis ${per} ggü. den drei Monaten davor, in %.` },
+    { key: "level", label: "ggü. 2019", note: `Niveau im ${per} ggü. dem Durchschnitt 2019, in %. 2019 ist das letzte volle Jahr vor der Pandemie und vor dem Energiepreisschock 2022; der Vergleich zeigt, welche Branchen ihr Vorkrisenniveau wieder erreicht haben.` }];
+  const seg = document.createElement("div"); seg.className = "seg"; seg.setAttribute("role", "group"); seg.setAttribute("aria-label", "Balken");
+  const note = document.createElement("p"); note.className = "tnote"; const bx = document.createElement("div"); bx.className = "heatbars";
+  const draw = v => {
+    const rows = H.rows.filter(r => r[v.key] != null).slice().sort((p, q) => p[v.key] - q[v.key]);
+    const xsv = rows.map(r => r[v.key]), lo = Math.min(0, ...xsv), hi = Math.max(0, ...xsv), padv = (hi - lo) * 0.16 || 1;
+    const tr = { type: "bar", orientation: "h", y: rows.map(r => r.label), x: xsv, marker: { color: xsv.map(x => tileColor(x, Math.max(...xsv.map(Math.abs), 1)).bg), line: { width: 0 } },
+      text: xsv.map(sg), textposition: "outside", cliponaxis: false, hovertemplate: `%{x:+,.1f} %<extra>%{y}</extra>` };
+    const L = baseLayout(bx); bx.style.height = Math.max(240, 24 * rows.length + 50) + "px";
+    Object.assign(L, { margin: { l: 6, r: 30, t: 6, b: 24 }, showlegend: false, bargap: 0.3, hovermode: "closest",
+      xaxis: { range: [lo - padv, hi + padv], zeroline: true, zerolinecolor: HS.zero, showgrid: true, gridcolor: HS.gridH, fixedrange: true, ticksuffix: " %" },
+      yaxis: { automargin: true, fixedrange: true, ticks: "" } });
+    Plotly.react(bx, [tr], L, CFG); note.textContent = v.note;
+  };
+  views.forEach((v, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = v.label; b.setAttribute("aria-pressed", i === 0);
+    b.onclick = () => { seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); draw(v); }; seg.appendChild(b); });
+  el.appendChild(seg); el.appendChild(bx); el.appendChild(note); draw(views[0]);
 }
 
 // Veröffentlichungskalender: Liste der Tage mit Terminen, der nächste Termin hervorgehoben
@@ -455,84 +505,66 @@ function calendarChart(el, c) {
   const wd = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
   let html = `<ol class="callist">`;
   days.forEach(d => { const dt = new Date(d + "T12:00:00Z");
-    html += `<li class="${d === next ? "next" : ""}"><span class="cd">${d === next ? "<b>Nächster Termin</b><br>" : ""}${wd[dt.getUTCDay()]}, ${dt.getUTCDate()}. ${MONTHS[dt.getUTCMonth()]} ${dt.getUTCFullYear()}</span>`
-      + `<span class="ce">${byDay[d].map(e => `<a href="#${e.topic}">${esc(e.name)}</a> <span class="cs">${esc(e.source)}</span>${(e.figs || []).length ? ` <span class="cf">→ ${e.figs.map(n => `<a href="#abb-${n}">Abb. ${n}</a>`).join(", ")}</span>` : ""}`).join("<br>")}</span></li>`; });
-  html += `</ol><p class="callinks">Kalender der Quellen: ${K.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(" · ")}</p>`;
+    html += `<li class="${d === next ? "next" : ""}"><span class="cd">${d === next ? "<b>Nächster Termin</b><br>" : ""}${wd[dt.getUTCDay()]}, ${dt.getUTCDate()}. ${MONTHS_L[dt.getUTCMonth()]} ${dt.getUTCFullYear()}</span>`
+      + `<span class="ce">${byDay[d].map(e => `<a href="#${e.topic}">${esc(e.name)}</a>${e.estimated ? '<sup class="e" title="geschätzt">e</sup>' : ""} <span class="cs">${esc(e.source)}</span>${(e.figs || []).length ? ` <span class="cf">→ ${e.figs.map(n => `<a href="#abb-${n}">Abb. ${n}</a>`).join(", ")}</span>` : ""}`).join("<br>")}</span></li>`; });
+  html += `</ol>${K.events.some(e => e.estimated) ? `<p class="callinks"><sup>e</sup> geschätzt nach dem üblichen Veröffentlichungsrhythmus der Quelle.</p>` : ""}<p class="callinks">Kalender der Quellen: ${K.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(" · ")}</p>`;
   el.innerHTML = html;
 }
 
 // Konjunkturuhr: Lage (waagerecht) gegen Erwartungen (senkrecht), Spur der letzten Monate
 function clockChart(el, c) {
   const k = c.clock, n = k.x.length, m = Math.max(...k.x.map(Math.abs), ...k.y.map(Math.abs)) * 1.15;
-  const lab = (x, y, t, ax, ay) => ({ x, y, text: t, showarrow: false, xanchor: ax, yanchor: ay, font: { family: HS.font, size: 14, color: "#7f7f7f" } });
+  const lab = (x, y, t, ax, ay) => ({ x, y, text: t, showarrow: false, xanchor: ax, yanchor: ay, font: { family: HS.font, size: 14, color: "#000" } });
   const last = n - 1, d = new Date(k.t[last]);
   const traces = [
     { type: "scatter", mode: "lines", x: k.x, y: k.y, line: { color: "#9db7d6", width: 2, shape: "spline" }, hoverinfo: "skip", showlegend: false },
     { type: "scatter", mode: "markers", x: k.x, y: k.y, marker: { color: k.x.map((_, i) => i / last), colorscale: [[0, "#C1E5F5"], [1, PAL[0]]], size: k.x.map((_, i) => i === last ? 14 : 6) },
-      customdata: k.t.map(t => `${MONTHS[+t.slice(5, 7) - 1]} ${t.slice(0, 4)}`), hovertemplate: "%{customdata}<br>Lage %{x:+.1f} · Erwartungen %{y:+.1f}<extra></extra>", showlegend: false },
+      customdata: k.t.map(t => `${MONTHS_L[+t.slice(5, 7) - 1]} ${t.slice(0, 4)}`), hovertemplate: "%{customdata}<br>Lage %{x:+.1f} · Erwartungen %{y:+.1f}<extra></extra>", showlegend: false },
   ];
   const L = baseLayout(el);
+  const Q = (x0, x1, y0, y1, col) => ({ type: "rect", xref: "x", yref: "y", x0, x1, y0, y1, fillcolor: col, line: { width: 0 }, layer: "below" });
   Object.assign(L, { margin: { l: 6, r: 6, t: 8, b: 6 }, hovermode: "closest", showlegend: false,
+    shapes: [Q(-m, 0, 0, m, "rgba(0,176,240,0.08)"), Q(0, m, 0, m, "rgba(71,211,89,0.10)"), Q(0, m, -m, 0, "rgba(227,108,10,0.08)"), Q(-m, 0, -m, 0, "rgba(192,0,0,0.07)")],
     xaxis: { range: [-m, m], zeroline: true, zerolinecolor: "#7f7f7f", showgrid: false, showticklabels: false, fixedrange: true },
     yaxis: { range: [-m, m], zeroline: true, zerolinecolor: "#7f7f7f", showgrid: false, showticklabels: false, fixedrange: true, scaleanchor: "x" },
     annotations: [lab(-m * 0.96, m * 0.96, "Aufschwung", "left", "top"), lab(m * 0.96, m * 0.96, "Boom", "right", "top"),
       lab(m * 0.96, -m * 0.96, "Abschwung", "right", "bottom"), lab(-m * 0.96, -m * 0.96, "Rezession", "left", "bottom"),
-      { x: k.x[last], y: k.y[last], text: `<b>${MONTHS[d.getMonth()]} ${d.getFullYear()}</b>`, showarrow: true, arrowhead: 0, ax: 30, ay: -24, font: { family: HS.font, size: 13, color: PAL[0] } },
-      ...k.t.map((tt, i) => ({ tt, i })).filter(o => o.i === 0 || o.tt.slice(5, 7) === "01").map(o => ({ x: k.x[o.i], y: k.y[o.i], text: o.i === 0 ? `Start ${MONTHS[+o.tt.slice(5, 7) - 1]} ${o.tt.slice(0, 4)}` : o.tt.slice(0, 4), showarrow: true, arrowhead: 0, arrowcolor: "#7f7f7f", ax: -26, ay: 18, font: { family: HS.font, size: 12, color: "#595959" } })),
+      { x: k.x[last], y: k.y[last], text: `<b>${MONTHS_L[d.getMonth()]} ${d.getFullYear()}</b>`, showarrow: true, arrowhead: 0, ax: 30, ay: -24, font: { family: HS.font, size: 13, color: PAL[0] } },
+      ...k.t.map((tt, i) => ({ tt, i })).filter(o => o.i === 0 || o.tt.slice(5, 7) === "01").map(o => ({ x: k.x[o.i], y: k.y[o.i], text: o.i === 0 ? `Start ${MONTHS_L[+o.tt.slice(5, 7) - 1]} ${o.tt.slice(0, 4)}` : o.tt.slice(0, 4), showarrow: true, arrowhead: 0, arrowcolor: "#7f7f7f", ax: -26, ay: 18, font: { family: HS.font, size: 12, color: "#595959" } })),
       ...[0.25, 0.5, 0.75].map(f => Math.max(1, Math.round(f * last))).map(i => ({ x: k.x[i], y: k.y[i], ax: k.x[i - 1], ay: k.y[i - 1], axref: "x", ayref: "y", xref: "x", yref: "y", showarrow: true, arrowhead: 2, arrowsize: 1.2, arrowwidth: 1.5, arrowcolor: "#6f8fb8", text: "" })),
       { x: m * 0.98, y: 0, text: "Lage besser →", showarrow: false, xanchor: "right", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#7f7f7f" } },
       { x: 0, y: m * 0.98, text: "Erwartungen besser ↑", showarrow: false, xanchor: "left", yanchor: "top", font: { family: HS.font, size: 12, color: "#7f7f7f" } }] });
   Plotly.newPlot(el, traces, L, CFG);
 }
 
-// Prognosespektrum: je Jahr ein Punkt je Herausgeber, Bundesregierung hervorgehoben, frühere Runden hohl
+// Prognosen: Zieljahre waagerecht, Bundesregierung als Linie mit Werten, graue Fläche von der niedrigsten bis zur höchsten
+// jüngsten Prognose aller Herausgeber; die übrigen Herausgeber lassen sich über die Legende einblenden.
 function forecastChart(el, c) {
-  // Je Zieljahr ein Feld: Prognosen gegen das Erstellungsdatum, Wert am Punkt, Runden eines Herausgebers verbunden,
-  // rechts die Spanne der jeweils jüngsten Prognose aller Herausgeber (Balken) mit Median (Strich).
-  el.classList.add("multi");
-  const F = c.forecasts, now = new Date().getFullYear();
-  const years = [...new Set(F.flatMap(f => Object.keys(f.values).map(Number)))].filter(y => y >= now - 0 && F.filter(f => f.values[y] != null).length >= 2).sort().slice(0, 3);
+  const F = c.forecasts, now = new Date().getFullYear(), GOV = "Bundesregierung";
   const by = [...new Set(F.map(f => f.by))];
-  const col = b => b === "Bundesregierung" ? PAL[0] : ["#0070C0", "#7030A0", "#00B0F0", "#D86DCD", "#47D359", "#51154A", "#595959"][by.filter(x => x !== "Bundesregierung").indexOf(b) % 7];
-  const vals = F.flatMap(f => years.map(y => f.values[y]).filter(v => v != null));
-  const ya = yAxis(vals.concat([0]), "%");
-  const grid = document.createElement("div"); grid.className = "multiples"; grid.style.setProperty("--cols", Math.min(years.length, 3)); el.appendChild(grid);
-  const d0 = F.map(f => f.date).sort()[0], d1 = new Date().toISOString().slice(0, 10);
-  const x0 = new Date(Date.parse(d0) - 20 * 864e5).toISOString().slice(0, 10), x1 = new Date(Date.parse(d1) + 75 * 864e5).toISOString().slice(0, 10);
-  years.forEach((Y, k) => {
-    const latest = by.map(b => F.filter(f => f.by === b && f.values[Y] != null).sort((p, q) => p.date < q.date ? -1 : 1).pop()).filter(Boolean);
-    const lv = latest.map(f => f.values[Y]).sort((p, q) => p - q), med = lv.length % 2 ? lv[(lv.length - 1) / 2] : (lv[lv.length / 2 - 1] + lv[lv.length / 2]) / 2;
-    const box = document.createElement("div");
-    box.innerHTML = `<p class="mt"><b>Prognosen für ${Y}</b> Spanne ${fmt(lv[0], 1)} bis ${fmt(lv[lv.length - 1], 1)} %, Median ${fmt(med, 1)} %<br><span class="mtsub">${latest.length} Herausgeber, jeweils jüngste Runde</span></p>`;
-    const m = document.createElement("div"); m.className = "mini"; m.style.height = "300px"; box.appendChild(m); grid.appendChild(box);
-    const traces = [], placed = [];
-    // Beschriftung ausweichen lassen: liegt ein Punkt nahe an einem schon beschrifteten, wechselt die Position
-    const POS = ["top center", "bottom center", "middle right", "middle left", "top right", "bottom right"];
-    const posFor = (date, v) => { const near = placed.filter(p => Math.abs(Date.parse(p.d) - Date.parse(date)) < 40 * 864e5 && Math.abs(p.v - v) < 0.2);
-      const used = new Set(near.map(p => p.pos)); const pos = POS.find(q => !used.has(q)) || "top center"; placed.push({ d: date, v, pos }); return pos; };
-    by.forEach(b => {
-      const fs = F.filter(f => f.by === b && f.values[Y] != null).sort((p, q) => p.date < q.date ? -1 : 1); if (!fs.length) return;
-      const last = fs[fs.length - 1];
-      traces.push({ type: "scatter", mode: "lines+markers+text", x: fs.map(f => f.date), y: fs.map(f => f.values[Y]), name: b, showlegend: k === 0,
-        line: { color: col(b), width: b === "Bundesregierung" ? 2.5 : 1.2 },
-        marker: { size: fs.map(f => f === last ? 11 : 7), color: fs.map(f => f === last ? col(b) : "#fff"), line: { color: col(b), width: 2 } },
-        text: fs.map(f => fmt(f.values[Y], 1)), textposition: fs.map(f => posFor(f.date, f.values[Y])), textfont: { family: HS.font, size: 12, color: col(b) },
-        customdata: fs.map(f => `${f.by}, ${f.round}${f.check ? " (" + f.check + ")" : ""}`), hovertemplate: `%{y:,.1f} %<extra>%{customdata}</extra>` });
-    });
-    const xb = new Date(Date.parse(d1) + 45 * 864e5).toISOString().slice(0, 10);
-    const shapes = [{ type: "rect", xref: "x", yref: "y", x0: new Date(Date.parse(xb) - 9 * 864e5).toISOString().slice(0, 10), x1: new Date(Date.parse(xb) + 9 * 864e5).toISOString().slice(0, 10), y0: lv[0], y1: lv[lv.length - 1], fillcolor: "rgba(0,112,192,0.18)", line: { width: 0 } },
-      { type: "line", xref: "x", yref: "y", x0: new Date(Date.parse(xb) - 11 * 864e5).toISOString().slice(0, 10), x1: new Date(Date.parse(xb) + 11 * 864e5).toISOString().slice(0, 10), y0: med, y1: med, line: { color: PAL[0], width: 2 } }];
-    if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
-    const L = baseLayout(m);
-    Object.assign(L, { margin: { l: 4, r: 4, t: 8, b: 26 }, hovermode: "closest", shapes, showlegend: false, font: { family: HS.font, size: 12 },
-      annotations: [{ x: xb, y: lv[lv.length - 1], yanchor: "bottom", text: "Spanne", showarrow: false, font: { family: HS.font, size: 12, color: "#3f4752" } }],
-      xaxis: { type: "date", range: [x0, x1], tickformat: "%b %y", showgrid: false, zeroline: false, fixedrange: true, nticks: 5 },
-      yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
-    Plotly.newPlot(m, traces, L, CFG);
-  });
-  const leg = document.createElement("p"); leg.className = "tnote";
-  leg.innerHTML = by.map(b => `<span style="color:${col(b)}">●</span> ${esc(b)}`).join(" · ") + " · gefüllt: jüngste Runde, hohl: frühere Runde. Balken rechts: Spanne der jüngsten Prognosen, Strich: Median.";
-  el.appendChild(leg);
+  const latest = by.map(b => F.filter(f => f.by === b).sort((p, q) => p.date < q.date ? -1 : 1).pop());
+  const years = [...new Set(latest.flatMap(f => Object.keys(f.values).map(Number)))].filter(y => y >= now && latest.filter(f => f.values[y] != null).length >= 1).sort().slice(0, 3);
+  const xs = years.map(String), lo = years.map(y => Math.min(...latest.map(f => f.values[y]).filter(v => v != null))), hi = years.map(y => Math.max(...latest.map(f => f.values[y]).filter(v => v != null)));
+  const n = years.map(y => latest.filter(f => f.values[y] != null).length);
+  const cols = ["#0070C0", "#7030A0", "#00B0F0", "#D86DCD", "#47D359", "#51154A", "#595959", "#B45309", "#002060"];
+  const traces = [
+    { type: "scatter", mode: "lines", x: xs, y: hi, line: { width: 0, color: "#bfbfbf" }, hoverinfo: "skip", showlegend: false },
+    { type: "scatter", mode: "lines", x: xs, y: lo, fill: "tonexty", fillcolor: "rgba(150,150,150,0.25)", line: { width: 0, color: "#bfbfbf" }, name: "Spanne aller Prognosen",
+      customdata: years.map((y, i) => `${fmt(lo[i], 1)} bis ${fmt(hi[i], 1)} % (${n[i]} Herausgeber)`), hovertemplate: "Spanne %{customdata}<extra></extra>" }];
+  latest.filter(f => f.by !== GOV).forEach((f, k) => traces.push({ type: "scatter", mode: "lines+markers", x: xs, y: years.map(y => f.values[y] ?? null), name: f.by, visible: "legendonly",
+    line: { color: cols[k % cols.length], width: 1.5 }, marker: { size: 7 }, customdata: years.map(() => `${f.by}, ${f.round}${f.check ? " (" + f.check + ")" : ""}`), hovertemplate: "%{y:,.1f} %<extra>%{customdata}</extra>" }));
+  const g = latest.find(f => f.by === GOV);
+  if (g) traces.push({ type: "scatter", mode: "lines+markers+text", x: xs, y: years.map(y => g.values[y] ?? null), name: `${GOV}, ${g.round}`, line: { color: PAL[0], width: 3 }, marker: { size: 9, color: PAL[0] },
+    text: years.map(y => g.values[y] == null ? "" : fmt(g.values[y], 1) + "\u202f%"), textposition: "top center", textfont: { family: HS.font, size: 13, color: PAL[0] }, hovertemplate: `%{y:,.1f} %<extra>${esc(GOV)}, ${esc(g.round)}</extra>` });
+  const ya = yAxis(lo.concat(hi, [0]), "%");
+  const L = baseLayout(el);
+  Object.assign(L, { margin: { l: 6, r: 6, t: 30, b: 28 }, hovermode: "x unified", showlegend: true,
+    legend: { orientation: "h", x: 0, y: -0.12, yanchor: "top", font: { size: 12 } },
+    shapes: ya.zero ? [{ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } }] : [],
+    xaxis: { type: "category", showgrid: false, zeroline: false, fixedrange: true, ticks: "" },
+    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true, automargin: true } });
+  el.style.aspectRatio = "auto"; el.style.height = (el.clientWidth < 600 ? 360 : 420) + "px";
+  Plotly.newPlot(el, traces, L, CFG);
 }
 
 // Saisonvergleich: Monate dünn, 12-Monats-Mittel dick, übliches Niveau vor Corona gestrichelt
@@ -556,7 +588,7 @@ function seasonalChart(el, c) {
 // Letzter Wert je Reihe als waagerechte Balken, Raute: Wert der Vorperiode
 function latestChart(el, c) {
   const b = c.bars.slice().reverse(), lab = b.map(x => x.label);
-  const per = x => { const d = new Date(x.period); return c.freq === "Q" ? `${Math.floor(d.getMonth() / 3) + 1}. Q. ${d.getFullYear()}` : d.toLocaleDateString("de-DE", { month: "short", year: "numeric" }); };
+  const per = x => perLong(x.period, c.freq);
   const traces = [
     { type: "bar", orientation: "h", y: lab, x: b.map(x => x.value), marker: { color: b.map(x => x.value >= 0 ? PAL[0] : PAL[2]) }, name: "Letztes Quartal",
       text: b.map(x => (x.value > 0 ? "+" : "") + fmt(x.value, c.decimals)), textposition: "outside", cliponaxis: false,
@@ -698,37 +730,68 @@ function chartSentence(c, html) {
   return s;  // nächster Termin steht in der Metazeile der Abbildung
 }
 
+// Sätze mit je einem Kopierknopf; jeder Satz steht für sich
+const sentHtml = arr => arr.map((s, k) => `<span class="sent">${esc(s)}<button type="button" class="copy1" data-k="${k}" title="Satz mit Quellenangabe kopieren" aria-label="Satz kopieren">⧉</button></span>`).join(" ");
+function bindCopies(root, arr, what) { root.querySelectorAll("button.copy1").forEach(b => b.onclick = () => copyText(arr[+b.dataset.k], b, what)); }
+
 function card(c, no) {
-  const el = document.createElement("div"); el.className = "card" + (c.type === "heat" || c.type === "calendar" || c.context_grey ? " wide" : "") + (c.type === "calendar" ? " calcard" : ""); el.id = `abb-${no}`;
+  const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" ? " full" : ""); el.id = `abb-${no}`;
   const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
-  const unit = c.type === "clock" ? "Saldo in Prozentpunkten, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real"
-    : c.type === "tiles" ? "Veränderung gegenüber denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
+  const unit = c.type === "clock" ? "Saldo in Pp, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% ggü. Vorjahr"
+    : c.type === "tiles" ? "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
   const lead = c._lead;  // Leitgrafik: Frage und Satz stehen schon in der Antwort des Abschnitts
   let next = "";
-  if (c.next_update) { const nd = new Date(c.next_update.date + "T12:00:00Z"); next = `nächster Termin ${nd.getUTCDate()}. ${MONTHS[nd.getUTCMonth()]} ${nd.getUTCFullYear()} (<a href="#abb-${c.next_update.calendar}">Kalender</a>)`; }
+  if (c.next_update) { const nd = new Date(c.next_update.date + "T12:00:00Z"), dd = `${String(nd.getUTCDate()).padStart(2, "0")}.${String(nd.getUTCMonth() + 1).padStart(2, "0")}.${nd.getUTCFullYear()}`;
+    next = `Neue Daten${c.next_update.period ? ", dann für " + esc(c.next_update.period) + "," : ""} am ${dd} (<a href="#abb-${c.next_update.calendar}">Kalender</a>)`; }
   const meta = [sub ? esc(sub) : "", next].filter(Boolean).join(" · ");
-  el.innerHTML = `${!lead && c.ask ? `<h4 class="cask">${esc(c.ask)}</h4>` : ""}${!lead && c.text ? `<p class="ctext">${esc(c.text)}</p>` : ""}`
-    + `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${meta ? `<div class="sub">${meta}</div>` : ""}`
-    + `${c.caption ? `<details class="capfold"><summary>Erläuterung</summary><div class="cap">${esc(c.caption)}</div></details>` : ""}<div class="unit">${esc(unit)}</div>`;
-  const box = document.createElement("div"); box.className = "chartbox"; el.appendChild(box);
+  const texts = c.texts || [];
+  el.innerHTML = `${!lead && c.ask ? `<h4 class="cask">${esc(c.ask)}</h4>` : ""}${!lead && texts.length ? `<p class="ctext">${sentHtml(texts)}</p>` : ""}`
+    + `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${meta ? `<div class="sub">${meta}</div>` : ""}`;
+  if (!lead) bindCopies(el, texts, `Abb. ${no}`);
+  const body = document.createElement("div"); body.className = "cbody"; el.appendChild(body);
+  const main = document.createElement("div"); main.className = "cmain"; body.appendChild(main);
+  main.insertAdjacentHTML("beforeend", `<div class="unit">${esc(unit)}</div>`);
+  const box = document.createElement("div"); box.className = "chartbox"; main.appendChild(box);
   const ch = document.createElement("div"); ch.className = ["tiles", "heat", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
-  const nts = (c.notes || []).map((n, k) => `${k + 1} ${esc(n.text)}`).concat((c.outliers || []).map(o => `${esc(o.label)} im ${MONTHS[+o.date.slice(5, 7) - 1]} ${o.date.slice(0, 4)}: ${(o.change > 0 ? "+" : "") + fmt(o.change, 1)} % zum Vormonat${(c.notes || []).length ? "" : " (automatisch markiert)"}`));
-  if (nts.length) box.insertAdjacentHTML("afterbegin", `<div class="notebox" title="Automatisch markiert: Veränderung zum Vormonat mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019. Die Ursache nennt die Quelle."><b>Auffällige Ausschläge und Sondereffekte</b><br>${nts.join("<br>")}</div>`);
+  // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
+  const side = document.createElement("aside"); side.className = "cside"; body.appendChild(side);
+  if (c.caption) side.insertAdjacentHTML("beforeend", `<div class="capbox cap"><b>Erläuterung</b>${esc(c.caption)}</div>`);
+  const nts = (c.notes || []).map((n, k) => `${k + 1} ${n.text}`).concat((c.outliers || []).map(o => `${o.label} im ${MONTHS_L[+o.date.slice(5, 7) - 1]} ${o.date.slice(0, 4)}: ${(o.change > 0 ? "+" : "") + fmt(o.change, 1)} % ggü. Vormonat${(c.notes || []).length ? "" : " (automatisch markiert)"}`));
+  if (nts.length) {
+    const nb = document.createElement("button"); nb.type = "button"; nb.className = "btn"; nb.textContent = "Ausschläge und Sondereffekte"; nb.setAttribute("aria-pressed", "false");
+    const nbox = document.createElement("div"); nbox.className = "notebox"; nbox.hidden = true;
+    nbox.innerHTML = `<b>Ausschläge und Sondereffekte</b>${sentHtml(nts).replace(/<\/span> <span/g, "</span><br><span")}<p class="tnote" style="margin:4px 0 0">Automatisch markiert: Veränderung zum Vormonat mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019. Die Ursache nennt die Quelle.</p>`;
+    bindCopies(nbox, nts, `Abb. ${no}`);
+    nb.onclick = () => { nbox.hidden = !nbox.hidden; nb.setAttribute("aria-pressed", String(!nbox.hidden)); };
+    side.appendChild(nb); side.appendChild(nbox);
+  }
   let src = (c.sources || []).join(", ");
   if (c.type === "forecast") src = c.forecasts.filter(f => f.latest).map(f => `<a href="${esc(f.source)}" target="_blank" rel="noopener">${esc(f.by)}, ${esc(f.round)}</a>`).join(" · ");
   else src = esc(src);
-  el.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}</div>`);
+  // Knöpfe unter der Grafik: Monatswerte, Rezessionen, Download, alle gleich gestaltet
+  const tools = document.createElement("div"); tools.className = "tools"; main.appendChild(tools);
+  main.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}</div>`);
+  const redraw = () => { Plotly.purge(ch); ch.innerHTML = ""; ch.classList.remove("multi"); (c.multiples && (DATA.layout || {}).small_multiples && c.series.length > 2 ? multiplesChart : timeChart)(ch, c); };
+  if (c.ma3) {
+    const tg = document.createElement("button"); tg.type = "button"; tg.className = "btn rawtoggle"; tg.textContent = "Monatswerte ausblenden";
+    tg.onclick = () => { c._raw = !(c._raw ?? true); tg.textContent = c._raw ? "Monatswerte ausblenden" : "Monatswerte einblenden"; redraw(); };
+    tools.appendChild(tg); }
+  if (Array.isArray(c.series) && (c.recessions || []).length) {
+    const xs = c.series.flatMap(s => s.x || []).sort();
+    if (xs.length && recIn(c, [xs[0], xs[xs.length - 1]]).length) {
+      const rb = document.createElement("button"); rb.type = "button"; rb.className = "btn";
+      const lab = () => (c._rec ?? c.recessions_on) ? "Rezessionen ausblenden" : "Rezessionen einblenden"; rb.textContent = lab();
+      rb.title = "Rezessionen nach der Datierung des Sachverständigenrats (graue Flächen)";
+      rb.onclick = () => { c._rec = !(c._rec ?? c.recessions_on); rb.textContent = lab(); redraw(); };
+      tools.appendChild(rb); }
+  }
   const f = c.files || {}, acts = [], u = x => encodeURI(x);
-  if (f.xlsx) acts.push(`<a href="${u(f.xlsx)}" download>▦ XLSX: Daten und Diagramm</a>`);
-  if (f.pptx) acts.push(`<a href="${u(f.pptx)}" download>▭ PPTX: Folie</a>`);
-  if (c.type !== "heat" && c.type !== "calendar") acts.push(`<button type="button" class="png">▨ PNG: Bild</button>`);
-  if (f.csv) acts.push(`<a href="${u(f.csv)}" download>▤ CSV: Daten</a>`);
-  el.insertAdjacentHTML("beforeend", `<details class="dl"><summary title="Herunterladen" aria-label="Herunterladen">⤓</summary><div class="dlmenu">${acts.join("")}</div></details>`);
-  if (c.ma3) { // Monatswerte auf Wunsch einblenden
-    const tg = document.createElement("button"); tg.type = "button"; tg.className = "rawtoggle"; tg.textContent = "Monatswerte einblenden";
-    tg.onclick = () => { c._raw = !c._raw; tg.textContent = c._raw ? "Monatswerte ausblenden" : "Monatswerte einblenden"; Plotly.purge(ch); timeChart(ch, c); };
-    el.insertBefore(tg, el.querySelector("details.dl")); }
+  if (f.xlsx) acts.push(`<a href="${u(f.xlsx)}" download>XLSX</a>`);
+  if (f.pptx) acts.push(`<a href="${u(f.pptx)}" download>PPTX</a>`);
+  if (c.type !== "heat" && c.type !== "calendar") acts.push(`<button type="button" class="png">PNG</button>`);
+  if (f.csv) acts.push(`<a href="${u(f.csv)}" download>CSV</a>`);
+  tools.insertAdjacentHTML("beforeend", `<details class="dl"><summary title="Herunterladen">⤓ Download</summary><div class="dlmenu">${acts.join("")}</div></details>`);
   ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `Abb. ${no} ${c.title || ""}. ${c.text || ""}`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
   ch._c = c;
@@ -744,7 +807,7 @@ function render(ch) {
     seg.className = "seg"; seg.setAttribute("role", "group");
     [base, c.alt].forEach((v, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = v.label; b.setAttribute("aria-pressed", i === 0);
       b.onclick = () => { seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); c.series = v.series; c.unit = v.unit;
-        const card = ch.closest(".card"); if (card) card.querySelector(".unit").textContent = v.unit; Plotly.purge(ch); timeChart(ch, c); };
+        const card = ch.closest(".card"); if (card) { const ue = card.querySelector(".unit"); ue.textContent = v.unit; ue.style.display = ""; } Plotly.purge(ch); timeChart(ch, c); };
       seg.appendChild(b); });
     ch.parentNode.insertBefore(seg, ch); ch._seg = seg;
   }
@@ -761,7 +824,7 @@ function render(ch) {
 function kpiTiles(rows, sp) {
   const by = Object.fromEntries(rows.map(r => [r.series, r]));
   const cu = (v, r) => (v > 0 ? "+" : "") + fmt(Math.abs(v) < 0.5 * 10 ** -(r.change_decimals ?? 1) ? 0 : v, r.change_decimals ?? 1) + "\u202f" + r.change_unit;
-  const per = r => { const y = r.date.slice(0, 4), m = +r.date.slice(5, 7); return r.freq === "Q" ? `${Math.floor((m - 1) / 3) + 1}. Quartal ${y}` : `${MONTHS[m - 1]} ${y}`; };
+  const per = r => perLong(r.date, r.freq);
   const spec = [
     ["de_gdp_index", "Wirtschaftswachstum", r => [cu(r.prev, r), "ggü. Vorquartal, real"], r => `Vorjahr ${cu(r.yoy, r)}`],
     ["de_cpi_yoy", "Inflationsrate", r => [fmt(r.value, 1) + "\u202f%", "ggü. Vorjahresmonat"], r => `${cu(r.prev, r)} ggü. Vormonat`],
@@ -771,21 +834,28 @@ function kpiTiles(rows, sp) {
     ["de_insolv", "Unternehmensinsolvenzen", r => [cu(r.yoy, r), "ggü. Vorjahresmonat"], r => `${fmt(r.value, 0)} Anträge`]];
   const tiles = spec.filter(s => by[s[0]]).map(([sid, name, big, small]) => { const r = by[sid], [num, what] = big(r);
     return `<a class="kpi" href="#${r.topic}"><span class="kn">${esc(name)}</span><span class="kv">${num} ${tendHtml(r.tendency, r.up_bad)}</span>`
-      + `<span class="kw">${esc(what)}</span><span class="ks">${esc(small(r))} · ${per(r)}</span>${sp(r, 240, 44)}</a>`; });
+      + `<span class="kw">${esc(what)}</span><span class="ks">${esc(small(r))} · ${per(r)}</span>${sp(r, 240, 44, true)}</a>`; });
   return `<div class="kpis">${tiles.join("")}</div>`;
 }
 
 function startTable(box) {
   const rows = DATA.start || []; if (!rows.length) return false;
-  const sp = (r, w = 130, h = 22) => { const d = r.spark, x = d.x.map(t => Date.parse(t)), y = d.y, p = 2;
+  // Sparkline: Hoch als Strich darüber, Tief als Strich darunter (tangential), rote Nulllinie, Start- und Enddatum darunter;
+  // in den großen Kacheln zusätzlich der Zeitpunkt von Hoch und Tief
+  const sp = (r, w = 130, h = 22, big = false) => { const d = r.spark, x = d.x.map(t => Date.parse(t)), y = d.y, p = big ? 9 : 4;
     const lo = Math.min(...y), hi = Math.max(...y);
     const X = v => p + (v - x[0]) / (x[x.length - 1] - x[0] || 1) * (w - 2 * p), Y = v => h - p - (v - lo) / (hi - lo || 1) * (h - 2 * p);
     const path = y.map((v, i) => `${i ? "L" : "M"}${X(x[i]).toFixed(1)},${Y(v).toFixed(1)}`).join("");
-    const iHi = y.indexOf(hi), iLo = y.indexOf(lo), dot = (i, col, rr) => `<circle cx="${X(x[i]).toFixed(1)}" cy="${Y(y[i]).toFixed(1)}" r="${rr}" fill="${col}"/>`;
-    const zero = lo < 0 && hi > 0 ? `<line x1="${p}" x2="${w - p}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="#b0b0b0" stroke-width="0.6"/>` : "";
-    return `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true">${zero}<path d="${path}" fill="none" stroke="#002060" stroke-width="1.1"/>${dot(iHi, "#0070C0", 1.8)}${dot(iLo, "#00B0F0", 1.8)}${dot(y.length - 1, "#000", 2.2)}</svg>`; };
+    const iHi = y.indexOf(hi), iLo = y.indexOf(lo);
+    const tick = (i, dy) => `<line x1="${(X(x[i]) - 4).toFixed(1)}" x2="${(X(x[i]) + 4).toFixed(1)}" y1="${(Y(y[i]) + dy).toFixed(1)}" y2="${(Y(y[i]) + dy).toFixed(1)}" stroke="#000" stroke-width="1"/>`;
+    const zero = lo < 0 && hi > 0 ? `<line x1="${p}" x2="${w - p}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="#C00000" stroke-width="0.6"/>` : "";
+    const fs = big ? 10 : 0, lab = (i, dy, anchorY) => { if (!big) return ""; const xx = X(x[i]), right = xx < w / 2;
+      return `<text x="${(xx + (right ? 6 : -6)).toFixed(1)}" y="${(Y(y[i]) + dy).toFixed(1)}" font-size="${fs}" text-anchor="${right ? "start" : "end"}" dominant-baseline="${anchorY}" fill="#000">${esc(perLong(d.x[i], r.freq))}</text>`; };
+    const svg = `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true">${zero}<path d="${path}" fill="none" stroke="#002060" stroke-width="1.1"/>${tick(iHi, -2.5)}${tick(iLo, 2.5)}${lab(iHi, -2.5, "middle")}${lab(iLo, 2.5, "middle")}<circle cx="${X(x[x.length - 1]).toFixed(1)}" cy="${Y(y[y.length - 1]).toFixed(1)}" r="2.2" fill="#000"/></svg>`;
+    const dl = big ? q => perLong(q, r.freq) : q => perShort(q, r.freq);
+    return `<span class="spk">${svg}<small><span>${esc(dl(d.x[0]))}</span><span>${esc(dl(d.x[d.x.length - 1]))}</span></small></span>`; };
   const ch = (v, r) => { if (v == null) return ""; const z = Math.abs(v) < 0.5 * 10 ** -(r.change_decimals ?? 1) ? 0 : v; return (z > 0 ? "+" : "") + fmt(z, r.change_decimals ?? 1) + `<small class="cu">\u202f${esc(r.change_unit)}</small>`; };
-  const pshort = r => { const y = r.date.slice(0, 4), m = +r.date.slice(5, 7); return r.freq === "Q" ? `Q${Math.floor((m - 1) / 3) + 1} ${y}` : `${MONTHS[m - 1]} ${y}`; };
+  const pshort = r => perLong(r.date, r.freq);
   const head = `<thead><tr><th class="l">Kennzahl</th><th>Stand</th><th>Wert</th><th>Δ Vor&shy;periode</th><th>Δ Vorjahr</th><th>Δ 3 Monate</th><th class="l">Verlauf fünf Jahre</th><th>Ten&shy;denz</th></tr></thead>`;
   let grp = null, older = false, html = `<table class="stable">${head}<tbody>`;
   const rowHtml = r => {
@@ -820,10 +890,9 @@ function copyText(txt, btn, what) {
 
 function build() {
   const S = DATA.site;
-  document.getElementById("claim").textContent = S.claim;
   const nw = document.getElementById("news");
   if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
-  const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) ov.textContent = DATA.overview; else ov.remove();
+  const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
   const d = new Date(DATA.generated_at); document.getElementById("stand").textContent = "Stand: " + d.toLocaleDateString("de-DE");
   const AS = DATA.all_series || {};
   document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${encodeURI(AS.xlsx)}" download>Excel</a> · <a href="${encodeURI(AS.csv)}" download>CSV</a>` : "",
@@ -845,22 +914,25 @@ function build() {
   const navMore = document.createElement("div"); navMore.className = "navlist";
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     struktur: { no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
-    service: { no: "Service", title: "Termine", text: "Wann die nächsten Zahlen erscheinen." } };
+    service: { no: "", title: "Termine", text: "" } };
   const obs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { obs.unobserve(e.target); render(e.target); } }), { rootMargin: "300px" }) : null;
   DATA.topics.forEach(t => {
     const sec = document.createElement("section"); sec.className = "topic"; sec.id = t.id;
     const q = t.question;
     if (!q && !t.charts.length) return;
-    sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))} <a class="totop" href="#top" title="Zur Übersicht">↑ Übersicht</a></h2>`
-      + (q || t.charts[0] ? `<div class="intro"><p class="answer">${esc(q ? [q.answer.head, ...q.answer.more].join(" ") : "")} ${t.charts[0] ? chartSentence(q && sidsOf(t.charts[0]).includes(q.series) ? Object.assign({}, t.charts[0], { text: "" }) : t.charts[0], true) : ""} <button type="button" class="copy" title="Absatz mit Quellenangabe kopieren">Kopieren</button></p>`
-        + (q ? `<div class="explain"><span class="ico" aria-label="Erläuterung" role="img">❓</span>${esc(q.explain)}</div>` : "") + `</div>` : "");
-    if (t.charts[0]) t.charts[0]._lead = true;
-    // Kopieren: Antwort und die Sätze aller Abbildungen des Abschnitts als ein zusammenhängender Text
     const dup = x => q && sidsOf(x).includes(q.series);  // Leitgrafik wiederholt die Antwort
-    const allText = () => [q ? [q.answer.head, ...q.answer.more].join(" ") : "", ...t.charts.map((x, i) => { const s = chartSentence(!i && dup(x) ? Object.assign({}, x, { text: "" }) : x, false); return s ? (i ? `${x.ask ? x.ask + " " : ""}${s} (Abb. ${x.no})` : `${s} (Abb. ${x.no})`) : ""; })].filter(Boolean).join(" ");
+    const leadTexts = t.charts[0] && !dup(t.charts[0]) ? (t.charts[0].texts || []) : [];
+    const ans = (q ? [q.answer.head, ...q.answer.more] : []).concat(leadTexts);
+    sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))} <a class="totop" href="#top" title="Zur Übersicht">↑ Übersicht</a></h2>`
+      + (ans.length ? `<div class="intro"><p class="answer">${sentHtml(ans)} <button type="button" class="copy" title="Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren">⧉ Textbaustein</button></p>`
+        + (q ? `<div class="explain">${esc(q.explain)}</div>` : "") + `</div>` : "");
+    if (t.charts[0]) t.charts[0]._lead = true;
+    bindCopies(sec, ans, t.title);
+    // Textbaustein: Antwort und die Sätze aller Abbildungen des Abschnitts als ein zusammenhängender Text
+    const allText = () => [ans.join(" "), ...t.charts.slice(1).map(x => (x.texts || []).length ? `${x.texts.join(" ")} (Abb. ${x.no})` : "")].filter(Boolean).join(" ");
     const cpb = sec.querySelector(".answer button.copy");
-    if (cpb) { cpb.textContent = "Abschnitt kopieren"; cpb.title = "Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren"; cpb.onclick = () => copyText(allText(), cpb, t.title); }
-    else if (t.charts.some(x => x.text)) { sec.insertAdjacentHTML("beforeend", `<p class="answer"><button type="button" class="copy">Abschnitt kopieren</button></p>`); const b2 = sec.querySelector(".answer button.copy"); b2.onclick = () => copyText(allText(), b2, t.title); }
+    if (cpb) cpb.onclick = () => copyText(allText(), cpb, t.title);
+    else if (t.charts.some(x => (x.texts || []).length)) { sec.insertAdjacentHTML("beforeend", `<p class="answer"><button type="button" class="copy">⧉ Textbaustein</button></p>`); const b2 = sec.querySelector(".answer button.copy"); b2.onclick = () => copyText(allText(), b2, t.title); }
     const wrap = document.createElement("div"); wrap.className = "charts"; sec.appendChild(wrap);
     let target = wrap;
     t.charts.forEach((c, i) => {
@@ -874,7 +946,7 @@ function build() {
     if (LY.lead_chart_only && wrap.children.length === 1) wrap.classList.add("single");
     const part = t.part || "konjunktur";
     if (part !== curPart) { curPart = part; const P = PARTS[part];
-      topics.insertAdjacentHTML("beforeend", `<div class="parthead" id="teil-${part}"><span>${esc(P.no)}</span> ${esc(P.title)}<p>${esc(P.text)}</p></div>`);
+      topics.insertAdjacentHTML("beforeend", `<div class="parthead" id="teil-${part}">${P.no ? `<span>${esc(P.no)}</span> ` : ""}${esc(P.title)}${P.text ? `<p>${esc(P.text)}</p>` : ""}</div>`);
     }
     topics.appendChild(sec);
     (MAIN_NAV.includes(t.id) ? nav : navMore).insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
@@ -883,6 +955,10 @@ function build() {
   navMore.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen und Downloads</a>`);
   navMore.querySelectorAll("a").forEach(a => a.addEventListener("click", () => dd.open = false));
   nav.insertAdjacentHTML("afterbegin", `<a href="#top"><b>Übersicht</b></a>`);
+  const ex = document.createElement("button"); ex.type = "button"; ex.className = "btn expandall"; ex.textContent = "Alle Abbildungen ausklappen";
+  ex.onclick = () => { const open = ex.textContent.startsWith("Alle Abbildungen aus"); document.querySelectorAll("details.morecharts").forEach(d => d.open = open);
+    ex.textContent = open ? "Alle Abbildungen einklappen" : "Alle Abbildungen ausklappen"; };
+  document.querySelector("header .bar").appendChild(ex);
   document.body.insertAdjacentHTML("beforeend", `<a class="fab" href="#top" aria-label="Zur Übersicht">↑ Übersicht</a>`);
 }
 build();

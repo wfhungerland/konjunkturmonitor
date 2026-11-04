@@ -1,10 +1,12 @@
 # Prognosen für das reale BIP Deutschlands (% gegenüber Vorjahr). Nur öffentlich veröffentlichte Werte, je mit Quelle.
 # Neue Runde: Eintrag ergänzen; der Monitor zeigt je Herausgeber den jüngsten Stand und frühere Runden hohl.
+# inflation: Prognose der Inflationsrate (VPI, sonst inflation_measure angeben).
 # check: "Pressemeldung" heißt: Zahl aus übereinstimmenden Presseberichten, noch nicht an der Originalveröffentlichung geprüft.
 - by: Bundesregierung
   round: Herbstprojektion 2026
   date: 2026-10-08
   values: {2026: 1.3, 2027: 1.1, 2028: 0.6}
+  inflation: {2026: 2.7, 2027: 3.0, 2028: 2.2}
   source: https://www.bundeswirtschaftsministerium.de/Redaktion/DE/Pressemitteilungen/2026/10/20261008-reiche-stellt-herbstprojektion-vor.html
 - by: Bundesregierung
   round: Frühjahrsprojektion 2026
@@ -15,6 +17,7 @@
   round: Herbst 2026
   date: 2026-09-24
   values: {2026: 1.3, 2027: 1.1, 2028: 0.4}
+  inflation: {2026: 2.8}
   source: https://www.diw.de/de/diw_01.c.1020394.de/gemeinschaftsdiagnose_herbst_2026__aufschwung_mit_strukturproblemen_____finanzpolitik_auf_abwegen.html
 - by: IWF
   round: World Economic Outlook Oktober 2026
@@ -38,6 +41,7 @@
   round: Konjunkturprognose Herbst 2026
   date: 2026-09-10
   values: {2026: 1.4, 2027: 1.2}
+  inflation: {2026: 2.8, 2027: 3.0}
   source: https://www.zdfheute.de/wirtschaft/ifo-konjunktur-prognose-wirtschaft-100.html
   check: Pressemeldung, Datum ungefähr
 - by: EU-Kommission
@@ -56,5 +60,33 @@
   round: Deutschland-Prognose Juni 2026
   date: 2026-06-12
   values: {2026: 0.5}
+  inflation: {2026: 2.9, 2027: 2.7, 2028: 1.9}
+  inflation_measure: HVPI
   source: https://www.cash-online.de/a/bundesbank-erwartet-2026-staerkeres-wirtschaftswachstum-725126/
+  check: Pressemeldung, Datum ungefähr
+- by: DIW
+  round: Herbstprognose 2026
+  date: 2026-09-11
+  values: {2026: 1.2}
+  source: https://www.zdfheute.de/wirtschaft/herbstprognose-wirtschaftsforschungsinstitute-wachstum-bip-100.html
+  check: Pressemeldung, Datum ungefähr
+- by: IfW Kiel
+  round: Herbstprognose 2026
+  date: 2026-09-11
+  values: {2026: 1.3}
+  source: https://www.boersen-zeitung.de/konjunktur-politik/institute-verdoppeln-prognose-fuer-2026-nur-miniwachstum-2028
+  check: Pressemeldung, Datum ungefähr
+- by: IWH
+  round: Herbstprognose 2026
+  date: 2026-09-11
+  values: {2026: 1.4, 2027: 0.8}
+  inflation: {2026: 2.6}
+  source: https://www.boersen-zeitung.de/konjunktur-politik/institute-verdoppeln-prognose-fuer-2026-nur-miniwachstum-2028
+  check: Pressemeldung, Datum ungefähr
+- by: RWI
+  round: Herbstprognose 2026
+  date: 2026-09-11
+  values: {2026: 1.3, 2027: 1.1}
+  inflation: {2026: 2.7}
+  source: https://www.boersen-zeitung.de/konjunktur-politik/institute-verdoppeln-prognose-fuer-2026-nur-miniwachstum-2028
   check: Pressemeldung, Datum ungefähr
