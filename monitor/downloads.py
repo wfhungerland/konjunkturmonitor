@@ -105,6 +105,12 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
         ev = c["calendar"]["events"]
         df = pd.DataFrame({"Datum (geschätzt)": [e["date"] for e in ev], "Veröffentlichung": [e["name"] for e in ev], "Quelle": [e["source"] for e in ev]})
         return df, {"kind": "list"}
+    if typ == "heatbars" and c.get("heat"):
+        h = c["heat"]
+        df = pd.DataFrame({"Branche": [r["label"] for r in h["rows"]],
+                           "Dreimonatsvergleich, %": [r["m3"] for r in h["rows"]],
+                           "Niveau gegenüber 2019, %": [r["level"] for r in h["rows"]]})
+        return df.iloc[::-1].reset_index(drop=True), {"kind": "table"}
     if typ == "heat" and c.get("heat"):
         h = c["heat"]
         df = pd.DataFrame({"Branche": [r["label"] for r in h["rows"]],

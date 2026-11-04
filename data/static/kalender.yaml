@@ -9,8 +9,8 @@ links:
   - {name: "Eurostat, Release calendar", url: "https://ec.europa.eu/eurostat/news/release-calendar"}
   - {name: "Deutsche Bundesbank, Wöchentlicher Aktivitätsindex", url: "https://www.bundesbank.de/de/statistiken/konjunktur-und-preise/woechentlicher-aktivitaetsindex"}
 items:
-  - {name: "Auftragseingang Industrie", source: Destatis, rule: {workday: 4}, topic: industrie, charts: [industry, orders_split, orders_euro, orders_heat]}
-  - {name: "Produktion im Produzierenden Gewerbe", source: Destatis, rule: {workday: 5}, topic: industrie, charts: [branch_heat, prod_groups, sales, bau_prod]}
+  - {name: "Auftragseingang Industrie", source: Destatis, rule: {workday: 4}, topic: industrie, charts: [industry, orders_split, orders_euro, orders_heat, orders_heat_bars]}
+  - {name: "Produktion im Produzierenden Gewerbe", source: Destatis, rule: {workday: 5}, topic: industrie, charts: [branch_heat, branch_heat_bars, prod_groups, sales, bau_prod]}
   - {name: "Außenhandel", source: Destatis, rule: {workday: 6}, topic: export, charts: [trade, trade_region]}
   - {name: "Unternehmensinsolvenzen", source: Destatis, rule: {workday: 8}, topic: insolvenzen, charts: [insolv, insolv_land, insolv_emp, insolv_claims]}
   - {name: "Verbraucherpreise, endgültig", source: Destatis, rule: {workday: 9}, topic: preise, charts: [cpi, cpi_contrib, cpi_core]}
