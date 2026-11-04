@@ -17,7 +17,7 @@
 <style>
   :root { --bg: #f7f7f5; --card: #fff; --text: #000; --muted: #000; --line: #e2e5e9; --accent: #164a8c; --dark: #002060; }
   * { box-sizing: border-box; }
-  html, body { max-width: 100%; overflow-x: hidden; }
+  html, body { max-width: 100%; overflow-x: clip; }  /* clip statt hidden, sonst bleibt die Kopfzeile beim Scrollen nicht oben */
   body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
   a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
   header { background: var(--card); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; }
@@ -925,8 +925,9 @@ function build() {
   const d = new Date(DATA.generated_at); document.getElementById("stand").textContent = "Stand: " + d.toLocaleDateString("de-DE");
   const AS = DATA.all_series || {};
   document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${encodeURI(AS.xlsx)}" download>Excel</a> · <a href="${encodeURI(AS.csv)}" download>CSV</a>` : "",
-    `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, DATA.page_docx ? `<a href="${encodeURI(DATA.page_docx)}" download>Ganze Seite als Word-Datei zum Bearbeiten</a>` : "", `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
-  if (DATA.deck) document.getElementById("deck").innerHTML = `<a href="${encodeURI(DATA.deck)}" download>Alle Abbildungen als PowerPoint</a>`;
+    `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
+  document.getElementById("deck").innerHTML = [DATA.deck ? `<a href="${encodeURI(DATA.deck)}" download>Alle Abbildungen als PowerPoint</a>` : "",
+    DATA.page_docx ? `<a href="${encodeURI(DATA.page_docx)}" download>Ganze Seite als Word-Datei zum Bearbeiten</a>` : ""].filter(Boolean).join(" · ");
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const LY = DATA.layout || {};
   if (LY.minimal) document.body.classList.add("minimal");
