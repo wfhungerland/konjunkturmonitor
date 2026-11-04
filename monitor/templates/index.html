@@ -219,8 +219,9 @@
   .cside .capbox b, .cside .notebox b { display: block; margin-bottom: 2px; }
   .cside .notebox[hidden] { display: none; }
   .cside .btn { align-self: flex-start; }
-  .tlist { list-style: none; padding: 0; margin: 10px auto 4px; max-width: 360px; columns: 2; column-gap: 24px; font-size: 13.5px; }
-  .tlist li { display: flex; justify-content: space-between; gap: 8px; break-inside: avoid; }
+  .tlist { list-style: none; padding: 0; margin: 10px auto 4px; max-width: 540px; columns: 2; column-gap: 32px; font-size: 13.5px; }
+  .tlist li { display: flex; justify-content: space-between; gap: 8px; break-inside: avoid; white-space: nowrap; }
+  @media (max-width: 480px) { .tlist { columns: 1; max-width: 300px; } }
   @media print {
     header, nav, .fab, .totop, details.dl, .rawtoggle, .btn, button.copy, button.copy1, .seg, .navmore { display: none !important; }
     body { background: #fff; font-size: 11pt; }
@@ -377,7 +378,7 @@ function timeChart(el, c) {
   if (c.threshold != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.threshold, y1: c.threshold, line: { color: WARN, width: 1.5, dash: "dash" } });
   if (c._rec ?? c.recessions_on) recIn(c, r).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak < r[0] ? r[0] : rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.22)", line: { width: 0 }, layer: "below" }));
   const LY = DATA.layout || {}, annotations = [];
-  (c.notes || []).forEach((n, k) => { shapes.push({ type: "line", xref: "x", yref: "paper", x0: n.date, x1: n.date, y0: 0, y1: 1, line: { color: "#595959", width: 1, dash: "dot" } });
+  (c._shownotes ? c.notes || [] : []).forEach((n, k) => { shapes.push({ type: "line", xref: "x", yref: "paper", x0: n.date, x1: n.date, y0: 0, y1: 1, line: { color: "#595959", width: 1, dash: "dot" } });
     annotations.push({ xref: "x", yref: "paper", x: n.date, y: 1, text: String(k + 1), showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" } }); });
   if (c.band && LY.compare_band) {
     shapes.push({ type: "rect", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.band.lo, y1: c.band.hi, fillcolor: "rgba(120,120,120,0.10)", line: { width: 0 }, layer: "below" });
@@ -583,7 +584,7 @@ function seasonalChart(el, c) {
   const traces = [
     { type: "scatter", mode: "lines", x: xs, y: c.y, name: "Monat", line: { color: PAL[1], width: 1 }, opacity: 0.6, hovertemplate: `%{y:,.${d}f}<extra>Monat</extra>` },
     { type: "scatter", mode: "lines", x: xs, y: c.ma12, name: "Mittel aus 12 Monaten", line: { color: PAL[0], width: 3 }, hovertemplate: `%{y:,.${d}f}<extra>12-Monats-Mittel</extra>` },
-    { type: "scatter", mode: "lines", x: xs, y: c.norm, name: "Üblich vor Corona (2016–2019)", line: { color: "#7f7f7f", width: 1.5, dash: "dash" }, hovertemplate: `%{y:,.${d}f}<extra>Mittel desselben Monats 2016–2019</extra>` },
+    { type: "scatter", mode: "lines", x: xs, y: c.norm, name: "Üblich vor Corona (2015–2019)", line: { color: "#7f7f7f", width: 1.5, dash: "dash" }, hovertemplate: `%{y:,.${d}f}<extra>Mittel desselben Monats 2015–2019</extra>` },
   ];
   const shapes = xa.shapes.slice();
   if (c._rec ?? c.recessions_on) recIn(c, r).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak < r[0] ? r[0] : rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.22)", line: { width: 0 }, layer: "below" }));
@@ -666,7 +667,7 @@ function tilesChart(el, c) {
       box.appendChild(grid);
     }
     const lo = tileColor(-m, m), hi = tileColor(m, m);
-    box.insertAdjacentHTML("beforeend", `<ol class="tlist">${w.rows.slice().sort((p, q) => q.change - p.change).map(r => `<li><span>${esc(r.name)}</span><b style="color:${r.change >= 0 ? "#B45309" : "#0070C0"}">${pct0(r.change)}</b></li>`).join("")}</ol>`);
+    box.insertAdjacentHTML("beforeend", `<ol class="tlist">${w.rows.slice().sort((p, q) => q.change - p.change).map(r => `<li><span>${esc(r.name)}</span><span style="color:${r.change >= 0 ? "#B45309" : "#0070C0"}">${pct0(r.change)}</span></li>`).join("")}</ol>`);
     box.insertAdjacentHTML("beforeend", `<div class="tlegend"><span><i style="background:${lo.bg}"></i>Abnahme</span><span><i style="background:#fff;border:1px solid #ccc"></i>unverändert</span><span><i style="background:${hi.bg}"></i>Zunahme</span></div>`);
     const card = el.closest(".card");
     if (card) {
@@ -765,14 +766,15 @@ function card(c, no) {
   const ch = document.createElement("div"); ch.className = ["tiles", "heat", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
   const side = document.createElement("aside"); side.className = "cside"; body.appendChild(side);
-  if (c.caption) side.insertAdjacentHTML("beforeend", `<div class="capnote cap">${esc(c.caption)}</div>`);
+  const capx = (c.caption || "") + ((c.notes || []).length ? " Über „Ausschläge und Sondereffekte“ erscheinen nummerierte, gepunktete Linien an den betroffenen Monaten." : "");
+  if (capx) side.insertAdjacentHTML("beforeend", `<div class="capnote cap">${esc(capx.trim())}</div>`);
   const nts = (c.notes || []).map((n, k) => `${k + 1} ${n.text}`).concat((c.outliers || []).map(o => `${o.label} im ${MONTHS_L[+o.date.slice(5, 7) - 1]} ${o.date.slice(0, 4)}: ${(o.change > 0 ? "+" : "") + fmt(o.change, 1)} % ggü. Vormonat${(c.notes || []).length ? "" : " (automatisch markiert)"}`));
   if (nts.length) {
     const nb = document.createElement("button"); nb.type = "button"; nb.className = "btn"; nb.textContent = "Ausschläge und Sondereffekte"; nb.setAttribute("aria-pressed", "false");
     const nbox = document.createElement("div"); nbox.className = "notebox"; nbox.hidden = true;
     nbox.innerHTML = `<b>Ausschläge und Sondereffekte</b>${sentHtml(nts, "<br>")}<p class="tnote" style="margin:4px 0 0">Automatisch markiert: Veränderung zum Vormonat mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019. Die Ursache nennt die Quelle.</p>`;
     bindCopies(nbox, nts, `Abb. ${no}`);
-    nb.onclick = () => { nbox.hidden = !nbox.hidden; nb.setAttribute("aria-pressed", String(!nbox.hidden)); };
+    nb.onclick = () => { nbox.hidden = !nbox.hidden; nb.setAttribute("aria-pressed", String(!nbox.hidden)); c._shownotes = !nbox.hidden; if ((c.notes || []).length && ch.dataset.done) redraw(); };
     side.appendChild(nb); side.appendChild(nbox);
   }
   let src = (c.sources || []).join(", ");
