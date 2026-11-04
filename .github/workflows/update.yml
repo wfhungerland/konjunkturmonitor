@@ -37,6 +37,12 @@ jobs:
           GENESIS_USER: ${{ secrets.GENESIS_USER }}
           GENESIS_PASSWORD: ${{ secrets.GENESIS_PASSWORD }}
         run: python -m monitor run --no-cache
+      - name: Grafiken für die Word-Datei
+        continue-on-error: true
+        run: |
+          pip install -q playwright
+          python -m playwright install --with-deps chromium
+          python -m monitor.shots site
       - name: Daten committen
         if: github.event_name != 'pull_request'
         run: |

@@ -1,6 +1,7 @@
 """Die ganze Seite als Word-Datei zum Bearbeiten mit Änderungsverfolgung und Kommentaren.
 
-Reihenfolge und Texte folgen der Seite, aufgeklappte Teile eingeschlossen. Grafiken stehen als Platzhalter.
+Reihenfolge und Texte folgen der Seite, aufgeklappte Teile eingeschlossen. Grafiken als Bildschirmfoto der Seite
+(monitor.shots), sonst als Platzhalter.
 Vor jedem bearbeitbaren Text steht eine graue Kennung in doppelten eckigen Klammern, etwa [[chart.cpi.caption]].
 Sie zeigt, woher der Text stammt (monitor.yaml, Katalog oder automatisch erzeugter Satz), und erlaubt es,
 eine bearbeitete Fassung der richtigen Stelle zuzuordnen. Kennungen bitte nicht ändern.
@@ -46,7 +47,7 @@ class _Quellen(HTMLParser):
 def write_page_docx(payload: dict, out: Path) -> str:
     from docx import Document
     from docx.enum.text import WD_BREAK
-    from docx.shared import Pt, RGBColor
+    from docx.shared import Cm, Pt, RGBColor
 
     doc = Document()
     st = doc.styles["Normal"]
@@ -144,7 +145,11 @@ def write_page_docx(payload: dict, out: Path) -> str:
                 para(" · ".join(meta), size=9, grey=True)
             if c.get("unit"):
                 para(c["unit"], f"chart.{cid}.unit", size=9)
-            para(f"[Grafik {kind} {c['no']}: {c.get('title', '')}]", size=9, grey=True)
+            shot = out / "img" / f"abb-{c['no']}.png"
+            if shot.exists():
+                doc.add_picture(str(shot), width=Cm(16))
+            else:
+                para(f"[Grafik {kind} {c['no']}: {c.get('title', '')}]", size=9, grey=True)
             if c.get("caption"):
                 para(c["caption"], f"chart.{cid}.caption", italic=True)
             for k, n in enumerate(c.get("notes") or []):
