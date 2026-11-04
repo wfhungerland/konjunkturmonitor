@@ -33,10 +33,10 @@ jobs:
       - name: Tests
         run: pytest -q
       - name: Probe (temporär)
-        continue-on-error: true
         run: |
           curl -s -m 60 "https://data-api.ecb.europa.eu/service/data/EXR/D..EUR.EN00.A?lastNObservations=1&format=csvdata" | cut -d, -f1-12 | head -20
           curl -s -m 60 "https://data-api.ecb.europa.eu/service/data/EXR/D.USD+CNY+GBP+CHF.EUR.SP00.A?lastNObservations=1&format=csvdata" | cut -d, -f1-12 | head -8
+          exit 1
       - name: Daten holen und Seite bauen
         env:
           GENESIS_USER: ${{ secrets.GENESIS_USER }}
