@@ -34,8 +34,8 @@ jobs:
         run: pytest -q
       - name: Probe (temporär)
         run: |
-          curl -s -m 60 "https://data-api.ecb.europa.eu/service/data/EXR/D..EUR.EN00.A?lastNObservations=1&format=csvdata" | cut -d, -f1-12 | head -20
-          curl -s -m 60 "https://data-api.ecb.europa.eu/service/data/EXR/D.USD+CNY+GBP+CHF.EUR.SP00.A?lastNObservations=1&format=csvdata" | cut -d, -f1-12 | head -8
+          curl -s -m 90 "https://data-api.ecb.europa.eu/service/data/EXR/D..EUR.EN00.A?lastNObservations=1&format=csvdata&detail=full" | python3 -c "import csv,sys; [print(r['KEY'], '|', r.get('TITLE'), '|', r.get('TITLE_COMPL','')[:200]) for r in csv.DictReader(sys.stdin)]"
+          curl -s -m 90 "https://data-api.ecb.europa.eu/service/data/EXR/D.USD+CNY+GBP+CHF.EUR.SP00.A?lastNObservations=1&format=csvdata" | cut -d, -f1-9 | head -8
           exit 1
       - name: Daten holen und Seite bauen
         env:
