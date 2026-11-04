@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import copy
 from datetime import datetime
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -157,33 +158,35 @@ def write_xlsx(c: dict, df: pd.DataFrame, plan: dict, path: Path, stand: str, ci
         bold = wb.add_format({"bold": True, "font_name": FONT, "font_size": 12})
         norm = wb.add_format({"font_name": FONT, "font_color": MUTED})
         wrap = wb.add_format({"font_name": FONT, "text_wrap": True, "valign": "top"})
-        sheet = wb.add_worksheet("Abbildung")
+        sn = c.get("_sheet", "Daten")
+        sheet = wb.add_worksheet("Grafik")
         sheet.hide_gridlines(2)
-        sheet.write(0, 0, title, bold)
+        sheet.write(0, 0, c.get("_stem", title), bold)
         sheet.write(1, 0, " · ".join(x for x in (sub, unit) if x), norm)
         sheet.write(24, 0, c.get("caption", ""), norm)
         sheet.write(25, 0, source_line(c), norm)
-        df.to_excel(xw, sheet_name="Daten", index=False, startrow=3)
-        ws = xw.sheets["Daten"]
-        ws.write(0, 0, title, bold)
+        df.to_excel(xw, sheet_name=sn, index=False, startrow=3)
+        ws = xw.sheets[sn]
+        ws.write(0, 0, c.get("_stem", title), bold)
         ws.write(1, 0, source_line(c), norm)
         ws.set_column(0, 0, 16)
         ws.set_column(1, max(1, len(df.columns) - 1), 18)
         chart = _xlsx_chart(wb, df, plan, c)
         if chart is not None:
             sheet.insert_chart(3, 0, chart)
-        info = wb.add_worksheet("Info")
+        info = wb.add_worksheet("Quelle")
         info.set_column(0, 0, 22)
         info.set_column(1, 1, 110)
-        for r, (k, v) in enumerate([("Abbildung", title), ("Zeitraum und Bereinigung", sub), ("Einheit", unit),
+        for r, (k, v) in enumerate([("Datei", c.get("_stem", "")), ("Abbildung", title), ("Zeitraum und Bereinigung", sub), ("Einheit", unit),
                                     ("Erläuterung", c.get("caption", "")), ("Quelle", source_line(c)),
-                                    ("Stand", stand), ("Zitiervorschlag", cite), ("Lizenz", CONTENT_LICENSE)]):
+                                    ("Datenstand", c.get("datenstand", "")), ("Abrufdatum", stand), ("Zitiervorschlag", cite), ("Lizenz", CONTENT_LICENSE)]):
             info.write(r, 0, k, wb.add_format({"bold": True, "font_name": FONT}))
             info.write(r, 1, v, wrap)
         sheet.activate()
 
 
 def _xlsx_chart(wb, df: pd.DataFrame, plan: dict, c: dict):
+    sn = c.get("_sheet", "Daten")
     n = len(df)
     if not n or plan["kind"] in ("none", "tiles", "table", "list"):
         return None
@@ -192,9 +195,9 @@ def _xlsx_chart(wb, df: pd.DataFrame, plan: dict, c: dict):
     col = {name: j for j, name in enumerate(df.columns)}
 
     def ref(j):
-        return ["Daten", 4, j, 3 + n, j]
+        return [sn, 4, j, 3 + n, j]
 
-    cats = ["Daten", 4, 0, 3 + n, 0]
+    cats = [sn, 4, 0, 3 + n, 0]
     kind = plan["kind"]
     if kind == "scatter":
         ch = wb.add_chart({"type": "scatter", "subtype": "straight_with_markers"})
@@ -203,12 +206,12 @@ def _xlsx_chart(wb, df: pd.DataFrame, plan: dict, c: dict):
     elif kind in ("hbar", "columns_cat"):
         ch = wb.add_chart({"type": "bar" if kind == "hbar" else "column"})
         for i, name in enumerate(df.columns[1:]):
-            ch.add_series({"name": ["Daten", 3, i + 1], "categories": cats, "values": ref(i + 1),
+            ch.add_series({"name": [sn, 3, i + 1], "categories": cats, "values": ref(i + 1),
                            "fill": {"color": PALETTE[i % len(PALETTE)]}, "gap": 60})
     else:
         ch = wb.add_chart({"type": "column", "subtype": "stacked"}) if kind in ("stacked", "columns") else wb.add_chart({"type": "line"})
         for i, name in enumerate(plan.get("bars", []) if kind in ("stacked", "columns") else []):
-            ch.add_series({"name": ["Daten", 3, col[name]], "categories": cats, "values": ref(col[name]),
+            ch.add_series({"name": [sn, 3, col[name]], "categories": cats, "values": ref(col[name]),
                            "fill": {"color": BAR_PALETTE[i % len(BAR_PALETTE)]}, "gap": 40})
         target = ch
         if kind == "stacked" and plan.get("lines"):
@@ -219,10 +222,10 @@ def _xlsx_chart(wb, df: pd.DataFrame, plan: dict, c: dict):
             line = {"color": "#C00000" if name in plan.get("dashed", []) and name.startswith("Schwelle") else color, "width": width}
             if name in plan.get("dashed", []):
                 line.update(dash_type="dash", width=1.25, color=PALETTE[1] if name.startswith("Referenz") else line["color"])
-            target.add_series({"name": ["Daten", 3, col[name]], "categories": cats, "values": ref(col[name]),
+            target.add_series({"name": [sn, 3, col[name]], "categories": cats, "values": ref(col[name]),
                                "line": line, "marker": {"type": "none"}})
         for i, name in enumerate(plan.get("thin", [])):
-            target.add_series({"name": ["Daten", 3, col[name]], "categories": cats, "values": ref(col[name]),
+            target.add_series({"name": [sn, 3, col[name]], "categories": cats, "values": ref(col[name]),
                                "line": {"color": PALETTE[i % len(PALETTE)], "width": 0.75, "transparency": 50}, "marker": {"type": "none"}})
         if target is not ch:
             ch.combine(target)
@@ -447,7 +450,7 @@ def add_slide(prs, c: dict, df: pd.DataFrame, plan: dict, stand: str, number: in
     _text(slide, UNIT, unit, 10, "#000000", align=PP_ALIGN.RIGHT)
     _text(slide, SOURCE, source_line(c), 8, MUTED)
     if c.get("caption"):
-        slide.notes_slide.notes_text_frame.text = c["caption"]
+        slide.notes_slide.notes_text_frame.text = (c.get("_stem", "") + "\n\n" + c["caption"]).strip()
     kind = plan["kind"]
     if df.empty or kind == "none":
         return
@@ -508,7 +511,7 @@ TILE_POS = {"SH": (0, 2), "HB": (1, 1), "HH": (1, 2), "MV": (1, 3), "NW": (2, 0)
 
 def _tile_color(v: float, m: float) -> tuple[str, str]:
     k = min(1.0, abs(v) / m)
-    base = (81, 21, 74) if v >= 0 else (0, 112, 192)
+    base = (227, 108, 10) if v >= 0 else (0, 112, 192)
     rgb = [round(255 - (255 - x) * k * 0.85) for x in base]
     return "#%02X%02X%02X" % tuple(rgb), ("#FFFFFF" if k > 0.55 else "#000000")
 
@@ -610,7 +613,7 @@ def _tiles(slide, c: dict):
 
 
 def _table(slide, df: pd.DataFrame) -> None:
-    """Tabelle mit Farbskala (violett Zunahme, blau Abnahme) für Wärmetabellen."""
+    """Tabelle mit Farbskala (orange Zunahme, blau Abnahme) für Wärmetabellen."""
     from pptx.util import Pt
 
     rows, cols = len(df) + 1, len(df.columns)
@@ -660,9 +663,43 @@ def new_presentation():
 
 
 # ---------------------------------------------------------------------------
+# Dateinamen (Regelwerk Dateinamen Konjunkturmonitor)
+# ---------------------------------------------------------------------------
+_TRANS = str.maketrans({"ä": "ae", "ö": "oe", "ü": "ue", "Ä": "Ae", "Ö": "Oe", "Ü": "Ue", "ß": "ss"})
+_FILL = {"der", "die", "das", "des", "dem", "den", "und", "im", "in", "von", "vom", "zur", "zum", "fuer", "mit", "nach",
+         "je", "auf", "aus", "ein", "eine", "einer", "an", "bei", "ohne", "gegenueber"}
+
+
+def short_titles(root: Path) -> dict:
+    """Kurztitel je Abbildung aus abbildungen.txt (Abbildung;Kurztitel;erste Ausgabe;gestrichen ab)."""
+    path = root / "abbildungen.txt"
+    out = {}
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if line.strip() and not line.startswith("#"):
+                f = line.split(";")
+                if len(f) >= 2 and f[1].strip():
+                    out[f[0].strip()] = f[1].strip()
+    return out
+
+
+def clean_title(title: str) -> str:
+    """Höchstens vier Wörter, ohne Artikel und Füllwörter, nur Buchstaben, Ziffern, Leerzeichen und Bindestrich."""
+    t = title.translate(_TRANS)
+    words = [w for w in re.sub(r"[^A-Za-z0-9 -]", " ", t).split() if w.lower() not in _FILL]
+    return " ".join(words[:4]) or "Abbildung"
+
+
+def file_stem(c: dict, date: str, width: int, shorts: dict) -> str:
+    kind = "Tab." if c.get("type") in ("heat", "calendar") else "Abb."
+    title = clean_title(shorts.get(c["chart"]) or c.get("title", ""))
+    return f"Konjunkturmonitor ({date}, {kind} {c['no']:0{width}d}) {title}"[:79]
+
+
+# ---------------------------------------------------------------------------
 # Alles zusammen
 # ---------------------------------------------------------------------------
-def write_all(payload: dict, out: Path) -> None:
+def write_all(payload: dict, out: Path, root: Path | None = None) -> None:
     global GEO
     GEO = payload.get("geo")
     folder = out / "dl"
@@ -672,18 +709,28 @@ def write_all(payload: dict, out: Path) -> None:
     cite = f"{site['author']} ({stand[-4:]}): Konjunkturmonitor. Stand {stand}. {site['url']}"
     deck = new_presentation()
     number = 0
+    date = payload["generated_at"][:10]
+    shorts = short_titles(root or Path.cwd())
+    total = sum(len(t["charts"]) for t in payload["topics"])
+    width = 3 if total >= 100 else 2
     for t in payload["topics"]:
         for c in t["charts"]:
             number += 1
             c["topic_title"] = t.get("title", "")
             df, plan = chart_table(c)
-            stem = f"abb{c['no']:02d}_{c['chart']}"
+            stem = file_stem(c, date, width, shorts)
+            c["_stem"] = stem
+            c["_sheet"] = stem.split(", ", 1)[1].split(")")[0]  # etwa „Abb. 04“
+            xs = [x for s in (c.get("series") or []) if isinstance(s, dict) for x in s.get("x", [])]
+            c["datenstand"] = max(xs) if xs else ""
             files = {}
             if not df.empty:
                 csv = df.copy()
                 if "Datum" in csv:
                     csv["Datum"] = pd.to_datetime(csv["Datum"]).dt.strftime("%Y-%m-%d")
-                csv.to_csv(folder / f"{stem}.csv", sep=";", decimal=",", index=False, encoding="utf-8-sig")
+                with open(folder / f"{stem}.csv", "w", encoding="utf-8-sig", newline="") as fh:
+                    fh.write(stem + "\n")  # Regel 9: Stamm in der ersten Zeile
+                    csv.to_csv(fh, sep=";", decimal=",", index=False)
                 files["csv"] = f"dl/{stem}.csv"
                 write_xlsx(c, df, plan, folder / f"{stem}.xlsx", stand, cite)
                 files["xlsx"] = f"dl/{stem}.xlsx"
@@ -692,7 +739,9 @@ def write_all(payload: dict, out: Path) -> None:
             prs.save(folder / f"{stem}.pptx")
             files["pptx"] = f"dl/{stem}.pptx"
             add_slide(deck, c, df, plan, stand, number)
+            files["png"] = f"{stem}.png"
             c["files"] = files
-            c.pop("topic_title", None)
-    deck.save(folder / "konjunkturmonitor_alle_abbildungen.pptx")
-    payload["deck"] = "dl/konjunkturmonitor_alle_abbildungen.pptx"
+            for k in ("topic_title", "_sheet"):
+                c.pop(k, None)
+    deck.save(folder / f"Konjunkturmonitor ({date}) Alle Abbildungen.pptx")
+    payload["deck"] = f"dl/Konjunkturmonitor ({date}) Alle Abbildungen.pptx"

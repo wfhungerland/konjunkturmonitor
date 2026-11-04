@@ -18,13 +18,13 @@
   :root { --bg: #f7f7f5; --card: #fff; --text: #1d232b; --muted: #3f4752; --line: #e2e5e9; --accent: #164a8c; --dark: #002060; }
   * { box-sizing: border-box; }
   html, body { max-width: 100%; overflow-x: hidden; }
-  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 "Palatino Linotype", Palatino, "Book Antiqua", serif; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
   a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
   header { background: var(--card); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; }
   .bar { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
   .bar h1 { font-size: 19px; margin: 0; }
   .bar .stand { color: var(--muted); font-size: 13px; }
-  nav { display: flex; flex-wrap: wrap; gap: 4px 12px; font: 14px "Arial Narrow", Arial, sans-serif; }
+  nav { display: flex; flex-wrap: wrap; gap: 4px 12px; font: 14px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
   main { max-width: 1180px; margin: 0 auto; padding: 8px 16px 40px; }
   .claim { font-size: 21px; margin: 18px 0 18px; max-width: 46em; }
   /* Startseite: sieben Fragen */
@@ -33,31 +33,31 @@
   .q:hover { border-color: var(--accent); text-decoration: none; }
   .q .ask { font-size: 17px; font-weight: bold; }
   .q .big { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-  .q .num { font: bold 34px/1 "Arial Narrow", Arial, sans-serif; color: var(--dark); }
-  .q .u { font: 15px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
-  .verdict { display: inline-block; font: 13px "Arial Narrow", Arial, sans-serif; color: var(--dark); background: #e6eef8; border-radius: 10px; padding: 1px 8px; }
+  .q .num { font: bold 34px/1 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--dark); }
+  .q .u { font: 15px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); }
+  .verdict { display: inline-block; font: 13px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--dark); background: #e6eef8; border-radius: 10px; padding: 1px 8px; }
   .q .head { font-size: 14.5px; }
-  .q .per { font: 12px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
+  .q .per { font: 12px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); }
   .q svg { width: 100%; height: 34px; }
   /* Themen */
-  section.topic { margin-top: 44px; scroll-margin-top: 60px; }
+  section.topic { margin-top: 88px; scroll-margin-top: 60px; }
   section.topic > h2 { font-size: 26px; margin: 0 0 4px; }
   .answer { font-size: 18px; margin: 4px 0 6px; max-width: 48em; }
   .more { color: var(--text); margin: 0 0 8px; padding-left: 18px; max-width: 48em; }
   .explain { background: var(--card); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 8px 0 14px; max-width: 48em; font-size: 15px; }
-  .explain b { font-family: "Arial Narrow", Arial, sans-serif; color: var(--accent); }
-  .charts { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+  .explain b { font-family: "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); }
+  .charts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
   @media (max-width: 900px) { .charts { grid-template-columns: 1fr; } }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px 8px; min-width: 0; }
   .card h3 { font-size: 16px; margin: 0 0 2px; }
-  .card .sub, .card .unit, .card .cap, .card .src { font: 13px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); }
+  .card .sub, .card .unit, .card .cap, .card .src { font: 13px/1.4 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); }
   .card .unit { text-align: right; margin-top: 2px; }
-  .card .acts { font: 13px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin-top: 6px; }
+  .card .acts { font: 13px/1.4 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); margin-top: 6px; }
   .card .acts a, .card .acts button { color: var(--link, #0b4f8a); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
   .card .acts a:hover, .card .acts button:hover { text-decoration: underline; }
   .card .cap { color: var(--text); margin: 6px 0 4px; font-size: 13.5px; }
   .card .cap.notes { color: var(--muted); }
-  .card .nextup { font: 13px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin-top: 4px; }
+  .card .nextup { font: 13px/1.4 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); margin-top: 4px; }
   .card .chart { width: 100%; aspect-ratio: 5 / 3; min-height: 260px; overflow: hidden; }
   .charts.single { grid-template-columns: minmax(0, 1fr); }
   .charts.single .card .chart { aspect-ratio: 5 / 2; max-height: 440px; }
@@ -72,18 +72,18 @@
   .seg button[aria-pressed="true"] { background: #0070C0; color: #fff; }
   .tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; max-width: 330px; margin: 10px auto 4px; }
   .tile { aspect-ratio: 1 / 1; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-          font: 13px/1.15 "Arial Narrow", Arial, sans-serif; border: 1px solid #e2e5e9; }
+          font: 13px/1.15 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; border: 1px solid #e2e5e9; }
   .tile b { font-size: 15px; }
-  .tlegend { display: flex; justify-content: center; gap: 10px; font: 12px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
+  .tlegend { display: flex; justify-content: center; gap: 10px; font: 12px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); }
   .tlegend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -2px; margin-right: 3px; }
   /* Tufte-Darstellung, über DATA.layout schaltbar */
   .overview { font-size: 19px; margin: 14px 0 6px; max-width: 46em; }
-  .stable { width: 100%; border-collapse: collapse; font: 15px/1.35 "Arial Narrow", Arial, sans-serif; margin: 6px 0 4px; }
+  .stable { width: 100%; border-collapse: collapse; font: 15px/1.35 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; margin: 6px 0 4px; }
   .stable th { text-align: right; font-weight: normal; color: var(--muted); border-bottom: 1px solid #999; padding: 4px 8px 4px 0; font-size: 13px; vertical-align: bottom; }
   .stable th.l { text-align: left; }
   .stable td { padding: 3px 8px 3px 0; border-bottom: 1px solid #eee; vertical-align: middle; }
   .stable tr.row { cursor: pointer; } .stable tr.row:hover td { background: #f3f6fa; }
-  .stable tr.grp td { border-bottom: 0; padding-top: 12px; font: bold 13px "Arial Narrow", Arial, sans-serif; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .stable tr.grp td { border-bottom: 0; padding-top: 12px; font: bold 13px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
   .stable tr.grp a { color: inherit; }
   .stable td.v { text-align: right; font-variant-numeric: tabular-nums; font-weight: bold; color: var(--dark); white-space: nowrap; }
   .stable td.d { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -93,7 +93,7 @@
   .stable td.t { text-align: center; font-size: 14px; }
   .stable td.s svg { width: 130px; height: 22px; display: block; }
   .stable a { color: inherit; }
-  .tnote { font: 13px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin: 0 0 8px; max-width: 60em; }
+  .tnote { font: 13px/1.4 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); margin: 0 0 8px; max-width: 60em; }
   .up-bad { color: #C00000; } .up-ok, .down { color: #0070C0; } .flat { color: #7f7f7f; }
   @media (max-width: 760px) {
     .stable thead { display: none; }
@@ -113,7 +113,7 @@
   body.minimal .card { border: 0; border-radius: 0; padding: 4px 0 8px; background: transparent; }
   body.minimal .q { border-color: #e5e5e5; }
   body.minimal .verdict { background: none; padding: 0; color: var(--muted); font-style: italic; }
-  body.minimal .explain { background: #f2f3f4; border-left: 0; padding: 8px 12px; border-radius: 4px; color: var(--text); font: 14px/1.45 "Arial Narrow", Arial, sans-serif; }
+  body.minimal .explain { background: #f2f3f4; border-left: 0; padding: 8px 12px; border-radius: 4px; color: var(--text); font: 14px/1.45 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
   .explain .ico, .card .cap .ico { margin-right: 4px; }
   body.minimal .explain b { color: var(--muted); }
   @media (min-width: 1100px) {
@@ -121,67 +121,97 @@
     body.minimal .intro .explain { grid-column: 2; grid-row: 1 / span 3; margin-top: 6px; }
   }
   details.morecharts { margin-top: 10px; }
-  details.morecharts > summary { cursor: pointer; font: 15px "Arial Narrow", Arial, sans-serif; color: var(--accent); margin: 4px 0 10px; }
+  details.morecharts > summary { cursor: pointer; font: 15px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); margin: 4px 0 10px; }
   details.morecharts > summary .list { display: block; color: var(--muted); font-size: 13.5px; margin: 2px 0 0 1.1em; }
   details.morecharts[open] > summary .list { display: none; }
   @media (max-width: 700px) { .card .chart { aspect-ratio: auto; height: 300px; min-height: 0; } .charts.single .card .chart { aspect-ratio: auto; height: 300px; } .card .chart.square { height: auto; aspect-ratio: 1 / 1; } .card .chart.multi { height: auto; } .claim { font-size: 18px; } section.topic > h2 { font-size: 22px; } }
   .multiples { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 10px 16px; }
   @media (max-width: 600px) { .multiples { grid-template-columns: repeat(2, minmax(0, 1fr)); } .multiples > div { grid-column: auto !important; } .multiples > div.span-m { grid-column: 1 / -1 !important; } }
   .multiples .mini { height: 150px; }
-  .multiples .mt { font: 13px/1.3 "Arial Narrow", Arial, sans-serif; margin: 0; }
+  .multiples .mt { font: 13px/1.3 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; margin: 0; }
   .multiples .mt span.mtsub { color: var(--muted); }
   .heat { overflow-x: auto; }
   .card.wide { grid-column: 1 / -1; }
-  .heat table { border-collapse: collapse; font: 12.5px/1.2 "Arial Narrow", Arial, sans-serif; width: 100%; }
+  .heat table { border-collapse: collapse; font: 12.5px/1.2 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; width: 100%; }
   .heat th { font-weight: normal; color: var(--muted); padding: 2px 3px; text-align: center; white-space: nowrap; }
   .heat td { padding: 2px 3px; text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .heat td.l { text-align: left; padding-right: 8px; }
   .heat td.k { font-weight: bold; border-left: 1px solid #ccc; }
   .cal { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
   .calm h4 { margin: 4px 0 4px; font-size: 15px; }
-  .calm table { width: 100%; border-collapse: collapse; table-layout: fixed; font: 12px/1.25 "Arial Narrow", Arial, sans-serif; }
+  .calm table { width: 100%; border-collapse: collapse; table-layout: fixed; font: 12px/1.25 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
   .calm th { color: var(--muted); font-weight: normal; text-align: left; padding: 2px 4px; }
   .calm td { vertical-align: top; border-top: 1px solid #e3e3e3; padding: 3px 4px 6px; height: 54px; }
   .calm td b { display: block; color: var(--muted); font-weight: normal; }
   .calm td a { display: block; color: var(--text); margin-top: 2px; overflow-wrap: anywhere; hyphens: auto; }
   .calm td.today { background: #eef4fb; } .calm td.past a { color: #999; }
-  .callinks { font: 13px "Arial Narrow", Arial, sans-serif; color: var(--muted); }
-  .answer button.copy, .ctext button.copy { font: 12.5px "Arial Narrow", Arial, sans-serif; color: var(--accent); background: none; border: 1px solid #c9d3df; border-radius: 3px; padding: 0 6px; cursor: pointer; vertical-align: 1px; }
-  .card .cask { font: bold 16px/1.3 "Palatino Linotype", Palatino, "Book Antiqua", serif; margin: 2px 0 2px; }
-  .card .ctext { font: 15.5px/1.45 "Palatino Linotype", Palatino, "Book Antiqua", serif; margin: 2px 0 8px; color: var(--text); }
+  .callinks { font: 13px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); }
+  .answer button.copy, .ctext button.copy { font: 12.5px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); background: none; border: 1px solid #c9d3df; border-radius: 3px; padding: 0 6px; cursor: pointer; vertical-align: 1px; }
+  .card .cask { font: bold 16px/1.3 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; margin: 2px 0 2px; }
+  .card .ctext { font: 15.5px/1.45 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; margin: 2px 0 8px; color: var(--text); }
   .chartbox { position: relative; }
-  .notebox { width: fit-content; max-width: 62%; margin: 2px 0 4px auto; background: #f2f3f4; border: 0; border-radius: 4px; padding: 8px 12px; font: 13.5px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--text); }
+  .notebox { width: fit-content; max-width: 62%; margin: 2px 0 4px auto; background: #f2f3f4; border: 0; border-radius: 4px; padding: 8px 12px; font: 13.5px/1.4 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--text); }
   @media (max-width: 600px) { .notebox { max-width: none; margin: 4px 0; } }
-  .totop { font: 13px "Arial Narrow", Arial, sans-serif; font-weight: normal; margin-left: 8px; vertical-align: middle; }
-  .fab { position: fixed; right: 14px; bottom: 14px; z-index: 6; background: var(--dark); color: #fff; font: 13px "Arial Narrow", Arial, sans-serif; padding: 6px 10px; border-radius: 16px; opacity: .85; }
+  .totop { font: 13px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; font-weight: normal; margin-left: 8px; vertical-align: middle; }
+  .fab { position: fixed; right: 14px; bottom: 14px; z-index: 6; background: var(--dark); color: #fff; font: 13px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; padding: 6px 10px; border-radius: 16px; opacity: .85; }
   .fab:hover { opacity: 1; text-decoration: none; }
   .card .cap.notes { color: var(--muted); }
   .heat td.k { text-align: right; } .heat td:not(.l) { text-align: right; } .heat th { text-align: right; } .heat th.l { text-align: left; }
   .heat .sortnote { font-size: 11.5px; color: var(--muted); }
   .card.calcard { max-width: 800px; }
   ol.callist .cf { color: var(--muted); font-size: 13px; }
-  ol.callist { list-style: none; margin: 4px 0 8px; padding: 0; font: 14.5px/1.35 "Arial Narrow", Arial, sans-serif; }
+  ol.callist { list-style: none; margin: 4px 0 8px; padding: 0; font: 14.5px/1.35 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
   ol.callist li { display: grid; grid-template-columns: 13em 1fr; gap: 4px 14px; padding: 6px 0; border-top: 1px solid #e6e6e6; }
   ol.callist li.next { background: #eef4fb; padding: 8px 6px; }
   ol.callist .cs { color: var(--muted); font-size: 13px; }
   @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
-  .parthead { margin: 56px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 15px "Arial Narrow", Arial, sans-serif; color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
+  .parthead { margin: 56px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 15px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
   .parthead span { color: var(--muted); margin-right: 6px; }
   .parthead p { text-transform: none; letter-spacing: 0; font-weight: normal; color: var(--muted); font-size: 14.5px; margin: 4px 0 0; }
-  details.moretable > summary { cursor: pointer; font: 14px "Arial Narrow", Arial, sans-serif; color: var(--accent); margin: 2px 0 8px; }
+  details.moretable > summary { cursor: pointer; font: 14px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); margin: 2px 0 8px; }
   nav details.navmore { position: relative; }
   nav details.navmore > summary { cursor: pointer; color: var(--accent); list-style: none; } nav details.navmore > summary::after { content: " ▾"; }
   nav .navlist { position: absolute; right: 0; top: 1.6em; background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 8px 12px; display: grid; grid-template-columns: repeat(2, max-content); gap: 4px 18px; box-shadow: 0 4px 12px rgba(0,0,0,.08); z-index: 10; }
   @media (max-width: 600px) { nav .navlist { left: auto; right: -8px; grid-template-columns: max-content; } }
   .navpart { color: var(--muted); font-size: 13px; margin-left: 6px; }
   ul.missing { padding-left: 18px; } ul.missing li { margin-bottom: 6px; }
-  .news { font: 14.5px/1.4 "Arial Narrow", Arial, sans-serif; color: var(--muted); margin: 0 0 8px; max-width: 60em; }
+  .news { font: 14.5px/1.4 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); margin: 0 0 8px; max-width: 60em; }
   .news b { color: var(--dark); }
   sup.rev { color: var(--muted); font-weight: normal; margin-left: 1px; cursor: help; }
   .stable td.k .ku { display: block; font-size: 12px; color: var(--muted); line-height: 1.2; }
-  .stable small.cu { font-size: 11px; color: #8a929c; }
-  details.fold { margin: 6px 0; } details.fold > summary { cursor: pointer; color: var(--accent); font: 14.5px "Arial Narrow", Arial, sans-serif; }
+  .stable small.cu { font-size: 12px; color: #595959; }
+  details.fold { margin: 6px 0; } details.fold > summary { cursor: pointer; color: var(--accent); font: 14.5px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; }
   details.fold[open] > summary { margin-bottom: 4px; }
+  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 10px 0 18px; }
+  @media (max-width: 760px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .kpi { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border: 1px solid #e3e6ea; border-radius: 8px; color: inherit; background: #fff; }
+  .kpi:hover { border-color: var(--accent); text-decoration: none; }
+  .kpi .kn { font-size: 15px; color: var(--muted); }
+  .kpi .kv { font-size: 30px; font-weight: 600; color: var(--dark); line-height: 1.15; }
+  .kpi .kv span { font-size: 18px; vertical-align: 3px; }
+  .kpi .kw, .kpi .ks { font-size: 13.5px; color: #595959; }
+  .kpi svg { width: 100%; height: 44px; margin-top: 4px; }
+  details.alltable > summary { cursor: pointer; color: var(--accent); font-size: 15px; margin: 4px 0 8px; }
+  details.capfold > summary { cursor: pointer; color: var(--accent); font-size: 14px; margin: 2px 0; }
+  details.dl { display: inline-block; margin-top: 6px; position: relative; }
+  details.dl > summary { cursor: pointer; list-style: none; font-size: 18px; color: var(--accent); width: 28px; text-align: center; border: 1px solid #c9d3df; border-radius: 4px; }
+  details.dl > summary::-webkit-details-marker { display: none; }
+  .dlmenu { position: absolute; z-index: 4; background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 6px 10px; display: grid; gap: 4px; min-width: 210px; box-shadow: 0 4px 12px rgba(0,0,0,.08); font-size: 14px; }
+  .dlmenu a, .dlmenu button { color: var(--accent); background: none; border: 0; padding: 0; font: inherit; text-align: left; cursor: pointer; }
+  .rawtoggle { font-size: 13px; color: var(--accent); background: none; border: 1px solid #c9d3df; border-radius: 4px; padding: 1px 8px; margin: 6px 8px 0 0; cursor: pointer; }
+  .tlist { list-style: none; padding: 0; margin: 10px auto 4px; max-width: 360px; columns: 2; column-gap: 24px; font-size: 13.5px; }
+  .tlist li { display: flex; justify-content: space-between; gap: 8px; break-inside: avoid; }
+  @media print {
+    header, nav, .fab, .totop, details.dl, .rawtoggle, button.copy, .seg, .navmore { display: none !important; }
+    body { background: #fff; font-size: 11pt; }
+    main, .refs { max-width: none; padding: 0; }
+    section.topic { break-before: page; margin-top: 0; }
+    .card { break-inside: avoid; page-break-inside: avoid; }
+    details.morecharts { display: none; }
+    details.capfold > summary { display: none; } details.capfold > .cap { display: block; }
+    .charts { gap: 18pt; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
   .refs { max-width: 1180px; margin: 30px auto 0; padding: 0 16px; font-size: 14px; color: var(--muted); }
   footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
@@ -201,7 +231,7 @@
   <h2>Quellen und Hinweise</h2>
   <details class="fold"><summary>Methodik, Vergleichszeitraum und Zeichen</summary>
   <p><b>Vergleichszeitraum.</b> Wo der Monitor ein „übliches“ Niveau angibt, ist es der Durchschnitt der Jahre 2015 bis 2019: die fünf letzten vollen Jahre vor der Pandemie, nach der Euro-Schuldenkrise und vor dem Energiepreisschock 2022. Ausnahme ist die Konjunkturuhr; sie misst den Abstand zum langjährigen Mittel 2005 bis 2019, weil die Phasen eines Konjunkturzyklus nur über mehrere Zyklen bestimmt werden können.</p>
-  <p><b>Farben und Zeichen.</b> ▲ gestiegen, ▼ gesunken, ■ unverändert in der angezeigten Genauigkeit. Rot ist Warnsignalen vorbehalten: einem Anstieg, wo er ungünstig ist (Inflation, Arbeitslosigkeit, Insolvenzen), und Schwellenwerten. Blau, Violett und Grün unterscheiden nur Reihen und tragen keine Wertung.</p>
+  <p><b>Farben und Zeichen.</b> ▲ gestiegen, ▼ gesunken, ■ unverändert in der angezeigten Genauigkeit. Rot ist Warnsignalen vorbehalten: einem Anstieg, wo er ungünstig ist (Inflation, Arbeitslosigkeit, Insolvenzen), und Schwellenwerten. Blau, Violett und Grün unterscheiden nur Reihen und tragen keine Wertung. In Karten und Wärmetabellen steht Orange für eine Zunahme und Blau für eine Abnahme.</p>
   </details>
   <details class="fold"><summary>Datenquellen und Lizenzen</summary>
   <p>Alle Zahlen stammen aus offenen, amtlichen Quellen: Deutsche Bundesbank (saisonbereinigte Reihen von Statistischem Bundesamt und Bundesagentur für Arbeit), Eurostat (Volkswirtschaftliche Gesamtrechnungen, Verbraucherpreise, EU-Unternehmens- und Verbraucherumfragen) und Statistik der Bundesagentur für Arbeit. Prognosen stammen aus den verlinkten Veröffentlichungen. Die Texte sind eigene Erläuterungen und keine amtliche Bewertung.</p>
@@ -224,7 +254,7 @@
 const DATA = /*__DATA__*/null;
 // Grafikstandard: Farben, Jahresbänder, Gitter, Nulllinie, Schrift
 const PAL = ["#002060", "#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#47D359"];
-const HS = { band: "rgba(193,229,245,0.15)", gridH: "#BFBFBF", gridV: "#F2F2F2", zero: DATA.layout && DATA.layout.red_zero_line ? "#FF0000" : "#595959", font: "Arial Narrow, Arial, sans-serif" };
+const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero: DATA.layout && DATA.layout.red_zero_line ? "#FF0000" : "#595959", font: "Source Sans 3, Segoe UI, system-ui, Roboto, Helvetica Neue, Arial, sans-serif" };
 // Balken (etwa Wachstumsbeiträge): benachbarte Farben mit deutlichem Kontrast
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (▲) und Schwellen
@@ -264,7 +294,7 @@ function xAxis(x0, x1, width) {
   for (let y = y0; y <= y1; y++) {
     const a = `${y}-01-01`, b = `${y + 1}-01-01`, lo = a < x0 ? x0 : a, hi = b > x1 ? x1 : b;
     if (y % every === 0) { tv.push(new Date((Date.parse(lo) + Date.parse(hi)) / 2).toISOString().slice(0, 10)); tt.push(String(y)); }
-    if (y > y0) shapes.push({ type: "line", xref: "x", yref: "paper", x0: a, x1: a, y0: 0, y1: 1, line: { color: HS.gridV, width: 1 }, layer: "below" });
+    if (y > y0 && HS.gridV) shapes.push({ type: "line", xref: "x", yref: "paper", x0: a, x1: a, y0: 0, y1: 1, line: { color: HS.gridV, width: 1 }, layer: "below" });
     if ((y - y0) % 2 === 0) shapes.push({ type: "rect", xref: "x", yref: "paper", x0: lo, x1: hi, y0: 0, y1: 1, fillcolor: HS.band, line: { width: 0 }, layer: "below" });
   }
   return { tickvals: tv, ticktext: tt, shapes };
@@ -288,9 +318,9 @@ function timeChart(el, c) {
     hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` }); all.push(...s.y); });
   lines.forEach((s, i) => {
     const col = c.type === "stacked" ? "#000" : PAL[i % PAL.length];
-    const strong = !c.emphasis || c.emphasis === s.id;
+    const many = !c.emphasis && lines.length >= 5, strong = many ? i === 0 : (!c.emphasis || c.emphasis === s.id);
     if (c.ma3) {
-      traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, meta: s.id, showlegend: false, hoverinfo: "skip", line: { color: col, width: 1, shape: "spline" }, opacity: 0.45 });
+      if (c._raw) traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, meta: s.id, showlegend: false, hoverinfo: "skip", line: { color: col, width: 1, shape: "spline" }, opacity: 0.45 });
       const m = ma3(s.y); traces.push({ type: "scatter", mode: "lines", x: s.x, y: m, name: s.label, meta: s.id, line: { color: col, width: 3 },
         hovertemplate: `%{y:,.${c.decimals}f} (3-Monats-Mittel)<extra>${esc(s.label)}</extra>` });
     } else if (c.forecast_after_bars && bars.length) { // Prognosejahre: nach dem letzten Ist-Wert der Balken gestrichelt
@@ -299,7 +329,7 @@ function timeChart(el, c) {
       traces.push({ type: "scatter", mode: "lines", x: s.x.slice(0, cut), y: s.y.slice(0, cut), name: s.label, meta: s.id, line: { color: col, width: 3 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
       if (k > 0) traces.push({ type: "scatter", mode: "lines+markers", x: s.x.slice(cut - 1), y: s.y.slice(cut - 1), name: s.label + ", Prognose", line: { color: col, width: 2, dash: "dot" }, marker: { size: 6, symbol: "circle-open" }, hovertemplate: `%{y:,.${c.decimals}f} (Prognose)<extra>${esc(s.label)}</extra>` });
     } else {
-      const grey = c.context_grey && !strong;
+      const grey = (c.context_grey || many) && !strong;
       traces.push({ type: "scatter", mode: s.x.length < 12 ? "lines+markers" : "lines", x: s.x, y: s.y, name: s.label, meta: s.id,
         line: { color: grey ? "#a6a6a6" : col, width: strong ? 3 : grey ? 1.2 : 1.6 }, marker: { size: 5 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
     }
@@ -320,10 +350,10 @@ function timeChart(el, c) {
   (c.recessions || []).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.25)", line: { width: 0 }, layer: "below" }));
   const LY = DATA.layout || {}, annotations = [];
   (c.notes || []).forEach((n, k) => { shapes.push({ type: "line", xref: "x", yref: "paper", x0: n.date, x1: n.date, y0: 0, y1: 1, line: { color: "#595959", width: 1, dash: "dot" } });
-    annotations.push({ xref: "x", yref: "paper", x: n.date, y: 1, text: String(k + 1), showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 11, color: "#595959" } }); });
+    annotations.push({ xref: "x", yref: "paper", x: n.date, y: 1, text: String(k + 1), showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" } }); });
   if (c.band && LY.compare_band) {
     shapes.push({ type: "rect", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.band.lo, y1: c.band.hi, fillcolor: "rgba(120,120,120,0.10)", line: { width: 0 }, layer: "below" });
-    annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.band.hi, text: "Spanne 2015–2019", showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 11, color: "#7f7f7f" } });
+    annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.band.hi, text: "Spanne 2015–2019", showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#7f7f7f" } });
   }
   const named = traces.filter(t => t.showlegend !== false && t.type === "scatter");
   const direct = LY.direct_labels && c.type !== "stacked" && !bars.length && named.length > 1 && (named.length <= 4 || c.context_grey);
@@ -332,7 +362,7 @@ function timeChart(el, c) {
     const wrap = s => { if (s.length <= 24) return [s]; const w = s.split(" "); let a = "", out = []; w.forEach(x => { if ((a + " " + x).trim().length > 24 && a) { out.push(a); a = x; } else a = (a + " " + x).trim(); }); out.push(a); return out; };
     const sgn = /gg\.|gegenüber|Veränderung|^Pp|^Saldo/.test(c.unit || "") || ya.zero;
     const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const td = tendOf(tr.y, c.decimals ?? 1), arrow = td ? ` <span style="color:${tendColor(td, isBad(c, tr.meta))}">${{ up: "▲", down: "▼", flat: "■" }[td]}</span>` : "";
-      const v = tr.y[i], val = (sgn && +v.toFixed(c.decimals ?? 1) > 0 ? "+" : "") + fmtU(v, c.decimals ?? 1, c.unit);
+      const v = tr.y[i], f0 = fmtU(v, c.decimals ?? 1, c.unit), val = (sgn && +v.toFixed(c.decimals ?? 1) > 0 && !f0.startsWith("+") ? "+" : "") + f0;
       const lines = v == null ? [] : [`${tr.name} ${val} in ${periodCode(tr.x[i], c.freq)}`]; return { tr, i, y: v, lines, arrow }; }).filter(e => e.y != null).sort((a, b) => a.y - b.y);
     const span = ya.range[1] - ya.range[0], px = span / Math.max(140, (el.clientHeight || 300) - 70);
     for (let k = 1; k < ends.length; k++) { const need = ((ends[k - 1].lines.length + ends[k].lines.length) * 7.5 + 4) * px; if (ends[k].y - ends[k - 1].y < need) ends[k].y = ends[k - 1].y + need; }
@@ -345,7 +375,7 @@ function timeChart(el, c) {
   // Jahresmittel je Jahresband (eine Leitreihe mit Monats- oder Quartalswerten). Unten, wo die Linien unten verlaufen oben;
   // entfällt, wenn das Jahresband zu schmal für die Zahl ist.
   const lead = c.type === "stacked" ? null : c.series.find(s => s.id === c.emphasis) || (lines.length === 1 && !bars.length ? lines[0] : null);
-  if (lead && c.year_means !== false && (c.freq === "M" || c.freq === "Q")) {
+  if (lead && (DATA.layout || {}).year_means && c.year_means !== false && (c.freq === "M" || c.freq === "Q")) {
     const plotW = Math.max(120, (el.clientWidth || 500) - rMargin - 50), t0 = Date.parse(r[0]), t1 = Date.parse(r[1]), pxd = plotW / ((t1 - t0) / 864e5);
     const pos = v => (v - ya.range[0]) / (ya.range[1] - ya.range[0]), dm = c.decimals ?? 1;
     const by = {}; lead.x.forEach((x, i) => { if (lead.y[i] != null) (by[x.slice(0, 4)] = by[x.slice(0, 4)] || []).push(lead.y[i]); });
@@ -358,7 +388,7 @@ function timeChart(el, c) {
       const low = inYear.filter(q => q < 0.16).length, high = inYear.filter(q => q > 0.84).length;
       const top = low > 0 && high <= low;
       annotations.push({ xref: "x", yref: "paper", x: new Date((a0 + a1) / 2).toISOString().slice(0, 10), y: top ? 0.98 : 0.02, yanchor: top ? "top" : "bottom", showarrow: false, text: txt,
-        font: { family: HS.font, size: 11, color: "#595959" }, bordercolor: "#a6a6a6", borderwidth: 1, borderpad: 2, bgcolor: "rgba(255,255,255,0.9)" }); });
+        font: { family: HS.font, size: 12, color: "#595959" }, bordercolor: "#a6a6a6", borderwidth: 1, borderpad: 2, bgcolor: "rgba(255,255,255,0.9)" }); });
   }
   const card0 = el.closest(".card"), uEl = card0 && card0.querySelector(".unit");
   const tickW0 = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;  // Einheit rechtsbündig über den Achsenzahlen
@@ -400,7 +430,7 @@ function multiplesChart(el, c) {
     if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
     if (c.ref != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1, dash: "dash" } });
     const L = baseLayout(m);
-    Object.assign(L, { margin: { l: 2, r: 2, t: 4, b: 18 }, showlegend: false, shapes, hovermode: "closest", font: { family: HS.font, size: 11 },
+    Object.assign(L, { margin: { l: 2, r: 2, t: 4, b: 18 }, showlegend: false, shapes, hovermode: "closest", font: { family: HS.font, size: 12 },
       xaxis: { type: "date", range: r, tickmode: "array", tickvals: [r[0], r[1]], ticktext: [r[0].slice(0, 4), r[1].slice(0, 4)], showgrid: false, zeroline: false, fixedrange: true },
       yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showticklabels: true, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
     Plotly.newPlot(m, traces, L, CFG);
@@ -486,7 +516,7 @@ function forecastChart(el, c) {
       traces.push({ type: "scatter", mode: "lines+markers+text", x: fs.map(f => f.date), y: fs.map(f => f.values[Y]), name: b, showlegend: k === 0,
         line: { color: col(b), width: b === "Bundesregierung" ? 2.5 : 1.2 },
         marker: { size: fs.map(f => f === last ? 11 : 7), color: fs.map(f => f === last ? col(b) : "#fff"), line: { color: col(b), width: 2 } },
-        text: fs.map(f => fmt(f.values[Y], 1)), textposition: fs.map(f => posFor(f.date, f.values[Y])), textfont: { family: HS.font, size: 11, color: col(b) },
+        text: fs.map(f => fmt(f.values[Y], 1)), textposition: fs.map(f => posFor(f.date, f.values[Y])), textfont: { family: HS.font, size: 12, color: col(b) },
         customdata: fs.map(f => `${f.by}, ${f.round}${f.check ? " (" + f.check + ")" : ""}`), hovertemplate: `%{y:,.1f} %<extra>%{customdata}</extra>` });
     });
     const xb = new Date(Date.parse(d1) + 45 * 864e5).toISOString().slice(0, 10);
@@ -494,8 +524,8 @@ function forecastChart(el, c) {
       { type: "line", xref: "x", yref: "y", x0: new Date(Date.parse(xb) - 11 * 864e5).toISOString().slice(0, 10), x1: new Date(Date.parse(xb) + 11 * 864e5).toISOString().slice(0, 10), y0: med, y1: med, line: { color: PAL[0], width: 2 } }];
     if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
     const L = baseLayout(m);
-    Object.assign(L, { margin: { l: 4, r: 4, t: 8, b: 26 }, hovermode: "closest", shapes, showlegend: false, font: { family: HS.font, size: 11 },
-      annotations: [{ x: xb, y: lv[lv.length - 1], yanchor: "bottom", text: "Spanne", showarrow: false, font: { family: HS.font, size: 11, color: "#3f4752" } }],
+    Object.assign(L, { margin: { l: 4, r: 4, t: 8, b: 26 }, hovermode: "closest", shapes, showlegend: false, font: { family: HS.font, size: 12 },
+      annotations: [{ x: xb, y: lv[lv.length - 1], yanchor: "bottom", text: "Spanne", showarrow: false, font: { family: HS.font, size: 12, color: "#3f4752" } }],
       xaxis: { type: "date", range: [x0, x1], tickformat: "%b %y", showgrid: false, zeroline: false, fixedrange: true, nticks: 5 },
       yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
     Plotly.newPlot(m, traces, L, CFG);
@@ -547,7 +577,7 @@ function latestChart(el, c) {
 const TILE_POS = { SH: [0, 2], HB: [1, 1], HH: [1, 2], MV: [1, 3], NW: [2, 0], NI: [2, 1], ST: [2, 2], BE: [2, 3], BB: [2, 4],
   RP: [3, 0], HE: [3, 1], TH: [3, 2], SN: [3, 3], SL: [4, 0], BW: [4, 1], BY: [4, 2] };
 function tileColor(v, m) {
-  const k = Math.min(1, Math.abs(v) / m), base = v >= 0 ? [81, 21, 74] : [0, 112, 192];
+  const k = Math.min(1, Math.abs(v) / m), base = v >= 0 ? [227, 108, 10] : [0, 112, 192];
   const c = base.map(x => Math.round(255 - (255 - x) * k * 0.85));
   return { bg: `rgb(${c.join(",")})`, fg: k > 0.55 ? "#fff" : "#000" };
 }
@@ -596,6 +626,7 @@ function tilesChart(el, c) {
       box.appendChild(grid);
     }
     const lo = tileColor(-m, m), hi = tileColor(m, m);
+    box.insertAdjacentHTML("beforeend", `<ol class="tlist">${w.rows.slice().sort((p, q) => q.change - p.change).map(r => `<li><span>${esc(r.name)}</span><b style="color:${r.change >= 0 ? "#B45309" : "#0070C0"}">${pct0(r.change)}</b></li>`).join("")}</ol>`);
     box.insertAdjacentHTML("beforeend", `<div class="tlegend"><span><i style="background:${lo.bg}"></i>Abnahme</span><span><i style="background:#fff;border:1px solid #ccc"></i>unverändert</span><span><i style="background:${hi.bg}"></i>Zunahme</span></div>`);
     const card = el.closest(".card");
     if (card) {
@@ -627,7 +658,7 @@ function spark(d, ref) {
 // PNG: Abbildung mit Kopf (Abb., Titel, Zeitraum, Einheit) und Fuß (Erläuterung, Quelle), 2-fache Auflösung
 async function pngDownload(el, ch, c, no, sub, unit) {
   render(ch);
-  const W = 1200, S = 2, pad = 24, font = '"Arial Narrow", Arial, sans-serif';
+  const W = 1200, S = 2, pad = 24, font = '"Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif';
   let img = null, plotH = 520;
   if (c.type === "tiles" && DATA.geo) {
     const svg = ch.querySelector("svg"), clone = svg.cloneNode(true); clone.setAttribute("width", 520); clone.setAttribute("height", 560); clone.removeAttribute("style");
@@ -657,17 +688,14 @@ async function pngDownload(el, ch, c, no, sub, unit) {
   }
   let y = 104 + plotH + 12; x.fillStyle = "#000"; x.font = `15px ${font}`; cap.forEach(l => { x.fillText(l, pad, y); y += 20; });
   x.fillStyle = "#555"; x.font = `13px ${font}`; src.forEach(l => { x.fillText(l, pad, y); y += 18; });
-  const a = document.createElement("a"); a.download = `abb${String(no).padStart(2, "0")}_${c.chart}.png`; a.href = cv.toDataURL("image/png"); a.click();
+  const a = document.createElement("a"); a.download = (c.files && c.files.png) || `Abb ${no}.png`; a.href = cv.toDataURL("image/png"); a.click();
 }
 
 const sidsOf = c => Array.isArray(c.series) ? c.series.map(s => s.id) : c.series ? [c.series] : [];
 // Satz zur Abbildung samt nächstem Termin; html: mit Link zum Kalender
 function chartSentence(c, html) {
   let s = html ? esc(c.text || "") : (c.text || "");
-  if (c.next_update) { const nd = new Date(c.next_update.date + "T12:00:00Z"), names = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-    const d = `${nd.getUTCDate()}. ${names[nd.getUTCMonth()]} ${nd.getUTCFullYear()}`;
-    s += (s ? " " : "") + `Neue Zahlen erscheinen voraussichtlich am ${d}` + (html ? ` (<a href="#abb-${c.next_update.calendar}">Kalender</a>).` : "."); }
-  return s;
+  return s;  // nächster Termin steht in der Metazeile der Abbildung
 }
 
 function card(c, no) {
@@ -677,8 +705,12 @@ function card(c, no) {
   const unit = c.type === "clock" ? "Saldo in Prozentpunkten, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% gegenüber Vorjahr, BIP real"
     : c.type === "tiles" ? "Veränderung gegenüber denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
   const lead = c._lead;  // Leitgrafik: Frage und Satz stehen schon in der Antwort des Abschnitts
-  el.innerHTML = `${!lead && c.ask ? `<h4 class="cask">${esc(c.ask)}</h4>` : ""}${!lead && (c.text || c.next_update) ? `<p class="ctext">${chartSentence(c, true)}</p>` : ""}`
-    + `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${sub ? `<div class="sub">${esc(sub)}</div>` : ""}${c.caption ? `<div class="cap">${esc(c.caption)}</div>` : ""}<div class="unit">${esc(unit)}</div>`;
+  let next = "";
+  if (c.next_update) { const nd = new Date(c.next_update.date + "T12:00:00Z"); next = `nächster Termin ${nd.getUTCDate()}. ${MONTHS[nd.getUTCMonth()]} ${nd.getUTCFullYear()} (<a href="#abb-${c.next_update.calendar}">Kalender</a>)`; }
+  const meta = [sub ? esc(sub) : "", next].filter(Boolean).join(" · ");
+  el.innerHTML = `${!lead && c.ask ? `<h4 class="cask">${esc(c.ask)}</h4>` : ""}${!lead && c.text ? `<p class="ctext">${esc(c.text)}</p>` : ""}`
+    + `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${meta ? `<div class="sub">${meta}</div>` : ""}`
+    + `${c.caption ? `<details class="capfold"><summary>Erläuterung</summary><div class="cap">${esc(c.caption)}</div></details>` : ""}<div class="unit">${esc(unit)}</div>`;
   const box = document.createElement("div"); box.className = "chartbox"; el.appendChild(box);
   const ch = document.createElement("div"); ch.className = ["tiles", "heat", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   const nts = (c.notes || []).map((n, k) => `${k + 1} ${esc(n.text)}`).concat((c.outliers || []).map(o => `${esc(o.label)} im ${MONTHS[+o.date.slice(5, 7) - 1]} ${o.date.slice(0, 4)}: ${(o.change > 0 ? "+" : "") + fmt(o.change, 1)} % zum Vormonat${(c.notes || []).length ? "" : " (automatisch markiert)"}`));
@@ -687,12 +719,17 @@ function card(c, no) {
   if (c.type === "forecast") src = c.forecasts.filter(f => f.latest).map(f => `<a href="${esc(f.source)}" target="_blank" rel="noopener">${esc(f.by)}, ${esc(f.round)}</a>`).join(" · ");
   else src = esc(src);
   el.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}</div>`);
-  const f = c.files || {}, acts = [];
-  if (f.xlsx) acts.push(`<a href="${f.xlsx}" download title="Excel mit Daten und Diagramm">▦ XLSX</a>`);
-  if (f.pptx) acts.push(`<a href="${f.pptx}" download title="PowerPoint-Folie">▭ PPTX</a>`);
-  if (c.type !== "heat" && c.type !== "calendar") acts.push(`<button type="button" class="png" title="Bild">▨ PNG</button>`);
-  if (f.csv) acts.push(`<a href="${f.csv}" download title="Daten als CSV">▤ CSV</a>`);
-  el.insertAdjacentHTML("beforeend", `<div class="acts" aria-label="Herunterladen">${acts.join("\u2003")}</div>`);
+  const f = c.files || {}, acts = [], u = x => encodeURI(x);
+  if (f.xlsx) acts.push(`<a href="${u(f.xlsx)}" download>▦ XLSX: Daten und Diagramm</a>`);
+  if (f.pptx) acts.push(`<a href="${u(f.pptx)}" download>▭ PPTX: Folie</a>`);
+  if (c.type !== "heat" && c.type !== "calendar") acts.push(`<button type="button" class="png">▨ PNG: Bild</button>`);
+  if (f.csv) acts.push(`<a href="${u(f.csv)}" download>▤ CSV: Daten</a>`);
+  el.insertAdjacentHTML("beforeend", `<details class="dl"><summary title="Herunterladen" aria-label="Herunterladen">⤓</summary><div class="dlmenu">${acts.join("")}</div></details>`);
+  if (c.ma3) { // Monatswerte auf Wunsch einblenden
+    const tg = document.createElement("button"); tg.type = "button"; tg.className = "rawtoggle"; tg.textContent = "Monatswerte einblenden";
+    tg.onclick = () => { c._raw = !c._raw; tg.textContent = c._raw ? "Monatswerte ausblenden" : "Monatswerte einblenden"; Plotly.purge(ch); timeChart(ch, c); };
+    el.insertBefore(tg, el.querySelector("details.dl")); }
+  ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `Abb. ${no} ${c.title || ""}. ${c.text || ""}`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
   ch._c = c;
   return el;
@@ -720,9 +757,27 @@ function render(ch) {
   else timeChart(ch, c);
 }
 
+// Kennzahl-Kacheln: sechs Kernzahlen groß, mit Tendenz, Stand und Verlauf über fünf Jahre
+function kpiTiles(rows, sp) {
+  const by = Object.fromEntries(rows.map(r => [r.series, r]));
+  const cu = (v, r) => (v > 0 ? "+" : "") + fmt(Math.abs(v) < 0.5 * 10 ** -(r.change_decimals ?? 1) ? 0 : v, r.change_decimals ?? 1) + "\u202f" + r.change_unit;
+  const per = r => { const y = r.date.slice(0, 4), m = +r.date.slice(5, 7); return r.freq === "Q" ? `${Math.floor((m - 1) / 3) + 1}. Quartal ${y}` : `${MONTHS[m - 1]} ${y}`; };
+  const spec = [
+    ["de_gdp_index", "Wirtschaftswachstum", r => [cu(r.prev, r), "ggü. Vorquartal, real"], r => `Vorjahr ${cu(r.yoy, r)}`],
+    ["de_cpi_yoy", "Inflationsrate", r => [fmt(r.value, 1) + "\u202f%", "ggü. Vorjahresmonat"], r => `${cu(r.prev, r)} ggü. Vormonat`],
+    ["de_alq_sa", "Arbeitslosenquote", r => [fmt(r.value, 1) + "\u202f%", "saisonbereinigt"], r => `${cu(r.yoy, r)} ggü. Vorjahr`],
+    ["de_ip", "Industrieproduktion", r => [cu(r.prev, r), "ggü. Vormonat"], r => `3 Monate ${cu(r.m3, r)}`],
+    ["de_esi", "Wirtschaftsklima", r => [fmt(r.value, 1), "Punkte, Durchschnitt = 100"], r => `${cu(r.prev, r)} ggü. Vormonat`],
+    ["de_insolv", "Unternehmensinsolvenzen", r => [cu(r.yoy, r), "ggü. Vorjahresmonat"], r => `${fmt(r.value, 0)} Anträge`]];
+  const tiles = spec.filter(s => by[s[0]]).map(([sid, name, big, small]) => { const r = by[sid], [num, what] = big(r);
+    return `<a class="kpi" href="#${r.topic}"><span class="kn">${esc(name)}</span><span class="kv">${num} ${tendHtml(r.tendency, r.up_bad)}</span>`
+      + `<span class="kw">${esc(what)}</span><span class="ks">${esc(small(r))} · ${per(r)}</span>${sp(r, 240, 44)}</a>`; });
+  return `<div class="kpis">${tiles.join("")}</div>`;
+}
+
 function startTable(box) {
   const rows = DATA.start || []; if (!rows.length) return false;
-  const sp = r => { const d = r.spark, x = d.x.map(t => Date.parse(t)), y = d.y, w = 130, h = 22, p = 2;
+  const sp = (r, w = 130, h = 22) => { const d = r.spark, x = d.x.map(t => Date.parse(t)), y = d.y, p = 2;
     const lo = Math.min(...y), hi = Math.max(...y);
     const X = v => p + (v - x[0]) / (x[x.length - 1] - x[0] || 1) * (w - 2 * p), Y = v => h - p - (v - lo) / (hi - lo || 1) * (h - 2 * p);
     const path = y.map((v, i) => `${i ? "L" : "M"}${X(x[i]).toFixed(1)},${Y(v).toFixed(1)}`).join("");
@@ -745,12 +800,12 @@ function startTable(box) {
   html += "</tbody></table>";
   const more = rows.filter(r => r.more);
   if (more.length) { grp = null; html += `<details class="moretable"><summary>Weitere Kennzahlen (${more.length}): ${more.map(r => esc(r.label.split(" (")[0])).join(", ")}</summary><table class="stable">${head}<tbody>`; more.forEach(rowHtml); html += "</tbody></table></details>"; }
-  box.innerHTML = html
+  box.innerHTML = kpiTiles(rows, sp) + `<details class="alltable"><summary>Alle Kennzahlen (${rows.length})</summary>` + html
     + `<details class="fold"><summary>Lesehilfe zur Tabelle</summary><p class="tnote">Vorperiode und Dreimonatsvergleich saison- und kalenderbereinigt, soweit die Quelle bereinigte Werte bietet; Vorjahresvergleich aus saison- und kalenderbereinigten Werten; bei Preisen, Insolvenzen und beim BIP nach Ursprungswerten, wie in den Meldungen der Statistikämter. `
     + `Bei Raten und Salden ist die Veränderung eine Differenz in Prozentpunkten (Pp) oder Punkten (Pkt.), sonst eine Veränderung in Prozent. Dreimonatsvergleich: die letzten drei Monate gegenüber den drei Monaten davor. `
     + `Tendenz zur Vorperiode: <span class="up-ok">▲</span> gestiegen, <span class="down">▼</span> gesunken, <span class="flat">■</span> unverändert; <span class="up-bad">▲</span> rot, wo ein Anstieg ungünstig ist (Preise, Arbeitslosigkeit, Insolvenzen).`
     + `${older ? " ¹ Älterer Stand: Die Quelle meldet diese Zahl später als die übrigen Monatswerte." : ""}`
-    + `${rows.some(r => r.revised) ? " r Revidiert: Die Quelle hat den Wert für diesen Zeitraum seit der ersten Veröffentlichung geändert; der erste Wert steht im Tooltip und im Archiv." : ""}</p></details>`;
+    + `${rows.some(r => r.revised) ? " r Revidiert: Die Quelle hat den Wert für diesen Zeitraum seit der ersten Veröffentlichung geändert; der erste Wert steht im Tooltip und im Archiv." : ""}</p></details></details>`;
   box.querySelectorAll("tr.row").forEach(tr => tr.addEventListener("click", e => { if (e.target.closest("a")) return; location.hash = tr.dataset.href; }));
   return true;
 }
@@ -771,9 +826,9 @@ function build() {
   const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) ov.textContent = DATA.overview; else ov.remove();
   const d = new Date(DATA.generated_at); document.getElementById("stand").textContent = "Stand: " + d.toLocaleDateString("de-DE");
   const AS = DATA.all_series || {};
-  document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${AS.xlsx}" download>Excel</a> · <a href="${AS.csv}" download>CSV</a>` : "",
-    `<a href="dl/kernzahlen_archiv.csv" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
-  if (DATA.deck) document.getElementById("deck").innerHTML = `<a href="${DATA.deck}" download>Alle Abbildungen als PowerPoint</a>`;
+  document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${encodeURI(AS.xlsx)}" download>Excel</a> · <a href="${encodeURI(AS.csv)}" download>CSV</a>` : "",
+    `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
+  if (DATA.deck) document.getElementById("deck").innerHTML = `<a href="${encodeURI(DATA.deck)}" download>Alle Abbildungen als PowerPoint</a>`;
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const LY = DATA.layout || {};
   if (LY.minimal) document.body.classList.add("minimal");
@@ -833,6 +888,7 @@ function build() {
 build();
 function openHash() { const el = location.hash && document.querySelector(location.hash); const d = el && el.closest("details"); if (d) d.open = true; }
 addEventListener("hashchange", openHash); openHash();
+addEventListener("beforeprint", () => document.querySelectorAll("details.capfold").forEach(d => d.open = true));
 </script>
 </body>
 </html>

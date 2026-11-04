@@ -19,7 +19,7 @@ ARCHIVE_COLUMNS = ["stand", "series", "label", "date", "period", "value"]
 # ---------------------------------------------------------------------------
 # Gesamtdownload
 # ---------------------------------------------------------------------------
-def write_all_series(data: dict, meta: dict, root: Path, out: Path, stand: str, cite: str) -> dict:
+def write_all_series(data: dict, meta: dict, root: Path, out: Path, stand: str, cite: str, date: str = "") -> dict:
     """Alle Reihen als CSV (lang) und Excel (je Frequenz breit, dazu Verzeichnis mit Metadaten)."""
     from .build import _license, _source_name
 
@@ -41,11 +41,14 @@ def write_all_series(data: dict, meta: dict, root: Path, out: Path, stand: str, 
     if not rows:
         return {}
     long = pd.concat(rows, ignore_index=True)
-    long.to_csv(folder / "konjunkturmonitor_alle_reihen.csv", sep=";", decimal=",", index=False, encoding="utf-8-sig")
+    stem = f"Konjunkturmonitor ({date}) Alle Reihen"
+    with open(folder / f"{stem}.csv", "w", encoding="utf-8-sig", newline="") as fh:
+        fh.write(stem + "\n")
+        long.to_csv(fh, sep=";", decimal=",", index=False)
     idx = pd.DataFrame(index)
-    with pd.ExcelWriter(folder / "konjunkturmonitor_alle_reihen.xlsx", engine="xlsxwriter") as xw:
-        info = pd.DataFrame({"Feld": ["Inhalt", "Stand", "Zitiervorschlag", "Lizenz", "Aufbau"],
-                             "Wert": ["Alle Zeitreihen des Konjunkturmonitors", stand, cite,
+    with pd.ExcelWriter(folder / f"{stem}.xlsx", engine="xlsxwriter") as xw:
+        info = pd.DataFrame({"Feld": ["Datei", "Inhalt", "Stand", "Zitiervorschlag", "Lizenz", "Aufbau"],
+                             "Wert": [stem, "Alle Zeitreihen des Konjunkturmonitors", stand, cite,
                                       "Daten: Lizenz der jeweiligen Quelle (Blatt Verzeichnis). Zusammenstellung: CC BY 4.0, Wolf-Fabian Hungerland",
                                       "Blatt Verzeichnis: Metadaten je Reihe. Blätter Monat, Quartal, Jahr, Woche: Werte breit, eine Spalte je Reihe."]})
         info.to_excel(xw, sheet_name="Info", index=False)
@@ -59,7 +62,7 @@ def write_all_series(data: dict, meta: dict, root: Path, out: Path, stand: str, 
         for ws in xw.sheets.values():
             ws.set_column(0, 0, 14)
             ws.set_column(1, 12, 18)
-    return {"csv": "dl/konjunkturmonitor_alle_reihen.csv", "xlsx": "dl/konjunkturmonitor_alle_reihen.xlsx", "n": len(index)}
+    return {"csv": f"dl/{stem}.csv", "xlsx": f"dl/{stem}.xlsx", "n": len(index)}
 
 
 # ---------------------------------------------------------------------------
