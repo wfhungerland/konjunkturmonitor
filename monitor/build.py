@@ -356,7 +356,8 @@ def chart_text(c: dict) -> str:
     typ, d = c.get("type"), int(c.get("decimals", 1))
     unit = (c.get("unit") or "").split(",")[0]
     u = unit if unit.startswith(("% des", "% der")) else "%" if unit.startswith("%") else "Prozentpunkte" if unit.startswith("Pp") else "Prozentpunkte" if unit.startswith("Saldo") else "" if unit.startswith("Index") else unit
-    fmtv = lambda v: f"{num(v, d, unit.startswith('Saldo'))} {u}".strip()
+    u_dat = {"Prozentpunkte": "Prozentpunkten", "Punkte": "Punkten"}.get(u, u)  # nach „bei“ steht der Dativ
+    fmtv = lambda v: f"{num(v, d, unit.startswith('Saldo'))} {u_dat}".strip()
     from .answers import num as _num
 
     def num(v, dd=1, sign=False):  # gerundete Null ohne Vorzeichen
@@ -379,26 +380,49 @@ def chart_text(c: dict) -> str:
                     f"Produktionserwartungen {num(y, 1, True)} Prozentpunkte gegenüber dem Mittel 2005 bis 2019 (Salden).")
         if typ == "seasonal":
             i = max(k for k, v in enumerate(c["y"]) if v is not None)
-            s = f"Im {_per(c['x'][i], 'M')} lag der Wert bei {num(c['y'][i], d)}"
+            su = "" if c.get("unit") in ("Anzahl", None, "") else " " + c["unit"]
+            s = f"Im {_per(c['x'][i], 'M')} lag der Wert bei {num(c['y'][i], d)}{su}"
             if c["ma12"][i] is not None and c["norm"][i] is not None:
-                s += f", im Mittel der letzten zwölf Monate bei {num(c['ma12'][i], d)}; üblich waren in diesem Monat 2015 bis 2019 im Schnitt {num(c['norm'][i], d)}"
+                s += f", im Mittel der letzten zwölf Monate bei {num(c['ma12'][i], d)}{su}; üblich waren in diesem Monat 2015 bis 2019 im Schnitt {num(c['norm'][i], d)}{su}"
             return s + "."
         if typ == "latest":
             b = c["bars"]
             return f"{c.get('bar_name', 'Veränderung')}, Stand {_per(b[0]['period'], c.get('freq', 'Q'))}: " + ", ".join(f"{x['label']} {num(x['value'], d, True)}" for x in b) + "."
-        if typ in ("calendar", "forecast") or not c.get("series"):
+        if typ == "forecast":
+            fs = c.get("forecasts") or []
+            parts = []
+            for y in sorted({int(k) for f in fs for k in f["values"]}):
+                latest = {}
+                for f in sorted(fs, key=lambda f: f["date"]):
+                    if y in f["values"]:
+                        latest[f["by"]] = f["values"][y]
+                if len(latest) < 2 or y < datetime.now().year:
+                    continue
+                v = sorted(latest.values())
+                med = v[len(v) // 2] if len(v) % 2 else (v[len(v) // 2 - 1] + v[len(v) // 2]) / 2
+                parts.append(f"für {y} im Mittel (Median) {num(med, 1)} %, Spanne {num(v[0], 1)} bis {num(v[-1], 1)} % ({len(v)} Herausgeber)")
+            joined = parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " sowie " + parts[-1]
+            return ("Die jüngsten Prognosen erwarten " + joined + ".") if parts else ""
+        if typ == "calendar" or not c.get("series"):
             return ""
         series = [s for s in c["series"] if s.get("y")]
-        if typ == "stacked":
-            last = max(s["x"][-1] for s in series)
-            bars = [s for s in series if s.get("style") == "bar" and s["x"][-1] == last]
-            tot = [s for s in series if s.get("style") != "bar" and s["x"][-1] == last]
-            what = f" zur Rate von {num(tot[0]['y'][-1], d, True)} %" if tot else ""
-            return f"{_when(last, c.get('freq', 'M'))} trugen{what} bei (in Prozentpunkten): " + ", ".join(f"{s['label']} {num(s['y'][-1], d, True)}" for s in bars) + "."
+        if typ == "stacked":  # Stichtag ist das jüngste Quartal mit Beiträgen (die Rate liegt oft früher vor)
+            bars0 = [s for s in series if s.get("style") == "bar"]
+            last = max(s["x"][-1] for s in bars0) if bars0 else max(s["x"][-1] for s in series)
+            bars = [s for s in bars0 if last in s["x"]]
+            tot = [s for s in series if s.get("style") != "bar" and last in s["x"]]
+            at = lambda s: s["y"][s["x"].index(last)]
+            what = f" zur Rate von {num(at(tot[0]), d, True)} %" if tot else ""
+            return f"{_when(last, c.get('freq', 'M'))} trugen{what} bei (in Prozentpunkten): " + ", ".join(f"{s['label']} {num(at(s), d, True)}" for s in bars) + "."
         if c.get("emphasis"):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         series = series[:6]
         last = max(s["x"][-1] for s in series)
+        if c.get("forecast_after_bars"):  # Prognosejahre nicht als Ist-Werte berichten
+            bars0 = [s for s in c["series"] if s.get("style") == "bar"]
+            if bars0:
+                last = max(s["x"][-1] for s in bars0)
+                series = [dict(s, x=s["x"][:s["x"].index(last) + 1], y=s["y"][:s["x"].index(last) + 1]) for s in series if last in s["x"]]
         when = _when(last, c.get("freq", "M"))
         if unit.startswith("Index"):  # Indexstände sind nicht berichtenswert: Veränderung gegenüber dem Vorjahr
             parts = []
@@ -423,7 +447,10 @@ def chart_text(c: dict) -> str:
             yago = s["y"][-1 - lag] if len(s["y"]) > lag else None
             add = ""
             if yago is not None and c.get("type") != "stacked" and s.get("style") != "bar":
-                if unit.startswith(("%", "Pp", "Saldo")) or "Saldo" in unit:
+                neg = any(q is not None and q < 0 for x in c["series"] for q in x["y"]) or "saldo" in s["label"].lower()
+                if neg and not unit.startswith(("%", "Pp", "Saldo")):  # Salden und Wanderungen: Differenz statt Prozent
+                    add = f" ({num(v - yago, d, True)} {u} gegenüber dem Vorjahr)"
+                elif unit.startswith(("%", "Pp", "Saldo")) or "Saldo" in unit:
                     add = f" ({num(v - yago, d, True)} {'Punkte' if unit.startswith('Punkte') else 'Prozentpunkte'} gegenüber dem Vorjahr)"
                 elif yago:
                     add = f" ({num((v / yago - 1) * 100, 1, True)} % gegenüber dem Vorjahr)"
@@ -489,10 +516,10 @@ def build_payload(root: Path = ROOT) -> dict:
         for c in t["charts"]:
             typ = c.get("type", "line")
             uy = layout.get("uniform_years")
-            if uy and c.get("years") and 3 <= c["years"] <= 8:
+            if uy and c.get("years") and 3 <= c["years"] <= 8 and not c.get("keep_years"):
                 c = dict(c, years=int(uy))
             entry = dict(c, type=typ, title=(charts_cfg.get(c["chart"], {}) or {}).get("title", c.get("title", "")),
-                         decimals=(charts_cfg.get(c["chart"], {}) or {}).get("decimals", 1))
+                         decimals=c.get("decimals", (charts_cfg.get(c["chart"], {}) or {}).get("decimals", 1)))
             if typ == "clock":
                 entry["clock"] = _clock(c, data)
                 entry["sources"] = ["Europäische Kommission, Unternehmensumfrage Industrie (Eurostat ei_bsin_m_r2)"]
@@ -573,6 +600,8 @@ def build_payload(root: Path = ROOT) -> dict:
                                        **_xy(data[s.id], c.get("years"))))
                 if not series:
                     continue
+                if typ == "stacked":  # Vorzeichenlogik der Importe sichtbar machen
+                    series = [dict(s, label="Importe (negativ gerechnet)") if s["label"] == "Importe" else s for s in series]
                 entry["series"] = series
                 if layout.get("compare_band") and typ in ("line",) and not c.get("ma3") and (len(series) == 1 or c.get("emphasis")):
                     lead = next((s for s in specs if s.id == c.get("emphasis")), None) or next((s for s in specs if s.id in data), None)

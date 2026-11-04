@@ -211,7 +211,7 @@
   
   <p>Der Monitor zeigt nur Daten, die frei abrufbar sind und weiterverbreitet werden dürfen. Einige verbreitete Indikatoren fehlen deshalb:</p>
   <ul class="missing">
-    <li><b>Lizenz erforderlich:</b> ifo-Geschäftsklima und ifo-Exporterwartungen (<a href="https://www.ifo.de/">ifo Institut</a>), ZEW-Konjunkturerwartungen (<a href="https://www.zew.de/">ZEW</a>), Einkaufsmanagerindizes (<a href="https://www.pmi.spglobal.com/">S&amp;P Global</a>), GfK-Konsumklima (<a href="https://www.nim.org/">NIM</a>), HDE-Konsumbarometer (<a href="https://einzelhandel.de/">HDE</a>), IAB-Arbeitsmarktbarometer (<a href="https://iab.de/">IAB</a>), IWH-Insolvenztrend (<a href="https://www.iwh-halle.de/">IWH</a>), Terminpreise für Strom und Gas (<a href="https://www.eex.com/">EEX</a>), Containerumschlag-Index (<a href="https://www.rwi-essen.de/">RWI/ISL</a>). Die Stimmung der Unternehmen und Verbraucher bilden stattdessen die frei verfügbaren Umfragen der EU-Kommission ab.</li>
+    <li><b>Lizenz erforderlich:</b> ifo-Geschäftsklima und ifo-Exporterwartungen (<a href="https://www.ifo.de/">ifo Institut</a>), ZEW-Konjunkturerwartungen (<a href="https://www.zew.de/">ZEW</a>), Einkaufsmanagerindizes (<a href="https://www.pmi.spglobal.com/">S&amp;P Global</a>), GfK-Konsumklima (<a href="https://www.nim.org/">NIM</a>), HDE-Konsumbarometer (<a href="https://einzelhandel.de/">HDE</a>), IAB-Arbeitsmarktbarometer (<a href="https://iab.de/">IAB</a>), IWH-Insolvenztrend (<a href="https://www.iwh-halle.de/">IWH</a>), Terminpreise für Strom und Gas (<a href="https://www.eex.com/">EEX</a>), Containerumschlag-Index (<a href="https://www.rwi-essen.de/">RWI/ISL</a>). Der Lieferkettenindex GSCPI der Federal Reserve Bank of New York fehlt vorerst, weil seine Nutzungsbedingungen noch zu prüfen sind. Die Stimmung der Unternehmen und Verbraucher bilden stattdessen die frei verfügbaren Umfragen der EU-Kommission ab.</li>
     <li><b>Keine abrufbare Zeitreihe:</b> Unterbeschäftigung der Bundesagentur für Arbeit (nur in Monatsberichten), Finanzlage und Beitragssätze der Sozialversicherung (Projektionen der Träger), Investitionshemmnisse aus Unternehmensumfragen, Zerlegung des Produktionspotenzials in Arbeit, Kapital und Produktivität (in AMECO nicht als Reihe abrufbar), Beiträge der Branchen zum Auftragseingang (Gewichte nicht veröffentlicht).</li>
   </ul>
   </details>
@@ -362,13 +362,15 @@ function timeChart(el, c) {
   }
   const card0 = el.closest(".card"), uEl = card0 && card0.querySelector(".unit");
   const tickW0 = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;  // Einheit rechtsbündig über den Achsenzahlen
-  if (uEl && uEl.textContent) { annotations.push({ xref: "paper", yref: "paper", x: 1, y: 1, xanchor: "right", yanchor: "bottom", xshift: tickW0, yshift: 6, showarrow: false, align: "right",
+  const legendShown = !direct && traces.filter(tr => tr.showlegend !== false).length > 1;  // mit Legende bleibt die Einheit über der Grafik
+  if (uEl && uEl.textContent && !legendShown) { annotations.push({ xref: "paper", yref: "paper", x: 1, y: 1, xanchor: "right", yanchor: "bottom", xshift: tickW0, yshift: 6, showarrow: false, align: "right",
     text: esc(uEl.textContent), font: { family: HS.font, size: 12, color: "#3f4752" } }); uEl.style.display = "none"; }
   const L = baseLayout(el);
   L.margin = Object.assign({}, L.margin, { r: Math.max(rMargin, tickW0), t: Math.max(L.margin.t, 34) });
+  const xa2 = xAxis(r[0], r[1], Math.max(120, (el.clientWidth || 500) - Math.max(rMargin, tickW0) - 10));  // Jahreszahlen nach der tatsächlichen Zeichenbreite
   const nb = el.parentNode && el.parentNode.querySelector(".notebox"); if (nb) nb.style.marginRight = (rMargin + 6) + "px";  // Kasten oben rechts über der Zeichenfläche
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
-    xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
+    xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa2.tickvals, ticktext: xa2.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
     yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
   Plotly.newPlot(el, traces, L, CFG);
 }
@@ -455,26 +457,52 @@ function clockChart(el, c) {
 
 // Prognosespektrum: je Jahr ein Punkt je Herausgeber, Bundesregierung hervorgehoben, frühere Runden hohl
 function forecastChart(el, c) {
-  const F = c.forecasts, years = [...new Set(F.flatMap(f => Object.keys(f.values).map(Number)))].sort();
+  // Je Zieljahr ein Feld: Prognosen gegen das Erstellungsdatum, Wert am Punkt, Runden eines Herausgebers verbunden,
+  // rechts die Spanne der jeweils jüngsten Prognose aller Herausgeber (Balken) mit Median (Strich).
+  el.classList.add("multi");
+  const F = c.forecasts, now = new Date().getFullYear();
+  const years = [...new Set(F.flatMap(f => Object.keys(f.values).map(Number)))].filter(y => y >= now - 0 && F.filter(f => f.values[y] != null).length >= 2).sort().slice(0, 3);
   const by = [...new Set(F.map(f => f.by))];
-  const traces = [];
-  by.forEach((b, i) => {
-    const col = b === "Bundesregierung" ? PAL[0] : PAL[(i + 1) % PAL.length];
-    F.filter(f => f.by === b).forEach(f => {
-      const ys = years.filter(y => f.values[y] != null);
-      const off = (i - (by.length - 1) / 2) * 0.16;  // je Herausgeber leicht versetzt, damit gleiche Werte sichtbar bleiben
-      traces.push({ type: "scatter", mode: "markers", x: ys.map(y => y + off), y: ys.map(y => f.values[y]), name: f.latest ? b : `${b}, ${f.round}`,
-        marker: { size: f.latest ? 15 : 11, color: f.latest ? col : "#fff", line: { color: col, width: 2 }, symbol: "circle" },
-        hovertemplate: `%{y:,.1f} %<extra>${esc(b)}: ${esc(f.round)}</extra>`, showlegend: f.latest });
-    });
-  });
-  const vals = F.flatMap(f => Object.values(f.values));
+  const col = b => b === "Bundesregierung" ? PAL[0] : ["#0070C0", "#7030A0", "#00B0F0", "#D86DCD", "#47D359", "#51154A", "#595959"][by.filter(x => x !== "Bundesregierung").indexOf(b) % 7];
+  const vals = F.flatMap(f => years.map(y => f.values[y]).filter(v => v != null));
   const ya = yAxis(vals.concat([0]), "%");
-  const L = baseLayout(el);
-  Object.assign(L, { hovermode: "closest", xaxis: { type: "linear", range: [years[0] - 0.6, years[years.length - 1] + 0.6], tickmode: "array", tickvals: years, ticktext: years.map(String), fixedrange: true, showgrid: false, zeroline: false, tickfont: { size: 15 } },
-    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true, automargin: true },
-    shapes: ya.zero ? [{ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } }] : [] });
-  Plotly.newPlot(el, traces, L, CFG);
+  const grid = document.createElement("div"); grid.className = "multiples"; grid.style.setProperty("--cols", Math.min(years.length, 3)); el.appendChild(grid);
+  const d0 = F.map(f => f.date).sort()[0], d1 = new Date().toISOString().slice(0, 10);
+  const x0 = new Date(Date.parse(d0) - 20 * 864e5).toISOString().slice(0, 10), x1 = new Date(Date.parse(d1) + 75 * 864e5).toISOString().slice(0, 10);
+  years.forEach((Y, k) => {
+    const latest = by.map(b => F.filter(f => f.by === b && f.values[Y] != null).sort((p, q) => p.date < q.date ? -1 : 1).pop()).filter(Boolean);
+    const lv = latest.map(f => f.values[Y]).sort((p, q) => p - q), med = lv.length % 2 ? lv[(lv.length - 1) / 2] : (lv[lv.length / 2 - 1] + lv[lv.length / 2]) / 2;
+    const box = document.createElement("div");
+    box.innerHTML = `<p class="mt"><b>Prognosen für ${Y}</b> Spanne ${fmt(lv[0], 1)} bis ${fmt(lv[lv.length - 1], 1)} %, Median ${fmt(med, 1)} %<br><span class="mtsub">${latest.length} Herausgeber, jeweils jüngste Runde</span></p>`;
+    const m = document.createElement("div"); m.className = "mini"; m.style.height = "300px"; box.appendChild(m); grid.appendChild(box);
+    const traces = [], placed = [];
+    // Beschriftung ausweichen lassen: liegt ein Punkt nahe an einem schon beschrifteten, wechselt die Position
+    const POS = ["top center", "bottom center", "middle right", "middle left", "top right", "bottom right"];
+    const posFor = (date, v) => { const near = placed.filter(p => Math.abs(Date.parse(p.d) - Date.parse(date)) < 40 * 864e5 && Math.abs(p.v - v) < 0.2);
+      const used = new Set(near.map(p => p.pos)); const pos = POS.find(q => !used.has(q)) || "top center"; placed.push({ d: date, v, pos }); return pos; };
+    by.forEach(b => {
+      const fs = F.filter(f => f.by === b && f.values[Y] != null).sort((p, q) => p.date < q.date ? -1 : 1); if (!fs.length) return;
+      const last = fs[fs.length - 1];
+      traces.push({ type: "scatter", mode: "lines+markers+text", x: fs.map(f => f.date), y: fs.map(f => f.values[Y]), name: b, showlegend: k === 0,
+        line: { color: col(b), width: b === "Bundesregierung" ? 2.5 : 1.2 },
+        marker: { size: fs.map(f => f === last ? 11 : 7), color: fs.map(f => f === last ? col(b) : "#fff"), line: { color: col(b), width: 2 } },
+        text: fs.map(f => fmt(f.values[Y], 1)), textposition: fs.map(f => posFor(f.date, f.values[Y])), textfont: { family: HS.font, size: 11, color: col(b) },
+        customdata: fs.map(f => `${f.by}, ${f.round}${f.check ? " (" + f.check + ")" : ""}`), hovertemplate: `%{y:,.1f} %<extra>%{customdata}</extra>` });
+    });
+    const xb = new Date(Date.parse(d1) + 45 * 864e5).toISOString().slice(0, 10);
+    const shapes = [{ type: "rect", xref: "x", yref: "y", x0: new Date(Date.parse(xb) - 9 * 864e5).toISOString().slice(0, 10), x1: new Date(Date.parse(xb) + 9 * 864e5).toISOString().slice(0, 10), y0: lv[0], y1: lv[lv.length - 1], fillcolor: "rgba(0,112,192,0.18)", line: { width: 0 } },
+      { type: "line", xref: "x", yref: "y", x0: new Date(Date.parse(xb) - 11 * 864e5).toISOString().slice(0, 10), x1: new Date(Date.parse(xb) + 11 * 864e5).toISOString().slice(0, 10), y0: med, y1: med, line: { color: PAL[0], width: 2 } }];
+    if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
+    const L = baseLayout(m);
+    Object.assign(L, { margin: { l: 4, r: 4, t: 8, b: 26 }, hovermode: "closest", shapes, showlegend: false, font: { family: HS.font, size: 11 },
+      annotations: [{ x: xb, y: lv[lv.length - 1], yanchor: "bottom", text: "Spanne", showarrow: false, font: { family: HS.font, size: 11, color: "#3f4752" } }],
+      xaxis: { type: "date", range: [x0, x1], tickformat: "%b %y", showgrid: false, zeroline: false, fixedrange: true, nticks: 5 },
+      yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
+    Plotly.newPlot(m, traces, L, CFG);
+  });
+  const leg = document.createElement("p"); leg.className = "tnote";
+  leg.innerHTML = by.map(b => `<span style="color:${col(b)}">●</span> ${esc(b)}`).join(" · ") + " · gefüllt: jüngste Runde, hohl: frühere Runde. Balken rechts: Spanne der jüngsten Prognosen, Strich: Median.";
+  el.appendChild(leg);
 }
 
 // Saisonvergleich: Monate dünn, 12-Monats-Mittel dick, übliches Niveau vor Corona gestrichelt
@@ -632,6 +660,7 @@ async function pngDownload(el, ch, c, no, sub, unit) {
   const a = document.createElement("a"); a.download = `abb${String(no).padStart(2, "0")}_${c.chart}.png`; a.href = cv.toDataURL("image/png"); a.click();
 }
 
+const sidsOf = c => Array.isArray(c.series) ? c.series.map(s => s.id) : c.series ? [c.series] : [];
 // Satz zur Abbildung samt nächstem Termin; html: mit Link zum Kalender
 function chartSentence(c, html) {
   let s = html ? esc(c.text || "") : (c.text || "");
@@ -663,7 +692,7 @@ function card(c, no) {
   if (f.pptx) acts.push(`<a href="${f.pptx}" download title="PowerPoint-Folie">▭ PPTX</a>`);
   if (c.type !== "heat" && c.type !== "calendar") acts.push(`<button type="button" class="png" title="Bild">▨ PNG</button>`);
   if (f.csv) acts.push(`<a href="${f.csv}" download title="Daten als CSV">▤ CSV</a>`);
-  el.insertAdjacentHTML("beforeend", `<div class="acts" aria-label="Herunterladen">${acts.join(" | ")}</div>`);
+  el.insertAdjacentHTML("beforeend", `<div class="acts" aria-label="Herunterladen">${acts.join("\u2003")}</div>`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
   ch._c = c;
   return el;
@@ -768,11 +797,12 @@ function build() {
     const q = t.question;
     if (!q && !t.charts.length) return;
     sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))} <a class="totop" href="#top" title="Zur Übersicht">↑ Übersicht</a></h2>`
-      + (q || t.charts[0] ? `<div class="intro"><p class="answer">${esc(q ? [q.answer.head, ...q.answer.more].join(" ") : "")} ${t.charts[0] ? chartSentence(t.charts[0], true) : ""} <button type="button" class="copy" title="Absatz mit Quellenangabe kopieren">Kopieren</button></p>`
+      + (q || t.charts[0] ? `<div class="intro"><p class="answer">${esc(q ? [q.answer.head, ...q.answer.more].join(" ") : "")} ${t.charts[0] ? chartSentence(q && sidsOf(t.charts[0]).includes(q.series) ? Object.assign({}, t.charts[0], { text: "" }) : t.charts[0], true) : ""} <button type="button" class="copy" title="Absatz mit Quellenangabe kopieren">Kopieren</button></p>`
         + (q ? `<div class="explain"><span class="ico" aria-label="Erläuterung" role="img">❓</span>${esc(q.explain)}</div>` : "") + `</div>` : "");
     if (t.charts[0]) t.charts[0]._lead = true;
     // Kopieren: Antwort und die Sätze aller Abbildungen des Abschnitts als ein zusammenhängender Text
-    const allText = () => [q ? [q.answer.head, ...q.answer.more].join(" ") : "", ...t.charts.map((x, i) => { const s = chartSentence(x, false); return s ? (i ? `${x.ask ? x.ask + " " : ""}${s} (Abb. ${x.no})` : `${s} (Abb. ${x.no})`) : ""; })].filter(Boolean).join(" ");
+    const dup = x => q && sidsOf(x).includes(q.series);  // Leitgrafik wiederholt die Antwort
+    const allText = () => [q ? [q.answer.head, ...q.answer.more].join(" ") : "", ...t.charts.map((x, i) => { const s = chartSentence(!i && dup(x) ? Object.assign({}, x, { text: "" }) : x, false); return s ? (i ? `${x.ask ? x.ask + " " : ""}${s} (Abb. ${x.no})` : `${s} (Abb. ${x.no})`) : ""; })].filter(Boolean).join(" ");
     const cpb = sec.querySelector(".answer button.copy");
     if (cpb) { cpb.textContent = "Abschnitt kopieren"; cpb.title = "Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren"; cpb.onclick = () => copyText(allText(), cpb, t.title); }
     else if (t.charts.some(x => x.text)) { sec.insertAdjacentHTML("beforeend", `<p class="answer"><button type="button" class="copy">Abschnitt kopieren</button></p>`); const b2 = sec.querySelector(".answer button.copy"); b2.onclick = () => copyText(allText(), b2, t.title); }

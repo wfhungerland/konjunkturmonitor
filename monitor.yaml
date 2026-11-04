@@ -136,7 +136,7 @@ topics:
   - id: wachstum
     title: Wachstum
     charts:
-      - {chart: gdp_contrib, ask: "Welche Nachfrage trägt das Wachstum?", type: stacked, total: de_gdp_qoq, years: 4, caption: "Balken: Beiträge der Verwendungskomponenten zum Wachstum in Prozentpunkten. Linie: Wachstum insgesamt. Importe gehen mit negativem Vorzeichen ein, da sie im Ausland erzeugt werden."}
+      - {chart: gdp_contrib, ask: "Welche Nachfrage trägt das Wachstum?", type: stacked, total: de_gdp_qoq, years: 3, keep_years: true, caption: "Balken: Beiträge der Verwendungskomponenten zum Wachstum in Prozentpunkten. Linie: Wachstum insgesamt. Importe gehen mit negativem Vorzeichen ein, da sie im Ausland erzeugt werden."}
       - {chart: wai, ask: "Was zeigen die Wochendaten zur Wirtschaftsleistung?", years: 3, ref: 0, caption: "Der Aktivitätsindex der Bundesbank schätzt aus wöchentlichen Daten (etwa Lkw-Maut, Stromverbrauch, Suchanfragen), wie stark die Wirtschaftsleistung in den letzten 13 Wochen gegenüber den 13 Wochen davor gewachsen ist. Er liegt früher vor als das BIP, ist aber eine Schätzung."}
       - {chart: maut, ask: "Wie viel fahren die Lkw auf den Autobahnen?", years: 6, ma3: true, caption: "Fahrleistung mautpflichtiger Lkw ab vier Achsen auf Autobahnen, ermittelt aus den Mautdaten. Der Index liegt wenige Tage nach Monatsende vor und folgt eng der Industrieproduktion, weil diese Lkw vor allem Vorleistungen und Waren transportieren. Gleitendes Dreimonatsmittel."}
       - {chart: gdp_level, ask: "Wo steht die Wirtschaftsleistung im längeren Vergleich?", years: 12, caption: "Wirtschaftsleistung, preisbereinigt, 2020 = 100. Der Einbruch 2020 geht auf die Corona-Pandemie zurück."}
@@ -193,6 +193,7 @@ topics:
     title: Einkommen
     ask: "Wie entwickeln sich Einkommen und Verteilung?"
     charts:
+      - {chart: wages, ask: "Steigen die Löhne schneller als die Preise?", years: 12, ref: 0, caption: "Nominallohnindex: durchschnittliche Bruttomonatsverdienste einschließlich Sonderzahlungen; Reallohnindex: Nominallohnindex bereinigt um die Entwicklung der Verbraucherpreise. Liegt die Reallohnrate über null, steigen die Löhne schneller als die Preise. Veränderung gegenüber dem Vorjahresquartal."}
       - {chart: hh_income, ask: "Wie entwickeln sich die Einkommen der Haushalte?", years: 12, caption: "Verfügbares Einkommen der privaten Haushalte je Einwohner, also Löhne, Gewinne, Vermögenseinkommen und Sozialleistungen nach Steuern und Abgaben, bereinigt um die Preisentwicklung des Konsums. 2010 = 100."}
       - {chart: saving, ask: "Wie viel sparen die Haushalte?", years: 12, caption: "Anteil des verfügbaren Einkommens, den die Haushalte nicht für Konsum ausgeben. Eine steigende Sparquote dämpft den Konsum, oft aus Vorsicht in unsicheren Zeiten."}
       - {chart: profit_share, ask: "Wie verteilt sich die Wertschöpfung auf Gewinne und Löhne?", years: 12, caption: "Bruttobetriebsüberschuss der nichtfinanziellen Unternehmen in Prozent ihrer Wertschöpfung. Steigt die Gewinnquote, entfällt ein größerer Teil der Wertschöpfung auf Gewinne und ein kleinerer auf Löhne."}
@@ -240,7 +241,7 @@ topics:
     title: Aussichten
     ask: "Was erwarten die Prognosen?"
     charts:
-      - {chart: forecast, ask: "Was erwarten die Prognosen für das Wachstum?", type: forecast, caption: "Jeder Punkt steht für eine Prognose des realen BIP-Wachstums im jeweiligen Jahr. Hervorgehoben: Bundesregierung. Hohle Punkte: frühere Prognoserunde."}
+      - {chart: forecast, ask: "Was erwarten die Prognosen für das Wachstum?", type: forecast, caption: "Prognosen für das reale BIP-Wachstum, je Zieljahr ein Feld. Waagerecht: Veröffentlichungsdatum der Prognose; so wird sichtbar, wie sich die Erwartungen über die Zeit verschoben haben. Gefüllte Punkte: jüngste Runde je Herausgeber, hohle Punkte: frühere Runden. Balken rechts: Spanne der jüngsten Prognosen aller Herausgeber, Strich: Median. Gemeinschaftsdiagnose: gemeinsame Prognose von DIW, ifo, IfW Kiel, IWH und RWI. Einzelne Werte stammen aus Presseberichten zu den Veröffentlichungen und sind im Tooltip gekennzeichnet."}
   - id: struktur
     title: Struktur
     part: struktur
