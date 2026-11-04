@@ -388,7 +388,22 @@ def chart_text(c: dict) -> str:
         if typ == "latest":
             b = c["bars"]
             return f"{c.get('bar_name', 'Veränderung')}, Stand {_per(b[0]['period'], c.get('freq', 'Q'))}: " + ", ".join(f"{x['label']} {num(x['value'], d, True)}" for x in b) + "."
-        if typ in ("calendar", "forecast") or not c.get("series"):
+        if typ == "forecast":
+            fs = c.get("forecasts") or []
+            parts = []
+            for y in sorted({int(k) for f in fs for k in f["values"]}):
+                latest = {}
+                for f in sorted(fs, key=lambda f: f["date"]):
+                    if y in f["values"]:
+                        latest[f["by"]] = f["values"][y]
+                if len(latest) < 2 or y < datetime.now().year:
+                    continue
+                v = sorted(latest.values())
+                med = v[len(v) // 2] if len(v) % 2 else (v[len(v) // 2 - 1] + v[len(v) // 2]) / 2
+                parts.append(f"für {y} im Mittel (Median) {num(med, 1)} %, Spanne {num(v[0], 1)} bis {num(v[-1], 1)} % ({len(v)} Herausgeber)")
+            joined = parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " sowie " + parts[-1]
+            return ("Die jüngsten Prognosen erwarten " + joined + ".") if parts else ""
+        if typ == "calendar" or not c.get("series"):
             return ""
         series = [s for s in c["series"] if s.get("y")]
         if typ == "stacked":  # Stichtag ist das jüngste Quartal mit Beiträgen (die Rate liegt oft früher vor)

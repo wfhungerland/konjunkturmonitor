@@ -1,5 +1,6 @@
 # Prognosen für das reale BIP Deutschlands (% gegenüber Vorjahr). Nur öffentlich veröffentlichte Werte, je mit Quelle.
-# Neue Runde: Eintrag ergänzen; der Monitor zeigt je Herausgeber den jüngsten Stand.
+# Neue Runde: Eintrag ergänzen; der Monitor zeigt je Herausgeber den jüngsten Stand und frühere Runden hohl.
+# check: "Pressemeldung" heißt: Zahl aus übereinstimmenden Presseberichten, noch nicht an der Originalveröffentlichung geprüft.
 - by: Bundesregierung
   round: Herbstprojektion 2026
   date: 2026-10-08
@@ -15,3 +16,45 @@
   date: 2026-09-24
   values: {2026: 1.3, 2027: 1.1, 2028: 0.4}
   source: https://www.diw.de/de/diw_01.c.1020394.de/gemeinschaftsdiagnose_herbst_2026__aufschwung_mit_strukturproblemen_____finanzpolitik_auf_abwegen.html
+- by: IWF
+  round: World Economic Outlook Oktober 2026
+  date: 2026-10-13
+  values: {2026: 1.3, 2027: 1.1}
+  source: https://www.zdfheute.de/wirtschaft/iwf-wirtschaft-wachstum-deutschland-100.html
+  check: Pressemeldung
+- by: IWF
+  round: World Economic Outlook Update Juli 2026
+  date: 2026-07-15
+  values: {2026: 0.7, 2027: 1.0}
+  source: https://www.verkehrsrundschau.de/nachrichten/recht-geld/iwf-korrigiert-deutschland-prognose-nach-unten-3791064
+  check: Pressemeldung, Datum ungefähr
+- by: IWF
+  round: World Economic Outlook April 2026
+  date: 2026-04-14
+  values: {2026: 0.8, 2027: 1.2}
+  source: https://www.verkehrsrundschau.de/nachrichten/recht-geld/iwf-korrigiert-deutschland-prognose-nach-unten-3791064
+  check: Pressemeldung, Datum ungefähr
+- by: ifo Institut
+  round: Konjunkturprognose Herbst 2026
+  date: 2026-09-10
+  values: {2026: 1.4, 2027: 1.2}
+  source: https://www.zdfheute.de/wirtschaft/ifo-konjunktur-prognose-wirtschaft-100.html
+  check: Pressemeldung, Datum ungefähr
+- by: EU-Kommission
+  round: Frühjahrsprognose 2026
+  date: 2026-05-19
+  values: {2026: 0.6, 2027: 0.9}
+  source: https://www.berliner-zeitung.de/article/eu-kommission-halbiert-wachstumsprognose-fuer-deutschland-10037666
+  check: Pressemeldung, Datum ungefähr
+- by: OECD
+  round: Economic Outlook Juni 2026
+  date: 2026-06-03
+  values: {2026: 0.7, 2027: 1.1}
+  source: https://www.boersen-zeitung.de/konjunktur-politik/oecd-kappt-erneut-deutschland-prognose
+  check: Pressemeldung, Datum ungefähr
+- by: Bundesbank
+  round: Deutschland-Prognose Juni 2026
+  date: 2026-06-12
+  values: {2026: 0.5}
+  source: https://www.cash-online.de/a/bundesbank-erwartet-2026-staerkeres-wirtschaftswachstum-725126/
+  check: Pressemeldung, Datum ungefähr

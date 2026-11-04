@@ -240,7 +240,7 @@ topics:
     title: Aussichten
     ask: "Was erwarten die Prognosen?"
     charts:
-      - {chart: forecast, ask: "Was erwarten die Prognosen für das Wachstum?", type: forecast, caption: "Jeder Punkt steht für eine Prognose des realen BIP-Wachstums im jeweiligen Jahr. Hervorgehoben: Bundesregierung. Hohle Punkte: frühere Prognoserunde."}
+      - {chart: forecast, ask: "Was erwarten die Prognosen für das Wachstum?", type: forecast, caption: "Prognosen für das reale BIP-Wachstum, je Zieljahr ein Feld. Waagerecht: Veröffentlichungsdatum der Prognose; so wird sichtbar, wie sich die Erwartungen über die Zeit verschoben haben. Gefüllte Punkte: jüngste Runde je Herausgeber, hohle Punkte: frühere Runden. Balken rechts: Spanne der jüngsten Prognosen aller Herausgeber, Strich: Median. Gemeinschaftsdiagnose: gemeinsame Prognose von DIW, ifo, IfW Kiel, IWH und RWI. Einzelne Werte stammen aus Presseberichten zu den Veröffentlichungen und sind im Tooltip gekennzeichnet."}
   - id: struktur
     title: Struktur
     part: struktur

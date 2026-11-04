@@ -457,26 +457,52 @@ function clockChart(el, c) {
 
 // Prognosespektrum: je Jahr ein Punkt je Herausgeber, Bundesregierung hervorgehoben, frühere Runden hohl
 function forecastChart(el, c) {
-  const F = c.forecasts, years = [...new Set(F.flatMap(f => Object.keys(f.values).map(Number)))].sort();
+  // Je Zieljahr ein Feld: Prognosen gegen das Erstellungsdatum, Wert am Punkt, Runden eines Herausgebers verbunden,
+  // rechts die Spanne der jeweils jüngsten Prognose aller Herausgeber (Balken) mit Median (Strich).
+  el.classList.add("multi");
+  const F = c.forecasts, now = new Date().getFullYear();
+  const years = [...new Set(F.flatMap(f => Object.keys(f.values).map(Number)))].filter(y => y >= now - 0 && F.filter(f => f.values[y] != null).length >= 2).sort().slice(0, 3);
   const by = [...new Set(F.map(f => f.by))];
-  const traces = [];
-  by.forEach((b, i) => {
-    const col = b === "Bundesregierung" ? PAL[0] : PAL[(i + 1) % PAL.length];
-    F.filter(f => f.by === b).forEach(f => {
-      const ys = years.filter(y => f.values[y] != null);
-      const off = (i - (by.length - 1) / 2) * 0.16;  // je Herausgeber leicht versetzt, damit gleiche Werte sichtbar bleiben
-      traces.push({ type: "scatter", mode: "markers", x: ys.map(y => y + off), y: ys.map(y => f.values[y]), name: f.latest ? b : `${b}, ${f.round}`,
-        marker: { size: f.latest ? 15 : 11, color: f.latest ? col : "#fff", line: { color: col, width: 2 }, symbol: "circle" },
-        hovertemplate: `%{y:,.1f} %<extra>${esc(b)}: ${esc(f.round)}</extra>`, showlegend: f.latest });
-    });
-  });
-  const vals = F.flatMap(f => Object.values(f.values));
+  const col = b => b === "Bundesregierung" ? PAL[0] : ["#0070C0", "#7030A0", "#00B0F0", "#D86DCD", "#47D359", "#51154A", "#595959"][by.filter(x => x !== "Bundesregierung").indexOf(b) % 7];
+  const vals = F.flatMap(f => years.map(y => f.values[y]).filter(v => v != null));
   const ya = yAxis(vals.concat([0]), "%");
-  const L = baseLayout(el);
-  Object.assign(L, { hovermode: "closest", xaxis: { type: "linear", range: [years[0] - 0.6, years[years.length - 1] + 0.6], tickmode: "array", tickvals: years, ticktext: years.map(String), fixedrange: true, showgrid: false, zeroline: false, tickfont: { size: 15 } },
-    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true, automargin: true },
-    shapes: ya.zero ? [{ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } }] : [] });
-  Plotly.newPlot(el, traces, L, CFG);
+  const grid = document.createElement("div"); grid.className = "multiples"; grid.style.setProperty("--cols", Math.min(years.length, 3)); el.appendChild(grid);
+  const d0 = F.map(f => f.date).sort()[0], d1 = new Date().toISOString().slice(0, 10);
+  const x0 = new Date(Date.parse(d0) - 20 * 864e5).toISOString().slice(0, 10), x1 = new Date(Date.parse(d1) + 75 * 864e5).toISOString().slice(0, 10);
+  years.forEach((Y, k) => {
+    const latest = by.map(b => F.filter(f => f.by === b && f.values[Y] != null).sort((p, q) => p.date < q.date ? -1 : 1).pop()).filter(Boolean);
+    const lv = latest.map(f => f.values[Y]).sort((p, q) => p - q), med = lv.length % 2 ? lv[(lv.length - 1) / 2] : (lv[lv.length / 2 - 1] + lv[lv.length / 2]) / 2;
+    const box = document.createElement("div");
+    box.innerHTML = `<p class="mt"><b>Prognosen für ${Y}</b> Spanne ${fmt(lv[0], 1)} bis ${fmt(lv[lv.length - 1], 1)} %, Median ${fmt(med, 1)} %<br><span class="mtsub">${latest.length} Herausgeber, jeweils jüngste Runde</span></p>`;
+    const m = document.createElement("div"); m.className = "mini"; m.style.height = "300px"; box.appendChild(m); grid.appendChild(box);
+    const traces = [], placed = [];
+    // Beschriftung ausweichen lassen: liegt ein Punkt nahe an einem schon beschrifteten, wechselt die Position
+    const POS = ["top center", "bottom center", "middle right", "middle left", "top right", "bottom right"];
+    const posFor = (date, v) => { const near = placed.filter(p => Math.abs(Date.parse(p.d) - Date.parse(date)) < 40 * 864e5 && Math.abs(p.v - v) < 0.2);
+      const used = new Set(near.map(p => p.pos)); const pos = POS.find(q => !used.has(q)) || "top center"; placed.push({ d: date, v, pos }); return pos; };
+    by.forEach(b => {
+      const fs = F.filter(f => f.by === b && f.values[Y] != null).sort((p, q) => p.date < q.date ? -1 : 1); if (!fs.length) return;
+      const last = fs[fs.length - 1];
+      traces.push({ type: "scatter", mode: "lines+markers+text", x: fs.map(f => f.date), y: fs.map(f => f.values[Y]), name: b, showlegend: k === 0,
+        line: { color: col(b), width: b === "Bundesregierung" ? 2.5 : 1.2 },
+        marker: { size: fs.map(f => f === last ? 11 : 7), color: fs.map(f => f === last ? col(b) : "#fff"), line: { color: col(b), width: 2 } },
+        text: fs.map(f => fmt(f.values[Y], 1)), textposition: fs.map(f => posFor(f.date, f.values[Y])), textfont: { family: HS.font, size: 11, color: col(b) },
+        customdata: fs.map(f => `${f.by}, ${f.round}${f.check ? " (" + f.check + ")" : ""}`), hovertemplate: `%{y:,.1f} %<extra>%{customdata}</extra>` });
+    });
+    const xb = new Date(Date.parse(d1) + 45 * 864e5).toISOString().slice(0, 10);
+    const shapes = [{ type: "rect", xref: "x", yref: "y", x0: new Date(Date.parse(xb) - 9 * 864e5).toISOString().slice(0, 10), x1: new Date(Date.parse(xb) + 9 * 864e5).toISOString().slice(0, 10), y0: lv[0], y1: lv[lv.length - 1], fillcolor: "rgba(0,112,192,0.18)", line: { width: 0 } },
+      { type: "line", xref: "x", yref: "y", x0: new Date(Date.parse(xb) - 11 * 864e5).toISOString().slice(0, 10), x1: new Date(Date.parse(xb) + 11 * 864e5).toISOString().slice(0, 10), y0: med, y1: med, line: { color: PAL[0], width: 2 } }];
+    if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
+    const L = baseLayout(m);
+    Object.assign(L, { margin: { l: 4, r: 4, t: 8, b: 26 }, hovermode: "closest", shapes, showlegend: false, font: { family: HS.font, size: 11 },
+      annotations: [{ x: xb, y: lv[lv.length - 1], yanchor: "bottom", text: "Spanne", showarrow: false, font: { family: HS.font, size: 11, color: "#3f4752" } }],
+      xaxis: { type: "date", range: [x0, x1], tickformat: "%b %y", showgrid: false, zeroline: false, fixedrange: true, nticks: 5 },
+      yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
+    Plotly.newPlot(m, traces, L, CFG);
+  });
+  const leg = document.createElement("p"); leg.className = "tnote";
+  leg.innerHTML = by.map(b => `<span style="color:${col(b)}">●</span> ${esc(b)}`).join(" · ") + " · gefüllt: jüngste Runde, hohl: frühere Runde. Balken rechts: Spanne der jüngsten Prognosen, Strich: Median.";
+  el.appendChild(leg);
 }
 
 // Saisonvergleich: Monate dünn, 12-Monats-Mittel dick, übliches Niveau vor Corona gestrichelt
@@ -666,7 +692,7 @@ function card(c, no) {
   if (f.pptx) acts.push(`<a href="${f.pptx}" download title="PowerPoint-Folie">▭ PPTX</a>`);
   if (c.type !== "heat" && c.type !== "calendar") acts.push(`<button type="button" class="png" title="Bild">▨ PNG</button>`);
   if (f.csv) acts.push(`<a href="${f.csv}" download title="Daten als CSV">▤ CSV</a>`);
-  el.insertAdjacentHTML("beforeend", `<div class="acts" aria-label="Herunterladen">${acts.join(" | ")}</div>`);
+  el.insertAdjacentHTML("beforeend", `<div class="acts" aria-label="Herunterladen">${acts.join("\u2003")}</div>`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
   ch._c = c;
   return el;
