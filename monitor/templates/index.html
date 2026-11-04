@@ -93,9 +93,9 @@
   .stable td.s { width: 140px; padding-right: 4px; } .stable td.s svg { width: 130px; height: 22px; display: block; }
   .spk { display: inline-block; position: relative; } .spk small { display: flex; justify-content: space-between; gap: 6px; white-space: nowrap; font-size: 9.5px; line-height: 1.1; color: #7f7f7f; padding: 0 2px; }
   .stable td.v, .stable td.d { width: 6.2em; padding-right: 14px; }
-  .stable td.t { width: 1.6em; text-align: left; padding-left: 6px; }
+  .stable td.t { text-align: center; padding: 3px 0; }
   @media (min-width: 761px) { .stable { table-layout: fixed; }
-    .stable thead th:nth-child(1) { width: 29%; } .stable thead th:nth-child(2) { width: 14%; } .stable thead th:nth-child(3) { width: 5%; }
+    .stable thead th:nth-child(1) { width: 29%; } .stable thead th:nth-child(2) { width: 15.5%; } .stable thead th:nth-child(3) { width: 3.5%; text-align: center; }
     .stable thead th:nth-child(4) { width: 9%; } .stable thead th:nth-child(5), .stable thead th:nth-child(6), .stable thead th:nth-child(7) { width: 10%; } .stable thead th:nth-child(8) { width: 13%; } }
   .stable a { color: inherit; }
   .tnote { font: 13px/1.4 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); margin: 0 0 8px; max-width: 60em; }
@@ -171,9 +171,9 @@
   ol.callist sup.e { font-size: 10px; margin-left: 1px; }
   .expandall { margin-left: auto; }
   @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
-  .parthead { margin: 56px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 15px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
+  .parthead { margin: 56px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 17px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
   .parthead span { color: var(--muted); margin-right: 6px; }
-  .parthead p { text-transform: none; letter-spacing: 0; font-weight: normal; color: var(--muted); font-size: 14.5px; margin: 4px 0 0; }
+  .parthead p { text-transform: none; letter-spacing: 0; font-weight: normal; color: var(--muted); font-size: 16.5px; margin: 4px 0 0; }
   details.moretable > summary { cursor: pointer; font: 14px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); margin: 2px 0 8px; }
   nav details.navmore { position: relative; }
   nav details.navmore > summary { cursor: pointer; color: var(--accent); list-style: none; } nav details.navmore > summary::after { content: " ▾"; }
@@ -855,9 +855,12 @@ function startTable(box) {
   const rows = DATA.start || []; if (!rows.length) return false;
   // Sparkline: Hoch als Strich darüber, Tief als Strich darunter (tangential), rote Nulllinie, Start- und Enddatum darunter;
   // in den großen Kacheln zusätzlich der Zeitpunkt von Hoch und Tief
-  const sp = (r, w = 130, h = 22, big = false) => { const d = r.spark, x = d.x.map(t => Date.parse(t)), y = d.y, p = big ? 9 : 4;
+  // Gemeinsame Zeitachse: alle Sparklines beginnen am selben Tag (dem spätesten Anfang) und enden am jüngsten Datum aller Reihen
+  const T0 = Math.max(...rows.map(r => Date.parse(r.spark.x[0]))), T1 = Math.max(...rows.map(r => Date.parse(r.spark.x[r.spark.x.length - 1])));
+  const sp = (r, w = 130, h = 22, big = false) => { const k0 = r.spark.x.findIndex(t => Date.parse(t) >= T0), d = { x: r.spark.x.slice(k0), y: r.spark.y.slice(k0) };
+    const x = d.x.map(t => Date.parse(t)), y = d.y, p = big ? 9 : 4;
     const lo = Math.min(...y), hi = Math.max(...y);
-    const X = v => p + (v - x[0]) / (x[x.length - 1] - x[0] || 1) * (w - 2 * p), Y = v => h - p - (v - lo) / (hi - lo || 1) * (h - 2 * p);
+    const X = v => p + (v - T0) / (T1 - T0 || 1) * (w - 2 * p), Y = v => h - p - (v - lo) / (hi - lo || 1) * (h - 2 * p);
     const path = y.map((v, i) => `${i ? "L" : "M"}${X(x[i]).toFixed(1)},${Y(v).toFixed(1)}`).join("");
     const iHi = y.indexOf(hi), iLo = y.indexOf(lo);
     const tick = (i, dy) => `<line x1="${(X(x[i]) - 4).toFixed(1)}" x2="${(X(x[i]) + 4).toFixed(1)}" y1="${(Y(y[i]) + dy).toFixed(1)}" y2="${(Y(y[i]) + dy).toFixed(1)}" stroke="#000" stroke-width="1"/>`;
@@ -866,10 +869,11 @@ function startTable(box) {
       return `<text x="${(xx + (right ? 6 : -6)).toFixed(1)}" y="${(Y(y[i]) + dy).toFixed(1)}" font-size="${fs}" text-anchor="${right ? "start" : "end"}" dominant-baseline="${anchorY}" fill="#000">${esc(perLong(d.x[i], r.freq))}</text>`; };
     const svg = `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true">${zero}<path d="${path}" fill="none" stroke="#002060" stroke-width="1.1"/>${tick(iHi, -2.5)}${tick(iLo, 2.5)}${lab(iHi, -2.5, "middle")}${lab(iLo, 2.5, "middle")}<circle cx="${X(x[x.length - 1]).toFixed(1)}" cy="${Y(y[y.length - 1]).toFixed(1)}" r="2.2" fill="#000"/></svg>`;
     const dl = big ? q => perLong(q, r.freq) : q => perShort(q, r.freq);
-    return `<span class="spk">${svg}<small><span>${esc(dl(d.x[0]))}</span><span>${esc(dl(d.x[d.x.length - 1]))}</span></small></span>`; };
+    const gap = ((w - X(x[x.length - 1])) / w * 100).toFixed(1);  // Enddatum unter dem Ende der Linie
+    return `<span class="spk">${svg}<small style="padding-right:${gap}%"><span>${esc(dl(d.x[0]))}</span><span>${esc(dl(d.x[d.x.length - 1]))}</span></small></span>`; };
   const ch = (v, r) => { if (v == null) return ""; const z = Math.abs(v) < 0.5 * 10 ** -(r.change_decimals ?? 1) ? 0 : v; return (z > 0 ? "+" : "") + fmt(z, r.change_decimals ?? 1) + `<small class="cu">\u202f${esc(r.change_unit)}</small>`; };
   const pshort = r => perLong(r.date, r.freq);
-  const head = `<thead><tr><th class="l">Kennzahl</th><th>Stand</th><th class="l">Ten&shy;denz</th><th>Wert</th><th>Δ Vor&shy;periode</th><th>Δ Vorjahr</th><th>Δ 3 Monate</th><th class="l">Verlauf fünf Jahre</th></tr></thead>`;
+  const head = `<thead><tr><th class="l">Kennzahl</th><th>Stand</th><th>Ten&shy;denz</th><th>Wert</th><th>Δ Vor&shy;periode</th><th>Δ Vorjahr</th><th>Δ 3 Monate</th><th class="l">Verlauf fünf Jahre</th></tr></thead>`;
   let grp = null, older = false, html = `<table class="stable">${head}<tbody>`;
   const rowHtml = r => {
     if (r.group !== grp) { grp = r.group; html += `<tr class="grp"><td colspan="8"><a href="#${r.topic}">${esc(grp)}</a></td></tr>`; }
