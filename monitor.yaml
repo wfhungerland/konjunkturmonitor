@@ -204,12 +204,12 @@ topics:
       - {chart: trade_region, ask: "Wohin exportiert Deutschland?", years: 6, ma3: true, caption: "Die wichtigsten Kundenregionen, gleitendes Dreimonatsmittel."}
       - {chart: trade_prices, ask: "Wie entwickeln sich die Außenhandelspreise?", years: 6, caption: "Terms of Trade: Ausfuhrpreise im Verhältnis zu den Einfuhrpreisen. Steigen sie, kann Deutschland mit derselben Exportmenge mehr Importe finanzieren."}
       - {chart: balances, ask: "Wie hoch ist der Leistungsbilanzüberschuss?", years: 6, caption: "Saldo der Leistungsbilanz (Waren, Dienstleistungen, Primär- und Sekundäreinkommen) je Monat, nicht saisonbereinigt."}
-      - {chart: esi, ask: "Wer konkurriert mit ähnlichen Waren wie Deutschland?", emphasis: esi_chn, caption: "Ähnlichkeit der Warenstruktur der Exporte eines Landes mit derjenigen Deutschlands: 0 bedeutet keine Überschneidung, 100 eine identische Struktur (Finger und Kreinin 1979, je Warengruppe zählt der kleinere Anteil). Hohe Werte bedeuten, dass beide Länder auf den Weltmärkten mit ähnlichen Waren konkurrieren. Hervorgehoben: China."}
+      - {chart: esi, recessions: false, ask: "Wer konkurriert mit ähnlichen Waren wie Deutschland?", emphasis: esi_chn, caption: "Ähnlichkeit der Warenstruktur der Exporte eines Landes mit derjenigen Deutschlands: 0 bedeutet keine Überschneidung, 100 eine identische Struktur (Finger und Kreinin 1979, je Warengruppe zählt der kleinere Anteil). Hohe Werte bedeuten, dass beide Länder auf den Weltmärkten mit ähnlichen Waren konkurrieren. Hervorgehoben: China."}
   - id: welt
     title: Welt
     ask: "Wie entwickelt sich die Weltwirtschaft?"
     charts:
-      - {chart: world_gdp, ask: "Wie wachsen die großen Wirtschaftsräume?", years: 8, ref: 0, caption: "Reales BIP gegenüber dem Vorjahresquartal. Der Euroraum nimmt rund 37 % der deutschen Warenexporte auf, die USA rund 10 %."}
+      - {chart: world_gdp, recessions: false, ask: "Wie wachsen die großen Wirtschaftsräume?", years: 8, ref: 0, caption: "Reales BIP gegenüber dem Vorjahresquartal. Der Euroraum nimmt rund 37 % der deutschen Warenexporte auf, die USA rund 10 %."}
       - {chart: uncertainty, ask: "Wie unsicher ist die Wirtschaftspolitik?", up_bad: true, years: 8, caption: "Index der wirtschaftspolitischen Unsicherheit nach Baker, Bloom und Davis, ermittelt aus der Häufigkeit einschlägiger Begriffe in Zeitungsartikeln; Mittel 1997 bis 2015 = 100. Hohe Unsicherheit lässt Unternehmen Investitionen aufschieben."}
   - id: stimmung
     title: Stimmung
@@ -255,7 +255,7 @@ topics:
       - {chart: emp_sector, ask: "In welchen Bereichen entstehen Arbeitsplätze?", type: since, base: "2022-04-01", unit: "Tsd. Personen, Veränderung seit dem 2. Quartal 2022", bar_name: "Veränderung seit 2. Quartal 2022", caption: "Veränderung der Zahl der Erwerbstätigen je Wirtschaftsbereich seit dem 2. Quartal 2022, in Tausend. Zeigt die Verschiebung von der Industrie zu den Dienstleistungen."}
       - {chart: migration, ask: "Wie viele Menschen wandern zu?", years: 30, scale: 0.000001, unit: "Mio. Personen", decimals: 2, caption: "Zuzüge minus Fortzüge über die Grenzen Deutschlands in Millionen Personen, einschließlich statistischer Anpassung. Die Zuwanderung trägt seit 2011 maßgeblich zum Wachstum der Erwerbsbevölkerung bei; 2015 und 2022 prägen die Fluchtbewegungen aus Syrien und der Ukraine."}
       - {chart: migration_groups, ask: "Wer wandert zu und wer ab?", years: 20, scale: 0.001, unit: "Tsd. Personen", decimals: 0, ref: 0, caption: "Zuzüge minus Fortzüge nach Staatsangehörigkeit, in Tausend. Deutsche wandern seit Jahren netto ab; die Zuwanderung aus Staaten außerhalb der EU prägen Fluchtbewegungen, die aus der EU vor allem Arbeitsmigration. Ohne statistische Anpassung, deshalb weicht die Summe von Abb. zur Nettozuwanderung ab."}
-      - {chart: cit, ask: "Wie hoch besteuert Deutschland Unternehmensgewinne im Vergleich?", years: 30, emphasis: cit_deu, context_grey: true, caption: "Tarifliche Gesamtsteuerbelastung von Kapitalgesellschaften (Körperschaftsteuer einschließlich Zuschläge und Steuern nachgeordneter Ebenen, in Deutschland Gewerbesteuer), nach OECD. Hervorgehoben: Deutschland; grau: Vergleichsländer."}
+      - {chart: cit, recessions: false, ask: "Wie hoch besteuert Deutschland Unternehmensgewinne im Vergleich?", years: 30, emphasis: cit_deu, context_grey: true, caption: "Tarifliche Gesamtsteuerbelastung von Kapitalgesellschaften (Körperschaftsteuer einschließlich Zuschläge und Steuern nachgeordneter Ebenen, in Deutschland Gewerbesteuer), nach OECD. Hervorgehoben: Deutschland; grau: Vergleichsländer."}
   - id: staat
     title: Staat
     part: struktur

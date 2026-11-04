@@ -633,6 +633,9 @@ def build_payload(root: Path = ROOT) -> dict:
                 if sid not in data:
                     continue
                 m = meta[sid]
+                rec = root / "data" / "static" / "svr_recessions.csv"
+                if rec.exists():
+                    entry.update(recessions=pd.read_csv(rec).to_dict("records"), recessions_on=False)
                 entry.update(_seasonal(data[sid], c.get("years")), unit=m.unit, freq=m.frequency, adjustment=m.adjustment,
                              label=m.label, sources=["Statistisches Bundesamt (GENESIS)"],
                              licenses=["Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt)"])
@@ -737,15 +740,23 @@ def build_payload(root: Path = ROOT) -> dict:
                     entry["bars"] = [dict(label=s["label"], value=s["y"][-1], prev=s["y"][-2] if len(s["y"]) > 1 else None,
                                           period=s["x"][-1]) for s in series]
                 rec = root / "data" / "static" / "svr_recessions.csv"
-                if rec.exists() and typ != "latest":
+                if c.get("recessions") is False:  # etwa Steuersätze oder Vergleiche anderer Länder
+                    entry.pop("recessions", None)
+                elif rec.exists() and typ != "latest":
                     entry["recessions"] = pd.read_csv(rec).to_dict("records")
                     entry["recessions_on"] = typ == "threshold"
             charts.append(entry)
         q = next((x for x in questions if x.get("topic") == t["id"]), None)
         topics.append(dict(t, charts=charts, question=q))
     notes = _notes(root)
+    rec_path = root / "data" / "static" / "svr_recessions.csv"
+    recs = pd.read_csv(rec_path).to_dict("records") if rec_path.exists() else []
     for tp in topics:
         for c in tp["charts"]:
+            if recs and "recessions" not in c and c.get("type") in ("line", "stacked", "threshold") and isinstance(c.get("series"), list):
+                c["recessions"], c["recessions_on"] = recs, False  # etwa Inflationsbeiträge, die einen eigenen Zweig haben
+            if c.get("recessions") is False:
+                c.pop("recessions")
             c["texts"] = chart_sentences(c)
             c["text"] = " ".join(c["texts"])
             c["last_x"] = _last_x(c)
