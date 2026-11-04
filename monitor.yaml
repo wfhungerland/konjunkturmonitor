@@ -193,6 +193,7 @@ topics:
     title: Einkommen
     ask: "Wie entwickeln sich Einkommen und Verteilung?"
     charts:
+      - {chart: wages, ask: "Steigen die Löhne schneller als die Preise?", years: 12, ref: 0, caption: "Nominallohnindex: durchschnittliche Bruttomonatsverdienste einschließlich Sonderzahlungen; Reallohnindex: Nominallohnindex bereinigt um die Entwicklung der Verbraucherpreise. Liegt die Reallohnrate über null, steigen die Löhne schneller als die Preise. Veränderung gegenüber dem Vorjahresquartal."}
       - {chart: hh_income, ask: "Wie entwickeln sich die Einkommen der Haushalte?", years: 12, caption: "Verfügbares Einkommen der privaten Haushalte je Einwohner, also Löhne, Gewinne, Vermögenseinkommen und Sozialleistungen nach Steuern und Abgaben, bereinigt um die Preisentwicklung des Konsums. 2010 = 100."}
       - {chart: saving, ask: "Wie viel sparen die Haushalte?", years: 12, caption: "Anteil des verfügbaren Einkommens, den die Haushalte nicht für Konsum ausgeben. Eine steigende Sparquote dämpft den Konsum, oft aus Vorsicht in unsicheren Zeiten."}
       - {chart: profit_share, ask: "Wie verteilt sich die Wertschöpfung auf Gewinne und Löhne?", years: 12, caption: "Bruttobetriebsüberschuss der nichtfinanziellen Unternehmen in Prozent ihrer Wertschöpfung. Steigt die Gewinnquote, entfällt ein größerer Teil der Wertschöpfung auf Gewinne und ein kleinerer auf Löhne."}

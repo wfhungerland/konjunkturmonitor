@@ -153,6 +153,7 @@ charts:
   orders_heat: {title: "Auftragseingang nach Branchen", decimals: 1}
   services: {title: "Produktion der Dienstleister", decimals: 1}
   hh_income: {title: "Real verfügbares Einkommen je Einwohner", decimals: 1}
+  wages: {title: "Nominal- und Reallöhne", decimals: 1}
   saving: {title: "Sparquote der privaten Haushalte", decimals: 1}
   profit_share: {title: "Gewinnquote der Unternehmen", decimals: 1}
   world_gdp: {title: "Wachstum großer Wirtschaftsräume", decimals: 1}
@@ -2239,3 +2240,29 @@ series:
     adjustment: Jahreswerte
     chart: migration_groups
     label: "Nicht-EU-Ausländer"
+
+  - id: de_reallohn_yoy
+    block: einkommen
+    source: genesis
+    key: 62361-0010
+    params: {value_variable: VST074, value_unit: "%"}
+    title: "Reallohnindex, Veränderung gegenüber dem Vorjahresquartal"
+    unit: "% gg. Vorjahresquartal"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2008-01-01"
+    chart: wages
+    label: "Reallöhne"
+
+  - id: de_nominallohn_yoy
+    block: einkommen
+    source: genesis
+    key: 62361-0010
+    params: {value_variable: VST075, value_unit: "%"}
+    title: "Nominallohnindex, Veränderung gegenüber dem Vorjahresquartal"
+    unit: "% gg. Vorjahresquartal"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2008-01-01"
+    chart: wages
+    label: "Nominallöhne"
