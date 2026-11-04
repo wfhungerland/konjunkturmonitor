@@ -154,7 +154,7 @@ topics:
   - id: arbeit
     title: Arbeit
     charts:
-      - {chart: labour, ask: "Wie hoch ist die Arbeitslosigkeit?", up_bad: [de_alq_sa, de_ilo], years: 12}
+      - {chart: labour, ask: "Wie hoch ist die Arbeitslosigkeit?", up_bad: [de_alq_sa, de_ilo], years: 12, caption: "Zwei Messungen der Arbeitslosigkeit. Die registrierte Quote der Bundesagentur für Arbeit zählt Menschen, die bei einer Arbeitsagentur oder einem Jobcenter arbeitslos gemeldet sind. Die Erwerbslosenquote nach der Definition der Internationalen Arbeitsorganisation (ILO) beruht auf einer Befragung: erwerbslos ist, wer keine Arbeit hat, aktiv sucht und kurzfristig verfügbar ist. Sie liegt in Deutschland deutlich niedriger und ist international vergleichbar. Beide saisonbereinigt."}
       - {chart: labour_flows, ask: "Wie entwickeln sich Arbeitslose und offene Stellen?", up_bad: [de_alo_sa], years: 12, caption: "Steigt die Arbeitslosigkeit, während die Zahl offener Stellen sinkt, deutet dies auf eine Abkühlung des Arbeitsmarkts hin."}
       - {chart: employment_m, ask: "Wie viele Menschen sind erwerbstätig?", years: 6, caption: "Erwerbstätige umfassen auch Selbständige und Beamte; sozialversicherungspflichtig Beschäftigte sind der größte Teil davon."}
       - {chart: sahm, ask: "Deutet der Arbeitsmarkt auf eine Rezession hin?", up_bad: true, years: 20, type: threshold, threshold: 0.25, caption: "Eigene Berechnung nach Michaillat und Saez (2025). Das Signal ist der kleinere von zwei Werten. Erstens: Arbeitslosenquote einschließlich Kurzarbeit (in Vollzeitäquivalenten), gleitendes Dreimonatsmittel, minus ihr Tief der letzten zwölf Monate. Zweitens: Hoch der Quote offener Stellen in den letzten zwölf Monaten minus ihr aktuelles Dreimonatsmittel. Das Signal steigt also nur, wenn die Arbeitslosigkeit zunimmt und zugleich die offenen Stellen abnehmen. Die Schwelle von 0,25 Prozentpunkten ist eigene Wahl für Deutschland; Michaillat und Saez nennen für die USA 0,29. Graue Flächen: Rezessionen nach der Datierung des Sachverständigenrats. Jede Rezession seit 2001 überschritt die Schwelle, teils mit erheblicher Verzögerung. Literatur: Michaillat, P. und Saez, E. (2025), Has the Recession Started?, Oxford Bulletin of Economics and Statistics; Sahm, C. (2019), Direct Stimulus Payments to Individuals, Brookings Institution."}
@@ -184,7 +184,7 @@ topics:
   - id: konsum
     title: Konsum
     charts:
-      - {chart: retail, ask: "Wie viel verkauft der Einzelhandel?", years: 6, ma3: true}
+      - {chart: retail, ask: "Wie viel verkauft der Einzelhandel?", years: 6, ma3: true, caption: "Umsatz des Einzelhandels ohne Kfz-Handel, preisbereinigt, also die verkaufte Menge. Der Einzelhandel steht für rund ein Drittel des privaten Konsums; Dienstleistungen, Mieten und Autos sind nicht enthalten. Dick: gleitendes Dreimonatsmittel, dünn: Monatswerte."}
       - {chart: retail_split, ask: "Welche Sortimente verkaufen sich besser?", years: 6, ma3: true, caption: "Umsatz nach Sortimenten, preisbereinigt, gleitendes Dreimonatsmittel."}
       - {chart: hospitality, ask: "Wie entwickelt sich das Gastgewerbe?", years: 6, ma3: true, caption: "Umsatz von Restaurants und Hotels, preisbereinigt, gleitendes Dreimonatsmittel."}
       - {chart: cars, ask: "Kaufen die Haushalte neue Autos?", years: 6, ma3: true, caption: "Neu zugelassene Pkw privater Halter in Tausend je Monat, gleitendes Dreimonatsmittel. Ein Indikator für die Bereitschaft der Haushalte zu größeren Anschaffungen."}
@@ -223,11 +223,11 @@ topics:
     title: Insolvenzen
     charts:
       - {chart: insolv, ask: "Wie viele Unternehmen beantragen Insolvenz?", type: seasonal, series: de_insolv, years: 11, caption: "Dünn: Monatswerte. Dick: gleitendes Zwölfmonatsmittel, das saisonale Schwankungen ausgleicht. Gestrichelt: Vorkrisenniveau, gemessen als Durchschnitt desselben Monats 2016 bis 2019."}
-      - {chart: insolv_land, ask: "In welchen Ländern steigen die Insolvenzen?", type: tiles, prefix: de_insolv_land_, caption: "Veränderung gegenüber demselben Zeitraum ein Jahr zuvor; umschaltbar zwischen 12 und 6 Monaten. Orange: Zunahme, blau: Abnahme."}
+      - {chart: insolv_land, ask: "In welchen Ländern steigen die Insolvenzen?", type: tiles, prefix: de_insolv_land_, what: "Zahl der Insolvenzanträge", caption: "Veränderung gegenüber demselben Zeitraum ein Jahr zuvor; umschaltbar zwischen 12 und 6 Monaten. Orange: Zunahme, blau: Abnahme."}
       - {chart: insolv_emp, ask: "Wie viele Beschäftigte sind betroffen?", type: seasonal, series: de_insolv_emp, years: 11, caption: "Beschäftigte in Unternehmen, die Insolvenz beantragt haben. Einzelne Großinsolvenzen führen zu starken Ausschlägen; dick: gleitendes Zwölfmonatsmittel."}
       - {chart: insolv_claims, ask: "Wie hoch sind die Forderungen der Gläubiger?", type: seasonal, series: de_insolv_claims, years: 11, caption: "Voraussichtliche Forderungen der Gläubiger in Milliarden Euro; dick: gleitendes Zwölfmonatsmittel."}
-      - {chart: gruend_land, ask: "Wo werden mehr Betriebe gegründet?", type: tiles, prefix: de_gruend_land_, caption: "Gründungen von Betrieben mit größerer wirtschaftlicher Bedeutung (Hauptniederlassung), gegenüber demselben Zeitraum ein Jahr zuvor. Orange: Zunahme, blau: Abnahme."}
-      - {chart: aufgabe_land, ask: "Wo werden mehr Betriebe aufgegeben?", type: tiles, prefix: de_aufgabe_land_, caption: "Vollständige Aufgaben solcher Betriebe, gegenüber demselben Zeitraum ein Jahr zuvor. Orange: Zunahme, blau: Abnahme."}
+      - {chart: gruend_land, ask: "Wo werden mehr Betriebe gegründet?", type: tiles, prefix: de_gruend_land_, what: "Zahl der Betriebsgründungen", caption: "Gründungen von Betrieben mit größerer wirtschaftlicher Bedeutung (Hauptniederlassung), gegenüber demselben Zeitraum ein Jahr zuvor. Orange: Zunahme, blau: Abnahme."}
+      - {chart: aufgabe_land, ask: "Wo werden mehr Betriebe aufgegeben?", type: tiles, prefix: de_aufgabe_land_, what: "Zahl der Betriebsaufgaben", caption: "Vollständige Aufgaben solcher Betriebe, gegenüber demselben Zeitraum ein Jahr zuvor. Orange: Zunahme, blau: Abnahme."}
   - id: zinsen
     title: Zinsen
     charts:
@@ -241,7 +241,9 @@ topics:
     title: Aussichten
     ask: "Was erwarten die Prognosen?"
     charts:
-      - {chart: forecast, ask: "Was erwarten die Prognosen für das Wachstum?", type: forecast, caption: "Prognosen für das reale BIP-Wachstum, je Zieljahr ein Feld. Waagerecht: Veröffentlichungsdatum der Prognose; so wird sichtbar, wie sich die Erwartungen über die Zeit verschoben haben. Gefüllte Punkte: jüngste Runde je Herausgeber, hohle Punkte: frühere Runden. Balken rechts: Spanne der jüngsten Prognosen aller Herausgeber, Strich: Median. Gemeinschaftsdiagnose: gemeinsame Prognose von DIW, ifo, IfW Kiel, IWH und RWI. Einzelne Werte stammen aus Presseberichten zu den Veröffentlichungen und sind im Tooltip gekennzeichnet."}
+      - {chart: forecast, ask: "Was erwarten die Prognosen für das Wachstum?", type: forecast, measure: gdp, title: "Prognosen für das Wachstum", caption: "Prognosen für das Wachstum des realen BIP ggü. Vorjahr, je Zieljahr. Linie: jüngste Projektion der Bundesregierung, die Grundlage für Haushalt und Steuerschätzung. Graue Fläche: Spanne aller jüngsten Prognosen, vom niedrigsten bis zum höchsten Wert. Weitere Herausgeber lassen sich über die Legende einblenden. Gemeinschaftsdiagnose: gemeinsame Prognose von DIW, ifo, IfW Kiel, IWH und RWI. Einzelne Werte stammen aus Presseberichten zu den Veröffentlichungen und sind im Tooltip gekennzeichnet."}
+      - {chart: forecast_infl, ask: "Was erwarten die Prognosen für die Inflation?", type: forecast, measure: inflation, title: "Prognosen für die Inflationsrate", caption: "Prognosen für die Inflationsrate ggü. Vorjahr, je Zieljahr; in der Regel gemessen am Verbraucherpreisindex (VPI). Die Bundesbank prognostiziert den europäischen HVPI, der meist nahe am VPI liegt. Linie: Bundesregierung. Graue Fläche: Spanne aller jüngsten Prognosen. Weitere Herausgeber über die Legende. Einzelne Werte stammen aus Presseberichten und sind im Tooltip gekennzeichnet."}
+      - {chart: forecast_core, ask: "Was erwarten die Prognosen für die Kerninflation?", type: forecast, measure: core, title: "Prognosen für die Kerninflation", caption: "Prognosen für die Inflationsrate ohne Energie und Nahrungsmittel. Erscheint, sobald mindestens zwei Herausgeber einen Wert veröffentlicht haben."}
   - id: struktur
     title: Struktur
     part: struktur

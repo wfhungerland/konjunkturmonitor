@@ -8,14 +8,14 @@ def s(vals, freq="MS", start="2024-01-01"):
 
 
 def test_num_german_format():
-    assert num(1234.5) == "1.234,5" and num(-0.25, 2) == "−0,25" and num(0.3, sign=True) == "+0,3"
+    assert num(1234.5) == "1.234,5" and num(-0.25, 2) == "-0,25" and num(0.3, sign=True) == "+0,3"
 
 
 def test_growth_sentence_and_verdict():
     data = {"g": s([0.4, 0.1, 0.2], "QS"), "y": s([1.0, 1.1, 1.3], "QS")}
     a = answer({"id": "wachstum", "kind": "growth", "series": "g", "yoy": "y"}, data)
     assert a["head"].startswith("Im 3. Quartal 2024 ist die Wirtschaft um 0,2 % gewachsen")
-    assert a["verdict"] == "wächst leicht" and "Gegenüber dem Vorjahr: +1,3 %." in a["more"]
+    assert a["verdict"] == "wächst leicht" and any("1,3 % über dem Vorjahresquartal" in m for m in a["more"])
 
 
 def test_inflation_target_wording():

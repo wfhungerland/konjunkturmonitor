@@ -10,7 +10,7 @@ QUARTER_WORDS = ["1.", "2.", "3.", "4."]
 def num(v: float, d: int = 1, sign: bool = False) -> str:
     s = f"{abs(v):,.{d}f}".replace(",", "X").replace(".", ",").replace("X", ".")
     if v < 0:
-        return "−" + s
+        return "-" + s
     return ("+" + s) if sign and v > 0 else s
 
 
@@ -39,10 +39,10 @@ def growth(q: dict, data: dict) -> dict:
     verb = "gewachsen" if v >= 0.05 else ("geschrumpft" if v <= -0.05 else "kaum verändert")
     head = (f"Im {period(t, 'Q')} ist die Wirtschaft um {num(abs(v))} % {verb}." if verb != "kaum verändert"
             else f"Im {period(t, 'Q')} hat sich die Wirtschaftsleistung kaum verändert ({num(v, sign=True)} %).")
-    more = [f"Im Quartal davor: {num(p, sign=True)} %."]
+    more = [f"Im Quartal davor hatte sich die Wirtschaftsleistung um {num(p, sign=True)} % verändert."]
     if yoy is not None and not yoy.dropna().empty:
-        more.append(f"Gegenüber dem Vorjahr: {num(yoy.dropna().iloc[-1], sign=True)} %.")
-    more.append(f"Zum Vergleich: In den Jahren 2015 bis 2019 wuchs sie im Schnitt um {num(avg)} % je Quartal.")
+        more.append(f"Im {period(t, 'Q')} lag die Wirtschaftsleistung {num(abs(yoy.dropna().iloc[-1]))} % {'über' if yoy.dropna().iloc[-1] >= 0 else 'unter'} dem Vorjahresquartal.")
+    more.append(f"In den Jahren 2015 bis 2019 wuchs die Wirtschaft im Schnitt um {num(avg)} % je Quartal.")
     verdict = ("schrumpft" if v <= -0.05 else "stagniert" if v < 0.1 else "wächst leicht" if v < 0.4 else "wächst" if v < 0.8 else "wächst kräftig")
     return {"value": round(float(v), 1), "unit": "%", "signed": True, "period": period(t, "Q"), "head": head, "more": more,
             "verdict": verdict, "spark": q["series"]}
@@ -59,17 +59,17 @@ def inflation(q: dict, data: dict) -> dict:
     idx = data.get(q.get("index"))
     if idx is not None and len(idx.dropna()) > 1 and idx.dropna().index[-1] == t:
         i = idx.dropna()
-        more.append(f"Gegenüber dem Vormonat: {num((i.iloc[-1] / i.iloc[-2] - 1) * 100, sign=True)} %.")
+        more.append(f"Im {period(t, 'M')} veränderten sich die Verbraucherpreise ggü. dem Vormonat um {num((i.iloc[-1] / i.iloc[-2] - 1) * 100, sign=True)} %.")
     core = data.get(q.get("core"))
     if core is not None and not core.dropna().empty and core.dropna().index[-1] == t:
-        more.append(f"Ohne Energie und Nahrungsmittel (Kernrate): {num(core.dropna().iloc[-1])} %.")
+        more.append(f"Ohne Energie und Nahrungsmittel lag die Inflationsrate (Kernrate) im {period(t, 'M')} bei {num(core.dropna().iloc[-1])} %.")
     parts = []
     for label, sid in (q.get("parts") or {}).items():
         ps = data.get(sid)
         if ps is not None and not ps.dropna().empty and ps.dropna().index[-1] == t:
             parts.append(f"{label} {num(ps.dropna().iloc[-1], sign=True)} %")
     if parts:
-        more.append("Gegenüber dem Vorjahresmonat: " + ", ".join(parts) + ".")
+        more.append(f"Im {period(t, 'M')} stiegen die Preise ggü. dem Vorjahresmonat je Bereich so: " + ", ".join(parts) + ".")
     more.append("Die Europäische Zentralbank strebt 2 % an.")
     verdict = ("unter dem Ziel" if v < 1.5 else "nahe am Ziel" if v <= 2.5 else "über dem Ziel" if v <= 4 else "hoch")
     return {"value": round(float(v), 1), "unit": "%", "signed": False, "period": period(t, "M"), "head": head, "more": more,
@@ -107,16 +107,16 @@ def index_mom(q: dict, data: dict) -> dict:
     what = {"industrie": ("die Industrie", "produziert"), "konsum": ("der Einzelhandel", "abgesetzt")}.get(q["id"], ("die Branche", "umgesetzt"))
     head = (f"Im {period(t, 'M')} hat {what[0]} {num(abs(mom))} % {'mehr' if mom >= 0 else 'weniger'} {what[1]} "
             f"als {prev_word(t - pd.DateOffset(months=1), 'M')}.")
-    more = [f"Die letzten drei Monate zusammen: {num(three, sign=True)} % gegenüber den drei Monaten davor. "
-            "Dieser Vergleich schwankt weniger als der einzelne Monat."]
+    more = [f"In den drei Monaten bis {period(t, 'M')} hat {what[0]} {num(abs(three))} % {'mehr' if three >= 0 else 'weniger'} {what[1]} als in den drei Monaten davor; "
+            "dieser Vergleich schwankt weniger als der einzelne Monat."]
     if q.get("orders") and q["orders"] in data:
         o = _s(data, q["orders"])
         om, o3 = _mom_3m(o)
-        more.append(f"Aufträge im {period(o.index[-1], 'M')}: {num(om, sign=True)} % zum Vormonat, "
-                    f"{num(o3, sign=True)} % im Dreimonatsvergleich.")
+        more.append(f"Der Auftragseingang veränderte sich im {period(o.index[-1], 'M')} um {num(om, sign=True)} % ggü. dem Vormonat "
+                    f"und um {num(o3, sign=True)} % im Dreimonatsvergleich.")
     if q.get("mood") and q["mood"] in data:
         m = _s(data, q["mood"])
-        more.append(f"Das Verbrauchervertrauen lag im {period(m.index[-1], 'M')} bei einem Saldo von {num(m.iloc[-1], sign=True)} Prozentpunkten "
+        more.append(f"Das Verbrauchervertrauen lag im {period(m.index[-1], 'M')} bei einem Saldo von {num(m.iloc[-1], sign=True)} Pp "
                     f"({'besser' if m.iloc[-1] > m.iloc[-2] else 'schlechter' if m.iloc[-1] < m.iloc[-2] else 'so'} als im Vormonat).")
     verdict = "steigt" if three >= 1 else ("sinkt" if three <= -1 else "stabil")
     return {"value": round(float(mom), 1), "unit": "%", "signed": True, "period": period(t, "M"), "head": head, "more": more,
@@ -129,7 +129,7 @@ def level_mom(q: dict, data: dict) -> dict:
     mom, three = _mom_3m(s)
     head = (f"Im {period(t, 'M')} exportierte Deutschland Waren im Wert von {num(s.iloc[-1])} Mrd. €, "
             f"{num(abs(mom))} % {'mehr' if mom >= 0 else 'weniger'} als im Vormonat.")
-    more = [f"Die letzten drei Monate zusammen: {num(three, sign=True)} % gegenüber den drei Monaten davor.",
+    more = [f"In den drei Monaten bis {period(t, 'M')} exportierte Deutschland {num(abs(three))} % {'mehr' if three >= 0 else 'weniger'} als in den drei Monaten davor.",
             "Die Werte sind nominal, also nicht um Preisänderungen bereinigt."]
     verdict = "steigt" if three >= 1 else ("sinkt" if three <= -1 else "stabil")
     return {"value": round(float(s.iloc[-1]), 1), "unit": "Mrd. €", "signed": False, "period": period(t, "M"), "head": head,
@@ -141,7 +141,7 @@ def sentiment(q: dict, data: dict) -> dict:
     v, p, t = s.iloc[-1], s.iloc[-2], s.index[-1]
     rel = "über" if v > 100.5 else ("unter" if v < 99.5 else "auf")
     head = f"Im {period(t, 'M')} lag der Wirtschaftsklimaindikator bei {num(v)} Punkten und damit {rel} dem langjährigen Durchschnitt von 100."
-    more = [f"Im Vormonat: {num(p)} Punkte, die Stimmung hat sich also {'aufgehellt' if v > p + 0.2 else 'eingetrübt' if v < p - 0.2 else 'kaum verändert'}."]
+    more = [f"Im Vormonat lag der Wirtschaftsklimaindikator bei {num(p)} Punkten; die Stimmung hat sich also {'aufgehellt' if v > p + 0.2 else 'eingetrübt' if v < p - 0.2 else 'kaum verändert'}."]
     verdict = "überdurchschnittlich" if v >= 103 else ("leicht überdurchschnittlich" if v > 100.5 else "durchschnittlich" if v >= 99.5 else "unterdurchschnittlich" if v >= 90 else "deutlich unterdurchschnittlich")
     return {"value": round(float(v), 1), "unit": "Punkte", "signed": False, "period": period(t, "M"), "head": head, "more": more,
             "verdict": f"Klima {verdict}", "spark": q["series"], "ref": 100.0}
@@ -169,7 +169,7 @@ def insolvency(q: dict, data: dict) -> dict:
     prev = s[(s.index.year == t.year - 1) & (s.index.month <= t.month)]
     if len(ytd) == t.month and len(prev) == t.month and prev.sum() > 0:
         d = (ytd.sum() / prev.sum() - 1) * 100
-        more.append(f"Januar bis {mon} {t.year}: {num(ytd.sum(), 0)} Insolvenzen, {num(abs(d))} % {'mehr' if d >= 0 else 'weniger'} als ein Jahr zuvor.")
+        more.append(f"Von Januar bis {mon} {t.year} beantragten {num(ytd.sum(), 0)} Unternehmen ein Insolvenzverfahren, {num(abs(d))} % {'mehr' if d >= 0 else 'weniger'} als ein Jahr zuvor.")
     emp, cl = data.get(q.get("employees")), data.get(q.get("claims"))
     if emp is not None and cl is not None and t in emp.index and t in cl.index:
         more.append(f"Betroffen waren rund {num(emp[t], 0)} Beschäftigte; die voraussichtlichen Forderungen der Gläubiger beliefen sich auf {num(cl[t])} Mrd. €.")
@@ -184,17 +184,17 @@ def level(q: dict, data: dict) -> dict:
     v, p, t = s.iloc[-1], s.iloc[-2], s.index[-1]
     unit, d = q.get("unit", ""), int(q.get("decimals", 1))
     rate = "%" in unit
-    ch = (lambda a, b: f"{num(a - b, 2 if d >= 2 else 1, sign=True)} Prozentpunkte") if rate else (lambda a, b: f"{num((a / b - 1) * 100, sign=True)} %")
+    ch = (lambda a, b: f"{num(a - b, 2 if d >= 2 else 1, sign=True)} Pp") if rate else (lambda a, b: f"{num((a / b - 1) * 100, sign=True)} %")
     head = f"Im {period(t, 'M')} lag {q['name']} bei {num(v, d)} {unit}."
-    more = [f"Gegenüber dem Vormonat: {ch(v, p)}."]
+    more = [f"Ggü. dem Vormonat veränderte sich {q['name']} um {ch(v, p)}."]
     ya = s[s.index <= t - pd.DateOffset(months=12)]
     if not ya.empty:
-        more.append(f"Gegenüber dem Vorjahresmonat: {ch(v, ya.iloc[-1])}.")
+        more.append(f"Ggü. dem Vorjahresmonat veränderte sich {q['name']} um {ch(v, ya.iloc[-1])}.")
     for extra in q.get("also") or []:
         e = data.get(extra["series"])
         if e is not None and not e.dropna().empty:
             e = e.dropna()
-            more.append(f"{extra['label']} im {period(e.index[-1], 'M')}: {num(e.iloc[-1], int(extra.get('decimals', 1)))} {extra.get('unit', '')}.".replace(" .", "."))
+            more.append(f"Der Preis für {extra['label']} lag im {period(e.index[-1], 'M')} bei {num(e.iloc[-1], int(extra.get('decimals', 1)))} {extra.get('unit', '')}.".replace(" .", "."))
     dy = (v - ya.iloc[-1]) if not ya.empty else 0
     verdict = "steigt" if dy > 0 else "sinkt" if dy < 0 else "stabil"
     return {"value": round(float(v), d), "unit": unit, "signed": False, "period": period(t, "M"), "head": head, "more": more,
