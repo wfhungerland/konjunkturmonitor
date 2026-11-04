@@ -1,0 +1,55 @@
+REGELWERK DATEINAMEN KONJUNKTURMONITOR
+Stand: 04.11.2026
+
+1 ZWECK
+Jede Datei, die aus dem Konjunkturmonitor heruntergeladen wird, trägt einen Namen, der ohne Kontext sagt: welches Produkt, welche Ausgabe, welche Abbildung, welcher Inhalt. Die Namen sortieren sich im Download-Ordner von selbst nach Ausgabe und Abbildungsnummer.
+
+2 BAUPRINZIP
+Produkt (Datum, Nummer) Titel.endung
+Beispiel: Konjunkturmonitor (2026-11-04, Abb. 04) Wirtschaftsleistung Niveau.xlsx
+Die vier Bausteine stehen immer in dieser Reihenfolge. Kein Baustein entfällt, außer die Nummer bei Gesamt- und Teilausgaben (Regel 8).
+
+3 PRODUKT
+Immer "Konjunkturmonitor", ausgeschrieben, ohne Kürzel. Kommen später Schwesterprodukte dazu, erhalten sie eigene ausgeschriebene Namen (etwa "Preismonitor").
+
+4 DATUM
+Das Datum ist das Ausgabedatum des Monitors im Format JJJJ-MM-TT. Alle Downloads einer Ausgabe tragen dasselbe Datum, auch wenn ihre Daten unterschiedlich alt sind. Der Datenstand (letzter Monat oder letztes Quartal) steht in der Datei selbst, nicht im Namen.
+
+5 NUMMER
+"Abb." für Abbildungen, "Tab." für Tabellen, danach ein Leerzeichen und eine zweistellige Zahl: Abb. 04, Tab. 22. Ab der hundertsten Abbildung dreistellig für alle. Die Nummer bleibt über alle Ausgaben stabil: Abb. 04 ist in jeder Ausgabe die Wirtschaftsleistung. Neue Abbildungen erhalten die nächste freie Nummer, gestrichene Nummern werden nie neu vergeben.
+
+6 TITEL
+Der Titel ist der Abbildungstitel aus dem Monitor, gekürzt auf höchstens vier Wörter, ohne Artikel und Füllwörter. Nur Buchstaben, Ziffern, Leerzeichen und Bindestrich. Keine Umlaute und kein ß, weil Browser, Server und fremde Rechner sie uneinheitlich behandeln: ae, oe, ue, ss. Kein Komma, kein Punkt, keine Klammer im Titel.
+
+7 ENDUNG
+Klein geschrieben: xlsx, pptx, png, csv, pdf. Alle Formate einer Abbildung tragen denselben Stamm und unterscheiden sich nur in der Endung.
+
+8 GESAMT- UND TEILAUSGABEN
+Gesamtausgabe:   Konjunkturmonitor (2026-11-04).pdf
+Teilausgabe:     Konjunkturmonitor (2026-11-04, Teil 2) Preise.pdf
+Die Teilnummer folgt der Gliederung des Monitors und bleibt wie die Abbildungsnummer stabil.
+
+9 INNERES DER DATEI
+Der Stamm ohne Endung steht in jeder Datei an erster Stelle: in xlsx und csv als erste Zeile, in pptx als Folientitel-Notiz, in png in den Metadaten. In xlsx heißt das Datenblatt wie die Nummer ("Abb. 04"), ein zweites Blatt "Quelle" nennt Datenstand, Quelle, Lizenz und Abrufdatum.
+
+10 VERBOTENE ZEICHEN UND LÄNGE
+Verboten im gesamten Namen: / \ : * ? " < > | sowie Gedankenstriche jeder Länge. Zwischen Zahlen steht der Bindestrich. Nie zwei Leerzeichen hintereinander, kein Leerzeichen vor dem Punkt der Endung. Der ganze Name bleibt unter 80 Zeichen.
+
+11 REIHENFOLGE IM ORDNER
+Durch das Bauprinzip sortieren Dateisysteme automatisch nach Produkt, dann Ausgabedatum, dann Nummer. Innerhalb einer Ausgabe stehen damit alle Abbildungen in Monitorreihenfolge, alle Formate einer Abbildung direkt untereinander.
+
+12 BEISPIELE
+Konjunkturmonitor (2026-11-04, Abb. 01) Wachstumsbeitraege.xlsx
+Konjunkturmonitor (2026-11-04, Abb. 01) Wachstumsbeitraege.png
+Konjunkturmonitor (2026-11-04, Abb. 06) VPI Bestandteile.csv
+Konjunkturmonitor (2026-11-04, Tab. 22) Produktion Branchen.xlsx
+Konjunkturmonitor (2026-11-04, Teil 1) Konjunktur.pdf
+Konjunkturmonitor (2026-11-04).pdf
+
+13 PFLEGE
+Nummern und Kurztitel stehen in einer Liste im Repo (abbildungen.txt): Nummer, Kurztitel, erste Ausgabe, gestrichen ab. Die Liste ist die einzige Stelle, an der Nummern vergeben werden. Änderungen an diesem Regelwerk werden unten datiert angehängt, alte Regeln nicht gelöscht.
+
+ÄNDERUNGEN
+04.11.2026 Erste Fassung.
+04.11.2026 Regel 5: Die Nummer folgt der Reihenfolge der Abbildungen im Monitor und wird bei jeder Ausgabe fortlaufend vergeben; sie kann sich zwischen Ausgaben verschieben. Damit gilt Regel 11 ohne Ausnahme. Regel 13: abbildungen.txt führt die Kurztitel je Abbildung, nicht die Nummern.
+04.11.2026 Regel 9, Umsetzung: In PNG-Dateien steht der Stamm im Dateinamen; Bild-Metadaten setzt der Browser-Export nicht.

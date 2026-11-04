@@ -602,6 +602,17 @@ def build_payload(root: Path = ROOT) -> dict:
                     continue
                 if typ == "stacked":  # Vorzeichenlogik der Importe sichtbar machen
                     series = [dict(s, label="Importe (negativ gerechnet)") if s["label"] == "Importe" else s for s in series]
+                if c.get("groups"):  # Beiträge zu Gruppen bündeln, etwa Außenhandel = Exporte + (negative) Importe
+                    bars = {s["id"]: s for s in series if s.get("style") == "bar"}
+                    grouped = []
+                    for label, items in c["groups"].items():
+                        members = [s for sid, s in bars.items() if any(sid.endswith("_" + str(i).lower()) for i in items)]
+                        if not members:
+                            continue
+                        xs = sorted(set.intersection(*[set(m["x"]) for m in members]))
+                        vals = [round(sum(m["y"][m["x"].index(x)] for m in members), 4) for x in xs]
+                        grouped.append(dict(members[0], id=f"group_{label}", label=label, x=xs, y=vals))
+                    series = grouped + [s for s in series if s.get("style") != "bar"]
                 entry["series"] = series
                 if layout.get("compare_band") and typ in ("line",) and not c.get("ma3") and (len(series) == 1 or c.get("emphasis")):
                     lead = next((s for s in specs if s.id == c.get("emphasis")), None) or next((s for s in specs if s.id in data), None)
@@ -610,8 +621,8 @@ def build_payload(root: Path = ROOT) -> dict:
                         entry["band"] = dict(b, label=f"Spanne 2015–2019 ({lead.label or lead.title})" if len(series) > 1 else "Spanne 2015–2019")
                 entry["unit"] = series[0]["unit"]
                 entry["freq"] = series[0]["freq"]
-                entry["adjustment"] = meta[series[0]["id"]].adjustment
-                specs_used = [meta[x["id"]] for x in series]
+                entry["adjustment"] = (meta.get(series[0]["id"]) or specs[0]).adjustment
+                specs_used = [meta[x["id"]] for x in series if x["id"] in meta] or specs
                 entry["sources"] = sorted({_source_name(s) for s in specs_used})
                 entry["licenses"] = sorted({lic for s in specs_used if (lic := _license(s))})
                 if typ == "latest":
@@ -662,19 +673,23 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
     from .downloads import write_all
     from .reuse import mark_revisions, news, update_archive, write_all_series, write_feed
 
-    write_all(payload, out)
+    write_all(payload, out, root)
     data, _ = load_observations(root)
     meta, _ = _series_meta(root / "series.yaml")
     stand_de = f"{payload['stand'][8:10]}.{payload['stand'][5:7]}.{payload['stand'][:4]}"
     cite = f"{payload['site']['author']} ({payload['stand'][:4]}): Konjunkturmonitor. Stand {stand_de}. {payload['site']['url']}"
-    payload["all_series"] = write_all_series(data, meta, root, out, stand_de, cite)
+    payload["all_series"] = write_all_series(data, meta, root, out, stand_de, cite, payload["generated_at"][:10])
     arch = update_archive(root, payload["start"], payload["stand"])
     mark_revisions(payload["start"], arch)
     items = news(arch, payload["stand"])
     payload["news"] = [i for i in items if i["stand"] == payload["stand"]]
     write_feed(items, payload["start"], payload["site"], out)
     (out / "dl").mkdir(exist_ok=True)
-    arch.to_csv(out / "dl" / "kernzahlen_archiv.csv", sep=";", decimal=",", index=False, encoding="utf-8-sig")
+    arch_name = f"Konjunkturmonitor ({payload['generated_at'][:10]}) Archiv Kernzahlen.csv"
+    with open(out / "dl" / arch_name, "w", encoding="utf-8-sig", newline="") as fh:
+        fh.write(arch_name[:-4] + "\n")
+        arch.to_csv(fh, sep=";", decimal=",", index=False)
+    payload["archive_file"] = "dl/" + arch_name
     tpl = resources.files("monitor").joinpath("templates/index.html").read_text(encoding="utf-8")
     js = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     from html import escape

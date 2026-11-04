@@ -170,8 +170,8 @@ series:
     source: eurostat
     key: namq_10_gdp
     params: {geo: DE, na_item: B1GQ, unit: CLV_PCH_PRE, s_adj: SCA}
-    title: BIP real, % gg. Vorquartal
-    unit: "% gg. Vorquartal"
+    title: BIP real, % ggü. Vorquartal
+    unit: "% ggü. Vorquartal"
     frequency: Q
     adjustment: preis-, saison- und kalenderbereinigt
     chart: gdp_qoq
@@ -183,8 +183,8 @@ series:
     source: eurostat
     key: namq_10_gdp
     params: {geo: DE, na_item: B1GQ, unit: CLV_PCH_SM, s_adj: NSA}
-    title: BIP real, % gg. Vorjahresquartal (Ursprungswerte wie in der Destatis-Meldung)
-    unit: "% gg. Vorjahresquartal"
+    title: BIP real, % ggü. Vorjahresquartal (Ursprungswerte wie in der Destatis-Meldung)
+    unit: "% ggü. Vorjahresquartal"
     frequency: Q
     adjustment: preisbereinigt, nicht saison- und kalenderbereinigt
 
@@ -207,7 +207,7 @@ series:
     key: namq_10_gdp
     params: {geo: DE, na_item: "{item}", unit: CON_PPCH_PRE, s_adj: SCA}
     title: Wachstumsbeitrag {item_name}
-    unit: Pp gg. Vorquartal
+    unit: Pp ggü. Vorquartal
     frequency: Q
     adjustment: preis-, saison- und kalenderbereinigt
     chart: gdp_contrib
@@ -220,8 +220,8 @@ series:
     block: preise
     source: bundesbank
     key: BBDP1/M.DE.N.VPI.C.A00000.VGJ.LV
-    title: Verbraucherpreise (VPI), % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    title: Verbraucherpreise (VPI), % ggü. Vorjahresmonat
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi
@@ -240,8 +240,8 @@ series:
     block: preise
     source: derived
     derive: {from: de_vpi_food, op: yoy_pct}
-    title: VPI Nahrungsmittel, % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    title: VPI Nahrungsmittel, % ggü. Vorjahresmonat
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi
@@ -260,8 +260,8 @@ series:
     block: preise
     source: derived
     derive: {from: de_vpi_energy, op: yoy_pct}
-    title: VPI Energie (Haushaltsenergie und Kraftstoffe), % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    title: VPI Energie (Haushaltsenergie und Kraftstoffe), % ggü. Vorjahresmonat
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi
@@ -280,8 +280,8 @@ series:
     block: preise
     source: derived
     derive: {from: de_vpi_goods, op: yoy_pct}
-    title: VPI Gewerbliche Waren ohne Energie, % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    title: VPI Gewerbliche Waren ohne Energie, % ggü. Vorjahresmonat
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi
@@ -300,8 +300,8 @@ series:
     block: preise
     source: derived
     derive: {from: de_vpi_serv, op: yoy_pct}
-    title: VPI Dienstleistungen ohne tatsächliche und unterstellte Wohnungsmieten, % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    title: VPI Dienstleistungen ohne tatsächliche und unterstellte Wohnungsmieten, % ggü. Vorjahresmonat
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi
@@ -320,8 +320,8 @@ series:
     block: preise
     source: derived
     derive: {from: de_vpi_rent, op: yoy_pct}
-    title: VPI Tatsächliche Wohnungsmiete (Nettokaltmiete), % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    title: VPI Tatsächliche Wohnungsmiete (Nettokaltmiete), % ggü. Vorjahresmonat
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi
@@ -341,8 +341,8 @@ series:
     block: preise
     source: derived
     derive: {from: de_ppi, op: yoy_pct}
-    title: Erzeugerpreise, % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    title: Erzeugerpreise, % ggü. Vorjahresmonat
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: pipeline_prices
@@ -361,8 +361,8 @@ series:
     block: preise
     source: derived
     derive: {from: de_import_prices, op: yoy_pct}
-    title: Einfuhrpreise, % gg. Vorjahresmonat
-    unit: "% gg. Vorjahresmonat"
+    title: Einfuhrpreise, % ggü. Vorjahresmonat
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     chart: pipeline_prices
@@ -859,8 +859,8 @@ series:
     block: preise
     source: derived
     derive: {from: de_vpi_core, op: yoy_pct}
-    title: "VPI ohne Energie und Nahrungsmittel (Kernrate), % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "VPI ohne Energie und Nahrungsmittel (Kernrate), % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     chart: cpi_core
@@ -870,8 +870,8 @@ series:
     block: preise
     source: bundesbank
     key: BBDP1/M.DE.N.VPI.C.A00000.VGJ.LV
-    title: "VPI insgesamt, % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "VPI insgesamt, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi_core
@@ -881,8 +881,8 @@ series:
     block: preise
     source: bundesbank
     key: BBDP1/M.DE.N.HVPI.C.A00000.VGJ.LV
-    title: "HVPI insgesamt, % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "HVPI insgesamt, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: cpi_core
@@ -893,8 +893,8 @@ series:
     source: eurostat
     key: namq_10_gdp
     params: {geo: DE, na_item: B1GQ, unit: PD_PCH_SM_NAC, s_adj: SCA}
-    title: "BIP-Deflator, % gg. Vorjahresquartal"
-    unit: "% gg. Vorjahresquartal"
+    title: "BIP-Deflator, % ggü. Vorjahresquartal"
+    unit: "% ggü. Vorjahresquartal"
     frequency: Q
     adjustment: saison- und kalenderbereinigt
     chart: deflator
@@ -905,8 +905,8 @@ series:
     source: eurostat
     key: namq_10_gdp
     params: {geo: DE, na_item: P31_S14_S15, unit: PD_PCH_SM_NAC, s_adj: SCA}
-    title: "Deflator Konsum der Haushalte, % gg. Vorjahresquartal"
-    unit: "% gg. Vorjahresquartal"
+    title: "Deflator Konsum der Haushalte, % ggü. Vorjahresquartal"
+    unit: "% ggü. Vorjahresquartal"
     frequency: Q
     adjustment: saison- und kalenderbereinigt
     chart: deflator
@@ -918,8 +918,8 @@ series:
     source: eurostat
     key: namq_10_gdp
     params: {geo: DE, na_item: "{item}", unit: CLV_PCH_PRE, s_adj: SCA}
-    title: "{item_name}, real, % gg. Vorquartal"
-    unit: "% gg. Vorquartal"
+    title: "{item_name}, real, % ggü. Vorquartal"
+    unit: "% ggü. Vorquartal"
     frequency: Q
     adjustment: preis-, saison- und kalenderbereinigt
     chart: gdp_use
@@ -931,8 +931,8 @@ series:
     source: eurostat
     key: namq_10_an6
     params: {geo: DE, asset10: "{asset}", unit: CLV_PCH_PRE, s_adj: SCA}
-    title: "Investitionen in {asset_name}, real, % gg. Vorquartal"
-    unit: "% gg. Vorquartal"
+    title: "Investitionen in {asset_name}, real, % ggü. Vorquartal"
+    unit: "% ggü. Vorquartal"
     frequency: Q
     adjustment: preis-, saison- und kalenderbereinigt
     chart: gdp_use
@@ -1246,8 +1246,8 @@ series:
     block: export
     source: derived
     derive: {from: de_export_prices, op: yoy_pct}
-    title: "Ausfuhrpreise, % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "Ausfuhrpreise, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: trade_prices
@@ -1266,8 +1266,8 @@ series:
     block: export
     source: derived
     derive: {from: de_tot, op: yoy_pct}
-    title: "Terms of Trade, % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "Terms of Trade, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     chart: trade_prices
@@ -1442,8 +1442,8 @@ series:
     block: preise
     source: derived
     derive: {from: de_ppi_xe, op: yoy_pct}
-    title: "Erzeugerpreise ohne Energie, % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "Erzeugerpreise ohne Energie, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     chart: pipeline_core
@@ -1462,8 +1462,8 @@ series:
     block: preise
     source: derived
     derive: {from: de_imp_xe, op: yoy_pct}
-    title: "Einfuhrpreise ohne Energie, % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "Einfuhrpreise ohne Energie, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     chart: pipeline_core
@@ -1482,8 +1482,8 @@ series:
     block: preise
     source: derived
     derive: {from: de_agri, op: yoy_pct}
-    title: "Erzeugerpreise landwirtschaftlicher Produkte, % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "Erzeugerpreise landwirtschaftlicher Produkte, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: pipeline_core
@@ -1581,8 +1581,8 @@ series:
     source: eurostat
     key: nama_10_gdp
     params: {geo: DE, na_item: B1GQ, unit: CLV_PCH_PRE}
-    title: "BIP real, % gg. Vorjahr (Jahreswerte)"
-    unit: "% gg. Vorjahr"
+    title: "BIP real, % ggü. Vorjahr (Jahreswerte)"
+    unit: "% ggü. Vorjahr"
     frequency: A
     adjustment: preisbereinigt
     start: "1996-01-01"
@@ -1596,7 +1596,7 @@ series:
     key: ameco_potential_de
     params: {source_name: "Europäische Kommission, AMECO (über DBnomics), eigene Berechnung"}
     title: "Wachstum des Produktionspotenzials (AMECO)"
-    unit: "% gg. Vorjahr"
+    unit: "% ggü. Vorjahr"
     frequency: A
     adjustment: preisbereinigt
     start: "1996-01-01"
@@ -1848,8 +1848,8 @@ series:
     block: arbeit
     source: derived
     derive: {from: de_sv_tot, op: yoy_pct}
-    title: "Sozialversicherungspflichtig Beschäftigte: Insgesamt, % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "Sozialversicherungspflichtig Beschäftigte: Insgesamt, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: sv_yoy
@@ -1869,8 +1869,8 @@ series:
     block: arbeit
     source: derived
     derive: {from: de_sv_ind, op: yoy_pct}
-    title: "Sozialversicherungspflichtig Beschäftigte: Produzierendes Gewerbe (sekundärer Sektor), % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "Sozialversicherungspflichtig Beschäftigte: Produzierendes Gewerbe (sekundärer Sektor), % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: sv_yoy
@@ -1890,8 +1890,8 @@ series:
     block: arbeit
     source: derived
     derive: {from: de_sv_dl, op: yoy_pct}
-    title: "Sozialversicherungspflichtig Beschäftigte: Dienstleistungen ohne Leiharbeit, % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "Sozialversicherungspflichtig Beschäftigte: Dienstleistungen ohne Leiharbeit, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: sv_yoy
@@ -1911,8 +1911,8 @@ series:
     block: arbeit
     source: derived
     derive: {from: de_sv_aue, op: yoy_pct}
-    title: "Sozialversicherungspflichtig Beschäftigte: Leiharbeit (Arbeitnehmerüberlassung), % gg. Vorjahresmonat"
-    unit: "% gg. Vorjahresmonat"
+    title: "Sozialversicherungspflichtig Beschäftigte: Leiharbeit (Arbeitnehmerüberlassung), % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     chart: sv_yoy
@@ -2011,8 +2011,8 @@ series:
     source: eurostat
     key: namq_10_gdp
     params: {geo: DE, na_item: B1GQ, unit: CLV_PCH_SM, s_adj: SCA}
-    title: "BIP real Deutschland, % gg. Vorjahresquartal (saison- und kalenderbereinigt)"
-    unit: "% gg. Vorjahresquartal"
+    title: "BIP real Deutschland, % ggü. Vorjahresquartal (saison- und kalenderbereinigt)"
+    unit: "% ggü. Vorjahresquartal"
     frequency: Q
     adjustment: preis-, saison- und kalenderbereinigt
     start: "2010-01-01"
@@ -2024,8 +2024,8 @@ series:
     source: eurostat
     key: namq_10_gdp
     params: {geo: EA20, na_item: B1GQ, unit: CLV_PCH_SM, s_adj: SCA}
-    title: "BIP real Euroraum, % gg. Vorjahresquartal"
-    unit: "% gg. Vorjahresquartal"
+    title: "BIP real Euroraum, % ggü. Vorjahresquartal"
+    unit: "% ggü. Vorjahresquartal"
     frequency: Q
     adjustment: preis-, saison- und kalenderbereinigt
     start: "2010-01-01"
@@ -2047,8 +2047,8 @@ series:
     block: welt
     source: derived
     derive: {from: us_gdp, op: yoy_pct}
-    title: "BIP real USA, % gg. Vorjahresquartal"
-    unit: "% gg. Vorjahresquartal"
+    title: "BIP real USA, % ggü. Vorjahresquartal"
+    unit: "% ggü. Vorjahresquartal"
     frequency: Q
     adjustment: preis- und saisonbereinigt
     chart: world_gdp
@@ -2247,7 +2247,7 @@ series:
     key: 62361-0010
     params: {value_variable: VST074, value_unit: "%"}
     title: "Reallohnindex, Veränderung gegenüber dem Vorjahresquartal"
-    unit: "% gg. Vorjahresquartal"
+    unit: "% ggü. Vorjahresquartal"
     frequency: Q
     adjustment: nicht bereinigt
     start: "2008-01-01"
@@ -2260,7 +2260,7 @@ series:
     key: 62361-0010
     params: {value_variable: VST075, value_unit: "%"}
     title: "Nominallohnindex, Veränderung gegenüber dem Vorjahresquartal"
-    unit: "% gg. Vorjahresquartal"
+    unit: "% ggü. Vorjahresquartal"
     frequency: Q
     adjustment: nicht bereinigt
     start: "2008-01-01"
