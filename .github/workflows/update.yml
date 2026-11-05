@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: update-${{ github.head_ref || github.ref_name }}
@@ -48,10 +49,16 @@ jobs:
         run: |
           git config user.name "konjunkturmonitor-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/processed data/archive data/static/rhine_*.csv data/static/dwd_*.csv data/static/enso_roni.csv
+          git add data/processed data/archive data/static/rhine_*.csv data/static/dwd_*.csv data/static/enso_roni.csv data/static/smard_*.csv
           git diff --cached --quiet && exit 0
           git commit -m "Daten aktualisiert ($(date -u +%Y-%m-%d))"
           git push origin "HEAD:${{ github.ref_name }}" || echo "::warning::Push abgelehnt (Branch geändert); nächster Lauf holt das nach."
+      - name: Ticket bei Ausfällen
+        if: github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -m monitor.alert
       - name: Pages-Artefakt
         if: github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch
         uses: actions/upload-pages-artifact@v3

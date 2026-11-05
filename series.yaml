@@ -58,6 +58,11 @@ names:
   geo:
     DE: Deutschland
     EU27_2020: Europäische Union
+    FR: Frankreich
+    IT: Italien
+    ES: Spanien
+    EA20: Euroraum
+    EA: Euroraum
   cit:
     deu: Deutschland
     fra: Frankreich
@@ -114,6 +119,14 @@ charts:
   fx_usd: {title: "Euro in US-Dollar, Tageswerte", decimals: 4}
   fx: {title: "Euro gegenüber vier Währungen, Tageswerte", decimals: 4}
   enso: {title: "Nahrungsmittel- und Agrarpreise nach sehr starken El-Niño-Ereignissen", decimals: 1}
+  ez_gdp: {title: "Wachstum im Euroraum-Vergleich", decimals: 1}
+  ez_hicp: {title: "Inflation im Euroraum-Vergleich (HVPI)", decimals: 1}
+  ez_unemp: {title: "Erwerbslosigkeit im Euroraum-Vergleich", decimals: 1}
+  power: {title: "Strom: Verbrauch und Großhandelspreis", decimals: 1}
+  permits: {title: "Baugenehmigungen für Wohnungen", decimals: 1}
+  house_prices: {title: "Preise für Wohnimmobilien", decimals: 1}
+  credit_rates: {title: "Zinsen für neue Bankkredite", decimals: 2}
+  credit_growth: {title: "Wachstum der Bankkredite", decimals: 1}
   weather: {title: "Witterung in Deutschland", decimals: 1}
   hdd: {title: "Heizgradtage", decimals: 0}
   rhine: {title: "Rheinpegel Kaub, Tagesmittel", decimals: 0}
@@ -1583,6 +1596,128 @@ series:
     label: "Niedrigwassertage"
     note: "Tage je Monat mit einem Tagesmittel unter 78 cm."
 
+  - id: de_power_load
+    block: finanzen
+    source: static
+    key: smard_load
+    params: {source_name: "Bundesnetzagentur | SMARD.de"}
+    license: "CC BY 4.0 (Bundesnetzagentur | SMARD.de)"
+    title: "Stromverbrauch (Netzlast) in Deutschland, TWh je Monat"
+    unit: "TWh"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    stale_after_months: 3
+
+  - id: de_power_load_yoy
+    block: finanzen
+    source: derived
+    derive: {from: de_power_load, op: yoy_pct}
+    title: "Stromverbrauch (Netzlast), % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: power
+    label: "Stromverbrauch"
+
+  - id: de_power_price
+    block: finanzen
+    source: static
+    key: smard_price
+    params: {source_name: "Bundesnetzagentur | SMARD.de"}
+    license: "CC BY 4.0 (Bundesnetzagentur | SMARD.de)"
+    title: "Großhandelspreis Strom (Day-Ahead, DE/LU), Monatsmittel"
+    unit: "€ je MWh"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    stale_after_months: 3
+    chart: power
+    label: "Großhandelspreis"
+
+  - id: de_permits
+    block: bau
+    source: genesis
+    key: 31111-0020
+    params: {value_variable: WOHN01, filters: {BAUTK1: BTK-GEB, BAUGB1: GBD-W-NW}, scale: 0.001, query: {contents: WOHN01, classifyingvariable1: BAUTK1, classifyingkey1: BTK-GEB, classifyingvariable2: BAUGB1, classifyingkey2: GBD-W-NW}}
+    title: "Baugenehmigungen: Wohnungen (Neubau und Baumaßnahmen an bestehenden Gebäuden), Tsd."
+    unit: "Tsd. Wohnungen"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: permits
+    label: "Genehmigte Wohnungen"
+
+  - id: de_hpi
+    block: bau
+    source: genesis
+    key: 61262-0002
+    params: {value_variable: PRE026}
+    title: "Häuserpreisindex (Wohnimmobilien)"
+    unit: "Index 2025=100"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+
+  - id: de_hpi_yoy
+    block: bau
+    source: derived
+    derive: {from: de_hpi, op: yoy_pct}
+    title: "Häuserpreisindex, % ggü. Vorjahresquartal"
+    unit: "% ggü. Vorjahresquartal"
+    frequency: Q
+    adjustment: nicht bereinigt
+    chart: house_prices
+    label: "Wohnimmobilien insgesamt"
+
+  - id: de_rate_nfc
+    block: finanzen
+    source: ecb
+    key: MIR/M.DE.B.A2I.AM.R.A.2240.EUR.N
+    title: "Zinssatz für neue Kredite an Unternehmen (Finanzierungskosten), Deutschland"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: credit_rates
+    label: "Kredite an Unternehmen"
+
+  - id: de_rate_house
+    block: finanzen
+    source: ecb
+    key: MIR/M.DE.B.A2C.AM.R.A.2250.EUR.N
+    title: "Zinssatz für neue Wohnungsbaukredite an private Haushalte, Deutschland"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: credit_rates
+    label: "Wohnungsbaukredite"
+
+  - id: de_loans_nfc_yoy
+    block: finanzen
+    source: ecb
+    key: BSI/M.DE.N.A.A20.A.I.U2.2240.Z01.A
+    title: "Kredite der Banken an nichtfinanzielle Unternehmen, % ggü. Vorjahr"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: credit_growth
+    label: "Kredite an Unternehmen"
+
+  - id: de_loans_house_yoy
+    block: finanzen
+    source: ecb
+    key: BSI/M.DE.N.A.A22.A.I.U2.2250.Z01.A
+    title: "Wohnungsbaukredite an private Haushalte, % ggü. Vorjahr"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    chart: credit_growth
+    label: "Wohnungsbaukredite"
+
   - id: w_brent
     block: finanzen
     source: fred
@@ -2226,6 +2361,60 @@ series:
     start: "2010-01-01"
     chart: world_gdp
     label: "Deutschland"
+
+  - id: ez_gdp
+    expand: {geo: [DE, FR, IT, ES, EA20]}
+    block: welt
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: "{geo}", na_item: B1GQ, unit: CLV_PCH_SM, s_adj: SCA}
+    title: "BIP real {geo_name}, % ggü. Vorjahresquartal"
+    unit: "% ggü. Vorjahresquartal"
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: ez_gdp
+    label: "{geo_name}"
+
+  - id: ez_hicp
+    expand: {geo: [DE, FR, IT, ES, EA]}
+    block: welt
+    source: eurostat
+    key: prc_hicp_minr
+    params: {geo: "{geo}", unit: RCH_A, coicop18: TOTAL}
+    title: "HVPI {geo_name}, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: ez_hicp
+    label: "{geo_name}"
+
+  - id: ez_unemp
+    expand: {geo: [DE, FR, IT, ES]}
+    block: welt
+    source: eurostat
+    key: une_rt_m
+    params: {geo: "{geo}", s_adj: SA, age: TOTAL, sex: T, unit: PC_ACT}
+    title: "Erwerbslosenquote {geo_name} (ILO)"
+    unit: "% der Erwerbspersonen"
+    frequency: M
+    adjustment: saisonbereinigt
+    start: "2015-01-01"
+    chart: ez_unemp
+    label: "{geo_name}"
+
+  - id: ez_unemp_ea20
+    block: welt
+    source: ecb
+    key: LFSI/M.I9.S.UNEHRT.TOTAL0.15_74.T
+    title: "Erwerbslosenquote Euroraum (ILO)"
+    unit: "% der Erwerbspersonen"
+    frequency: M
+    adjustment: saisonbereinigt
+    start: "2015-01-01"
+    chart: ez_unemp
+    label: "Euroraum"
 
   - id: ea_gdp_yoy
     block: welt
