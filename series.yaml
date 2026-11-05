@@ -112,6 +112,7 @@ charts:
   forecast: {title: "Prognosen für das Wachstum", decimals: 1}
   fx_usd: {title: "Euro in US-Dollar, Tageswerte", decimals: 4}
   fx: {title: "Euro gegenüber vier Währungen, Tageswerte", decimals: 4}
+  fx_eer: {title: "Effektiver Wechselkurs des Euro, Tageswerte", decimals: 1}
   cpi_core: {title: "Kernrate und Vergleich mit dem HVPI", decimals: 1}
   cpi_contrib: {title: "Woraus die Inflationsrate besteht", decimals: 1}
   deflator: {title: "Preise in der Gesamtrechnung", decimals: 1}
@@ -1469,6 +1470,32 @@ series:
     stale_after_months: 1
     chart: fx
     label: "Schweizer Franken"
+
+  - id: fx_eer41
+    block: finanzen
+    source: ecb
+    key: EXR/D.E03.EUR.EN00.A
+    title: "Nominaler effektiver Wechselkurs des Euro gegenüber 41 Handelspartnern (EZB, EER-41)"
+    unit: "Index 1999 Q1 = 100"
+    frequency: D
+    adjustment: "nicht bereinigt"
+    start: "2019-01-01"
+    stale_after_months: 1
+    chart: fx_eer
+    label: "Gegenüber 41 Handelspartnern"
+
+  - id: fx_eer18
+    block: finanzen
+    source: ecb
+    key: EXR/D.E02.EUR.EN00.A
+    title: "Nominaler effektiver Wechselkurs des Euro gegenüber 18 Handelspartnern (EZB, EER-18)"
+    unit: "Index 1999 Q1 = 100"
+    frequency: D
+    adjustment: "nicht bereinigt"
+    start: "2019-01-01"
+    stale_after_months: 1
+    chart: fx_eer
+    label: "Gegenüber 18 Handelspartnern"
 
   - id: w_brent
     block: finanzen

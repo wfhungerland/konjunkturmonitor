@@ -61,6 +61,7 @@ gruend_land;Betriebsgruendungen Laender;2026-11-04;
 aufgabe_land;Betriebsaufgaben Laender;2026-11-04;
 yields;Rendite Bundesanleihen;2026-11-04;
 fx_usd;Euro US-Dollar;2026-11-05;
+fx_eer;Effektiver Wechselkurs Euro;2026-11-05;
 fx;Euro Waehrungen;2026-11-05;
 oil;Oelpreis;2026-11-04;
 gas;Erdgaspreis;2026-11-04;
