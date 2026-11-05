@@ -75,6 +75,7 @@ fx_eer;Effektiver Wechselkurs Euro;2026-11-05;
 fx;Euro Waehrungen;2026-11-05;
 oil;Oelpreis;2026-11-04;
 power;Strom Verbrauch Preis;2026-11-05;
+gas_storage;Gasspeicher Fuellstand;2026-11-05;
 hdd;Heizgradtage;2026-11-05;
 gas;Erdgaspreis;2026-11-04;
 forecast;Prognosen Wachstum;2026-11-04;

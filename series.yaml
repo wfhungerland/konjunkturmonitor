@@ -127,6 +127,7 @@ charts:
   house_prices: {title: "Preise für Wohnimmobilien", decimals: 1}
   credit_rates: {title: "Zinsen für neue Bankkredite", decimals: 2}
   credit_growth: {title: "Wachstum der Bankkredite", decimals: 1}
+  gas_storage: {title: "Füllstand der Gasspeicher, Tageswerte", decimals: 1}
   weather: {title: "Witterung in Deutschland", decimals: 1}
   hdd: {title: "Heizgradtage", decimals: 0}
   rhine: {title: "Rheinpegel Kaub, Tagesmittel", decimals: 0}
@@ -1717,6 +1718,21 @@ series:
     start: "2010-01-01"
     chart: credit_growth
     label: "Wohnungsbaukredite"
+
+  - id: de_gas_storage
+    block: finanzen
+    source: static
+    key: gie_storage_de
+    params: {source_name: "GIE (AGSI)"}
+    license: "Weiterverwendung mit Quellenangabe GIE (AGSI)"
+    title: "Füllstand der Gasspeicher in Deutschland, % der Arbeitsgaskapazität"
+    unit: "% der Speicherkapazität"
+    frequency: D
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    stale_after_months: 1
+    chart: gas_storage
+    label: "Füllstand"
 
   - id: w_brent
     block: finanzen

@@ -178,10 +178,36 @@ def update_smard(static: Path) -> None:
     log.info("SMARD: %d Monate Verbrauch, %d Monate Preis", len(load), len(price))
 
 
+def update_gas_storage(static: Path) -> None:
+    """Füllstand der deutschen Gasspeicher (GIE AGSI), Tageswerte in % der Arbeitsgaskapazität.
+    Braucht den API-Schlüssel in der Umgebungsvariablen GIE_API_KEY; Quellenangabe GIE (AGSI) ist Pflicht."""
+    import os
+    key = os.environ.get("GIE_API_KEY", "").strip()
+    if not key:
+        log.info("Gasspeicher: kein GIE_API_KEY gesetzt, übersprungen")
+        return
+    vals, page, last = {}, 1, 1
+    to = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    while page <= last:
+        req = urllib.request.Request(f"https://agsi.gie.eu/api?country=de&from=2015-01-01&to={to}&size=300&page={page}",
+                                     headers={"User-Agent": "Konjunkturmonitor/1.0", "x-key": key})
+        with urllib.request.urlopen(req, timeout=120) as r:
+            j = json.loads(r.read().decode("utf-8"))
+        last = int(j.get("last_page") or 1)
+        for row in j.get("data", []):
+            try:
+                vals[pd.Timestamp(row["gasDayStart"])] = float(row["full"])
+            except (KeyError, TypeError, ValueError):
+                continue
+        page += 1
+    _write(static / "gie_storage_de.csv", pd.Series(vals))
+    log.info("Gasspeicher: %d Tage", len(vals))
+
+
 def update_all(root: Path) -> None:
     static = root / "data" / "static"
     static.mkdir(parents=True, exist_ok=True)
-    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard)):
+    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Gasspeicher", update_gas_storage)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf
