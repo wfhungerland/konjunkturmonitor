@@ -33,11 +33,6 @@ jobs:
         run: pip install -e ".[dev]"
       - name: Tests
         run: pytest -q
-      - name: Probe (temporär)
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          python probe/probe_c.py
-          exit 1
       - name: Daten holen und Seite bauen
         env:
           GENESIS_USER: ${{ secrets.GENESIS_USER }}

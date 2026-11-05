@@ -62,6 +62,7 @@ names:
     IT: Italien
     ES: Spanien
     EA20: Euroraum
+    EA: Euroraum
   cit:
     deu: Deutschland
     fra: Frankreich
@@ -2375,65 +2376,19 @@ series:
     chart: ez_gdp
     label: "{geo_name}"
 
-  - id: ez_hicp_de
+  - id: ez_hicp
+    expand: {geo: [DE, FR, IT, ES, EA]}
     block: welt
-    source: ecb
-    key: ICP/M.DE.N.000000.4.ANR
-    title: "HVPI Deutschland, % ggü. Vorjahresmonat"
+    source: eurostat
+    key: prc_hicp_minr
+    params: {geo: "{geo}", unit: RCH_A, coicop18: TOTAL}
+    title: "HVPI {geo_name}, % ggü. Vorjahresmonat"
     unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     start: "2015-01-01"
     chart: ez_hicp
-    label: "Deutschland"
-
-  - id: ez_hicp_fr
-    block: welt
-    source: ecb
-    key: ICP/M.FR.N.000000.4.ANR
-    title: "HVPI Frankreich, % ggü. Vorjahresmonat"
-    unit: "% ggü. Vorjahresmonat"
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2015-01-01"
-    chart: ez_hicp
-    label: "Frankreich"
-
-  - id: ez_hicp_it
-    block: welt
-    source: ecb
-    key: ICP/M.IT.N.000000.4.ANR
-    title: "HVPI Italien, % ggü. Vorjahresmonat"
-    unit: "% ggü. Vorjahresmonat"
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2015-01-01"
-    chart: ez_hicp
-    label: "Italien"
-
-  - id: ez_hicp_es
-    block: welt
-    source: ecb
-    key: ICP/M.ES.N.000000.4.ANR
-    title: "HVPI Spanien, % ggü. Vorjahresmonat"
-    unit: "% ggü. Vorjahresmonat"
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2015-01-01"
-    chart: ez_hicp
-    label: "Spanien"
-
-  - id: ez_hicp_ea20
-    block: welt
-    source: ecb
-    key: ICP/M.U2.N.000000.4.ANR
-    title: "HVPI Euroraum, % ggü. Vorjahresmonat"
-    unit: "% ggü. Vorjahresmonat"
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2015-01-01"
-    chart: ez_hicp
-    label: "Euroraum"
+    label: "{geo_name}"
 
   - id: ez_unemp
     expand: {geo: [DE, FR, IT, ES]}

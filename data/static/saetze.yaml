@@ -17,7 +17,7 @@ series:
   de_loans_nfc_yoy: [der Bestand an Bankkrediten an Unternehmen, s]
   de_loans_house_yoy: [der Bestand an Wohnungsbaukrediten, s]
   ez_gdp_ea20: [die Wirtschaftsleistung im Euroraum, s]
-  ez_hicp_ea20: [die Verbraucherpreise (HVPI) im Euroraum, p]
+  ez_hicp_ea: [die Verbraucherpreise (HVPI) im Euroraum, p]
   ez_unemp_ea20: [die Erwerbslosenquote im Euroraum, s]
   de_wai: [der Wöchentliche Aktivitätsindex der Bundesbank, s]
   de_maut: [die Fahrleistung der Lkw auf Autobahnen, s]
