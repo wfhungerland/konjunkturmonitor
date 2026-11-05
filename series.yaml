@@ -20,6 +20,7 @@ blocks:
   - {id: welt, title: Weltwirtschaft, sheet: Welt}
   - {id: staat, title: Staatsfinanzen, sheet: Staat}
   - {id: dienstleistungen, title: Dienstleistungen, sheet: Dienstleistungen}
+  - {id: wetter, title: Wetter und Pegel, sheet: Wetter}
 
 names:
   item:
@@ -112,6 +113,9 @@ charts:
   forecast: {title: "Prognosen für das Wachstum", decimals: 1}
   fx_usd: {title: "Euro in US-Dollar, Tageswerte", decimals: 4}
   fx: {title: "Euro gegenüber vier Währungen, Tageswerte", decimals: 4}
+  weather: {title: "Witterung in Deutschland", decimals: 1}
+  hdd: {title: "Heizgradtage", decimals: 0}
+  rhine: {title: "Rheinpegel Kaub, Tagesmittel", decimals: 0}
   fx_eer: {title: "Effektiver Wechselkurs des Euro, Tageswerte", decimals: 1}
   cpi_core: {title: "Kernrate und Vergleich mit dem HVPI", decimals: 1}
   cpi_contrib: {title: "Woraus die Inflationsrate besteht", decimals: 1}
@@ -1496,6 +1500,85 @@ series:
     stale_after_months: 1
     chart: fx_eer
     label: "Gegenüber 18 Handelspartnern"
+
+  - id: de_temp_anom
+    block: wetter
+    source: static
+    key: dwd_temp_anom
+    params: {source_name: "Deutscher Wetterdienst (CDC)"}
+    license: "DWD: Nutzung nach GeoNutzV mit Quellenangabe"
+    title: "Lufttemperatur Deutschland, Abweichung vom Mittel 1991–2020"
+    unit: "°C"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    stale_after_months: 3
+    chart: weather
+    label: "Temperatur"
+    note: "Gebietsmittel Deutschland des DWD; Abweichung vom Mittel desselben Kalendermonats 1991 bis 2020."
+
+  - id: de_rain_pct
+    block: wetter
+    source: static
+    key: dwd_rain_pct
+    params: {source_name: "Deutscher Wetterdienst (CDC)"}
+    license: "DWD: Nutzung nach GeoNutzV mit Quellenangabe"
+    title: "Niederschlag Deutschland in % des Mittels 1991–2020"
+    unit: "% des Mittels 1991–2020"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    stale_after_months: 3
+    chart: weather
+    label: "Niederschlag"
+    note: "Gebietsmittel Deutschland des DWD; in % des Mittels desselben Kalendermonats 1991 bis 2020."
+
+  - id: de_hdd_pct
+    block: wetter
+    source: static
+    key: dwd_hdd_pct
+    params: {source_name: "Deutscher Wetterdienst (CDC)"}
+    license: "DWD: Nutzung nach GeoNutzV mit Quellenangabe"
+    title: "Heizgradtage in % des Mittels 2015–2019"
+    unit: "% des Mittels 2015–2019"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    stale_after_months: 3
+    chart: hdd
+    label: "Heizgradtage"
+    note: "Gradtage nach VDI 3807 (20/15 °C), ungewichtetes Mittel aller DWD-Stationen; in % des Mittels desselben Kalendermonats 2015 bis 2019."
+
+  - id: rhine_kaub
+    block: wetter
+    source: static
+    key: rhine_kaub
+    params: {source_name: "PEGELONLINE (WSV)"}
+    license: "Datenlizenz Deutschland – Zero – Version 2.0 (WSV)"
+    title: "Wasserstand am Pegel Kaub (Rhein), Tagesmittel"
+    unit: "cm"
+    frequency: D
+    adjustment: nicht bereinigt
+    start: "2026-01-01"
+    stale_after_months: 3
+    chart: rhine
+    label: "Pegel Kaub"
+    note: "PEGELONLINE (WSV); Tagesmittel der Viertelstundenwerte, im Monitor fortgeschrieben seit November 2026."
+
+  - id: rhine_lowdays
+    block: wetter
+    source: static
+    key: rhine_lowdays
+    params: {source_name: "PEGELONLINE (WSV)"}
+    license: "Datenlizenz Deutschland – Zero – Version 2.0 (WSV)"
+    title: "Tage mit Wasserstand unter 78 cm am Pegel Kaub"
+    unit: "Tage"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2026-01-01"
+    stale_after_months: 3
+    label: "Niedrigwassertage"
+    note: "Tage je Monat mit einem Tagesmittel unter 78 cm."
 
   - id: w_brent
     block: finanzen
