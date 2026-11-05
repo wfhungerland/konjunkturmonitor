@@ -105,6 +105,10 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
         ev = c["calendar"]["events"]
         df = pd.DataFrame({"Datum (geschätzt)": [e["date"] for e in ev], "Veröffentlichung": [e["name"] for e in ev], "Quelle": [e["source"] for e in ev]})
         return df, {"kind": "list"}
+    if typ == "event" and c.get("event"):
+        rows = [{"Größe": p["title"], "Ereignis": l["label"] + (" (laufend)" if l["current"] else ""), "Beginn": l["start"], "Monat": x, "Index (Monat 0 = 100)": y}
+                for p in c["event"]["panels"] for l in p["lines"] for x, y in zip(l["x"], l["y"])]
+        return pd.DataFrame(rows), {"kind": "list"}
     if typ == "heatbars" and c.get("heat"):
         h = c["heat"]
         df = pd.DataFrame({"Branche": [r["label"] for r in h["rows"]],

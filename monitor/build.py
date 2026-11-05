@@ -435,6 +435,23 @@ def chart_sentences(c: dict) -> list[str]:
             low = rows[0]
             out.append(f"{w['span']}: Am {'stärksten gesunken' if low['change'] < 0 else 'wenigsten gestiegen'} ist die {what} in {low['name']} mit {num(low['change'], 1, True)} %.")
             return out
+        if typ == "event":
+            out = []
+            for p in c["event"]["panels"]:
+                what = "die realen Nahrungsmittelpreise" if "Nahrungs" in p["title"] else "die realen Erzeugerpreise landwirtschaftlicher Produkte"
+                cur = next((l for l in p["lines"] if l["current"]), None)
+                if cur and len(cur["y"]) > 4:
+                    m = len(cur["y"]) - 5
+                    v = cur["y"][-1] - 100
+                    st = pd.Timestamp(cur["start"])
+                    out.append(f"Seit Beginn des laufenden El Niño im {MONTHS[st.month - 1]} {st.year} sind {what} in Deutschland "
+                               f"{'um ' + num(abs(v), 1) + ' % gestiegen' if v > 0.05 else 'um ' + num(abs(v), 1) + ' % gesunken' if v < -0.05 else 'kaum verändert'} "
+                               f"({m} {'Monat' if m == 1 else 'Monate'} nach Beginn).")
+                ref = next((l for l in p["lines"] if l["label"].startswith("2015")), None)
+                if ref and len(ref["y"]) > 16:
+                    v = ref["y"][16] - 100
+                    out.append(f"Nach dem sehr starken El Niño von 2015/16 lagen {what} ein Jahr nach Beginn {num(abs(v), 1)} % {'höher' if v >= 0 else 'niedriger'} als zu Beginn.")
+            return out
         if typ == "heatbars":
             rows = c["heat"]["rows"]
             per = _per(c["heat"]["cols"][-1], "M")
@@ -592,6 +609,71 @@ def _notes(root: Path) -> dict:
     return out
 
 
+def _enso_episodes(roni: pd.Series, strong: float = 2.0) -> list[dict]:
+    """El-Niño-Folgen: mindestens fünf Dreimonatswerte ab 0,5 °C (die laufende Folge zählt auch kürzer). Beginn = erster Monat."""
+    s = roni.dropna().sort_index()
+    out, run = [], []
+    for d, v in s.items():
+        if v >= 0.5:
+            run.append((d, v))
+            continue
+        if len(run) >= 5:
+            out.append(run)
+        run = []
+    current = bool(run)
+    if run:
+        out.append(run)
+    eps = []
+    for k, r in enumerate(out):
+        peak = max(v for _, v in r)
+        cur = current and k == len(out) - 1
+        if peak >= strong or (cur and peak >= 1.5):
+            eps.append({"start": r[0][0], "peak": peak, "current": cur, "label": f"{r[0][0].year}/{str(r[0][0].year + 1)[2:]}"})
+    return eps
+
+
+def _enso_event(data: dict, pre: int = 4, post: int = 22) -> dict | None:
+    """Ereignisstudie: reale Nahrungsmittel- und Agrarpreise ab Beginn sehr starker El-Niño-Ereignisse, Monat 0 = 100."""
+    roni = data.get("enso_roni")
+    if roni is None or roni.dropna().empty:
+        return None
+    eps = _enso_episodes(roni)
+    cpi = data.get("de_vpi")
+    oecd = data.get("de_cpi_oecd")
+    defl = cpi.dropna() if cpi is not None else None
+    if defl is not None and oecd is not None and not oecd.dropna().empty:  # vor 1991 mit OECD-Index verketten
+        o = oecd.dropna()
+        joint = defl.index.intersection(o.index)
+        if len(joint):
+            f = defl[joint[0]] / o[joint[0]]
+            defl = pd.concat([o[o.index < defl.index[0]] * f, defl]).sort_index()
+    panels = []
+    for title, num, den in (("Nahrungsmittel im Verbraucherpreisindex", data.get("de_vpi_food"), cpi),
+                            ("Erzeugerpreise landwirtschaftlicher Produkte", data.get("de_agri"), defl)):
+        if num is None or den is None:
+            continue
+        real = (num / den).dropna()
+        lines = []
+        for e in eps:
+            k0 = real.index.searchsorted(e["start"])
+            if k0 >= len(real) or real.index[k0] != e["start"] or k0 - pre < 0:
+                continue
+            seg = real.iloc[k0 - pre:k0 + post + 1]
+            base = real.iloc[k0]
+            lines.append({"label": e["label"], "start": e["start"].strftime("%Y-%m-%d"), "current": e["current"], "peak": round(e["peak"], 2),
+                          "x": list(range(-pre, -pre + len(seg))), "y": [round(float(v / base * 100), 2) for v in seg]})
+        if not lines:
+            continue
+        past = [l for l in lines if not l["current"]]
+        xs = list(range(-pre, post + 1))
+        lo = [min((l["y"][i] for l in past if i < len(l["y"])), default=None) for i in range(len(xs))]
+        hi = [max((l["y"][i] for l in past if i < len(l["y"])), default=None) for i in range(len(xs))]
+        panels.append({"title": title, "lines": lines, "x": xs, "lo": lo, "hi": hi})
+    if not panels:
+        return None
+    return {"panels": panels, "episodes": [{"label": e["label"], "start": e["start"].strftime("%Y-%m-%d"), "peak": round(e["peak"], 2), "current": e["current"]} for e in eps]}
+
+
 def _weather_notes(c: dict, data: dict) -> list[dict]:
     """Automatische Hinweise: ungewöhnliche Witterung bei der Bauproduktion, Niedrigwasser am Rhein bei der Industrie."""
     from .answers import MONTHS, num
@@ -722,6 +804,14 @@ def build_payload(root: Path = ROOT) -> dict:
                 entry.update(type="latest", bars=bars, bar_name=c.get("bar_name", "Veränderung"), freq=m.frequency, adjustment=m.adjustment,
                              unit=c.get("unit", m.unit), sources=sorted({_source_name(s) for s in specs}), licenses=sorted({_license(s) for s in specs}),
                              series=[dict(id=s.id, label=s.label, unit=s.unit, freq=s.frequency, style="line", **_xy(data[s.id], 12)) for s in specs])
+            elif typ == "event":
+                ev = _enso_event(data)
+                if not ev:
+                    continue
+                entry.update(event=ev, freq="M", unit="Monat 0 = 100", adjustment="nicht bereinigt",
+                             sources=["NOAA Climate Prediction Center (RONI)", "Deutsche Bundesbank (VPI und Erzeugerpreise des Statistischen Bundesamts)",
+                                      "OECD über FRED (Verbraucherpreise vor 1991)", "eigene Berechnung"],
+                             licenses=["NOAA: gemeinfrei, mit Quellenangabe", SOURCE_LICENSES["bundesbank"]])
             elif typ == "calendar":
                 weeks = int(c.get("weeks", 12))
                 cal = _calendar(root, pd.Timestamp(datetime.now(timezone.utc).date()), weeks // 4 + 2, weeks)
