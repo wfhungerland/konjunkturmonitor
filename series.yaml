@@ -58,6 +58,10 @@ names:
   geo:
     DE: Deutschland
     EU27_2020: Europäische Union
+    FR: Frankreich
+    IT: Italien
+    ES: Spanien
+    EA20: Euroraum
   cit:
     deu: Deutschland
     fra: Frankreich
@@ -114,6 +118,9 @@ charts:
   fx_usd: {title: "Euro in US-Dollar, Tageswerte", decimals: 4}
   fx: {title: "Euro gegenüber vier Währungen, Tageswerte", decimals: 4}
   enso: {title: "Nahrungsmittel- und Agrarpreise nach sehr starken El-Niño-Ereignissen", decimals: 1}
+  ez_gdp: {title: "Wachstum im Euroraum-Vergleich", decimals: 1}
+  ez_hicp: {title: "Inflation im Euroraum-Vergleich (HVPI)", decimals: 1}
+  ez_unemp: {title: "Erwerbslosigkeit im Euroraum-Vergleich", decimals: 1}
   weather: {title: "Witterung in Deutschland", decimals: 1}
   hdd: {title: "Heizgradtage", decimals: 0}
   rhine: {title: "Rheinpegel Kaub, Tagesmittel", decimals: 0}
@@ -2226,6 +2233,48 @@ series:
     start: "2010-01-01"
     chart: world_gdp
     label: "Deutschland"
+
+  - id: ez_gdp
+    expand: {geo: [DE, FR, IT, ES, EA20]}
+    block: welt
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: "{geo}", na_item: B1GQ, unit: CLV_PCH_SM, s_adj: SCA}
+    title: "BIP real {geo_name}, % ggü. Vorjahresquartal"
+    unit: "% ggü. Vorjahresquartal"
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: ez_gdp
+    label: "{geo_name}"
+
+  - id: ez_hicp
+    expand: {geo: [DE, FR, IT, ES, EA20]}
+    block: welt
+    source: eurostat
+    key: prc_hicp_manr
+    params: {geo: "{geo}", coicop: CP00, unit: RCH_A}
+    title: "HVPI {geo_name}, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: ez_hicp
+    label: "{geo_name}"
+
+  - id: ez_unemp
+    expand: {geo: [DE, FR, IT, ES, EA20]}
+    block: welt
+    source: eurostat
+    key: une_rt_m
+    params: {geo: "{geo}", s_adj: SA, age: TOTAL, sex: T, unit: PC_ACT}
+    title: "Erwerbslosenquote {geo_name} (ILO)"
+    unit: "% der Erwerbspersonen"
+    frequency: M
+    adjustment: saisonbereinigt
+    start: "2015-01-01"
+    chart: ez_unemp
+    label: "{geo_name}"
 
   - id: ea_gdp_yoy
     block: welt

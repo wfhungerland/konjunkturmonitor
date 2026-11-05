@@ -1,0 +1,53 @@
+"""Ticket (GitHub-Issue) bei Ausfällen des Datenabrufs.
+
+Liest data/processed/run_status.json. Gibt es fehlgeschlagene oder veraltete Reihen, wird ein offenes Ticket
+„Datenabruf: Ausfälle“ angelegt oder dessen Text aktualisiert; ist alles in Ordnung, wird ein offenes Ticket geschlossen.
+Läuft im Workflow mit dem GitHub-CLI (gh) und dem Token des Laufs.
+"""
+from __future__ import annotations
+
+import json
+import subprocess
+from pathlib import Path
+
+TITLE = "Datenabruf: Ausfälle"
+
+
+def gh(*args: str) -> str:
+    return subprocess.run(["gh", *args], check=True, capture_output=True, text=True).stdout.strip()
+
+
+def body(run: dict) -> str | None:
+    ser = run.get("series", [])
+    bad = [s for s in ser if s.get("status") in ("failed", "skipped")]
+    old = [s for s in ser if s.get("outdated")]
+    if not bad and not old:
+        return None
+    lines = [f"Stand des Laufs: {run.get('finished_at', '')}", ""]
+    if bad:
+        lines += [f"**Fehlgeschlagen ({len(bad)}):**", ""] + [f"- `{s['series_id']}`: {s.get('message', '')[:200]}" for s in bad] + [""]
+    if old:
+        lines += [f"**Länger ohne neue Werte ({len(old)}):**", ""] + [f"- `{s['series_id']}`: letzte Periode {s.get('last', '')}" for s in old] + [""]
+    lines += ["Die Seite zeigt bei betroffenen Abbildungen einen Hinweis und den zuletzt erfolgreich abgerufenen Stand.",
+              "Dieses Ticket wird bei jedem Lauf aktualisiert und schließt sich, sobald alle Reihen wieder ankommen."]
+    return "\n".join(lines)
+
+
+def main() -> None:
+    run = json.loads(Path("data/processed/run_status.json").read_text(encoding="utf-8"))
+    text = body(run)
+    found = gh("issue", "list", "--state", "open", "--search", f'"{TITLE}" in:title', "--json", "number", "--jq", ".[0].number")
+    if text is None:
+        if found:
+            gh("issue", "close", found, "--comment", "Alle Reihen wurden im letzten Lauf wieder erfolgreich abgerufen.")
+        print("Keine Ausfälle.")
+        return
+    if found:
+        gh("issue", "edit", found, "--body", text)
+    else:
+        gh("issue", "create", "--title", TITLE, "--body", text)
+    print(text)
+
+
+if __name__ == "__main__":
+    main()

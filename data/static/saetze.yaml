@@ -8,6 +8,9 @@
 # Quoten und Salden „lag bei …, … Pp höher als ein Jahr zuvor“, Mengen „lag bei …, … mehr als ein Jahr zuvor“.
 
 series:
+  ez_gdp_ea20: [die Wirtschaftsleistung im Euroraum, s]
+  ez_hicp_ea20: [die Verbraucherpreise (HVPI) im Euroraum, p]
+  ez_unemp_ea20: [die Erwerbslosenquote im Euroraum, s]
   de_wai: [der Wöchentliche Aktivitätsindex der Bundesbank, s]
   de_maut: [die Fahrleistung der Lkw auf Autobahnen, s]
   de_gdp_index: [die Wirtschaftsleistung (reales BIP), s]
@@ -141,6 +144,9 @@ series:
   de_insolv_claims: [die voraussichtlichen Forderungen der Gläubiger, p]
 
 charts:
+  ez_gdp: ["die Wirtschaftsleistung in {label}", s]
+  ez_hicp: ["die Verbraucherpreise (HVPI) in {label}", p]
+  ez_unemp: ["die Erwerbslosenquote in {label}", s]
   esi: ["die Exportähnlichkeit von {label} mit Deutschland", s]
   inv_ratio: ["die Investitionsquote in {label}", s]
   cit: ["die tarifliche Steuerbelastung von Unternehmensgewinnen in {label}", s]

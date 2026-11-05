@@ -682,6 +682,37 @@ def _notes(root: Path) -> dict:
     return out
 
 
+def _health(root: Path, topics: list, meta: dict) -> dict:
+    """Status des letzten Datenabrufs: Hinweis je Abbildung bei fehlgeschlagenem Abruf oder veralteten Daten."""
+    path = root / "data" / "processed" / "run_status.json"
+    if not path.exists():
+        return {}
+    run = json.loads(path.read_text(encoding="utf-8"))
+    st = {s["series_id"]: s for s in run.get("series", [])}
+    for tp in topics:
+        for c in tp["charts"]:
+            sids = {s.id for s in meta.values() if s.chart_id == c.get("chart")}
+            if isinstance(c.get("series"), list):
+                sids |= {s.get("id") for s in c["series"] if isinstance(s, dict)}
+            elif isinstance(c.get("series"), str):
+                sids.add(c["series"])
+            if c.get("type") == "tiles":
+                sids |= {k for k in st if k.startswith(c.get("prefix", "@"))}
+            if c.get("type") == "event":
+                sids |= {"enso_roni", "de_vpi", "de_vpi_food", "de_agri"}
+            bad = [st[k] for k in sids if k in st and st[k].get("status") in ("failed", "skipped")]
+            old = [st[k] for k in sids if k in st and st[k].get("outdated")]
+            if bad:
+                c["warn"] = (f"Der letzte Abruf von {len(bad)} {'Reihe' if len(bad) == 1 else 'Reihen'} dieser Abbildung ist fehlgeschlagen; "
+                             "angezeigt wird der zuletzt erfolgreich abgerufene Stand.")
+            elif old:
+                c["warn"] = f"Die Quelle hat für {len(old)} {'Reihe' if len(old) == 1 else 'Reihen'} dieser Abbildung länger als üblich keine neuen Werte geliefert."
+    ser = run.get("series", [])
+    return {"finished_at": run.get("finished_at"), "n": len(ser), "ok": sum(1 for s in ser if s.get("status") in ("ok", "cache")),
+            "failed": sorted(s["series_id"] for s in ser if s.get("status") in ("failed", "skipped")),
+            "outdated": sorted(s["series_id"] for s in ser if s.get("outdated"))}
+
+
 def _enso_episodes(roni: pd.Series, strong: float = 2.0) -> list[dict]:
     """El-Niño-Folgen: mindestens fünf Dreimonatswerte ab 0,5 °C (die laufende Folge zählt auch kürzer). Beginn = erster Monat."""
     s = roni.dropna().sort_index()
@@ -1009,8 +1040,9 @@ def build_payload(root: Path = ROOT) -> dict:
                 n["text"] = tidy(n["text"])
             if c.get("alt"):
                 c["alt"] = dict(c["alt"], label=tidy(c["alt"]["label"]), base=tidy(c["alt"]["base"]), unit=tidy(c["alt"]["unit"]))
+    health = _health(root, topics, meta)
     geo = _geo(root)
-    return {"layout": layout, "start": _start_rows(cfg, data, meta, {t["id"]: t["title"] for t in cfg["topics"]}), "geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
+    return {"layout": layout, "health": health, "start": _start_rows(cfg, data, meta, {t["id"]: t["title"] for t in cfg["topics"]}), "geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
             "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "questions": questions, "topics": topics, "overview": tidy(overview({q["id"]: q["answer"] for q in questions})),
             "content_license": cfg["site"].get("license", "")}
