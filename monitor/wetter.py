@@ -32,10 +32,18 @@ LOW = 78  # cm, Schwelle nach IfW Kiel
 log = logging.getLogger(__name__)
 
 
-def _get(url: str) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": "Konjunkturmonitor/1.0"})
-    with urllib.request.urlopen(req, timeout=120) as r:
-        return r.read().decode("latin-1")
+def _get(url: str, tries: int = 5) -> str:
+    """Abruf mit Wiederholung; der DWD-Server bricht Verbindungen gelegentlich ab."""
+    import time
+    for k in range(tries):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Konjunkturmonitor/1.0"})
+            with urllib.request.urlopen(req, timeout=120) as r:
+                return r.read().decode("latin-1")
+        except Exception:
+            if k == tries - 1:
+                raise
+            time.sleep(2 * 2 ** k)
 
 
 def _write(path: Path, s: pd.Series) -> None:
