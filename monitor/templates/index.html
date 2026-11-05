@@ -1003,7 +1003,6 @@ function build() {
   exLab(); ex.title = "Alle Abbildungen aus- oder einklappen";
   ex.onclick = () => { opened = !opened; document.querySelectorAll("details.morecharts").forEach(d => d.open = opened); exLab(); };
   document.querySelector("header .bar").appendChild(ex);
-  if (DATA.page_docx) document.querySelector("header .bar").insertAdjacentHTML("beforeend", `<a class="btn" href="${encodeURI(DATA.page_docx)}" download title="Ganze Seite samt aufgeklappter Teile als Word-Datei, zum Bearbeiten mit Änderungsverfolgung">⤓ Word</a>`);
   document.body.insertAdjacentHTML("beforeend", `<a class="fab" href="#top" aria-label="Zur Übersicht">↑ Übersicht</a>`);
 }
 build();
