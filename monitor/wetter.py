@@ -121,10 +121,25 @@ def update_pegel(static: Path) -> None:
     log.info("Pegel Kaub: %d Tage, davon %d neu", len(s), len(set(new) - set(old.index)))
 
 
+def update_enso(static: Path) -> None:
+    """RONI der NOAA; Datum ist der mittlere Monat des Dreimonatszeitraums (DJF -> Januar)."""
+    seas = ["DJF", "JFM", "FMA", "MAM", "AMJ", "MJJ", "JJA", "JAS", "ASO", "SON", "OND", "NDJ"]
+    vals = {}
+    for z in _get("https://www.cpc.ncep.noaa.gov/data/indices/RONI.ascii.txt").splitlines():
+        f = z.split()
+        if len(f) >= 3 and f[0] in seas and f[1].isdigit():
+            try:
+                vals[pd.Timestamp(int(f[1]), seas.index(f[0]) + 1, 1)] = float(f[2])
+            except ValueError:
+                continue
+    _write(static / "enso_roni.csv", pd.Series(vals))
+    log.info("RONI: %d Monate", len(vals))
+
+
 def update_all(root: Path) -> None:
     static = root / "data" / "static"
     static.mkdir(parents=True, exist_ok=True)
-    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel)):
+    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf

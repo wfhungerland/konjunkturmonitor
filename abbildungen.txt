@@ -13,6 +13,7 @@ cpi_core;Kernrate HVPI;2026-11-04;
 deflator;Deflatoren;2026-11-04;
 pipeline_prices;Vorstufenpreise;2026-11-04;
 pipeline_core;Vorstufenpreise ohne Energie;2026-11-04;
+enso;El Nino Nahrungsmittelpreise;2026-11-05;
 price_exp;Preiserwartungen;2026-11-04;
 labour;Arbeitslosenquote;2026-11-04;
 labour_flows;Arbeitslose offene Stellen;2026-11-04;

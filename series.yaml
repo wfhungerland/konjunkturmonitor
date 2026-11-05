@@ -113,6 +113,7 @@ charts:
   forecast: {title: "Prognosen für das Wachstum", decimals: 1}
   fx_usd: {title: "Euro in US-Dollar, Tageswerte", decimals: 4}
   fx: {title: "Euro gegenüber vier Währungen, Tageswerte", decimals: 4}
+  enso: {title: "Nahrungsmittel- und Agrarpreise nach sehr starken El-Niño-Ereignissen", decimals: 1}
   weather: {title: "Witterung in Deutschland", decimals: 1}
   hdd: {title: "Heizgradtage", decimals: 0}
   rhine: {title: "Rheinpegel Kaub, Tagesmittel", decimals: 0}
@@ -242,6 +243,7 @@ series:
     unit: Index 2020=100
     frequency: M
     adjustment: nicht bereinigt
+    start: "1991-01-01"
 
   - id: de_vpi_food_yoy
     block: preise
@@ -852,6 +854,7 @@ series:
     unit: "Index 2020=100"
     frequency: M
     adjustment: nicht bereinigt
+    start: "1991-01-01"
 
   - id: de_vpi_core
     block: preise
@@ -1654,6 +1657,34 @@ series:
     unit: "Index 2020=100"
     frequency: M
     adjustment: nicht bereinigt
+    start: "1975-01-01"
+
+  - id: de_cpi_oecd
+    block: preise
+    source: fred
+    key: DEUCPIALLMINMEI
+    params: {source_name: "OECD (Main Economic Indicators) über FRED"}
+    title: "Verbraucherpreisindex Deutschland (OECD), lange Reihe"
+    unit: "Index 2015=100"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1975-01-01"
+    stale_after_months: 60
+    note: "Dient nur als Deflator für die Agrarpreise vor 1991; bis 1990 früheres Bundesgebiet."
+
+  - id: enso_roni
+    block: wetter
+    source: static
+    key: enso_roni
+    params: {source_name: "NOAA Climate Prediction Center (RONI)"}
+    license: "Gemeinfrei (U.S. Government Work), mit Quellenangabe"
+    title: "Relative Oceanic Niño Index (RONI), gleitendes Dreimonatsmittel"
+    unit: "°C"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1975-01-01"
+    stale_after_months: 3
+    note: "Datum: mittlerer Monat des Dreimonatszeitraums."
 
   - id: de_agri_yoy
     block: preise
