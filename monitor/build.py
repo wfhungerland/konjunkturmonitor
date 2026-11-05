@@ -339,6 +339,9 @@ def _calendar(root: Path, start: pd.Timestamp, months: int = 2, weeks: int | Non
 
 def _per(x: str, freq: str) -> str:
     from .answers import period
+    if freq == "B":
+        from .answers import MONTHS
+        return f"{int(x[8:10])}. {MONTHS[int(x[5:7]) - 1]} {x[:4]}"
     return period(pd.Timestamp(x), freq) if freq in ("M", "Q") else (x[:4] if freq == "A" else f"Woche bis {x[8:10]}.{x[5:7]}.{x[:4]}")
 
 
@@ -348,6 +351,8 @@ def _when(x: str, freq: str) -> str:
         return f"Im Jahr {x[:4]}"
     if freq == "D":
         return f"In der Woche bis zum {int(x[8:10])}.{int(x[5:7])}.{x[:4]}"
+    if freq == "B":
+        return f"Am {_per(x, freq)}"
     return f"Im {_per(x, freq)}"
 
 
@@ -393,7 +398,7 @@ def _next_period(c: dict) -> str | None:
         return f"das {(n.month - 1) // 3 + 1}. Quartal {n.year}"
     if f == "A":
         return str(t.year + 1)
-    if f == "D":
+    if f in ("D", "B"):
         return None
     n = t + pd.DateOffset(months=1)
     return f"{MONTHS[n.month - 1]} {n.year}"
@@ -408,8 +413,8 @@ def chart_sentences(c: dict) -> list[str]:
     is_rate = unit.startswith(("%", "Pp", "Saldo")) and not unit.startswith(("% des", "% der"))
     u = unit if unit.startswith(("% des", "% der")) else "%" if unit.startswith("%") else "Pp" if unit.startswith(("Pp", "Saldo")) else "" if unit.startswith("Index") else unit
     freq = c.get("freq", "M")
-    prev_word = {"M": "Vormonat", "Q": "Vorquartal", "A": "Vorjahr", "D": "Vorwoche"}.get(freq, "Vormonat")
-    yoy_word = {"M": "Vorjahresmonat", "Q": "Vorjahresquartal", "A": "Vorjahr", "D": "Vorjahr"}.get(freq, "Vorjahr")
+    prev_word = {"M": "Vormonat", "Q": "Vorquartal", "A": "Vorjahr", "D": "Vorwoche", "B": "Vortag"}.get(freq, "Vormonat")
+    yoy_word = {"M": "Vorjahresmonat", "Q": "Vorjahresquartal", "A": "Vorjahr", "D": "Vorjahr", "B": "Vorjahr"}.get(freq, "Vorjahr")
 
     def num(v, dd=1, sign=False):  # gerundete Null ohne Vorzeichen
         v = round(float(v), dd)
@@ -540,6 +545,12 @@ def chart_sentences(c: dict) -> list[str]:
             v = s["y"][-1]
             lag = {"M": 12, "Q": 4, "A": 1, "D": 52}.get(s.get("freq", freq), 12)
             yago = s["y"][-1 - lag] if len(s["y"]) > lag else None
+            if s.get("freq", freq) == "B":  # Tageswerte: Wert ein Jahr zuvor nach Kalenderdatum
+                ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
+                k = max((i for i, x in enumerate(s["x"]) if x <= ago), default=None)
+                yago = s["y"][k] if k is not None else None
+            if c.get("own_scale"):  # jede Reihe mit eigener Einheit, etwa Wechselkurse
+                u = s.get("unit", u)
             if unit.startswith("Index"):  # Indexstände sind nicht berichtenswert: Veränderung ggü. Vorjahr
                 if not yago:
                     continue
@@ -708,7 +719,7 @@ def build_payload(root: Path = ROOT) -> dict:
                     if s.id not in data:
                         continue
                     xy = _xy(data[s.id] * float(c.get("scale", 1)), c.get("years"))
-                    series.append(dict(id=s.id, label=s.label or s.title, unit=c.get("unit", s.unit), freq=s.frequency,
+                    series.append(dict(id=s.id, label=s.label or s.title, unit=c.get("unit", s.unit), freq="B" if c.get("daily") else s.frequency,
                                        style=getattr(s, "style", None) or "line", **xy))
                 if c.get("total") and c["total"] in data:
                     s = meta[c["total"]]

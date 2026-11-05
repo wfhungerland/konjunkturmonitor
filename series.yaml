@@ -110,6 +110,8 @@ charts:
   clock: {title: "Konjunkturuhr der Industrie", decimals: 1}
   employment: {title: "Erwerbstätige", decimals: 0}
   forecast: {title: "Prognosen für das Wachstum", decimals: 1}
+  fx_usd: {title: "Euro in US-Dollar, Tageswerte", decimals: 4}
+  fx: {title: "Euro gegenüber vier Währungen, Tageswerte", decimals: 4}
   cpi_core: {title: "Kernrate und Vergleich mit dem HVPI", decimals: 1}
   cpi_contrib: {title: "Woraus die Inflationsrate besteht", decimals: 1}
   deflator: {title: "Preise in der Gesamtrechnung", decimals: 1}
@@ -1402,6 +1404,71 @@ series:
     adjustment: nicht bereinigt
     chart: yields
     label: "2 Jahre"
+
+  - id: fx_usd
+    block: finanzen
+    source: ecb
+    key: EXR/D.USD.EUR.SP00.A
+    title: "Referenzkurs der EZB: US-Dollar je Euro"
+    unit: "US-$ je €"
+    frequency: D
+    adjustment: "nicht bereinigt"
+    start: "2019-01-01"
+    stale_after_months: 1
+    chart: fx_usd
+    label: "US-Dollar"
+
+  - id: fx_usd_m
+    block: finanzen
+    source: ecb
+    key: EXR/D.USD.EUR.SP00.A
+    title: "Referenzkurs der EZB: US-Dollar je Euro"
+    unit: "US-$ je €"
+    frequency: D
+    adjustment: "nicht bereinigt"
+    start: "2019-01-01"
+    stale_after_months: 1
+    chart: fx
+    label: "US-Dollar"
+
+  - id: fx_cny
+    block: finanzen
+    source: ecb
+    key: EXR/D.CNY.EUR.SP00.A
+    title: "Referenzkurs der EZB: Chinesischer Yuan je Euro"
+    unit: "Yuan je €"
+    frequency: D
+    adjustment: "nicht bereinigt"
+    start: "2019-01-01"
+    stale_after_months: 1
+    chart: fx
+    label: "Chinesischer Yuan"
+
+  - id: fx_gbp
+    block: finanzen
+    source: ecb
+    key: EXR/D.GBP.EUR.SP00.A
+    title: "Referenzkurs der EZB: Britisches Pfund je Euro"
+    unit: "£ je €"
+    frequency: D
+    adjustment: "nicht bereinigt"
+    start: "2019-01-01"
+    stale_after_months: 1
+    chart: fx
+    label: "Britisches Pfund"
+
+  - id: fx_chf
+    block: finanzen
+    source: ecb
+    key: EXR/D.CHF.EUR.SP00.A
+    title: "Referenzkurs der EZB: Schweizer Franken je Euro"
+    unit: "CHF je €"
+    frequency: D
+    adjustment: "nicht bereinigt"
+    start: "2019-01-01"
+    stale_after_months: 1
+    chart: fx
+    label: "Schweizer Franken"
 
   - id: w_brent
     block: finanzen

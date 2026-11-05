@@ -232,6 +232,12 @@ topics:
     title: Zinsen
     charts:
       - {chart: yields, ask: "Wie hoch sind die Zinsen für Bundesanleihen?", years: 10, caption: "Rendite von Bundesanleihen mit 10 und 2 Jahren Restlaufzeit, Monatsmittel. Sie beeinflusst die Finanzierungskosten von Staat, Unternehmen und privaten Bauherren."}
+  - id: wechselkurse
+    title: Wechselkurse
+    ask: "Wie entwickelt sich der Euro?"
+    charts:
+      - {chart: fx_usd, ask: "Wie viel US-Dollar kostet ein Euro?", daily: true, years: 3, keep_years: true, recessions: false, caption: "Referenzkurs der Europäischen Zentralbank: wie viele US-Dollar ein Euro kostet, an jedem Arbeitstag gegen 16 Uhr festgestellt. Steigt die Linie, wird der Euro teurer: Importe aus dem Dollarraum, auch Rohöl und Gas, werden in Euro billiger, deutsche Exporte im Dollarraum teurer."}
+      - {chart: fx, ask: "Wie entwickelt sich der Euro gegenüber wichtigen Währungen?", daily: true, multiples: true, own_scale: true, years: 3, keep_years: true, recessions: false, caption: "Referenzkurse der EZB: Einheiten der jeweiligen Währung je Euro, an jedem Arbeitstag. Je Feld eine Währung mit eigener Skala, weil die Kurse sehr verschieden hoch sind. Steigt eine Linie, wird der Euro gegenüber dieser Währung teurer. Über jedem Feld: jüngster Kurs mit Tendenz zum Vortag sowie die Mittel der letzten 3 und 12 Monate."}
   - id: energie
     title: Energie
     charts:
