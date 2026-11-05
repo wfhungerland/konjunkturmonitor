@@ -8,6 +8,14 @@
 # Quoten und Salden „lag bei …, … Pp höher als ein Jahr zuvor“, Mengen „lag bei …, … mehr als ein Jahr zuvor“.
 
 series:
+  de_power_load_yoy: [der Stromverbrauch, s]
+  de_power_price: [der Großhandelspreis für Strom, s]
+  de_permits: [die Zahl der genehmigten Wohnungen, s]
+  de_hpi_yoy: [die Preise für Wohnimmobilien, p]
+  de_rate_nfc: [der Zinssatz für neue Unternehmenskredite, s]
+  de_rate_house: [der Zinssatz für neue Wohnungsbaukredite, s]
+  de_loans_nfc_yoy: [der Bestand an Bankkrediten an Unternehmen, s]
+  de_loans_house_yoy: [der Bestand an Wohnungsbaukrediten, s]
   ez_gdp_ea20: [die Wirtschaftsleistung im Euroraum, s]
   ez_hicp_ea20: [die Verbraucherpreise (HVPI) im Euroraum, p]
   ez_unemp_ea20: [die Erwerbslosenquote im Euroraum, s]
