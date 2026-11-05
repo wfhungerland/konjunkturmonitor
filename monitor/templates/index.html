@@ -339,7 +339,7 @@ function xAxis(x0, x1, width) {
 }
 // Abbildungen, an deren Linienenden die jüngsten Werte stehen können
 const labelable = c => Array.isArray(c.series) && !["stacked", "latest", "seasonal"].includes(c.type) && !c.series.some(s => s.style === "bar")
-  && (c.series.filter(s => s.style !== "bar").length <= 4 || c.context_grey) && !(c.multiples && (DATA.layout || {}).small_multiples && c.series.length > 2);
+  && (c.series.filter(s => s.style !== "bar").length <= 4 || c.context_grey) && !(c.multiples && (DATA.layout || {}).small_multiples && (c.series.length > 2 || c.own_scale));
 // Rezessionen nach SVR, die ins Zeitfenster der Abbildung fallen
 const recIn = (c, r) => (c.recessions || []).filter(rc => rc.trough >= r[0] && rc.peak <= r[1]);
 function ma3(y) { return y.map((v, i) => i < 2 ? null : (y[i] + y[i - 1] + y[i - 2]) / 3); }
@@ -806,7 +806,7 @@ function card(c, no) {
   // Knöpfe unter der Grafik: Monatswerte, Rezessionen, Download, alle gleich gestaltet
   const tools = document.createElement("div"); tools.className = "tools"; main.appendChild(tools);
   main.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}</div>`);
-  const redraw = () => { Plotly.purge(ch); ch.innerHTML = ""; ch.classList.remove("multi"); (c.type === "seasonal" ? seasonalChart : c.multiples && (DATA.layout || {}).small_multiples && c.series.length > 2 ? multiplesChart : timeChart)(ch, c); };
+  const redraw = () => { Plotly.purge(ch); ch.innerHTML = ""; ch.classList.remove("multi"); (c.type === "seasonal" ? seasonalChart : c.multiples && (DATA.layout || {}).small_multiples && (c.series.length > 2 || c.own_scale) ? multiplesChart : timeChart)(ch, c); };
   if (c.ma3) {
     const tg = document.createElement("button"); tg.type = "button"; tg.className = "btn rawtoggle"; tg.textContent = "Monatswerte ausblenden";
     tg.onclick = () => { c._raw = !(c._raw ?? true); tg.textContent = c._raw ? "Monatswerte ausblenden" : "Monatswerte einblenden"; redraw(); };
@@ -855,7 +855,7 @@ function render(ch) {
   else if (c.type === "heatbars") heatbarsChart(ch, c);
   else if (c.type === "calendar") calendarChart(ch, c);
   else if (c.type === "seasonal") seasonalChart(ch, c); else if (c.type === "tiles") tilesChart(ch, c);
-  else if (c.multiples && (DATA.layout || {}).small_multiples && c.series && c.series.length > 2) multiplesChart(ch, c);
+  else if (c.multiples && (DATA.layout || {}).small_multiples && c.series && (c.series.length > 2 || c.own_scale)) multiplesChart(ch, c);
   else timeChart(ch, c);
 }
 

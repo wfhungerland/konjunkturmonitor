@@ -21,6 +21,9 @@ def main(argv: list[str] | None = None) -> int:
     os.chdir(root)
     os.environ.setdefault("KONJUNKTURWOLF_STATIC_DIR", str(root / "data" / "static"))
     if args.cmd == "run":
+        from .wetter import update_all
+
+        update_all(root)  # Wetter und Rheinpegel als statische Reihen, vor dem Abruf
         from konjunkturwolf.catalog import load_catalog
         from konjunkturwolf.http import HttpClient
         from konjunkturwolf.pipeline import Paths, run, save

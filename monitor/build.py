@@ -561,7 +561,7 @@ def chart_sentences(c: dict) -> list[str]:
                     out.append(f"{when} lag {name(s)} {num(abs(ch), 1)} % {'über' if ch > 0 else 'unter'} dem Stand des {yoy_word}s.")
                 continue
             add = ""
-            if yago is not None and s.get("style") != "bar":
+            if yago is not None and s.get("style") != "bar" and not c.get("no_yoy"):
                 neg = any(q is not None and q < 0 for x in c["series"] for q in x["y"])
                 if is_rate:
                     add = f" ({num(v - yago, d, True)} Pp ggü. {yoy_word})"
@@ -590,6 +590,33 @@ def _notes(root: Path) -> dict:
     for n in (yaml.safe_load(path.read_text(encoding="utf-8")) or {}).get("notes") or []:
         out.setdefault(n["chart"], []).append({"date": str(n["date"]), "text": n["text"]})
     return out
+
+
+def _weather_notes(c: dict, data: dict) -> list[dict]:
+    """Automatische Hinweise: ungewöhnliche Witterung bei der Bauproduktion, Niedrigwasser am Rhein bei der Industrie."""
+    from .answers import MONTHS, num
+    out = []
+    xs = [x for s in c.get("series") or [] if isinstance(s, dict) for x in s.get("x", [])]
+    if not xs:
+        return out
+    x0 = min(xs)
+    if c.get("chart") == "bau_prod":
+        t, r = data.get("de_temp_anom"), data.get("de_rain_pct")
+        for d, v in (t.dropna().items() if t is not None else []):
+            if d.strftime("%Y-%m-%d") < x0 or d.month not in (11, 12, 1, 2, 3):
+                continue
+            if abs(v) >= 2.5:
+                out.append({"date": d.strftime("%Y-%m-%d"), "text": f"{MONTHS[d.month - 1]} {d.year} {'ungewöhnlich mild' if v > 0 else 'ungewöhnlich kalt'}: "
+                            f"{num(abs(v), 1)} °C {'über' if v > 0 else 'unter'} dem Mittel 1991–2020 (Deutscher Wetterdienst)", "auto": True})
+        for d, v in (r.dropna().items() if r is not None else []):
+            if d.strftime("%Y-%m-%d") >= x0 and v >= 170:
+                out.append({"date": d.strftime("%Y-%m-%d"), "text": f"{MONTHS[d.month - 1]} {d.year} sehr nass: Niederschlag {num(v, 0)} % des Mittels 1991–2020 (Deutscher Wetterdienst)", "auto": True})
+    if c.get("chart") == "industry":
+        lw = data.get("rhine_lowdays")
+        for d, v in (lw.dropna().items() if lw is not None else []):
+            if d.strftime("%Y-%m-%d") >= x0 and v >= 10:
+                out.append({"date": d.strftime("%Y-%m-%d"), "text": f"{MONTHS[d.month - 1]} {d.year}: an {int(v)} Tagen Niedrigwasser am Rhein (Pegel Kaub unter 78 cm)", "auto": True})
+    return sorted(out, key=lambda n: n["date"])
 
 
 def _outliers(c: dict) -> list[dict]:
@@ -783,7 +810,7 @@ def build_payload(root: Path = ROOT) -> dict:
             c["texts"] = chart_sentences(c)
             c["text"] = " ".join(c["texts"])
             c["last_x"] = _last_x(c)
-            c["notes"] = notes.get(c["chart"], [])
+            c["notes"] = notes.get(c["chart"], []) + _weather_notes(c, data)
             if c.get("ma3") or c.get("outliers"):
                 c["outliers"] = _outliers(c)
     no = 0
