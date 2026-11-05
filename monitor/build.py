@@ -404,6 +404,38 @@ def _next_period(c: dict) -> str | None:
     return f"{MONTHS[n.month - 1]} {n.year}"
 
 
+_SAETZE: dict = {}
+ZAHLWORT = {2: "zwei", 3: "drei", 4: "vier", 5: "fünf", 6: "sechs", 7: "sieben", 8: "acht", 9: "neun", 10: "zehn", 11: "elf", 12: "zwölf"}
+
+
+def load_saetze(root: Path) -> None:
+    path = root / "data" / "static" / "saetze.yaml"
+    _SAETZE.clear()
+    if path.exists():
+        _SAETZE.update(yaml.safe_load(path.read_text(encoding="utf-8")) or {})
+
+
+def _subject(sid: str | None, label: str = "", chart: str = "") -> dict | None:
+    """Satzgegenstand einer Reihe: {subj, pl} oder {tpl}; sonst None."""
+    def conv(x):
+        if isinstance(x, dict):
+            return x
+        if isinstance(x, list) and x:
+            return {"subj": x[0].replace("{label}", label), "pl": len(x) > 1 and x[1] == "p"}
+        return None
+    if sid and sid in (_SAETZE.get("series") or {}):
+        return conv(_SAETZE["series"][sid])
+    if chart in (_SAETZE.get("charts") or {}):
+        return conv(_SAETZE["charts"][chart])
+    if label in (_SAETZE.get("labels") or {}):
+        return conv(_SAETZE["labels"][label])
+    return None
+
+
+def _cap(s: str) -> str:
+    return s[:1].upper() + s[1:]
+
+
 def chart_sentences(c: dict) -> list[str]:
     """Kopierfertige Sätze zum jüngsten Stand einer Abbildung. Jeder Satz steht für sich: Zeitraum, Größe, Wert, Vergleich."""
     from .answers import MONTHS
@@ -433,7 +465,8 @@ def chart_sentences(c: dict) -> list[str]:
             what = c.get("what") or "Zahl"
             out = [f"{w['span']}: Den stärksten Anstieg ggü. demselben Zeitraum ein Jahr zuvor verzeichnete {rows[-1]['name']} mit {num(rows[-1]['change'], 1, True)} %."]
             low = rows[0]
-            out.append(f"{w['span']}: Am {'stärksten gesunken' if low['change'] < 0 else 'wenigsten gestiegen'} ist die {what} in {low['name']} mit {num(low['change'], 1, True)} %.")
+            loc = lambda n: {"Saarland": "im Saarland"}.get(n, "in " + n)
+            out.append(f"{w['span']}: Am {'stärksten gesunken' if low['change'] < 0 else 'wenigsten gestiegen'} ist die {what} {loc(low['name'])} mit {num(low['change'], 1, True)} %.")
             return out
         if typ == "event":
             out = []
@@ -481,12 +514,14 @@ def chart_sentences(c: dict) -> list[str]:
             su = "" if c.get("unit") in ("Anzahl", None, "") else " " + c["unit"]
             lab = c.get("label") or c.get("title", "")
             when = f"Im {_per(c['x'][i], 'M')}"
-            out = [f"{when} lag der Wert für „{lab}“ bei {num(c['y'][i], d)}{su}."]
+            sp = _subject(c.get("series") if isinstance(c.get("series"), str) else None, lab) or {"subj": f"der Wert für „{lab}“", "pl": False}
+            subj, lv = sp["subj"], "lagen" if sp["pl"] else "lag"
+            out = [f"{when} {lv} {subj} bei {num(c['y'][i], d)}{su}."]
             if c["ma12"][i] is not None:
-                out.append(f"In den zwölf Monaten bis {_per(c['x'][i], 'M')} lag der Wert für „{lab}“ im Mittel bei {num(c['ma12'][i], d)}{su} je Monat.")
+                out.append(f"In den zwölf Monaten bis {_per(c['x'][i], 'M')} {lv} {subj} im Mittel bei {num(c['ma12'][i], d)}{su} je Monat.")
             if c["norm"][i] is not None:
                 m = MONTHS[int(c['x'][i][5:7]) - 1]
-                out.append(f"Vor der Pandemie (2015 bis 2019) lag der Wert für „{lab}“ in einem {m} im Schnitt bei {num(c['norm'][i], d)}{su}.")
+                out.append(f"Vor der Pandemie (2015 bis 2019) {lv} {subj} in einem {m} im Schnitt bei {num(c['norm'][i], d)}{su}.")
             return out
         if typ == "latest":
             b = c["bars"]
@@ -501,9 +536,11 @@ def chart_sentences(c: dict) -> list[str]:
             out = []
             for x in b:
                 v = x["value"]
-                verb = "stieg" if v > 0.05 else "sank" if v < -0.05 else "veränderte sich kaum"
-                tail = f" um {num(abs(v), d)} %" if verb != "veränderte sich kaum" else f" ({num(v, d, True)} %)"
-                out.append(f"{when} {verb} der Wert für „{x['label']}“{tail} ggü. {prev_word}.")
+                sx = _subject(None, x["label"]) or {"subj": f"der Wert für „{x['label']}“", "pl": False}
+                pl = sx["pl"]
+                verb = ("stiegen" if pl else "stieg") if v > 0.05 else ("sanken" if pl else "sank") if v < -0.05 else ("veränderten sich kaum" if pl else "veränderte sich kaum")
+                tail = f" um {num(abs(v), d)} %" if "kaum" not in verb else f" ({num(v, d, True)} %)"
+                out.append(f"{when} {verb} {sx['subj']}{tail} ggü. dem {prev_word}.")
             return out
         if typ == "forecast":
             fs = c.get("forecasts") or []
@@ -525,7 +562,7 @@ def chart_sentences(c: dict) -> list[str]:
                 if len(latest) < 2:
                     continue
                 v = sorted(latest.values())
-                out.append(f"Die jüngsten Prognosen von {len(v)} Herausgebern für {y} reichen von {num(v[0], 1)} bis {num(v[-1], 1)} %.")
+                out.append(f"Die jüngsten Prognosen von {ZAHLWORT.get(len(v), len(v))} Institutionen für {y} reichen von {num(v[0], 1)} bis {num(v[-1], 1)} %.")
             return out
         if typ == "calendar" or not c.get("series"):
             return []
@@ -538,12 +575,20 @@ def chart_sentences(c: dict) -> list[str]:
             at = lambda s: s["y"][s["x"].index(last)]
             when = _when(last, freq)
             whole = c.get("whole") or ("das Wachstum des BIP" if "gdp" in c.get("chart", "") else "die Rate insgesamt")
-            out = [f"{when} betrug {whole} {num(at(tot[0]), d, True)} % ggü. {prev_word if 'gdp' in c.get('chart', '') else yoy_word}."] if tot else []
+            if tot and "gdp" in c.get("chart", ""):
+                g = at(tot[0])
+                out = [f"{when} {'wuchs' if g > 0.05 else 'schrumpfte' if g < -0.05 else 'stagnierte'} das reale BIP{' um ' + num(abs(g), d) + ' % ggü. dem Vorquartal' if abs(g) > 0.05 else ''}."]
+            elif tot:
+                out = [f"{when} lag die Inflationsrate bei {num(at(tot[0]), d)} % ggü. dem Vorjahresmonat."]
+            else:
+                out = []
             if bars:
                 hi, lo = max(bars, key=at), min(bars, key=at)
-                out.append(f"{when} trug „{hi['label']}“ am meisten bei: {num(at(hi), d, True)} Pp.")
-                if at(lo) < 0:
-                    out.append(f"{when} dämpfte „{lo['label']}“ am stärksten: {num(at(lo), d, True)} Pp.")
+                sh = _subject(None, hi["label"]) or {"subj": f"„{hi['label']}“", "pl": False}
+                out.append(f"{when} {'trugen' if sh['pl'] else 'trug'} {sh['subj']} am meisten bei: {num(at(hi), d, True)} Pp.")
+                if round(at(lo), d) < 0:
+                    sl = _subject(None, lo["label"]) or {"subj": f"„{lo['label']}“", "pl": False}
+                    out.append(f"{when} {'dämpften' if sl['pl'] else 'dämpfte'} {sl['subj']} am stärksten: {num(at(lo), d, True)} Pp.")
             return out
         if c.get("emphasis"):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
@@ -555,40 +600,66 @@ def chart_sentences(c: dict) -> list[str]:
                 last = max(s["x"][-1] for s in bars0)
                 series = [dict(s, x=s["x"][:s["x"].index(last) + 1], y=s["y"][:s["x"].index(last) + 1]) for s in series if last in s["x"]]
         when = _when(last, freq)
+        prev_lbl = {"M": "im Vormonat", "Q": "im Vorquartal", "A": "im Vorjahr", "D": "in der Vorwoche", "B": "am Vortag"}
         out = []
         for s in series:
             if s["x"][-1] != last:
                 continue
             v = s["y"][-1]
-            lag = {"M": 12, "Q": 4, "A": 1, "D": 52}.get(s.get("freq", freq), 12)
+            f = s.get("freq", freq)
+            lag = {"M": 12, "Q": 4, "A": 1, "D": 52}.get(f, 12)
             yago = s["y"][-1 - lag] if len(s["y"]) > lag else None
-            if s.get("freq", freq) == "B":  # Tageswerte: Wert ein Jahr zuvor nach Kalenderdatum
+            if f == "B":  # Tageswerte: Wert ein Jahr zuvor nach Kalenderdatum
                 ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
                 k = max((i for i, x in enumerate(s["x"]) if x <= ago), default=None)
                 yago = s["y"][k] if k is not None else None
-            if c.get("own_scale"):  # jede Reihe mit eigener Einheit, etwa Wechselkurse
-                u = s.get("unit", u)
-            if unit.startswith("Index"):  # Indexstände sind nicht berichtenswert: Veränderung ggü. Vorjahr
+            su = s.get("unit") if c.get("own_scale") else unit
+            su = (su or "").split(",")[0]
+            uu = su if su.startswith(("% des", "% der")) else "%" if su.startswith("%") else "Pp" if su.startswith(("Pp", "Saldo")) else "" if su.startswith("Index") else su
+            vv = f"{num(v, d, su.startswith('Saldo'))} {uu}".strip() if not su.startswith("Index 0") else f"{num(v, d)} von 100 Punkten"
+            sp = _subject(s.get("id"), s.get("label", ""), c.get("chart", ""))
+            no_cmp = c.get("no_yoy") or yago is None
+            if sp and sp.get("tpl"):  # ganzer Satz als Vorlage
+                chg = num((v / yago - 1) * 100, 1, True) + " %" if yago else ""
+                out.append(sp["tpl"].format(when=when, v=vv, n=num(v, d), abs=num(abs(v), d), ueber="über" if v >= 0 else "unter",
+                                            waermer="wärmer" if v >= 0 else "kälter", hoeher="höher" if v >= 0 else "niedriger", chg=chg).replace(" ( ggü. Vorjahr)", ""))
+                continue
+            if not sp:  # Rückfall: neutrale Formulierung mit Beschriftung
+                sp = {"subj": name(s), "pl": False}
+            subj, pl = sp["subj"], sp["pl"]
+            lag_v = "lagen" if pl else "lag"
+            if su.startswith(("% ggü", "Pp ggü")):  # Veränderungsrate: stieg/sank um
+                ref = su.split(" ", 1)[1] if " " in su else ""
+                if round(v, d) == 0:
+                    sent = f"{when} {'veränderten' if pl else 'veränderte'} sich {subj} kaum ({ref})"
+                else:
+                    sent = f"{when} {('stiegen' if pl else 'stieg') if v > 0 else ('sanken' if pl else 'sank')} {subj} um {num(abs(v), d)} {'%' if su.startswith('%') else 'Pp'} {ref}"
+                if len(s["y"]) > 1 and s["y"][-2] is not None and not c.get("no_yoy"):
+                    sent += f", nach {num(s['y'][-2], d)} {'%' if su.startswith('%') else 'Pp'} {prev_lbl.get(f, 'zuvor')}"
+                out.append(sent + ".")
+                continue
+            if su.startswith("Index") and not su.startswith("Index 0"):  # Indexstände: Abstand zum Vorjahr
                 if not yago:
                     continue
                 ch = (v / yago - 1) * 100
-                if round(ch, 1) == 0:
-                    out.append(f"{when} lag {name(s)} auf dem Stand des {yoy_word}s.")
-                else:
-                    out.append(f"{when} lag {name(s)} {num(abs(ch), 1)} % {'über' if ch > 0 else 'unter'} dem Stand des {yoy_word}s.")
+                ref = {"M": "des Vorjahresmonats", "Q": "des Vorjahresquartals"}.get(f, "von vor einem Jahr")
+                out.append(f"{when} {lag_v} {subj} {'auf dem Stand ' + ref if round(ch, 1) == 0 else num(abs(ch), 1) + ' % ' + ('über' if ch > 0 else 'unter') + ' dem Stand ' + ref}.")
                 continue
-            add = ""
-            if yago is not None and s.get("style") != "bar" and not c.get("no_yoy"):
+            sent = f"{when} {lag_v} {subj} bei {vv}"
+            if not no_cmp:
+                diff = v - yago
+                level_like = su.startswith(("%", "Pp", "Saldo", "Punkte", "Index 0", "°C", "cm")) or "je" in su
                 neg = any(q is not None and q < 0 for x in c["series"] for q in x["y"])
-                if is_rate:
-                    add = f" ({num(v - yago, d, True)} Pp ggü. {yoy_word})"
-                elif unit.startswith("Punkte"):
-                    add = f" ({num(v - yago, d, True)} Punkte ggü. {yoy_word})"
-                elif neg or "saldo" in s["label"].lower():  # Salden und Wanderungen: Differenz statt Prozent
-                    add = f" ({num(v - yago, d, True)} {u} ggü. {yoy_word})".replace("  ", " ")
+                if level_like or neg or "saldo" in subj.lower():
+                    du = "Pp" if su.startswith(("%", "Pp", "Saldo")) else ("Punkt" if round(abs(diff), d) == 1 else "Punkte") if su.startswith(("Punkte", "Index 0")) else uu
+                    if round(diff, d) == 0:
+                        sent += ", so hoch wie ein Jahr zuvor"
+                    else:
+                        sent += f", {num(abs(diff), d)} {du} {'höher' if diff > 0 else 'niedriger'} als ein Jahr zuvor"
                 elif yago:
-                    add = f" ({num((v / yago - 1) * 100, 1, True)} % ggü. {yoy_word})"
-            out.append(f"{when} lag {name(s)} bei {val(v)}{add}.")
+                    pc = (v / yago - 1) * 100
+                    sent += ", so viel wie ein Jahr zuvor" if round(pc, 1) == 0 else f", {num(abs(pc), 1)} % {'mehr' if pc > 0 else 'weniger'} als ein Jahr zuvor"
+            out.append(sent + ".")
         return out
     except (KeyError, IndexError, ValueError, TypeError, ZeroDivisionError):
         return []
@@ -730,6 +801,7 @@ def build_payload(root: Path = ROOT) -> dict:
     meta, charts_cfg = _series_meta(root / "series.yaml")
     _META.clear()
     _META.update(meta)
+    load_saetze(root)
     questions = []
     for q in cfg["questions"]:
         a = answer(q, data)
