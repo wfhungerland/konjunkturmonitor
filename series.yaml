@@ -1638,7 +1638,7 @@ series:
     block: bau
     source: genesis
     key: 31111-0020
-    params: {value_variable: WOHN01, filters: {BAUTK1: BTK-GEB, BAUGB1: GBD-W-NW}, scale: 0.001}
+    params: {value_variable: WOHN01, filters: {BAUTK1: BTK-GEB, BAUGB1: GBD-W-NW}, scale: 0.001, query: {contents: WOHN01, classifyingvariable1: BAUTK1, classifyingkey1: BTK-GEB, classifyingvariable2: BAUGB1, classifyingkey2: GBD-W-NW}}
     title: "Baugenehmigungen: Wohnungen (Neubau und Baumaßnahmen an bestehenden Gebäuden), Tsd."
     unit: "Tsd. Wohnungen"
     frequency: M
@@ -2375,22 +2375,68 @@ series:
     chart: ez_gdp
     label: "{geo_name}"
 
-  - id: ez_hicp
-    expand: {geo: [DE, FR, IT, ES, EA20]}
+  - id: ez_hicp_de
     block: welt
-    source: eurostat
-    key: prc_hicp_manr
-    params: {geo: "{geo}", coicop: CP00, unit: RCH_A}
-    title: "HVPI {geo_name}, % ggü. Vorjahresmonat"
+    source: ecb
+    key: ICP/M.DE.N.000000.4.ANR
+    title: "HVPI Deutschland, % ggü. Vorjahresmonat"
     unit: "% ggü. Vorjahresmonat"
     frequency: M
     adjustment: nicht bereinigt
     start: "2015-01-01"
     chart: ez_hicp
-    label: "{geo_name}"
+    label: "Deutschland"
+
+  - id: ez_hicp_fr
+    block: welt
+    source: ecb
+    key: ICP/M.FR.N.000000.4.ANR
+    title: "HVPI Frankreich, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: ez_hicp
+    label: "Frankreich"
+
+  - id: ez_hicp_it
+    block: welt
+    source: ecb
+    key: ICP/M.IT.N.000000.4.ANR
+    title: "HVPI Italien, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: ez_hicp
+    label: "Italien"
+
+  - id: ez_hicp_es
+    block: welt
+    source: ecb
+    key: ICP/M.ES.N.000000.4.ANR
+    title: "HVPI Spanien, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: ez_hicp
+    label: "Spanien"
+
+  - id: ez_hicp_ea20
+    block: welt
+    source: ecb
+    key: ICP/M.U2.N.000000.4.ANR
+    title: "HVPI Euroraum, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    chart: ez_hicp
+    label: "Euroraum"
 
   - id: ez_unemp
-    expand: {geo: [DE, FR, IT, ES, EA20]}
+    expand: {geo: [DE, FR, IT, ES]}
     block: welt
     source: eurostat
     key: une_rt_m
@@ -2402,6 +2448,18 @@ series:
     start: "2015-01-01"
     chart: ez_unemp
     label: "{geo_name}"
+
+  - id: ez_unemp_ea20
+    block: welt
+    source: ecb
+    key: LFSI/M.I9.S.UNEHRT.TOTAL0.15_74.T
+    title: "Erwerbslosenquote Euroraum (ILO)"
+    unit: "% der Erwerbspersonen"
+    frequency: M
+    adjustment: saisonbereinigt
+    start: "2015-01-01"
+    chart: ez_unemp
+    label: "Euroraum"
 
   - id: ea_gdp_yoy
     block: welt
