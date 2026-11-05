@@ -72,24 +72,44 @@ def _by_month_norm(s: pd.Series, y0: int, y1: int) -> pd.Series:
     return pd.Series([norm.get(d.month) for d in s.index], index=s.index)
 
 
-def _hdd() -> pd.Series:
-    out = {}
+def _hdd_month(url: str) -> float | None:
+    """Ungewichtetes Mittel der Monatsgradtage aller Stationen einer DWD-Monatsdatei."""
+    vals = []
+    for z in _get(url).splitlines():
+        f = [c.strip() for c in z.split(";")]
+        if z.startswith("#") or len(f) < 8:
+            continue
+        try:
+            g = float(f[6])
+        except ValueError:
+            continue
+        if g >= 0:
+            vals.append(g)
+    return sum(vals) / len(vals) if vals else None
+
+
+def _hdd(cache: Path, refresh: int = 3) -> pd.Series:
+    """Heizgradtage je Monat. Bereits geladene Monate kommen aus dem Zwischenspeicher (data/static/dwd_hdd_raw.csv);
+    neu geladen werden nur fehlende Monate und die jüngsten `refresh` Monate, die der DWD noch nachträglich ergänzt."""
+    old = pd.read_csv(cache, parse_dates=["date"]).set_index("date")["value"] if cache.exists() else pd.Series(dtype=float)
+    files = {}
     for part in ("historical/", "recent/"):
         for name in sorted(set(re.findall(r'href="(gradtage_\d{6}\.csv)"', _get(HDD + part)))):
-            vals = []
-            for z in _get(HDD + part + name).splitlines():
-                f = [c.strip() for c in z.split(";")]
-                if z.startswith("#") or len(f) < 8:
-                    continue
-                try:
-                    g = float(f[6])
-                except ValueError:
-                    continue
-                if g >= 0:
-                    vals.append(g)
-            if vals:
-                out[pd.Timestamp(int(name[9:13]), int(name[13:15]), 1)] = sum(vals) / len(vals)
-    return pd.Series(out).sort_index()
+            files[pd.Timestamp(int(name[9:13]), int(name[13:15]), 1)] = HDD + part + name  # recent überschreibt historical
+    newest = sorted(files)[-refresh:]
+    out = old.to_dict()
+    n = 0
+    for d, url in sorted(files.items()):
+        if d in out and d not in newest:
+            continue
+        v = _hdd_month(url)
+        n += 1
+        if v is not None:
+            out[d] = v
+    s = pd.Series(out).sort_index()
+    _write(cache, s)
+    log.info("Heizgradtage: %d Dateien geladen, %d Monate aus dem Zwischenspeicher", n, len(s) - n)
+    return s
 
 
 def update_weather(static: Path) -> None:
@@ -97,7 +117,7 @@ def update_weather(static: Path) -> None:
     _write(static / "dwd_temp_anom.csv", tm - _by_month_norm(tm, 1991, 2020))
     rr = _regional("precipitation", "rr")
     _write(static / "dwd_rain_pct.csv", rr / _by_month_norm(rr, 1991, 2020) * 100)
-    hdd = _hdd()
+    hdd = _hdd(static / "dwd_hdd_raw.csv")
     _write(static / "dwd_hdd_pct.csv", hdd / _by_month_norm(hdd, 2015, 2019) * 100)
     log.info("Wetter: %d Monate Temperatur, %d Monate Heizgradtage", len(tm), len(hdd))
 
