@@ -578,8 +578,10 @@ def chart_sentences(c: dict) -> list[str]:
             if tot and "gdp" in c.get("chart", ""):
                 g = at(tot[0])
                 out = [f"{when} {'wuchs' if g > 0.05 else 'schrumpfte' if g < -0.05 else 'stagnierte'} das reale BIP{' um ' + num(abs(g), d) + ' % ggü. dem Vorquartal' if abs(g) > 0.05 else ''}."]
-            elif tot:
+            elif tot and c.get("chart") == "cpi_contrib":
                 out = [f"{when} lag die Inflationsrate bei {num(at(tot[0]), d)} % ggü. dem Vorjahresmonat."]
+            elif tot:
+                out = [f"{when} lag die Rate insgesamt bei {num(at(tot[0]), d)} %."]
             else:
                 out = []
             if bars:

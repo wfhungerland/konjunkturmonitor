@@ -52,7 +52,7 @@ def test_chart_text_and_outliers():
     s = {"type": "stacked", "unit": "Pp", "decimals": 1, "freq": "Q", "series": [
         {"id": "b", "label": "Konsum", "style": "bar", "x": ["2026-07-01"], "y": [0.2]},
         {"id": "t", "label": "BIP", "style": "line", "x": ["2026-07-01"], "y": [-0.04]}]}
-    assert chart_text(s) == "Im 3. Quartal 2026 betrug die Rate insgesamt 0,0 % ggü. Vorjahresquartal. Im 3. Quartal 2026 trug „Konsum“ am meisten bei: +0,2 Pp."
+    assert chart_text(s) == "Im 3. Quartal 2026 lag die Rate insgesamt bei 0,0 %. Im 3. Quartal 2026 trug „Konsum“ am meisten bei: +0,2 Pp."
 
 
 def test_archive_revisions_and_news(tmp_path):
