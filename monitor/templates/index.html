@@ -179,6 +179,7 @@
   nav details.navmore > summary { cursor: pointer; color: var(--accent); list-style: none; } nav details.navmore > summary::after { content: " ▾"; }
   nav .navlist { position: absolute; right: 0; top: 1.6em; background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 8px 12px; display: grid; grid-template-columns: repeat(2, max-content); gap: 4px 18px; box-shadow: 0 4px 12px rgba(0,0,0,.08); z-index: 10; }
   .expandall .short { display: none; }
+  @media (max-width: 1320px) { .expandall .long { display: none; } .expandall .short { display: inline; } }
   @media (max-width: 600px) {
     /* Handy: Kopfzeile in zwei Zeilen, Themen als waagerecht wischbare Zeile */
     .bar { padding: 6px 10px 4px; gap: 2px 6px; align-items: center; }
@@ -783,7 +784,7 @@ function card(c, no) {
   if (!lead) bindCopies(el, texts, `Abb. ${no}`);
   const body = document.createElement("div"); body.className = "cbody"; el.appendChild(body);
   const main = document.createElement("div"); main.className = "cmain"; body.appendChild(main);
-  main.insertAdjacentHTML("beforeend", `<div class="unit">${esc(unit)}</div>`);
+  main.insertAdjacentHTML("beforeend", `<div class="unit">${c.own_scale ? "" : esc(unit)}</div>`);
   const box = document.createElement("div"); box.className = "chartbox"; main.appendChild(box);
   const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
