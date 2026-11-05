@@ -156,10 +156,32 @@ def update_enso(static: Path) -> None:
     log.info("RONI: %d Monate", len(vals))
 
 
+def _smard(filt: int, region: str) -> pd.Series:
+    """Monatswerte von SMARD (Bundesnetzagentur): Index der Jahresdateien, dann je Datei die Monatswerte."""
+    base = "https://www.smard.de/app/chart_data"
+    stamps = json.loads(_get(f"{base}/{filt}/{region}/index_month.json"))["timestamps"]
+    vals = {}
+    for ts in stamps:
+        for t, v in json.loads(_get(f"{base}/{filt}/{region}/{filt}_{region}_month_{ts}.json")).get("series", []):
+            if v is not None:
+                d = pd.Timestamp(t, unit="ms", tz="Europe/Berlin")
+                vals[pd.Timestamp(d.year, d.month, 1)] = float(v)
+    return pd.Series(vals).sort_index()
+
+
+def update_smard(static: Path) -> None:
+    """Stromverbrauch (Netzlast) in TWh je Monat und Großhandelspreis Day-Ahead DE/LU in €/MWh. Lizenz CC BY 4.0."""
+    load = _smard(410, "DE") / 1e6
+    _write(static / "smard_load.csv", load)
+    price = _smard(4169, "DE-LU")
+    _write(static / "smard_price.csv", price)
+    log.info("SMARD: %d Monate Verbrauch, %d Monate Preis", len(load), len(price))
+
+
 def update_all(root: Path) -> None:
     static = root / "data" / "static"
     static.mkdir(parents=True, exist_ok=True)
-    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso)):
+    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf

@@ -56,7 +56,7 @@ jobs:
         run: |
           git config user.name "konjunkturmonitor-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/processed data/archive data/static/rhine_*.csv data/static/dwd_*.csv data/static/enso_roni.csv
+          git add data/processed data/archive data/static/rhine_*.csv data/static/dwd_*.csv data/static/enso_roni.csv data/static/smard_*.csv
           git diff --cached --quiet && exit 0
           git commit -m "Daten aktualisiert ($(date -u +%Y-%m-%d))"
           git push origin "HEAD:${{ github.ref_name }}" || echo "::warning::Push abgelehnt (Branch geändert); nächster Lauf holt das nach."
