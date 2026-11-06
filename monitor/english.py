@@ -389,6 +389,17 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                 c["caption"] = (f"{w[0]} by industry as bars, switchable. Three-month comparison: last three months vs the three months before, seasonally adjusted. "
                                 "Level vs 2019: latest month vs the 2019 average, the last full year before the pandemic and the 2022 energy price shock; "
                                 "it shows which industries have regained their pre-crisis level. Orange: increase, blue: decrease.")
+            if c.get("kind") == "downturn" and isinstance(c.get("event"), dict):
+                PT = {"Industrieproduktion": "Industrial production", "Arbeitslosenquote": "Unemployment rate", "Wirtschaftsleistung (BIP)": "Economic output (GDP)",
+                      "Hoch = 100; waagerecht: Monate seit dem Hoch": "peak = 100; horizontal: months since the peak",
+                      "Veränderung seit dem Hoch der Produktion in Pp; waagerecht: Monate": "change since the production peak in pp; horizontal: months",
+                      "Quartal des Hochs = 100; waagerecht: Quartale": "quarter of the peak = 100; horizontal: quarters", "Monat": "Month", "Quartal": "Quarter"}
+                for pn in c["event"]["panels"]:
+                    for f in ("title", "sub", "step"):
+                        pn[f] = PT.get(pn.get(f), pn.get(f))
+                    pn["unit"] = "pp" if pn.get("unit") == "Pp" else pn.get("unit")
+                    for ln in pn["lines"]:
+                        ln["label"] = ln["label"].replace("Finanzkrise ab", "Financial crisis from").replace("Corona ab", "COVID from").replace("Energiekrise ab", "Energy crisis from").replace("seit ", "since ")
             c["sources"] = [tr.src(x) for x in c.get("sources") or []]
             c["licenses"] = [tr.src(x) for x in c.get("licenses") or []]
             for f in ("title", "ask", "caption", "what"):
@@ -431,6 +442,8 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
         for k in ("prev_label", "change_unit"):
             r[k] = tr.s(r.get(k))
     p["geo_source"] = Tr.src(tr, p.get("geo_source"))
+    titles = {c.get("no"): c.get("title") for t in p["topics"] for c in t["charts"]}
+    p["week"] = [dict(w, title=titles.get(w.get("no"), w.get("title"))) for w in p.get("week") or []]
     p["news"] = [dict(n, label=tr.label(n.get("series"), n.get("label")), period=de_period_to_en(n.get("period"))) for n in p.get("news") or []]
     for k in ("archive_file",):
         p[k] = _rel(p.get(k))

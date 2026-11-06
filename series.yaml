@@ -131,6 +131,8 @@ charts:
   weather: {title: "Witterung in Deutschland", decimals: 1}
   hdd: {title: "Heizgradtage", decimals: 0}
   rhine: {title: "Rheinpegel Kaub, Tagesmittel", decimals: 0}
+  downturns: {title: "Abschwünge im Vergleich", decimals: 1}
+  energy_intensive: {title: "Produktion der energieintensiven Industrie", decimals: 1}
   rhine_low: {title: "Niedrigwassertage am Rhein je Jahr", decimals: 0}
   fx_eer: {title: "Effektiver Wechselkurs des Euro, Tageswerte", decimals: 1}
   cpi_core: {title: "Kernrate und Vergleich mit dem HVPI", decimals: 1}

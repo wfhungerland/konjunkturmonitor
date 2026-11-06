@@ -204,6 +204,11 @@
   @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
   .parthead { margin: 96px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 17px var(--ff); color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
   .parthead + section.topic { margin-top: 64px; }
+  .weekrev { margin-top: 96px; padding-top: 10px; border-top: 3px solid var(--dark); }
+  .weekrev h2 { font-size: 26px; margin: 0 0 4px; }
+  .weekrev ol { list-style: none; padding: 0; margin: 8px 0; columns: 2 380px; column-gap: 40px; font-size: 15px; }
+  .weekrev li { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; border-bottom: 1px solid var(--line); break-inside: avoid; }
+  .weekrev li span { color: var(--grey); white-space: nowrap; font-size: 13.5px; }
   .parthead span { color: var(--muted); margin-right: 6px; }
   .parthead p { text-transform: none; letter-spacing: 0; font-weight: normal; color: var(--muted); font-size: 15px; margin: 4px 0 0; }
   details.moretable > summary { cursor: pointer; font: 13.5px var(--ff); color: var(--accent); margin: 2px 0 8px; }
@@ -649,7 +654,7 @@ function eventChart(el, c) {
   const grid = document.createElement("div"); grid.className = "multiples"; grid.style.setProperty("--cols", cols); el.appendChild(grid);
   const LC = ["#0070C0", "#7030A0", "#00B0F0", "#47D359"];
   E.panels.forEach(p => {
-    const box = document.createElement("div"); box.innerHTML = `<p class="mt"><b>${esc(p.title)}</b><br><span class="mtsub">real, Monat 0 = Beginn des Ereignisses = 100; waagerecht: Monate seit Beginn</span></p>`;
+    const box = document.createElement("div"); box.innerHTML = `<p class="mt"><b>${esc(p.title)}</b><br><span class="mtsub">${esc(p.sub ?? "real, Monat 0 = Beginn des Ereignisses = 100; waagerecht: Monate seit Beginn")}</span></p>`;
     const m = document.createElement("div"); m.className = "mini"; m.style.height = "300px"; box.appendChild(m); grid.appendChild(box);
     const traces = [];
     if (p.hi.some(v => v != null)) {
@@ -657,15 +662,15 @@ function eventChart(el, c) {
       traces.push({ type: "scatter", mode: "lines", x: p.x, y: p.lo, fill: "tonexty", fillcolor: "rgba(150,150,150,0.25)", line: { width: 0 }, name: "Spanne früherer Ereignisse", hoverinfo: "skip" });
     }
     let k = 0;
-    p.lines.forEach(l => traces.push({ type: "scatter", mode: "lines", x: l.x, y: l.y, name: `El Niño ${l.label}${l.current ? " (laufend)" : ""}`,
-      line: { color: l.current ? PAL[0] : LC[k++ % LC.length], width: l.current ? 3 : 1.6 }, hovertemplate: `Monat %{x}: %{y:,.1f}<extra>${esc(l.label)}</extra>` }));
-    const all = p.lines.flatMap(l => l.y).concat(p.lo, p.hi).filter(v => v != null), ya = yAxis(all.concat([100]), "");
+    p.lines.forEach(l => traces.push({ type: "scatter", mode: "lines", x: l.x, y: l.y, name: `${p.prefix ?? "El Niño "}${l.label}${l.current ? (p.prefix === "" ? "" : " (laufend)") : ""}`,
+      line: { color: l.current ? PAL[0] : LC[k++ % LC.length], width: l.current ? 3 : 1.6 }, hovertemplate: `${p.step ?? "Monat"} %{x}: %{y:,.1f}${p.unit ? " " + p.unit : ""}<extra>${esc(l.label)}</extra>` }));
+    const b0 = p.base ?? 100, all = p.lines.flatMap(l => l.y).concat(p.lo, p.hi).filter(v => v != null), ya = yAxis(all.concat([b0]), p.unit || "");
     const L = baseLayout(m);
     Object.assign(L, { margin: { l: 4, r: 4, t: 8, b: 40 }, hovermode: "closest", showlegend: true, font: { family: HS.font, size: 12 },
       legend: { orientation: "h", x: 0, y: -0.18, yanchor: "top", font: { size: 11 } },
       shapes: [{ type: "line", xref: "x", yref: "paper", x0: 0, x1: 0, y0: 0, y1: 1, line: { color: "#000", width: 1 } },
-        { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 100, y1: 100, line: { color: "#595959", width: 1 } }],
-      xaxis: { range: [p.x[0] - 0.5, p.x[p.x.length - 1] + 0.5], dtick: 2, showgrid: false, zeroline: false, fixedrange: true },
+        { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: b0, y1: b0, line: { color: "#595959", width: 1 } }],
+      xaxis: { range: [p.x[0] - 0.5, p.x[p.x.length - 1] + 0.5], dtick: p.x.length > 26 ? 6 : 2, showgrid: false, zeroline: false, fixedrange: true },
       yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
     Plotly.newPlot(m, traces, L, CFG);
   });
@@ -1133,6 +1138,14 @@ function build() {
     topics.appendChild(sec);
     nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
   });
+  // Wochenrückblick: Abbildungen mit neuen Daten in den letzten sieben Tagen
+  const W = DATA.week || [];
+  if (W.length) {
+    const dd = s => `${+s.slice(8, 10)}.${+s.slice(5, 7)}.`;
+    topics.insertAdjacentHTML("afterend", `<section class="weekrev" id="woche"><h2>Diese Woche neu</h2><p class="tnote">Abbildungen, die in den letzten sieben Tagen neue Daten erhalten haben, jüngste zuerst.</p><ol>`
+      + W.map(w => `<li><a href="#abb-${w.no}">Abb. ${w.no} ${esc(w.title)}</a><span>neue Daten am ${dd(w.date)}</span></li>`).join("") + `</ol></section>`);
+    nav.insertAdjacentHTML("beforeend", `<a href="#woche">Diese Woche</a>`);
+  }
   nav.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen</a>`);
   nav.insertAdjacentHTML("afterbegin", `<a href="#top"><b>Übersicht</b></a>`);
   const ex = document.createElement("button"); ex.type = "button"; ex.className = "btn expandall"; let opened = false;

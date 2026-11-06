@@ -57,6 +57,14 @@ topics:
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
 
 charts:
+  downturns:
+    title: "Downturns compared"
+    ask: "How deep is the current downturn compared with earlier crises?"
+    caption: "Path from the peak in industrial production before earlier crises and in the current downturn (dark blue, thick). Production and GDP as an index with the peak = 100, unemployment rate as the change in percentage points since that peak. The current peak is the highest level of production in the last five years. The peak dates are set by the monitor, not an official dating."
+  energy_intensive:
+    title: "Output of energy-intensive industries"
+    ask: "How are the energy-intensive industries producing?"
+    caption: "Production index of the five energy-intensive industries (Federal Statistical Office via Bundesbank, seasonally and calendar adjusted, 2021 = 100): paper, coke and refined petroleum, chemicals, glass and ceramics, and basic metals. They use most of the energy consumed by industry and react strongly to gas and electricity prices. Thin: monthly values; thick: three-month moving average."
   gdp_contrib:
     title: "Where growth comes from"
     ask: "Which components of demand are driving growth?"

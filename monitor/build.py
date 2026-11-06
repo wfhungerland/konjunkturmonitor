@@ -528,6 +528,24 @@ def chart_sentences(c: dict) -> list[str]:
             loc = lambda n: {"Saarland": "im Saarland"}.get(n, "in " + n)
             out.append(f"{w['span']}: Am {'stärksten gesunken' if low['change'] < 0 else 'wenigsten gestiegen'} ist die {what} {loc(low['name'])} mit {num(low['change'], 1, True)} %.")
             return out
+        if typ == "event" and c.get("kind") == "downturn":
+            out = []
+            for p in c["event"]["panels"]:
+                cur = next((l for l in p["lines"] if l["current"]), None)
+                if not cur or len(cur["y"]) < 2:
+                    continue
+                k, v, st = len(cur["y"]) - 1, cur["y"][-1], pd.Timestamp(cur["start"])
+                step = "Quartal" if p["step"] == "Quartal" else "Monat"
+                span = f"{k} {step}{'' if k == 1 else ('e' if step == 'Quartal' else 'e')}"
+                if p["unit"] == "Pp":
+                    s = f"Seit dem Hoch der Produktion im {MONTHS[st.month - 1]} {st.year} ist die Arbeitslosenquote um {num(abs(v), 1)} Pp {'gestiegen' if v > 0 else 'gesunken'} ({span})."
+                else:
+                    s = f"{span} nach dem Hoch im {MONTHS[st.month - 1] if step == 'Monat' else str((st.month - 1) // 3 + 1) + '. Quartal'} {st.year} lag {'die Industrieproduktion' if 'Industrie' in p['title'] else 'das BIP'} {num(abs(v - 100), 1)} % {'unter' if v < 100 else 'über'} dem Hoch."
+                old = [l for l in p["lines"] if not l["current"] and len(l["y"]) > k]
+                if old:
+                    s = s[:-1] + "; zum selben Zeitpunkt " + ", ".join(f"{l['label']} {num(l['y'][k] - p['base'], 1, True)} {'Pp' if p['unit'] == 'Pp' else '%'}" for l in old) + "."
+                out.append(s)
+            return out
         if typ == "event":
             out = []
             for p in c["event"]["panels"]:
@@ -838,6 +856,64 @@ def _enso_event(data: dict, pre: int = 4, post: int = 22) -> dict | None:
     return {"panels": panels, "episodes": [{"label": e["label"], "start": e["start"].strftime("%Y-%m-%d"), "peak": round(e["peak"], 2), "current": e["current"]} for e in eps]}
 
 
+def _downturn_event(c: dict, data: dict) -> dict | None:
+    """Abschwünge im Vergleich: Verlauf ab dem Hoch der Industrieproduktion vor früheren Krisen und im aktuellen Abschwung.
+    Produktion und BIP als Index (Hoch = 100), Arbeitslosenquote als Veränderung in Prozentpunkten seit dem Hoch."""
+    ip = data.get("de_ip")
+    if ip is None or ip.dropna().empty:
+        return None
+    ip = ip.dropna()
+    eps = [{"label": e["label"], "start": pd.Timestamp(e["start"]), "current": False} for e in c.get("episodes") or []]
+    cur = ip[-60:].idxmax()  # aktuelles Hoch: höchster Stand der letzten fünf Jahre
+    post = int(c.get("months", 36))
+    if all(abs((cur - e["start"]).days) > 400 for e in eps) and cur < ip.index[-3]:
+        eps.append({"label": f"seit {cur.strftime('%m/%Y')}", "start": cur, "current": True})
+        post = max(post, (ip.index[-1].year - cur.year) * 12 + ip.index[-1].month - cur.month)  # aktuelle Kurve vollständig zeigen
+    panels = []
+    for title, sid, mode, freq, sub in (("Industrieproduktion", "de_ip", "index", "M", "Hoch = 100; waagerecht: Monate seit dem Hoch"),
+                                        ("Arbeitslosenquote", "de_alq_sa", "diff", "M", "Veränderung seit dem Hoch der Produktion in Pp; waagerecht: Monate"),
+                                        ("Wirtschaftsleistung (BIP)", "de_gdp_index", "index", "Q", "Quartal des Hochs = 100; waagerecht: Quartale")):
+        s = data.get(sid)
+        if s is None or s.dropna().empty:
+            continue
+        s = s.dropna()
+        n = post if freq == "M" else post // 3
+        lines = []
+        for e in eps:
+            t0 = e["start"] if freq == "M" else pd.Timestamp(e["start"].year, (e["start"].month - 1) // 3 * 3 + 1, 1)
+            k0 = s.index.searchsorted(t0)
+            if k0 >= len(s) or s.index[k0] != t0:
+                continue
+            seg, base = s.iloc[k0:k0 + n + 1], s.iloc[k0]
+            ys = [round(float(v / base * 100 if mode == "index" else v - base), 2) for v in seg]
+            lines.append({"label": e["label"], "start": t0.strftime("%Y-%m-%d"), "current": e["current"], "x": list(range(len(ys))), "y": ys})
+        if lines:
+            panels.append({"title": title, "sub": sub, "lines": lines, "x": list(range(n + 1)), "lo": [None] * (n + 1), "hi": [None] * (n + 1),
+                           "base": 100 if mode == "index" else 0, "prefix": "", "unit": "" if mode == "index" else "Pp", "step": "Quartal" if freq == "Q" else "Monat"})
+    return {"panels": panels} if panels else None
+
+
+def week_review(root: Path, topics: list, today: pd.Timestamp, days: int = 7) -> list[dict]:
+    """Abbildungen mit neuen Daten in den letzten sieben Tagen (aus dem Erscheinungsprotokoll data/archive/erscheinen.csv)."""
+    path = root / "data" / "archive" / "erscheinen.csv"
+    if not path.exists():
+        return []
+    rel = pd.read_csv(path, dtype=str, keep_default_na=False)
+    rel = rel[rel["first_seen"] >= (today - pd.Timedelta(days=days - 1)).strftime("%Y-%m-%d")]
+    if rel.empty:
+        return []
+    out, seen = [], set()
+    for t in topics:
+        for c in t["charts"]:
+            ids = {s.get("id") for s in c.get("series") or [] if isinstance(s, dict)} if isinstance(c.get("series"), list) else set()
+            hit = rel[rel["series"].isin(ids)]
+            if hit.empty or c.get("no") in seen:
+                continue
+            seen.add(c.get("no"))
+            out.append({"no": c.get("no"), "title": c.get("title", ""), "topic": t["id"], "date": hit["first_seen"].max()})
+    return sorted(out, key=lambda x: (x["date"], -(x["no"] or 0)), reverse=True)
+
+
 def _weather_notes(c: dict, data: dict) -> list[dict]:
     """Automatische Hinweise: ungewöhnliche Witterung bei der Bauproduktion, Niedrigwasser am Rhein bei der Industrie."""
     from .answers import MONTHS, num
@@ -970,6 +1046,13 @@ def build_payload(root: Path = ROOT) -> dict:
                 entry.update(type="latest", bars=bars, bar_name=c.get("bar_name", "Veränderung"), freq=m.frequency, adjustment=m.adjustment,
                              unit=c.get("unit", m.unit), sources=sorted({_source_name(s) for s in specs}), licenses=sorted({_license(s) for s in specs}),
                              series=[dict(id=s.id, label=s.label, unit=s.unit, freq=s.frequency, style="line", **_xy(data[s.id], 12)) for s in specs])
+            elif typ == "event" and c.get("kind") == "downturn":
+                ev = _downturn_event(c, data)
+                if not ev:
+                    continue
+                entry.update(event=ev, freq="M", unit="Hoch = 100", adjustment="saison- und kalenderbereinigt",
+                             sources=["Deutsche Bundesbank (Produktion, Arbeitslosenquote)", "Eurostat (BIP)", "eigene Berechnung"],
+                             licenses=[SOURCE_LICENSES["bundesbank"], SOURCE_LICENSES["eurostat"]])
             elif typ == "event":
                 ev = _enso_event(data)
                 if not ev:
@@ -996,7 +1079,7 @@ def build_payload(root: Path = ROOT) -> dict:
                 if len({f["by"] for f in fs}) < 2:
                     continue
             else:
-                specs = [s for s in meta.values() if s.chart_id == c["chart"]]
+                specs = [meta[x] for x in c["pick"] if x in meta] if c.get("pick") else [s for s in meta.values() if s.chart_id == c["chart"]]
                 series = []
                 for s in specs:
                     if s.id not in data:
@@ -1126,6 +1209,7 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
     mark_revisions(payload["start"], arch)
     items = news(arch, payload["stand"])
     payload["news"] = [i for i in items if i["stand"] == payload["stand"]]
+    payload["week"] = week_review(root, payload["topics"], pd.Timestamp(payload["generated_at"][:10]))
     write_feed(items, payload["start"], payload["site"], out)
     (out / "dl").mkdir(exist_ok=True)
     arch_name = f"Konjunkturmonitor ({payload['generated_at'][:10]}) Archiv Kernzahlen.csv"
