@@ -69,6 +69,30 @@ class Tr:
         v = v.get(field) if isinstance(v, dict) else None
         return v if v not in (None, "") else default
 
+    def label(self, sid, de):
+        """Englischer Reihenname; bei ausgeklappten Reihen (de_insolv_land_09) aus der Vorlage mit Platzhaltern."""
+        v = self.get("series", sid, "label")
+        if v or not sid:
+            return v or de
+        ser = self.d.get("series") or {}
+        base = max((k for k in ser if sid.startswith(k + "_")), key=len, default=None)
+        tpl = self.get("series", base, "label") if base else None
+        if not tpl:
+            return de
+        code, names, bad = sid[len(base) + 1:], self.d.get("names") or {}, []
+
+        def rep(m):
+            kind = m.group(1)
+            if kind == "wz":
+                return code.upper()
+            for k, val in (names.get(kind.replace("_name", "")) or {}).items():
+                if str(k).lower() == code:
+                    return str(val)
+            bad.append(kind)
+            return m.group(0)
+        out = re.sub(r"\{(\w+)\}", rep, tpl)
+        return de if bad else out
+
     def s(self, text):
         """Kurzer fester Text (Einheit, Bereinigung): exakte Übersetzung, sonst unverändert."""
         if not isinstance(text, str):
@@ -321,7 +345,7 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                 if isinstance(s, dict):
                     s["unit_de"] = s.get("unit")
                     if s.get("label") and s.get("id"):
-                        s["label"] = tr.get("series", s["id"], "label", s["label"])
+                        s["label"] = tr.label(s["id"], s["label"])
                     if s.get("unit"):
                         s["unit"] = tr.get("series", s.get("id"), "unit", tr.s(s["unit"]))
             texts = chart_sentences_en(c)
@@ -338,13 +362,13 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
             q["answer"] = ans[q["id"]]
     p["overview"] = overview_en(ans)
     for r in p.get("start") or []:
-        r["label"] = tr.get("series", r.get("series"), "label", r["label"])
+        r["label"] = tr.label(r.get("series"), r["label"])
         r["unit"] = tr.s(r.get("unit"))
         r["group"] = tr.get("topics", r.get("topic"), "title", r.get("group"))
         r["period"] = de_period_to_en(r.get("period"))
         for k in ("prev_label", "change_unit"):
             r[k] = tr.s(r.get(k))
-    p["news"] = [dict(n, label=tr.get("series", n.get("series"), "label", n.get("label")), period=de_period_to_en(n.get("period"))) for n in p.get("news") or []]
+    p["news"] = [dict(n, label=tr.label(n.get("series"), n.get("label")), period=de_period_to_en(n.get("period"))) for n in p.get("news") or []]
     for k in ("archive_file",):
         p[k] = _rel(p.get(k))
     if isinstance(p.get("all_series"), dict):
