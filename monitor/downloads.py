@@ -122,6 +122,12 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
                            "Dreimonatsvergleich, %": [r["m3"] for r in h["rows"]],
                            "Niveau gegenüber 2019, %": [r["level"] for r in h["rows"]]})
         return df.iloc[::-1].reset_index(drop=True), {"kind": "table"}
+    if typ == "tiles" and c.get("tiles") and c["tiles"].get("measure") == "diff":
+        rows = c["tiles"]["rows"]
+        df = pd.DataFrame({"Land": [r["name"] for r in rows], "Kürzel": [r["abbr"] for r in rows],
+                           f"Wert {c['tiles']['span']}, %": [r["level"] for r in rows],
+                           "Veränderung gegenüber Vorjahr, Pp": [r["change"] for r in rows]})
+        return df, {"kind": "tiles"}
     if typ == "tiles" and c.get("tiles"):
         rows = c["tiles"]["rows"]
         df = pd.DataFrame({"Land": [r["name"] for r in rows], "Kürzel": [r["abbr"] for r in rows],
@@ -139,12 +145,14 @@ def header_lines(c: dict) -> tuple[str, str]:
     if typ in ("clock", "forecast"):
         sub = ""
     elif typ == "tiles":
-        sub = "Summe " + c["tiles"]["span"] if c.get("tiles") else ""
+        sub = ("Jahr " if c.get("tiles", {}).get("measure") == "diff" else "Summe ") + c["tiles"]["span"] if c.get("tiles") else ""
     else:
         freq = {"Q": "Vierteljährlich", "A": "Jährlich", "D": "Wöchentlich", "B": "Täglich (Arbeitstage)"}.get(c.get("freq"), "Monatlich")
         sub = " · ".join(x for x in (freq, c.get("adjustment")) if x)
     unit = {"clock": "Saldo in Prozentpunkten, Abstand zum Mittel 2005 bis 2019", "forecast": "% gegenüber Vorjahr, BIP real",
             "tiles": "Veränderung gegenüber demselben Zeitraum ein Jahr zuvor, %"}.get(typ, ("Saldo in Prozentpunkten (Anteil positiver minus Anteil negativer Antworten)" + c["unit"][5:]) if (c.get("unit") or "").startswith("Saldo") else c.get("unit") or "")
+    if typ == "tiles" and c.get("tiles", {}).get("measure") == "diff":
+        unit = f"Quote {c['tiles']['span']} in %; Veränderung gegenüber dem Vorjahr in Prozentpunkten"
     return sub, unit
 
 

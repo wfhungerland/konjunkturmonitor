@@ -8,6 +8,7 @@
 # Quoten und Salden „lag bei …, … Pp höher als ein Jahr zuvor“, Mengen „lag bei …, … mehr als ein Jahr zuvor“.
 
 series:
+  de_tarif_yoy: [die Tarifverdienste, p]
   ea_spf_lt: [die langfristige Inflationserwartung der Fachleute im Euroraum, s]
   de_gas_storage: [der Füllstand der Gasspeicher, s]
   de_power_load_yoy: [der Stromverbrauch, s]

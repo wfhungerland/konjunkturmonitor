@@ -5,6 +5,8 @@
 gdp_contrib;Wachstumsbeitraege;2026-11-04;
 downturns;Abschwuenge Vergleich;2026-11-06;
 ulc;Lohnstueckkosten;2026-11-06;
+alq_land;Arbeitslosenquote Laender;2026-11-06;
+tarif;Tarifverdienste Preise;2026-11-06;
 spf;Inflationserwartung Fachleute;2026-11-06;
 energy_intensive;Energieintensive Industrie;2026-11-06;
 wai;Woechentlicher Aktivitaetsindex;2026-11-04;

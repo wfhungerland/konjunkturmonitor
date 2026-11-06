@@ -180,6 +180,8 @@ charts:
   hh_income: {title: "Real verfügbares Einkommen je Einwohner", decimals: 1}
   wages: {title: "Nominal- und Reallöhne", decimals: 1}
   ulc: {title: "Lohnstückkosten", decimals: 1}
+  alq_land: {title: "Arbeitslosenquote nach Ländern", decimals: 1}
+  tarif: {title: "Tarifverdienste und Verbraucherpreise", decimals: 1}
   spf: {title: "Langfristige Inflationserwartung der Fachleute", decimals: 2}
   saving: {title: "Sparquote der privaten Haushalte", decimals: 1}
   profit_share: {title: "Gewinnquote der Unternehmen", decimals: 1}
@@ -2688,6 +2690,42 @@ series:
     start: "2008-01-01"
     chart: wages
     label: "Reallöhne"
+
+  - id: de_alq_land
+    expand: {land: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"]}
+    block: arbeit
+    source: genesis
+    key: 13211-0007
+    params: {value_variable: ERW112, value_unit: percent, filters: {DLAND: "{land}"}}
+    title: Arbeitslosenquote {land_name}, Jahresdurchschnitt
+    unit: "% der zivilen Erwerbspersonen"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    stale_after_months: 24
+    chart: alq_land
+    label: "{land_name}"
+
+  - id: de_tarif
+    block: einkommen
+    source: genesis
+    key: 62231-0001
+    params: {value_variable: VST073, filters: {WZ08C7: WZ08-B-08}}
+    title: "Index der tariflichen Monatsverdienste mit Sonderzahlungen, Gesamtwirtschaft"
+    unit: "Index 2020=100"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+
+  - id: de_tarif_yoy
+    block: einkommen
+    source: derived
+    derive: {from: de_tarif, op: yoy_pct}
+    title: "Tarifverdienste mit Sonderzahlungen, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    label: "Tarifverdienste"
 
   - id: de_ulc_yoy
     block: einkommen

@@ -96,8 +96,22 @@ def _seasonal(s: pd.Series, years: int | None) -> dict:
     return {"x": [d.strftime("%Y-%m-%d") for d in s.index], "y": [r(v) for v in s], "ma12": [r(v) for v in ma12], "norm": [r(v) for v in norm]}
 
 
-def _tiles(prefix: str, data: dict, meta: dict, months: int = 12) -> dict | None:
-    """Veränderung der letzten `months` Monate gegenüber demselben Zeitraum ein Jahr zuvor, je Land."""
+def _tiles(prefix: str, data: dict, meta: dict, months: int = 12, measure: str = "sum") -> dict | None:
+    """Veränderung der letzten `months` Monate gegenüber demselben Zeitraum ein Jahr zuvor, je Land.
+    measure "diff": jüngster Wert einer Quote je Land (level) und Veränderung zum vorigen Wert in Prozentpunkten (change)."""
+    if measure == "diff":
+        rows, last = [], None
+        for code, abbr in LAND_ABBR.items():
+            s = data.get(f"{prefix}{code}")
+            if s is None or len(s.dropna()) < 2:
+                continue
+            s = s.dropna()
+            last = s.index[-1] if last is None else max(last, s.index[-1])
+            rows.append({"code": code, "abbr": abbr, "name": meta[f"{prefix}{code}"].label, "level": round(float(s.iloc[-1]), 1),
+                         "change": round(float(s.iloc[-1] - s.iloc[-2]), 1), "sum": round(float(s.iloc[-1]), 1)})
+        if not rows:
+            return None
+        return {"rows": rows, "span": str(last.year), "months": None, "last": last.strftime("%Y-%m-%d"), "measure": "diff"}
     rows, last = [], None
     for code, abbr in LAND_ABBR.items():
         s = data.get(f"{prefix}{code}")
@@ -519,6 +533,15 @@ def chart_sentences(c: dict) -> list[str]:
         lab = s.get("label") or ""
         return f"der Wert für „{lab}“" if lab else "der Wert"
     try:
+        if typ == "tiles" and c["tiles"].get("measure") == "diff":
+            w = c["tiles"]
+            loc = lambda n: {"Saarland": "im Saarland"}.get(n, "in " + n)
+            hi, lo = max(w["rows"], key=lambda r: r["level"]), min(w["rows"], key=lambda r: r["level"])
+            up = max(w["rows"], key=lambda r: r["change"])
+            out = [f"Im Jahr {w['span']} war die {c.get('what') or 'Quote'} {loc(hi['name'])} mit {num(hi['level'], 1)} % am höchsten und {loc(lo['name'])} mit {num(lo['level'], 1)} % am niedrigsten."]
+            if up["change"] > 0:
+                out.append(f"Am stärksten gestiegen ist sie im Jahr {w['span']} {loc(up['name'])}: um {num(up['change'], 1)} Pp ggü. dem Vorjahr.")
+            return out
         if typ == "tiles":
             w = c["tiles"]
             rows = sorted(w["rows"], key=lambda r: r["change"])
@@ -1007,7 +1030,8 @@ def build_payload(root: Path = ROOT) -> dict:
                              label=m.label, sources=["Statistisches Bundesamt (GENESIS)"],
                              licenses=["Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt)"])
             elif typ == "tiles":
-                windows = {m: _tiles(c["prefix"], data, meta, m) for m in (12, 6)}
+                windows = ({12: _tiles(c["prefix"], data, meta, 12, "diff"), 6: None} if c.get("measure") == "diff"
+                           else {m: _tiles(c["prefix"], data, meta, m) for m in (12, 6)})
                 if not windows[12]:
                     continue
                 entry.update(tiles=windows[12], tiles6=windows[6], sources=["Statistisches Bundesamt (GENESIS)"],
