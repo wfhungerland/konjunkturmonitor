@@ -25,6 +25,7 @@ industry;Produktion Auftraege Industrie;2026-11-04;
 orders_split;Auftraege Inland Ausland;2026-11-04;
 orders_euro;Auftraege Euroraum;2026-11-04;
 rhine;Rheinpegel Kaub;2026-11-05;
+rhine_low;Niedrigwassertage Rhein;2026-11-06;
 branch_heat;Produktion Branchen;2026-11-04;
 branch_heat_bars;Produktion Branchen Balken;2026-11-04;
 orders_heat;Auftraege Branchen;2026-11-04;

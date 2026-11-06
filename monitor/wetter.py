@@ -7,7 +7,9 @@ Läuft vor dem Datenabruf (python -m monitor run) und schreibt nach data/static/
   Kalendermonats 2015 bis 2019. Der DWD veröffentlicht keinen Deutschlandwert; Daten ab 2010.
 - rhine_kaub: Tagesmittel des Wasserstands am Pegel Kaub, cm. PEGELONLINE liefert nur die letzten 31 Tage; die Reihe wird
   deshalb bei jedem Lauf fortgeschrieben (data/static/rhine_kaub.csv liegt im Repository).
-- rhine_lowdays: Tage je Monat mit einem Tagesmittel in Kaub unter 78 cm.
+- rhine_lowdays: Tage je Monat mit einem Tagesmittel in Kaub unter 78 cm; rhine_lowdays_year: dasselbe je Kalenderjahr.
+  Die Tageswerte seit November 1969 stammen aus den geprüften Pegeldaten der WSV, die die Bundesanstalt für Gewässerkunde
+  (BfG) für das R-Paket hyd1d bereitstellt (bis Ende des Vorjahres geprüft); sie werden einmal je Jahr nachgeladen.
 Quellen: DWD Climate Data Center (opendata.dwd.de), Nutzungsbedingungen nach GeoNutzV mit Quellenangabe;
 PEGELONLINE der Wasserstraßen- und Schifffahrtsverwaltung des Bundes, Datenlizenz Deutschland – Zero – Version 2.0.
 Fehler eines Abrufs halten die übrigen nicht auf; vorhandene Dateien bleiben dann unverändert.
@@ -28,6 +30,7 @@ CDC = "https://opendata.dwd.de/climate_environment/CDC/"
 REGIONAL = CDC + "regional_averages_DE/monthly/"
 HDD = CDC + "derived_germany/techn/monthly/heating_degreedays/hdd_3807/"
 PEGEL = "https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/KAUB/W/measurements.json?start=P31D"
+BFG = "https://hyd1d.bafg.de/downloads/df.gauging_data_latest.RDS"  # geprüfte WSV-Pegeldaten Elbe und Rhein (BfG, hyd1d)
 LOW = 78  # cm, Schwelle nach IfW Kiel
 log = logging.getLogger(__name__)
 
@@ -134,11 +137,44 @@ def update_pegel(static: Path) -> None:
     old = pd.read_csv(path, parse_dates=["date"]).set_index("date")["value"] if path.exists() else pd.Series(dtype=float)
     s = pd.concat([old, pd.Series(new)])
     s = s[~s.index.duplicated(keep="last")].sort_index()
+    try:
+        s = _bfg_history(s, static / "rhine_kaub_bfg.txt")
+    except Exception as e:  # ohne Historie weiter mit den eigenen Werten
+        log.warning("Pegel Kaub: BfG-Historie nicht geladen: %s", e)
     _write(path, s)
     low = (s < LOW).groupby([s.index.year, s.index.month]).sum()
     lows = pd.Series(low.values, index=[pd.Timestamp(y, m, 1) for y, m in low.index], dtype=float)
     _write(static / "rhine_lowdays.csv", lows)
+    ly = (s < LOW).groupby(s.index.year).sum()
+    _write(static / "rhine_lowdays_year.csv", pd.Series(ly.values, index=[pd.Timestamp(y, 1, 1) for y in ly.index], dtype=float).loc["1970":])
     log.info("Pegel Kaub: %d Tage, davon %d neu", len(s), len(set(new) - set(old.index)))
+
+
+def _bfg_history(s: pd.Series, stamp: Path) -> pd.Series:
+    """Tagesmittel Kaub seit 1969 aus den geprüften Pegeldaten (BfG). Nachgeladen, wenn die Reihe noch keine Historie hat
+    oder seit dem letzten Abruf ein neues Jahr begonnen hat (die BfG ersetzt dann die ungeprüften Werte des Vorjahres).
+    Geprüfte Werte haben Vorrang; danach gelten die eigenen Tagesmittel aus PEGELONLINE."""
+    year = datetime.now(timezone.utc).year
+    if len(s) and s.index.min() <= pd.Timestamp("1970-01-01") and stamp.exists() and stamp.read_text().strip() == str(year):
+        return s
+    import tempfile
+    import pyreadr
+    req = urllib.request.Request(BFG, headers={"User-Agent": "Konjunkturmonitor/1.0"})
+    with urllib.request.urlopen(req, timeout=300) as r:
+        raw = r.read()
+    with tempfile.NamedTemporaryFile(suffix=".RDS", delete=False) as f:
+        f.write(raw)
+    df = pyreadr.read_r(f.name)[None]
+    Path(f.name).unlink(missing_ok=True)
+    kb = df[df["gauging_station"].astype(str).str.upper() == "KAUB"]
+    h = pd.Series(kb["w"].astype(float).values, index=pd.to_datetime(kb["date"])).dropna().sort_index()
+    cut = pd.Timestamp(year, 1, 1)  # bis Ende des Vorjahres geprüft; im laufenden Jahr gelten die eigenen Werte, BfG nur für Lücken
+    checked, rest = h[h.index < cut], h[(h.index >= cut) & ~h.index.isin(s.index)]
+    out = pd.concat([s[s.index >= cut], rest, checked])
+    out = out[~out.index.duplicated(keep="first")].sort_index()
+    stamp.write_text(str(year))
+    log.info("Pegel Kaub: %d Tage aus den geprüften BfG-Daten (%s bis %s)", len(h), h.index.min().date(), h.index.max().date())
+    return out
 
 
 def update_enso(static: Path) -> None:

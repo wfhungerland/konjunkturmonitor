@@ -131,6 +131,7 @@ charts:
   weather: {title: "Witterung in Deutschland", decimals: 1}
   hdd: {title: "Heizgradtage", decimals: 0}
   rhine: {title: "Rheinpegel Kaub, Tagesmittel", decimals: 0}
+  rhine_low: {title: "Niedrigwassertage am Rhein je Jahr", decimals: 0}
   fx_eer: {title: "Effektiver Wechselkurs des Euro, Tageswerte", decimals: 1}
   cpi_core: {title: "Kernrate und Vergleich mit dem HVPI", decimals: 1}
   cpi_contrib: {title: "Woraus die Inflationsrate besteht", decimals: 1}
@@ -1570,17 +1571,17 @@ series:
     block: wetter
     source: static
     key: rhine_kaub
-    params: {source_name: "PEGELONLINE (WSV)"}
-    license: "Datenlizenz Deutschland – Zero – Version 2.0 (WSV)"
+    params: {source_name: "WSV, geprüfte Pegeldaten über BfG (bis Vorjahr); PEGELONLINE (WSV)"}
+    license: "WSV-Pegeldaten, bereitgestellt durch die Bundesanstalt für Gewässerkunde (R-Paket hyd1d); PEGELONLINE: Datenlizenz Deutschland – Zero – Version 2.0"
     title: "Wasserstand am Pegel Kaub (Rhein), Tagesmittel"
     unit: "cm"
     frequency: D
     adjustment: nicht bereinigt
-    start: "2026-01-01"
+    start: "1969-11-01"
     stale_after_months: 3
     chart: rhine
     label: "Pegel Kaub"
-    note: "PEGELONLINE (WSV); Tagesmittel der Viertelstundenwerte, im Monitor fortgeschrieben seit November 2026."
+    note: "Bis Ende des Vorjahres geprüfte Tagesmittel der WSV (Bundesanstalt für Gewässerkunde, R-Paket hyd1d); danach Tagesmittel der Viertelstundenwerte aus PEGELONLINE."
 
   - id: rhine_lowdays
     block: wetter
@@ -1592,10 +1593,27 @@ series:
     unit: "Tage"
     frequency: M
     adjustment: nicht bereinigt
-    start: "2026-01-01"
+    start: "1970-01-01"
     stale_after_months: 3
     label: "Niedrigwassertage"
     note: "Tage je Monat mit einem Tagesmittel unter 78 cm."
+
+  - id: rhine_lowdays_year
+    block: wetter
+    source: static
+    key: rhine_lowdays_year
+    params: {source_name: "WSV, geprüfte Pegeldaten über BfG; PEGELONLINE (WSV); eigene Berechnung"}
+    license: "WSV-Pegeldaten, bereitgestellt durch die Bundesanstalt für Gewässerkunde (R-Paket hyd1d); PEGELONLINE: Datenlizenz Deutschland – Zero – Version 2.0"
+    title: "Niedrigwassertage am Pegel Kaub je Jahr (Tagesmittel unter 78 cm)"
+    unit: "Tage"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1970-01-01"
+    stale_after_months: 24
+    chart: rhine_low
+    label: "Niedrigwassertage"
+    style: bar
+    note: "Zahl der Tage je Kalenderjahr mit einem Tagesmittel unter 78 cm; laufendes Jahr bis zum jüngsten Tag."
 
   - id: de_power_load
     block: finanzen
