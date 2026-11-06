@@ -5,6 +5,7 @@
 #   - {chart: orders_split, date: 2026-05-01, text: "Großaufträge im sonstigen Fahrzeugbau (Destatis, PM vom 5.7.2026)"}
 # Zusätzlich markiert der Monitor auffällige Ausschläge automatisch (Veränderung zum Vormonat
 # mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019), ohne eine Ursache zu nennen.
+# Englische Fassung: denselben Text als Schlüssel unter labels in data/static/en.yaml eintragen, sonst entfällt der Hinweis auf /en/.
 notes:
   - {chart: industry, date: 2025-06-01, text: "Juni 2025: hohes Volumen an Großaufträgen im sonstigen Fahrzeugbau; dort im Juli 2025 Rückgang um 38,6 % (Destatis, Pressemitteilung Nr. 323/2025)"}
   - {chart: industry, date: 2025-12-01, text: "Dezember 2025: Aufträge +7,8 % zum Vormonat, gestützt durch Großaufträge (Destatis, Pressemitteilung Nr. 041/2026)"}

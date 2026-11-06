@@ -69,6 +69,7 @@ LICENCES = {
     "eigene Berechnung": "own calculation",
     "Pkt.": "pts", "Anträge": "filings", "% ggü. Vorjahr": "% on a year earlier", "% ggü. Vorjahresmonat": "% on a year earlier",
     "% ggü. Vorjahresmonat, Beiträge in Pp": "% on a year earlier, contributions in pp",
+    "% ggü. Vormonat, Beiträge in Pp": "% on the previous month, contributions in pp",
     "% gegenüber Vorjahresmonat, Beiträge in Prozentpunkten": "% on a year earlier, contributions in pp",
     "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %": "change on the same 12 months a year earlier, %", "Pp": "pp", "Punkte": "points", "Vorquartal": "previous quarter", "Vormonat": "previous month", "Vorjahr": "year earlier",
 }
@@ -104,22 +105,65 @@ class Tr:
         p = root / "data" / "static" / "en.yaml"
         self.d = yaml.safe_load(p.read_text(encoding="utf-8")) if p.exists() else {}
         self.strings = dict(LICENCES, **(self.d.get("strings") or {}))
+        # Beschriftungen deutsch -> englisch: Reihennamen, Namenslisten (Länder, Branchen …) und feste Beschriftungen
+        self.labels = {}
+        cat = root / "series.yaml"
+        if cat.exists():
+            c = yaml.safe_load(cat.read_text(encoding="utf-8")) or {}
+            for s in c.get("series") or []:
+                lab, en = s.get("label"), self.get("series", s.get("id"), "label")
+                if lab and en and "{" not in lab:
+                    self.labels.setdefault(lab, en)
+            self.names_de = c.get("names") or {}
+            for kind, vals in self.names_de.items():
+                for code, de in (vals or {}).items():
+                    en = ((self.d.get("names") or {}).get(kind) or {}).get(code)
+                    if en:
+                        self.labels.setdefault(str(de), str(en))
+        self.labels.update(self.d.get("labels") or {})
 
     def get(self, sect: str, key: str, field: str, default=None):
         v = ((self.d.get(sect) or {}).get(key) or {})
         v = v.get(field) if isinstance(v, dict) else None
         return v if v not in (None, "") else default
 
+    def lab(self, text):
+        """Beschriftung übersetzen: exakt, „26 Elektronik und Optik“ als Branchennummer mit Name, sonst unverändert."""
+        if not isinstance(text, str):
+            return text
+        if text in self.labels:
+            return self.labels[text]
+        m = re.match(r"^(\d{2}) (.+)$", text)
+        if m and m.group(2) in self.labels:
+            return f"{m.group(1)} {self.labels[m.group(2)]}"
+        return text
+
+    def note(self, text):
+        """Automatische Hinweise (Wetter, Rhein, Ausreißer) nach Mustern übersetzen; Handhinweise über labels; sonst None."""
+        if text in self.labels:
+            return self.labels[text]
+        de_num = lambda s: s.replace(".", "").replace(",", ".")
+        m = re.match(r"^(\w+ \d{4}) (ungewöhnlich mild|ungewöhnlich kalt): ([\d,]+) °C (über|unter) dem Mittel 1991–2020 \(Deutscher Wetterdienst\)$", text)
+        if m:
+            return f"{de_period_to_en(m.group(1))} unusually {'mild' if 'mild' in m.group(2) else 'cold'}: {de_num(m.group(3))} °C {'above' if m.group(4) == 'über' else 'below'} the 1991–2020 average (German Weather Service)"
+        m = re.match(r"^(\w+ \d{4}) sehr nass: Niederschlag ([\d.,]+) % des Mittels 1991–2020 \(Deutscher Wetterdienst\)$", text)
+        if m:
+            return f"{de_period_to_en(m.group(1))} very wet: precipitation {de_num(m.group(2))}% of the 1991–2020 average (German Weather Service)"
+        m = re.match(r"^(\w+ \d{4}): an (\d+) Tagen Niedrigwasser am Rhein \(Pegel Kaub unter 78 cm\)$", text)
+        if m:
+            return f"{de_period_to_en(m.group(1))}: low water on the Rhine on {m.group(2)} days (Kaub gauge below 78 cm)"
+        return None
+
     def label(self, sid, de):
         """Englischer Reihenname; bei ausgeklappten Reihen (de_insolv_land_09) aus der Vorlage mit Platzhaltern."""
         v = self.get("series", sid, "label")
         if v or not sid:
-            return v or de
+            return v or self.lab(de)
         ser = self.d.get("series") or {}
         base = max((k for k in ser if sid.startswith(k + "_")), key=len, default=None)
         tpl = self.get("series", base, "label") if base else None
         if not tpl:
-            return de
+            return self.lab(de)
         code, names, bad = sid[len(base) + 1:], self.d.get("names") or {}, []
 
         def rep(m):
@@ -132,7 +176,7 @@ class Tr:
             bad.append(kind)
             return m.group(0)
         out = re.sub(r"\{(\w+)\}", rep, tpl)
-        return de if bad else out
+        return self.lab(de) if bad else out
 
     def s(self, text):
         """Kurzer fester Text (Einheit, Bereinigung): exakte Übersetzung, sonst unverändert."""
@@ -286,9 +330,120 @@ def _subject(label: str) -> str:
     return label if keep else "the " + label[:1].lower() + label[1:]
 
 
-def chart_sentences_en(c: dict) -> list[str]:
-    """Englische Fassung der Standardsätze für Linien- und Balkenabbildungen; übrige Arten vorerst ohne Sätze."""
+def _special_en(c: dict) -> list[str] | None:
+    """Sätze für Sonderabbildungen (Karte, Wärmetabelle, Uhr, Saison, Balken, Prognosen, Beiträge, Ereignisse); None für Linien."""
     typ, d = c.get("type"), int(c.get("decimals", 1))
+    sg = lambda v, k=1: num(v, k, True)
+    if typ == "tiles":
+        w = c["tiles"]
+        if w.get("measure") == "diff":
+            hi, lo = max(w["rows"], key=lambda r: r["level"]), min(w["rows"], key=lambda r: r["level"])
+            up = max(w["rows"], key=lambda r: r["change"])
+            out = [f"In {w['span']} the {c.get('what') or 'rate'} was highest in {hi['name']} at {num(hi['level'])}% and lowest in {lo['name']} at {num(lo['level'])}%."]
+            if up["change"] > 0:
+                out.append(f"It rose most in {up['name']}: by {num(up['change'])} pp on the previous year.")
+            return out
+        rows = sorted(w["rows"], key=lambda r: r["change"])
+        span = de_period_to_en(w["span"]).replace(" bis ", " to ")
+        return [f"{span}: the strongest increase on the same period a year earlier was in {rows[-1]['name']} at {sg(rows[-1]['change'])}%.",
+                f"{span}: the {'largest decrease' if rows[0]['change'] < 0 else 'smallest increase'} was in {rows[0]['name']} at {sg(rows[0]['change'])}%."]
+    if typ == "heat":
+        rows, per = c["heat"]["rows"], period(pd.Timestamp(c["heat"]["cols"][-1]), "M")
+        return [f"In the three months to {per}, “{rows[-1]['label']}” grew most: {sg(rows[-1]['m3'])}% on the three months before.",
+                f"In the three months to {per}, “{rows[0]['label']}” was weakest: {sg(rows[0]['m3'])}% on the three months before."]
+    if typ == "heatbars":
+        lv = sorted([r for r in c["heat"]["rows"] if r.get("level") is not None], key=lambda r: r["level"])
+        if not lv:
+            return []
+        per = period(pd.Timestamp(c["heat"]["cols"][-1]), "M")
+        below = sum(1 for r in lv if r["level"] < 0)
+        return [f"In {per}, {below} of {len(lv)} industries were below their 2019 average, the last full year before the pandemic.",
+                f"Furthest above 2019 was “{lv[-1]['label']}” ({sg(lv[-1]['level'])}%), furthest below “{lv[0]['label']}” ({sg(lv[0]['level'])}%)."]
+    if typ == "clock":
+        k = c["clock"]
+        x, y, t0 = k["x"][-1], k["y"][-1], pd.Timestamp(k["t"][-1])
+        phase = "boom" if x >= 0 and y >= 0 else "downswing" if x >= 0 else "upswing" if y >= 0 else "recession"
+        w = f"In {period(t0, 'M')}"
+        return [f"{w}, industry was in the “{phase}” quadrant of the business cycle clock.",
+                f"{w}, manufacturers rated their order books {'better' if x >= 0 else 'worse'} than the 2005–2019 average (balance {sg(x)} pp).",
+                f"{w}, manufacturers expected {'stronger' if y >= 0 else 'weaker'} production over the next three months than the 2005–2019 average (balance {sg(y)} pp)."]
+    if typ == "seasonal":
+        i = max(k for k, v in enumerate(c["y"]) if v is not None)
+        t0, lab = pd.Timestamp(c["x"][i]), c.get("label") or c.get("title", "")
+        out = [f"In {period(t0, 'M')} the figure for “{lab}” was {num(c['y'][i], d)}."]
+        if c["ma12"][i] is not None:
+            out.append(f"In the twelve months to {period(t0, 'M')} it averaged {num(c['ma12'][i], d)} a month.")
+        if c["norm"][i] is not None:
+            out.append(f"Before the pandemic (2015 to 2019) it averaged {num(c['norm'][i], d)} in {MONTHS[t0.month - 1]}.")
+        return out
+    if typ == "latest":
+        b = c.get("bars") or []
+        if not b:
+            return []
+        if c.get("base"):
+            bs = sorted(b, key=lambda x: x["value"])
+            out = [f"Since {period(pd.Timestamp(c['base']), c.get('freq', 'Q'))}, employment rose most in “{bs[-1]['label']}”: by {num(bs[-1]['value'], d)} {(c.get('unit') or '').split(',')[0]}.".replace(" .", ".")]
+            if bs[0]["value"] < 0:
+                out.append(f"It fell most in “{bs[0]['label']}”: by {num(abs(bs[0]['value']), d)} {(c.get('unit') or '').split(',')[0]}.".replace(" .", "."))
+            return out
+        w = when(b[0]["period"], c.get("freq", "Q"))
+        return [f"{w}, “{x['label']}” {'rose' if x['value'] > 0.05 else 'fell' if x['value'] < -0.05 else 'barely changed'}"
+                + (f" by {num(abs(x['value']), d)}%" if abs(x["value"]) > 0.05 else "") + " on the previous period." for x in b]
+    if typ == "forecast":
+        fs = c.get("forecasts") or []
+        what = {"gdp": "real GDP growth", "inflation": "inflation", "core": "core inflation"}.get(c.get("measure", "gdp"), "growth")
+        years = sorted({int(k) for f in fs for k in f["values"] if int(k) >= pd.Timestamp.now().year})
+        out = []
+        for y in years:
+            latest = {}
+            for f in sorted(fs, key=lambda f: f["date"]):
+                if y in f["values"] or str(y) in f["values"]:
+                    latest[f["by"]] = f["values"].get(y, f["values"].get(str(y)))
+            if len(latest) >= 2:
+                v = sorted(latest.values())
+                out.append(f"The latest forecasts of {len(v)} institutions for {what} in {y} range from {num(v[0])}% to {num(v[-1])}%.")
+        return out
+    if typ == "stacked":
+        series = [s for s in c.get("series") or [] if s.get("y")]
+        bars0 = [s for s in series if s.get("style") == "bar"]
+        if not bars0:
+            return []
+        last = max(s["x"][-1] for s in bars0)
+        bars = [s for s in bars0 if last in s["x"]]
+        at = lambda s: s["y"][s["x"].index(last)]
+        w = when(last, c.get("freq", "Q"))
+        hi, lo = max(bars, key=at), min(bars, key=at)
+        out = [f"{w}, “{hi['label']}” contributed most: {sg(at(hi), d)} pp."]
+        if round(at(lo), d) < 0:
+            out.append(f"{w}, “{lo['label']}” held it back most: {sg(at(lo), d)} pp.")
+        return out
+    if typ == "event" and c.get("kind") == "downturn":
+        out = []
+        for p in c["event"]["panels"]:
+            cur = next((l for l in p["lines"] if l["current"]), None)
+            if not cur or len(cur["y"]) < 2:
+                continue
+            k, v, st = len(cur["y"]) - 1, cur["y"][-1], pd.Timestamp(cur["start"])
+            step = "quarters" if p.get("step") in ("Quarter", "Quartal") else "months"
+            if p.get("unit") in ("pp", "Pp"):
+                out.append(f"Since the production peak in {period(st, 'M')} the unemployment rate has {'risen' if v > 0 else 'fallen'} by {num(abs(v))} pp ({k} {step}).")
+            else:
+                out.append(f"{k} {step} after the peak in {period(st, 'Q' if step == 'quarters' else 'M')}, {p['title'][:1].lower() + p['title'][1:]} was {num(abs(v - 100))}% {'below' if v < 100 else 'above'} the peak.")
+        return out
+    if typ == "event":
+        return []
+    return None
+
+
+def chart_sentences_en(c: dict) -> list[str]:
+    """Englische Fassung der automatischen Sätze: Sonderabbildungen eigens, Linien und Balken nach der Einheit."""
+    typ, d = c.get("type"), int(c.get("decimals", 1))
+    try:
+        sp = _special_en(c)
+    except (KeyError, IndexError, ValueError, TypeError, ZeroDivisionError):
+        return []
+    if sp is not None:
+        return sp
     if typ not in ("line", None) or not isinstance(c.get("series"), list):
         return []
     try:
@@ -420,10 +575,32 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                         lab_map[de_lab] = s["label"]
                     if s.get("unit"):
                         s["unit"] = tr.get("series", s.get("id"), "unit", tr.s(s["unit"]))
-            c["outliers"] = [dict(o, label=lab_map.get(o.get("label"), o.get("label"))) for o in c.get("outliers") or []]
+            c["outliers"] = [dict(o, label=tr.lab(lab_map.get(o.get("label"), o.get("label")))) for o in c.get("outliers") or []]
+            c["notes"] = [dict(n, text=en) for n in c.get("notes") or [] if (en := tr.note(n.get("text", "")))]
+            if isinstance(c.get("heat"), dict):
+                for r in c["heat"].get("rows") or []:
+                    r["label"] = tr.lab(r.get("label"))
+            for b in c.get("bars") or []:
+                b["label"] = tr.lab(lab_map.get(b.get("label"), b.get("label")))
+            if c.get("type") == "seasonal" and c.get("label"):
+                c["label"] = tr.label(c.get("series") if isinstance(c.get("series"), str) else None, c["label"])
+            if isinstance(c.get("alt"), dict):
+                for s in c["alt"].get("series") or []:
+                    s["label"] = tr.lab(s.get("label"))
+                c["alt"]["label"], c["alt"]["base"] = "on previous month", "on a year earlier"
+                c["alt"]["unit"] = tr.s(c["alt"].get("unit"))
+            for w in (c.get("tiles"), c.get("tiles6")):
+                for r in (w or {}).get("rows") or []:
+                    r["name"] = tr.lab(r.get("name"))
+            for f in c.get("forecasts") or []:
+                f["by"], f["round"] = tr.src(f.get("by")), tr.src(f.get("round"))
+            if isinstance(c.get("calendar"), dict):
+                for e in c["calendar"].get("events") or []:
+                    e["name"], e["source"] = tr.lab(e.get("name")), tr.lab(e.get("source"))
+                for l in c["calendar"].get("links") or []:
+                    l["name"] = tr.lab(l.get("name"))
             texts = chart_sentences_en(c)
             c["texts"], c["text"] = texts, " ".join(texts)
-            c["notes"] = []  # automatische Hinweise vorerst nur deutsch
             if isinstance(c.get("files"), dict):
                 c["files"] = {k: _rel(v) for k, v in c["files"].items()}
             nu = c.get("next_update")
