@@ -43,9 +43,9 @@
   /* Breite Bildschirme: Abbildungsübersicht des Abschnitts läuft links mit */
   .rail { display: none; position: sticky; top: 72px; align-self: start; max-height: calc(100vh - 90px); overflow: auto; font: 13.5px/1.35 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; border-top: 3px solid var(--line); padding-top: 8px; }
   .rail .rh { font-weight: 600; color: var(--dark); margin: 0 0 6px; }
-  .rail a { display: block; color: var(--muted); padding: 3px 0 3px 8px; border-left: 2px solid transparent; }
+  .rail a { display: block; color: var(--muted); padding: 3px 0; }
   .rail a:hover { color: var(--text); text-decoration: none; }
-  .rail a.on { color: var(--text); border-left-color: var(--accent); }
+  .rail a.on { color: var(--accent); }
   .rail a b { font-weight: 600; }
   @media (min-width: 1240px) {
     main, .bar { max-width: 1320px; }
@@ -276,12 +276,14 @@
   <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
   <div id="starttable">/*__STATIC__*/</div>
+  <p class="tnote" id="legendhint">Abbildungen mit mehreren Reihen: Ein Klick auf einen Eintrag der Legende blendet die Reihe aus oder ein, ein Doppelklick zeigt nur diese Reihe.</p>
   <div id="topics"></div>
 </main>
 <section class="refs" id="quellen">
   <h2>Quellen und Hinweise</h2>
   <details class="fold"><summary>Methodik, Vergleichszeitraum und Zeichen</summary>
   <p><b>Vergleichszeitraum.</b> Wo der Monitor ein „übliches“ Niveau angibt, ist es der Durchschnitt der Jahre 2015 bis 2019: die fünf letzten vollen Jahre vor der Pandemie, nach der Euro-Schuldenkrise und vor dem Energiepreisschock 2022. Ausnahme ist die Konjunkturuhr; sie misst den Abstand zum langjährigen Mittel 2005 bis 2019, weil die Phasen eines Konjunkturzyklus nur über mehrere Zyklen bestimmt werden können.</p>
+  <p><b>Legenden.</b> Wo eine Abbildung mehrere Reihen zeigt, blendet ein Klick auf den Eintrag in der Legende die Reihe aus oder wieder ein; ein Doppelklick zeigt nur diese Reihe, ein weiterer alle.</p>
   <p><b>Farben und Zeichen.</b> ▲ gestiegen, ▼ gesunken, ■ unverändert in der angezeigten Genauigkeit. Rot ist Warnsignalen vorbehalten: einem Anstieg, wo er ungünstig ist (Inflation, Arbeitslosigkeit, Insolvenzen), und Schwellenwerten. Blau, Violett und Grün unterscheiden nur Reihen und tragen keine Wertung. In Karten und Wärmetabellen steht Orange für eine Zunahme und Blau für eine Abnahme.</p>
   </details>
   <details class="fold"><summary>Datenquellen und Lizenzen</summary>
