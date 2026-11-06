@@ -35,36 +35,20 @@ jobs:
         run: pytest -q
       - name: Probe (temporär)
         run: |
-          pip install -q pyreadr
           python - <<'PY'
-          import urllib.request, re, tarfile, io, pyreadr, tempfile, os
-          def get(u):
-              try:
-                  r = urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Konjunkturmonitor/1.0"}), timeout=120); return r.read()
-              except Exception as e:
-                  print("FEHLER", u, e); return b""
-          idx = get("https://cran.r-project.org/web/packages/hyd1d/index.html").decode("utf-8", "replace")
-          v = re.findall(r"hyd1d_([0-9.\-]+)\.tar\.gz", idx); print("CRAN-Versionen", v[:3])
-          print(re.sub(r"<[^>]+>", " ", idx)[:1500])
-          if v:
-              tb = get(f"https://cran.r-project.org/src/contrib/hyd1d_{v[0]}.tar.gz")
-              tf = tarfile.open(fileobj=io.BytesIO(tb))
-              names = tf.getnames(); print([n for n in names if "/data/" in n or "DESCRIPTION" in n or "gauging_data" in n][:30])
-              print(tf.extractfile("hyd1d/DESCRIPTION").read().decode()[:1500])
-              for n in names:
-                  if n.endswith("df.gauging_data.Rd"): print(tf.extractfile(n).read().decode()[:2500])
-              for n in names:
-                  if n.endswith("df.gauging_data.rda") or n.endswith("df.gauging_data.RData"):
-                      d = tempfile.mkdtemp(); tf.extract(n, d); res = pyreadr.read_r(os.path.join(d, n))
-                      for k, df in res.items():
-                          print(k, df.shape, df.columns.tolist()); print(df["gauging_station"].value_counts().head(40) if "gauging_station" in df else df.head())
-                          kb = df[df.iloc[:, 0].astype(str).str.upper() == "KAUB"]; print("KAUB", kb.shape, kb.head(), kb.tail())
-          for u in ["https://hyd1d.bafg.de/downloads/", "https://hyd1d.bafg.de/downloads/df.gauging_data_latest_v2.RDS", "https://hyd1d.bafg.de/downloads/df.gauging_data_latest.RDS", "https://dgj-daten.bafg.de/Rhein/Kaub/"]:
-              b = get(u); print(u, len(b)); print(b[:600].decode("utf-8", "replace") if b[:1] != b"\x1f" else "gz-Daten")
-              if len(b) > 100000 and u.endswith(".RDS"):
-                  open("/tmp/g.rds", "wb").write(b); df = pyreadr.read_r("/tmp/g.rds")[None]
-                  print(df.shape, df.columns.tolist()); kb = df[df["gauging_station"].astype(str).str.upper() == "KAUB"]
-                  print("KAUB", kb.shape, kb["date"].min(), kb["date"].max()); print(kb.tail())
+          import urllib.request, re, tarfile, io
+          get = lambda u: urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Konjunkturmonitor/1.0"}), timeout=120).read()
+          tf = tarfile.open(fileobj=io.BytesIO(get("https://cran.r-project.org/src/contrib/hyd1d_0.5.5.tar.gz")))
+          d = tf.extractfile("hyd1d/DESCRIPTION").read().decode(); print([l for l in d.splitlines() if l.startswith(("License", "URL", "Copyright"))])
+          for n in tf.getnames():
+              if n.endswith(("REFERENCES.bib", "LICENSE", "LICENCE", "COPYRIGHTS")):
+                  s = tf.extractfile(n).read().decode("utf-8", "replace")
+                  if n.endswith(".bib"):
+                      for k in ("wsv_pegeldaten_2021", "wsv_pegelonline_2018"):
+                          m = re.search(r"@\w+\{" + k + r".*?\n\}", s, re.S); print(m.group(0) if m else k + " fehlt")
+                  else: print(n, s[:800])
+          for n in tf.getnames():
+              if n.endswith("updateGaugingData.Rd"): print(tf.extractfile(n).read().decode()[:1500])
           PY
           exit 1
       - name: Daten holen und Seite bauen
