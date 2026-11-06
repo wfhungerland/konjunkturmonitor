@@ -879,6 +879,12 @@ function card(c, no) {
   if (!["heat", "heatbars", "calendar", "event"].includes(c.type)) acts.push(`<button type="button" class="png">PNG</button>`);
   if (f.csv) acts.push(`<a href="${u(f.csv)}" download>CSV</a>`);
   tools.insertAdjacentHTML("beforeend", `<details class="dl"><summary title="Herunterladen">⤓ Download</summary><div class="dlmenu">${acts.join("")}</div></details>`);
+  // Direkter Link auf diese Abbildung zum Teilen
+  const lk = document.createElement("button"); lk.type = "button"; lk.className = "btn"; lk.textContent = "Link kopieren"; lk.title = "Direkten Link auf diese Abbildung kopieren";
+  lk.onclick = () => { const url = (DATA.site.url || location.href.split("#")[0]).replace(/#.*$/, "") + "#abb-" + no;
+    const done = () => { lk.textContent = "Link kopiert"; setTimeout(() => lk.textContent = "Link kopieren", 1500); };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => prompt("Link kopieren:", url)); else prompt("Link kopieren:", url); };
+  tools.appendChild(lk);
   ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `Abb. ${no} ${c.title || ""}. ${c.text || ""}`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
   ch._c = c;
