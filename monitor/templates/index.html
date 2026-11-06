@@ -39,7 +39,19 @@
   .q .per { font: 12px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--muted); }
   .q svg { width: 100%; height: 34px; }
   /* Themen */
-  section.topic { margin-top: 88px; scroll-margin-top: 60px; }
+  section.topic { margin-top: 112px; scroll-margin-top: 60px; }
+  /* Breite Bildschirme: Abbildungsübersicht des Abschnitts läuft links mit */
+  .rail { display: none; position: sticky; top: 72px; align-self: start; max-height: calc(100vh - 90px); overflow: auto; font: 13.5px/1.35 "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; border-top: 3px solid var(--line); padding-top: 8px; }
+  .rail .rh { font-weight: 600; color: var(--dark); margin: 0 0 6px; }
+  .rail a { display: block; color: var(--muted); padding: 3px 0 3px 8px; border-left: 2px solid transparent; }
+  .rail a:hover { color: var(--text); text-decoration: none; }
+  .rail a.on { color: var(--text); border-left-color: var(--accent); }
+  .rail a b { font-weight: 600; }
+  @media (min-width: 1240px) {
+    main, .bar { max-width: 1320px; }
+    section.topic { display: grid; grid-template-columns: 210px minmax(0, 1fr); column-gap: 40px; }
+    .rail { display: block; }
+  }
   section.topic > h2 { font-size: 26px; margin: 0 0 4px; }
   .answer { font-size: 18px; margin: 4px 0 6px; max-width: 48em; }
   .more { color: var(--text); margin: 0 0 8px; padding-left: 18px; max-width: 48em; }
@@ -129,6 +141,7 @@
   details.morecharts > summary { cursor: pointer; font: 15px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); margin: 4px 0 10px; }
   details.morecharts > summary .list { display: block; color: var(--muted); font-size: 13.5px; margin: 2px 0 0 1.1em; }
   details.morecharts[open] > summary .list { display: none; }
+  @media (min-width: 1240px) { details.morecharts > summary .list { display: none; } }  /* steht dann links */
   @media (max-width: 700px) { .card .chart { aspect-ratio: auto; height: 300px; min-height: 0; } .charts.single .card .chart { aspect-ratio: auto; height: 300px; } .card .chart.square { height: auto; aspect-ratio: 1 / 1; } .card .chart.multi { height: auto; } section.topic > h2 { font-size: 22px; } }
   .multiples { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 10px 16px; }
   .multiples { gap: 14px 22px; }
@@ -171,7 +184,8 @@
   ol.callist sup.e { font-size: 10px; margin-left: 1px; }
   .expandall { margin-left: auto; }
   @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
-  .parthead { margin: 56px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 17px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
+  .parthead { margin: 96px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 17px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
+  .parthead + section.topic { margin-top: 64px; }
   .parthead span { color: var(--muted); margin-right: 6px; }
   .parthead p { text-transform: none; letter-spacing: 0; font-weight: normal; color: var(--muted); font-size: 16.5px; margin: 4px 0 0; }
   details.moretable > summary { cursor: pointer; font: 14px "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); margin: 2px 0 8px; }
@@ -244,11 +258,13 @@
     section.topic { break-before: page; margin-top: 0; }
     .card { break-inside: avoid; page-break-inside: avoid; }
     details.morecharts { display: none; }
+    .rail { display: none !important; } section.topic { display: block; }
     details.capfold > summary { display: none; } details.capfold > .cap { display: block; }
     .charts { gap: 18pt; }
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
   .refs { max-width: 1180px; margin: 30px auto 0; padding: 0 16px; font-size: 14px; color: var(--muted); }
+  @media (min-width: 1240px) { .refs { max-width: 1320px; } }
   footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
 </style>
@@ -993,6 +1009,10 @@ function build() {
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     struktur: { no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
     service: { no: "", title: "Termine", text: "" } };
+  const railObs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return; const r = e.target.closest("section.topic").querySelector(".rail");
+    r.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id));
+  }), { rootMargin: "-35% 0px -60% 0px" }) : null;
   const obs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { obs.unobserve(e.target); render(e.target); } }), { rootMargin: "300px" }) : null;
   DATA.topics.forEach(t => {
     const sec = document.createElement("section"); sec.className = "topic"; sec.id = t.id;
@@ -1021,6 +1041,13 @@ function build() {
       no += 1; const el = card(c, c.no ?? no); target.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : render(ch);
     });
     if (LY.lead_chart_only && wrap.children.length === 1) wrap.classList.add("single");
+    // Linke Spalte: alle Abbildungen des Abschnitts, die gerade sichtbare hervorgehoben
+    const secMain = document.createElement("div"); secMain.className = "secmain";
+    while (sec.firstChild) secMain.appendChild(sec.firstChild);
+    const rail = document.createElement("nav"); rail.className = "rail"; rail.setAttribute("aria-label", "Abbildungen dieses Abschnitts");
+    rail.innerHTML = `<p class="rh">Abbildungen</p>` + t.charts.map(x => `<a href="#abb-${x.no}"><b>${x.no}</b> ${esc(x.title || "")}</a>`).join("");
+    sec.append(rail, secMain);
+    if (railObs) secMain.querySelectorAll(".card").forEach(cd => railObs.observe(cd));
     const part = t.part || "konjunktur";
     if (part !== curPart) { curPart = part; const P = PARTS[part];
       topics.insertAdjacentHTML("beforeend", `<div class="parthead" id="teil-${part}">${P.no ? `<span>${esc(P.no)}</span> ` : ""}${esc(P.title)}${P.text ? `<p>${esc(P.text)}</p>` : ""}</div>`);
