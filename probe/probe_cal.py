@@ -1,34 +1,28 @@
-"""Temporäre Probe: Aufbau der Veröffentlichungskalender (Destatis, BA, Eurostat)."""
+"""Temporäre Probe 2: Terminsuche Destatis, BA-Termine."""
 import re
 import urllib.request
 
 
 def get(u):
     try:
-        req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0 Konjunkturmonitor/1.0"})
+        req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) Konjunkturmonitor/1.0", "Accept": "text/html"})
         with urllib.request.urlopen(req, timeout=90) as r:
-            return r.read().decode("utf-8", "replace")
+            return r.geturl() + " || " + r.read().decode("utf-8", "replace")
     except Exception as e:
         return f"FEHLER {e}"
 
 
-t = get("https://www.destatis.de/DE/Presse/Termine/_inhalt.html")
-print("== Destatis Länge", len(t))
-for m in re.finditer(r"(ics|ical|rss|Terminvorschau|Woche|Monat)[^\"<]{0,80}", t, re.I):
-    pass
-links = sorted(set(re.findall(r'href="([^"]*(?:ics|ical|rss|termin|Termin)[^"]*)"', t)))
-print("Links:", links[:40])
-i = t.find("Termin")
-body = re.sub(r"\s+", " ", re.sub(r"<script.*?</script>", "", t, flags=re.S))
-for kw in ("2026", "November"):
-    for m in list(re.finditer(kw, body))[:8]:
-        print("…", body[max(0, m.start() - 200): m.start() + 300])
+def show(name, u, pat=r"\d{1,2}\.\s?\d{1,2}\.\s?2026|\d{1,2}\. (November|Dezember|Januar) 202[67]", n=12, w=260):
+    t = get(u)
+    b = re.sub(r"\s+", " ", re.sub(r"<(script|style).*?</\1>", "", t, flags=re.S))
+    print("==", name, len(t), t[:150])
+    for m in list(re.finditer(pat, b))[:n]:
+        print("…", re.sub(r"<[^>]+>", " | ", b[max(0, m.start() - w): m.start() + w]))
         print("----")
-b = get("https://statistik.arbeitsagentur.de/DE/Navigation/Service/Veroeffentlichungskalender/Veroeffentlichungskalender-Nav.html")
-bb = re.sub(r"\s+", " ", re.sub(r"<script.*?</script>", "", b, flags=re.S))
-print("== BA Länge", len(b))
-for m in list(re.finditer(r"\d{2}\.\d{2}\.2026", bb))[:10]:
-    print("…", bb[max(0, m.start() - 150): m.start() + 200])
-    print("----")
-e = get("https://ec.europa.eu/eurostat/api/dissemination/catalogue/rss/en/release-calendar.rss")
-print("== Eurostat RSS", e[:800])
+
+
+show("Destatis Terminsuche", "https://www.destatis.de/SiteGlobals/Forms/Suche/Termine/DE/Terminsuche_Formular.html?nn=250582")
+show("Destatis Terminsuche Seite 2", "https://www.destatis.de/SiteGlobals/Forms/Suche/Termine/DE/Terminsuche_Formular.html?gtp=250592_list%253D2&nn=250582", n=4)
+show("BA Statistik", "https://statistik.arbeitsagentur.de/DE/Navigation/Service/Veroeffentlichungskalender/Veroeffentlichungskalender-Nav.html", n=6)
+show("BA Presse", "https://www.arbeitsagentur.de/presse/termine", n=6)
+show("Eurostat Kalender", "https://ec.europa.eu/eurostat/news/release-calendar", n=4)
