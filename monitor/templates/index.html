@@ -24,8 +24,11 @@
   a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
   header { background: var(--card); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; }
   .bar { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
-  .bar h1 { font-size: 19px; margin: 0; }
-  .bar .stand { color: var(--muted); font-size: 13.5px; }
+  .bar h1 { font-size: 19px; margin: 0; line-height: 1.15; }
+  .brand { flex: none; } .brand .meta { font-size: 12px; color: var(--grey); line-height: 1.3; }
+  .bar { align-items: center; }
+  @media (min-width: 601px) { nav { flex: 1; font-size: 13px; gap: 0 10px; line-height: 1.6; } }
+  .bar .stand { color: var(--grey); font-size: 12px; }
   nav { display: flex; flex-wrap: wrap; gap: 4px 12px; font: 13.5px var(--ff); }
   main { max-width: 1180px; margin: 0 auto; padding: 8px 16px 40px; }
   /* Startseite: sieben Fragen */
@@ -186,8 +189,8 @@
   ol.callist sup.e { font-size: 12px; margin-left: 1px; }
   .expandall { margin-left: auto; }
   /* Suche mit Vorschlägen in der Kopfzeile */
-  .search { position: relative; margin-left: auto; }
-  .search input { font: 13.5px/1.5 var(--ff); width: 170px; padding: 1px 9px; border: 1px solid var(--line); border-radius: var(--r); background: #fff; color: var(--text); }
+  .search { position: relative; margin-left: auto; flex: none; }
+  .search input { font: 13.5px/1.5 var(--ff); width: 150px; padding: 1px 9px; border: 1px solid var(--line); border-radius: var(--r); background: #fff; color: var(--text); }
   .search input:focus { outline: none; border-color: var(--accent); }
   .search ul { position: absolute; right: 0; top: 1.9em; z-index: 10; list-style: none; margin: 0; padding: 4px 0; width: 380px; max-height: 70vh; overflow-y: auto;
     background: #fff; border: 1px solid var(--line); border-radius: var(--r); box-shadow: 0 4px 12px rgba(0,0,0,.08); font: 13.5px/1.35 var(--ff); }
@@ -207,7 +210,7 @@
   nav details.navmore > summary { cursor: pointer; color: var(--accent); list-style: none; } nav details.navmore > summary::after { content: " ▾"; }
   nav .navlist { position: absolute; right: 0; top: 1.6em; background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 8px 12px; display: grid; grid-template-columns: repeat(2, max-content); gap: 4px 18px; box-shadow: 0 4px 12px rgba(0,0,0,.08); z-index: 10; }
   .expandall .short { display: none; }
-  @media (max-width: 1320px) { .expandall .long { display: none; } .expandall .short { display: inline; } }
+  @media (max-width: 1700px) { .expandall .long { display: none; } .expandall .short { display: inline; } }
   @media (max-width: 600px) {
     /* Handy: Kopfzeile in zwei Zeilen, Themen als waagerecht wischbare Zeile */
     .bar { padding: 6px 10px 4px; gap: 2px 6px; align-items: center; }
@@ -289,7 +292,7 @@
 </style>
 </head>
 <body>
-<header id="top"><div class="bar"><h1>Konjunkturmonitor</h1><span class="stand" id="stand"></span><nav id="nav"></nav></div></header>
+<header id="top"><div class="bar"><div class="brand"><h1>Konjunkturmonitor</h1><div class="meta"><span class="stand" id="stand"></span></div></div><nav id="nav"></nav></div></header>
 <main>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
   <p class="news" id="news"></p>
@@ -1059,7 +1062,7 @@ function build() {
   const nw = document.getElementById("news");
   if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
   const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
-  const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `<span class="sl">Stand: </span>${d.toLocaleDateString("de-DE")}`;
+  const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `Stand ${d.toLocaleDateString("de-DE")}`;
   const AS = DATA.all_series || {};
   document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${encodeURI(AS.xlsx)}" download>Excel</a> · <a href="${encodeURI(AS.csv)}" download>CSV</a>` : "",
     `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
@@ -1079,8 +1082,6 @@ function build() {
       <span class="head">${esc(a.head)}</span>${spark(a.spark_data, a.ref)}<span class="per">${esc(a.period)}</span></a>`);
   });
   let no = 0, curPart = null;
-  const MAIN_NAV = (DATA.layout || {}).main_nav || ["wachstum", "preise", "arbeit", "industrie", "konsum", "insolvenzen"];
-  const navMore = document.createElement("div"); navMore.className = "navlist";
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     struktur: { no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
     service: { no: "", title: "Termine", text: "" } };
@@ -1128,11 +1129,9 @@ function build() {
       topics.insertAdjacentHTML("beforeend", `<div class="parthead" id="teil-${part}">${P.no ? `<span>${esc(P.no)}</span> ` : ""}${esc(P.title)}${P.text ? `<p>${esc(P.text)}</p>` : ""}</div>`);
     }
     topics.appendChild(sec);
-    (MAIN_NAV.includes(t.id) ? nav : navMore).insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
+    nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
   });
-  const dd = document.createElement("details"); dd.className = "navmore"; dd.innerHTML = "<summary>Alle Themen</summary>"; dd.appendChild(navMore); nav.appendChild(dd);
-  navMore.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen und Downloads</a>`);
-  navMore.querySelectorAll("a").forEach(a => a.addEventListener("click", () => dd.open = false));
+  nav.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen</a>`);
   nav.insertAdjacentHTML("afterbegin", `<a href="#top"><b>Übersicht</b></a>`);
   const ex = document.createElement("button"); ex.type = "button"; ex.className = "btn expandall"; let opened = false;
   const exLab = () => ex.innerHTML = `<span class="long">Alle Abbildungen ${opened ? "einklappen" : "ausklappen"}</span><span class="short">${opened ? "Einklappen" : "Ausklappen"}</span>`;
