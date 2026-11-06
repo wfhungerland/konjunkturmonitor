@@ -1252,6 +1252,10 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
         (out / page).write_text(resources.files("monitor").joinpath(f"templates/{page}").read_text(encoding="utf-8"), encoding="utf-8")
     (out / "data.json").write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     (out / ".nojekyll").write_text("", encoding="utf-8")
+    fonts = out / "fonts"  # Source Sans 3 (OFL) liegt neben der Seite
+    fonts.mkdir(exist_ok=True)
+    for f in resources.files("monitor").joinpath("static/fonts").iterdir():
+        (fonts / f.name).write_bytes(f.read_bytes())
     plotly = resources.files("konjunkturwolf").joinpath("static/plotly.min.js")
     (out / "plotly.min.js").write_bytes(plotly.read_bytes())
     return out / "index.html"
