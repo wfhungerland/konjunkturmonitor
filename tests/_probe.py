@@ -1,45 +1,39 @@
-import os, re, io, json, urllib.request, urllib.parse
-def get(u, data=None, headers=None, n=None):
+import os, re, io, zipfile, json, urllib.request, urllib.parse
+def get(u, data=None, headers=None, raw=False):
     try:
         req = urllib.request.Request(u, data=data, headers=dict({"User-Agent": "Konjunkturmonitor/1.0"}, **(headers or {})))
-        b = urllib.request.urlopen(req, timeout=120).read()
-        return b.decode("utf-8", "replace")
+        b = urllib.request.urlopen(req, timeout=180).read()
+        return b if raw else b.decode("utf-8", "replace")
     except Exception as e:
-        return f"FEHLER {e}"
-def show(t, s, n=700): print("=====", t); print(s[:n])
+        return (f"FEHLER {e}").encode() if raw else f"FEHLER {e}"
+def show(t, s, n=1500): print("=====", t); print(s[:n] if isinstance(s, str) else s)
 BB = "https://api.statistiken.bundesbank.de/rest"
-# 1 Bundesbank: Datenflüsse mit Tarif/Echtzeit
-df = get(BB + "/metadata/dataflow/BBK", headers={"Accept": "application/xml"})
-names = re.findall(r'id="(\w+)"[^>]*>.*?<com:Name xml:lang="de">([^<]+)', df, re.S)
-show("Dataflows Tarif/Echtzeit/Arbeit", "\n".join(f"{i}: {n}" for i, n in names if re.search(r"Tarif|Echtzeit|Arbeitsk|Löhn|Lohn|Verdienst", n)), 2000)
-# 2 Tariflohn: Kandidaten
-for flow in ("BBDL1", "BBDP1", "BBDE1", "BBEE1"):
-    s = get(f"{BB}/data/{flow}?lastNObservations=1&detail=serieskeysonly", headers={"Accept": "application/vnd.sdmx.data+csv;version=1.0.0"})
-    keys = [l.split(",")[0:12] for l in s.splitlines()[1:]]
-    hits = [l for l in s.splitlines() if re.search(r"DN1|TV|CA010", l)]
-    show(f"{flow}: {len(keys)} Reihen, Treffer DN1/CA010", "\n".join(hits[:15]) or s[:300], 2500)
-# 3 Echtzeit BIP vierteljährlich
-s = get(f"{BB}/data/BBKRT/Q.DE.?lastNObservations=1&lastNVintages=1&detail=serieskeysonly", headers={"Accept": "application/vnd.sdmx.data+csv;version=1.0.0"})
-show("BBKRT Q Reihen mit AG1/BIP", "\n".join([l for l in s.splitlines() if "AG1" in l or "B1G" in l][:20]) or s[:600], 2500)
-s = get(f"{BB}/data/BBKRT/Q.DE.Y.A.AG1.CA010.A.I?lastNVintages=3&lastNObservations=4", headers={"Accept": "application/vnd.sdmx.data+csv;version=1.0.0"})
-show("BBKRT Versuch Q.DE.Y.A.AG1.CA010.A.I", s, 1500)
-# 4 GENESIS 13211-0007
+CSV = {"Accept": "application/vnd.sdmx.data+csv;version=1.0.0"}
+# Bundesbank: Liste der Datenflüsse roh
+s = get(BB + "/metadata/dataflow/BBK", headers={"Accept": "application/vnd.sdmx.structure+xml;version=2.1"})
+ids = re.findall(r'<str:Dataflow[^>]*id="(\w+)"', s); nm = re.findall(r'<com:Name xml:lang="de">([^<]+)', s)
+show("Dataflows", f"{len(ids)} " + " | ".join(f"{a}:{b}" for a, b in zip(ids, nm) if re.search(r"Tarif|Verdien|Lohn|Löhn|Arbeitsk", b)) + " ... alle ids: " + ",".join(ids), 3000)
+for key in ("BBDL1/M.DE.N.TV.DN1.CA010.I", "BBDL1/M.DE..TV....", "BBDE1/M.DE.N.TV.DN1.CA010.I"):
+    show("BB " + key, get(f"{BB}/data/{key}?lastNObservations=2", headers=CSV), 800)
+# Echtzeit BIP: Anzahl Datenstände
+s = get(f"{BB}/data/BBKRT/Q.DE.Y.A.AG1.CA010.A.I?startPeriod=2024-Q1", headers=CSV)
+vint = sorted({".".join(l.split(";")[9:12]) for l in s.splitlines()[1:] if l})
+show("BBKRT Datenstände", f"{len(vint)} {vint[:3]} ... {vint[-3:]}", 600)
+s = get(f"{BB}/data/BBKRT/Q.DE.Y.A.AG1.CA010.A.I?startPeriod=2010-Q1&startVintage=2010-01-01&endVintage=2010-12-31", headers=CSV)
+show("BBKRT 2010 Datenstände", f"{len(s.splitlines())} Zeilen " + s.splitlines()[1][:200] if len(s.splitlines()) > 1 else s, 600)
+# GENESIS 13211-0007 entpackt
 u, p = os.environ.get("GENESIS_USER", ""), os.environ.get("GENESIS_PASSWORD", "")
-for tab in ("13211-0007", "13211-0005"):
-    s = get("https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile", data=urllib.parse.urlencode({"name": tab, "area": "all", "compress": "false", "format": "ffcsv", "language": "en", "startyear": "2024"}).encode(),
-            headers={"username": u, "password": p, "Content-Type": "application/x-www-form-urlencoded"})
-    lines = s.splitlines()
-    show(f"GENESIS {tab}: {len(lines)} Zeilen", "\n".join(lines[:4]), 1800)
-# 5 Eurostat: Preiserwartungen Verbraucher, Lohnstückkosten
-ES = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data"
-s = get(f"{ES}/ei_bsco_m?geo=DE&format=JSON&lang=en&sinceTimePeriod=2026-01")
-try:
-    j = json.loads(s); show("ei_bsco_m indic", json.dumps(j["dimension"]["indic"]["category"]["label"], ensure_ascii=False), 2500)
-except Exception as e: show("ei_bsco_m", s, 400)
-s = get(f"{ES}/namq_10_lp_ulc?geo=DE&format=JSON&lang=en&sinceTimePeriod=2025-Q1")
-try:
-    j = json.loads(s); d = j["dimension"]; show("namq_10_lp_ulc", json.dumps({k: d[k]["category"]["label"] for k in ("unit", "na_item", "s_adj")}, ensure_ascii=False), 2500)
-except Exception as e: show("namq_10_lp_ulc", s, 400)
-# 6 EZB SPF
-s = get("https://data-api.ecb.europa.eu/service/data/SPF/Q.U2.HICP..?format=csvdata&lastNObservations=1&detail=serieskeysonly")
-show("SPF HICP Reihen", "\n".join(s.splitlines()[:40]), 3000)
+b = get("https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile", raw=True, data=urllib.parse.urlencode({"name": "13211-0007", "area": "all", "compress": "false", "format": "ffcsv", "language": "en", "startyear": "2025"}).encode(),
+        headers={"username": u, "password": p, "Content-Type": "application/x-www-form-urlencoded"})
+if b[:2] == b"PK":
+    z = zipfile.ZipFile(io.BytesIO(b)); txt = z.read(z.namelist()[0]).decode("utf-8-sig", "replace").splitlines()
+    show("GENESIS 13211-0007", "\n".join(txt[:6]) + f"\n... {len(txt)} Zeilen; Merkmale: " + str(sorted({tuple(l.split(";")[k] for k in (7, 9)) for l in txt[1:]})[:30]), 3500)
+else: show("GENESIS 13211-0007", b[:500])
+s = get("https://genesis.destatis.de/genesisWS/rest/2020/find/find", data=urllib.parse.urlencode({"term": "Tarifindex", "category": "tables", "language": "de"}).encode(),
+        headers={"username": u, "password": p, "Content-Type": "application/x-www-form-urlencoded"})
+show("GENESIS Suche Tarifindex", re.sub(r"\s+", " ", s), 2500)
+# EZB SPF
+E = "https://data-api.ecb.europa.eu/service/data/SPF"
+for key in ("Q.U2.HICP.POINT.LT.Q.AVG", "Q.U2.HICP.POINT.P24M.Q.AVG", "Q.U2.HICP.POINT.Y2.Q.AVG", "Q.U2.HICP.POINT..Q.AVG"):
+    s = get(f"{E}/{key}?format=csvdata&lastNObservations=2")
+    show("SPF " + key, s if s.startswith("FEHLER") else "\n".join(s.splitlines()[:4])[:900], 900)
