@@ -8,6 +8,7 @@
 # Quoten und Salden „lag bei …, … Pp höher als ein Jahr zuvor“, Mengen „lag bei …, … mehr als ein Jahr zuvor“.
 
 series:
+  ea_spf_lt: [die langfristige Inflationserwartung der Fachleute im Euroraum, s]
   de_gas_storage: [der Füllstand der Gasspeicher, s]
   de_power_load_yoy: [der Stromverbrauch, s]
   de_power_price: [der Großhandelspreis für Strom, s]
@@ -154,6 +155,7 @@ series:
   de_insolv_claims: [die voraussichtlichen Forderungen der Gläubiger, p]
 
 charts:
+  ulc: ["die Lohnstückkosten in {label}", p]
   energy_intensive: ["die Produktion im Bereich „{label}“", s]
   ez_gdp: ["die Wirtschaftsleistung in {label}", s]
   ez_hicp: ["die Verbraucherpreise (HVPI) in {label}", p]

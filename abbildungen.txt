@@ -4,6 +4,8 @@
 # Die Nummer (Abb. NN) folgt der Reihenfolge im Monitor und wird beim Bau vergeben (Änderung vom 04.11.2026).
 gdp_contrib;Wachstumsbeitraege;2026-11-04;
 downturns;Abschwuenge Vergleich;2026-11-06;
+ulc;Lohnstueckkosten;2026-11-06;
+spf;Inflationserwartung Fachleute;2026-11-06;
 energy_intensive;Energieintensive Industrie;2026-11-06;
 wai;Woechentlicher Aktivitaetsindex;2026-11-04;
 maut;Lkw-Maut-Fahrleistung;2026-11-04;

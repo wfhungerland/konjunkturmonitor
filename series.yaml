@@ -179,6 +179,8 @@ charts:
   services: {title: "Produktion der Dienstleister", decimals: 1}
   hh_income: {title: "Real verfügbares Einkommen je Einwohner", decimals: 1}
   wages: {title: "Nominal- und Reallöhne", decimals: 1}
+  ulc: {title: "Lohnstückkosten", decimals: 1}
+  spf: {title: "Langfristige Inflationserwartung der Fachleute", decimals: 2}
   saving: {title: "Sparquote der privaten Haushalte", decimals: 1}
   profit_share: {title: "Gewinnquote der Unternehmen", decimals: 1}
   world_gdp: {title: "Wachstum großer Wirtschaftsräume", decimals: 1}
@@ -2686,6 +2688,45 @@ series:
     start: "2008-01-01"
     chart: wages
     label: "Reallöhne"
+
+  - id: de_ulc_yoy
+    block: einkommen
+    source: eurostat
+    key: namq_10_lp_ulc
+    params: {geo: DE, na_item: NULC_PER, unit: PCH_SM, s_adj: SCA}
+    title: "Lohnstückkosten (je Erwerbstätigen), Deutschland, % ggü. Vorjahresquartal"
+    unit: "% ggü. Vorjahresquartal"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2005-01-01"
+    chart: ulc
+    label: "Deutschland"
+
+  - id: ea_ulc_yoy
+    block: einkommen
+    source: eurostat
+    key: namq_10_lp_ulc
+    params: {geo: EA20, na_item: NULC_PER, unit: PCH_SM, s_adj: SCA}
+    title: "Lohnstückkosten (je Erwerbstätigen), Euroraum, % ggü. Vorjahresquartal"
+    unit: "% ggü. Vorjahresquartal"
+    frequency: Q
+    adjustment: saison- und kalenderbereinigt
+    start: "2005-01-01"
+    chart: ulc
+    label: "Euroraum"
+
+  - id: ea_spf_lt
+    block: preise
+    source: ecb
+    key: SPF/Q.U2.HICP.POINT.LT.Q.AVG
+    title: "Langfristige Inflationserwartung der Fachleute (EZB, Survey of Professional Forecasters), Euroraum"
+    unit: "%"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2001-01-01"
+    chart: spf
+    label: "Erwartung in fünf Jahren"
+    note: "Mittel der Punktprognosen für die HVPI-Inflation im Euroraum in vier bis fünf Kalenderjahren; vierteljährliche Umfrage der EZB."
 
   - id: de_nominallohn_yoy
     block: einkommen
