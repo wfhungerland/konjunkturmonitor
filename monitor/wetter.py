@@ -240,10 +240,50 @@ def update_gas_storage(static: Path) -> None:
     log.info("Gasspeicher: %d Tage", len(vals))
 
 
+BBKRT = ("https://api.statistiken.bundesbank.de/rest/data/BBKRT/Q.DE.Y.A.AG1.CA010.A.I"
+         "?startPeriod=2004-Q1&startVintage=2005-01-01&detail=dataonly")
+
+
+def gdp_revisions(text: str) -> tuple[pd.Series, pd.Series]:
+    """Aus allen Datenständen der Echtzeitdatenbank (BIP, preis-, saison- und kalenderbereinigt) die Wachstumsrate
+    ggü. dem Vorquartal je Quartal: in der ersten Veröffentlichung und im jüngsten Datenstand, jeweils in %."""
+    lines = [l for l in text.splitlines() if l.strip()]
+    head = [h.strip().lstrip("\ufeff") for h in lines[0].split(";")]
+    ix = {h: i for i, h in enumerate(head)}
+    rows = []
+    for l in lines[1:]:
+        f = l.split(";")
+        try:
+            vint = pd.Timestamp(int(f[ix["BBK_RTD_REL_YEAR"]]), int(f[ix["BBK_RTD_REL_MONTH"]]), int(f[ix["BBK_RTD_REL_DAY"]]))
+            rows.append((vint, pd.Period(f[ix["TIME_PERIOD"]], "Q").start_time, float(f[ix["OBS_VALUE"]])))
+        except (KeyError, ValueError, IndexError):
+            continue
+    df = pd.DataFrame(rows, columns=["vintage", "period", "value"])
+    first, latest = {}, None
+    for v, g in df.sort_values("vintage").groupby("vintage", sort=True):
+        s = g.set_index("period")["value"].sort_index()
+        q = (s / s.shift(1) - 1) * 100
+        for p in q.dropna().index:
+            first.setdefault(p, round(float(q[p]), 2))  # erster Datenstand, in dem das Quartal vorkommt
+        latest = q.dropna().round(2)
+    return pd.Series(first).sort_index(), latest
+
+
+def update_revisions(static: Path) -> None:
+    """Revisionsanzeiger: erste Meldung und heutiger Stand des BIP-Wachstums (Echtzeitdatenbank der Bundesbank)."""
+    req = urllib.request.Request(BBKRT, headers={"User-Agent": "Konjunkturmonitor/1.0", "Accept": "application/vnd.sdmx.data+csv;version=1.0.0"})
+    with urllib.request.urlopen(req, timeout=300) as r:
+        first, latest = gdp_revisions(r.read().decode("utf-8", "replace"))
+    _write(static / "gdp_rt_first.csv", first)
+    _write(static / "gdp_rt_latest.csv", latest)
+    _write(static / "gdp_rt_rev.csv", (latest - first).dropna())
+    log.info("Echtzeitdaten BIP: %d Quartale mit erster Meldung", len(first))
+
+
 def update_all(root: Path) -> None:
     static = root / "data" / "static"
     static.mkdir(parents=True, exist_ok=True)
-    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Gasspeicher", update_gas_storage)):
+    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf

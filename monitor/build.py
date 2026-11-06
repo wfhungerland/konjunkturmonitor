@@ -725,7 +725,7 @@ def chart_sentences(c: dict) -> list[str]:
             if sp and sp.get("tpl"):  # ganzer Satz als Vorlage
                 chg = num((v / yago - 1) * 100, 1, True) + " %" if yago else ""
                 out.append(sp["tpl"].format(when=when, v=vv, n=num(v, d), abs=num(abs(v), d), ueber="über" if v >= 0 else "unter",
-                                            waermer="wärmer" if v >= 0 else "kälter", hoeher="höher" if v >= 0 else "niedriger", chg=chg).replace(" ( ggü. Vorjahr)", ""))
+                                            waermer="wärmer" if v >= 0 else "kälter", hoeher="höher" if v >= 0 else "niedriger", oben_unten="oben" if v >= 0 else "unten", chg=chg).replace(" ( ggü. Vorjahr)", ""))
                 continue
             if not sp:  # Rückfall: neutrale Formulierung mit Beschriftung
                 sp = {"subj": name(s), "pl": False}

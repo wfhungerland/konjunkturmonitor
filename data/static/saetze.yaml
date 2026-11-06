@@ -8,6 +8,9 @@
 # Quoten und Salden „lag bei …, … Pp höher als ein Jahr zuvor“, Mengen „lag bei …, … mehr als ein Jahr zuvor“.
 
 series:
+  gdp_rt_first: [das zuerst gemeldete BIP-Wachstum, s]
+  gdp_rt_latest: [das BIP-Wachstum im heutigen Datenstand, s]
+  gdp_rt_rev: {tpl: "{when} wurde das BIP-Wachstum seit der ersten Meldung um {abs} Pp nach {oben_unten} korrigiert."}
   de_tarif_yoy: [die Tarifverdienste, p]
   ea_spf_lt: [die langfristige Inflationserwartung der Fachleute im Euroraum, s]
   de_gas_storage: [der Füllstand der Gasspeicher, s]
