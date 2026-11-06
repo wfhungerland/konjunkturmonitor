@@ -26,6 +26,7 @@
   .bar { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
   .bar h1 { font-size: 19px; margin: 0; line-height: 1.15; }
   .brand { flex: none; } .brand .meta { font-size: 12px; color: var(--grey); line-height: 1.3; }
+  .lang a, .lang b { padding: 0 1px; } .lang a { color: var(--grey); } .lang b { color: var(--text); } .lang:not(:empty)::after { content: " · "; }
   .bar { align-items: center; }
   @media (min-width: 601px) { nav { flex: 1; font-size: 13px; gap: 0 10px; line-height: 1.6; } }
   .bar .stand { color: var(--grey); font-size: 12px; }
@@ -292,7 +293,7 @@
 </style>
 </head>
 <body>
-<header id="top"><div class="bar"><div class="brand"><h1>Konjunkturmonitor</h1><div class="meta"><span class="stand" id="stand"></span></div></div><nav id="nav"></nav></div></header>
+<header id="top"><div class="bar"><div class="brand"><h1>Konjunkturmonitor</h1><div class="meta"><span class="lang" id="lang"></span><span class="stand" id="stand"></span></div></div><nav id="nav"></nav></div></header>
 <main>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
   <p class="news" id="news"></p>
@@ -1062,6 +1063,7 @@ function build() {
   const nw = document.getElementById("news");
   if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
   const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
+  if (DATA.has_en || DATA.lang === "en") document.getElementById("lang").innerHTML = DATA.lang === "en" ? `<a href="../" hreflang="de" lang="de">DE</a> <b>EN</b>` : `<b>DE</b> <a href="en/" hreflang="en" lang="en">EN</a>`;
   const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `Stand ${d.toLocaleDateString("de-DE")}`;
   const AS = DATA.all_series || {};
   document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${encodeURI(AS.xlsx)}" download>Excel</a> · <a href="${encodeURI(AS.csv)}" download>CSV</a>` : "",

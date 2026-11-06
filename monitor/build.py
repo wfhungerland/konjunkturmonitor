@@ -1140,6 +1140,7 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
         cache.mkdir(exist_ok=True)
         (cache / "payload.json").write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     tpl = resources.files("monitor").joinpath("templates/index.html").read_text(encoding="utf-8")
+    payload["has_en"] = (root / "data" / "static" / "en.yaml").exists()
     js = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     from html import escape
     url = payload["site"].get("url", "")
@@ -1148,6 +1149,20 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
             .replace("/*__OVERVIEW__*/", escape(payload.get("overview", ""))).replace("/*__DESC__*/", escape(desc, quote=True))
             .replace("/*__URL__*/", escape(url, quote=True)).replace("/*__OGIMG__*/", escape(url + "vorschau.png", quote=True)))
     (out / "index.html").write_text(html, encoding="utf-8")
+    if payload["has_en"]:  # englische Fassung unter site/en/
+        from .english import english_payload
+        from .ui_en import apply
+        pen = english_payload(payload, data, root)
+        tpl_en, missing = apply(tpl)
+        if missing:
+            print(f"Englische Oberfläche: {len(missing)} Texte im Template nicht gefunden, z. B. {missing[:3]}")
+        js_en = json.dumps(pen, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+        desc_en = pen.get("overview") or pen["site"]["claim"]
+        html_en = (tpl_en.replace("/*__DATA__*/null", js_en).replace("/*__STATIC__*/", "")
+                   .replace("/*__OVERVIEW__*/", escape(pen.get("overview", ""))).replace("/*__DESC__*/", escape(desc_en, quote=True))
+                   .replace("/*__URL__*/", escape(pen["site"]["url"], quote=True)).replace("/*__OGIMG__*/", escape(url + "vorschau.png", quote=True)))
+        (out / "en").mkdir(exist_ok=True)
+        (out / "en" / "index.html").write_text(html_en, encoding="utf-8")
     preview_image(payload, out / "vorschau.png")
     for page in ("impressum.html", "datenschutz.html"):
         (out / page).write_text(resources.files("monitor").joinpath(f"templates/{page}").read_text(encoding="utf-8"), encoding="utf-8")
