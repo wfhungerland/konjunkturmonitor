@@ -24,8 +24,11 @@
   a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
   header { background: var(--card); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; }
   .bar { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
-  .bar h1 { font-size: 19px; margin: 0; }
-  .bar .stand { color: var(--muted); font-size: 13.5px; }
+  .bar h1 { font-size: 19px; margin: 0; line-height: 1.15; }
+  .brand { flex: none; } .brand .meta { font-size: 12px; color: var(--grey); line-height: 1.3; }
+  .bar { align-items: center; }
+  @media (min-width: 601px) { nav { flex: 1; font-size: 13px; gap: 0 10px; line-height: 1.6; } }
+  .bar .stand { color: var(--grey); font-size: 12px; }
   nav { display: flex; flex-wrap: wrap; gap: 4px 12px; font: 13.5px var(--ff); }
   main { max-width: 1180px; margin: 0 auto; padding: 8px 16px 40px; }
   /* Startseite: sieben Fragen */
@@ -105,7 +108,7 @@
   .stable td.p.old { font-style: italic; }
   .stable td.t { font-size: 13.5px; }
   .stable td.s { width: 140px; padding-right: 4px; } .stable td.s svg { width: 130px; height: 22px; display: block; }
-  .spk { display: inline-block; position: relative; } .spk small { display: flex; justify-content: space-between; gap: 6px; white-space: nowrap; font-size: 12px; line-height: 1.1; color: var(--grey); padding: 0 2px; }
+  .spk { display: inline-block; position: relative; } .spk small { display: flex; justify-content: space-between; gap: 6px; white-space: nowrap; font-size: 10px; line-height: 1.1; color: var(--grey); padding: 0 2px; }
   .stable td.v, .stable td.d { width: 6.2em; padding-right: 14px; }
   .stable td.t { text-align: center; padding: 3px 0; }
   @media (min-width: 761px) { .stable { table-layout: fixed; }
@@ -185,6 +188,18 @@
   ol.callist .cs { color: var(--muted); font-size: 13.5px; }
   ol.callist sup.e { font-size: 12px; margin-left: 1px; }
   .expandall { margin-left: auto; }
+  /* Suche mit Vorschlägen in der Kopfzeile */
+  .search { position: relative; margin-left: auto; flex: none; }
+  .search input { font: 13.5px/1.5 var(--ff); width: 150px; padding: 1px 9px; border: 1px solid var(--line); border-radius: var(--r); background: #fff; color: var(--text); }
+  .search input:focus { outline: none; border-color: var(--accent); }
+  .search ul { position: absolute; right: 0; top: 1.9em; z-index: 10; list-style: none; margin: 0; padding: 4px 0; width: 380px; max-height: 70vh; overflow-y: auto;
+    background: #fff; border: 1px solid var(--line); border-radius: var(--r); box-shadow: 0 4px 12px rgba(0,0,0,.08); font: 13.5px/1.35 var(--ff); }
+  .search li { padding: 5px 12px; cursor: pointer; }
+  .search li small { display: block; color: var(--grey); font-size: 12px; }
+  .search li.on, .search li:hover { background: var(--tint); }
+  .search li mark { background: none; color: var(--accent); font-weight: 600; }
+  .search + .expandall { margin-left: 0; }
+  @media (max-width: 600px) { .search { order: 6; width: 100%; margin: 2px 0 0; } .search input { width: 100%; } .search ul { left: 0; width: auto; } }
   @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
   .parthead { margin: 96px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 17px var(--ff); color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
   .parthead + section.topic { margin-top: 64px; }
@@ -195,7 +210,7 @@
   nav details.navmore > summary { cursor: pointer; color: var(--accent); list-style: none; } nav details.navmore > summary::after { content: " ▾"; }
   nav .navlist { position: absolute; right: 0; top: 1.6em; background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 8px 12px; display: grid; grid-template-columns: repeat(2, max-content); gap: 4px 18px; box-shadow: 0 4px 12px rgba(0,0,0,.08); z-index: 10; }
   .expandall .short { display: none; }
-  @media (max-width: 1320px) { .expandall .long { display: none; } .expandall .short { display: inline; } }
+  @media (max-width: 1700px) { .expandall .long { display: none; } .expandall .short { display: inline; } }
   @media (max-width: 600px) {
     /* Handy: Kopfzeile in zwei Zeilen, Themen als waagerecht wischbare Zeile */
     .bar { padding: 6px 10px 4px; gap: 2px 6px; align-items: center; }
@@ -221,6 +236,8 @@
   .kpi { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r); color: inherit; background: #fff; }
   .kpi:hover { border-color: var(--accent); text-decoration: none; }
   .kpi .kn { font-size: 15px; color: var(--muted); }
+  .kpi { min-width: 0; } .kpi .kn { overflow-wrap: anywhere; hyphens: auto; }
+  @media (max-width: 600px) { .kpi { padding: 10px 10px; } .kpi .kn { font-size: 13.5px; } .kpi .kv { font-size: 26px; } .kpi .kw, .kpi .ks { font-size: 12px; } .kpi .spk small { font-size: 9px; padding: 0; } }
   .kpi .kv { font-size: 32px; font-weight: 600; color: var(--dark); line-height: 1.15; }
   .kpi .kv span { font-size: 17px; vertical-align: 3px; }
   .kpi .kw, .kpi .ks { font-size: 13.5px; color: var(--grey); }
@@ -275,7 +292,7 @@
 </style>
 </head>
 <body>
-<header id="top"><div class="bar"><h1>Konjunkturmonitor</h1><span class="stand" id="stand"></span><nav id="nav"></nav></div></header>
+<header id="top"><div class="bar"><div class="brand"><h1>Konjunkturmonitor</h1><div class="meta"><span class="stand" id="stand"></span></div></div><nav id="nav"></nav></div></header>
 <main>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
   <p class="news" id="news"></p>
@@ -996,12 +1013,56 @@ function copyText(txt, btn, what) {
   if (navigator.clipboard) navigator.clipboard.writeText(full).then(done, () => prompt("Text kopieren:", full)); else prompt("Text kopieren:", full);
 }
 
+// Suche: Abschnitte und Abbildungen nach Titel, Frage und Reihen; alle Suchwörter müssen vorkommen
+function searchBox() {
+  const norm = s => (s || "").toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const items = [];
+  DATA.topics.forEach(t => {
+    const head = t.question ? t.question.ask : (t.ask || t.title);
+    items.push({ href: "#" + t.id, label: t.title, sub: head !== t.title ? head : "Abschnitt", key: norm([t.title, head].join(" ")), w: 3 });
+    t.charts.forEach(c => { if (c.no == null) return;
+      const ser = Array.isArray(c.series) ? c.series.map(s => s.label) : [];
+      items.push({ href: "#abb-" + c.no, label: `Abb. ${c.no} ${c.title || ""}`, sub: t.title + (c.ask ? " · " + c.ask : ""),
+        key: norm([c.title, c.ask, t.title, ...ser].join(" ")), w: 2 }); });
+  });
+  const box = document.createElement("div"); box.className = "search"; box.setAttribute("role", "search");
+  box.innerHTML = `<input type="search" placeholder="Suchen, z. B. Inflation" aria-label="Abbildungen und Themen durchsuchen" autocomplete="off"><ul hidden role="listbox"></ul>`;
+  const inp = box.querySelector("input"), ul = box.querySelector("ul"); let hits = [], sel = 0;
+  const mark = (s, ws) => { let h = esc(s); ws.forEach(w => { const i = norm(h).indexOf(w); if (i >= 0 && norm(h).length === h.length) h = h.slice(0, i) + "<mark>" + h.slice(i, i + w.length) + "</mark>" + h.slice(i + w.length); }); return h; };
+  const show = () => {
+    const ws = norm(inp.value).split(/\s+/).filter(Boolean);
+    if (!ws.length) { ul.hidden = true; return; }
+    hits = items.filter(it => ws.every(w => it.key.includes(w)))
+      .map(it => ({ it, s: it.w + (norm(it.label).includes(ws[0]) ? 4 : 0) + (norm(it.label).split(/\W+/).some(x => x.startsWith(ws[0])) ? 2 : 0) }))
+      .sort((a, b) => b.s - a.s).slice(0, 10).map(x => x.it);
+    sel = 0;
+    ul.innerHTML = hits.length ? hits.map((it, i) => `<li role="option" data-i="${i}" class="${i === sel ? "on" : ""}">${mark(it.label, ws)}<small>${esc(it.sub)}</small></li>`).join("")
+      : `<li aria-disabled="true"><small>Keine Treffer</small></li>`;
+    ul.hidden = false;
+  };
+  const go = it => { if (!it) return; ul.hidden = true; inp.value = ""; inp.blur();
+    const el = document.querySelector(it.href); if (!el) return;
+    const d = el.closest("details"); if (d) d.open = true;
+    history.replaceState(null, "", it.href); el.scrollIntoView(); scrollBy(0, -70); };
+  inp.addEventListener("input", show);
+  inp.addEventListener("keydown", e => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); if (!hits.length) return; sel = (sel + (e.key === "ArrowDown" ? 1 : hits.length - 1)) % hits.length;
+      ul.querySelectorAll("li").forEach((li, i) => li.classList.toggle("on", i === sel)); }
+    else if (e.key === "Enter") { e.preventDefault(); go(hits[sel]); }
+    else if (e.key === "Escape") { ul.hidden = true; inp.blur(); } });
+  ul.addEventListener("mousedown", e => { const li = e.target.closest("li[data-i]"); if (li) { e.preventDefault(); go(hits[+li.dataset.i]); } });
+  inp.addEventListener("blur", () => setTimeout(() => ul.hidden = true, 100));
+  inp.addEventListener("focus", show);
+  addEventListener("keydown", e => { if (e.key === "/" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); inp.focus(); } });
+  return box;
+}
+
 function build() {
   const S = DATA.site;
   const nw = document.getElementById("news");
   if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
   const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
-  const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `<span class="sl">Stand: </span>${d.toLocaleDateString("de-DE")}`;
+  const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `Stand ${d.toLocaleDateString("de-DE")}`;
   const AS = DATA.all_series || {};
   document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${encodeURI(AS.xlsx)}" download>Excel</a> · <a href="${encodeURI(AS.csv)}" download>CSV</a>` : "",
     `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
@@ -1021,8 +1082,6 @@ function build() {
       <span class="head">${esc(a.head)}</span>${spark(a.spark_data, a.ref)}<span class="per">${esc(a.period)}</span></a>`);
   });
   let no = 0, curPart = null;
-  const MAIN_NAV = (DATA.layout || {}).main_nav || ["wachstum", "preise", "arbeit", "industrie", "konsum", "insolvenzen"];
-  const navMore = document.createElement("div"); navMore.className = "navlist";
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     struktur: { no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
     service: { no: "", title: "Termine", text: "" } };
@@ -1070,17 +1129,15 @@ function build() {
       topics.insertAdjacentHTML("beforeend", `<div class="parthead" id="teil-${part}">${P.no ? `<span>${esc(P.no)}</span> ` : ""}${esc(P.title)}${P.text ? `<p>${esc(P.text)}</p>` : ""}</div>`);
     }
     topics.appendChild(sec);
-    (MAIN_NAV.includes(t.id) ? nav : navMore).insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
+    nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
   });
-  const dd = document.createElement("details"); dd.className = "navmore"; dd.innerHTML = "<summary>Alle Themen</summary>"; dd.appendChild(navMore); nav.appendChild(dd);
-  navMore.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen und Downloads</a>`);
-  navMore.querySelectorAll("a").forEach(a => a.addEventListener("click", () => dd.open = false));
+  nav.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen</a>`);
   nav.insertAdjacentHTML("afterbegin", `<a href="#top"><b>Übersicht</b></a>`);
   const ex = document.createElement("button"); ex.type = "button"; ex.className = "btn expandall"; let opened = false;
   const exLab = () => ex.innerHTML = `<span class="long">Alle Abbildungen ${opened ? "einklappen" : "ausklappen"}</span><span class="short">${opened ? "Einklappen" : "Ausklappen"}</span>`;
   exLab(); ex.title = "Alle Abbildungen aus- oder einklappen";
   ex.onclick = () => { opened = !opened; document.querySelectorAll("details.morecharts").forEach(d => d.open = opened); exLab(); };
-  document.querySelector("header .bar").appendChild(ex);
+  document.querySelector("header .bar").append(searchBox(), ex);
   document.body.insertAdjacentHTML("beforeend", `<a class="fab" href="#top" aria-label="Zur Übersicht">↑ Übersicht</a>`);
 }
 build();
