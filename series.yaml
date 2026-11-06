@@ -180,6 +180,7 @@ charts:
   hh_income: {title: "Real verfügbares Einkommen je Einwohner", decimals: 1}
   wages: {title: "Nominal- und Reallöhne", decimals: 1}
   ulc: {title: "Lohnstückkosten", decimals: 1}
+  gdp_rev: {title: "BIP-Wachstum: erste Meldung und heutiger Stand", decimals: 1}
   alq_land: {title: "Arbeitslosenquote nach Ländern", decimals: 1}
   tarif: {title: "Tarifverdienste und Verbraucherpreise", decimals: 1}
   spf: {title: "Langfristige Inflationserwartung der Fachleute", decimals: 2}
@@ -1603,6 +1604,49 @@ series:
     stale_after_months: 3
     label: "Niedrigwassertage"
     note: "Tage je Monat mit einem Tagesmittel unter 78 cm."
+
+  - id: gdp_rt_first
+    block: wachstum
+    source: static
+    key: gdp_rt_first
+    params: {source_name: "Deutsche Bundesbank, Echtzeitdatenbank; eigene Berechnung"}
+    license: "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)"
+    title: "BIP-Wachstum ggü. Vorquartal in der ersten Veröffentlichung"
+    unit: "% ggü. Vorquartal"
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    start: "2005-01-01"
+    chart: gdp_rev
+    label: "erste Meldung"
+
+  - id: gdp_rt_latest
+    block: wachstum
+    source: static
+    key: gdp_rt_latest
+    params: {source_name: "Deutsche Bundesbank, Echtzeitdatenbank; eigene Berechnung"}
+    license: "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)"
+    title: "BIP-Wachstum ggü. Vorquartal im jüngsten Datenstand"
+    unit: "% ggü. Vorquartal"
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    start: "2005-01-01"
+    chart: gdp_rev
+    label: "heutiger Stand"
+
+  - id: gdp_rt_rev
+    block: wachstum
+    source: static
+    key: gdp_rt_rev
+    params: {source_name: "Deutsche Bundesbank, Echtzeitdatenbank; eigene Berechnung"}
+    license: "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)"
+    title: "Revision des BIP-Wachstums seit der ersten Veröffentlichung"
+    unit: "Pp"
+    frequency: Q
+    adjustment: preis-, saison- und kalenderbereinigt
+    start: "2005-01-01"
+    chart: gdp_rev
+    label: "Revision"
+    style: bar
 
   - id: rhine_lowdays_year
     block: wetter

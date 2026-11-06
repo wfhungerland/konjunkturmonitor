@@ -57,6 +57,10 @@ topics:
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
 
 charts:
+  gdp_rev:
+    title: "GDP growth: first release and current vintage"
+    ask: "How much is GDP growth revised after the first release?"
+    caption: "Real GDP growth on the previous quarter as first published by the Federal Statistical Office and as it stands in the latest vintage; bars: revision since then in percentage points (positive: revised up). Based on the stored vintages of the Bundesbank's real-time database since 2005. The first release of a quarter rests on incomplete information; later vintages and benchmark revisions often change it by several tenths."
   alq_land:
     title: "Unemployment rate by state"
     ask: "In which states is unemployment high, where is it rising?"
@@ -447,6 +451,9 @@ charts:
     caption: "Dates are estimated from the sources' usual release schedules and marked with a superscript e. The linked calendars of the sources are authoritative. The links lead to the charts that receive new values on that date."
 
 series:
+  gdp_rt_first: {label: "first release", title: "GDP growth on previous quarter, first release"}
+  gdp_rt_latest: {label: "current vintage", title: "GDP growth on previous quarter, latest vintage"}
+  gdp_rt_rev: {label: "Revision", title: "Revision of GDP growth since first release"}
   de_alq_land: {label: "{land_name}", title: "Unemployment rate {land_name}, annual average"}
   de_tarif: {title: "Index of agreed monthly earnings including special payments, economy as a whole"}
   de_tarif_yoy: {label: "Agreed earnings", title: "Agreed earnings including special payments, % on a year earlier"}

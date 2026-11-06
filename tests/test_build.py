@@ -67,3 +67,15 @@ def test_archive_revisions_and_news(tmp_path):
     mark_revisions(r3, arch)
     assert r3[0]["revised"] == {"from": 2.0, "stand": "2026-11-01"}
     assert len(arch) == 3
+
+
+def test_gdp_revisions_first_and_latest():
+    from monitor.wetter import gdp_revisions
+    hdr = ("DATAFLOW;BBK_STD_FREQ;BBK_STD_AREA;BBK_STD_ADJUSTMENT;BBK_RTD_ACCOUNTSYS;BBK_RTD_IND_CATEG;BBK_RTD_IND_IDENT;BBK_PRICEUNIT;"
+           "BBK_RTD_CALCBASIS;BBK_RTD_REL_YEAR;BBK_RTD_REL_MONTH;BBK_RTD_REL_DAY;TIME_PERIOD;OBS_VALUE")
+    rows = [("2026;08;25", "2026-Q1", 100), ("2026;08;25", "2026-Q2", 100.5),
+            ("2026;10;30", "2026-Q1", 100), ("2026;10;30", "2026-Q2", 100.3), ("2026;10;30", "2026-Q3", 100.5)]
+    text = "﻿" + hdr + "\n" + "\n".join(f"BBK:BBKRT(1.0);Q;DE;Y;A;AG1;CA010;A;I;{v};{p};{x}" for v, p, x in rows)
+    first, latest = gdp_revisions(text)
+    assert first.round(2).tolist() == [0.5, 0.2]   # Q2 zuerst mit 0,5 % gemeldet, Q3 mit 0,2 %
+    assert latest.round(2).tolist() == [0.3, 0.2]  # Q2 heute 0,3 %
