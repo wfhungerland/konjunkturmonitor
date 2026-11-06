@@ -306,11 +306,71 @@ def _workdays(year: int, month: int) -> list:
     return [d for d in days if d.month == month and d.weekday() < 5 and (d.month, d.day) not in fixed]
 
 
+def update_release_log(root: Path) -> pd.DataFrame:
+    """Protokoll, wann der Monitor einen neuen Zeitraum je Reihe zum ersten Mal abgerufen hat (data/archive/erscheinen.csv).
+    Beim ersten Lauf werden die vorhandenen Zeiträume ohne Datum eingetragen, weil ihr Erscheinungstag unbekannt ist."""
+    path = root / "data" / "archive" / "erscheinen.csv"
+    status = root / "data" / "processed" / "run_status.json"
+    cols = ["series", "period", "first_seen"]
+    log = pd.read_csv(path, dtype=str, keep_default_na=False) if path.exists() else pd.DataFrame(columns=cols)
+    if not status.exists():
+        return log
+    first_run = not path.exists()
+    today = pd.Timestamp.now(tz="Europe/Berlin").strftime("%Y-%m-%d")
+    seen = set(zip(log["series"], log["period"]))
+    new = []
+    for s in json.loads(status.read_text(encoding="utf-8")).get("series", []):
+        if s.get("status") not in ("ok", "cache") or not s.get("last"):
+            continue
+        key = (s["series_id"], str(s["last"]))
+        if key not in seen:
+            new.append({"series": key[0], "period": key[1], "first_seen": "" if first_run else today})
+    if new:
+        log = pd.concat([log, pd.DataFrame(new, columns=cols)], ignore_index=True)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        log.to_csv(path, index=False)
+    return log
+
+
+def _learned_rule(dates: list[pd.Timestamp]) -> dict | None:
+    """Üblicher Erscheinungstag aus beobachteten Terminen: n-ter Werktag oder n Werktage vor Monatsende, je nachdem, was stabiler ist."""
+    if len(dates) < 2:
+        return None
+    first, last = [], []
+    for d in dates:
+        wd = _workdays(d.year, d.month)
+        days = [x.strftime("%Y-%m-%d") for x in wd]
+        k = d.strftime("%Y-%m-%d")
+        if k not in days:
+            continue
+        i = days.index(k)
+        first.append(i + 1)
+        last.append(len(days) - 1 - i)
+    if len(first) < 2:
+        return None
+    spread = lambda v: max(v) - min(v)
+    med = lambda v: int(sorted(v)[len(v) // 2])
+    rule = {"workday": med(first)} if spread(first) <= spread(last) else {"last_workday": med(last)}
+    return dict(rule, n=len(first))
+
+
 def _calendar(root: Path, start: pd.Timestamp, months: int = 2, weeks: int | None = None) -> dict | None:
     path = root / "data" / "static" / "kalender.yaml"
     if not path.exists():
         return None
     cfg = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    logp = root / "data" / "archive" / "erscheinen.csv"
+    rel = pd.read_csv(logp, dtype=str, keep_default_na=False) if logp.exists() else pd.DataFrame(columns=["series", "period", "first_seen"])
+    rel = rel[rel["first_seen"] != ""]
+    for it in cfg.get("items") or []:  # gelernte Regel ersetzt die geschätzte, sobald mindestens zwei Erscheinungstage vorliegen
+        ser = it.get("series") or []
+        if not ser or rel.empty:
+            continue
+        days = sorted({pd.Timestamp(x) for x in rel.loc[rel["series"].isin(ser), "first_seen"]})
+        lr = _learned_rule(days)
+        if lr:
+            it["rule"] = dict({k: v for k, v in (it.get("rule") or {}).items() if k == "months"}, **{k: v for k, v in lr.items() if k != "n"})
+            it["learned"] = lr["n"]
     events = []
     for k in range(months):
         m0 = (start + pd.DateOffset(months=k))
@@ -331,7 +391,7 @@ def _calendar(root: Path, start: pd.Timestamp, months: int = 2, weeks: int | Non
                 if weeks and not (start.normalize() <= d < start.normalize() + pd.Timedelta(weeks=weeks)):
                     continue
                 events.append({"date": d.strftime("%Y-%m-%d"), "name": it["name"], "source": it.get("source", ""), "topic": it.get("topic"),
-                               "charts": it.get("charts") or [], "estimated": not it.get("fixed")})
+                               "charts": it.get("charts") or [], "estimated": not it.get("fixed"), "learned": it.get("learned", 0)})
     first = start.replace(day=1)
     return {"months": [(first + pd.DateOffset(months=k)).strftime("%Y-%m") for k in range(months)],
             "events": sorted(events, key=lambda e: e["date"]), "links": cfg.get("links") or []}
@@ -829,6 +889,7 @@ def _outliers(c: dict) -> list[dict]:
 
 def build_payload(root: Path = ROOT) -> dict:
     cfg = yaml.safe_load((root / "monitor.yaml").read_text(encoding="utf-8"))
+    update_release_log(root)
     layout = cfg.get("layout") or {}
     data, stand = load_observations(root)
     meta, charts_cfg = _series_meta(root / "series.yaml")

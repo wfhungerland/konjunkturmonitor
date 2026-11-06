@@ -3,23 +3,25 @@
 # Regeln: workday: n  -> n-ter Werktag des Monats; last_workday: n -> n Werktage vor dem letzten Werktag (0 = letzter);
 #         weekday: 1   -> jeden Dienstag (0 = Montag); months: nur in diesen Monaten.
 # charts: Abbildungen, die mit dieser Veröffentlichung neue Werte erhalten.
+# series: Reihen, an deren erstem Abruf eines neuen Zeitraums der Monitor den tatsächlichen Erscheinungstag erkennt
+#         (data/archive/erscheinen.csv). Ab zwei beobachteten Terminen ersetzt der gelernte übliche Werktag die Regel.
 links:
   - {name: "Destatis, Veröffentlichungskalender", url: "https://www.destatis.de/DE/Presse/Termine/_inhalt.html"}
   - {name: "Bundesagentur für Arbeit, Veröffentlichungskalender", url: "https://statistik.arbeitsagentur.de/DE/Navigation/Service/Veroeffentlichungskalender/Veroeffentlichungskalender-Nav.html"}
   - {name: "Eurostat, Release calendar", url: "https://ec.europa.eu/eurostat/news/release-calendar"}
   - {name: "Deutsche Bundesbank, Wöchentlicher Aktivitätsindex", url: "https://www.bundesbank.de/de/statistiken/konjunktur-und-preise/woechentlicher-aktivitaetsindex"}
 items:
-  - {name: "Auftragseingang Industrie", source: Destatis, rule: {workday: 4}, topic: industrie, charts: [industry, orders_split, orders_euro, orders_heat, orders_heat_bars]}
-  - {name: "Produktion im Produzierenden Gewerbe", source: Destatis, rule: {workday: 5}, topic: industrie, charts: [branch_heat, branch_heat_bars, prod_groups, sales, bau_prod]}
-  - {name: "Außenhandel", source: Destatis, rule: {workday: 6}, topic: export, charts: [trade, trade_region]}
-  - {name: "Unternehmensinsolvenzen", source: Destatis, rule: {workday: 8}, topic: insolvenzen, charts: [insolv, insolv_land, insolv_emp, insolv_claims]}
+  - {name: "Auftragseingang Industrie", series: [de_orders], source: Destatis, rule: {workday: 4}, topic: industrie, charts: [industry, orders_split, orders_euro, orders_heat, orders_heat_bars]}
+  - {name: "Produktion im Produzierenden Gewerbe", series: [de_ip], source: Destatis, rule: {workday: 5}, topic: industrie, charts: [branch_heat, branch_heat_bars, prod_groups, sales, bau_prod]}
+  - {name: "Außenhandel", series: [de_exports], source: Destatis, rule: {workday: 6}, topic: export, charts: [trade, trade_region]}
+  - {name: "Unternehmensinsolvenzen", series: [de_insolv], source: Destatis, rule: {workday: 8}, topic: insolvenzen, charts: [insolv, insolv_land, insolv_emp, insolv_claims]}
   - {name: "Verbraucherpreise, endgültig", source: Destatis, rule: {workday: 9}, topic: preise, charts: [cpi, cpi_contrib, cpi_core]}
-  - {name: "Erzeugerpreise", source: Destatis, rule: {workday: 14}, topic: preise, charts: [pipeline_prices, pipeline_core]}
-  - {name: "BIP, ausführliche Ergebnisse", source: Destatis, rule: {workday: 17, months: [2, 5, 8, 11]}, topic: wachstum, charts: [gdp_contrib, gdp_use, deflator]}
-  - {name: "Einfuhrpreise", source: Destatis, rule: {last_workday: 4}, topic: preise, charts: [trade_prices]}
-  - {name: "Wirtschaftsklima (ESI)", source: EU-Kommission, rule: {last_workday: 1}, topic: stimmung, charts: [clock, sentiment, sector_now, sector_next, price_exp, consumer]}
-  - {name: "Einzelhandelsumsatz", source: Destatis, rule: {last_workday: 1}, topic: konsum, charts: [retail, retail_split]}
-  - {name: "Arbeitsmarkt", source: BA, rule: {last_workday: 0}, topic: arbeit, charts: [labour, labour_flows, sahm, kurzarbeit]}
-  - {name: "Verbraucherpreise, vorläufig", source: Destatis, rule: {last_workday: 0}, topic: preise, charts: [cpi, cpi_contrib, cpi_core]}
-  - {name: "BIP, Schnellmeldung", source: Destatis, rule: {last_workday: 0, months: [1, 4, 7, 10]}, topic: wachstum, charts: [gdp_level]}
+  - {name: "Erzeugerpreise", series: [de_ppi_yoy], source: Destatis, rule: {workday: 14}, topic: preise, charts: [pipeline_prices, pipeline_core]}
+  - {name: "BIP, ausführliche Ergebnisse", series: [de_gdp_contrib_p31_s14_s15], source: Destatis, rule: {workday: 17, months: [2, 5, 8, 11]}, topic: wachstum, charts: [gdp_contrib, gdp_use, deflator]}
+  - {name: "Einfuhrpreise", series: [de_import_prices_yoy], source: Destatis, rule: {last_workday: 4}, topic: preise, charts: [trade_prices]}
+  - {name: "Wirtschaftsklima (ESI)", series: [de_esi], source: EU-Kommission, rule: {last_workday: 1}, topic: stimmung, charts: [clock, sentiment, sector_now, sector_next, price_exp, consumer]}
+  - {name: "Einzelhandelsumsatz", series: [de_retail], source: Destatis, rule: {last_workday: 1}, topic: konsum, charts: [retail, retail_split]}
+  - {name: "Arbeitsmarkt", series: [de_alq_sa], source: BA, rule: {last_workday: 0}, topic: arbeit, charts: [labour, labour_flows, sahm, kurzarbeit]}
+  - {name: "Verbraucherpreise, vorläufig", series: [de_cpi_yoy], source: Destatis, rule: {last_workday: 0}, topic: preise, charts: [cpi, cpi_contrib, cpi_core]}
+  - {name: "BIP, Schnellmeldung", series: [de_gdp_qoq], source: Destatis, rule: {last_workday: 0, months: [1, 4, 7, 10]}, topic: wachstum, charts: [gdp_level]}
   - {name: "Aktivitätsindex", source: Bundesbank, rule: {weekday: 1}, topic: wachstum, charts: [wai]}
