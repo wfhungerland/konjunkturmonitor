@@ -15,9 +15,9 @@
 <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.de">
 <script src="plotly.min.js"></script>
 <style>
-  :root { --bg: #f7f7f5; --card: #fff; --text: #000; --muted: #000; --line: #e2e5e9; --accent: #164a8c; --dark: #002060;
+  :root { --bg: #f7f7f5; --card: #fff; --text: #000; --muted: #000; --line: #e2e5e9; --accent: #000; --dark: #000;  /* Schrift außerhalb der Grafiken durchgehend schwarz; Grafiken haben eigene Farben */
     --ff: "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
-    --grey: #595959; --rule: #8c8c8c; --tint: #eef3f9; --box: #f2f3f4; --r: 6px; }
+    --grey: #000; --rule: #8c8c8c; --tint: #eef3f9; --box: #f2f3f4; --r: 6px; }
   * { box-sizing: border-box; }
   html, body { max-width: 100%; overflow-x: clip; }  /* clip statt hidden, sonst bleibt die Kopfzeile beim Scrollen nicht oben */
   body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 var(--ff); }
@@ -51,7 +51,7 @@
   .rail .rh { font-weight: 600; color: var(--dark); margin: 0 0 6px; }
   .rail a { display: block; color: var(--muted); padding: 3px 0; }
   .rail a:hover { color: var(--text); text-decoration: none; }
-  .rail a.on { color: var(--accent); }
+  .rail a.on { color: var(--accent); font-weight: 600; }
   .rail a b { font-weight: 600; }
   @media (min-width: 1240px) {
     main, .bar { max-width: 1320px; }
