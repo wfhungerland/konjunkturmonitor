@@ -45,7 +45,7 @@
   .more { color: var(--text); margin: 0 0 8px; padding-left: 18px; max-width: 48em; }
   .explain { background: var(--card); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 8px 0 14px; max-width: 48em; font-size: 15px; }
   .explain b { font-family: "Source Sans 3", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif; color: var(--accent); }
-  .charts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
+  .charts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 68px; }
   @media (max-width: 900px) { .charts { grid-template-columns: 1fr; } }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px 8px; min-width: 0; }
   .card h3 { font-size: 16px; margin: 0 0 2px; }
@@ -536,7 +536,7 @@ function calendarChart(el, c) {
   days.forEach(d => { const dt = new Date(d + "T12:00:00Z");
     html += `<li class="${d === next ? "next" : ""}"><span class="cd">${d === next ? "<b>Nächster Termin</b><br>" : ""}${wd[dt.getUTCDay()]}, ${dt.getUTCDate()}. ${MONTHS_L[dt.getUTCMonth()]} ${dt.getUTCFullYear()}</span>`
       + `<span class="ce">${byDay[d].map(e => `<a href="#${e.topic}">${esc(e.name)}</a>${e.estimated ? '<sup class="e" title="geschätzt">e</sup>' : ""} <span class="cs">${esc(e.source)}</span>${(e.figs || []).length ? ` <span class="cf">→ ${e.figs.map(n => `<a href="#abb-${n}">Abb. ${n}</a>`).join(", ")}</span>` : ""}`).join("<br>")}</span></li>`; });
-  html += `</ol>${K.events.some(e => e.estimated) ? `<p class="callinks"><sup>e</sup> geschätzt nach dem üblichen Veröffentlichungsrhythmus der Quelle.</p>` : ""}<p class="callinks">Kalender der Quellen: ${K.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(" · ")}</p>`;
+  html += `</ol>${K.events.some(e => e.estimated) ? `<p class="callinks"><sup>e</sup> geschätzt nach dem üblichen Veröffentlichungsrhythmus der Quelle${K.events.some(e => e.learned) ? "; wo möglich aus den Tagen abgeleitet, an denen der Monitor neue Zahlen tatsächlich erstmals abgerufen hat" : ""}.</p>` : ""}<p class="callinks">Kalender der Quellen: ${K.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(" · ")}</p>`;
   el.innerHTML = html;
 }
 
