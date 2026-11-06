@@ -1,25 +1,20 @@
 # Konjunkturmonitor
 
-Wie geht es der deutschen Wirtschaft? Sieben Fragen, sieben Antworten, jeden Werktag neu aus amtlichen und offenen Daten.
+Wie steht es um die deutsche Wirtschaft? Kennzahlen, Antworten in ganzen Sätzen und gut 90 Abbildungen, jeden Werktag neu aus amtlichen und offenen Daten.
 
 Seite: https://wfhungerland.github.io/konjunkturmonitor/
 
 ## Aufbau
 
-- **Auf einen Blick:** sieben Fragen in Alltagssprache. Jede bekommt eine große Zahl, ein kurzes Urteil, einen Antwortsatz und eine Mini-Grafik der letzten fünf Jahre.
-  - Wächst die Wirtschaft?
-  - Steigen die Preise?
-  - Gibt es genug Arbeit?
-  - Läuft die Industrie?
-  - Kaufen die Leute ein?
-  - Läuft der Export?
-  - Was erwarten die Unternehmen?
-- **Themen:** je Frage ein Abschnitt mit dem Antwortsatz, Vergleichen, einer Erklärung („Was heißt das?“) und Abbildungen.
-- **Abbildungen:** nach dem Grafikstandard (Werteachse rechts, Jahresbänder, Arial Narrow, feste Farbfolge, Einheit an der obersten Zahl). Wo es klarer ist, gibt es eigene Formen:
-  - Wachstumsbeiträge als gestapelte Balken
-  - Konjunkturuhr aus der EU-Industrieumfrage
-  - Prognosespektrum
-  - Rezessionssignal mit Rezessionsbändern
+Eine lange Seite, deutsch unter `/` und englisch unter `/en/` (Sprachschalter unter dem Titel).
+
+- **Kopfzeile (fixiert):** Titel, Sprachschalter und Stand; alle Themen als Links; Suche mit Vorschlägen (Taste `/`); Knopf zum Aus- und Einklappen aller Abbildungen.
+- **Start:** zwei bis drei Sätze zur Gesamtlage, „Heute neu“, sechs Kennzahl-Kacheln mit Fünfjahresverlauf, alle Kennzahlen als Tabelle (aufklappbar).
+- **Teil I Konjunktur, Teil II Struktur, Termine:** je Abschnitt eine Frage als Überschrift, ein Antwortsatz aus den Daten mit Erläuterung, eine Leitabbildung und weitere Abbildungen zum Aufklappen. Ab 1240 px Breite läuft links die Liste der Abbildungen des Abschnitts mit.
+- **Diese Woche neu:** Abbildungen mit neuen Daten in den letzten sieben Tagen.
+- **Quellen und Hinweise:** Methodik, Quellen und Lizenzen, fehlende Indikatoren, Gesamtdownloads, Abrufstatus, Zitiervorschlag.
+
+Jede Abbildung hat Nummer, Unterfrage, Sätze zum jüngsten Stand, Titel, Erläuterung in der Randspalte, Quelle und Lizenz sowie das Menü „Download und Link“ (XLSX, PPTX, PNG, CSV, Link kopieren).
 
 ## Daten
 
@@ -44,16 +39,25 @@ Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global
 
 ## Darstellung
 
-Die Darstellung nach Tufte steuern Schalter im Bereich `layout` von `monitor.yaml`. Jeder lässt sich einzeln mit `false` zurücknehmen:
-`start_table` (Kennzahlentabelle statt Fragekarten), `minimal` (ohne Rahmen und Etiketten, Erläuterungen als Randnotiz), `direct_labels` (Beschriftung am Linienende), `small_multiples` (kleine Einzeldiagramme für Abbildungen mit `multiples: true`), `compare_band` (Spanne 2015 bis 2019), `uniform_years` (einheitliches Zeitfenster), `lead_chart_only` (eine Leitgrafik je Thema, weitere aufklappbar), `overview` (zwei bis drei Sätze zur Gesamtlage) und `red_zero_line` (rote Nulllinie wie im Grafikstandard; ausgeschaltet bleibt Rot den Warnsignalen vorbehalten).
+- **Schrift:** Source Sans 3 in vier Schnitten, mitgeliefert unter `monitor/static/fonts/` (SIL Open Font License); keine fremden Server.
+- **Größen:** 12, 13,5, 15, 17, 19 und 26 px, Kennzahlen 32 px.
+- **Farben:** Text außerhalb der Grafiken schwarz, Links ohne Unterstrich. Datenfarben nur in Grafiken, erste Reihe #002060. Rot (#C00000) nur für Warnsignale: ungünstige Anstiege und Schwellen.
+- **Grafiken (Plotly):** Werteachse rechts, runde Schritte, waagerechte Gitterlinien, Einheit über der obersten Zahl, helle Flächen für jedes zweite Kalenderjahr, keine Werkzeugleiste.
+- **Tendenz:** ▲ ▼ ■; in der Tabelle `kind: rate` als Differenz, `kind: level` prozentual; `up_bad: true` färbt einen Anstieg rot.
 
-Die Kennzahlentabelle zeigt je Zeile Wert, Vergleich zur Vorperiode, zum Vorjahr und den Dreimonatsvergleich sowie die Tendenz (▲ ▼ ■). `kind: rate` vergleicht als Differenz, `kind: level` prozentual; `up_bad: true` färbt einen Anstieg rot. Die Seite enthält die Kernzahlen auch als statisches HTML und ein Vorschaubild (`vorschau.png`). Impressum und Datenschutzerklärung liegen in `monitor/templates/`. Eigene Texte und Abbildungen stehen unter CC BY 4.0.
+Weitere Schalter stehen im Bereich `layout` von `monitor.yaml`; jeder lässt sich einzeln mit `false` zurücknehmen:
+- `start_table`: Kennzahlentabelle statt Fragekarten
+- `minimal`: ohne Rahmen; Erläuterungen kursiv in der Randspalte
+- `direct_labels`: „Jüngste Werte einblenden“ am Linienende
+- `small_multiples`, `compare_band`, `uniform_years`, `lead_chart_only`, `overview`, `red_zero_line`, `word_export`
+
+Die Seite enthält die Kernzahlen auch als statisches HTML und ein Vorschaubild (`vorschau.png`). Impressum und Datenschutzerklärung liegen in `monitor/templates/`. Eigene Texte und Abbildungen stehen unter CC BY 4.0.
 
 ### Quellenweg und Lizenzgrenzen
 
 Alle Reihen werden bei jedem Lauf direkt bei der Quelle abgerufen: Bundesbank (SDMX-REST), Eurostat (JSON-API), Destatis (GENESIS-Webservice, Zugang über Repository-Secrets), FRED (CSV). Statische Reihen in `data/static` (AMECO, OECD-Steuersätze, Kartengrenzen, Kalenderregeln, Hinweise auf Sondereffekte) werden von Hand aktualisiert; der Abrufstand steht jeweils im Katalog (`note`). Nicht aufgenommen sind Daten, deren Weiterverbreitung eine Lizenz erfordert (ifo, ZEW, S&P Global PMI, GfK/NIM, HDE, IAB-Barometer, IWH-Insolvenztrend, EEX-Terminpreise, RWI/ISL-Containerindex), und Größen ohne abrufbare Zeitreihe (Unterbeschäftigung der BA, Finanzlage der Sozialversicherung, Investitionshemmnisse, Zerlegung des Produktionspotenzials). Die Seite nennt diese Lücken im Abschnitt „Was fehlt und warum“.
 
-Die Seite gliedert sich in Teil I Konjunktur (Monats- und Quartalszahlen), Teil II Struktur (Jahreszahlen und Staatsfinanzen) und Termine; die Zuordnung steht je Abschnitt in `monitor.yaml` (`part`).
+Die Zuordnung der Abschnitte zu Teil I, Teil II und Termine steht je Abschnitt in `monitor.yaml` (`part`). Texte für die englische Seite stehen in `data/static/en.yaml`, Satzvorlagen in `data/static/saetze.yaml`.
 
 ## Downloads
 
@@ -81,7 +85,7 @@ python -m monitor build
 
 `run` holt die Daten und baut die Seite. `build` baut nur die Seite aus `data/processed`.
 
-Der Workflow `update.yml` läuft werktags zweimal, bei Änderungen auf `main` und von Hand. Er committet die Daten und veröffentlicht `site/` auf GitHub Pages; unter Settings, Pages muss als Quelle „GitHub Actions“ gewählt sein.
+Der Workflow `update.yml` läuft werktags zweimal (7:23 und 12:23 UTC), bei Änderungen auf `main`, in Pull Requests und von Hand. Er committet die Daten, prüft die fertige Seite im Browser (`tests/smoke.js`, deutsch und englisch) und veröffentlicht `site/` auf GitHub Pages; unter Settings, Pages muss als Quelle „GitHub Actions“ gewählt sein. Fallen Reihen aus, legt er ein Issue „Datenabruf: Ausfälle“ an.
 
 ## Prognosen pflegen
 

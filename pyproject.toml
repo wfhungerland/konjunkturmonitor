@@ -29,7 +29,7 @@ konjunkturmonitor = "monitor.cli:main"
 packages = ["monitor"]
 
 [tool.setuptools.package-data]
-monitor = ["templates/*.html"]
+monitor = ["templates/*.html", "static/fonts/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

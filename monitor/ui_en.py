@@ -8,6 +8,7 @@ PAIRS: list[tuple[str, str]] = [
     # Sprache, Formate, Pfade
     ('<html lang="de">', '<html lang="en">'),
     ('<script src="plotly.min.js">', '<script src="../plotly.min.js">'),
+    ('url("fonts/', 'url("../fonts/'),
     ('href="feed.xml"', 'href="../feed.xml"'),
     ('href="impressum.html"', 'href="../impressum.html"'),
     ('href="datenschutz.html"', 'href="../datenschutz.html"'),
