@@ -57,6 +57,23 @@ topics:
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
 
 charts:
+  alq_land:
+    title: "Unemployment rate by state"
+    ask: "In which states is unemployment high, where is it rising?"
+    what: "unemployment rate"
+    caption: "Unemployment rate by state, annual average, relative to the civilian labour force (Federal Employment Agency via the Federal Statistical Office). The number gives the rate, the colour the change on the previous year: orange up, blue down. The official database offers no monthly figures by state, so the map changes once a year."
+  tarif:
+    title: "Agreed pay and consumer prices"
+    ask: "Is agreed pay rising faster than prices?"
+    caption: "Collectively agreed monthly earnings including special payments in the economy as a whole (Federal Statistical Office) and consumer prices, each on the same month a year earlier. If agreed earnings rise faster than inflation, agreed pay rises in real terms. One-off payments such as the inflation compensation bonus in 2023 and 2024 cause jumps in the series."
+  ulc:
+    title: "Unit labour costs"
+    ask: "Are unit labour costs rising faster than in the euro area?"
+    caption: "Unit labour costs: compensation per employee relative to real output per person employed, on the same quarter a year earlier (Eurostat). If they rise persistently faster in Germany than in the euro area, the German economy loses price competitiveness; they rise when wages grow faster than productivity."
+  spf:
+    title: "Long-term inflation expectations of experts"
+    ask: "Do experts trust that inflation will return to 2%?"
+    caption: "Expected euro area inflation in four to five years, average of point forecasts in the ECB's quarterly survey of experts from banks, research and associations (Survey of Professional Forecasters). Blue dashed: the ECB's 2% target. If expectations are close to the target, inflation expectations are considered anchored."
   downturns:
     title: "Downturns compared"
     ask: "How deep is the current downturn compared with earlier crises?"
@@ -430,6 +447,12 @@ charts:
     caption: "Dates are estimated from the sources' usual release schedules and marked with a superscript e. The linked calendars of the sources are authoritative. The links lead to the charts that receive new values on that date."
 
 series:
+  de_alq_land: {label: "{land_name}", title: "Unemployment rate {land_name}, annual average"}
+  de_tarif: {title: "Index of agreed monthly earnings including special payments, economy as a whole"}
+  de_tarif_yoy: {label: "Agreed earnings", title: "Agreed earnings including special payments, % on a year earlier"}
+  de_ulc_yoy: {label: "Germany", title: "Unit labour costs (per person employed), Germany, % on same quarter a year earlier"}
+  ea_ulc_yoy: {label: "Euro area", title: "Unit labour costs (per person employed), euro area, % on same quarter a year earlier"}
+  ea_spf_lt: {label: "Expectation five years ahead", title: "Long-term inflation expectation of experts (ECB Survey of Professional Forecasters), euro area"}
   de_gdp_qoq: {title: "Real GDP, % on previous quarter", label: "GDP", unit: "% on previous quarter", adjustment: "price, seasonally and calendar adjusted"}
   de_gdp_yoy: {title: "Real GDP, % on same quarter a year earlier (unadjusted, as in the Destatis release)", unit: "% on same quarter a year earlier", adjustment: "price adjusted, not seasonally or calendar adjusted"}
   de_gdp_index: {title: "Real GDP, index 2020 = 100", label: "GDP", unit: "Index 2020=100", adjustment: "price, seasonally and calendar adjusted"}

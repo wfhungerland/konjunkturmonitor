@@ -740,11 +740,11 @@ function geoSvg(w, m) {
   const rows = Object.fromEntries(w.rows.map(r => [r.abbr, r]));
   svg.setAttribute("aria-label", w.rows.map(r => `${r.name} ${fmt(r.change, 0)} %`).join(", "));
   G.forEach(f => {
-    const r = rows[f.abbr], col = r ? tileColor(r.change, m) : { bg: "#eee", fg: "#000" };
+    const r = rows[f.abbr], col = r ? tileColor(r.change, m) : { bg: "#eee", fg: "#000" }, dl = r && w.measure === "diff";
     const d = f.rings.map(ring => "M" + ring.map(([lo, la]) => `${X(lo).toFixed(3)},${Y(la).toFixed(3)}`).join("L") + "Z").join("");
     const p = document.createElementNS(ns, "path"); p.setAttribute("d", d); p.setAttribute("fill", col.bg); p.setAttribute("fill-rule", "evenodd");
     p.setAttribute("stroke", "#fff"); p.setAttribute("stroke-width", "0.03"); p.setAttribute("stroke-linejoin", "round");
-    const tt = document.createElementNS(ns, "title"); tt.textContent = r ? `${r.name}: ${fmt(r.change, 1)} % (${r.sum.toLocaleString("de-DE")} in ${w.months} Monaten)` : f.abbr;
+    const tt = document.createElementNS(ns, "title"); tt.textContent = dl ? `${r.name}: ${fmt(r.level, 1)} % (${r.change > 0 ? "+" : ""}${fmt(r.change, 1)} Pp)` : r ? `${r.name}: ${fmt(r.change, 1)} % (${r.sum.toLocaleString("de-DE")} in ${w.months} Monaten)` : f.abbr;
     p.appendChild(tt); svg.appendChild(p);
   });
   G.forEach(f => {
@@ -754,7 +754,7 @@ function geoSvg(w, m) {
     if (off) { const tx = lx + off[0], ty = ly - off[1]; const l = document.createElementNS(ns, "line");
       Object.entries({ x1: lx, y1: ly, x2: tx, y2: ty, stroke: "#a6a6a6", "stroke-width": 0.012 }).forEach(([a, v]) => l.setAttribute(a, v)); svg.appendChild(l); lx = tx; ly = ty; fg = "#000"; }
     const t = document.createElementNS(ns, "text"); t.setAttribute("x", lx); t.setAttribute("y", ly); t.setAttribute("text-anchor", "middle"); t.setAttribute("fill", fg);
-    t.setAttribute("font-size", "0.3"); t.innerHTML = `<tspan font-weight="bold">${r.abbr}</tspan><tspan x="${lx}" dy="0.32">${pct0(r.change)}</tspan>`;
+    t.setAttribute("font-size", "0.3"); t.innerHTML = `<tspan font-weight="bold">${r.abbr}</tspan><tspan x="${lx}" dy="0.32">${w.measure === "diff" ? fmt(r.level, 1) + " %" : pct0(r.change)}</tspan>`;
     svg.appendChild(t);
   });
   return svg;
@@ -764,7 +764,7 @@ function tilesChart(el, c) {
   const box = document.createElement("div"); el.appendChild(box);
   const draw = w => {
     box.innerHTML = ""; el._w = w; box.className = "tilebox";
-    const m = Math.max(10, ...w.rows.map(r => Math.abs(r.change)));
+    const diff = w.measure === "diff", m = diff ? Math.max(0.5, ...w.rows.map(r => Math.abs(r.change))) : Math.max(10, ...w.rows.map(r => Math.abs(r.change)));
     if (DATA.geo) box.appendChild(geoSvg(w, m));
     else {
       const grid = document.createElement("div"); grid.className = "tiles";
@@ -776,11 +776,11 @@ function tilesChart(el, c) {
     const lo = tileColor(-m, m), hi = tileColor(m, m);
     const leg = document.createElement("div"); leg.className = "tside"; box.appendChild(leg);
     leg.insertAdjacentHTML("beforeend", `<div class="tlegend"><span><i style="background:${tileColor(-m, m).bg}"></i>Abnahme</span><span><i style="background:#fff;border:1px solid #ccc"></i>unverändert</span><span><i style="background:${tileColor(m, m).bg}"></i>Zunahme</span></div>`);
-    leg.insertAdjacentHTML("beforeend", `<ol class="tlist">${w.rows.slice().sort((p, q) => q.change - p.change).map(r => `<li><span>${esc(r.name)}</span><span style="color:${r.change >= 0 ? "#B45309" : "#0070C0"}">${pct0(r.change)}</span></li>`).join("")}</ol>`);
+    leg.insertAdjacentHTML("beforeend", `<ol class="tlist">${w.rows.slice().sort((p, q) => q.change - p.change).map(r => `<li><span>${esc(r.name)}</span><span style="color:${r.change >= 0 ? "#B45309" : "#0070C0"}">${diff ? fmt(r.level, 1) + "\u202f% (" + (r.change > 0 ? "+" : "") + fmt(r.change, 1) + " Pp)" : pct0(r.change)}</span></li>`).join("")}</ol>`);
     const card = el.closest(".card");
     if (card) {
-      card.querySelector(".sub").textContent = "Summe " + w.span;
-      card.querySelector(".unit").textContent = `Veränderung ggü. denselben ${w.months} Monaten ein Jahr zuvor, %`;
+      card.querySelector(".sub").textContent = diff ? "Jahr " + w.span : "Summe " + w.span;
+      card.querySelector(".unit").textContent = diff ? `Zahl: Quote ${w.span} in %; Farbe: Veränderung ggü. dem Vorjahr in Pp` : `Veränderung ggü. denselben ${w.months} Monaten ein Jahr zuvor, %`;
     }
   };
   if (sets.length > 1) {
