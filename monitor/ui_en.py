@@ -158,6 +158,11 @@ PAIRS: list[tuple[str, str]] = [
     ('c.type === "tiles" ? "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %"', 'c.type === "tiles" ? "change on the same 12 months a year earlier, %"'),
     ("Bei Raten und Salden ist die Veränderung eine Differenz in Prozentpunkten (Pp) oder Punkten (Pkt.), sonst eine Veränderung in Prozent. Dreimonatsvergleich: die letzten drei Monate gegenüber den drei Monaten davor. ",
      "For rates and balances the change is a difference in percentage points (pp) or points (pts), otherwise a change in per cent. Three-month comparison: the last three months against the three months before. "),
+    ('<h2>Diese Woche neu</h2><p class="tnote">Abbildungen, die in den letzten sieben Tagen neue Daten erhalten haben, jüngste zuerst.</p>', '<h2>New this week</h2><p class="tnote">Charts that received new data in the last seven days, most recent first.</p>'),
+    ("<span>neue Daten am ${dd(w.date)}</span>", "<span>new data on ${dd(w.date)}</span>"),
+    ('`<a href="#woche">Diese Woche</a>`', '`<a href="#woche">This week</a>`'),
+    ("const dd = s => `${+s.slice(8, 10)}.${+s.slice(5, 7)}.`;", "const dd = s => `${+s.slice(8, 10)} ${MONTHS[+s.slice(5, 7) - 1]}`;"),
+    ('sub ?? "real, Monat 0 = Beginn des Ereignisses = 100; waagerecht: Monate seit Beginn"', 'sub ?? "real, month 0 = start of the event = 100; horizontal: months since start"'),
     # Kalender und Quellenteil
     ("Kalender der Quellen: ", "Release calendars of the sources: "),
     ("geschätzt nach dem üblichen Veröffentlichungsrhythmus der Quelle", "estimated from the source’s usual release pattern"),

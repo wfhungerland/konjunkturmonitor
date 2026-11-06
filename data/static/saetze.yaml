@@ -154,6 +154,7 @@ series:
   de_insolv_claims: [die voraussichtlichen Forderungen der Gläubiger, p]
 
 charts:
+  energy_intensive: ["die Produktion im Bereich „{label}“", s]
   ez_gdp: ["die Wirtschaftsleistung in {label}", s]
   ez_hicp: ["die Verbraucherpreise (HVPI) in {label}", p]
   ez_unemp: ["die Erwerbslosenquote in {label}", s]
