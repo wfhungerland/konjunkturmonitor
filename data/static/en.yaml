@@ -1,0 +1,785 @@
+# English translation of the Konjunkturmonitor texts.
+# Keys match the German ids in monitor.yaml and series.yaml. Placeholders such as {geo_name} stay unchanged.
+
+questions:
+  wachstum:
+    ask: "Is the economy growing?"
+    explain: "Gross domestic product (GDP) is the value of all goods and services produced in Germany. When it rises, more is produced and more income is earned."
+  preise:
+    ask: "Are prices rising?"
+    explain: "The inflation rate shows by what percentage the prices of a typical basket of goods are higher than a year earlier. It is measured with the consumer price index (CPI) of the Federal Statistical Office (Destatis). The European Central Bank aims for 2% over the medium term."
+  arbeit:
+    ask: "How is the labour market doing?"
+    explain: "The unemployment rate is the number of unemployed people registered with the Federal Employment Agency as a share of the civilian labour force."
+  industrie:
+    ask: "How is industry doing?"
+    explain: "Production measures how much industry makes. New orders measure fresh demand; they lead production by a few months."
+  konsum:
+    ask: "How is private consumption doing?"
+    explain: "Price-adjusted retail sales measure how much shops sell. Consumer confidence is based on a survey of households about their financial situation and their expectations."
+  export:
+    ask: "How are exports doing?"
+    explain: "Exports are goods sold abroad. In Germany exports of goods and services amount to almost half of gross domestic product."
+  stimmung:
+    ask: "How do businesses and households judge the situation?"
+    explain: "Every month the European Commission asks businesses and households about their situation and their expectations. The economic sentiment indicator is scaled so that 100 equals the long-term average; higher values indicate above-average sentiment."
+  insolvenzen:
+    ask: "How many businesses are filing for insolvency?"
+    explain: "Insolvency proceedings are filed when a business is unable to pay its debts or is over-indebted. Because the number of filings fluctuates over the year, the monitor compares with the same month in earlier years."
+  zinsen:
+    ask: "How are interest rates moving?"
+    explain: "The yield on federal bonds (Bunds) is the interest rate the federal government pays on new borrowing in the capital market. It serves as a benchmark for long-term loans to businesses and for mortgages."
+    name: "the yield on ten-year federal bonds"
+  energie:
+    ask: "How are energy prices moving?"
+    explain: "Oil and gas prices quickly affect consumer prices for fuel and heating and, with a lag, industry's costs. The prices are traded in US dollars; a weaker euro makes them more expensive in euro terms."
+    name: "the price of Brent crude oil"
+
+topics:
+  wachstum: {title: "Growth"}
+  preise: {title: "Prices"}
+  arbeit: {title: "Labour"}
+  industrie: {title: "Industry"}
+  bau: {title: "Construction", ask: "How is construction doing?"}
+  dienstleistungen: {title: "Services", ask: "How are service providers doing?"}
+  konsum: {title: "Consumption"}
+  einkommen: {title: "Incomes", ask: "How are incomes and their distribution developing?"}
+  export: {title: "Exports"}
+  welt: {title: "World", ask: "How is the world economy doing?"}
+  stimmung: {title: "Sentiment"}
+  insolvenzen: {title: "Insolvencies"}
+  zinsen: {title: "Interest rates and credit"}
+  wechselkurse: {title: "Exchange rates", ask: "How is the euro doing?"}
+  energie: {title: "Energy"}
+  aussichten: {title: "Outlook", ask: "What do the forecasts expect?"}
+  struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
+  staat: {title: "Government", ask: "What state are the public finances in?"}
+  kalender: {title: "Calendar", ask: "When are the next figures due?"}
+
+charts:
+  gdp_contrib:
+    title: "Where growth comes from"
+    ask: "Which components of demand are driving growth?"
+    caption: "Bars: contributions of the expenditure components to growth on the previous quarter, in percentage points: household and government consumption, investment, net trade (exports minus imports) and change in inventories (stocks). Line: total GDP growth in %. Apart from rounding, the bars add up to the line."
+  wai:
+    title: "Weekly activity index"
+    ask: "What do the weekly data show about economic output?"
+    caption: "The Bundesbank's activity index uses weekly data (such as truck tolls, electricity consumption and internet searches) to estimate how much economic output grew in the latest 13 weeks compared with the 13 weeks before. It is available earlier than GDP, but is an estimate."
+  maut:
+    title: "Truck toll mileage index"
+    ask: "How much are trucks driving on the motorways?"
+    caption: "Mileage of toll-liable trucks with four or more axles on motorways, derived from toll data. The index is available a few days after the end of the month and closely tracks industrial production, because these trucks mainly carry intermediate inputs and goods. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  gdp_level:
+    title: "Economic output, level"
+    ask: "Where does economic output stand in a longer comparison?"
+    caption: "Economic output, price adjusted, 2020 = 100. The slump in 2020 was caused by the covid-19 pandemic. The change on a year earlier is seasonally and calendar adjusted here; like the flash estimate of the Federal Statistical Office (Destatis), the overview gives the unadjusted rate, so the two may differ by 0.1 percentage points."
+  gdp_use:
+    title: "Expenditure components of output in the latest quarter"
+    ask: "How did the expenditure components develop in the latest quarter?"
+    caption: "Bars: change in the latest quarter, price adjusted. Diamond: the quarter before. Investment is split into equipment (machinery, vehicles, weapons systems), construction and other assets (mainly software and research)."
+  cpi:
+    title: "Inflation rate (CPI) and components"
+    ask: "Which areas are becoming more expensive?"
+    caption: "Inflation rate based on the consumer price index (CPI) of the Federal Statistical Office (Destatis), overall and for five components. In each panel one component is highlighted in dark blue, with the others in grey behind it for comparison; all panels share the same scale. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months. Dashed: 2%, the ECB's target (it refers to the European HICP, which in Germany is usually close to the CPI). ‘Services excluding rents’ excludes actual and imputed rents and therefore differs from the rate for services as a whole reported by the Federal Statistical Office."
+  cpi_contrib:
+    title: "What the inflation rate is made of"
+    ask: "What makes up the inflation rate?"
+    caption: "Contribution of each component to the inflation rate in percentage points; switchable between comparison with a year earlier and with the previous month. Own calculation: component weights estimated from the CPI sub-indices since 2020; the remainder covers rounding and parts not recorded separately."
+  cpi_core:
+    title: "Core rate compared with the HICP"
+    ask: "How strong is underlying price pressure?"
+    caption: "Thick line: core rate, CPI inflation excluding the volatile prices of energy and food; it shows the underlying price trend. Thin lines: overall CPI and the European HICP, to which the ECB's target refers. Dashed: 2%, the ECB's target."
+  deflator:
+    title: "Prices in the national accounts"
+    ask: "How are prices developing in the national accounts?"
+    caption: "National accounts deflators: price development of all goods and services produced domestically (GDP deflator) and of private consumption."
+  pipeline_prices:
+    title: "Upstream prices"
+    ask: "Are prices rising at earlier stages?"
+    caption: "Prices at earlier stages: producer prices for domestic sales and import prices. They often lead consumer prices."
+  pipeline_core:
+    title: "Upstream prices excluding energy, and agricultural prices"
+    ask: "Are cost increases spreading beyond energy?"
+    caption: "Upstream prices excluding energy show whether cost increases are spreading beyond energy. Agricultural prices feed through to food prices with a lag."
+  enso:
+    title: "Food and agricultural prices after very strong El Niño events"
+    ask: "Is El Niño driving food prices?"
+    caption: "Event study: price path from the start of very strong El Niño events (month 0 = 100), adjusted for general inflation. Left: food in the consumer price index relative to the overall index (from 1995). Right: producer prices of agricultural products relative to consumer prices (up to 1990 former West Germany, deflated there by the OECD consumer price index). Grey area: range of earlier very strong events; lines: individual events, the current one thick. Start: first month of a sequence in which NOAA's Relative Oceanic Niño Index (RONI) reaches at least 0.5 °C; very strong: peak of 2 °C or more. Through droughts and heavy rain, El Niño reduces harvests mainly in South Asia, Africa and South America; in Germany the effect works through world market prices for grain, vegetable oils, cocoa and coffee, damped and delayed."
+  price_exp:
+    title: "Price expectations of businesses and consumers"
+    ask: "What prices do businesses and consumers expect?"
+    caption: "Balance of the shares of respondents expecting rising and falling prices (EU surveys). Businesses: next three months; consumers: next twelve months. In each panel one sector is highlighted in dark blue, with the others in grey behind it for comparison; all panels share the same scale. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
+  labour:
+    title: "Unemployment rate"
+    ask: "How high is unemployment?"
+    caption: "Two measures of unemployment. The registered rate of the Federal Employment Agency counts people registered as unemployed with an employment agency or a job centre. The unemployment rate as defined by the International Labour Organization (ILO) is based on a survey: a person is unemployed if they have no work, are actively looking and are available at short notice. In Germany it is markedly lower and is internationally comparable. Both seasonally adjusted."
+  labour_flows:
+    title: "Unemployed and vacancies"
+    ask: "How are unemployment and vacancies developing?"
+    caption: "If unemployment rises while the number of vacancies falls, this points to a cooling labour market."
+  employment_m:
+    title: "Persons in employment and employees subject to social security contributions"
+    ask: "How many people are in work?"
+    caption: "Persons in employment also include the self-employed and civil servants; employees subject to social security contributions make up the largest part."
+  sahm:
+    title: "Recession signal"
+    ask: "Is the labour market pointing to a recession?"
+    caption: "Own calculation following Michaillat and Saez (2025). The signal is the smaller of two values. First: the unemployment rate including short-time work (in full-time equivalents), three-month moving average, minus its low over the past twelve months. Second: the high of the vacancy rate over the past twelve months minus its current three-month average. The signal therefore rises only if unemployment increases and vacancies decrease at the same time. The threshold of 0.25 percentage points is our own choice for Germany; Michaillat and Saez give 0.29 for the United States. Red dashed: threshold. Grey areas: recessions as dated by the German Council of Economic Experts. Every recession since 2001 crossed the threshold, some with a considerable lag. References: Michaillat, P. and Saez, E. (2025), Has the Recession Started?, Oxford Bulletin of Economics and Statistics; Sahm, C. (2019), Direct Stimulus Payments to Individuals, Brookings Institution."
+  kurzarbeit:
+    title: "Short-time work for cyclical reasons"
+    ask: "How many employees are on short-time work?"
+    caption: "Employees on short-time work for economic reasons (§ 96 SGB III), in thousands. Short-time work keeps employees in the firm when orders are temporarily lacking; in downturns it rises earlier than unemployment. The latest months are based on projections by the Federal Employment Agency."
+    unit: "thousand people"
+  sv_yoy:
+    title: "Employment subject to social security contributions by sector"
+    ask: "In which sectors is employment growing?"
+    caption: "Employees subject to social security contributions by sector, change on the same month a year earlier. Temporary agency work is the first to react to weaker demand, because firms shed agency workers first."
+  industry:
+    title: "Industrial production and orders"
+    ask: "How are industrial production and orders developing?"
+    caption: "Thin: monthly values. Thick: three-month moving average. New orders lead production."
+  orders_split:
+    title: "Domestic and foreign orders"
+    ask: "Are orders coming from home or abroad?"
+    caption: "New orders by origin. Large orders, for example for aircraft, ships or military equipment, cause occasional sharp spikes. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  orders_euro:
+    title: "Orders from the euro area and from outside"
+    ask: "How are orders from the euro area and from outside developing?"
+    caption: "Orders from abroad, split into the euro area and the rest of the world. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  rhine:
+    title: "Rhine at the Kaub gauge, daily mean"
+    ask: "Is the Rhine easily navigable for cargo ships?"
+    caption: "Water level at the Kaub gauge, the bottleneck for Rhine shipping between Mainz and Koblenz, daily mean in cm. The chemical, steel, oil and coal industries ship large volumes on the Rhine. Red dashed: 78 cm. According to a rule of thumb from the Kiel Institute (IfW Kiel), industrial production falls by about 1% if the level stays below this mark for a month. Up to the end of the previous year, verified gauge data from the Federal Waterways and Shipping Administration (WSV) (Federal Institute of Hydrology, BfG); thereafter PEGELONLINE."
+  rhine_low:
+    title: "Low-water days on the Rhine per year"
+    ask: "How often has the Rhine been too shallow since 1970?"
+    caption: "Number of days per calendar year on which the daily mean water level at the Kaub gauge was below 78 cm; current year up to the latest day. Long low-water spells such as in 2018 and 2022 made transport more expensive and held back industry. Source: verified gauge data from the WSV, provided by the Federal Institute of Hydrology (BfG) (R package hyd1d); latest values from PEGELONLINE."
+  branch_heat:
+    title: "Production by industry"
+    ask: "Which industries are producing more, and which less?"
+    caption: "Table: production by industry, % on the same month a year earlier; orange: increase, blue: decrease. Sorted by the three-month comparison (last three months vs. the three months before). Right-hand columns: three-month comparison and level vs. the 2019 average; both shown as bars in the following chart."
+  orders_heat:
+    title: "New orders by industry"
+    ask: "Which industries are receiving more orders?"
+    caption: "Table: new orders by industry, % on the same month a year earlier, price adjusted; orange: increase, blue: decrease. Sorted by the three-month comparison. Right-hand columns: three-month comparison and level vs. the 2019 average; both shown as bars in the following chart. Large orders, especially in other transport equipment, distort individual months."
+  prod_groups:
+    title: "Production by type of goods"
+    ask: "Which types of goods are carrying production?"
+    caption: "Intermediate goods are processed further (such as steel and chemicals), capital goods are mainly machinery and vehicles, and consumer goods are bought by private households. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  sales:
+    title: "Industrial turnover, nominal"
+    ask: "How is industrial turnover developing?"
+    caption: "Industrial turnover at current prices, i.e. not price adjusted; total, by sales market and for capital goods. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  bau_orders:
+    title: "Orders in the main construction sector"
+    ask: "How are construction orders developing?"
+    caption: "Orders in the main construction sector, price adjusted, total and by type of construction. Individual large projects cause sharp spikes. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  permits:
+    title: "Building permits for dwellings"
+    ask: "Will more be built soon?"
+    caption: "Number of dwellings approved per month, in thousands (Federal Statistical Office), in new buildings and through construction work on existing buildings. Permits lead housing construction by about one to two years; not every permit is built."
+  house_prices:
+    title: "Residential property prices"
+    ask: "How are residential property prices developing?"
+    caption: "House price index of the Federal Statistical Office: prices of newly built and existing residential property (houses and owner-occupied flats), on the same quarter a year earlier. Published about three months after the end of the quarter."
+  weather:
+    title: "Weather in Germany"
+    ask: "Was the weather unusual for construction?"
+    caption: "Monthly values from the German Weather Service (DWD) for Germany as a whole. Temperature: deviation from the 1991 to 2020 average for the same month, in °C. Precipitation: in % of the 1991 to 2020 average for the same month. A very cold, frosty or wet winter month depresses construction output, a mild one lifts it; the swings usually even out in the following months. Unusual months appear in the construction output chart under ‘Swings and special effects’."
+  bau_prod:
+    title: "Construction output"
+    ask: "How much is being built?"
+    caption: "Construction output. The finishing trades cover installation, electrical work and interior finishing. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  services:
+    title: "Output of service providers"
+    ask: "How is output of service providers developing?"
+    caption: "Price-adjusted output of selected service sectors. ‘Total’ covers transport and storage, accommodation and food services, information and communication, real estate, and professional, technical and other business services; trade, finance and government are not included. Service providers generate a good two-thirds of value added, but monthly data cover them only patchily. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  retail:
+    title: "Retail sales, real"
+    ask: "How much are retailers selling?"
+    caption: "Retail sales excluding motor vehicles, price adjusted, i.e. the volume sold. Retail accounts for about a third of private consumption; services, rents and cars are not included. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  retail_split:
+    title: "Retail sales by product range, real"
+    ask: "Which product ranges are selling better?"
+    caption: "Sales by product range, price adjusted. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  hospitality:
+    title: "Hospitality, real"
+    ask: "How is the hospitality sector doing?"
+    caption: "Turnover of restaurants and hotels, price adjusted. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  cars:
+    title: "New cars registered by private owners"
+    ask: "Are households buying new cars?"
+    caption: "New passenger cars registered by private owners, in thousands per month. An indicator of households' willingness to make larger purchases. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  consumer:
+    title: "Consumer confidence"
+    ask: "How confident are consumers?"
+    caption: "Balance of positive and negative responses from households. Values below zero mean that negative assessments prevail."
+  wages:
+    title: "Nominal and real wages"
+    ask: "Are wages rising faster than prices?"
+    caption: "Nominal wage index: average gross monthly earnings including special payments; real wage index: nominal wage index adjusted for the change in consumer prices. If real wage growth is above zero, wages are rising faster than prices. Change on the same quarter a year earlier."
+  hh_income:
+    title: "Real disposable income per head"
+    ask: "How are household incomes developing?"
+    caption: "Disposable income of private households per inhabitant, i.e. wages, profits, property income and social benefits after taxes and contributions, adjusted for the change in consumption prices. 2010 = 100."
+  saving:
+    title: "Household saving ratio"
+    ask: "How much are households saving?"
+    caption: "Share of disposable income that households do not spend on consumption. A rising saving ratio dampens consumption, often out of caution in uncertain times."
+  profit_share:
+    title: "Corporate profit share"
+    ask: "How is value added split between profits and wages?"
+    caption: "Gross operating surplus of non-financial corporations as a percentage of their value added. If the profit share rises, a larger part of value added goes to profits and a smaller part to wages."
+  trade:
+    title: "Trade in goods"
+    ask: "How are exports and imports developing?"
+    caption: "Goods exports, goods imports and their balance (exports minus imports), in billions of euros per month. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  trade_region:
+    title: "Exports by region"
+    ask: "Where does Germany export to?"
+    caption: "Goods exports to the main customer regions, in billions of euros per month. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  trade_prices:
+    title: "Foreign trade prices"
+    ask: "How are foreign trade prices developing?"
+    caption: "Export prices and terms of trade, i.e. export prices relative to import prices. If the terms of trade rise, Germany can finance more imports with the same volume of exports."
+  balances:
+    title: "Current-account balance"
+    ask: "How large is the current-account surplus?"
+    caption: "Current-account balance (goods, services, primary and secondary income) per month, not seasonally adjusted."
+  esi:
+    title: "Export similarity with Germany"
+    ask: "Who competes with goods similar to Germany's?"
+    caption: "Similarity of a country's export structure to Germany's: 0 means no overlap, 100 an identical structure (Finger and Kreinin 1979; for each product group the smaller share counts). High values mean that both countries compete with similar goods on world markets. Highlighted: China."
+  world_gdp:
+    title: "Growth in major economies"
+    ask: "How fast are the major economies growing?"
+    caption: "Real GDP on the same quarter a year earlier. The euro area takes about 37% of German goods exports, the United States about 10%."
+  ez_gdp:
+    title: "Growth compared across the euro area"
+    ask: "Is Germany growing faster or more slowly than its neighbours?"
+    caption: "Real GDP on the same quarter a year earlier, seasonally and calendar adjusted (Eurostat), for Germany, France, Italy, Spain and the euro area. In each panel one country is highlighted in dark blue, with the others in grey behind it; all panels share the same scale. Together the four countries generate about three-quarters of euro-area output."
+  ez_hicp:
+    title: "Inflation compared across the euro area (HICP)"
+    ask: "Is inflation in Germany higher than in neighbouring countries?"
+    caption: "Harmonised index of consumer prices (HICP) on the same month a year earlier (Eurostat; from 2026 based on the new product classification ECOICOP 2). The HICP is internationally comparable and is the basis of the ECB's inflation target of 2% (dashed). For Germany it usually differs only slightly from the national CPI. One country highlighted per panel, all panels on the same scale."
+  ez_unemp:
+    title: "Unemployment compared across the euro area"
+    ask: "How high is unemployment by comparison?"
+    caption: "Unemployment rate as defined by the International Labour Organization (ILO), seasonally adjusted (Eurostat; euro area: ECB): the unemployed as a share of the labour force. It is internationally comparable and in Germany is markedly below the registered unemployment rate of the Federal Employment Agency. One country highlighted per panel, all panels on the same scale."
+  uncertainty:
+    title: "Economic policy uncertainty"
+    ask: "How uncertain is economic policy?"
+    caption: "Economic policy uncertainty index of Baker, Bloom and Davis, derived from the frequency of relevant terms in newspaper articles; average 1997 to 2015 = 100. High uncertainty leads firms to postpone investment."
+  clock:
+    title: "Business cycle clock for industry"
+    ask: "Which phase of the business cycle is industry in?"
+    caption: "Horizontal: how do industrial firms assess their order books today? Vertical: what do they expect for the next three months? Both as deviation from the 2005 to 2019 average. The trail shows the last 24 months, the large dot the latest month, the arrows the direction. In a typical business cycle the dot moves clockwise through the four shaded phases: upswing, boom, downswing, recession."
+  sentiment:
+    title: "Sentiment by sector"
+    ask: "What is the mood in the different sectors?"
+    caption: "Balance of positive and negative responses by sector (EU surveys)."
+  sector_now:
+    title: "Current situation by sector"
+    ask: "How do the sectors assess their current situation?"
+    caption: "Assessment of business developments over the past three months, balance of positive and negative responses (EU surveys). In each panel one sector is highlighted in dark blue, with the others in grey behind it for comparison; all panels share the same scale. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
+  sector_next:
+    title: "Expectations by sector"
+    ask: "What do the sectors expect for the coming months?"
+    caption: "Expectations for the coming three months, balance of positive and negative responses (EU surveys). For construction the survey records employment plans here. In each panel one sector is highlighted in dark blue, with the others in grey behind it for comparison; all panels share the same scale. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
+  capacity:
+    title: "Capacity utilisation in industry"
+    ask: "How fully is industrial capacity being used?"
+    caption: "Utilisation of production capacity in industry in per cent, quarterly survey."
+  insolv:
+    title: "Business insolvencies per month"
+    ask: "How many businesses are filing for insolvency?"
+    caption: "Insolvency proceedings filed by businesses per month. Thin: monthly values. Thick: twelve-month moving average, which smooths out seasonal fluctuations. Dashed: pre-crisis level, measured as the average of the same month in 2015 to 2019."
+  insolv_land:
+    title: "Insolvencies by state"
+    ask: "In which states are insolvencies rising?"
+    caption: "Business insolvency filings by state, change on the same period a year earlier; switchable between 12 and 6 months. Orange: increase, blue: decrease. The list on the right ranks the states by change."
+    what: "Number of insolvency filings"
+  insolv_emp:
+    title: "Employees affected by insolvencies per month"
+    ask: "How many employees are affected?"
+    caption: "Employees in businesses that have filed for insolvency. Individual large insolvencies cause sharp spikes. Thin: monthly values. Thick: twelve-month moving average, which smooths out seasonal fluctuations. Dashed: pre-crisis level, measured as the average of the same month in 2015 to 2019."
+  insolv_claims:
+    title: "Expected creditor claims per month"
+    ask: "How large are creditors' claims?"
+    caption: "Expected creditor claims in billions of euros. Thin: monthly values. Thick: twelve-month moving average, which smooths out seasonal fluctuations. Dashed: pre-crisis level, measured as the average of the same month in 2015 to 2019."
+  gruend_land:
+    title: "Business start-ups by state"
+    ask: "Where are more businesses being started?"
+    caption: "Start-ups of businesses of greater economic significance (head offices) by state, change on the same period a year earlier. Orange: increase, blue: decrease. The list on the right ranks the states by change."
+    what: "Number of business start-ups"
+  aufgabe_land:
+    title: "Business closures by state"
+    ask: "Where are more businesses closing?"
+    caption: "Complete closures of businesses of greater economic significance (head offices) by state, change on the same period a year earlier. Orange: increase, blue: decrease. The list on the right ranks the states by change."
+    what: "Number of business closures"
+  credit_rates:
+    title: "Interest rates on new bank loans"
+    ask: "How expensive are loans?"
+    caption: "Effective interest rates charged by banks in Germany on newly granted loans (new business), weighted across all maturities: to non-financial corporations and to private households for house purchase (ECB, MFI interest rate statistics). They follow the ECB's policy rates and capital-market rates with a lag."
+  credit_growth:
+    title: "Growth in bank lending"
+    ask: "Are banks lending more?"
+    caption: "Stock of bank loans to non-financial corporations and of housing loans to private households in Germany, on the same month a year earlier, adjusted for reclassifications and valuation changes (ECB, balance sheet statistics). Weak credit growth points to low investment or tight lending standards."
+  yields:
+    title: "Federal bond yields"
+    ask: "How high are yields on federal bonds?"
+    caption: "Yield on federal bonds with residual maturities of 10 and 2 years, monthly average. It affects the financing costs of government, businesses and private home builders."
+  fx_usd:
+    title: "Euro in US dollars, daily values"
+    ask: "How many US dollars does a euro cost?"
+    caption: "Reference rate of the European Central Bank: how many US dollars one euro costs, set at around 16:00 on each working day. If the line rises, the euro becomes more expensive: imports from the dollar area, including crude oil and gas, become cheaper in euro terms, and German exports become more expensive in the dollar area."
+  fx_eer:
+    title: "Effective exchange rate of the euro, daily values"
+    ask: "Is the euro becoming more expensive against all trading partners?"
+    caption: "Nominal effective exchange rate of the ECB: a weighted average of the euro's exchange rates against the currencies of the euro area's trading partners, weighted by their share of trade. 1999 Q1 = 100. The broad group comprises 41 partners, the narrow one 18 (including the United States, China, the United Kingdom, Switzerland and Japan). If the index rises, the euro becomes more expensive on average; this makes exports dearer and imports cheaper. The broad group is higher because many emerging-market currencies have lost value against the euro since 1999."
+  fx:
+    title: "Euro against four currencies, daily values"
+    ask: "How is the euro moving against major currencies?"
+    caption: "ECB reference rates: units of each currency per euro, on each working day. Each panel shows one currency on its own scale, because the rates differ widely in level. If a line rises, the euro becomes more expensive against that currency. Above each panel: latest rate with the trend on the previous day, and the averages of the last 3 and 12 months."
+  oil:
+    title: "Oil price"
+    ask: "How expensive is crude oil?"
+    caption: "Price per barrel (159 litres) of North Sea Brent crude oil, monthly average."
+  power:
+    title: "Electricity: consumption and wholesale price"
+    ask: "How much electricity is being used, and what does it cost on the wholesale market?"
+    caption: "Electricity consumption (grid load) in Germany on the same month a year earlier, and the wholesale electricity price on the day-ahead market (Germany/Luxembourg bidding zone), monthly average in € per MWh. Consumption closely tracks industrial production, but is available just a few days after the end of the month; weather and public holidays distort individual months. Source: Federal Network Agency | SMARD.de, licence CC BY 4.0."
+  gas_storage:
+    title: "Gas storage fill level, daily values"
+    ask: "How full are the gas storage facilities?"
+    caption: "Fill level of German gas storage facilities in % of working gas capacity, daily values. The facilities are filled in summer and drawn down in winter; a low level at the start of winter raises the risk of price spikes. The law sets minimum fill levels on reference dates in the autumn. Source: GIE (AGSI)."
+  hdd:
+    title: "Heating degree days"
+    ask: "How much heating is needed?"
+    caption: "Heating degree days measure heating demand: the colder a day below 15 °C, the more degree days (VDI 3807, room temperature 20 °C). Shown here in % of the 2015 to 2019 average for the same month; above 100 means colder and more heating demand than usual. A cold winter raises consumption of gas and heating oil and energy generation, a mild one lowers them. Unweighted average of all stations of the German Weather Service (DWD), as the DWD does not publish a figure for Germany as a whole."
+  gas:
+    title: "Natural gas price in Europe"
+    ask: "How expensive is natural gas?"
+    caption: "Wholesale price of natural gas in Europe (TTF trading hub), monthly average. An MMBtu is a quantity of energy of about 293 kilowatt hours."
+  forecast:
+    title: "Growth forecasts"
+    ask: "What do the forecasts expect for growth?"
+    caption: "Forecasts for real GDP growth on the previous year, by target year. Line: latest projection of the Federal Government, the basis for the budget and the tax revenue estimate. Grey area: range of all latest forecasts, from the lowest to the highest value. Further forecasters can be shown via the legend. Joint Economic Forecast: joint forecast by DIW, ifo, IfW Kiel, IWH and RWI. Some values come from press reports on the publications and are marked in the tooltip."
+  forecast_infl:
+    title: "Inflation forecasts"
+    ask: "What do the forecasts expect for inflation?"
+    caption: "Forecasts for the inflation rate on the previous year, by target year; usually measured by the consumer price index (CPI). The Bundesbank forecasts the European HICP, which is usually close to the CPI. Line: Federal Government. Grey area: range of all latest forecasts. Further forecasters via the legend. Some values come from press reports and are marked in the tooltip."
+  forecast_core:
+    title: "Core inflation forecasts"
+    ask: "What do the forecasts expect for core inflation?"
+    caption: "Forecasts for the inflation rate excluding energy and food. Shown once at least two forecasters have published a value."
+  potential:
+    title: "Growth and potential output"
+    ask: "Is the economy growing faster than its potential?"
+    caption: "Potential output is the economic output that would be possible with normal utilisation of labour and machinery. It cannot be observed but has to be estimated, here by the European Commission (AMECO, spring 2026 forecast) from labour input, the capital stock and productivity. If GDP (bars) grows faster than potential (line), utilisation rises; the difference between the levels is called the output gap. If it is positive, inflation becomes more likely; if it is negative, capacity is unused. Dashed: forecast years."
+  productivity:
+    title: "Labour productivity"
+    ask: "How is productivity developing?"
+    caption: "Real economic output per person employed and per hour worked. In the long run, productivity determines prosperity."
+  inv_ratio:
+    title: "Investment ratio"
+    ask: "How much does Germany invest compared with the EU?"
+    caption: "Gross fixed capital formation (machinery, buildings, software and research) as a percentage of GDP, Germany compared with the European Union."
+  emp_sector:
+    title: "Persons in employment by economic sector"
+    ask: "In which sectors are jobs being created?"
+    caption: "Change in the number of persons in employment by economic sector since the second quarter of 2022, in thousands. Shows the shift from industry to services."
+    unit: "thousand people, change since 2022 Q2"
+  migration:
+    title: "Net migration"
+    ask: "How many people are moving to Germany?"
+    caption: "Arrivals minus departures across Germany's borders, in millions of people, including statistical adjustment. Since 2011 immigration has contributed substantially to the growth of the labour force; 2015 and 2022 are marked by refugee flows from Syria and Ukraine."
+    unit: "million people"
+  migration_groups:
+    title: "Net migration by citizenship"
+    ask: "Who is moving in, and who is moving out?"
+    caption: "Arrivals minus departures by citizenship, in thousands. Germans have been net emigrants for years; immigration from outside the EU is shaped by refugee flows, that from within the EU mainly by labour migration. Excluding statistical adjustment, so the total differs from the net migration chart."
+    unit: "thousand people"
+  cit:
+    title: "Tax rates on corporate profits"
+    ask: "How heavily does Germany tax corporate profits by comparison?"
+    caption: "Combined statutory tax rate on corporations (corporate income tax including surcharges and taxes at sub-central levels, in Germany the local business tax), according to the OECD. Highlighted: Germany; grey: comparison countries."
+  gov_balance:
+    title: "General government balance"
+    ask: "How large is the government deficit?"
+    caption: "Revenue minus expenditure of federal, state and local government and social security, as a percentage of GDP, quarterly, seasonally adjusted. Negative values mean a deficit."
+  gov_spend:
+    title: "Government interest expenditure and investment"
+    ask: "How much does the government spend on interest and investment?"
+    caption: "Government interest expenditure and gross fixed capital formation as a percentage of GDP, annual values. Rising interest rates narrow the scope for investment."
+  gov_debt:
+    title: "Government debt"
+    ask: "How high is government debt?"
+    caption: "General government gross debt as defined in the Maastricht Treaty, as a percentage of GDP. The EU reference value is 60%."
+  calendar:
+    title: "Release calendar: the next twelve weeks"
+    ask: "When are which figures released?"
+    caption: "Dates are estimated from the sources' usual release schedules and marked with a superscript e. The linked calendars of the sources are authoritative. The links lead to the charts that receive new values on that date."
+
+series:
+  de_gdp_qoq: {title: "Real GDP, % on previous quarter", label: "GDP", unit: "% on previous quarter", adjustment: "price, seasonally and calendar adjusted"}
+  de_gdp_yoy: {title: "Real GDP, % on same quarter a year earlier (unadjusted, as in the Destatis release)", unit: "% on same quarter a year earlier", adjustment: "price adjusted, not seasonally or calendar adjusted"}
+  de_gdp_index: {title: "Real GDP, index 2020 = 100", label: "GDP", unit: "Index 2020=100", adjustment: "price, seasonally and calendar adjusted"}
+  de_gdp_contrib: {title: "Growth contribution: {item_name}", label: "{item_name}", unit: "pp on previous quarter", note: "Contribution to the change in real GDP on the previous quarter in percentage points (Eurostat). Because of chain-linking, the sum differs slightly from the GDP growth rate.", adjustment: "price, seasonally and calendar adjusted"}
+  de_cpi_yoy: {title: "Consumer prices (CPI), % on a year earlier", label: "Total", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_vpi_food: {title: "CPI food, index", unit: "Index 2020=100", adjustment: "not adjusted"}
+  de_vpi_food_yoy: {title: "CPI food, % on a year earlier", label: "Food", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_vpi_energy: {title: "CPI energy (household energy and fuels), index", unit: "Index 2020=100", adjustment: "not adjusted"}
+  de_vpi_energy_yoy: {title: "CPI energy (household energy and fuels), % on a year earlier", label: "Energy", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_vpi_goods: {title: "CPI industrial goods excluding energy, index", unit: "Index 2020=100", adjustment: "not adjusted"}
+  de_vpi_goods_yoy: {title: "CPI industrial goods excluding energy, % on a year earlier", label: "Goods excluding energy", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_vpi_serv: {title: "CPI services excluding actual and imputed rents, index", unit: "Index 2020=100", adjustment: "not adjusted"}
+  de_vpi_serv_yoy: {title: "CPI services excluding actual and imputed rents, % on a year earlier", label: "Services excluding rents", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_vpi_rent: {title: "CPI actual rents (net rent excluding utilities), index", unit: "Index 2020=100", adjustment: "not adjusted"}
+  de_vpi_rent_yoy: {title: "CPI actual rents (net rent excluding utilities), % on a year earlier", label: "Rents", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_ppi: {title: "Producer prices of industrial products (domestic sales), index", unit: "Index 2021=100", adjustment: "not adjusted"}
+  de_ppi_yoy: {title: "Producer prices, % on a year earlier", label: "Producer prices", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_import_prices: {title: "Import prices, index", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_import_prices_yoy: {title: "Import prices, % on a year earlier", label: "Import prices", unit: "% on a year earlier", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_alq_sa: {title: "Unemployment rate (Federal Employment Agency, registered)", label: "Unemployment rate", unit: "% of civilian labour force", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_alo_sa: {title: "Registered unemployed (Federal Employment Agency)", label: "Unemployed", unit: "thousand people", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_vac_sa: {title: "Registered vacancies (Federal Employment Agency)", label: "Vacancies (registered)", unit: "thousand people", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_ka_sa: {title: "Short-time workers, cyclical (§ 96 SGB III)", label: "Short-time workers", unit: "people", note: "People, not full-time equivalents; latest months provisional.", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_ka_fte_ratio: {title: "Working time lost per short-time worker (share of working time)", unit: "share", note: "From the Federal Employment Agency's statistics on realised short-time work, weighted by the midpoints of the working-time-loss bands.", adjustment: "not adjusted"}
+  de_sahm: {title: "Recession signal (Michaillat and Saez, with short-time work)", label: "Recession signal", unit: "pp", adjustment: "seasonally and calendar adjusted"}
+  de_employment: {title: "Persons in employment (domestic)", label: "Persons in employment", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
+  de_ip: {title: "Industrial production", label: "Production", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_orders: {title: "Industrial new orders, real", label: "Orders", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_orders_dom: {title: "Industrial new orders from Germany, real", label: "Domestic", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_orders_for: {title: "Industrial new orders from abroad, real", label: "Foreign", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_retail: {title: "Retail sales (excluding motor vehicles), real", label: "Retail", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_consumer_conf: {title: "Consumer confidence (EU consumer survey), balance", label: "Consumer confidence", unit: "balance", adjustment: "seasonally adjusted"}
+  de_exports: {title: "Goods exports, nominal", label: "Exports", unit: "€bn", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_imports: {title: "Goods imports, nominal", label: "Imports", unit: "€bn", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_exports_eu: {title: "Goods exports to the EU", label: "EU", unit: "€bn", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_exports_us: {title: "Goods exports to the United States", label: "United States", unit: "€bn", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_exports_asia: {title: "Goods exports to Asia", label: "Asia", unit: "€bn", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  esi_chn: {title: "Export similarity Germany–China (Finger-Kreinin, HS chapters)", label: "China", unit: "Index 0–100", note: "Sum across all HS chapters (excluding 98 and 99) of the smaller share in goods exports to the world; reports of the exporting countries.", adjustment: "not adjusted"}
+  esi_usa: {title: "Export similarity Germany–United States (Finger-Kreinin, HS chapters)", label: "United States", unit: "Index 0–100", note: "Sum across all HS chapters (excluding 98 and 99) of the smaller share in goods exports to the world; reports of the exporting countries.", adjustment: "not adjusted"}
+  esi_jpn: {title: "Export similarity Germany–Japan (Finger-Kreinin, HS chapters)", label: "Japan", unit: "Index 0–100", note: "Sum across all HS chapters (excluding 98 and 99) of the smaller share in goods exports to the world; reports of the exporting countries.", adjustment: "not adjusted"}
+  esi_kor: {title: "Export similarity Germany–South Korea (Finger-Kreinin, HS chapters)", label: "South Korea", unit: "Index 0–100", note: "Sum across all HS chapters (excluding 98 and 99) of the smaller share in goods exports to the world; reports of the exporting countries.", adjustment: "not adjusted"}
+  esi_fra: {title: "Export similarity Germany–France (Finger-Kreinin, HS chapters)", label: "France", unit: "Index 0–100", note: "Sum across all HS chapters (excluding 98 and 99) of the smaller share in goods exports to the world; reports of the exporting countries.", adjustment: "not adjusted"}
+  esi_ita: {title: "Export similarity Germany–Italy (Finger-Kreinin, HS chapters)", label: "Italy", unit: "Index 0–100", note: "Sum across all HS chapters (excluding 98 and 99) of the smaller share in goods exports to the world; reports of the exporting countries.", adjustment: "not adjusted"}
+  de_esi: {title: "Economic sentiment indicator (ESI), 100 = long-term average", unit: "index", adjustment: "seasonally adjusted"}
+  de_conf_industry: {title: "Industrial confidence, balance", label: "Industry", unit: "balance", adjustment: "seasonally adjusted"}
+  de_conf_services: {title: "Services confidence, balance", label: "Services", unit: "balance", adjustment: "seasonally adjusted"}
+  de_conf_retail: {title: "Retail confidence, balance", label: "Retail", unit: "balance", adjustment: "seasonally adjusted"}
+  de_conf_construction: {title: "Construction confidence, balance", label: "Construction", unit: "balance", adjustment: "seasonally adjusted"}
+  de_ind_orderbooks: {title: "Industry, assessment of order books (current situation), balance", unit: "balance", adjustment: "seasonally adjusted"}
+  de_ind_prodexp: {title: "Industry, production expectations (next 3 months), balance", unit: "balance", adjustment: "seasonally adjusted"}
+  de_insolv: {title: "Business insolvency filings", label: "Business insolvencies", unit: "number", adjustment: "not adjusted"}
+  de_insolv_emp: {title: "Employees affected by business insolvencies", label: "Employees affected", unit: "people", adjustment: "not adjusted"}
+  de_insolv_claims: {title: "Expected claims in business insolvencies", label: "Claims", unit: "€bn", adjustment: "not adjusted"}
+  de_insolv_land: {title: "Business insolvencies, {land_name}", label: "{land_name}", unit: "number", adjustment: "not adjusted"}
+  de_gruend_land: {title: "Business start-ups (head offices), {land_name}", label: "{land_name}", unit: "number", note: "New head offices of greater economic significance (excluding sideline businesses and other start-ups).", adjustment: "not adjusted"}
+  de_aufgabe_land: {title: "Business closures (head offices), {land_name}", label: "{land_name}", unit: "number", note: "Complete closures of head offices of greater economic significance (excluding sideline businesses and other closures).", adjustment: "not adjusted"}
+  de_vpi: {title: "Consumer price index, total", unit: "Index 2020=100", adjustment: "not adjusted"}
+  de_vpi_core: {title: "CPI excluding energy and food, index", unit: "Index 2020=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_vpi_core_yoy: {title: "CPI excluding energy and food (core rate), % on a year earlier", label: "Core rate", unit: "% on a year earlier", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_vpi_yoy_cmp: {title: "CPI total, % on a year earlier", label: "CPI total", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_hicp_yoy: {title: "HICP total, % on a year earlier", label: "HICP", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_defl_gdp: {title: "GDP deflator, % on same quarter a year earlier", label: "GDP deflator", unit: "% on same quarter a year earlier", adjustment: "seasonally and calendar adjusted"}
+  de_defl_cons: {title: "Household consumption deflator, % on same quarter a year earlier", label: "Household consumption", unit: "% on same quarter a year earlier", adjustment: "seasonally and calendar adjusted"}
+  de_use: {title: "{item_name}, real, % on previous quarter", label: "{item_name}", unit: "% on previous quarter", adjustment: "price, seasonally and calendar adjusted"}
+  de_inv: {title: "Investment in {asset_name}, real, % on previous quarter", label: "Investment: {asset_name}", unit: "% on previous quarter", adjustment: "price, seasonally and calendar adjusted"}
+  de_prod_vorl: {title: "Production of intermediate goods", label: "Intermediate goods", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_prod_inve: {title: "Production of capital goods", label: "Capital goods", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_prod_kons: {title: "Production of consumer goods", label: "Consumer goods", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_orders_euro: {title: "Industrial new orders from the euro area, real", label: "Euro area", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_orders_noneuro: {title: "Industrial new orders from outside the euro area, real", label: "Outside the euro area", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_orders_xbig: {title: "Industrial new orders excluding large orders, real", label: "Orders excluding large orders", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_sales: {title: "Industrial turnover, total, nominal", label: "Total", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_sales_dom: {title: "Industrial turnover, domestic, nominal", label: "Domestic", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_sales_for: {title: "Industrial turnover, foreign, nominal", label: "Foreign", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_sales_inv: {title: "Industrial turnover, capital goods, nominal", label: "Capital goods", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_bau_orders_total: {title: "New orders in the main construction sector, total, real", label: "Total", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_bau_orders_wohn: {title: "New orders in the main construction sector, residential, real", label: "Residential", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_bau_orders_hoch: {title: "New orders in the main construction sector, non-residential building, real", label: "Non-residential building", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_bau_orders_tief: {title: "New orders in the main construction sector, civil engineering, real", label: "Civil engineering", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_bau_prod: {title: "Construction output, total", label: "Construction, total", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_bau_prod_main: {title: "Output in building and civil engineering", label: "Building and civil engineering", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_bau_prod_ausbau: {title: "Output in the finishing trades", label: "Finishing and installation", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_retail_food: {title: "Retail sales of food, real", label: "Food", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Destatis)"}
+  de_retail_nonfood: {title: "Retail sales of non-food products, real", label: "Non-food", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Destatis)"}
+  de_retail_online: {title: "Mail-order and online retail, real", label: "Mail-order and online", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Destatis)"}
+  de_hospitality: {title: "Hospitality, real turnover", label: "Hospitality", unit: "Index 2015=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_cars_private: {title: "New car registrations by private owners", label: "Private owners", unit: "thousands", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_emp_m: {title: "Persons in employment (domestic)", label: "Persons in employment", unit: "thousand people", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_svb_m: {title: "Employees subject to social security contributions", label: "Employees subject to social security", unit: "thousand people", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_ca: {title: "Current-account balance", label: "Current account", unit: "€m", adjustment: "not adjusted"}
+  de_trade_bal: {title: "Balance of trade in goods", label: "Trade balance", unit: "€bn", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_export_prices: {title: "Export prices, index", unit: "Index 2021=100", adjustment: "not adjusted"}
+  de_export_prices_yoy: {title: "Export prices, % on a year earlier", label: "Export prices", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_tot: {title: "Terms of trade, index", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_tot_yoy: {title: "Terms of trade, % on a year earlier", label: "Terms of trade", unit: "% on a year earlier", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_capacity: {title: "Capacity utilisation in industry", label: "Capacity utilisation", unit: "% of capacity", adjustment: "seasonally adjusted"}
+  de_now_serv: {title: "Services: business situation over the past three months, balance", label: "Services", unit: "balance", adjustment: "seasonally adjusted"}
+  de_now_retail: {title: "Retail: business over the past three months, balance", label: "Retail", unit: "balance", adjustment: "seasonally adjusted"}
+  de_now_bau: {title: "Construction: building activity over the past three months, balance", label: "Construction", unit: "balance", adjustment: "seasonally adjusted"}
+  de_now_ind: {title: "Industry: current order books, balance", label: "Industry", unit: "balance", adjustment: "seasonally adjusted"}
+  de_next_serv: {title: "Services: expected demand (next three months), balance", label: "Services", unit: "balance", adjustment: "seasonally adjusted"}
+  de_next_retail: {title: "Retail: expected business (next three months), balance", label: "Retail", unit: "balance", adjustment: "seasonally adjusted"}
+  de_next_bau: {title: "Construction: employment plans (next three months), balance", label: "Construction (employment plans)", unit: "balance", adjustment: "seasonally adjusted"}
+  de_next_ind: {title: "Industry: production expectations (next three months), balance", label: "Industry", unit: "balance", adjustment: "seasonally adjusted"}
+  de_bund10: {title: "Yield on federal securities, residual maturity 10 years", label: "10 years", unit: "% p.a.", adjustment: "not adjusted"}
+  de_bund2: {title: "Yield on federal securities, residual maturity 2 years", label: "2 years", unit: "% p.a.", adjustment: "not adjusted"}
+  fx_usd: {title: "ECB reference rate: US dollars per euro", label: "US dollar", unit: "US$ per €", adjustment: "not adjusted"}
+  fx_usd_m: {title: "ECB reference rate: US dollars per euro", label: "US dollar", unit: "US$ per €", adjustment: "not adjusted"}
+  fx_cny: {title: "ECB reference rate: Chinese yuan per euro", label: "Chinese yuan", unit: "yuan per €", adjustment: "not adjusted"}
+  fx_gbp: {title: "ECB reference rate: pounds sterling per euro", label: "Pound sterling", unit: "£ per €", adjustment: "not adjusted"}
+  fx_chf: {title: "ECB reference rate: Swiss francs per euro", label: "Swiss franc", unit: "CHF per €", adjustment: "not adjusted"}
+  fx_eer41: {title: "Nominal effective exchange rate of the euro against 41 trading partners (ECB, EER-41)", label: "Against 41 trading partners", unit: "Index 1999 Q1 = 100", adjustment: "not adjusted"}
+  fx_eer18: {title: "Nominal effective exchange rate of the euro against 18 trading partners (ECB, EER-18)", label: "Against 18 trading partners", unit: "Index 1999 Q1 = 100", adjustment: "not adjusted"}
+  de_temp_anom: {title: "Air temperature in Germany, deviation from the 1991–2020 average", label: "Temperature", unit: "°C", note: "Area average for Germany from the German Weather Service (DWD); deviation from the average for the same calendar month 1991 to 2020.", adjustment: "not adjusted"}
+  de_rain_pct: {title: "Precipitation in Germany in % of the 1991–2020 average", label: "Precipitation", unit: "% of 1991–2020 average", note: "Area average for Germany from the German Weather Service (DWD); in % of the average for the same calendar month 1991 to 2020.", adjustment: "not adjusted"}
+  de_hdd_pct: {title: "Heating degree days in % of the 2015–2019 average", label: "Heating degree days", unit: "% of 2015–2019 average", note: "Degree days according to VDI 3807 (20/15 °C), unweighted average of all DWD stations; in % of the average for the same calendar month 2015 to 2019.", adjustment: "not adjusted"}
+  rhine_kaub: {title: "Water level at the Kaub gauge (Rhine), daily mean", label: "Kaub gauge", unit: "cm", note: "Up to the end of the previous year, verified daily means from the WSV (Federal Institute of Hydrology, BfG; R package hyd1d); thereafter daily means of the 15-minute values from PEGELONLINE.", adjustment: "not adjusted"}
+  rhine_lowdays: {title: "Days with a water level below 78 cm at the Kaub gauge", label: "Low-water days", unit: "days", note: "Days per month with a daily mean below 78 cm.", adjustment: "not adjusted"}
+  rhine_lowdays_year: {title: "Low-water days at the Kaub gauge per year (daily mean below 78 cm)", label: "Low-water days", unit: "days", note: "Number of days per calendar year with a daily mean below 78 cm; current year up to the latest day.", adjustment: "not adjusted"}
+  de_power_load: {title: "Electricity consumption (grid load) in Germany, TWh per month", unit: "TWh", adjustment: "not adjusted"}
+  de_power_load_yoy: {title: "Electricity consumption (grid load), % on a year earlier", label: "Electricity consumption", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_power_price: {title: "Wholesale electricity price (day-ahead, DE/LU), monthly average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
+  de_permits: {title: "Building permits: dwellings (new buildings and work on existing buildings), thousands", label: "Dwellings approved", unit: "thousand dwellings", adjustment: "not adjusted"}
+  de_hpi: {title: "House price index (residential property)", unit: "Index 2025=100", adjustment: "not adjusted"}
+  de_hpi_yoy: {title: "House price index, % on same quarter a year earlier", label: "Residential property, total", unit: "% on same quarter a year earlier", adjustment: "not adjusted"}
+  de_rate_nfc: {title: "Interest rate on new loans to businesses (cost of borrowing), Germany", label: "Loans to businesses", unit: "% p.a.", adjustment: "not adjusted"}
+  de_rate_house: {title: "Interest rate on new housing loans to private households, Germany", label: "Housing loans", unit: "% p.a.", adjustment: "not adjusted"}
+  de_loans_nfc_yoy: {title: "Bank loans to non-financial corporations, % on a year earlier", label: "Loans to businesses", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_loans_house_yoy: {title: "Housing loans to private households, % on a year earlier", label: "Housing loans", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_gas_storage: {title: "Gas storage fill level in Germany, % of working gas capacity", label: "Fill level", unit: "% of storage capacity", adjustment: "not adjusted"}
+  w_brent: {title: "Brent crude oil, monthly average", label: "Brent", unit: "US$ per barrel", adjustment: "not adjusted"}
+  w_gas_eu: {title: "Natural gas Europe, monthly average", label: "Natural gas Europe (TTF)", unit: "US$ per MMBtu", adjustment: "not adjusted"}
+  de_ppi_xe: {title: "Producer prices excluding energy, index", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_ppi_xe_yoy: {title: "Producer prices excluding energy, % on a year earlier", label: "Producer prices excluding energy", unit: "% on a year earlier", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_imp_xe: {title: "Import prices excluding energy, index", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_imp_xe_yoy: {title: "Import prices excluding energy, % on a year earlier", label: "Import prices excluding energy", unit: "% on a year earlier", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_agri: {title: "Producer prices of agricultural products, index", unit: "Index 2020=100", adjustment: "not adjusted"}
+  de_cpi_oecd: {title: "Consumer price index Germany (OECD), long series", unit: "Index 2015=100", note: "Used only as a deflator for agricultural prices before 1991; up to 1990 former West Germany.", adjustment: "not adjusted"}
+  enso_roni: {title: "Relative Oceanic Niño Index (RONI), three-month moving average", unit: "°C", note: "Date: middle month of the three-month period.", adjustment: "not adjusted"}
+  de_agri_yoy: {title: "Producer prices of agricultural products, % on a year earlier", label: "Agricultural prices", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_pexp_ind: {title: "Industry: expected selling prices, balance", label: "Industry", unit: "balance", adjustment: "seasonally adjusted"}
+  de_pexp_serv: {title: "Services: expected prices, balance", label: "Services", unit: "balance", adjustment: "seasonally adjusted"}
+  de_pexp_retail: {title: "Retail: expected prices, balance", label: "Retail", unit: "balance", adjustment: "seasonally adjusted"}
+  de_pexp_bau: {title: "Construction: expected prices, balance", label: "Construction", unit: "balance", adjustment: "seasonally adjusted"}
+  de_pexp_cons: {title: "Consumers: expected price trends over the next twelve months, balance", label: "Consumers (twelve months)", unit: "balance", adjustment: "seasonally adjusted"}
+  de_prod_wz: {title: "Production: {wz_name}", label: "{wz} {wz_name}", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_wai: {title: "Weekly activity index of the Bundesbank", label: "Activity index", unit: "%", note: "Estimated GDP growth rate over the latest 13 weeks compared with the 13 weeks before, from high-frequency indicators.", adjustment: "weekly data (Bundesbank)"}
+  de_gdp_a: {title: "Real GDP, % on previous year (annual data)", label: "GDP growth", unit: "% on previous year", adjustment: "price adjusted"}
+  de_potential: {title: "Growth of potential output (AMECO)", label: "Potential output", unit: "% on previous year", note: "Change in potential output (AMECO series OVGDP) on the previous year; AMECO spring 2026 vintage, retrieved via DBnomics on 3.11.2026. Updated by hand twice a year.", adjustment: "price adjusted"}
+  de_lp_hour: {title: "Labour productivity per hour worked, real", label: "per hour", unit: "Index 2020=100", adjustment: "seasonally and calendar adjusted"}
+  de_lp_person: {title: "Labour productivity per person employed, real", label: "per person employed", unit: "Index 2020=100", adjustment: "seasonally and calendar adjusted"}
+  inv_ratio: {title: "Gross fixed capital formation in % of GDP ({geo_name})", label: "{geo_name}", unit: "% of GDP", adjustment: "nominal"}
+  emp_sector_a: {title: "Persons in employment: agriculture and forestry", label: "Agriculture and forestry", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
+  emp_sector_be: {title: "Persons in employment: industry (excluding construction)", label: "Industry (excluding construction)", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
+  emp_sector_f: {title: "Persons in employment: construction", label: "Construction", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
+  emp_sector_gi: {title: "Persons in employment: trade, transport, hospitality", label: "Trade, transport, hospitality", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
+  emp_sector_j: {title: "Persons in employment: information and communication", label: "Information and communication", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
+  emp_sector_k: {title: "Persons in employment: finance and insurance", label: "Finance and insurance", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
+  emp_sector_l: {title: "Persons in employment: real estate", label: "Real estate", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
+  emp_sector_mn: {title: "Persons in employment: business services", label: "Business services", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
+  emp_sector_oq: {title: "Persons in employment: public services, education, health", label: "Public services, education, health", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
+  emp_sector_ru: {title: "Persons in employment: other services", label: "Other services", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
+  de_migration: {title: "Net migration (including statistical adjustment)", label: "Net migration", unit: "people", adjustment: "annual data"}
+  cit: {title: "Combined statutory tax rate on corporate profits, {cit_name}", label: "{cit_name}", unit: "%", note: "OECD Corporate Tax Statistics, combined statutory tax rate (CIT_C), standard rate (ST). Retrieved via the OECD SDMX interface on 3.11.2026.", adjustment: "standard rate, central and sub-central government"}
+  de_maut: {title: "Truck toll mileage index (motorways, vehicles with four or more axles)", label: "Truck toll mileage", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_ilo: {title: "Unemployment rate (ILO definition)", label: "Unemployment rate (ILO)", unit: "% of labour force", adjustment: "seasonally adjusted"}
+  de_sv_tot: {title: "Employees subject to social security contributions: total", unit: "people", adjustment: "not adjusted"}
+  de_sv_tot_yoy: {title: "Employees subject to social security contributions: total, % on a year earlier", label: "Total", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_sv_ind: {title: "Employees subject to social security contributions: production sector (secondary sector)", unit: "people", adjustment: "not adjusted"}
+  de_sv_ind_yoy: {title: "Employees subject to social security contributions: production sector (secondary sector), % on a year earlier", label: "Production sector", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_sv_dl: {title: "Employees subject to social security contributions: services excluding temporary agency work", unit: "people", adjustment: "not adjusted"}
+  de_sv_dl_yoy: {title: "Employees subject to social security contributions: services excluding temporary agency work, % on a year earlier", label: "Services excluding agency work", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_sv_aue: {title: "Employees subject to social security contributions: temporary agency work", unit: "people", adjustment: "not adjusted"}
+  de_sv_aue_yoy: {title: "Employees subject to social security contributions: temporary agency work, % on a year earlier", label: "Temporary agency work", unit: "% on a year earlier", adjustment: "not adjusted"}
+  de_orders_wz: {title: "New orders: {wz_name}", label: "{wz_name}", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_services_prod: {title: "Output of selected service sectors and hospitality (H, I, J, L, M, N)", label: "Services, total", unit: "Index 2015=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_services_m: {title: "Output: professional, scientific and technical services", label: "Professional and technical", unit: "Index 2015=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_services_n: {title: "Output: administrative and support services", label: "Other business services", unit: "Index 2015=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_hh_income: {title: "Real disposable income of private households per inhabitant", label: "Income per head, real", unit: "Index 2010=100", adjustment: "price, seasonally and calendar adjusted"}
+  de_saving: {title: "Gross saving ratio of private households", label: "Saving ratio", unit: "% of disposable income", adjustment: "seasonally and calendar adjusted"}
+  de_profit_share: {title: "Gross profit share of non-financial corporations", label: "Profit share", unit: "% of gross value added", adjustment: "seasonally and calendar adjusted"}
+  de_gdp_yoy_world: {title: "Real GDP Germany, % on same quarter a year earlier (seasonally and calendar adjusted)", label: "Germany", unit: "% on same quarter a year earlier", adjustment: "price, seasonally and calendar adjusted"}
+  ez_gdp: {title: "Real GDP, {geo_name}, % on same quarter a year earlier", label: "{geo_name}", unit: "% on same quarter a year earlier", adjustment: "price, seasonally and calendar adjusted"}
+  ez_hicp: {title: "HICP, {geo_name}, % on a year earlier", label: "{geo_name}", unit: "% on a year earlier", adjustment: "not adjusted"}
+  ez_unemp: {title: "Unemployment rate, {geo_name} (ILO)", label: "{geo_name}", unit: "% of labour force", adjustment: "seasonally adjusted"}
+  ez_unemp_ea20: {title: "Unemployment rate, euro area (ILO)", label: "Euro area", unit: "% of labour force", adjustment: "seasonally adjusted"}
+  ea_gdp_yoy: {title: "Real GDP, euro area, % on same quarter a year earlier", label: "Euro area", unit: "% on same quarter a year earlier", adjustment: "price, seasonally and calendar adjusted"}
+  us_gdp: {title: "Real GDP, United States, US$bn (chained, annual rate)", unit: "US$bn", adjustment: "price and seasonally adjusted"}
+  us_gdp_yoy: {title: "Real GDP, United States, % on same quarter a year earlier", label: "United States", unit: "% on same quarter a year earlier", adjustment: "price and seasonally adjusted"}
+  epu_europe: {title: "Economic policy uncertainty index, Europe", label: "Europe", unit: "index", adjustment: "not adjusted"}
+  epu_global: {title: "Economic policy uncertainty index, world (GDP-weighted)", label: "World", unit: "index", adjustment: "not adjusted"}
+  de_gov_b9: {title: "General government balance", label: "Government balance", unit: "% of GDP", adjustment: "seasonally and calendar adjusted"}
+  de_gov_interest: {title: "Government interest expenditure", label: "Interest expenditure", unit: "% of GDP", adjustment: "annual data"}
+  de_gov_inv: {title: "Government gross fixed capital formation", label: "Investment", unit: "% of GDP", adjustment: "annual data"}
+  de_gov_debt: {title: "General government gross debt (Maastricht definition)", label: "Debt", unit: "% of GDP", adjustment: "not adjusted"}
+  de_imm_de: {title: "Arrivals, Germans", unit: "people", adjustment: "annual data"}
+  de_emi_de: {title: "Departures, Germans", unit: "people", adjustment: "annual data"}
+  de_netmig_de: {title: "Net migration, Germans", label: "Germans", unit: "people", adjustment: "annual data"}
+  de_imm_eu: {title: "Arrivals, EU foreigners", unit: "people", adjustment: "annual data"}
+  de_emi_eu: {title: "Departures, EU foreigners", unit: "people", adjustment: "annual data"}
+  de_netmig_eu: {title: "Net migration, EU foreigners", label: "EU foreigners", unit: "people", adjustment: "annual data"}
+  de_imm_neu: {title: "Arrivals, non-EU foreigners", unit: "people", adjustment: "annual data"}
+  de_emi_neu: {title: "Departures, non-EU foreigners", unit: "people", adjustment: "annual data"}
+  de_netmig_neu: {title: "Net migration, non-EU foreigners", label: "Non-EU foreigners", unit: "people", adjustment: "annual data"}
+  de_reallohn_yoy: {title: "Real wage index, change on same quarter a year earlier", label: "Real wages", unit: "% on same quarter a year earlier", adjustment: "not adjusted"}
+  de_nominallohn_yoy: {title: "Nominal wage index, change on same quarter a year earlier", label: "Nominal wages", unit: "% on same quarter a year earlier", adjustment: "not adjusted"}
+
+geo:
+  DE: "Germany"
+  EU27_2020: "European Union"
+  FR: "France"
+  IT: "Italy"
+  ES: "Spain"
+  EA20: "Euro area"
+  EA: "Euro area"
+
+strings:
+  # units
+  "%": "%"
+  "% der Bruttowertschöpfung": "% of gross value added"
+  "% der Erwerbspersonen": "% of labour force"
+  "% der Kapazität": "% of capacity"
+  "% der Speicherkapazität": "% of storage capacity"
+  "% der zivilen Erwerbspersonen": "% of civilian labour force"
+  "% des BIP": "% of GDP"
+  "% des Mittels 1991–2020": "% of 1991–2020 average"
+  "% des Mittels 2015–2019": "% of 2015–2019 average"
+  "% des verfügbaren Einkommens": "% of disposable income"
+  "% ggü. Vorjahr": "% on previous year"
+  "% ggü. Vorjahresmonat": "% on a year earlier"
+  "% ggü. Vorjahresquartal": "% on same quarter a year earlier"
+  "% ggü. Vorquartal": "% on previous quarter"
+  "% p. a.": "% p.a."
+  "Anteil": "share"
+  "Anzahl": "number"
+  "CHF je €": "CHF per €"
+  "Index": "index"
+  "Index 0–100": "Index 0–100"
+  "Index 1999 Q1 = 100": "Index 1999 Q1 = 100"
+  "Index 2010=100": "Index 2010=100"
+  "Index 2015=100": "Index 2015=100"
+  "Index 2020=100": "Index 2020=100"
+  "Index 2021=100": "Index 2021=100"
+  "Index 2025=100": "Index 2025=100"
+  "Mio. €": "€m"
+  "Mrd. US-Dollar": "US$bn"
+  "Mrd. €": "€bn"
+  "Personen": "people"
+  "Pp": "pp"
+  "Pp ggü. Vorquartal": "pp on previous quarter"
+  "Saldo": "balance"
+  "TWh": "TWh"
+  "Tage": "days"
+  "Tausend": "thousands"
+  "Tsd. Personen": "thousand people"
+  "Tsd. Wohnungen": "thousand dwellings"
+  "US-$ je €": "US$ per €"
+  "US-Dollar je Barrel": "US$ per barrel"
+  "US-Dollar je MMBtu": "US$ per MMBtu"
+  "Yuan je €": "yuan per €"
+  "cm": "cm"
+  "£ je €": "£ per €"
+  "°C": "°C"
+  "€ je MWh": "€ per MWh"
+  # further units used in monitor.yaml charts
+  "Mio. Personen": "million people"
+  "Tsd. Personen, Veränderung seit dem 2. Quartal 2022": "thousand people, change since 2022 Q2"
+  # adjustments
+  "Jahreswerte": "annual data"
+  "Regelsatz, Zentralstaat und nachgeordnete Ebenen": "standard rate, central and sub-central government"
+  "Wochenwerte (Bundesbank)": "weekly data (Bundesbank)"
+  "kalender- und saisonbereinigt (Destatis)": "calendar and seasonally adjusted (Destatis)"
+  "nicht bereinigt": "not adjusted"
+  "nominal": "nominal"
+  "preis- und saisonbereinigt": "price and seasonally adjusted"
+  "preis-, saison- und kalenderbereinigt": "price, seasonally and calendar adjusted"
+  "preisbereinigt": "price adjusted"
+  "preisbereinigt, nicht saison- und kalenderbereinigt": "price adjusted, not seasonally or calendar adjusted"
+  "saison- und kalenderbereinigt": "seasonally and calendar adjusted"
+  "saison- und kalenderbereinigt (Bundesbank)": "seasonally and calendar adjusted (Bundesbank)"
+  "saisonbereinigt": "seasonally adjusted"
+  # frequencies
+  "Monatlich": "Monthly"
+  "Vierteljährlich": "Quarterly"
+  "Jährlich": "Annual"
+  "Täglich": "Daily"
+  "Wöchentlich": "Weekly"
+
+names:
+  item:
+    P31_S14_S15: "Household consumption"
+    P3_S13: "Government consumption"
+    P51G: "Investment"
+    P52_P53: "Inventories"
+    P6: "Exports"
+    P7: "Imports"
+  wz:
+    "10": "Food and animal feed"
+    "11": "Beverages"
+    "12": "Tobacco"
+    "13": "Textiles"
+    "14": "Clothing"
+    "15": "Leather and footwear"
+    "16": "Wood products"
+    "17": "Paper and paperboard"
+    "18": "Printing"
+    "19": "Coke and refined petroleum"
+    "20": "Chemicals"
+    "21": "Pharmaceuticals"
+    "22": "Rubber and plastics"
+    "23": "Glass, ceramics and other non-metallic minerals"
+    "24": "Basic metals"
+    "25": "Fabricated metal products"
+    "26": "Computer, electronic and optical products"
+    "27": "Electrical equipment"
+    "28": "Machinery and equipment"
+    "29": "Motor vehicles and parts"
+    "30": "Other transport equipment"
+    "31": "Furniture"
+    "32": "Other manufacturing"
+    "33": "Repair and installation"
+  geo:
+    DE: "Germany"
+    EU27_2020: "European Union"
+    FR: "France"
+    IT: "Italy"
+    ES: "Spain"
+    EA20: "Euro area"
+    EA: "Euro area"
+  cit:
+    deu: "Germany"
+    fra: "France"
+    ita: "Italy"
+    esp: "Spain"
+    nld: "Netherlands"
+    pol: "Poland"
+    aut: "Austria"
+    gbr: "United Kingdom"
+    usa: "United States"
+    jpn: "Japan"
+  asset:
+    N11MG: "equipment"
+    N11KG: "construction"
+    N117G: "other assets"
+  land:
+    "01": "Schleswig-Holstein"
+    "02": "Hamburg"
+    "03": "Lower Saxony"
+    "04": "Bremen"
+    "05": "North Rhine-Westphalia"
+    "06": "Hesse"
+    "07": "Rhineland-Palatinate"
+    "08": "Baden-Württemberg"
+    "09": "Bavaria"
+    "10": "Saarland"
+    "11": "Berlin"
+    "12": "Brandenburg"
+    "13": "Mecklenburg-Western Pomerania"
+    "14": "Saxony"
+    "15": "Saxony-Anhalt"
+    "16": "Thuringia"

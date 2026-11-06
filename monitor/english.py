@@ -51,6 +51,7 @@ def de_period_to_en(s: str) -> str:
     from .answers import MONTHS as DE
     if not isinstance(s, str):
         return s
+    s = re.sub(r"^(das|den|der) ", "", s)
     s = re.sub(r"(\d)\. Quartal (\d{4})", r"Q\1 \2", s)
     s = re.sub(r"(\d{1,2})\. (" + "|".join(DE) + r") (\d{4})", lambda m: f"{m.group(1)} {MONTHS[DE.index(m.group(2))]} {m.group(3)}", s)
     for i, m in enumerate(DE):
@@ -58,11 +59,51 @@ def de_period_to_en(s: str) -> str:
     return s.replace("Woche bis ", "week to ")
 
 
+LICENCES = {
+    "Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt)": "Data licence Germany – attribution – version 2.0 (Federal Statistical Office)",
+    "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)": "Reuse with attribution (Deutsche Bundesbank)",
+    "Wiederverwendung mit Quellenangabe (EZB)": "Reuse with attribution (ECB)",
+    "Nutzungsbedingungen der Originalquelle laut FRED, mit Quellenangabe": "Terms of use of the original source as stated by FRED, with attribution",
+    "Statistik der Bundesagentur für Arbeit, mit Quellenangabe": "Statistics of the Federal Employment Agency, with attribution",
+    "Statistisches Bundesamt (GENESIS)": "Federal Statistical Office (GENESIS)",
+    "eigene Berechnung": "own calculation",
+    "Pkt.": "pts", "Anträge": "filings", "% ggü. Vorjahr": "% on a year earlier", "% ggü. Vorjahresmonat": "% on a year earlier",
+    "% ggü. Vorjahresmonat, Beiträge in Pp": "% on a year earlier, contributions in pp",
+    "% gegenüber Vorjahresmonat, Beiträge in Prozentpunkten": "% on a year earlier, contributions in pp",
+    "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %": "change on the same 12 months a year earlier, %", "Pp": "pp", "Punkte": "points", "Vorquartal": "previous quarter", "Vormonat": "previous month", "Vorjahr": "year earlier",
+}
+# Wortweise Übersetzung für Quellen- und Lizenzangaben (nach den exakten Treffern)
+WORDS = [
+    ("Eigene Zusammenstellung nach dem üblichen Veröffentlichungsrhythmus der Quellen", "Own compilation based on the sources’ usual release patterns"),
+    ("WSV-Pegeldaten, bereitgestellt durch die Bundesanstalt für Gewässerkunde (R-Paket hyd1d)", "WSV gauge data provided by the Federal Institute of Hydrology (R package hyd1d)"),
+    ("geprüfte Pegeldaten über BfG (bis Vorjahr)", "validated gauge data via BfG (to end of previous year)"),
+    ("geprüfte Pegeldaten über BfG", "validated gauge data via BfG"),
+    ("Datenlizenz Deutschland – Zero – Version 2.0", "Data licence Germany – Zero – version 2.0"),
+    ("Datenlizenz Deutschland – Namensnennung – Version 2.0", "Data licence Germany – attribution – version 2.0"),
+    ("Nutzungsbedingungen der Vereinten Nationen", "terms of use of the United Nations"),
+    ("Unternehmensumfrage Industrie", "industry business survey"),
+    ("Wiederverwendung mit Quellenangabe", "reuse with attribution"),
+    ("Quellenangabe erforderlich", "attribution required"), ("Quellenangabe", "attribution"),
+    ("Eigene Berechnung aus", "Own calculation from"), ("eigene Berechnung", "own calculation"), ("Eigene Berechnung", "Own calculation"),
+    ("Europäische Kommission", "European Commission"), ("EU-Kommission", "European Commission"),
+    ("des Statistischen Bundesamts", "of the Federal Statistical Office"), ("Statistisches Bundesamt", "Federal Statistical Office"),
+    ("Bundesagentur für Arbeit", "Federal Employment Agency"), ("Bundesnetzagentur", "Federal Network Agency"),
+    ("Deutscher Wetterdienst", "German Weather Service"), ("Sachverständigenrat", "German Council of Economic Experts"),
+    ("Frühjahrsprognose", "spring forecast"), ("Herbstprognose", "autumn forecast"), ("Herbstprojektion", "autumn projection"),
+    ("Frühjahrsprojektion", "spring projection"), ("Konjunkturprognose", "economic forecast"), ("Gemeinschaftsdiagnose", "Joint Economic Forecast"),
+    ("Bundesregierung", "Federal Government"), ("Gemeinfrei", "Public domain"), ("IWF", "IMF"), ("EZB", "ECB"),
+    ("VPI", "CPI"), ("Erzeugerpreise", "producer prices"), ("Nutzungsbedingungen", "terms of use"), ("-Daten", " data"),
+    ("Ländergrenzen: © GeoBasis-DE / BKG (VG2500)", "State borders: © GeoBasis-DE / BKG (VG2500)"),
+    ("(über ", "(via "), (" über ", " via "), (" und ", " and "), (" laut ", " as stated by "), (" mit ", " with "),
+]
+BARS = {"Auftragseingang": ("New orders", "orders"), "Produktion": ("Production", "production")}
+
+
 class Tr:
     def __init__(self, root: Path):
         p = root / "data" / "static" / "en.yaml"
         self.d = yaml.safe_load(p.read_text(encoding="utf-8")) if p.exists() else {}
-        self.strings = self.d.get("strings") or {}
+        self.strings = dict(LICENCES, **(self.d.get("strings") or {}))
 
     def get(self, sect: str, key: str, field: str, default=None):
         v = ((self.d.get(sect) or {}).get(key) or {})
@@ -98,6 +139,14 @@ class Tr:
         if not isinstance(text, str):
             return text
         return self.strings.get(text, text)
+
+    def src(self, text):
+        """Quellen- oder Lizenzangabe: exakt, sonst Wort für Wort."""
+        if not isinstance(text, str) or text in self.strings:
+            return self.s(text)
+        for de, en in WORDS:
+            text = text.replace(de, en)
+        return text
 
 
 # --------------------------------------------------------------------------- Antworten auf die Startfragen
@@ -333,10 +382,20 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                 q["answer"].update(head="", more=[])
         for c in t["charts"]:
             cid = c.get("chart")
+            if c.get("type") == "heatbars" and cid not in (tr.d.get("charts") or {}):  # aus der Wärmetabelle abgeleitet
+                w = BARS["Auftragseingang" if "order" in cid else "Produktion"]
+                c["title"] = f"{w[0]} by industry: three-month change and level vs 2019"
+                c["ask"] = f"Which industries have gained in {w[1]}, which are below 2019?"
+                c["caption"] = (f"{w[0]} by industry as bars, switchable. Three-month comparison: last three months vs the three months before, seasonally adjusted. "
+                                "Level vs 2019: latest month vs the 2019 average, the last full year before the pandemic and the 2022 energy price shock; "
+                                "it shows which industries have regained their pre-crisis level. Orange: increase, blue: decrease.")
+            c["sources"] = [tr.src(x) for x in c.get("sources") or []]
+            c["licenses"] = [tr.src(x) for x in c.get("licenses") or []]
             for f in ("title", "ask", "caption", "what"):
                 if c.get(f):
                     c[f] = tr.get("charts", cid, f, c[f])
             c["unit_de"] = c.get("unit")
+            lab_map = {}
             if c.get("unit"):
                 c["unit"] = tr.get("charts", cid, "unit", tr.s(c["unit"]))
             if c.get("adjustment"):
@@ -345,9 +404,12 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                 if isinstance(s, dict):
                     s["unit_de"] = s.get("unit")
                     if s.get("label") and s.get("id"):
+                        de_lab = s["label"]
                         s["label"] = tr.label(s["id"], s["label"])
+                        lab_map[de_lab] = s["label"]
                     if s.get("unit"):
                         s["unit"] = tr.get("series", s.get("id"), "unit", tr.s(s["unit"]))
+            c["outliers"] = [dict(o, label=lab_map.get(o.get("label"), o.get("label"))) for o in c.get("outliers") or []]
             texts = chart_sentences_en(c)
             c["texts"], c["text"] = texts, " ".join(texts)
             c["notes"] = []  # automatische Hinweise vorerst nur deutsch
@@ -368,6 +430,7 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
         r["period"] = de_period_to_en(r.get("period"))
         for k in ("prev_label", "change_unit"):
             r[k] = tr.s(r.get(k))
+    p["geo_source"] = Tr.src(tr, p.get("geo_source"))
     p["news"] = [dict(n, label=tr.label(n.get("series"), n.get("label")), period=de_period_to_en(n.get("period"))) for n in p.get("news") or []]
     for k in ("archive_file",):
         p[k] = _rel(p.get(k))
