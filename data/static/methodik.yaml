@@ -1,0 +1,110 @@
+# Methodentexte für die Methodenblätter (site/methodik/<abbildung>.html).
+# charts: Abbildung -> methode (Absatz, wie gerechnet und warum) und grenzen (Liste der wichtigsten Einschränkungen).
+# Alles Übrige (Quellen, Kennungen, Einheiten, Rechenschritte aus der Konfiguration) erzeugt der Bau automatisch.
+
+charts:
+  gdp_contrib:
+    methode: "Das Statistische Bundesamt meldet das reale BIP und seine Verwendungsseite: Konsum der Haushalte und des Staates, Investitionen, Vorratsveränderung, Exporte und Importe. Der Beitrag eines Bestandteils ist seine Veränderung gegenüber dem Vorquartal, gewichtet mit seinem Anteil am BIP; Eurostat veröffentlicht diese Beiträge aus den Daten des Statistischen Bundesamts saison- und kalenderbereinigt. Importe gehen mit negativem Vorzeichen ein, weil sie nicht im Inland erzeugt wurden. Der Monitor fasst Bestandteile zu Gruppen zusammen und stellt sie neben die Wachstumsrate des BIP."
+    grenzen:
+      - "Die Vorratsveränderung enthält statistische Restgrößen und schwankt deshalb stark."
+      - "Die Beiträge für das jüngste Quartal erscheinen später als die Schnellmeldung des BIP; die Linie kann deshalb ein Quartal weiter reichen als die Balken."
+  gdp_rev:
+    methode: "Die Echtzeitdatenbank der Bundesbank speichert jeden veröffentlichten Rechenstand des BIP. Für jedes Quartal vergleicht der Monitor die Wachstumsrate aus der ersten Meldung mit der Rate im jüngsten Rechenstand; die Differenz ist die Korrektur. Das graue Band zeigt den Durchschnitt der Korrekturen ohne Vorzeichen und damit, wie stark sich eine erste Meldung typischerweise noch ändert."
+    grenzen:
+      - "Junge Quartale sind meist erst wenig überarbeitet; ihre Korrekturen wachsen mit der Zeit."
+      - "Große Revisionen der Volkswirtschaftlichen Gesamtrechnungen ändern viele Quartale auf einmal."
+  downturns:
+    methode: "Ausgangspunkt jeder Episode ist ein Hoch der Industrieproduktion. Für frühere Krisen ist es gesetzt (Finanzkrise Januar 2008, Corona Februar 2020); für den laufenden Abschwung wählt der Monitor den höchsten Stand der letzten fünf Jahre. Von diesem Zeitpunkt an zeigt jedes Feld den Verlauf: Produktion und BIP als Index mit dem Hoch = 100, die Arbeitslosenquote als Veränderung in Prozentpunkten."
+    grenzen:
+      - "Die Zeitpunkte der Hochs sind gesetzt und keine amtliche Datierung."
+      - "Die Energiekrise ab Ende 2021 geht in den laufenden Abschwung über und ist deshalb nicht eigens gezeigt."
+  downturns_hist:
+    methode: "Für Jahreswerte seit 1870 liefert die Global Macro Database (Müller, Xu, Lehbib und Chen 2025) reales BIP und Arbeitslosenquote für Deutschland. Als Hoch gilt das letzte Jahr vor einem Rückgang des realen BIP. Ab diesem Jahr zeigt die Abbildung den Verlauf über die folgenden Jahre: BIP als Index (Jahr des Hochs = 100), Arbeitslosenquote als Veränderung in Prozentpunkten. Den laufenden Abschwung rechnet der Monitor mit amtlichen Jahreswerten: Jahresmittel des vierteljährlichen BIP-Index und der Erwerbslosenquote nach ILO, jeweils nur für vollständige Jahre."
+    grenzen:
+      - "Deutschland in den jeweiligen Grenzen: Gebietsänderungen 1871, 1918, 1945 und 1990 brechen die Reihen."
+      - "Kriegsjahre sind ausgelassen; Verläufe enden vor 1914 und 1939."
+      - "Die historische Arbeitslosenquote wechselt Quelle und Abgrenzung; vor 1950 ist sie nur grob vergleichbar."
+      - "Der laufende Abschwung beruht auf anderen Quellen als die historischen Episoden."
+      - "Die Global Macro Database steht unter CC BY-NC-SA 4.0; diese Abbildung und ihr Download deshalb ebenso."
+  cpi_contrib:
+    methode: "Der Beitrag eines Bereichs zur Inflationsrate ist seine Preisveränderung, gewichtet mit seinem Anteil am Warenkorb des Verbraucherpreisindex. Der Monitor rechnet die Beiträge aus den Teilindizes und den Wägungsanteilen des Statistischen Bundesamts; Dienstleistungen und Mieten sind zusammengefasst. Die Summe der Beiträge ergibt bis auf eine kleine Restgröße die Inflationsrate."
+    grenzen:
+      - "Die Gewichte ändern sich mit jeder Neuberechnung des Warenkorbs; die Restgröße entsteht aus Rundung und Verkettung."
+  enso:
+    methode: "Als sehr starkes El-Niño-Ereignis gilt eine Folge von mindestens fünf Dreimonatswerten des Relative Oceanic Niño Index der NOAA ab 0,5 °C mit einem Höchstwert ab 2 °C; Beginn ist der erste Monat der Folge. Ab diesem Monat zeigt die Abbildung die realen Nahrungsmittelpreise (Nahrungsmittelindex im Verhältnis zum Gesamtindex) und die realen Erzeugerpreise landwirtschaftlicher Produkte, jeweils mit dem Beginn = 100."
+    grenzen:
+      - "Wenige Episoden; andere Einflüsse wie Energiepreise oder Wechselkurse überlagern den Effekt."
+  sahm:
+    methode: "Eigene Berechnung nach Michaillat und Saez (2025). Erster Teil: Dreimonatsmittel der Arbeitslosenquote einschließlich Kurzarbeit in Vollzeitäquivalenten minus ihr Tief der letzten zwölf Monate. Zweiter Teil: Hoch der Quote offener Stellen in den letzten zwölf Monaten minus ihr Dreimonatsmittel. Das Signal ist der kleinere der beiden Teile; es steigt nur, wenn die Arbeitslosigkeit zunimmt und zugleich die offenen Stellen abnehmen."
+    grenzen:
+      - "Die Schwelle von 0,25 Prozentpunkten ist eigene Wahl für Deutschland."
+      - "Das Signal kam in früheren Rezessionen teils mit Verzögerung."
+  wai:
+    methode: "Der Wöchentliche Aktivitätsindex der Bundesbank schätzt aus wöchentlichen Daten (unter anderem Lkw-Maut, Stromverbrauch, Suchanfragen), wie stark die Wirtschaftsleistung in den letzten 13 Wochen gegenüber den 13 Wochen davor gewachsen ist. Der Monitor übernimmt die Werte unverändert."
+    grenzen:
+      - "Eine Schätzung; sie wird mit neuen Daten überarbeitet."
+  clock:
+    methode: "Die Konjunkturuhr verbindet zwei Fragen der EU-Unternehmensumfrage in der Industrie: die Beurteilung der Auftragsbestände (waagerecht) und die Produktionserwartungen für die nächsten drei Monate (senkrecht). Beide Salden werden als Abstand zu ihrem Mittel 2005 bis 2019 gezeigt; im typischen Zyklus läuft der Punkt im Uhrzeigersinn durch Aufschwung, Boom, Abschwung und Rezession."
+    grenzen:
+      - "Umfragesalden messen die Richtung, nicht die Höhe der Produktion."
+  forecast:
+    methode: "Der Monitor sammelt die jüngsten Prognosen von Bundesregierung, Instituten und internationalen Organisationen (data/static/prognosen.yaml) mit Datum und Quelle. Je Herausgeber gilt die jüngste Prognose; die Bundesregierung ist hervorgehoben, weil ihre Projektion Grundlage für Haushalt und Steuerschätzung ist."
+    grenzen:
+      - "Prognosen haben unterschiedliche Stichtage; ältere Prognosen sind heller gezeichnet."
+      - "Einzelne Werte stammen aus Presseberichten zu den Veröffentlichungen."
+  forecast_infl:
+    methode: "Wie bei den Wachstumsprognosen: je Herausgeber die jüngste Prognose der Inflationsrate. Meist ist das der Verbraucherpreisindex; die Bundesbank prognostiziert den europäischen HVPI."
+    grenzen:
+      - "VPI und HVPI unterscheiden sich in Abgrenzung und Gewichten, meist nur wenig."
+  potential:
+    methode: "Das Produktionspotenzial schätzt die Europäische Kommission (AMECO) mit einer Produktionsfunktion aus Arbeitsvolumen, Kapitalbestand und Produktivität. Gezeigt sind dessen Wachstumsrate und die Wachstumsrate des realen BIP."
+    grenzen:
+      - "Das Potenzial ist nicht beobachtbar; Schätzungen werden oft deutlich überarbeitet."
+  esi:
+    methode: "Exportähnlichkeitsindex nach Finger und Kreinin (1979): je Warengruppe zählt der kleinere der beiden Exportanteile; die Summe über alle Gruppen ergibt einen Wert zwischen 0 (keine Überschneidung) und 100 (identische Warenstruktur)."
+    grenzen:
+      - "Die Ähnlichkeit hängt von der Feinheit der Warengliederung ab."
+  uncertainty:
+    methode: "Index der wirtschaftspolitischen Unsicherheit nach Baker, Bloom und Davis: Anteil der Zeitungsartikel, die Begriffe zu Wirtschaft, Politik und Unsicherheit zugleich enthalten, normiert auf ein Mittel von 100 in den Jahren 1997 bis 2015."
+    grenzen:
+      - "Misst Berichterstattung, nicht Unsicherheit selbst; die Reihen enden nicht im selben Monat."
+  hdd:
+    methode: "Heizgradtage nach VDI 3807: Für jeden Tag mit einem Mittel unter 15 °C zählt die Differenz zu 20 °C Raumtemperatur; die Summe je Monat ergibt die Gradtage in Kelvin mal Tagen. Der Deutsche Wetterdienst veröffentlicht sie je Station; der Monitor bildet das ungewichtete Mittel aller Stationen."
+    grenzen:
+      - "Ungewichtetes Stationsmittel, kein amtlicher Deutschlandwert."
+  rhine:
+    methode: "Tagesmittel des Wasserstands am Pegel Kaub. Bis Ende des Vorjahres geprüfte Daten der Wasserstraßen- und Schifffahrtsverwaltung über die Bundesanstalt für Gewässerkunde, danach vorläufige Werte aus PEGELONLINE."
+    grenzen:
+      - "Der Pegelstand ist nicht die Wassertiefe der Fahrrinne; die Marke von 78 cm ist eine Faustregel."
+  rhine_low:
+    methode: "Zahl der Tage je Kalenderjahr, an denen das Tagesmittel am Pegel Kaub unter 78 cm lag; das laufende Jahr reicht bis zum jüngsten Tag und ist heller gezeichnet."
+    grenzen:
+      - "Das laufende Jahr ist unvollständig."
+  insolv_claims:
+    methode: "Voraussichtliche Forderungen der Gläubiger aus beantragten Unternehmensinsolvenzen je Monat, in jeweiligen Preisen. Einzelne Großinsolvenzen lassen die Monatswerte springen; das Zwölfmonatsmittel gleicht das aus."
+    grenzen:
+      - "Beträge nominal; die Preise sind seit 2019 um rund ein Viertel gestiegen."
+  insolv_land:
+    methode: "Je Land die Zahl der beantragten Unternehmensinsolvenzen der jüngsten zwölf (umschaltbar: sechs) Monate gegenüber demselben Zeitraum ein Jahr zuvor. Die Sätze nennen nur die größere Hälfte der Länder, weil Prozentwerte kleiner Länder auf wenigen Fällen beruhen."
+    grenzen:
+      - "Kleine Länder schwanken stark; die absoluten Zahlen stehen im Tooltip."
+  spf:
+    methode: "Mittel der Punktprognosen für die Inflationsrate im Euroraum in vier bis fünf Jahren aus der vierteljährlichen Umfrage der EZB unter Fachleuten (Survey of Professional Forecasters)."
+    grenzen:
+      - "Euroraum, nicht Deutschland; die Zahl der Teilnehmer schwankt."
+  gas:
+    methode: "Der IWF veröffentlicht den Großhandelspreis für Erdgas in Europa (Handelsplatz TTF) als Monatsmittel in US-Dollar je MMBtu. Der Monitor rechnet in Euro je Megawattstunde um: Preis ÷ Monatsmittel des EZB-Referenzkurses (US-Dollar je Euro) ÷ 0,293071 MWh je MMBtu."
+    grenzen:
+      - "Monatsmittel glätten kurzfristige Preisspitzen."
+  cit:
+    methode: "Tarifliche Gesamtsteuerbelastung von Kapitalgesellschaften nach der OECD (Corporate Tax Statistics): Körperschaftsteuer einschließlich Zuschlägen und Steuern nachgeordneter Ebenen, in Deutschland die Gewerbesteuer mit durchschnittlichem Hebesatz."
+    grenzen:
+      - "Tarifliche Sätze, nicht die tatsächlich gezahlte Steuer; Bemessungsgrundlagen unterscheiden sich."
+  tarif:
+    methode: "Index der tariflichen Monatsverdienste mit Sonderzahlungen für die Gesamtwirtschaft (Statistisches Bundesamt) und Verbraucherpreisindex, jeweils als Veränderung gegenüber dem Vorjahresmonat. Liegt die Tarifrate über der Inflationsrate, steigen die Tariflöhne real."
+    grenzen:
+      - "Einmalzahlungen wie die Inflationsausgleichsprämie lassen die Reihe springen."
+  emp_sector:
+    methode: "Erwerbstätige je Wirtschaftsbereich, saison- und kalenderbereinigt (Eurostat). Je Bereich die Veränderung vom 2. Quartal 2022 bis zum jüngsten Quartal in Tausend, in Klammern in Prozent des Stands im 2. Quartal 2022."
+    grenzen:
+      - "Erwerbstätige zählen Köpfe, nicht Arbeitsstunden."
