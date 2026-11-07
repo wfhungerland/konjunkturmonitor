@@ -2384,7 +2384,7 @@ series:
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     start: "2015-01-01"
     chart: services
-    label: "Dienstleister insgesamt"
+    label: "Erfasste Dienstleister"
 
   - id: de_services_m
     block: dienstleistungen
@@ -2770,7 +2770,7 @@ series:
     block: einkommen
     source: genesis
     key: 62231-0001
-    params: {value_variable: VST073, filters: {WZ08C7: WZ08-B-08}}
+    params: {value_variable: VST073, filters: {WZ08C7: WZ08-B-08}, query: {contents: VST073, classifyingvariable1: WZ08C7, classifyingkey1: WZ08-B-08}}
     title: "Index der tariflichen Monatsverdienste mit Sonderzahlungen, Gesamtwirtschaft"
     unit: "Index 2020=100"
     frequency: M

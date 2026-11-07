@@ -343,10 +343,13 @@ def _special_en(c: dict) -> list[str] | None:
             if up["change"] > 0:
                 out.append(f"It rose most in {up['name']}: by {num(up['change'])} pp on the previous year.")
             return out
-        rows = sorted(w["rows"], key=lambda r: r["change"])
+        big = sorted(w["rows"], key=lambda r: r.get("sum") or 0)[len(w["rows"]) // 2:] if all(r.get("sum") is not None for r in w["rows"]) else w["rows"]
+        rows = sorted(big, key=lambda r: r["change"])
         span = de_period_to_en(w["span"]).replace(" bis ", " to ")
-        return [f"{span}: the strongest increase on the same period a year earlier was in {rows[-1]['name']} at {sg(rows[-1]['change'])}%.",
-                f"{span}: the {'largest decrease' if rows[0]['change'] < 0 else 'smallest increase'} was in {rows[0]['name']} at {sg(rows[0]['change'])}%."]
+        cnt = lambda r: f" ({int(r['sum']):,} cases)" if r.get("sum") is not None else ""
+        pre = f"{span}, among the {len(big)} states with the most cases: " if len(big) < len(w["rows"]) else f"{span}: "
+        return [f"{pre}the strongest increase on the same period a year earlier was in {rows[-1]['name']} at {sg(rows[-1]['change'])}%{cnt(rows[-1])}.",
+                f"The {'largest decrease' if rows[0]['change'] < 0 else 'smallest increase'} was in {rows[0]['name']} at {sg(rows[0]['change'])}%{cnt(rows[0])}."]
     if typ == "heat":
         rows, per = c["heat"]["rows"], period(pd.Timestamp(c["heat"]["cols"][-1]), "M")
         return [f"In the three months to {per}, “{rows[-1]['label']}” grew most: {sg(rows[-1]['m3'])}% on the three months before.",
@@ -357,7 +360,9 @@ def _special_en(c: dict) -> list[str] | None:
             return []
         per = period(pd.Timestamp(c["heat"]["cols"][-1]), "M")
         below = sum(1 for r in lv if r["level"] < 0)
-        return [f"In {per}, {below} of {len(lv)} industries were below their 2019 average, the last full year before the pandemic.",
+        m3 = sorted([r for r in c["heat"]["rows"] if r.get("m3") is not None], key=lambda r: r["m3"])
+        first = [f"In the three months to {per}, “{m3[-1]['label']}” grew most ({sg(m3[-1]['m3'])}% on the three months before), “{m3[0]['label']}” was weakest ({sg(m3[0]['m3'])}%)."] if m3 else []
+        return first + [f"In {per}, {below} of {len(lv)} industries were below their 2019 average, the last full year before the pandemic.",
                 f"Furthest above 2019 was “{lv[-1]['label']}” ({sg(lv[-1]['level'])}%), furthest below “{lv[0]['label']}” ({sg(lv[0]['level'])}%)."]
     if typ == "clock":
         k = c["clock"]
@@ -388,6 +393,10 @@ def _special_en(c: dict) -> list[str] | None:
                 out.append(f"It fell most in “{bs[0]['label']}”: by {num(abs(bs[0]['value']), d)} {(c.get('unit') or '').split(',')[0]}{pc(bs[0])}.".replace(" .", ".").replace("  (", " ("))
             return out
         w = when(b[0]["period"], c.get("freq", "Q"))
+        cb = c.get("combine")
+        if isinstance(cb, dict) and cb.get("lead_en"):
+            items = [f"{x['label']} {sg(x['value'], d)}%" for x in b]
+            return [f"{w}, {cb['lead_en']} " + (", ".join(items[:-1]) + " and " + items[-1] if len(items) > 1 else items[0]) + "."]
         return [f"{w}, “{x['label']}” {'rose' if x['value'] > 0.05 else 'fell' if x['value'] < -0.05 else 'barely changed'}"
                 + (f" by {num(abs(x['value']), d)}%" if abs(x["value"]) > 0.05 else "") + " on the previous period." for x in b]
     if typ == "forecast":
@@ -466,6 +475,13 @@ def chart_sentences_en(c: dict) -> list[str]:
         series = series[:6]
         last = max(s["x"][-1] for s in series)
         w = when(last, freq)
+        cb = c.get("combine")
+        if isinstance(cb, dict) and cb.get("lead_en"):  # gleich gebaute Reihen in einem Satz
+            su0 = (c.get("unit_de") or "").split(",")[0]
+            sym = "%" if su0.startswith("%") else " pp" if su0.startswith(("Pp", "Saldo")) else " " + (c.get("unit") or "").split(",")[0]
+            items = [f"{cb.get('pre_en', '')}{s.get('label', '')} {num(s['y'][-1], d, cb.get('sign', True))}{sym}" for s in series if s["x"][-1] == last and s["y"][-1] is not None]
+            if items:
+                return [f"{w}, {cb['lead_en']} " + (", ".join(items[:-1]) + " and " + items[-1] if len(items) > 1 else items[0]) + "."]
         mig = {"de_netmig_de": "Germans", "de_netmig_eu": "people from other EU countries", "de_netmig_neu": "people from outside the EU"}
         prev_lbl = {"M": "in the previous month", "Q": "in the previous quarter", "A": "in the previous year", "D": "in the previous week", "B": "on the previous day"}
         out = []
@@ -487,6 +503,16 @@ def chart_sentences_en(c: dict) -> list[str]:
             if s.get("id") in mig:  # Wanderung: wer kam, wer ging
                 out.append(f"{w}, net {num(abs(v), d)} thousand {mig[s['id']]} {'moved to Germany' if v >= 0 else 'left Germany'}.")
                 continue
+            if s.get("id") in ("gdp_rt_first", "gdp_rt_latest"):
+                out.append(f"{w}, {subj} was {num(v, d)}% on the previous quarter.")
+                continue
+            if s.get("id") == "gdp_rt_rev":
+                out.append(f"{w}, GDP growth is unchanged since the first release." if round(v, d) == 0 else f"{w}, GDP growth has been revised {'up' if v > 0 else 'down'} by {num(abs(v), d)} pp since the first release.")
+                continue
+            if su.startswith("Index") and not su.startswith("Index 0") and c.get("sent_ma3") and len(s["y"]) >= 15 and None not in s["y"][-15:]:
+                ch = (sum(s["y"][-3:]) / sum(s["y"][-15:-12]) - 1) * 100
+                out.append(f"In the three months to {period(pd.Timestamp(last), f)}, {subj} was {num(abs(ch), 1)}% {'above' if ch > 0 else 'below'} the same period a year earlier.")
+                continue
             if s.get("id") == "de_hdd":
                 out.append(f"{w}, heating demand was {num(v, d)} degree days.")
                 continue
@@ -499,7 +525,7 @@ def chart_sentences_en(c: dict) -> list[str]:
                 else:
                     sent = f"{w}, {subj} {'rose' if v > 0 else 'fell'} by {num(abs(v), d)}{pu} {ref}"
                 if len(s["y"]) > 1 and s["y"][-2] is not None and not c.get("no_yoy"):
-                    sent += f", after {num(s['y'][-2], d)}{pu} {prev_lbl.get(f, 'before')}"
+                    sent += f", after {num(s['y'][-2], d, True)}{pu} {prev_lbl.get(f, 'before')}"
                 out.append(sent.replace(" ()", "") + ".")
                 continue
             if su.startswith("Index") and not su.startswith("Index 0"):
@@ -520,6 +546,8 @@ def chart_sentences_en(c: dict) -> list[str]:
                     pc = (v / yago - 1) * 100
                     sent += ", the same as a year earlier" if round(pc, 1) == 0 else f", {num(abs(pc), 1)}% {'more' if pc > 0 else 'less'} than a year earlier"
             out.append(sent + ".")
+        if c.get("type") == "threshold" and c.get("threshold") is not None and out and series and series[0]["y"][-1] is not None:
+            out.append("This is a recession signal." if series[0]["y"][-1] >= float(c["threshold"]) else "This is not a recession signal.")
         if norm and out and norm["x"][-1] == last and series and series[0]["y"][-1] is not None and norm["y"][-1]:
             a0, a1 = c.get("norm") or ("", "")
             out.append(f"That is {num(series[0]['y'][-1] / norm['y'][-1] * 100, 0)}% of the {a0}–{a1} average for the same month ({num(norm['y'][-1], d)}).")
