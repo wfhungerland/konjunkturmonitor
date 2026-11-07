@@ -427,6 +427,20 @@ def _special_en(c: dict) -> list[str] | None:
         if round(at(lo), d) < 0:
             out.append(f"{w}, “{lo['label']}” held it back most: {sg(at(lo), d)} pp.")
         return out
+    if typ == "event" and c.get("kind") == "history":
+        out = []
+        for p in c["event"]["panels"]:
+            cur = next((l for l in p["lines"] if l["current"]), None)
+            if not cur or len(cur["y"]) < 2 or cur["y"][-1] is None:
+                continue
+            k, v, pk = len(cur["y"]) - 1, cur["y"][-1], cur["start"][:4]
+            old = [l for l in p["lines"] if not l["current"] and len(l["y"]) > k and l["y"][k] is not None]
+            cmp = "; at the same point " + ", ".join(f"{l['label']} {num(l['y'][k] - p['base'], 1, True)}{' pp' if p.get('unit') in ('pp', 'Pp') else '%'}" for l in old) if old else ""
+            if p.get("unit") in ("pp", "Pp"):
+                out.append(f"Since the {pk} peak the unemployment rate has {'risen' if v > 0 else 'fallen'} by {num(abs(v))} pp ({k} {'year' if k == 1 else 'years'}){cmp}.")
+            else:
+                out.append(f"{k} {'year' if k == 1 else 'years'} after the {pk} peak, real GDP was {num(abs(v - 100))}% {'below' if v < 100 else 'above'} the peak{cmp}.")
+        return out
     if typ == "event" and c.get("kind") == "downturn":
         out = []
         for p in c["event"]["panels"]:
@@ -606,17 +620,20 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                 c["caption"] = (f"{w[0]} by industry as bars, switchable. Three-month comparison: last three months vs the three months before, seasonally adjusted. "
                                 "Level vs 2019: latest month vs the 2019 average, the last full year before the pandemic and the 2022 energy price shock; "
                                 "it shows which industries have regained their pre-crisis level. Orange: increase, blue: decrease.")
-            if c.get("kind") == "downturn" and isinstance(c.get("event"), dict):
-                PT = {"Industrieproduktion": "Industrial production", "Arbeitslosenquote": "Unemployment rate", "Wirtschaftsleistung (BIP)": "Economic output (GDP)",
+            if c.get("kind") in ("downturn", "history") and isinstance(c.get("event"), dict):
+                PT = {"Reales BIP": "Real GDP", "Jahr des Hochs = 100; waagerecht: Jahre seit dem Hoch": "peak year = 100; horizontal: years since the peak",
+                      "Veränderung seit dem Jahr des Hochs in Pp; waagerecht: Jahre": "change since the peak year in pp; horizontal: years", "Jahr": "Year",
+                      "Spanne der übrigen Abschwünge": "Range of the other downturns",
+                      "Industrieproduktion": "Industrial production", "Arbeitslosenquote": "Unemployment rate", "Wirtschaftsleistung (BIP)": "Economic output (GDP)",
                       "Hoch = 100; waagerecht: Monate seit dem Hoch": "peak = 100; horizontal: months since the peak",
                       "Veränderung seit dem Hoch der Produktion in Pp; waagerecht: Monate": "change since the production peak in pp; horizontal: months",
                       "Quartal des Hochs = 100; waagerecht: Quartale": "quarter of the peak = 100; horizontal: quarters", "Monat": "Month", "Quartal": "Quarter"}
                 for pn in c["event"]["panels"]:
-                    for f in ("title", "sub", "step"):
+                    for f in ("title", "sub", "step", "band_label"):
                         pn[f] = PT.get(pn.get(f), pn.get(f))
                     pn["unit"] = "pp" if pn.get("unit") == "Pp" else pn.get("unit")
                     for ln in pn["lines"]:
-                        ln["label"] = ln["label"].replace("Finanzkrise ab", "Financial crisis from").replace("Corona ab", "COVID from").replace("Energiekrise ab", "Energy crisis from").replace("Finanzkrise ", "Financial crisis ").replace("Corona ", "COVID ").replace("laufend, seit ", "ongoing, since ").replace("seit ", "since ")
+                        ln["label"] = ln["label"].replace("Finanzkrise ab", "Financial crisis from").replace("Corona ab", "COVID from").replace("Energiekrise ab", "Energy crisis from").replace("Finanzkrise ", "Financial crisis ").replace("Weltwirtschaftskrise ", "Great Depression ").replace("Corona ", "COVID ").replace("laufend, seit ", "ongoing, since ").replace("seit ", "since ")
             c["sources"] = [tr.src(x) for x in c.get("sources") or []]
             c["licenses"] = [tr.src(x) for x in c.get("licenses") or []]
             for f in ("title", "ask", "caption", "what"):

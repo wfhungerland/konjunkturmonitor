@@ -21,6 +21,8 @@ MUTED = "#576164"
 FRAME = "#E5E8E9"
 BAR_PALETTE = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"]  # kontrastreich für gestapelte Balken
 CONTENT_LICENSE = "Abbildung und Erläuterung: CC BY 4.0, Wolf-Fabian Hungerland, Konjunkturmonitor (https://creativecommons.org/licenses/by/4.0/deed.de)"
+# Abbildungen mit Daten unter ShareAlike-Lizenz (Global Macro Database) übernehmen deren Lizenz
+NCSA_LICENSE = "Abbildung, Erläuterung und Daten: CC BY-NC-SA 4.0, Wolf-Fabian Hungerland, Konjunkturmonitor, nach der Global Macro Database (https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de)"
 
 # Geometrie des Folienmasters (EMU)
 SLIDE_W, SLIDE_H = 9144000, 5143500
@@ -201,7 +203,7 @@ def write_xlsx(c: dict, df: pd.DataFrame, plan: dict, path: Path, stand: str, ci
         info.set_column(1, 1, 110)
         for r, (k, v) in enumerate([("Datei", c.get("_stem", "")), ("Abbildung", title), ("Zeitraum und Bereinigung", sub), ("Einheit", unit),
                                     ("Erläuterung", c.get("caption", "")), ("Quelle", source_line(c)),
-                                    ("Datenstand", c.get("datenstand", "")), ("Abrufdatum", stand), ("Zitiervorschlag", cite), ("Lizenz", CONTENT_LICENSE)]):
+                                    ("Datenstand", c.get("datenstand", "")), ("Abrufdatum", stand), ("Zitiervorschlag", cite), ("Lizenz", NCSA_LICENSE if c.get("content_license") == "CC BY-NC-SA 4.0" else CONTENT_LICENSE)]):
             info.write(r, 0, k, wb.add_format({"bold": True, "font_name": FONT}))
             info.write(r, 1, v, wrap)
         sheet.activate()
@@ -293,7 +295,7 @@ def _text(slide, box, text, size, color="#000000", bold=False, align=None, font=
     return tb
 
 
-def _frame(slide, stand: str, number: int):
+def _frame(slide, stand: str, number: int, lic: str = "CC BY 4.0"):
     from pptx.enum.shapes import MSO_SHAPE
     from pptx.enum.text import PP_ALIGN
 
@@ -304,7 +306,7 @@ def _frame(slide, stand: str, number: int):
         shp.fill.fore_color.rgb = _rgb(color)
         shp.line.fill.background()
         shp.shadow.inherit = False
-    _text(slide, FOOT_L, "Konjunkturmonitor · CC BY 4.0, Wolf-Fabian Hungerland", 9, MUTED)
+    _text(slide, FOOT_L, f"Konjunkturmonitor · {lic}, Wolf-Fabian Hungerland", 9, MUTED)
     _text(slide, FOOT_R, f"Letzte Aktualisierung: {stand}", 9, MUTED, align=PP_ALIGN.RIGHT)
     _text(slide, NUMBER, str(number), 9, MUTED, italic=True, align=PP_ALIGN.RIGHT)
 
@@ -463,7 +465,7 @@ def add_slide(prs, c: dict, df: pd.DataFrame, plan: dict, stand: str, number: in
     from pptx.enum.text import PP_ALIGN
 
     slide = prs.slides.add_slide(prs.slide_layouts[6])
-    _frame(slide, stand, number)
+    _frame(slide, stand, number, c.get("content_license") or "CC BY 4.0")
     sub, unit = header_lines(c)
     _text(slide, OVERTITLE, f"Abb. {c['no']} · {c.get('topic_title', '')}", 10, MUTED)
     _text(slide, TITLE, c.get("title", ""), 22, "#000000", font="Arial")

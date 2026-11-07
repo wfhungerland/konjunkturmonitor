@@ -322,7 +322,7 @@
   </details>
   <details class="fold"><summary>Datenquellen und Lizenzen</summary>
   <p>Alle Zahlen stammen aus offenen, amtlichen Quellen: Deutsche Bundesbank (saisonbereinigte Reihen von Statistischem Bundesamt und Bundesagentur für Arbeit), Eurostat (Volkswirtschaftliche Gesamtrechnungen, Verbraucherpreise, EU-Unternehmens- und Verbraucherumfragen) und Statistik der Bundesagentur für Arbeit. Prognosen stammen aus den verlinkten Veröffentlichungen. Die Texte sind eigene Erläuterungen und keine amtliche Bewertung.</p>
-  <p><b>Lizenz.</b> Texte und eigene Abbildungen stehen unter <a href="https://creativecommons.org/licenses/by/4.0/deed.de" rel="license">CC BY 4.0</a>; Namensnennung: Wolf-Fabian Hungerland, Konjunkturmonitor. Die Daten unterliegen den Lizenzen der Quellen, die bei jeder Abbildung stehen.</p>
+  <p><b>Lizenz.</b> Texte und eigene Abbildungen stehen unter <a href="https://creativecommons.org/licenses/by/4.0/deed.de" rel="license">CC BY 4.0</a>; Namensnennung: Wolf-Fabian Hungerland, Konjunkturmonitor. Die Daten unterliegen den Lizenzen der Quellen, die bei jeder Abbildung stehen. Ausnahme: Abbildungen mit Daten der Global Macro Database stehen samt Download unter <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" rel="license">CC BY-NC-SA 4.0</a>, weil die Datenbank diese Lizenz verlangt.</p>
   </details>
   <details class="fold" id="fehlt"><summary>Warum fehlen bekannte Indikatoren (ifo, ZEW und andere)?</summary>
   
@@ -378,6 +378,7 @@ function withGaps(s, f) {
 const plotC = c => Object.assign({}, c, { series: c.series.map(s => { const f = s.freq || c.freq, g = withGaps(s, f); return Object.assign({}, g, { x: g.x.map(x => midP(x, f)) }); }) });
 const MTXT = { m: ["Mittel der letzten 3 Monate", "der letzten 12 Monate"], q: "Mittel der letzten 4 Quartale", w: ["Mittel der letzten 4 Wochen", "der letzten 52 Wochen"] };
 const SCALE_TXT = { own: "Eigene Skala je Feld", common: "Gemeinsame Skala", zoom: "Skala auf die jüngsten Jahre", full: "Skala über den ganzen Zeitraum", note: "Skala nach den letzten {n} Jahren; ältere Werte teils abgeschnitten", partial: "laufendes Jahr", mad: "mittlere Korrektur ±{m} Pp" };
+const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
 const HFMT = { A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
 function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 5, 10].map(m => m * p).find(s => s >= raw); }
 function decs(step) { return step >= 1 ? 0 : step >= 0.1 ? 1 : 2; }
@@ -756,7 +757,7 @@ function eventChart(el, c) {
     const traces = [];
     if (p.hi.some(v => v != null)) {
       traces.push({ type: "scatter", mode: "lines", x: p.x, y: p.hi, line: { width: 0 }, hoverinfo: "skip", showlegend: false });
-      traces.push({ type: "scatter", mode: "lines", x: p.x, y: p.lo, fill: "tonexty", fillcolor: "rgba(150,150,150,0.25)", line: { width: 0 }, name: "Spanne früherer Ereignisse", hoverinfo: "skip" });
+      traces.push({ type: "scatter", mode: "lines", x: p.x, y: p.lo, fill: "tonexty", fillcolor: "rgba(150,150,150,0.25)", line: { width: 0 }, name: p.band_label || "Spanne früherer Ereignisse", hoverinfo: "skip" });
     }
     p.lines.forEach(l => traces.push({ type: "scatter", mode: "lines", x: l.x, y: l.y, name: `${p.prefix ?? "El Niño "}${l.label}${l.current ? (p.prefix === "" ? "" : " (laufend)") : ""}`,
       line: { color: l.current ? PAL[0] : LC[epi.indexOf(l.label) % LC.length], width: l.current ? 3 : 1.6 }, hovertemplate: `${p.step ?? "Monat"} %{x}: %{y:,.1f}${p.unit ? " " + p.unit : ""}<extra>${esc(l.label)}</extra>` }));
@@ -983,7 +984,7 @@ function card(c, no) {
   else src = esc(src);
   // Knöpfe unter der Grafik: Monatswerte, Rezessionen, Download, alle gleich gestaltet
   const tools = document.createElement("div"); tools.className = "tools"; main.appendChild(tools);
-  main.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}</div>`);
+  main.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}${c.content_license ? `. <b>${LIC_NOTE} ${esc(c.content_license)}</b>` : ""}</div>`);
   const redraw = () => { Plotly.purge(ch); ch.innerHTML = ""; ch.classList.remove("multi"); (c.type === "seasonal" ? seasonalChart : c.multiples && (DATA.layout || {}).small_multiples && (c.series.length > 2 || c.own_scale) ? multiplesChart : timeChart)(ch, c); };
   if (c.ma3) {
     const tg = document.createElement("button"); tg.type = "button"; tg.className = "btn rawtoggle"; tg.textContent = "Monatswerte ausblenden";

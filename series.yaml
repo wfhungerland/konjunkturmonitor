@@ -2838,3 +2838,30 @@ series:
     start: "2008-01-01"
     chart: wages
     label: "Nominallöhne"
+
+  # Lange Reihen aus der Global Macro Database (Lizenz CC BY-NC-SA 4.0), nur für den Krisenvergleich seit 1879
+  - id: hist_rgdp_deu
+    block: struktur
+    source: gmd
+    key: rGDP
+    params: {country: DEU, max_year: 2024, source_name: "Global Macro Database (Müller, Xu, Lehbib und Chen 2025)"}
+    license: "CC BY-NC-SA 4.0 (Global Macro Database)"
+    title: "Reales BIP Deutschland, lange Reihe"
+    unit: "Mio. Landeswährung, real"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1850-01-01"
+    note: "Global Macro Database, Variable rGDP, Deutschland in den jeweiligen Grenzen; ohne Prognosejahre."
+
+  - id: hist_unemp_deu
+    block: struktur
+    source: gmd
+    key: unemp
+    params: {country: DEU, max_year: 2024, source_name: "Global Macro Database (Müller, Xu, Lehbib und Chen 2025)"}
+    license: "CC BY-NC-SA 4.0 (Global Macro Database)"
+    title: "Arbeitslosenquote Deutschland, lange Reihe"
+    unit: "%"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1850-01-01"
+    note: "Global Macro Database, Variable unemp; Abgrenzung und Quelle wechseln über die Zeit."

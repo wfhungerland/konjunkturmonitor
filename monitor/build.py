@@ -556,6 +556,20 @@ def chart_sentences(c: dict) -> list[str]:
             loc = lambda n: {"Saarland": "im Saarland"}.get(n, "in " + n)
             out.append(f"Am {'stärksten gesunken' if low['change'] < 0 else 'wenigsten gestiegen'} ist die {what} {loc(low['name'])} mit {num(low['change'], 1, True)} %{cnt(low)}.")
             return out
+        if typ == "event" and c.get("kind") == "history":
+            out = []
+            for p in c["event"]["panels"]:
+                cur = next((l for l in p["lines"] if l["current"]), None)
+                if not cur or len(cur["y"]) < 2 or cur["y"][-1] is None:
+                    continue
+                k, v, pk = len(cur["y"]) - 1, cur["y"][-1], cur["start"][:4]
+                old = [l for l in p["lines"] if not l["current"] and len(l["y"]) > k and l["y"][k] is not None]
+                cmp = "; zum selben Zeitpunkt " + ", ".join(f"{l['label']} {num(l['y'][k] - p['base'], 1, True)} {'Pp' if p['unit'] == 'Pp' else '%'}" for l in old) if old else ""
+                if p["unit"] == "Pp":
+                    out.append(f"Seit dem Hoch {pk} ist die Erwerbslosenquote um {num(abs(v), 1)} Pp {'gestiegen' if v > 0 else 'gesunken'} ({k} {'Jahr' if k == 1 else 'Jahre'}){cmp}.")
+                else:
+                    out.append(f"{k} {'Jahr' if k == 1 else 'Jahre'} nach dem Hoch {pk} lag das reale BIP {num(abs(v - 100), 1)} % {'unter' if v < 100 else 'über'} dem Hoch{cmp}.")
+            return out
         if typ == "event" and c.get("kind") == "downturn":
             out = []
             for p in c["event"]["panels"]:
@@ -861,7 +875,7 @@ def _health(root: Path, topics: list, meta: dict) -> dict:
             if c.get("type") == "tiles":
                 sids |= {k for k in st if k.startswith(c.get("prefix", "@"))}
             if c.get("type") == "event":  # Ereignisstudien rechnen mit festen Reihen
-                sids |= {"de_ip", "de_alq_sa", "de_gdp_index"} if c.get("kind") == "downturn" else {"enso_roni", "de_vpi", "de_vpi_food", "de_agri"}
+                sids |= {"de_ip", "de_alq_sa", "de_gdp_index"} if c.get("kind") == "downturn" else {"hist_rgdp_deu", "hist_unemp_deu", "de_gdp_index", "de_ilo"} if c.get("kind") == "history" else {"enso_roni", "de_vpi", "de_vpi_food", "de_agri"}
             bad = [st[k] for k in sids if k in st and st[k].get("status") in ("failed", "skipped")]
             old = [st[k] for k in sids if k in st and st[k].get("outdated")]
             if bad:
@@ -974,6 +988,65 @@ def _downturn_event(c: dict, data: dict) -> dict | None:
         if lines:
             panels.append({"title": title, "sub": sub, "lines": lines, "x": list(range(n + 1)), "lo": [None] * (n + 1), "hi": [None] * (n + 1),
                            "base": 100 if mode == "index" else 0, "prefix": "", "unit": "" if mode == "index" else "Pp", "step": "Quartal" if freq == "Q" else "Monat"})
+    return {"panels": panels} if panels else None
+
+
+def _history_event(c: dict, data: dict) -> dict | None:
+    """Abschwünge seit dem 19. Jahrhundert, Jahreswerte: reales BIP (Jahr des Hochs = 100) und Arbeitslosenquote (Veränderung in Pp).
+    Historische Episoden aus der Global Macro Database; der laufende Abschwung aus amtlichen Jahreswerten (BIP: Statistisches
+    Bundesamt über Eurostat, Erwerbslosenquote nach ILO als Jahresmittel). Hervorgehobene Episoden als Linien, die übrigen als Spanne."""
+    n = int(c.get("years", 8))
+    gdp_h, une_h = data.get("hist_rgdp_deu"), data.get("hist_unemp_deu")
+    if gdp_h is None or gdp_h.dropna().empty:
+        return None
+    annual = lambda s: s.dropna().groupby(s.dropna().index.year).agg(["mean", "count"])
+    gdp_h = gdp_h.dropna().groupby(gdp_h.dropna().index.year).last()
+    une_h = une_h.dropna().groupby(une_h.dropna().index.year).last() if une_h is not None else pd.Series(dtype=float)
+    gq = data.get("de_gdp_index")  # reales BIP, Index, vierteljährlich: Jahresmittel vollständiger Jahre
+    if gq is not None and not gq.dropna().empty:
+        a = annual(gq)
+        gdp_c = a.loc[a["count"] == 4, "mean"]
+    else:
+        gdp_c = pd.Series(dtype=float)
+    ilo = data.get("de_ilo")
+    if ilo is not None and not ilo.dropna().empty:
+        a = annual(ilo)
+        une_c = a.loc[a["count"] == 12, "mean"]  # nur vollständige Jahre
+    else:
+        une_c = pd.Series(dtype=float)
+    eps = [dict(e, current=False) for e in c.get("episodes") or []]
+    if len(gdp_c) >= 3:  # laufender Abschwung: höchster Stand der letzten sechs Jahre, sofern das jüngste Jahr darunter liegt
+        pk = int(gdp_c.iloc[-6:].idxmax())
+        if pk < int(gdp_c.index[-1]):
+            eps.append({"peak": pk, "label": f"laufend, seit {pk}", "highlight": True, "current": True})
+    stop = [int(x) for x in c.get("stop_before", [])]  # Kriegsjahre nicht durchlaufen
+    panels = []
+    for title, mode, sub in (("Reales BIP", "index", "Jahr des Hochs = 100; waagerecht: Jahre seit dem Hoch"),
+                             ("Arbeitslosenquote", "diff", "Veränderung seit dem Jahr des Hochs in Pp; waagerecht: Jahre")):
+        lines, rest = [], []
+        for e in eps:
+            s = (gdp_c if mode == "index" else une_c) if e["current"] else (gdp_h if mode == "index" else une_h)
+            pk = int(e["peak"])
+            if pk not in s.index or pd.isna(s.loc[pk]):
+                continue
+            end = min([pk + n] + [w - 1 for w in stop if w > pk])
+            ys = []
+            for y in range(pk, end + 1):
+                v = s.get(y)
+                ys.append(None if v is None or pd.isna(v) else round(float(v / s.loc[pk] * 100 if mode == "index" else v - s.loc[pk]), 2))
+            while ys and ys[-1] is None:
+                ys.pop()
+            if len(ys) < 2:
+                continue
+            ln = {"label": e.get("label") or str(pk), "start": f"{pk}-01-01", "current": e["current"], "x": list(range(len(ys))), "y": ys}
+            (lines if e.get("highlight") else rest).append(ln)
+        if not lines:
+            continue
+        lo = [min([r["y"][k] for r in rest if k < len(r["y"]) and r["y"][k] is not None], default=None) for k in range(n + 1)]
+        hi = [max([r["y"][k] for r in rest if k < len(r["y"]) and r["y"][k] is not None], default=None) for k in range(n + 1)]
+        panels.append({"title": title, "sub": sub, "lines": lines, "x": list(range(n + 1)), "lo": lo, "hi": hi, "band_label": c.get("band_label"),
+                       "base": 100 if mode == "index" else 0, "prefix": "", "unit": "" if mode == "index" else "Pp", "step": "Jahr",
+                       "others": [r["label"] for r in rest]})
     return {"panels": panels} if panels else None
 
 
@@ -1132,6 +1205,14 @@ def build_payload(root: Path = ROOT) -> dict:
                 entry.update(type="latest", bars=bars, bar_name=c.get("bar_name", "Veränderung"), freq=m.frequency, adjustment=m.adjustment,
                              unit=c.get("unit", m.unit), sources=sorted({_source_name(s) for s in specs}), licenses=sorted({_license(s) for s in specs}),
                              series=[dict(id=s.id, label=s.label, unit=s.unit, freq=s.frequency, style="line", **_xy(data[s.id], 12)) for s in specs])
+            elif typ == "event" and c.get("kind") == "history":
+                ev = _history_event(c, data)
+                if not ev:
+                    continue
+                entry.update(event=ev, freq="A", unit="Jahr des Hochs = 100", adjustment="Jahreswerte",
+                             sources=["Global Macro Database (Müller, Xu, Lehbib und Chen 2025, NBER Working Paper 33714)",
+                                      "Eurostat (BIP und Erwerbslosenquote im laufenden Abschwung)", "eigene Berechnung"],
+                             licenses=["CC BY-NC-SA 4.0 (Global Macro Database)", SOURCE_LICENSES["eurostat"]], content_license="CC BY-NC-SA 4.0")
             elif typ == "event" and c.get("kind") == "downturn":
                 ev = _downturn_event(c, data)
                 if not ev:
