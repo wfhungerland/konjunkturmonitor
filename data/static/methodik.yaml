@@ -108,3 +108,33 @@ charts:
     methode: "Erwerbstätige je Wirtschaftsbereich, saison- und kalenderbereinigt (Eurostat). Je Bereich die Veränderung vom 2. Quartal 2022 bis zum jüngsten Quartal in Tausend, in Klammern in Prozent des Stands im 2. Quartal 2022."
     grenzen:
       - "Erwerbstätige zählen Köpfe, nicht Arbeitsstunden."
+  infl_hist:
+    methode: "Als Inflationshoch gilt das Jahr mit der höchsten Jahresinflationsrate eines Schubs. Ab diesem Jahr zeigt die Abbildung die Rate selbst in den folgenden Jahren; so wird sichtbar, wie lange es bis zur Rückkehr nahe 2 % dauerte. Historische Raten aus der Global Macro Database, den laufenden Schub rechnet der Monitor als Jahresmittel des harmonisierten Verbraucherpreisindex (HVPI) für vollständige Jahre."
+    grenzen:
+      - "Historisch wechseln Preisindex und Abgrenzung; ab den 1990er Jahren entspricht die Reihe weitgehend dem HVPI."
+      - "Die Global Macro Database steht unter CC BY-NC-SA 4.0; diese Abbildung und ihr Download deshalb ebenso."
+  long_rr:
+    methode: "Realzins im Nachhinein (ex post): Rendite langfristiger Staatsanleihen minus Inflationsrate desselben Jahres, beide aus der Global Macro Database. Die Jahre 1914 bis 1924 und 1939 bis 1950 sind ausgelassen, weil Krieg, Hyperinflation und Währungsreform die Werte unbrauchbar machen (1923: Realzins weit unter −100 %)."
+    grenzen:
+      - "Die erwartete Inflation ist nicht beobachtbar; der Ex-post-Realzins kann von dem abweichen, mit dem Anleger rechneten."
+      - "Die Anleihen und ihre Laufzeiten wechseln über die Zeit."
+  long_debt:
+    methode: "Bruttoschulden des Gesamtstaats in % des BIP aus der Global Macro Database. Kriegs- und Inflationsjahre sind ausgelassen, weil Schulden und BIP dort nicht sinnvoll vergleichbar sind."
+    grenzen:
+      - "Vor 1950 umfasst der Gesamtstaat nicht überall dieselben Ebenen."
+  long_growth:
+    methode: "Je Jahr das durchschnittliche jährliche Wachstum des realen BIP je Einwohner über die zehn Jahre davor: ((Wert ÷ Wert zehn Jahre zuvor) hoch 1/10 − 1) × 100. Der Durchschnitt glättet Konjunkturschwankungen und zeigt den Trend."
+    grenzen:
+      - "Gebietsänderungen verändern Bevölkerung und BIP zugleich; je Einwohner mildert das, beseitigt es aber nicht."
+  long_inv:
+    methode: "Investitionen in % des BIP in jeweiligen Preisen aus der Global Macro Database. Vor 1950 beruhen die Werte auf historischen Schätzungen."
+    grenzen:
+      - "Abgrenzung der Investitionen und des BIP wechseln über die Zeit."
+  long_open:
+    methode: "Exporte von Waren und Dienstleistungen und Saldo der Leistungsbilanz, jeweils in % des BIP, aus der Global Macro Database."
+    grenzen:
+      - "Gebietsänderungen verändern, was als Außenhandel zählt (etwa Handel zwischen den beiden deutschen Staaten vor 1990)."
+  long_hpi:
+    methode: "Index der Hauspreise bereinigt um die Verbraucherpreise aus der Global Macro Database."
+    grenzen:
+      - "Die zugrunde liegenden Preisreihen und ihre Abgrenzung wechseln über die Zeit; der Index zeigt Trends, keine genauen Niveaus."

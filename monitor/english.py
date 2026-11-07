@@ -436,7 +436,9 @@ def _special_en(c: dict) -> list[str] | None:
             k, v, pk = len(cur["y"]) - 1, cur["y"][-1], cur["start"][:4]
             old = [l for l in p["lines"] if not l["current"] and len(l["y"]) > k and l["y"][k] is not None]
             cmp = "; at the same point " + ", ".join(f"{l['label']} {num(l['y'][k] - p['base'], 1, True)}{' pp' if p.get('unit') in ('pp', 'Pp') else '%'}" for l in old) if old else ""
-            if p.get("unit") in ("pp", "Pp"):
+            if p.get("mode") == "level":
+                out.append(f"{k} {'year' if k == 1 else 'years'} after the {pk} inflation peak, the inflation rate was {num(v)}%{cmp.replace('+', '')}.")
+            elif p.get("unit") in ("pp", "Pp"):
                 out.append(f"Since the {pk} peak the unemployment rate has {'risen' if v > 0 else 'fallen'} by {num(abs(v))} pp ({k} {'year' if k == 1 else 'years'}){cmp}.")
             else:
                 out.append(f"{k} {'year' if k == 1 else 'years'} after the {pk} peak, real GDP was {num(abs(v - 100))}% {'below' if v < 100 else 'above'} the peak{cmp}.")
@@ -572,6 +574,15 @@ def chart_sentences_en(c: dict) -> list[str]:
                     pc = (v / yago - 1) * 100
                     sent += ", the same as a year earlier" if round(pc, 1) == 0 else f", {num(abs(pc), 1)}% {'more' if pc > 0 else 'less'} than a year earlier"
             out.append(sent + ".")
+        if c.get("long_mean") and out and series:
+            su0 = (c.get("unit_de") or "").split(",")[0]
+            u0 = "%" if su0.startswith("%") and not su0.startswith(("% des", "% der")) else " " + (c.get("unit") or "").split(",")[0]
+            parts = [(s.get("label", ""), [v for v in s["y"] if v is not None]) for s in series if s.get("y")]
+            parts = [(lab, v) for lab, v in parts if v]
+            if parts:
+                many = len(parts) > 1
+                out.append(f"For comparison, average {series[0]['x'][0][:4]} to {series[0]['x'][-1][:4]} excluding war years: "
+                           + "; ".join(f"{lab + ' ' if many else ''}{num(sum(v) / len(v), d)}{u0}" for lab, v in parts) + ".")
         if c.get("type") == "threshold" and c.get("threshold") is not None and out and series and series[0]["y"][-1] is not None:
             out.append("This is a recession signal." if series[0]["y"][-1] >= float(c["threshold"]) else "This is not a recession signal.")
         if norm and out and norm["x"][-1] == last and series and series[0]["y"][-1] is not None and norm["y"][-1]:
@@ -621,7 +632,8 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                                 "Level vs 2019: latest month vs the 2019 average, the last full year before the pandemic and the 2022 energy price shock; "
                                 "it shows which industries have regained their pre-crisis level. Orange: increase, blue: decrease.")
             if c.get("kind") in ("downturn", "history") and isinstance(c.get("event"), dict):
-                PT = {"Reales BIP": "Real GDP", "Jahr des Hochs = 100; waagerecht: Jahre seit dem Hoch": "peak year = 100; horizontal: years since the peak",
+                PT = {"Inflationsrate": "Inflation rate", "in %; waagerecht: Jahre seit dem Inflationshoch": "in %; horizontal: years since the inflation peak",
+                      "Spanne der übrigen Schübe": "Range of the other surges", "Reales BIP": "Real GDP", "Jahr des Hochs = 100; waagerecht: Jahre seit dem Hoch": "peak year = 100; horizontal: years since the peak",
                       "Veränderung seit dem Jahr des Hochs in Pp; waagerecht: Jahre": "change since the peak year in pp; horizontal: years", "Jahr": "Year",
                       "Spanne der übrigen Abschwünge": "Range of the other downturns",
                       "Industrieproduktion": "Industrial production", "Arbeitslosenquote": "Unemployment rate", "Wirtschaftsleistung (BIP)": "Economic output (GDP)",
@@ -633,7 +645,7 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                         pn[f] = PT.get(pn.get(f), pn.get(f))
                     pn["unit"] = "pp" if pn.get("unit") == "Pp" else pn.get("unit")
                     for ln in pn["lines"]:
-                        ln["label"] = ln["label"].replace("Finanzkrise ab", "Financial crisis from").replace("Corona ab", "COVID from").replace("Energiekrise ab", "Energy crisis from").replace("Finanzkrise ", "Financial crisis ").replace("Weltwirtschaftskrise ", "Great Depression ").replace("Corona ", "COVID ").replace("laufend, seit ", "ongoing, since ").replace("seit ", "since ")
+                        ln["label"] = ln["label"].replace("Finanzkrise ab", "Financial crisis from").replace("Corona ab", "COVID from").replace("Energiekrise ab", "Energy crisis from").replace("Finanzkrise ", "Financial crisis ").replace("Weltwirtschaftskrise ", "Great Depression ").replace("Korea-Boom ", "Korean War boom ").replace("Zweite Ölkrise ", "Second oil crisis ").replace("Ölkrise ", "Oil crisis ").replace("Wiedervereinigung ", "Reunification ").replace("Corona ", "COVID ").replace("laufend, seit ", "ongoing, since ").replace("seit ", "since ")
             c["sources"] = [tr.src(x) for x in c.get("sources") or []]
             c["licenses"] = [tr.src(x) for x in c.get("licenses") or []]
             for f in ("title", "ask", "caption", "what"):

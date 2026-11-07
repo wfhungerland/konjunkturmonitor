@@ -61,6 +61,34 @@ charts:
     title: "Downturns since 1879 compared, annual data"
     ask: "How deep were the downturns since the 19th century?"
     caption: "Annual data from the last year before a fall in real GDP (peak year). Left: real GDP, peak year = 100. Right: change in the unemployment rate in percentage points since that year. Highlighted: the Great Depression, the financial crisis, COVID and the current downturn (thick); grey: range of the other downturns with peaks in 1879, 1898, 1966, 1974, 1981, 1992 and 2001. War years are left out; paths end before 1914 and 1939. Historical values from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time; the unemployment rate changes source and definition over time. The current downturn rests on official annual data (GDP from the Federal Statistical Office, ILO unemployment rate as an annual mean) and is therefore not fully comparable. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+  infl_hist:
+    title: "Inflation surges since 1945 compared, annual data"
+    ask: "How quickly did earlier inflation surges subside?"
+    caption: "Annual inflation rate from the year of the inflation peak: after the Korean War boom in 1951 (grey), the oil crises of 1974 and 1981, reunification in 1992 and in the current surge since 2022 (thick). The chart shows how many years it took for the rate to return close to 2%. Historical values from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025); the current surge as the annual mean of the harmonised index of consumer prices (HICP, Deutsche Bundesbank), complete years only. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+  long_rr:
+    title: "Real interest rate since 1870"
+    ask: "Are real interest rates high by historical standards?"
+    caption: "Real interest rate: yield on long-term government bonds minus the inflation rate of the same year, in %. This is the ex-post real rate; the inflation investors expected when buying is not observable. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Grey bands: banking crises according to the same database. Left out: 1914 to 1924 (war and hyperinflation) and 1939 to 1950 (war and currency reform). This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+  long_debt:
+    title: "Government debt since 1871"
+    ask: "How high was government debt in the past?"
+    caption: "General government gross debt as a percentage of GDP. After both world wars, debt was largely wiped out by inflation and currency reform. Dashed grey: Maastricht Treaty reference value. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Grey bands: banking crises according to the same database. Left out: 1914 to 1924 (war and hyperinflation) and 1939 to 1950 (war and currency reform). This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+  long_growth:
+    title: "Growth per capita since 1870, ten-year average"
+    ask: "Is such a long period of weak growth unusual by historical standards?"
+    caption: "Average annual growth of real GDP per capita over the ten years up to the year shown, in %. Per capita, so that changes in population and territory do not distort the comparison. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Grey bands: banking crises according to the same database. Left out are ten-year values whose period includes war or hyperinflation years: 1914 to 1928 and 1939 to 1955. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+  long_inv:
+    title: "Investment ratio since 1870"
+    ask: "Does Germany invest less today than in the past?"
+    caption: "Investment as a percentage of GDP, at current prices. Until 1950 gross investment from historical estimates, thereafter national accounts; definitions change over time. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Grey bands: banking crises according to the same database. Left out: 1914 to 1924 (war and hyperinflation) and 1939 to 1950 (war and currency reform). This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+  long_open:
+    title: "Export ratio and current account since 1871"
+    ask: "How dependent on foreign trade is Germany today?"
+    caption: "Exports of goods and services and the current account balance, each as a percentage of GDP. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Grey bands: banking crises according to the same database. Left out: 1914 to 1924 (war and hyperinflation) and 1939 to 1950 (war and currency reform). This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+  long_hpi:
+    title: "Real house prices since 1870"
+    ask: "How expensive is residential property in the long run?"
+    caption: "House price index adjusted for consumer prices. The underlying price series change over time; the index shows trends, not exact levels. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Grey bands: banking crises according to the same database. Left out: 1914 to 1924 (war and hyperinflation) and 1939 to 1950 (war and currency reform). This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   gdp_rev:
     title: "Revision of GDP growth since the first release"
     ask: "How much is GDP growth revised after the first release?"
@@ -579,6 +607,13 @@ series:
   fx_eer18: {title: "Nominal effective exchange rate of the euro against 18 trading partners (ECB, EER-18)", label: "Against 18 trading partners", unit: "Index 1999 Q1 = 100", adjustment: "not adjusted"}
   de_temp_anom: {title: "Air temperature in Germany, deviation from the 1991–2020 average", label: "Temperature", unit: "°C", note: "Area average for Germany from the German Weather Service (DWD); deviation from the average for the same calendar month 1991 to 2020.", adjustment: "not adjusted"}
   de_rain_pct: {title: "Precipitation in Germany in % of the 1991–2020 average", label: "Precipitation", unit: "% of 1991–2020 average", note: "Area average for Germany from the German Weather Service (DWD); in % of the average for the same calendar month 1991 to 2020.", adjustment: "not adjusted"}
+  hist_rr_deu: {title: "Real interest rate Germany, long series", label: "Real interest rate", unit: "%"}
+  hist_debt_deu: {title: "Government debt Germany, long series", label: "Government debt", unit: "% of GDP"}
+  hist_rgdppc_deu: {title: "Real GDP per capita Germany, long series", label: "Growth per capita, ten-year average", unit: "% p. a."}
+  hist_inv_deu: {title: "Investment ratio Germany, long series", label: "Investment ratio", unit: "% of GDP"}
+  hist_exports_deu: {title: "Export ratio Germany, long series", label: "Exports", unit: "% of GDP"}
+  hist_ca_deu: {title: "Current account balance Germany, long series", label: "Current account balance", unit: "% of GDP"}
+  hist_rhpi_deu: {title: "Real house prices Germany, long series", label: "Real house prices", unit: "Index"}
   de_hdd: {title: "Heating degree days", label: "Heating degree days", unit: "degree days (K·d)", note: "Degree days according to VDI 3807 (20/15 °C), unweighted average of all DWD stations, monthly sum in kelvin times days.", adjustment: "not adjusted"}
   de_hdd_pct: {title: "Heating degree days in % of the 2015–2019 average", label: "Heating degree days", unit: "% of 2015–2019 average", note: "Degree days according to VDI 3807 (20/15 °C), unweighted average of all DWD stations; in % of the average for the same calendar month 2015 to 2019.", adjustment: "not adjusted"}
   rhine_kaub: {title: "Water level at the Kaub gauge (Rhine), daily mean", label: "Kaub gauge", unit: "cm", note: "Up to the end of the previous year, verified daily means from the WSV (Federal Institute of Hydrology, BfG; R package hyd1d); thereafter daily means of the 15-minute values from PEGELONLINE.", adjustment: "not adjusted"}
@@ -694,6 +729,7 @@ strings:
   "% des Mittels 2015–2019": "% of 2015–2019 average"
   "€ je MWh": "€ per MWh"
   "Gradtage (K·d)": "degree days (K·d)"
+  "% p. a.": "% p. a."
   "% des verfügbaren Einkommens": "% of disposable income"
   "% ggü. Vorjahr": "% on previous year"
   "% ggü. Vorjahresmonat": "% on a year earlier"

@@ -403,7 +403,7 @@ function xAxis(x0, x1, width) {
     const a = `${y}-01-01`, b = `${y + 1}-01-01`, lo = a < x0 ? x0 : a, hi = b > x1 ? x1 : b;
     if (y % every === 0) { tv.push(new Date((Date.parse(lo) + Date.parse(hi)) / 2).toISOString().slice(0, 10)); tt.push(String(y)); }
     if (y > y0 && HS.gridV) shapes.push({ type: "line", xref: "x", yref: "paper", x0: a, x1: a, y0: 0, y1: 1, line: { color: HS.gridV, width: 1 }, layer: "below" });
-    if ((y - y0) % 2 === 0) shapes.push({ type: "rect", xref: "x", yref: "paper", x0: lo, x1: hi, y0: 0, y1: 1, fillcolor: HS.band, line: { width: 0 }, layer: "below" });
+    if ((y - y0) % 2 === 0 && n <= 50) shapes.push({ type: "rect", xref: "x", yref: "paper", x0: lo, x1: hi, y0: 0, y1: 1, fillcolor: HS.band, line: { width: 0 }, layer: "below" });  // bei sehr langen Reihen ohne Jahresbänder
   }
   // angeschnittene Randjahre: Zahl weglassen, wenn sie mit der Nachbarzahl zusammenstieße
   const pxms = (width || 600) / Math.max(1, Date.parse(x1) - Date.parse(x0)), gap = i => Math.abs(Date.parse(tv[i]) - Date.parse(tv[i + (i ? -1 : 1)])) * pxms;
@@ -483,6 +483,7 @@ function timeChart(el, c) {
   if (c.ref != null && c.ref !== 0) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1.5, dash: "dash" } });  // Zielwert, etwa 2 % der EZB
   if (c.threshold != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.threshold, y1: c.threshold, line: { color: WARN, width: 1.5, dash: "dash" } });
   if (c._rec ?? c.recessions_on) recIn(c, r).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak < r[0] ? r[0] : rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.22)", line: { width: 0 }, layer: "below" }));
+  (c.crisis_years || []).forEach(y => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: `${y}-01-01`, x1: `${+y + 1}-01-01`, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.2)", line: { width: 0 }, layer: "below" }));  // Bankenkrisen
   const LY = DATA.layout || {}, annotations = [];
   if (c.threshold != null && c.threshold_label) annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.threshold, text: esc(c.threshold_label), showarrow: false, xanchor: "left", yanchor: "bottom",
     font: { family: HS.font, size: 12, color: WARN }, bgcolor: "rgba(255,255,255,0.85)" });
@@ -748,7 +749,7 @@ function eventChart(el, c) {
   const LC = ["#0070C0", "#D86DCD", "#47D359", "#7030A0", "#00B0F0"];
   const sig = p => p.lines.map(l => l.label).join("|"), shared = E.panels.every(p => sig(p) === sig(E.panels[0]));  // gleiche Episoden: eine Legende für alle Felder
   if (shared) { const lg = document.createElement("p"); lg.className = "evlegend";
-    lg.innerHTML = E.panels[0].lines.map(l => `<span><i style="background:${l.current ? PAL[0] : LC[[...new Set(E.panels.flatMap(p => p.lines.filter(q => !q.current).map(q => q.label)))].indexOf(l.label) % LC.length]};height:${l.current ? 4 : 2}px"></i>${esc(l.label)}</span>`).join("");
+    lg.innerHTML = E.panels[0].lines.map(l => `<span><i style="background:${l.current ? PAL[0] : l.grey ? "#a6a6a6" : LC[[...new Set(E.panels.flatMap(p => p.lines.filter(q => !q.current).map(q => q.label)))].indexOf(l.label) % LC.length]};height:${l.current ? 4 : 2}px"></i>${esc(l.label)}</span>`).join("");
     el.appendChild(lg);
     const ue = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (ue) ue.style.display = "none"; }
   const grid = document.createElement("div"); grid.className = "multiples"; grid.style.setProperty("--cols", cols); el.appendChild(grid);
@@ -762,7 +763,7 @@ function eventChart(el, c) {
       traces.push({ type: "scatter", mode: "lines", x: p.x, y: p.lo, fill: "tonexty", fillcolor: "rgba(150,150,150,0.25)", line: { width: 0 }, name: p.band_label || "Spanne früherer Ereignisse", hoverinfo: "skip" });
     }
     p.lines.forEach(l => traces.push({ type: "scatter", mode: "lines", x: l.x, y: l.y, name: `${p.prefix ?? "El Niño "}${l.label}${l.current ? (p.prefix === "" ? "" : " (laufend)") : ""}`,
-      line: { color: l.current ? PAL[0] : LC[epi.indexOf(l.label) % LC.length], width: l.current ? 3 : 1.6 }, hovertemplate: `${p.step ?? "Monat"} %{x}: %{y:,.1f}${p.unit ? " " + p.unit : ""}<extra>${esc(l.label)}</extra>` }));
+      line: { color: l.current ? PAL[0] : l.grey ? "#a6a6a6" : LC[epi.indexOf(l.label) % LC.length], width: l.current ? 3 : l.grey ? 1.2 : 1.6 }, hovertemplate: `${p.step ?? "Monat"} %{x}: %{y:,.1f}${p.unit ? " " + p.unit : ""}<extra>${esc(l.label)}</extra>` }));
     const b0 = p.base ?? 100, all = p.lines.flatMap(l => l.y).concat(p.lo, p.hi).filter(v => v != null), ya = yAxis(all.concat([b0]), p.unit || "");
     const L = baseLayout(m);
     Object.assign(L, { margin: { l: 4, r: 4, t: 8, b: shared ? 24 : 40 }, hovermode: "closest", showlegend: !shared, font: { family: HS.font, size: 12 },
