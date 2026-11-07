@@ -57,6 +57,10 @@ topics:
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
 
 charts:
+  downturns_hist:
+    title: "Downturns since 1879 compared, annual data"
+    ask: "How deep were the downturns since the 19th century?"
+    caption: "Annual data from the last year before a fall in real GDP (peak year). Left: real GDP, peak year = 100. Right: change in the unemployment rate in percentage points since that year. Highlighted: the Great Depression, the financial crisis, COVID and the current downturn (thick); grey: range of the other downturns with peaks in 1879, 1898, 1966, 1974, 1981, 1992 and 2001. War years are left out; paths end before 1914 and 1939. Historical values from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time; the unemployment rate changes source and definition over time. The current downturn rests on official annual data (GDP from the Federal Statistical Office, ILO unemployment rate as an annual mean) and is therefore not fully comparable. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   gdp_rev:
     title: "Revision of GDP growth since the first release"
     ask: "How much is GDP growth revised after the first release?"
