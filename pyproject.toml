@@ -14,7 +14,6 @@ dependencies = [
   "pandas>=2.0",
   "PyYAML>=6.0",
   "python-pptx>=1.0",
-  "python-docx>=1.1",
   "XlsxWriter>=3.1",
   "pyreadr>=0.5",  # geprüfte Pegeldaten der BfG (RDS)
 ]
@@ -29,7 +28,7 @@ konjunkturmonitor = "monitor.cli:main"
 packages = ["monitor"]
 
 [tool.setuptools.package-data]
-monitor = ["templates/*.html", "static/fonts/*"]
+monitor = ["templates/*.html", "static/fonts/*", "static/plotly/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

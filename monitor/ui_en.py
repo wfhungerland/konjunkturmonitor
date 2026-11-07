@@ -7,7 +7,7 @@ damit Teilstücke nicht vorher ersetzt werden. Texte innerhalb der Abbildungen f
 PAIRS: list[tuple[str, str]] = [
     # Sprache, Formate, Pfade
     ('<html lang="de">', '<html lang="en">'),
-    ('<script src="plotly.min.js">', '<script src="../plotly.min.js">'),
+    ('const PLOTLY_SRC = "plotly.min.js";', 'const PLOTLY_SRC = "../plotly.min.js";'),
     ('url("fonts/', 'url("../fonts/'),
     ('href="feed.xml"', 'href="../feed.xml"'),
     ('href="impressum.html"', 'href="../impressum.html"'),

@@ -799,8 +799,8 @@ def _health(root: Path, topics: list, meta: dict) -> dict:
                 sids.add(c["series"])
             if c.get("type") == "tiles":
                 sids |= {k for k in st if k.startswith(c.get("prefix", "@"))}
-            if c.get("type") == "event":
-                sids |= {"enso_roni", "de_vpi", "de_vpi_food", "de_agri"}
+            if c.get("type") == "event":  # Ereignisstudien rechnen mit festen Reihen
+                sids |= {"de_ip", "de_alq_sa", "de_gdp_index"} if c.get("kind") == "downturn" else {"enso_roni", "de_vpi", "de_vpi_food", "de_agri"}
             bad = [st[k] for k in sids if k in st and st[k].get("status") in ("failed", "skipped")]
             old = [st[k] for k in sids if k in st and st[k].get("outdated")]
             if bad:
@@ -1241,12 +1241,6 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
         fh.write(arch_name[:-4] + "\n")
         arch.to_csv(fh, sep=";", decimal=",", index=False)
     payload["archive_file"] = "dl/" + arch_name
-    if (payload.get("layout") or {}).get("word_export"):  # Word-Datei zum Bearbeiten (vorerst aus, siehe monitor.yaml)
-        from .worddoc import write_page_docx
-        payload["page_docx"] = write_page_docx(payload, out)
-        cache = root / ".cache"  # für die Bildschirmfotos der Abbildungen (monitor.shots), nicht im Repo
-        cache.mkdir(exist_ok=True)
-        (cache / "payload.json").write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     tpl = resources.files("monitor").joinpath("templates/index.html").read_text(encoding="utf-8")
     payload["has_en"] = (root / "data" / "static" / "en.yaml").exists()
     js = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
@@ -1280,7 +1274,8 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
     fonts.mkdir(exist_ok=True)
     for f in resources.files("monitor").joinpath("static/fonts").iterdir():
         (fonts / f.name).write_bytes(f.read_bytes())
-    plotly = resources.files("konjunkturwolf").joinpath("static/plotly.min.js")
+    # schlanke Plotly-Fassung (nur Linien und Balken, MIT-Lizenz) statt des vollen Pakets aus konjunkturwolf: 0,4 statt 1,5 MB komprimiert
+    plotly = resources.files("monitor").joinpath("static/plotly/plotly-basic.min.js")
     (out / "plotly.min.js").write_bytes(plotly.read_bytes())
     return out / "index.html"
 

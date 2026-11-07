@@ -20,7 +20,6 @@ layout:
   lead_chart_only: true   # je Thema eine Leitgrafik, weitere Abbildungen aufklappbar
   overview: true          # Antwort auf die Titelfrage in zwei bis drei Sätzen über der Tabelle
   red_zero_line: false    # Nulllinie rot wie im Grafikstandard (false: dunkelgrau, Rot bleibt Warnsignalen vorbehalten)
-  word_export: false      # ganze Seite als Word-Datei zum Bearbeiten (true: wieder an; dann im Workflow den Schritt „python -m monitor.shots site“ ergänzen)
 
 # Kennzahlentabelle der Startseite, gruppiert nach den Abschnitten der Seite (topic).
 # kind rate: Vergleiche als Differenz; kind level: als prozentuale Veränderung. up_bad: steigender Wert ist ungünstig (rotes ▲).

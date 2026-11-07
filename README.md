@@ -49,7 +49,7 @@ Weitere Schalter stehen im Bereich `layout` von `monitor.yaml`; jeder lässt sic
 - `start_table`: Kennzahlentabelle statt Fragekarten
 - `minimal`: ohne Rahmen; Erläuterungen kursiv in der Randspalte
 - `direct_labels`: „Jüngste Werte einblenden“ am Linienende
-- `small_multiples`, `compare_band`, `uniform_years`, `lead_chart_only`, `overview`, `red_zero_line`, `word_export`
+- `small_multiples`, `compare_band`, `uniform_years`, `lead_chart_only`, `overview`, `red_zero_line`
 
 Die Seite enthält die Kernzahlen auch als statisches HTML und ein Vorschaubild (`vorschau.png`). Impressum und Datenschutzerklärung liegen in `monitor/templates/`. Eigene Texte und Abbildungen stehen unter CC BY 4.0.
 
@@ -60,6 +60,8 @@ Alle Reihen werden bei jedem Lauf direkt bei der Quelle abgerufen: Bundesbank (S
 Die Zuordnung der Abschnitte zu Teil I, Teil II und Termine steht je Abschnitt in `monitor.yaml` (`part`). Texte für die englische Seite stehen in `data/static/en.yaml`, Satzvorlagen in `data/static/saetze.yaml`.
 
 ## Downloads
+
+Ein Export der ganzen Seite als Word-Datei war gebaut, ist aber auf Wiedervorlage; der Code liegt im Git-Verlauf (`monitor/worddoc.py`, `monitor/shots.py`, zuletzt in Commit 0acaf59).
 
 Zu jeder Abbildung erzeugt der Lauf Excel (Daten, Diagramm, Info), eine PowerPoint-Folie mit bearbeitbarem Diagramm und CSV (`site/dl/`); das PNG entsteht im Browser. Die Folie übernimmt Format und Aufteilung des vorgegebenen Folienmasters (16:9, grauer Rahmen, Übertitel, Titel, Quellenzeile), aber ohne Logo und Behördenkennzeichnung.
 
