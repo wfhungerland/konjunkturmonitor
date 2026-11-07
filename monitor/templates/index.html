@@ -155,6 +155,8 @@
   @media (max-width: 700px) { .card .chart { aspect-ratio: auto; height: 300px; min-height: 0; } .charts.single .card .chart { aspect-ratio: auto; height: 300px; } .card .chart.square { height: auto; aspect-ratio: 1 / 1; } .card .chart.multi { height: auto; } section.topic .secmain > h2 { font-size: 22px; } }
   .multiples { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 10px 16px; }
   .multiples { gap: 14px 22px; }
+  .evlegend { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0 0 10px; font-size: 13.5px; }
+  .evlegend i { display: inline-block; width: 22px; vertical-align: middle; margin-right: 6px; }
   .multiples .mini { height: 170px; }
   .multiples .mt { font: 13.5px/1.3 var(--ff); margin: 0; }
   .multiples .mt span.mtsub { color: var(--muted); }
@@ -375,7 +377,7 @@ function withGaps(s, f) {
 }
 const plotC = c => Object.assign({}, c, { series: c.series.map(s => { const f = s.freq || c.freq, g = withGaps(s, f); return Object.assign({}, g, { x: g.x.map(x => midP(x, f)) }); }) });
 const MTXT = { m: ["Mittel der letzten 3 Monate", "der letzten 12 Monate"], q: "Mittel der letzten 4 Quartale", w: ["Mittel der letzten 4 Wochen", "der letzten 52 Wochen"] };
-const SCALE_TXT = { own: "Eigene Skala je Feld", common: "Gemeinsame Skala", zoom: "Skala auf die jüngsten Jahre", full: "Skala über den ganzen Zeitraum", note: "Skala nach den letzten {n} Jahren; ältere Werte teils abgeschnitten", partial: "laufendes Jahr" };
+const SCALE_TXT = { own: "Eigene Skala je Feld", common: "Gemeinsame Skala", zoom: "Skala auf die jüngsten Jahre", full: "Skala über den ganzen Zeitraum", note: "Skala nach den letzten {n} Jahren; ältere Werte teils abgeschnitten", partial: "laufendes Jahr", mad: "mittlere Korrektur ±{m} Pp" };
 const HFMT = { A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
 function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 5, 10].map(m => m * p).find(s => s >= raw); }
 function decs(step) { return step >= 1 ? 0 : step >= 0.1 ? 1 : 2; }
@@ -441,6 +443,9 @@ function timeChart(el, c) {
       const cut = k < 0 ? s.x.length : k;
       traces.push({ type: "scatter", mode: "lines", x: s.x.slice(0, cut), y: s.y.slice(0, cut), name: s.label, meta: s.id, line: { color: col, width: 3 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
       if (k > 0) traces.push({ type: "scatter", mode: "lines+markers", x: s.x.slice(cut - 1), y: s.y.slice(cut - 1), name: s.label + ", Prognose", line: { color: col, width: 2, dash: "dot" }, marker: { size: 6, symbol: "circle-open" }, hovertemplate: `%{y:,.${c.decimals}f} (Prognose)<extra>${esc(s.label)}</extra>` });
+    } else if (s.style === "hover") { // nur im Tooltip, etwa erste Meldung und heutiger Stand zur Korrektur
+      traces.push({ type: "scatter", mode: "markers", x: s.x, y: s.y, name: s.label, meta: s.id, showlegend: false, marker: { size: 1, opacity: 0 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
+      return;
     } else if (s.style === "norm") { // Vergleichsmarke je Periode, etwa Mittel desselben Monats 2015 bis 2019
       traces.push({ type: "scatter", mode: "markers", x: s.x, y: s.y, name: s.label, meta: s.id, marker: { symbol: "line-ew-open", size: 11, color: "#000", line: { color: "#000", width: 2 } },
         hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
@@ -481,6 +486,10 @@ function timeChart(el, c) {
   if (c._zoom) annotations.push({ xref: "paper", yref: "paper", x: 0.005, y: 0.995, xanchor: "left", yanchor: "top", showarrow: false, text: SCALE_TXT.note.replace("{n}", c.zoom_years || 3),
     font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" });
   if (c.partial_last && bars.length) { const s = bars[0], j = s.x.length - 1; annotations.push({ xref: "x", yref: "y", x: s.x[j], y: s.y[j], text: SCALE_TXT.partial, showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 11, color: "#595959" } }); }
+  if (c.mad_band && bars.length) { // mittlere absolute Korrektur als graues Band
+    const v = bars[0].y.filter(q => q != null), m = v.reduce((p, q) => p + Math.abs(q), 0) / Math.max(1, v.length);
+    shapes.push({ type: "rect", xref: "paper", yref: "y", x0: 0, x1: 1, y0: -m, y1: m, fillcolor: "rgba(120,120,120,0.14)", line: { width: 0 }, layer: "below" });
+    annotations.push({ xref: "paper", yref: "y", x: 0.005, y: m, text: SCALE_TXT.mad.replace("{m}", fmt(m, 2)), showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); }
   (c.refs || []).forEach(q => { // Referenzwerte, etwa die Grenzen des Maastricht-Vertrags: grau gestrichelt mit Beschriftung
     shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: q.y, y1: q.y, line: { color: "#595959", width: 1, dash: "dash" } });
     annotations.push({ xref: "paper", yref: "y", x: 0.005, y: q.y, text: esc(q.label), showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); });
@@ -732,9 +741,14 @@ function dumbbellChart(el, c) {
 // Ereignisstudie: je Feld eine Größe, Monat 0 = 100, graue Fläche = Spanne früherer Ereignisse, dick = laufendes Ereignis
 function eventChart(el, c) {
   el.classList.add("multi");
-  const E = c.event, cols = (el.clientWidth || 600) < 560 ? 1 : 2;
-  const grid = document.createElement("div"); grid.className = "multiples"; grid.style.setProperty("--cols", cols); el.appendChild(grid);
+  const E = c.event, w0 = el.clientWidth || 600, cols = w0 < 560 ? 1 : E.panels.length === 3 && w0 >= 680 ? 3 : 2;
   const LC = ["#0070C0", "#D86DCD", "#47D359", "#7030A0", "#00B0F0"];
+  const sig = p => p.lines.map(l => l.label).join("|"), shared = E.panels.every(p => sig(p) === sig(E.panels[0]));  // gleiche Episoden: eine Legende für alle Felder
+  if (shared) { const lg = document.createElement("p"); lg.className = "evlegend";
+    lg.innerHTML = E.panels[0].lines.map(l => `<span><i style="background:${l.current ? PAL[0] : LC[[...new Set(E.panels.flatMap(p => p.lines.filter(q => !q.current).map(q => q.label)))].indexOf(l.label) % LC.length]};height:${l.current ? 4 : 2}px"></i>${esc(l.label)}</span>`).join("");
+    el.appendChild(lg);
+    const ue = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (ue) ue.style.display = "none"; }
+  const grid = document.createElement("div"); grid.className = "multiples"; grid.style.setProperty("--cols", cols); el.appendChild(grid);
   const epi = [...new Set(E.panels.flatMap(p => p.lines.filter(l => !l.current).map(l => l.label)))];  // dieselbe Episode, dieselbe Farbe
   E.panels.forEach(p => {
     const box = document.createElement("div"); box.innerHTML = `<p class="mt"><b>${esc(p.title)}</b><br><span class="mtsub">${esc(p.sub ?? "real, Monat 0 = Beginn des Ereignisses = 100; waagerecht: Monate seit Beginn")}</span></p>`;
@@ -748,7 +762,7 @@ function eventChart(el, c) {
       line: { color: l.current ? PAL[0] : LC[epi.indexOf(l.label) % LC.length], width: l.current ? 3 : 1.6 }, hovertemplate: `${p.step ?? "Monat"} %{x}: %{y:,.1f}${p.unit ? " " + p.unit : ""}<extra>${esc(l.label)}</extra>` }));
     const b0 = p.base ?? 100, all = p.lines.flatMap(l => l.y).concat(p.lo, p.hi).filter(v => v != null), ya = yAxis(all.concat([b0]), p.unit || "");
     const L = baseLayout(m);
-    Object.assign(L, { margin: { l: 4, r: 4, t: 8, b: 40 }, hovermode: "closest", showlegend: true, font: { family: HS.font, size: 12 },
+    Object.assign(L, { margin: { l: 4, r: 4, t: 8, b: shared ? 24 : 40 }, hovermode: "closest", showlegend: !shared, font: { family: HS.font, size: 12 },
       legend: { orientation: "h", x: 0, y: -0.18, yanchor: "top", font: { size: 11 } },
       shapes: [{ type: "line", xref: "x", yref: "paper", x0: 0, x1: 0, y0: 0, y1: 1, line: { color: "#000", width: 1 } },
         { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: b0, y1: b0, line: { color: "#595959", width: 1 } }],

@@ -475,6 +475,18 @@ def chart_sentences_en(c: dict) -> list[str]:
         series = series[:6]
         last = max(s["x"][-1] for s in series)
         w = when(last, freq)
+        if c.get("mad_band"):  # Korrekturen des BIP-Wachstums
+            rv = next((s for s in c["series"] if s.get("style") == "bar"), None)
+            hv = {s["id"]: s for s in c["series"] if s.get("style") == "hover"}
+            if rv and rv["y"]:
+                pts = [(x, v) for x, v in zip(rv["x"], rv["y"]) if v is not None]
+                m = sum(abs(v) for _, v in pts) / len(pts)
+                xb, vb = max(pts, key=lambda p: abs(p[1]))
+                out = [f"From {period(pd.Timestamp(pts[0][0]), freq)} to {period(pd.Timestamp(pts[-1][0]), freq)}, quarterly GDP growth was revised by {num(m, 2)} pp on average, most in {period(pd.Timestamp(xb), freq)} ({num(vb, 1, True)} pp)."]
+                f0, l0 = hv.get("gdp_rt_first"), hv.get("gdp_rt_latest")
+                if f0 and l0 and f0["x"][-1] == l0["x"][-1]:
+                    out.append(f"For {period(pd.Timestamp(f0['x'][-1]), freq)}, the first release was {num(f0['y'][-1], 1)}% and the current figure is {num(l0['y'][-1], 1)}%; recent quarters have usually seen little revision so far.")
+                return out
         cb = c.get("combine")
         if isinstance(cb, dict) and cb.get("lead_en"):  # gleich gebaute Reihen in einem Satz
             su0 = (c.get("unit_de") or "").split(",")[0]
@@ -604,7 +616,7 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                         pn[f] = PT.get(pn.get(f), pn.get(f))
                     pn["unit"] = "pp" if pn.get("unit") == "Pp" else pn.get("unit")
                     for ln in pn["lines"]:
-                        ln["label"] = ln["label"].replace("Finanzkrise ab", "Financial crisis from").replace("Corona ab", "COVID from").replace("Energiekrise ab", "Energy crisis from").replace("seit ", "since ")
+                        ln["label"] = ln["label"].replace("Finanzkrise ab", "Financial crisis from").replace("Corona ab", "COVID from").replace("Energiekrise ab", "Energy crisis from").replace("Finanzkrise ", "Financial crisis ").replace("Corona ", "COVID ").replace("laufend, seit ", "ongoing, since ").replace("seit ", "since ")
             c["sources"] = [tr.src(x) for x in c.get("sources") or []]
             c["licenses"] = [tr.src(x) for x in c.get("licenses") or []]
             for f in ("title", "ask", "caption", "what"):

@@ -707,6 +707,19 @@ def chart_sentences(c: dict) -> list[str]:
                     sl = _subject(None, lo["label"]) or {"subj": f"„{lo['label']}“", "pl": False}
                     out.append(f"{when} {'dämpften' if sl['pl'] else 'dämpfte'} {sl['subj']} am stärksten: {num(at(lo), d, True)} Pp.")
             return out
+        if c.get("mad_band"):  # Korrekturen: mittlere absolute Korrektur, größte Korrektur, jüngstes Quartal
+            rv = next((s for s in series if s.get("style") == "bar"), None)
+            hv = {s["id"]: s for s in series if s.get("style") == "hover"}
+            if rv and rv["y"]:
+                pts = [(x, v) for x, v in zip(rv["x"], rv["y"]) if v is not None]
+                m = sum(abs(v) for _, v in pts) / len(pts)
+                xb, vb = max(pts, key=lambda p: abs(p[1]))
+                out = [f"Vom {_per(pts[0][0], freq)} bis zum {_per(pts[-1][0], freq)} wurde das BIP-Wachstum eines Quartals nachträglich im Mittel um {num(m, 2)} Pp korrigiert, "
+                       f"am stärksten im {_per(xb, freq)} ({num(vb, 1, True)} Pp)."]
+                f0, l0 = hv.get("gdp_rt_first"), hv.get("gdp_rt_latest")
+                if f0 and l0 and f0["x"][-1] == l0["x"][-1]:
+                    out.append(f"Für das {_per(f0['x'][-1], freq)} lag die erste Meldung bei {num(f0['y'][-1], 1)} %, der heutige Stand bei {num(l0['y'][-1], 1)} %; junge Quartale sind meist noch wenig überarbeitet.")
+                return out
         norm = next((s for s in series if s.get("style") == "norm"), None)
         series = [s for s in series if s.get("style") != "norm"]
         if c.get("emphasis"):
@@ -938,7 +951,7 @@ def _downturn_event(c: dict, data: dict) -> dict | None:
     cur = ip[-60:].idxmax()  # aktuelles Hoch: höchster Stand der letzten fünf Jahre
     post = int(c.get("months", 36))
     if all(abs((cur - e["start"]).days) > 400 for e in eps) and cur < ip.index[-3]:
-        eps.append({"label": f"seit {cur.strftime('%m/%Y')}", "start": cur, "current": True})
+        eps.append({"label": f"laufend, seit {cur.strftime('%m/%Y')}", "start": cur, "current": True})
         post = max(post, (ip.index[-1].year - cur.year) * 12 + ip.index[-1].month - cur.month)  # aktuelle Kurve vollständig zeigen
     panels = []
     for title, sid, mode, freq, sub in (("Industrieproduktion", "de_ip", "index", "M", "Hoch = 100; waagerecht: Monate seit dem Hoch"),
@@ -1171,7 +1184,7 @@ def build_payload(root: Path = ROOT) -> dict:
                         ser = ser.dropna().rolling(12, min_periods=12).sum().dropna()
                     xy = _xy(ser * float(c.get("scale", 1)), c.get("years"))
                     series.append(dict(id=s.id, label=s.label or s.title, unit=c.get("unit", s.unit), freq="B" if c.get("daily") else s.frequency,
-                                       style=getattr(s, "style", None) or "line", **xy))
+                                       style=(c.get("styles") or {}).get(s.id) or getattr(s, "style", None) or "line", **xy))
                 if c.get("total") and c["total"] in data:
                     s = meta[c["total"]]
                     series.append(dict(id=s.id, label="BIP insgesamt", unit=s.unit, freq=s.frequency, style="line",

@@ -180,7 +180,7 @@ charts:
   hh_income: {title: "Real verfügbares Einkommen je Einwohner", decimals: 1}
   wages: {title: "Nominal- und Reallöhne", decimals: 1}
   ulc: {title: "Lohnstückkosten", decimals: 1}
-  gdp_rev: {title: "BIP-Wachstum: erste Meldung und heutiger Stand", decimals: 1}
+  gdp_rev: {title: "Korrektur des BIP-Wachstums seit der ersten Meldung", decimals: 1}
   alq_land: {title: "Arbeitslosenquote nach Ländern", decimals: 1}
   tarif: {title: "Tarifverdienste und Verbraucherpreise", decimals: 1}
   spf: {title: "Langfristige Inflationserwartung der Fachleute", decimals: 2}

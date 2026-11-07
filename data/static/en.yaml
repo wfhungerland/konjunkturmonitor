@@ -58,9 +58,9 @@ topics:
 
 charts:
   gdp_rev:
-    title: "GDP growth: first release and current vintage"
+    title: "Revision of GDP growth since the first release"
     ask: "How much is GDP growth revised after the first release?"
-    caption: "Real GDP growth on the previous quarter as first published by the Federal Statistical Office and as it stands in the latest vintage; bars: revision since then in percentage points (positive: revised up). Based on the stored vintages of the Bundesbank's real-time database since 2005. The first release of a quarter rests on incomplete information; later vintages and benchmark revisions often change it by several tenths."
+    caption: "Bars: revision of real GDP growth on the previous quarter between the Federal Statistical Office's first release and the latest vintage, in percentage points (positive: revised up). Grey band: mean absolute revision over the period shown. The tooltip shows the first release and the current figure; both are also in the download. Based on the stored vintages of the Bundesbank's real-time database since 2005. The first release of a quarter rests on incomplete information; later vintages and benchmark revisions often change it by several tenths."
   alq_land:
     title: "Unemployment rate by state"
     ask: "In which states is unemployment high, where is it rising?"
@@ -373,7 +373,7 @@ charts:
   oil:
     title: "Oil price"
     ask: "How expensive is crude oil?"
-    caption: "Price per barrel (159 litres) of North Sea Brent crude oil, monthly average."
+    caption: "Price per barrel (159 litres) of North Sea Brent crude oil, monthly average, quoted in US dollars as is customary internationally."
   power:
     title: "Electricity: consumption and wholesale price"
     ask: "How much electricity is being used, and what does it cost on the wholesale market?"
