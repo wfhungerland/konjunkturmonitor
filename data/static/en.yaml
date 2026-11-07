@@ -230,7 +230,7 @@ charts:
   retail_split:
     title: "Retail sales by product range, real"
     ask: "Which product ranges are selling better?"
-    caption: "Sales by product range, price adjusted. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "Sales by product range, price adjusted, Federal Statistical Office data via Eurostat. Food: retail sale of food, beverages and tobacco; non-food excluding fuel. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
   hospitality:
     title: "Hospitality, real"
     ask: "How is the hospitality sector doing?"
@@ -542,9 +542,9 @@ series:
   de_bau_prod: {title: "Construction output, total", label: "Construction, total", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
   de_bau_prod_main: {title: "Output in building and civil engineering", label: "Building and civil engineering", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
   de_bau_prod_ausbau: {title: "Output in the finishing trades", label: "Finishing and installation", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
-  de_retail_food: {title: "Retail sales of food, real", label: "Food", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Destatis)"}
-  de_retail_nonfood: {title: "Retail sales of non-food products, real", label: "Non-food", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Destatis)"}
-  de_retail_online: {title: "Mail-order and online retail, real", label: "Mail-order and online", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Destatis)"}
+  de_retail_food: {title: "Retail sales of food, beverages and tobacco, real", label: "Food", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Eurostat)"}
+  de_retail_nonfood: {title: "Retail sales of non-food products (excluding fuel), real", label: "Non-food", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Eurostat)"}
+  de_retail_online: {title: "Mail-order and online retail, real", label: "Mail-order and online", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Eurostat)"}
   de_hospitality: {title: "Hospitality, real turnover", label: "Hospitality", unit: "Index 2015=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
   de_cars_private: {title: "New car registrations by private owners", label: "Private owners", unit: "thousands", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
   de_emp_m: {title: "Persons in employment (domestic)", label: "Persons in employment", unit: "thousand people", adjustment: "seasonally and calendar adjusted (Bundesbank)"}

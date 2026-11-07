@@ -1159,39 +1159,39 @@ series:
 
   - id: de_retail_food
     block: konsum
-    source: genesis
-    key: 45212-0005
-    params: {value_variable: UMS103, filters: {WERTE4: REAL, WERT01: X13JDKSB, WZ08E5: "WZ08-4711-01"}, query: {classifyingvariable1: WZ08E5, classifyingkey1: "WZ08-4711-01", classifyingvariable2: WERTE4, classifyingkey2: REAL, classifyingvariable3: WERT01, classifyingkey3: X13JDKSB}}
-    title: "Einzelhandel Lebensmittel, real"
+    source: eurostat
+    key: sts_trtu_m
+    params: {geo: DE, indic_bt: VOL_SLS, nace_r2: G47_FOOD, s_adj: SCA, unit: I21}
+    title: "Einzelhandel mit Nahrungsmitteln, Getränken und Tabakwaren, real"
     unit: "Index 2021=100"
     frequency: M
-    adjustment: kalender- und saisonbereinigt (Destatis)
+    adjustment: kalender- und saisonbereinigt (Eurostat)
     chart: retail_split
     label: "Lebensmittel"
     start: "2015-01-01"
 
   - id: de_retail_nonfood
     block: konsum
-    source: genesis
-    key: 45212-0005
-    params: {value_variable: UMS103, filters: {WERTE4: REAL, WERT01: X13JDKSB, WZ08E5: "WZ08-4719-01"}, query: {classifyingvariable1: WZ08E5, classifyingkey1: "WZ08-4719-01", classifyingvariable2: WERTE4, classifyingkey2: REAL, classifyingvariable3: WERT01, classifyingkey3: X13JDKSB}}
-    title: "Einzelhandel Nicht-Lebensmittel, real"
+    source: eurostat
+    key: sts_trtu_m
+    params: {geo: DE, indic_bt: VOL_SLS, nace_r2: G47_NFOOD_X_G473, s_adj: SCA, unit: I21}
+    title: "Einzelhandel mit Nicht-Lebensmitteln (ohne Tankstellen), real"
     unit: "Index 2021=100"
     frequency: M
-    adjustment: kalender- und saisonbereinigt (Destatis)
+    adjustment: kalender- und saisonbereinigt (Eurostat)
     chart: retail_split
     label: "Nicht-Lebensmittel"
     start: "2015-01-01"
 
   - id: de_retail_online
     block: konsum
-    source: genesis
-    key: 45212-0005
-    params: {value_variable: UMS103, filters: {WERTE4: REAL, WERT01: X13JDKSB, WZ08E5: "WZ08-4791"}, query: {classifyingvariable1: WZ08E5, classifyingkey1: "WZ08-4791", classifyingvariable2: WERTE4, classifyingkey2: REAL, classifyingvariable3: WERT01, classifyingkey3: X13JDKSB}}
+    source: eurostat
+    key: sts_trtu_m
+    params: {geo: DE, indic_bt: VOL_SLS, nace_r2: G4791, s_adj: SCA, unit: I21}
     title: "Einzelhandel Versand- und Internethandel, real"
     unit: "Index 2021=100"
     frequency: M
-    adjustment: kalender- und saisonbereinigt (Destatis)
+    adjustment: kalender- und saisonbereinigt (Eurostat)
     chart: retail_split
     label: "Versand- und Internethandel"
     start: "2015-01-01"
