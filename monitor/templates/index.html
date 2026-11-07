@@ -13,7 +13,6 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="Konjunkturmonitor: neue Zahlen" href="feed.xml">
 <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.de">
-<script src="plotly.min.js"></script>
 <style>
   /* Schrift wird mitgeliefert (SIL Open Font License, monitor/static/fonts/OFL.txt), keine fremden Server */
   @font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/source-sans-3-latin-400-normal.woff2") format("woff2"); }
@@ -928,8 +927,16 @@ function card(c, no) {
   return el;
 }
 
+// Plotly (Linien und Balken, plotly.js-basic) wird erst nach der ersten Darstellung geladen, damit Text und Kennzahlen sofort erscheinen
+const PLOTLY_SRC = "plotly.min.js";
+let plotlyLoading = null;
+const plotlyReady = () => plotlyLoading || (plotlyLoading = new Promise((ok, fail) => {
+  if (window.Plotly) return ok();
+  const s = document.createElement("script"); s.src = PLOTLY_SRC; s.async = true; s.onload = () => ok(); s.onerror = fail; document.head.appendChild(s); }));
+addEventListener("load", () => setTimeout(plotlyReady, 0));
 function render(ch) {
   if (ch.dataset.done) return;
+  if (!window.Plotly) { ch.dataset.done = "wait"; plotlyReady().then(() => { delete ch.dataset.done; render(ch); }); return; }
   ch.dataset.done = 1;
   const c = ch._c;
   if (c.alt && !ch._seg) { // Umschalter, etwa Vorjahres- und Vormonatsvergleich der Inflationsbeiträge
@@ -1078,8 +1085,7 @@ function build() {
   const AS = DATA.all_series || {};
   document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${encodeURI(AS.xlsx)}" download>Excel</a> · <a href="${encodeURI(AS.csv)}" download>CSV</a>` : "",
     `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
-  document.getElementById("deck").innerHTML = [DATA.deck ? `<a href="${encodeURI(DATA.deck)}" download>Alle Abbildungen als PowerPoint</a>` : "",
-    DATA.page_docx ? `<a href="${encodeURI(DATA.page_docx)}" download>Ganze Seite als Word-Datei zum Bearbeiten</a>` : ""].filter(Boolean).join(" · ");
+  document.getElementById("deck").innerHTML = [DATA.deck ? `<a href="${encodeURI(DATA.deck)}" download>Alle Abbildungen als PowerPoint</a>` : ""].filter(Boolean).join(" · ");
   const HL = DATA.health || {};
   if (HL.n) document.getElementById("reuse").insertAdjacentHTML("afterend", `<p class="tnote">Letzter Datenabruf: ${new Date(HL.finished_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })} Uhr; ${HL.ok} von ${HL.n} Reihen erfolgreich${HL.failed.length ? `, fehlgeschlagen: ${HL.failed.length}` : ""}${HL.outdated.length ? `, länger ohne neue Werte: ${HL.outdated.length}` : ""}. Betroffene Abbildungen tragen einen Hinweis.</p>`);
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
