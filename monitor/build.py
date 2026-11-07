@@ -1433,6 +1433,8 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
                    .replace("/*__URL__*/", escape(pen["site"]["url"], quote=True)).replace("/*__OGIMG__*/", escape(url + "vorschau.png", quote=True)))
         (out / "en").mkdir(exist_ok=True)
         (out / "en" / "index.html").write_text(html_en, encoding="utf-8")
+    from .methodik import write_method_pages
+    write_method_pages(payload, meta, root, out, _license)  # Methodenblatt je Abbildung (site/methodik/)
     preview_image(payload, out / "vorschau.png")
     for page in ("impressum.html", "datenschutz.html"):
         (out / page).write_text(resources.files("monitor").joinpath(f"templates/{page}").read_text(encoding="utf-8"), encoding="utf-8")
