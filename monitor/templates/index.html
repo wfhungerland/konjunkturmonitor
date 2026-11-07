@@ -363,6 +363,18 @@ const perIn = (x, f) => (f === "A" ? "im Jahr " : f === "D" ? "in der " : f === 
 const periodCode = (x, f) => f === "A" ? x.slice(0, 4) : f === "Q" ? `${x.slice(2, 4)}q${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}` : f === "D" ? `${x.slice(2, 4)}w${String(Math.ceil(((Date.parse(x) - Date.parse(x.slice(0, 4) + "-01-01")) / 864e5 + 1) / 7)).padStart(2, "0")}` : `${x.slice(2, 4)}m${x.slice(5, 7)}`;
 const perShort = (x, f) => f === "A" ? x.slice(0, 4) : f === "Q" ? `${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}. Q. ${x.slice(0, 4)}` : f === "D" ? `${+x.slice(8, 10)}. ${MONTHS[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : `${MONTHS[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`;
 
+// Werte in der Mitte ihres Zeitraums zeichnen, dort steht auch die Jahreszahl; fehlende Zeiträume bleiben Lücken
+const STEP = { A: 12, Q: 3, M: 1 };
+const midP = (x, f) => f === "A" ? x.slice(0, 4) + "-07-02" : f === "Q" ? `${x.slice(0, 5)}${String(+x.slice(5, 7) + 1).padStart(2, "0")}-15` : f === "M" ? x.slice(0, 8) + "15" : x;
+function withGaps(s, f) {
+  const k = STEP[f]; if (!k || !Array.isArray(s.x) || s.x.length < 2) return s;
+  const mon = d => +d.slice(0, 4) * 12 + +d.slice(5, 7) - 1, x = [], y = [];
+  s.x.forEach((d, i) => { if (i && mon(d) - mon(s.x[i - 1]) > k) { const m = mon(s.x[i - 1]) + k; x.push(`${Math.floor(m / 12)}-${String(m % 12 + 1).padStart(2, "0")}-01`); y.push(null); }
+    x.push(d); y.push(s.y[i]); });
+  return x.length === s.x.length ? s : Object.assign({}, s, { x, y });
+}
+const plotC = c => Object.assign({}, c, { series: c.series.map(s => { const f = s.freq || c.freq, g = withGaps(s, f); return Object.assign({}, g, { x: g.x.map(x => midP(x, f)) }); }) });
+const HFMT = { A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
 function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 5, 10].map(m => m * p).find(s => s >= raw); }
 function decs(step) { return step >= 1 ? 0 : step >= 0.1 ? 1 : 2; }
 // Werteachse rechts: runde Stufen, je eine Drittel Stufe Luft, Einheit an der obersten Zahl
@@ -393,23 +405,24 @@ function xAxis(x0, x1, width) {
   return { tickvals: tv, ticktext: tt, shapes };
 }
 // Abbildungen, an deren Linienenden die jüngsten Werte stehen können
-const labelable = c => Array.isArray(c.series) && !["stacked", "latest", "seasonal"].includes(c.type) && !c.series.some(s => s.style === "bar")
+const labelable = c => Array.isArray(c.series) && !["stacked", "latest", "seasonal", "dumbbell"].includes(c.type) && !c.series.some(s => s.style === "bar")
   && (c.series.filter(s => s.style !== "bar").length <= 4 || c.context_grey) && !(c.multiples && (DATA.layout || {}).small_multiples && (c.series.length > 2 || c.own_scale));
 // Rezessionen nach SVR, die ins Zeitfenster der Abbildung fallen
 const recIn = (c, r) => (c.recessions || []).filter(rc => rc.trough >= r[0] && rc.peak <= r[1]);
-function ma3(y) { return y.map((v, i) => i < 2 ? null : (y[i] + y[i - 1] + y[i - 2]) / 3); }
+function ma3(y) { return y.map((v, i) => i < 2 || y[i] == null || y[i - 1] == null || y[i - 2] == null ? null : (y[i] + y[i - 1] + y[i - 2]) / 3); }
 function baseLayout(el) {
   return { margin: { l: 6, r: 6, t: 26, b: 24 }, paper_bgcolor: "#fff", plot_bgcolor: "#fff", separators: ",.",
     font: { family: HS.font, size: 13, color: "#000" }, hovermode: TOUCH ? "closest" : "x unified",
     legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { size: 12 } }, dragmode: false };
 }
-const CFG = { displayModeBar: false, responsive: true };
+const CFG = { displayModeBar: false, responsive: true, locale: "site" };
 function pad(x0, x1, freq) { // Rand: halbe Periode Luft
   const d = freq === "Q" ? 45 : freq === "A" ? 182 : 15;
   return [new Date(Date.parse(x0) - d * 864e5).toISOString().slice(0, 10), new Date(Date.parse(x1) + d * 864e5).toISOString().slice(0, 10)];
 }
 
 function timeChart(el, c) {
+  c = plotC(c);
   const traces = [], all = [];
   const lines = c.series.filter(s => s.style !== "bar"), bars = c.series.filter(s => s.style === "bar");
   bars.forEach((s, i) => { traces.push({ type: "bar", x: s.x, y: s.y, name: s.label, marker: { color: BAR_PAL[i % BAR_PAL.length], line: { width: 0 } },
@@ -426,10 +439,16 @@ function timeChart(el, c) {
       const cut = k < 0 ? s.x.length : k;
       traces.push({ type: "scatter", mode: "lines", x: s.x.slice(0, cut), y: s.y.slice(0, cut), name: s.label, meta: s.id, line: { color: col, width: 3 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
       if (k > 0) traces.push({ type: "scatter", mode: "lines+markers", x: s.x.slice(cut - 1), y: s.y.slice(cut - 1), name: s.label + ", Prognose", line: { color: col, width: 2, dash: "dot" }, marker: { size: 6, symbol: "circle-open" }, hovertemplate: `%{y:,.${c.decimals}f} (Prognose)<extra>${esc(s.label)}</extra>` });
+    } else if (s.style === "norm") { // Vergleichsmarke je Periode, etwa Mittel desselben Monats 2015 bis 2019
+      traces.push({ type: "scatter", mode: "markers", x: s.x, y: s.y, name: s.label, meta: s.id, marker: { symbol: "line-ew-open", size: 11, color: "#000", line: { color: "#000", width: 2 } },
+        hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
     } else {
       const grey = (c.context_grey || many) && !strong;
       traces.push({ type: "scatter", mode: s.x.length < 12 ? "lines+markers" : "lines", x: s.x, y: s.y, name: s.label, meta: s.id,
         line: { color: grey ? "#a6a6a6" : col, width: strong ? 3 : grey ? 1.2 : 1.6 }, marker: { size: 5 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
+      const iso = s.y.map((v, i) => v != null && s.y[i - 1] == null && s.y[i + 1] == null ? i : -1).filter(i => i >= 0);  // einzelne Werte zwischen Lücken als Punkt
+      if (iso.length && s.x.length >= 12) traces.push({ type: "scatter", mode: "markers", x: iso.map(i => s.x[i]), y: iso.map(i => s.y[i]), showlegend: false, meta: s.id,
+        marker: { size: 6, color: grey ? "#a6a6a6" : col }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
     }
     all.push(...s.y.filter(v => v != null));
   });
@@ -439,14 +458,17 @@ function timeChart(el, c) {
   }
   const xs = c.series.flatMap(s => s.x).sort(), freq = c.freq;
   const r = pad(xs[0], xs[xs.length - 1], freq);
-  const ya = yAxis(all, c.unit, [c.ref, c.threshold, ...((c.band && (DATA.layout || {}).compare_band) ? [c.band.lo, c.band.hi] : [])].filter(v => v != null));
+  const ya = yAxis(all, c.unit, [c.ref, c.threshold, ...(c.refs || []).map(q => q.y), ...((c.band && (DATA.layout || {}).compare_band) ? [c.band.lo, c.band.hi] : [])].filter(v => v != null));
   const xa = xAxis(r[0], r[1], el.clientWidth || 500);
   const shapes = xa.shapes.slice();
-  if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
-  if (c.ref != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1.5, dash: "dash" } });
+  if (ya.zero || c.ref === 0) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
+  if (c.ref != null && c.ref !== 0) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1.5, dash: "dash" } });  // Zielwert, etwa 2 % der EZB
   if (c.threshold != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.threshold, y1: c.threshold, line: { color: WARN, width: 1.5, dash: "dash" } });
   if (c._rec ?? c.recessions_on) recIn(c, r).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak < r[0] ? r[0] : rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.22)", line: { width: 0 }, layer: "below" }));
   const LY = DATA.layout || {}, annotations = [];
+  (c.refs || []).forEach(q => { // Referenzwerte, etwa die Grenzen des Maastricht-Vertrags: grau gestrichelt mit Beschriftung
+    shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: q.y, y1: q.y, line: { color: "#595959", width: 1, dash: "dash" } });
+    annotations.push({ xref: "paper", yref: "y", x: 0.005, y: q.y, text: esc(q.label), showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); });
   (c._shownotes ? c.notes || [] : []).forEach((n, k) => { shapes.push({ type: "line", xref: "x", yref: "paper", x0: n.date, x1: n.date, y0: 0, y1: 1, line: { color: "#595959", width: 1, dash: "dot" } });
     annotations.push({ xref: "x", yref: "paper", x: n.date, y: 1, text: String(k + 1), showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" } }); });
   if (c.band && LY.compare_band) {
@@ -454,7 +476,8 @@ function timeChart(el, c) {
     annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.band.hi, text: "Spanne 2015–2019", showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#7f7f7f" } });
   }
   const named = traces.filter(t => t.showlegend !== false && t.type === "scatter");
-  const direct = LY.direct_labels && c._labels && labelable(c) && named.length >= 1;
+  const nameOnly = !c._labels && c.name_labels && LY.direct_labels && labelable(c) && named.length >= 2;  // Namen am Linienende statt Legende
+  const direct = (LY.direct_labels && c._labels && labelable(c) && named.length >= 1) || nameOnly;
   let rMargin = 6;
   if (direct) { // Beschriftung in der Zeichenfläche links über dem Linienende, bei Bedarf mit Bezugslinie und ohne Überlappung
     const sgn = /ggü\.|gegenüber|Veränderung|^Pp|^Saldo/.test(c.unit || "") || ya.zero;
@@ -462,7 +485,7 @@ function timeChart(el, c) {
     const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const v = tr.y[i]; if (v == null) return null;
       const td = tendOf(tr.y, c.decimals ?? 1), arrow = td ? ` <span style="color:${tendColor(td, isBad(c, tr.meta))}">${{ up: "▲", down: "▼", flat: "■" }[td]}</span>` : "";
       const f0 = fmtU(v, c.decimals ?? 1, c.unit), val = (sgn && +v.toFixed(c.decimals ?? 1) > 0 && !f0.startsWith("+") ? "+" : "") + f0;
-      return { tr, i, y: v, py: pyOf(v), text: `${esc(tr.name)} ${esc(val)}${arrow} ${esc(perIn(tr.x[i], c.freq))}` }; }).filter(Boolean).sort((p, q) => p.py - q.py);
+      return { tr, i, y: v, py: pyOf(v), text: nameOnly ? esc(tr.name) : `${esc(tr.name)} ${esc(val)}${arrow} ${esc(perIn(tr.x[i], c.freq))}` }; }).filter(Boolean).sort((p, q) => p.py - q.py);
     // Freie Fläche suchen: über oder unter allen Linien im Bereich, den die Beschriftungen waagerecht einnehmen
     const plotW = Math.max(160, (el.clientWidth || 500) - 50), t0 = Date.parse(r[0]), t1 = Date.parse(r[1]);
     const txtW = Math.max(...ends.map(e => e.text.replace(/<[^>]+>/g, "").length)) * 6.4 + 16, tFrom = t1 - txtW / plotW * (t1 - t0);
@@ -506,7 +529,7 @@ function timeChart(el, c) {
   L.margin = Object.assign({}, L.margin, { r: Math.max(rMargin, tickW0), t: Math.max(L.margin.t, 34) });
   const xa2 = xAxis(r[0], r[1], Math.max(120, (el.clientWidth || 500) - Math.max(rMargin, tickW0) - 10));  // Jahreszahlen nach der tatsächlichen Zeichenbreite
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
-    xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa2.tickvals, ticktext: xa2.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
+    xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa2.tickvals, ticktext: xa2.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true, hoverformat: HFMT[c.freq] || "" },
     yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
   Plotly.newPlot(el, traces, L, CFG);
 }
@@ -514,6 +537,7 @@ function timeChart(el, c) {
 // Small Multiples: je Reihe ein kleines Diagramm auf gleicher Skala, die übrigen Reihen grau als Kontext.
 // Kopf je Panel: letzter Wert mit Einheit und Monat, Mittel der letzten 3 und 12 Werte, Tendenz zum Vorwert.
 function multiplesChart(el, c) {
+  c = plotC(c);
   el.classList.add("multi");
   const all = c.series.flatMap(s => s.y.filter(v => v != null)).concat(c.ref != null ? [c.ref] : []);
   const ya0 = yAxis(all, c.unit, []);
@@ -530,11 +554,13 @@ function multiplesChart(el, c) {
     const head = last ? ` ${fmtU(last[0], d, un)} ${tendHtml(tend, isBad(c, s.id))} ${esc(perIn(last[1], c.freq))}<br><span class="mtsub">Mittel der letzten 3 Monate ${fmtU(avg(vals.slice(-nM(3))), d, un)}, der letzten 12 Monate ${fmtU(avg(vals.slice(-nM(12))), d, un)}</span>` : "";
     box.innerHTML = `<p class="mt"><b>${esc(s.label)}</b>${head}</p>`;
     const m = document.createElement("div"); m.className = "mini"; box.appendChild(m); grid.appendChild(box);
-    const traces = c.own_scale ? [] : c.series.filter(o => o !== s).map(o => ({ type: "scatter", mode: "lines", x: o.x, y: o.y, line: { color: "#d0d0d0", width: 1 }, hoverinfo: "skip" }));
-    traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, line: { color: PAL[0], width: 2 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
+    const sm = y => c.ma3 ? ma3(y) : y, ht = `%{x|${HFMT[c.freq] || "%Y"}}: %{y:,.${c.decimals}f}`;
+    const traces = c.own_scale ? [] : c.series.filter(o => o !== s).map(o => ({ type: "scatter", mode: "lines", x: o.x, y: sm(o.y), line: { color: "#d0d0d0", width: 1 }, hoverinfo: "skip" }));
+    if (c.ma3) traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, line: { color: PAL[0], width: 1 }, opacity: 0.4, hovertemplate: `${ht}<extra>${esc(s.label)}</extra>` });  // dünn: Monatswerte
+    traces.push({ type: "scatter", mode: "lines", x: s.x, y: sm(s.y), line: { color: PAL[0], width: c.ma3 ? 2.5 : 2 }, hovertemplate: `${ht}${c.ma3 ? " (3-Monats-Mittel)" : ""}<extra>${esc(s.label)}</extra>` });
     const w = Math.max(160, (el.clientWidth || 600) / cols - 50), xa = xAxis(r[0], r[1], w), shapes = xa.shapes.filter(sh => sh.type === "rect");
-    if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
-    if (c.ref != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1, dash: "dash" } });
+    if (ya.zero || c.ref === 0) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
+    if (c.ref != null && c.ref !== 0) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1, dash: "dash" } });
     if (c._rec ?? c.recessions_on) recIn(c, r).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak < r[0] ? r[0] : rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.22)", line: { width: 0 }, layer: "below" }));
     const L = baseLayout(m);
     Object.assign(L, { margin: { l: 2, r: 2, t: 4, b: 20 }, showlegend: false, shapes, hovermode: "closest", font: { family: HS.font, size: 12 },
@@ -623,31 +649,64 @@ function clockChart(el, c) {
 // Prognosen: Zieljahre waagerecht, Bundesregierung als Linie mit Werten, graue Fläche von der niedrigsten bis zur höchsten
 // jüngsten Prognose aller Herausgeber; die übrigen Herausgeber lassen sich über die Legende einblenden.
 function forecastChart(el, c) {
+  // Punktreihe je Zieljahr: jede Prognose ein Punkt, Bundesregierung dunkelblau, ältere Prognosen heller; grau hinterlegt die Spanne
   const F = c.forecasts, now = new Date().getFullYear(), GOV = "Bundesregierung";
   const by = [...new Set(F.map(f => f.by))];
   const latest = by.map(b => F.filter(f => f.by === b).sort((p, q) => p.date < q.date ? -1 : 1).pop());
   const years = [...new Set(latest.flatMap(f => Object.keys(f.values).map(Number)))].filter(y => y >= now && latest.filter(f => f.values[y] != null).length >= 1).sort().slice(0, 3);
-  const xs = years.map(String), lo = years.map(y => Math.min(...latest.map(f => f.values[y]).filter(v => v != null))), hi = years.map(y => Math.max(...latest.map(f => f.values[y]).filter(v => v != null)));
-  const n = years.map(y => latest.filter(f => f.values[y] != null).length);
-  const cols = ["#0070C0", "#7030A0", "#00B0F0", "#D86DCD", "#47D359", "#51154A", "#595959", "#B45309", "#002060"];
-  const traces = [
-    { type: "scatter", mode: "lines", x: xs, y: hi, line: { width: 0, color: "#bfbfbf" }, hoverinfo: "skip", showlegend: false },
-    { type: "scatter", mode: "lines", x: xs, y: lo, fill: "tonexty", fillcolor: "rgba(150,150,150,0.25)", line: { width: 0, color: "#bfbfbf" }, name: "Spanne aller Prognosen",
-      customdata: years.map((y, i) => `${fmt(lo[i], 1)} bis ${fmt(hi[i], 1)} % (${n[i]} Herausgeber)`), hovertemplate: "Spanne %{customdata}<extra></extra>" }];
-  latest.filter(f => f.by !== GOV).forEach((f, k) => traces.push({ type: "scatter", mode: "lines+markers", x: xs, y: years.map(y => f.values[y] ?? null), name: f.by, visible: "legendonly",
-    line: { color: cols[k % cols.length], width: 1.5 }, marker: { size: 7 }, customdata: years.map(() => `${f.by}, ${f.round}${f.check ? " (" + f.check + ")" : ""}`), hovertemplate: "%{y:,.1f} %<extra>%{customdata}</extra>" }));
+  const newest = latest.map(f => f.date).sort().pop(), old = f => (Date.parse(newest) - Date.parse(f.date)) / 864e5 > 120;
+  const grp = { gov: { x: [], y: [], t: [], cd: [] }, now: { x: [], y: [], cd: [] }, old: { x: [], y: [], cd: [] } }, shapes = [], all = [0];
+  const who = f => `${esc(f.by)}, ${esc(f.round)}${f.check ? " (" + esc(f.check) + ")" : ""}`;
+  years.forEach((y, i) => {
+    const pts = latest.filter(f => f.values[y] != null), oth = pts.filter(f => f.by !== GOV).sort((p, q) => p.values[y] - q.values[y] || (p.by < q.by ? -1 : 1));
+    const v = pts.map(f => f.values[y]); all.push(...v);
+    if (i % 2 === 0) shapes.push({ type: "rect", xref: "x", yref: "paper", x0: i - 0.5, x1: i + 0.5, y0: 0, y1: 1, fillcolor: HS.band, line: { width: 0 }, layer: "below" });
+    if (v.length > 1) shapes.push({ type: "rect", xref: "x", yref: "y", x0: i - 0.16, x1: i + 0.34, y0: Math.min(...v), y1: Math.max(...v), fillcolor: "rgba(150,150,150,0.16)", line: { width: 0 }, layer: "below" });
+    const w = Math.min(0.06, 0.26 / Math.max(1, oth.length - 1));  // weitere Herausgeber rechts, Bundesregierung links mit Zahl
+    oth.forEach((f, j) => { const g = old(f) ? grp.old : grp.now; g.x.push(i + 0.04 + j * w); g.y.push(f.values[y]); g.cd.push(who(f)); });
+    const gv = pts.find(f => f.by === GOV);
+    if (gv) { grp.gov.x.push(i - 0.1); grp.gov.y.push(gv.values[y]); grp.gov.t.push(fmt(gv.values[y], 1) + "\u202f%"); grp.gov.cd.push(who(gv)); }
+  });
   const g = latest.find(f => f.by === GOV);
-  if (g) traces.push({ type: "scatter", mode: "lines+markers+text", x: xs, y: years.map(y => g.values[y] ?? null), name: `${GOV}, ${g.round}`, line: { color: PAL[0], width: 3 }, marker: { size: 9, color: PAL[0] },
-    text: years.map(y => g.values[y] == null ? "" : fmt(g.values[y], 1) + "\u202f%"), textposition: "top center", textfont: { family: HS.font, size: 13, color: PAL[0] }, hovertemplate: `%{y:,.1f} %<extra>${esc(GOV)}, ${esc(g.round)}</extra>` });
-  const ya = yAxis(lo.concat(hi, [0]), "%");
+  const traces = [
+    { type: "scatter", mode: "markers", x: grp.old.x, y: grp.old.y, customdata: grp.old.cd, name: "Prognose älter als vier Monate", marker: { size: 8, color: "#d0d0d0" }, hovertemplate: "%{customdata}: %{y:,.1f} %<extra></extra>" },
+    { type: "scatter", mode: "markers", x: grp.now.x, y: grp.now.y, customdata: grp.now.cd, name: "Weitere Herausgeber, jüngste Prognose", marker: { size: 8, color: "#7f7f7f" }, hovertemplate: "%{customdata}: %{y:,.1f} %<extra></extra>" },
+    { type: "scatter", mode: "markers+text", x: grp.gov.x, y: grp.gov.y, customdata: grp.gov.cd, text: grp.gov.t, textposition: "middle left", name: g ? `${GOV}, ${g.round}` : GOV,
+      marker: { size: 12, color: PAL[0], line: { color: "#fff", width: 1.5 } }, textfont: { family: HS.font, size: 13, color: PAL[0] }, hovertemplate: "%{customdata}: %{y:,.1f} %<extra></extra>" }
+  ].filter(tr => tr.x.length);
+  const ya = yAxis(all, "%");
+  if (ya.tickvals.includes(0)) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
   const L = baseLayout(el);
-  Object.assign(L, { margin: { l: 6, r: 6, t: 30, b: 28 }, hovermode: "x unified", showlegend: true,
-    legend: { orientation: "h", x: 0, y: -0.12, yanchor: "top", font: { size: 12 }, title: { text: "Weitere Prognosen per Klick ein- und ausblenden:", side: "top", font: { size: 12 } } },
-    shapes: xs.map((_, i) => i % 2 ? null : { type: "rect", xref: "x", yref: "paper", x0: i - 0.5, x1: i + 0.5, y0: 0, y1: 1, fillcolor: HS.band, line: { width: 0 }, layer: "below" }).filter(Boolean)
-      .concat(ya.zero ? [{ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } }] : []),
-    xaxis: { type: "category", range: [-0.5, xs.length - 0.5], showgrid: false, zeroline: false, fixedrange: true, ticks: "" },
+  Object.assign(L, { margin: { l: 6, r: 6, t: 30, b: 28 }, hovermode: "closest", showlegend: true, shapes,
+    legend: { orientation: "h", x: 0, y: -0.1, yanchor: "top", font: { size: 12 }, traceorder: "reversed", itemclick: false, itemdoubleclick: false },
+    xaxis: { range: [-0.5, years.length - 0.5], tickmode: "array", tickvals: years.map((_, i) => i), ticktext: years.map(String), showgrid: false, zeroline: false, fixedrange: true, ticks: "" },
     yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true, automargin: true } });
-  el.style.aspectRatio = "auto"; el.style.height = (el.clientWidth < 600 ? 360 : 420) + "px";
+  el.style.aspectRatio = "auto"; el.style.height = (el.clientWidth < 600 ? 360 : 400) + "px";
+  Plotly.newPlot(el, traces, L, CFG);
+}
+
+// Hantelgrafik: je Land der Wert im ersten (hohl) und im jüngsten Jahr (voll), nach dem jüngsten Wert geordnet
+function dumbbellChart(el, c) {
+  const pick = s => { const ok = s.x.map((x, i) => [x, s.y[i]]).filter(p => p[1] != null); return ok.length ? { a: ok[0], b: ok[ok.length - 1] } : null; };
+  const rows = c.series.map(s => Object.assign({ s }, pick(s))).filter(r => r.a).sort((p, q) => p.b[1] - q.b[1]);
+  const emph = r => r.s.id === c.emphasis, col = r => emph(r) ? PAL[0] : "#7f7f7f", lab = rows.map(r => r.s.label);
+  const y0 = rows.map(r => r.a[0].slice(0, 4)), y1 = rows.map(r => r.b[0].slice(0, 4));
+  const A = [...new Set(y0)].length === 1 ? y0[0] : null, B = [...new Set(y1)].length === 1 ? y1[0] : null;
+  const shapes = rows.map((r, i) => ({ type: "line", xref: "x", yref: "y", x0: r.a[1], x1: r.b[1], y0: i, y1: i, line: { color: emph(r) ? PAL[0] : "#bfbfbf", width: emph(r) ? 2.5 : 1.5 }, layer: "below" }));
+  const traces = [
+    { type: "scatter", mode: "markers", x: rows.map(r => r.a[1]), y: rows.map((_, i) => i), name: A || "erstes Jahr", customdata: rows.map((r, i) => `${esc(lab[i])} ${y0[i]}`),
+      marker: { symbol: "circle-open", size: 10, color: rows.map(col), line: { width: 2 } }, hovertemplate: "%{customdata}: %{x:,.1f} %<extra></extra>" },
+    { type: "scatter", mode: "markers+text", x: rows.map(r => r.b[1]), y: rows.map((_, i) => i), name: B || "jüngstes Jahr", customdata: rows.map((r, i) => `${esc(lab[i])} ${y1[i]}`),
+      text: rows.map(r => fmt(r.b[1], 1)), textposition: rows.map(r => r.b[1] >= r.a[1] ? "middle right" : "middle left"), textfont: { family: HS.font, size: 12, color: rows.map(col) },
+      marker: { size: 10, color: rows.map(col) }, hovertemplate: "%{customdata}: %{x:,.1f} %<extra></extra>" }];
+  const v = rows.flatMap(r => [r.a[1], r.b[1]]), lo = Math.min(...v), hi = Math.max(...v), p = (hi - lo) * 0.08;
+  const L = baseLayout(el);
+  Object.assign(L, { height: Math.max(260, 30 * rows.length + 80), hovermode: "closest", showlegend: true, shapes, margin: { l: 6, r: 16, t: 34, b: 30 },
+    legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { size: 12 }, itemclick: false, itemdoubleclick: false },
+    xaxis: { range: [Math.max(0, lo - p * 2), hi + p * 2], showgrid: true, gridcolor: HS.gridH, zeroline: false, fixedrange: true, ticksuffix: "\u202f%" },
+    yaxis: { tickmode: "array", tickvals: rows.map((_, i) => i), ticktext: rows.map((r, i) => emph(r) ? `<b>${esc(lab[i])}</b>` : esc(lab[i])), range: [-0.7, rows.length - 0.3], automargin: true, fixedrange: true, ticks: "", showgrid: false, zeroline: false } });
+  el.style.aspectRatio = "auto"; el.style.height = L.height + "px";
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";  // Einheit steht an der Achse
   Plotly.newPlot(el, traces, L, CFG);
 }
 
@@ -706,12 +765,12 @@ function latestChart(el, c) {
   const per = x => perLong(x.period, c.freq);
   const traces = [
     { type: "bar", orientation: "h", y: lab, x: b.map(x => x.value), marker: { color: b.map(x => x.value >= 0 ? PAL[0] : PAL[2]) }, name: "Letztes Quartal",
-      text: b.map(x => (x.value > 0 ? "+" : "") + fmt(x.value, c.decimals)), textposition: "outside", cliponaxis: false,
+      text: b.map(x => (x.value > 0 ? "+" : "") + fmt(x.value, c.decimals) + (x.pct != null ? ` (${x.pct > 0 ? "+" : ""}${fmt(x.pct, 1)}\u202f%)` : "")), textposition: "outside", cliponaxis: false,
       customdata: b.map(per), hovertemplate: `%{x:,.${c.decimals}f} (%{customdata})<extra>%{y}</extra>` },
     ...(b.some(x => x.prev != null) ? [{ type: "scatter", mode: "markers", y: lab, x: b.map(x => x.prev), marker: { symbol: "diamond", size: 9, color: PAL[2] }, name: "Quartal davor",
       hovertemplate: `%{x:,.${c.decimals}f} (davor)<extra>%{y}</extra>` }] : [])];
   if (c.bar_name) traces[0].name = c.bar_name;
-  const all = b.flatMap(x => [x.value, x.prev]).filter(v => v != null), lo = Math.min(0, ...all), hi = Math.max(0, ...all), padv = (hi - lo) * 0.18 || 1;
+  const all = b.flatMap(x => [x.value, x.prev]).filter(v => v != null), lo = Math.min(0, ...all), hi = Math.max(0, ...all), padv = (hi - lo) * (b.some(x => x.pct != null) ? 0.32 : 0.18) || 1;
   const L = baseLayout(el);
   Object.assign(L, { height: Math.max(220, 34 * b.length + 70), showlegend: traces.length > 1, bargap: 0.35, hovermode: "closest",
     xaxis: { range: [lo - padv, hi + padv], zeroline: true, zerolinecolor: HS.zero, showgrid: true, gridcolor: HS.gridH, fixedrange: true, ticksuffix: "" },
@@ -938,6 +997,9 @@ function render(ch) {
   if (ch.dataset.done) return;
   if (!window.Plotly) { ch.dataset.done = "wait"; plotlyReady().then(() => { delete ch.dataset.done; render(ch); }); return; }
   ch.dataset.done = 1;
+  if (!render.loc) { render.loc = 1; Plotly.register({ moduleType: "locale", name: "site", dictionary: {}, format: { months: MONTHS_L, shortMonths: MONTHS,
+    days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], shortDays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], periods: ["AM", "PM"],
+    dateTime: "%a %b %e %X %Y", date: "%d.%m.%Y", time: "%H:%M:%S", decimal: ",", thousands: ".", grouping: [3], currency: ["", " €"], year: "%Y", month: "%b %Y", dayMonth: "%-d. %b", dayMonthYear: "%-d. %b %Y" } }); }
   const c = ch._c;
   if (c.alt && !ch._seg) { // Umschalter, etwa Vorjahres- und Vormonatsvergleich der Inflationsbeiträge
     const base = { series: c.series, unit: c.unit, label: c.alt.base }, seg = document.createElement("div");
@@ -950,6 +1012,7 @@ function render(ch) {
   }
   if (c.type === "clock") clockChart(ch, c); else if (c.type === "forecast") forecastChart(ch, c);
   else if (c.type === "latest") latestChart(ch, c);
+  else if (c.type === "dumbbell") dumbbellChart(ch, c);
   else if (c.type === "heat") heatChart(ch, c);
   else if (c.type === "heatbars") heatbarsChart(ch, c);
   else if (c.type === "event") eventChart(ch, c);

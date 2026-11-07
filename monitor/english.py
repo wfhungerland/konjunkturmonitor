@@ -382,9 +382,10 @@ def _special_en(c: dict) -> list[str] | None:
             return []
         if c.get("base"):
             bs = sorted(b, key=lambda x: x["value"])
-            out = [f"Since {period(pd.Timestamp(c['base']), c.get('freq', 'Q'))}, employment rose most in “{bs[-1]['label']}”: by {num(bs[-1]['value'], d)} {(c.get('unit') or '').split(',')[0]}.".replace(" .", ".")]
+            pc = lambda x: f" ({num(x['pct'], 1, True)}%)" if x.get("pct") is not None else ""
+            out = [f"Since {period(pd.Timestamp(c['base']), c.get('freq', 'Q'))}, employment rose most in “{bs[-1]['label']}”: by {num(bs[-1]['value'], d)} {(c.get('unit') or '').split(',')[0]}{pc(bs[-1])}.".replace(" .", ".").replace("  (", " (")]
             if bs[0]["value"] < 0:
-                out.append(f"It fell most in “{bs[0]['label']}”: by {num(abs(bs[0]['value']), d)} {(c.get('unit') or '').split(',')[0]}.".replace(" .", "."))
+                out.append(f"It fell most in “{bs[0]['label']}”: by {num(abs(bs[0]['value']), d)} {(c.get('unit') or '').split(',')[0]}{pc(bs[0])}.".replace(" .", ".").replace("  (", " ("))
             return out
         w = when(b[0]["period"], c.get("freq", "Q"))
         return [f"{w}, “{x['label']}” {'rose' if x['value'] > 0.05 else 'fell' if x['value'] < -0.05 else 'barely changed'}"
@@ -444,16 +445,28 @@ def chart_sentences_en(c: dict) -> list[str]:
         return []
     if sp is not None:
         return sp
-    if typ not in ("line", None) or not isinstance(c.get("series"), list):
+    if typ not in ("line", "dumbbell", None) or not isinstance(c.get("series"), list):
         return []
     try:
         series = [s for s in c["series"] if s.get("y")]
+        norm = next((s for s in series if s.get("style") == "norm"), None)
+        series = [s for s in series if s.get("style") != "norm"]
         if c.get("emphasis"):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
-        series = series[:6]
         freq = c.get("freq", "M")
+        if c.get("combine") and (c.get("unit_de") or "").startswith("Index"):  # gleich gebaute Reihen in einem Satz
+            last = max(s["x"][-1] for s in series)
+            parts = [(re.sub(r"^\d+\s+", "", s.get("label", "")), (s["y"][-1] / s["y"][-13] - 1) * 100)
+                     for s in series if s["x"][-1] == last and len(s["y"]) > 12 and s["y"][-13]]
+            if parts:
+                below = sum(1 for _, p in parts if round(p, 1) < 0)
+                words = {0: "none", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six"}
+                return [f"{when(last, freq)}, output was below its level of a year earlier in {words.get(below, below)} of {words.get(len(parts), len(parts))} industries: "
+                        + "; ".join(f"{lab} {num(p, 1, True)}%" for lab, p in parts) + "."]
+        series = series[:6]
         last = max(s["x"][-1] for s in series)
         w = when(last, freq)
+        mig = {"de_netmig_de": "Germans", "de_netmig_eu": "people from other EU countries", "de_netmig_neu": "people from outside the EU"}
         prev_lbl = {"M": "in the previous month", "Q": "in the previous quarter", "A": "in the previous year", "D": "in the previous week", "B": "on the previous day"}
         out = []
         for s in series:
@@ -471,6 +484,12 @@ def chart_sentences_en(c: dict) -> list[str]:
             uu = "%" if su.startswith("%") and not su.startswith(("% des", "% der")) else "pp" if su.startswith(("Pp", "Saldo")) else "" if su.startswith("Index") else unit_en.split(",")[0]
             vv = (f"{num(v, d, su.startswith('Saldo'))}{uu}" if uu == "%" else f"{num(v, d, su.startswith('Saldo'))} {uu}".strip()) if not su.startswith("Index 0") else f"{num(v, d)} out of 100 points"
             subj = _subject(s.get("label", ""))
+            if s.get("id") in mig:  # Wanderung: wer kam, wer ging
+                out.append(f"{w}, net {num(abs(v), d)} thousand {mig[s['id']]} {'moved to Germany' if v >= 0 else 'left Germany'}.")
+                continue
+            if s.get("id") == "de_hdd":
+                out.append(f"{w}, heating demand was {num(v, d)} degree days.")
+                continue
             if su.startswith(("% ggü", "Pp ggü")):
                 ref = ("on the previous month" if "Vormonat" in su else "on the previous quarter" if "Vorquartal" in su else "on a year earlier" if "Vorjahr" in su
                        else "on the previous week" if "Vorwoche" in su else "")
@@ -501,6 +520,9 @@ def chart_sentences_en(c: dict) -> list[str]:
                     pc = (v / yago - 1) * 100
                     sent += ", the same as a year earlier" if round(pc, 1) == 0 else f", {num(abs(pc), 1)}% {'more' if pc > 0 else 'less'} than a year earlier"
             out.append(sent + ".")
+        if norm and out and norm["x"][-1] == last and series and series[0]["y"][-1] is not None and norm["y"][-1]:
+            a0, a1 = c.get("norm") or ("", "")
+            out.append(f"That is {num(series[0]['y'][-1] / norm['y'][-1] * 100, 0)}% of the {a0}–{a1} average for the same month ({num(norm['y'][-1], d)}).")
         return [x.replace(" .", ".") for x in out]
     except (KeyError, IndexError, ValueError, TypeError, ZeroDivisionError):
         return []
@@ -566,6 +588,8 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                 c["unit"] = tr.get("charts", cid, "unit", tr.s(c["unit"]))
             if c.get("adjustment"):
                 c["adjustment"] = tr.s(c["adjustment"])
+            for r in c.get("refs") or []:
+                r["label"] = tr.lab(r.get("label"))
             for s in c.get("series") or [] if isinstance(c.get("series"), list) else []:
                 if isinstance(s, dict):
                     s["unit_de"] = s.get("unit")

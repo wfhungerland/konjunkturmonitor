@@ -1570,9 +1570,25 @@ series:
     adjustment: nicht bereinigt
     start: "2010-01-01"
     stale_after_months: 3
-    chart: hdd
     label: "Heizgradtage"
     note: "Gradtage nach VDI 3807 (20/15 °C), ungewichtetes Mittel aller DWD-Stationen; in % des Mittels desselben Kalendermonats 2015 bis 2019."
+
+  - id: de_hdd
+    block: wetter
+    source: static
+    key: dwd_hdd_raw
+    params: {source_name: "Deutscher Wetterdienst (CDC)"}
+    license: "DWD: Nutzung nach GeoNutzV mit Quellenangabe"
+    title: "Heizgradtage"
+    unit: "Gradtage (K·d)"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    stale_after_months: 3
+    style: bar
+    chart: hdd
+    label: "Heizgradtage"
+    note: "Gradtage nach VDI 3807 (20/15 °C), ungewichtetes Mittel aller DWD-Stationen, Summe je Monat in Kelvin mal Tagen."
 
   - id: rhine_kaub
     block: wetter

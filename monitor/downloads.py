@@ -51,7 +51,7 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
     thin (nur dünn zu zeichnende Spalten), emphasis, dashed.
     """
     typ = c.get("type", "line")
-    if typ in ("line", "threshold", "stacked") and c.get("series"):
+    if typ in ("line", "threshold", "stacked", "dumbbell") and c.get("series"):
         cols, thin, bars, lines = {}, [], [], []
         for s in c["series"]:
             x = pd.to_datetime(s["x"])
@@ -71,6 +71,10 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
                 df[name] = c[key]
                 lines.append(name)
                 dashed.append(name)
+        for r in c.get("refs") or []:  # Referenzwerte mit eigener Beschriftung, etwa Maastricht-Grenzen
+            df[r["label"]] = r["y"]
+            lines.append(r["label"])
+            dashed.append(r["label"])
         df.index.name = "Datum"
         emph = next((s["label"] for s in c["series"] if s["id"] == c.get("emphasis")), None)
         kind = "stacked" if bars and typ == "stacked" else ("columns" if bars and not lines else "line")

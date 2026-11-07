@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from datetime import datetime, timezone
 from importlib import resources
@@ -629,9 +630,10 @@ def chart_sentences(c: dict) -> list[str]:
             if c.get("base"):  # Veränderung seit einem Stichtag, etwa Erwerbstätige je Bereich
                 base = _per(c["base"], freq)
                 bs = sorted(b, key=lambda x: x["value"])
-                out = [f"Vom {base} bis zum {_per(bs[-1]['period'], freq)} stieg die Zahl der Erwerbstätigen im Bereich „{bs[-1]['label']}“ am stärksten: um {num(bs[-1]['value'], d)} {u}."]
+                pc = lambda x: f" ({num(x['pct'], 1, True)} %)" if x.get("pct") is not None else ""
+                out = [f"Vom {base} bis zum {_per(bs[-1]['period'], freq)} stieg die Zahl der Erwerbstätigen im Bereich „{bs[-1]['label']}“ am stärksten: um {num(bs[-1]['value'], d)} {u}{pc(bs[-1])}."]
                 if bs[0]["value"] < 0:
-                    out.append(f"Vom {base} bis zum {_per(bs[0]['period'], freq)} sank die Zahl der Erwerbstätigen im Bereich „{bs[0]['label']}“ am stärksten: um {num(abs(bs[0]['value']), d)} {u}.")
+                    out.append(f"Vom {base} bis zum {_per(bs[0]['period'], freq)} sank die Zahl der Erwerbstätigen im Bereich „{bs[0]['label']}“ am stärksten: um {num(abs(bs[0]['value']), d)} {u}{pc(bs[0])}.")
                 return out
             when = _when(b[0]["period"], freq)
             out = []
@@ -693,8 +695,21 @@ def chart_sentences(c: dict) -> list[str]:
                     sl = _subject(None, lo["label"]) or {"subj": f"„{lo['label']}“", "pl": False}
                     out.append(f"{when} {'dämpften' if sl['pl'] else 'dämpfte'} {sl['subj']} am stärksten: {num(at(lo), d, True)} Pp.")
             return out
+        norm = next((s for s in series if s.get("style") == "norm"), None)
+        series = [s for s in series if s.get("style") != "norm"]
         if c.get("emphasis"):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
+        if c.get("combine") and unit.startswith("Index"):  # gleich gebaute Reihen, etwa Branchen: ein Satz mit allen Werten
+            last = max(s["x"][-1] for s in series)
+            parts = []
+            for s in series:
+                if s["x"][-1] == last and len(s["y"]) > 12 and s["y"][-13]:
+                    parts.append((re.sub(r"^\d+\s+", "", s.get("label", "")), (s["y"][-1] / s["y"][-13] - 1) * 100))
+            if parts:
+                below = sum(1 for _, p in parts if round(p, 1) < 0)
+                n = ZAHLWORT.get(len(parts), len(parts))
+                return [f"{_when(last, freq)} lag die Produktion in {ZAHLWORT.get(below, below) if below else 'keiner'} von {n} {c['combine']} unter dem Stand des {yoy_word}s: "
+                        + "; ".join(f"{lab} {num(p, 1, True)} %" for lab, p in parts) + "."]
         series = series[:6]
         last = max(s["x"][-1] for s in series)
         if c.get("forecast_after_bars"):  # Prognosejahre nicht als Ist-Werte berichten
@@ -724,7 +739,7 @@ def chart_sentences(c: dict) -> list[str]:
             no_cmp = c.get("no_yoy") or yago is None
             if sp and sp.get("tpl"):  # ganzer Satz als Vorlage
                 chg = num((v / yago - 1) * 100, 1, True) + " %" if yago else ""
-                out.append(sp["tpl"].format(when=when, v=vv, n=num(v, d), abs=num(abs(v), d), ueber="über" if v >= 0 else "unter",
+                out.append(sp["tpl"].format(when=when, v=vv, n=num(v, d), abs=num(abs(v), d), ueber="über" if v >= 0 else "unter", zu_ab="zu" if v >= 0 else "ab",
                                             waermer="wärmer" if v >= 0 else "kälter", hoeher="höher" if v >= 0 else "niedriger", oben_unten="oben" if v >= 0 else "unten", chg=chg).replace(" ( ggü. Vorjahr)", ""))
                 continue
             if not sp:  # Rückfall: neutrale Formulierung mit Beschriftung
@@ -763,6 +778,10 @@ def chart_sentences(c: dict) -> list[str]:
                     pc = (v / yago - 1) * 100
                     sent += ", so viel wie ein Jahr zuvor" if round(pc, 1) == 0 else f", {num(abs(pc), 1)} % {'mehr' if pc > 0 else 'weniger'} als ein Jahr zuvor"
             out.append(sent + ".")
+        if norm and out and norm["x"][-1] == last and series and series[0]["y"][-1] is not None and norm["y"][-1]:
+            v, m = series[0]["y"][-1], norm["y"][-1]
+            a0, a1 = c.get("norm") or ("", "")
+            out.append(f"Das sind {num(v / m * 100, 0)} % des Mittels desselben Monats {a0} bis {a1} ({num(m, d)}).")
         return out
     except (KeyError, IndexError, ValueError, TypeError, ZeroDivisionError):
         return []
@@ -1062,7 +1081,8 @@ def build_payload(root: Path = ROOT) -> dict:
                     b = x[x.index <= base]
                     if b.empty:
                         continue
-                    bars.append({"label": s.label, "value": round(float(x.iloc[-1] - b.iloc[-1]), 1), "prev": None, "period": x.index[-1].strftime("%Y-%m-%d")})
+                    bars.append({"label": s.label, "value": round(float(x.iloc[-1] - b.iloc[-1]), 1), "prev": None, "period": x.index[-1].strftime("%Y-%m-%d"),
+                                 "pct": round(float((x.iloc[-1] / b.iloc[-1] - 1) * 100), 1) if b.iloc[-1] else None})
                 if not bars:
                     continue
                 bars.sort(key=lambda r: r["value"], reverse=True)
@@ -1108,7 +1128,13 @@ def build_payload(root: Path = ROOT) -> dict:
                 for s in specs:
                     if s.id not in data:
                         continue
-                    xy = _xy(data[s.id] * float(c.get("scale", 1)), c.get("years"))
+                    ser = data[s.id]
+                    if c.get("fx") and c["fx"] in data:  # US-Dollar je MMBtu in Euro je MWh: durch US-Dollar je Euro (Monatsmittel) und 0,293071 MWh je MMBtu
+                        fx = data[c["fx"]].dropna()
+                        fx = fx.groupby(fx.index.to_period("M")).mean()
+                        fx.index = fx.index.to_timestamp()
+                        ser = (ser / fx.reindex(ser.index) / 0.293071).dropna()
+                    xy = _xy(ser * float(c.get("scale", 1)), c.get("years"))
                     series.append(dict(id=s.id, label=s.label or s.title, unit=c.get("unit", s.unit), freq="B" if c.get("daily") else s.frequency,
                                        style=getattr(s, "style", None) or "line", **xy))
                 if c.get("total") and c["total"] in data:
@@ -1117,6 +1143,13 @@ def build_payload(root: Path = ROOT) -> dict:
                                        **_xy(data[s.id], c.get("years"))))
                 if not series:
                     continue
+                if c.get("norm"):  # Mittel desselben Kalendermonats als Vergleichsmarke, etwa 2015 bis 2019
+                    a0, a1 = c["norm"]
+                    s0 = data[series[0]["id"]].dropna()
+                    w = s0[(s0.index.year >= a0) & (s0.index.year <= a1)]
+                    m = w.groupby(w.index.month).mean()
+                    series.append(dict(series[0], id="norm_" + series[0]["id"], label=f"Mittel {a0}–{a1}", style="norm",
+                                       y=[round(float(m[int(x[5:7])]), 1) for x in series[0]["x"]]))
                 if typ == "stacked":  # Vorzeichenlogik der Importe sichtbar machen
                     series = [dict(s, label="Importe (negativ gerechnet)") if s["label"] == "Importe" else s for s in series]
                 if c.get("groups"):  # Beiträge zu Gruppen bündeln, etwa Außenhandel = Exporte + (negative) Importe
@@ -1139,7 +1172,7 @@ def build_payload(root: Path = ROOT) -> dict:
                 entry["unit"] = series[0]["unit"]
                 entry["freq"] = series[0]["freq"]
                 entry["adjustment"] = (meta.get(series[0]["id"]) or specs[0]).adjustment
-                specs_used = [meta[x["id"]] for x in series if x["id"] in meta] or specs
+                specs_used = ([meta[x["id"]] for x in series if x["id"] in meta] or specs) + ([meta[c["fx"]]] if c.get("fx") in meta else [])
                 entry["sources"] = sorted({_source_name(s) for s in specs_used})
                 entry["licenses"] = sorted({lic for s in specs_used if (lic := _license(s))})
                 if typ == "latest":

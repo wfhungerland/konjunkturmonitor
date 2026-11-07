@@ -1,6 +1,6 @@
 # Satzbausteine für die automatischen Sätze: grammatischer Satzgegenstand je Reihe.
 # series: Reihen-ID -> [Satzgegenstand mit Artikel im Nominativ, s (Einzahl) oder p (Mehrzahl)]
-#         oder {tpl: "..."} für einen ganzen Satz. Platzhalter: {when} (Im Oktober 2026), {v} (Wert mit Einheit),
+#         oder {tpl: "..."} für einen ganzen Satz. Platzhalter: {when} (Im Oktober 2026), {v} (Wert mit Einheit), {zu_ab} (zu/ab),
 #         {abs} (Betrag ohne Vorzeichen), {ueber} (über/unter), {hoeher} (höher/niedriger).
 # charts: Abbildung -> Muster mit {label} für Reihen, die gleich gebaut sind (etwa Länder).
 # labels: Beschriftung -> Satzgegenstand, für Beitragsbalken und Balken der jüngsten Veränderung.
@@ -138,6 +138,7 @@ series:
   fx_eer41: [der effektive Wechselkurs des Euro gegenüber 41 Handelspartnern, s]
   fx_eer18: [der effektive Wechselkurs des Euro gegenüber 18 Handelspartnern, s]
   w_brent: [der Preis für Rohöl der Sorte Brent, s]
+  de_hdd: {tpl: "{when} lag der Heizbedarf bei {n} Gradtagen."}
   de_hdd_pct: {tpl: "{when} lag der Heizbedarf (Heizgradtage) bei {n} % des Mittels desselben Monats 2015 bis 2019."}
   w_gas_eu: [der Großhandelspreis für Erdgas in Europa (TTF), s]
   de_gdp_a: [das reale BIP, s]
@@ -145,9 +146,9 @@ series:
   de_lp_hour: [die Arbeitsproduktivität je Stunde, s]
   de_lp_person: [die Arbeitsproduktivität je Erwerbstätigen, s]
   de_migration: [die Nettozuwanderung, s]
-  de_netmig_de: [die Nettozuwanderung von Deutschen, s]
-  de_netmig_eu: [die Nettozuwanderung von EU-Ausländern, s]
-  de_netmig_neu: [die Nettozuwanderung von Nicht-EU-Ausländern, s]
+  de_netmig_de: {tpl: "{when} wanderten netto {abs} Tsd. Deutsche {zu_ab}."}
+  de_netmig_eu: {tpl: "{when} wanderten netto {abs} Tsd. Menschen aus anderen EU-Staaten {zu_ab}."}
+  de_netmig_neu: {tpl: "{when} wanderten netto {abs} Tsd. Menschen aus Staaten außerhalb der EU {zu_ab}."}
   inv_ratio_de: [die Investitionsquote in Deutschland, s]
   inv_ratio_eu27_2020: [die Investitionsquote in der Europäischen Union, s]
   de_gov_b9: [der Finanzierungssaldo des Staates, s]
