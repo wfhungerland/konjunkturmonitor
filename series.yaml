@@ -180,7 +180,7 @@ charts:
   hh_income: {title: "Real verfügbares Einkommen je Einwohner", decimals: 1}
   wages: {title: "Nominal- und Reallöhne", decimals: 1}
   ulc: {title: "Lohnstückkosten", decimals: 1}
-  gdp_rev: {title: "BIP-Wachstum: erste Meldung und heutiger Stand", decimals: 1}
+  gdp_rev: {title: "Korrektur des BIP-Wachstums seit der ersten Meldung", decimals: 1}
   alq_land: {title: "Arbeitslosenquote nach Ländern", decimals: 1}
   tarif: {title: "Tarifverdienste und Verbraucherpreise", decimals: 1}
   spf: {title: "Langfristige Inflationserwartung der Fachleute", decimals: 2}
@@ -1570,9 +1570,25 @@ series:
     adjustment: nicht bereinigt
     start: "2010-01-01"
     stale_after_months: 3
-    chart: hdd
     label: "Heizgradtage"
     note: "Gradtage nach VDI 3807 (20/15 °C), ungewichtetes Mittel aller DWD-Stationen; in % des Mittels desselben Kalendermonats 2015 bis 2019."
+
+  - id: de_hdd
+    block: wetter
+    source: static
+    key: dwd_hdd_raw
+    params: {source_name: "Deutscher Wetterdienst (CDC)"}
+    license: "DWD: Nutzung nach GeoNutzV mit Quellenangabe"
+    title: "Heizgradtage"
+    unit: "Gradtage (K·d)"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    stale_after_months: 3
+    style: bar
+    chart: hdd
+    label: "Heizgradtage"
+    note: "Gradtage nach VDI 3807 (20/15 °C), ungewichtetes Mittel aller DWD-Stationen, Summe je Monat in Kelvin mal Tagen."
 
   - id: rhine_kaub
     block: wetter
@@ -2368,7 +2384,7 @@ series:
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     start: "2015-01-01"
     chart: services
-    label: "Dienstleister insgesamt"
+    label: "Erfasste Dienstleister"
 
   - id: de_services_m
     block: dienstleistungen
@@ -2754,7 +2770,7 @@ series:
     block: einkommen
     source: genesis
     key: 62231-0001
-    params: {value_variable: VST073, filters: {WZ08C7: WZ08-B-08}}
+    params: {value_variable: VST073, filters: {WZ08C7: WZ08-B-08}, query: {contents: VST073, classifyingvariable1: WZ08C7, classifyingkey1: WZ08-B-08}}
     title: "Index der tariflichen Monatsverdienste mit Sonderzahlungen, Gesamtwirtschaft"
     unit: "Index 2020=100"
     frequency: M

@@ -1,6 +1,6 @@
 # Satzbausteine für die automatischen Sätze: grammatischer Satzgegenstand je Reihe.
 # series: Reihen-ID -> [Satzgegenstand mit Artikel im Nominativ, s (Einzahl) oder p (Mehrzahl)]
-#         oder {tpl: "..."} für einen ganzen Satz. Platzhalter: {when} (Im Oktober 2026), {v} (Wert mit Einheit),
+#         oder {tpl: "..."} für einen ganzen Satz. Platzhalter: {when} (Im Oktober 2026), {v} (Wert mit Einheit), {zu_ab} (zu/ab),
 #         {abs} (Betrag ohne Vorzeichen), {ueber} (über/unter), {hoeher} (höher/niedriger).
 # charts: Abbildung -> Muster mit {label} für Reihen, die gleich gebaut sind (etwa Länder).
 # labels: Beschriftung -> Satzgegenstand, für Beitragsbalken und Balken der jüngsten Veränderung.
@@ -8,9 +8,9 @@
 # Quoten und Salden „lag bei …, … Pp höher als ein Jahr zuvor“, Mengen „lag bei …, … mehr als ein Jahr zuvor“.
 
 series:
-  gdp_rt_first: [das zuerst gemeldete BIP-Wachstum, s]
-  gdp_rt_latest: [das BIP-Wachstum im heutigen Datenstand, s]
-  gdp_rt_rev: {tpl: "{when} wurde das BIP-Wachstum seit der ersten Meldung um {abs} Pp nach {oben_unten} korrigiert."}
+  gdp_rt_first: {tpl: "{when} lag das zuerst gemeldete BIP-Wachstum bei {v} ggü. dem Vorquartal."}
+  gdp_rt_latest: {tpl: "{when} liegt das BIP-Wachstum im heutigen Datenstand bei {v} ggü. dem Vorquartal."}
+  gdp_rt_rev: {tpl: "{when} wurde das BIP-Wachstum seit der ersten Meldung um {abs} Pp nach {oben_unten} korrigiert.", tpl0: "{when} ist das BIP-Wachstum seit der ersten Meldung unverändert."}
   de_tarif_yoy: [die Tarifverdienste, p]
   ea_spf_lt: [die langfristige Inflationserwartung der Fachleute im Euroraum, s]
   de_gas_storage: [der Füllstand der Gasspeicher, s]
@@ -25,7 +25,7 @@ series:
   ez_gdp_ea20: [die Wirtschaftsleistung im Euroraum, s]
   ez_hicp_ea: [die Verbraucherpreise (HVPI) im Euroraum, p]
   ez_unemp_ea20: [die Erwerbslosenquote im Euroraum, s]
-  de_wai: [der Wöchentliche Aktivitätsindex der Bundesbank, s]
+  de_wai: [der wöchentliche Aktivitätsindex der Bundesbank, s]
   de_maut: [die Fahrleistung der Lkw auf Autobahnen, s]
   de_gdp_index: [die Wirtschaftsleistung (reales BIP), s]
   de_cpi_yoy: [die Verbraucherpreise insgesamt, p]
@@ -73,10 +73,10 @@ series:
   de_prod_vorl: [die Produktion von Vorleistungsgütern, s]
   de_prod_inve: [die Produktion von Investitionsgütern, s]
   de_prod_kons: [die Produktion von Konsumgütern, s]
-  de_sales: [der Umsatz der Industrie, s]
-  de_sales_dom: [der Inlandsumsatz der Industrie, s]
-  de_sales_for: [der Auslandsumsatz der Industrie, s]
-  de_sales_inv: [der Umsatz mit Investitionsgütern, s]
+  de_sales: [der nominale Umsatz der Industrie, s]
+  de_sales_dom: [der nominale Inlandsumsatz der Industrie, s]
+  de_sales_for: [der nominale Auslandsumsatz der Industrie, s]
+  de_sales_inv: [der nominale Umsatz mit Investitionsgütern, s]
   de_bau_orders_total: [der Auftragseingang im Bauhauptgewerbe, s]
   de_bau_orders_wohn: [der Auftragseingang im Wohnungsbau, s]
   de_bau_orders_hoch: [der Auftragseingang im Hochbau ohne Wohnungsbau, s]
@@ -85,7 +85,7 @@ series:
   de_rain_pct: {tpl: "{when} fielen in Deutschland {n} % der üblichen Niederschlagsmenge (Mittel desselben Monats 1991 bis 2020)."}
   de_bau_prod: [die Produktion im Baugewerbe, s]
   de_bau_prod_main: [die Produktion im Hoch- und Tiefbau, s]
-  de_bau_prod_ausbau: [die Produktion im Ausbaugewerbe, s]
+  de_bau_prod_ausbau: [die Produktion in Ausbau und Installation, s]
   de_services_prod: [die Produktion der erfassten Dienstleister, s]
   de_services_m: [die Produktion der freiberuflichen und technischen Dienstleister, s]
   de_services_n: [die Produktion der sonstigen Unternehmensdienstleister, s]
@@ -101,15 +101,15 @@ series:
   de_hh_income: [das reale verfügbare Einkommen je Einwohner, s]
   de_saving: [die Sparquote der privaten Haushalte, s]
   de_profit_share: [die Gewinnquote der nichtfinanziellen Unternehmen, s]
-  de_exports: [der Wert der Warenexporte, s]
-  de_imports: [der Wert der Warenimporte, s]
+  de_exports: [der nominale Wert der Warenexporte, s]
+  de_imports: [der nominale Wert der Warenimporte, s]
   de_trade_bal: [der Saldo im Warenhandel, s]
-  de_exports_eu: [der Wert der Warenexporte in die EU, s]
+  de_exports_eu: [der nominale Wert der Warenexporte in die EU, s]
   de_exports_us: [der Wert der Warenexporte in die USA, s]
   de_exports_asia: [der Wert der Warenexporte nach Asien, s]
   de_export_prices_yoy: [die Ausfuhrpreise, p]
   de_tot_yoy: [die Terms of Trade, p]
-  de_ca: [der Saldo der Leistungsbilanz, s]
+  de_ca: [der Saldo der Leistungsbilanz der letzten zwölf Monate, s]
   de_gdp_yoy_world: [die Wirtschaftsleistung in Deutschland, s]
   ea_gdp_yoy: [die Wirtschaftsleistung im Euroraum, s]
   us_gdp_yoy: [die Wirtschaftsleistung in den USA, s]
@@ -138,6 +138,7 @@ series:
   fx_eer41: [der effektive Wechselkurs des Euro gegenüber 41 Handelspartnern, s]
   fx_eer18: [der effektive Wechselkurs des Euro gegenüber 18 Handelspartnern, s]
   w_brent: [der Preis für Rohöl der Sorte Brent, s]
+  de_hdd: {tpl: "{when} lag der Heizbedarf bei {n} Gradtagen."}
   de_hdd_pct: {tpl: "{when} lag der Heizbedarf (Heizgradtage) bei {n} % des Mittels desselben Monats 2015 bis 2019."}
   w_gas_eu: [der Großhandelspreis für Erdgas in Europa (TTF), s]
   de_gdp_a: [das reale BIP, s]
@@ -145,9 +146,9 @@ series:
   de_lp_hour: [die Arbeitsproduktivität je Stunde, s]
   de_lp_person: [die Arbeitsproduktivität je Erwerbstätigen, s]
   de_migration: [die Nettozuwanderung, s]
-  de_netmig_de: [die Nettozuwanderung von Deutschen, s]
-  de_netmig_eu: [die Nettozuwanderung von EU-Ausländern, s]
-  de_netmig_neu: [die Nettozuwanderung von Nicht-EU-Ausländern, s]
+  de_netmig_de: {tpl: "{when} wanderten netto {abs} Tsd. Deutsche {zu_ab}."}
+  de_netmig_eu: {tpl: "{when} wanderten netto {abs} Tsd. Menschen aus anderen EU-Staaten {zu_ab}."}
+  de_netmig_neu: {tpl: "{when} wanderten netto {abs} Tsd. Menschen aus Staaten außerhalb der EU {zu_ab}."}
   inv_ratio_de: [die Investitionsquote in Deutschland, s]
   inv_ratio_eu27_2020: [die Investitionsquote in der Europäischen Union, s]
   de_gov_b9: [der Finanzierungssaldo des Staates, s]
@@ -156,7 +157,7 @@ series:
   de_gov_debt: [der Schuldenstand des Staates, s]
   de_insolv: [die Zahl der beantragten Unternehmensinsolvenzen, s]
   de_insolv_emp: [die Zahl der von Insolvenzen betroffenen Beschäftigten, s]
-  de_insolv_claims: [die voraussichtlichen Forderungen der Gläubiger, p]
+  de_insolv_claims: [die voraussichtlichen Forderungen der Gläubiger (nominal), p]
 
 charts:
   ulc: ["die Lohnstückkosten in {label}", p]

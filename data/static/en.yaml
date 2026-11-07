@@ -58,9 +58,9 @@ topics:
 
 charts:
   gdp_rev:
-    title: "GDP growth: first release and current vintage"
+    title: "Revision of GDP growth since the first release"
     ask: "How much is GDP growth revised after the first release?"
-    caption: "Real GDP growth on the previous quarter as first published by the Federal Statistical Office and as it stands in the latest vintage; bars: revision since then in percentage points (positive: revised up). Based on the stored vintages of the Bundesbank's real-time database since 2005. The first release of a quarter rests on incomplete information; later vintages and benchmark revisions often change it by several tenths."
+    caption: "Bars: revision of real GDP growth on the previous quarter between the Federal Statistical Office's first release and the latest vintage, in percentage points (positive: revised up). Grey band: mean absolute revision over the period shown. The tooltip shows the first release and the current figure; both are also in the download. Based on the stored vintages of the Bundesbank's real-time database since 2005. The first release of a quarter rests on incomplete information; later vintages and benchmark revisions often change it by several tenths."
   alq_land:
     title: "Unemployment rate by state"
     ask: "In which states is unemployment high, where is it rising?"
@@ -85,7 +85,7 @@ charts:
   energy_intensive:
     title: "Output of energy-intensive industries"
     ask: "How are the energy-intensive industries producing?"
-    caption: "Production index of the five energy-intensive industries (Federal Statistical Office via Bundesbank, seasonally and calendar adjusted, 2021 = 100): paper, coke and refined petroleum, chemicals, glass and ceramics, and basic metals. They use most of the energy consumed by industry and react strongly to gas and electricity prices. Thin: monthly values; thick: three-month moving average."
+    caption: "Production index of the five energy-intensive industries (Federal Statistical Office via Bundesbank, seasonally and calendar adjusted, 2021 = 100): paper, coke and refined petroleum, chemicals, glass and ceramics, and basic metals. They use most of the energy consumed by industry and react strongly to gas and electricity prices. Each panel highlights one industry in dark blue, with the others in grey behind it; all panels share the same scale. Thin: monthly values; thick: three-month moving average."
   gdp_contrib:
     title: "Where growth comes from"
     ask: "Which components of demand are driving growth?"
@@ -373,7 +373,7 @@ charts:
   oil:
     title: "Oil price"
     ask: "How expensive is crude oil?"
-    caption: "Price per barrel (159 litres) of North Sea Brent crude oil, monthly average."
+    caption: "Price per barrel (159 litres) of North Sea Brent crude oil, monthly average, quoted in US dollars as is customary internationally."
   power:
     title: "Electricity: consumption and wholesale price"
     ask: "How much electricity is being used, and what does it cost on the wholesale market?"
@@ -385,19 +385,19 @@ charts:
   hdd:
     title: "Heating degree days"
     ask: "How much heating is needed?"
-    caption: "Heating degree days measure heating demand: the colder a day below 15 °C, the more degree days (VDI 3807, room temperature 20 °C). Shown here in % of the 2015 to 2019 average for the same month; above 100 means colder and more heating demand than usual. A cold winter raises consumption of gas and heating oil and energy generation, a mild one lowers them. Unweighted average of all stations of the German Weather Service (DWD), as the DWD does not publish a figure for Germany as a whole."
+    caption: "Heating degree days measure heating demand: the colder a day below 15 °C, the more degree days (VDI 3807, room temperature 20 °C), here per month in kelvin times days. Bars: monthly values; black marks: average for the same month 2015 to 2019. A bar reaching above the mark means the month was colder than usual. Summer months carry little weight, as little heating is needed then. A cold winter raises consumption of gas and heating oil and energy generation, a mild one lowers them. Unweighted average of all stations of the German Weather Service (DWD), as the DWD does not publish a figure for Germany as a whole."
   gas:
     title: "Natural gas price in Europe"
     ask: "How expensive is natural gas?"
-    caption: "Wholesale price of natural gas in Europe (TTF trading hub), monthly average. An MMBtu is a quantity of energy of about 293 kilowatt hours."
+    caption: "Wholesale price of natural gas in Europe (TTF trading hub), monthly average. The IMF reports the price in US dollars per MMBtu; converted into euros per megawatt hour, the unit customary in Europe, using the monthly average of the ECB reference rate (1 MMBtu = 0.293071 MWh)."
   forecast:
     title: "Growth forecasts"
     ask: "What do the forecasts expect for growth?"
-    caption: "Forecasts for real GDP growth on the previous year, by target year. Line: latest projection of the Federal Government, the basis for the budget and the tax revenue estimate. Grey area: range of all latest forecasts, from the lowest to the highest value. Further forecasters can be shown via the legend. Joint Economic Forecast: joint forecast by DIW, ifo, IfW Kiel, IWH and RWI. Some values come from press reports on the publications and are marked in the tooltip."
+    caption: "Forecasts for real GDP growth on the previous year, by target year. One dot per forecaster and target year, each the latest forecast. Dark blue with figure: projection of the Federal Government, the basis for the budget and the tax revenue estimate; grey: other forecasters, light grey if the forecast is more than four months old. Grey field: range from the lowest to the highest value. Forecaster and date in the tooltip. Joint Economic Forecast: joint forecast by DIW, ifo, IfW Kiel, IWH and RWI. Some values come from press reports on the publications and are marked in the tooltip."
   forecast_infl:
     title: "Inflation forecasts"
     ask: "What do the forecasts expect for inflation?"
-    caption: "Forecasts for the inflation rate on the previous year, by target year; usually measured by the consumer price index (CPI). The Bundesbank forecasts the European HICP, which is usually close to the CPI. Line: Federal Government. Grey area: range of all latest forecasts. Further forecasters via the legend. Some values come from press reports and are marked in the tooltip."
+    caption: "Forecasts for the inflation rate on the previous year, by target year; usually measured by the consumer price index (CPI). The Bundesbank forecasts the European HICP, which is usually close to the CPI. One dot per forecaster and target year, each the latest forecast. Dark blue with figure: Federal Government; grey: other forecasters, light grey if more than four months old. Grey field: range of all latest forecasts. Forecaster and date in the tooltip. Some values come from press reports and are marked in the tooltip."
   forecast_core:
     title: "Core inflation forecasts"
     ask: "What do the forecasts expect for core inflation?"
@@ -417,7 +417,7 @@ charts:
   emp_sector:
     title: "Persons in employment by economic sector"
     ask: "In which sectors are jobs being created?"
-    caption: "Change in the number of persons in employment by economic sector since the second quarter of 2022, in thousands. Shows the shift from industry to services."
+    caption: "Change in the number of persons in employment by economic sector since the second quarter of 2022, in thousands; in brackets as a percentage of the 2022 Q2 level. Shows the shift from industry to services."
     unit: "thousand people, change since 2022 Q2"
   migration:
     title: "Net migration"
@@ -432,11 +432,11 @@ charts:
   cit:
     title: "Tax rates on corporate profits"
     ask: "How heavily does Germany tax corporate profits by comparison?"
-    caption: "Combined statutory tax rate on corporations (corporate income tax including surcharges and taxes at sub-central levels, in Germany the local business tax), according to the OECD. Highlighted: Germany; grey: comparison countries."
+    caption: "Combined statutory tax rate on corporations (corporate income tax including surcharges and taxes at sub-central levels, in Germany the local business tax), according to the OECD. Hollow dot: rate in the first year of the series; filled dot with figure: latest rate; years in the legend. Ordered by the latest rate, Germany highlighted."
   gov_balance:
     title: "General government balance"
     ask: "How large is the government deficit?"
-    caption: "Revenue minus expenditure of federal, state and local government and social security, as a percentage of GDP, quarterly, seasonally adjusted. Negative values mean a deficit."
+    caption: "Revenue minus expenditure of federal, state and local government and social security, as a percentage of GDP, quarterly, seasonally adjusted. Negative values mean a deficit. Dashed grey: Maastricht Treaty reference value of −3% of GDP; it applies to the deficit of a whole year, not to single quarters."
   gov_spend:
     title: "Government interest expenditure and investment"
     ask: "How much does the government spend on interest and investment?"
@@ -444,7 +444,7 @@ charts:
   gov_debt:
     title: "Government debt"
     ask: "How high is government debt?"
-    caption: "General government gross debt as defined in the Maastricht Treaty, as a percentage of GDP. The EU reference value is 60%."
+    caption: "General government gross debt as defined in the Maastricht Treaty, as a percentage of GDP. Dashed grey: Maastricht Treaty reference value of 60%."
   calendar:
     title: "Release calendar: the next twelve weeks"
     ask: "When are which figures released?"
@@ -575,6 +575,7 @@ series:
   fx_eer18: {title: "Nominal effective exchange rate of the euro against 18 trading partners (ECB, EER-18)", label: "Against 18 trading partners", unit: "Index 1999 Q1 = 100", adjustment: "not adjusted"}
   de_temp_anom: {title: "Air temperature in Germany, deviation from the 1991–2020 average", label: "Temperature", unit: "°C", note: "Area average for Germany from the German Weather Service (DWD); deviation from the average for the same calendar month 1991 to 2020.", adjustment: "not adjusted"}
   de_rain_pct: {title: "Precipitation in Germany in % of the 1991–2020 average", label: "Precipitation", unit: "% of 1991–2020 average", note: "Area average for Germany from the German Weather Service (DWD); in % of the average for the same calendar month 1991 to 2020.", adjustment: "not adjusted"}
+  de_hdd: {title: "Heating degree days", label: "Heating degree days", unit: "degree days (K·d)", note: "Degree days according to VDI 3807 (20/15 °C), unweighted average of all DWD stations, monthly sum in kelvin times days.", adjustment: "not adjusted"}
   de_hdd_pct: {title: "Heating degree days in % of the 2015–2019 average", label: "Heating degree days", unit: "% of 2015–2019 average", note: "Degree days according to VDI 3807 (20/15 °C), unweighted average of all DWD stations; in % of the average for the same calendar month 2015 to 2019.", adjustment: "not adjusted"}
   rhine_kaub: {title: "Water level at the Kaub gauge (Rhine), daily mean", label: "Kaub gauge", unit: "cm", note: "Up to the end of the previous year, verified daily means from the WSV (Federal Institute of Hydrology, BfG; R package hyd1d); thereafter daily means of the 15-minute values from PEGELONLINE.", adjustment: "not adjusted"}
   rhine_lowdays: {title: "Days with a water level below 78 cm at the Kaub gauge", label: "Low-water days", unit: "days", note: "Days per month with a daily mean below 78 cm.", adjustment: "not adjusted"}
@@ -687,6 +688,8 @@ strings:
   "% des BIP": "% of GDP"
   "% des Mittels 1991–2020": "% of 1991–2020 average"
   "% des Mittels 2015–2019": "% of 2015–2019 average"
+  "€ je MWh": "€ per MWh"
+  "Gradtage (K·d)": "degree days (K·d)"
   "% des verfügbaren Einkommens": "% of disposable income"
   "% ggü. Vorjahr": "% on previous year"
   "% ggü. Vorjahresmonat": "% on a year earlier"
@@ -823,6 +826,9 @@ names:
     "16": "Thuringia"
 # Feste Beschriftungen und Kalendertermine (deutsch: englisch), für Grafiken, Kalender und Gruppen
 labels:
+  "Mittel 2015–2019": "2015–2019 average"
+  "Referenzwert −3 %": "Reference value −3%"
+  "Referenzwert 60 %": "Reference value 60%"
   "Konsum": "Consumption"
   "Investitionen": "Investment"
   "Außenhandel": "Net trade"
