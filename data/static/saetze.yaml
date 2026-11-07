@@ -138,6 +138,13 @@ series:
   fx_eer41: [der effektive Wechselkurs des Euro gegenüber 41 Handelspartnern, s]
   fx_eer18: [der effektive Wechselkurs des Euro gegenüber 18 Handelspartnern, s]
   w_brent: [der Preis für Rohöl der Sorte Brent, s]
+  hist_rr_deu: [der Realzins, s]
+  hist_debt_deu: [der Schuldenstand des Staates, s]
+  hist_rgdppc_deu: {tpl: "{when} lag das durchschnittliche jährliche Wachstum des realen BIP je Einwohner in den zehn Jahren davor bei {v}."}
+  hist_inv_deu: [die Investitionsquote, s]
+  hist_exports_deu: [die Exportquote, s]
+  hist_ca_deu: [der Leistungsbilanzsaldo, s]
+  hist_rhpi_deu: [der Index der realen Hauspreise, s]
   de_hdd: {tpl: "{when} lag der Heizbedarf bei {n} Gradtagen."}
   de_hdd_pct: {tpl: "{when} lag der Heizbedarf (Heizgradtage) bei {n} % des Mittels desselben Monats 2015 bis 2019."}
   w_gas_eu: [der Großhandelspreis für Erdgas in Europa (TTF), s]

@@ -193,6 +193,13 @@ charts:
   gov_debt: {title: "Schuldenstand des Staates", decimals: 1}
   migration_groups: {title: "Nettozuwanderung nach Staatsangehörigkeit", decimals: 0}
 
+  long_rr: {title: "Realzins seit 1870", decimals: 1}
+  long_debt: {title: "Schuldenstand des Staates seit 1871", decimals: 0}
+  long_growth: {title: "Wachstum je Einwohner seit 1870, Zehnjahresdurchschnitt", decimals: 1}
+  long_inv: {title: "Investitionsquote seit 1870", decimals: 1}
+  long_open: {title: "Exportquote und Leistungsbilanz seit 1871", decimals: 1}
+  long_hpi: {title: "Reale Hauspreise seit 1870", decimals: 0}
+  infl_hist: {title: "Inflationsschübe seit 1945 im Vergleich, Jahreswerte", decimals: 1}
 series:
   # --- Wachstum ------------------------------------------------------------
   - id: de_gdp_qoq
@@ -2865,3 +2872,147 @@ series:
     adjustment: nicht bereinigt
     start: "1850-01-01"
     note: "Global Macro Database, Variable unemp; Abgrenzung und Quelle wechseln über die Zeit."
+
+  - id: hist_infl_deu
+    block: struktur
+    source: gmd
+    key: infl
+    params: {country: DEU, max_year: 2024, source_name: "Global Macro Database (Müller, Xu, Lehbib und Chen 2025)"}
+    license: "CC BY-NC-SA 4.0 (Global Macro Database)"
+    title: "Inflationsrate Deutschland, lange Reihe"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1850-01-01"
+    label: "Inflationsrate"
+    note: "Global Macro Database, Variable infl, Deutschland in den jeweiligen Grenzen."
+
+  - id: hist_ltrate_deu
+    block: struktur
+    source: gmd
+    key: ltrate
+    params: {country: DEU, max_year: 2024, source_name: "Global Macro Database (Müller, Xu, Lehbib und Chen 2025)"}
+    license: "CC BY-NC-SA 4.0 (Global Macro Database)"
+    title: "Langfristiger Zins Deutschland, lange Reihe"
+    unit: "%"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1850-01-01"
+    label: "Langfristiger Zins"
+    note: "Global Macro Database, Variable ltrate, Deutschland in den jeweiligen Grenzen."
+
+  - id: hist_debt_deu
+    block: struktur
+    source: gmd
+    key: gen_govdebt_GDP
+    params: {country: DEU, max_year: 2024, source_name: "Global Macro Database (Müller, Xu, Lehbib und Chen 2025)"}
+    license: "CC BY-NC-SA 4.0 (Global Macro Database)"
+    title: "Schuldenstand des Staates Deutschland, lange Reihe"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1850-01-01"
+    chart: long_debt
+    label: "Schuldenstand"
+    note: "Global Macro Database, Variable gen_govdebt_GDP, Deutschland in den jeweiligen Grenzen."
+
+  - id: hist_rgdppc_deu
+    block: struktur
+    source: gmd
+    key: rGDP_pc
+    params: {country: DEU, max_year: 2024, source_name: "Global Macro Database (Müller, Xu, Lehbib und Chen 2025)"}
+    license: "CC BY-NC-SA 4.0 (Global Macro Database)"
+    title: "Reales BIP je Einwohner Deutschland, lange Reihe"
+    unit: "% p. a."
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1850-01-01"
+    chart: long_growth
+    label: "Wachstum je Einwohner, Zehnjahresdurchschnitt"
+    note: "Global Macro Database, Variable rGDP_pc, Deutschland in den jeweiligen Grenzen."
+
+  - id: hist_inv_deu
+    block: struktur
+    source: gmd
+    key: inv_GDP
+    params: {country: DEU, max_year: 2024, source_name: "Global Macro Database (Müller, Xu, Lehbib und Chen 2025)"}
+    license: "CC BY-NC-SA 4.0 (Global Macro Database)"
+    title: "Investitionsquote Deutschland, lange Reihe"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: nominal
+    start: "1850-01-01"
+    chart: long_inv
+    label: "Investitionsquote"
+    note: "Global Macro Database, Variable inv_GDP, Deutschland in den jeweiligen Grenzen."
+
+  - id: hist_exports_deu
+    block: struktur
+    source: gmd
+    key: exports_GDP
+    params: {country: DEU, max_year: 2024, source_name: "Global Macro Database (Müller, Xu, Lehbib und Chen 2025)"}
+    license: "CC BY-NC-SA 4.0 (Global Macro Database)"
+    title: "Exportquote Deutschland, lange Reihe"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: nominal
+    start: "1850-01-01"
+    chart: long_open
+    label: "Exporte"
+    note: "Global Macro Database, Variable exports_GDP, Deutschland in den jeweiligen Grenzen."
+
+  - id: hist_ca_deu
+    block: struktur
+    source: gmd
+    key: CA_GDP
+    params: {country: DEU, max_year: 2024, source_name: "Global Macro Database (Müller, Xu, Lehbib und Chen 2025)"}
+    license: "CC BY-NC-SA 4.0 (Global Macro Database)"
+    title: "Leistungsbilanzsaldo Deutschland, lange Reihe"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: nominal
+    start: "1850-01-01"
+    chart: long_open
+    label: "Leistungsbilanzsaldo"
+    note: "Global Macro Database, Variable CA_GDP, Deutschland in den jeweiligen Grenzen."
+
+  - id: hist_rhpi_deu
+    block: struktur
+    source: gmd
+    key: rHPI
+    params: {country: DEU, max_year: 2024, source_name: "Global Macro Database (Müller, Xu, Lehbib und Chen 2025)"}
+    license: "CC BY-NC-SA 4.0 (Global Macro Database)"
+    title: "Reale Hauspreise Deutschland, lange Reihe"
+    unit: "Index"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1850-01-01"
+    chart: long_hpi
+    label: "Reale Hauspreise"
+    note: "Global Macro Database, Variable rHPI, Deutschland in den jeweiligen Grenzen."
+
+  - id: hist_bank_deu
+    block: struktur
+    source: gmd
+    key: BankingCrisis
+    params: {country: DEU, max_year: 2024, source_name: "Global Macro Database (Müller, Xu, Lehbib und Chen 2025)"}
+    license: "CC BY-NC-SA 4.0 (Global Macro Database)"
+    title: "Bankenkrisen Deutschland (1 = Krisenjahr)"
+    unit: "Krisenjahr"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1850-01-01"
+    label: "Bankenkrise"
+    note: "Global Macro Database, Variable BankingCrisis, Deutschland in den jeweiligen Grenzen."
+
+  - id: hist_rr_deu
+    block: struktur
+    source: derived
+    derive: {from: hist_ltrate_deu, minus: hist_infl_deu, op: diff}
+    title: "Realzins Deutschland, lange Reihe (langfristiger Zins minus Inflationsrate)"
+    unit: "%"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1850-01-01"
+    chart: long_rr
+    label: "Realzins"

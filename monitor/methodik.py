@@ -70,7 +70,9 @@ def chart_series_ids(c: dict, meta: dict, status_ids) -> list[str]:
     if c.get("type") == "tiles":
         ids += sorted(k for k in status_ids if k.startswith(c.get("prefix", "@")) and k not in ids)[:3]
     if c.get("type") == "event":
-        ids += [k for k in ({"downturn": ["de_ip", "de_alq_sa", "de_gdp_index"], "history": ["hist_rgdp_deu", "hist_unemp_deu", "de_gdp_index", "de_ilo"]}
+        from .build import HIST_PANELS
+        hist = [x for p in (c.get("panels") or HIST_PANELS) for x in (p["hist"], p["cur"])]
+        ids += [k for k in ({"downturn": ["de_ip", "de_alq_sa", "de_gdp_index"], "history": hist}
                             .get(c.get("kind"), ["enso_roni", "de_vpi", "de_vpi_food", "de_agri"])) if k not in ids]
     for k in ("x", "y", "total", "fx"):
         if isinstance(c.get(k), str) and c[k] in meta and c[k] not in ids:
@@ -106,6 +108,14 @@ def _steps(c: dict, meta: dict, ids: list[str]) -> list[str]:
     if c.get("fx"):
         f = c.get("fx_factor")
         st.append("Umrechnung von US-Dollar in Euro: Wert ÷ Monatsmittel des EZB-Referenzkurses (US-Dollar je Euro)" + (f" ÷ {str(f).replace('.', ',')} (MWh je MMBtu)" if f else "") + ".")
+    if c.get("transform") == "cagr10":
+        st.append("Durchschnittliches jährliches Wachstum über zehn Jahre: ((Wert ÷ Wert zehn Jahre zuvor) hoch 1/10 − 1) × 100.")
+    if c.get("blank_years"):
+        st.append("Ausgelassene Jahre (Lücke statt Werte): " + ", ".join(f"{a} bis {b}" for a, b in c["blank_years"]) + ".")
+    if c.get("crises"):
+        st.append("Graue Bänder: Jahre mit Bankenkrise nach der Datierung der Global Macro Database.")
+    if c.get("long_mean"):
+        st.append("Vergleichswert im Satz: einfacher Durchschnitt aller gezeigten Jahre.")
     if c.get("ma3"):
         st.append("Gleitender Dreimonatsdurchschnitt (dicke Linie): Mittel aus dem Monat und den beiden Monaten davor. Die dünne Linie zeigt die Monatswerte.")
     if c.get("norm"):
@@ -131,7 +141,9 @@ def _steps(c: dict, meta: dict, ids: list[str]) -> list[str]:
         st.append("Beide Salden als Abstand zu ihrem Mittel 2005 bis 2019. Waagerecht die Beurteilung der Aufträge, senkrecht die Produktionserwartungen der nächsten drei Monate.")
     if c.get("type") == "forecast":
         st.append("Je Herausgeber gilt die jüngste veröffentlichte Prognose. Prognosen, die älter als vier Monate sind, erscheinen heller.")
-    if c.get("type") == "event" and c.get("kind") in ("downturn", "history"):
+    if c.get("type") == "event" and c.get("kind") == "history" and any(p.get("mode") == "level" for p in c.get("panels") or []):
+        st.append("Ausgangsjahr jeder Episode ist das Jahr des Inflationshochs; gezeigt ist die Jahresrate selbst in den folgenden Jahren.")
+    elif c.get("type") == "event" and c.get("kind") in ("downturn", "history"):
         st.append("Index: Wert ÷ Wert im Ausgangszeitpunkt (Hoch) × 100. Arbeitslosenquote: Wert minus Wert im Ausgangszeitpunkt, in Prozentpunkten.")
     if c.get("type") == "stacked":
         st.append("Wachstumsbeiträge in Prozentpunkten: Veränderung eines Bestandteils, gewichtet mit seinem Anteil an der Gesamtgröße der Vorperiode. Gruppen (etwa Konsum) sind die Summe ihrer Bestandteile.")
