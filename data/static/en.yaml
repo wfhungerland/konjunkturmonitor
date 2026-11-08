@@ -422,6 +422,10 @@ charts:
     title: "Natural gas price in Europe"
     ask: "How expensive is natural gas?"
     caption: "Wholesale price of natural gas in Europe (TTF trading hub), monthly average. The IMF reports the price in US dollars per MMBtu; converted into euros per megawatt hour, the unit customary in Europe, using the monthly average of the ECB reference rate (1 MMBtu = 0.293071 MWh)."
+  proj_gap:
+    title: "GDP and the Federal Government's projection"
+    ask: "Is growth on track for the Federal Government's projection?"
+    caption: "Bars: real GDP on the same quarter a year earlier in %, unadjusted like the annual rate of the projection. Light: rate GDP would have to reach in each remaining quarter of the year for the year to meet the latest projection of the Federal Government (dashed line). The annual rate is approximately the mean of the four quarterly rates, weighted by each quarter's share of the previous year. Revisions to earlier quarters change the required rate. Once all four quarters are in, the chart shows the outcome of the past year until the first quarter of the following year is published."
   forecast:
     title: "Growth forecasts"
     ask: "What do the forecasts expect for growth?"

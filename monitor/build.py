@@ -147,6 +147,50 @@ def _forecasts(root: Path) -> list[dict]:
     return sorted((dict(r, latest=r["date"] == newest[r["by"]]) for r in rows), key=lambda r: r["date"])
 
 
+def _projection(c: dict, data: dict, root: Path) -> dict | None:
+    """Abgleich mit der jüngsten Projektion der Bundesregierung für das Jahr des jüngsten BIP-Quartals.
+
+    Die Jahresrate der Projektion ist unbereinigt. Sie entspricht näherungsweise dem gewogenen Mittel der unbereinigten
+    Raten ggü. Vorjahresquartal, gewichtet mit dem Anteil jedes Quartals am Vorjahr (Gewichte aus dem bereinigten Index).
+    Für die noch fehlenden Quartale folgt daraus die gleiche Rate je Quartal, die das Jahresziel gerade erreicht.
+    """
+    yoy_id, idx_id = c.get("yoy", "de_gdp_yoy"), c.get("index", "de_gdp_index")
+    if yoy_id not in data or idx_id not in data:
+        return None
+    yoy, idx = data[yoy_id].dropna(), data[idx_id].dropna()
+    year = int(yoy.index[-1].year)
+    rounds = [f for f in _forecasts(root) if f["by"] == "Bundesregierung" and year in (f.get("values") or {})]
+    if not rounds:
+        return None
+    rounds.sort(key=lambda f: f["date"])
+    cur, prev = rounds[-1], (rounds[-2] if len(rounds) > 1 else None)
+    target = float(cur["values"][year])
+    base = idx[idx.index.year == year - 1]
+    if len(base) != 4:
+        return None
+    w = {d.month: float(v) / float(base.sum()) for d, v in base.items()}  # Anteil je Quartal am Vorjahr
+    known = yoy[yoy.index.year == year]
+    done = sum(w[d.month] * float(v) for d, v in known.items())
+    rest = [m for m in (1, 4, 7, 10) if m not in {d.month for d in known.index}]
+    need = (target - done) / sum(w[m] for m in rest) if rest else None
+    need_qoq = None
+    if rest:  # bereinigt: nötiges Niveau im nächsten Quartal ggü. dem jüngsten bereinigten Stand, ohne Kalendereffekt
+        nxt = pd.Timestamp(year=year, month=rest[0], day=1)
+        ago = idx.get(nxt - pd.DateOffset(years=1))
+        if ago is not None and idx.index[-1] == nxt - pd.DateOffset(months=3):
+            need_qoq = (float(ago) * (1 + need / 100) / float(idx.iloc[-1]) - 1) * 100
+    hist = yoy[yoy.index.year >= year - 1]
+    xs = [d.strftime("%Y-%m-%d") for d in hist.index] + [f"{year}-{m:02d}-01" for m in rest]
+    ys = [round(float(v), 4) for v in hist.values] + [round(need, 2)] * len(rest)
+    return {"year": year, "target": target, "round": cur["round"], "date": cur["date"], "source": cur.get("source"),
+            "prev": {"round": prev["round"], "value": float(prev["values"][year])} if prev else None,
+            "known": [{"q": (d.month + 2) // 3, "v": float(v)} for d, v in known.items()], "rest": [(m + 2) // 3 for m in rest],
+            "need": need, "need_qoq": need_qoq, "done_rate": done if not rest else None,
+            "last_qoq": float(data["de_gdp_qoq"].dropna().iloc[-1]) if "de_gdp_qoq" in data else None,
+            "series": [{"id": yoy_id, "label": "BIP ggü. Vorjahresquartal", "unit": "% ggü. Vorjahresquartal", "freq": "Q", "style": "bar",
+                        "x": xs, "y": ys, "req": len(rest)}]}
+
+
 def _contrib(cfg: dict, data: dict) -> dict | None:
     """Beiträge zur Inflationsrate aus Teilindizes (2020 = 100).
 
@@ -534,6 +578,21 @@ def chart_sentences(c: dict) -> list[str]:
         lab = s.get("label") or ""
         return f"der Wert für „{lab}“" if lab else "der Wert"
     try:
+        if c.get("proj"):  # Abgleich mit der Projektion der Bundesregierung
+            p = c["proj"]
+            qs = lambda l: f"im {l[0]}. Quartal" if len(l) == 1 else f"im {l[0]}. bis {l[-1]}. Quartal je" if len(l) > 2 else f"im {l[0]}. und {l[1]}. Quartal je"
+            if p["rest"]:
+                k = p["known"][-1] if p["known"] else None
+                out = [f"Um die {p['round']} der Bundesregierung von {num(p['target'], 1)} % für {p['year']} zu erreichen, müsste das BIP {qs(p['rest'])} um "
+                       f"{num(p['need'], 1)} % über dem Vorjahresquartal liegen" + (f"; im {k['q']}. Quartal waren es {num(k['v'], 1)} %." if k else ".")]
+                if p.get("need_qoq") is not None and p.get("last_qoq") is not None:
+                    out.append(f"Saison- und kalenderbereinigt entspräche das im {p['rest'][0]}. Quartal einem Anstieg ggü. dem Vorquartal um "
+                               f"{num(p['need_qoq'], 1)} %; zuletzt waren es {num(p['last_qoq'], 1)} %.")
+            else:
+                out = [f"Nach den vier Quartalen wuchs das BIP {p['year']} um etwa {num(p['done_rate'], 1)} %; die {p['round']} der Bundesregierung erwartete {num(p['target'], 1)} %."]
+            if p.get("prev"):
+                out.append(f"Die {p['prev']['round']} hatte für {p['year']} {num(p['prev']['value'], 1)} % erwartet.")
+            return out
         if typ == "tiles" and c["tiles"].get("measure") == "diff":
             w = c["tiles"]
             loc = lambda n: {"Saarland": "im Saarland"}.get(n, "in " + n)
@@ -1251,6 +1310,16 @@ def build_payload(root: Path = ROOT) -> dict:
                 if not cal:
                     continue
                 entry.update(calendar=cal, sources=["Eigene Zusammenstellung nach dem üblichen Veröffentlichungsrhythmus der Quellen"], licenses=[])
+            elif typ == "projection":
+                pj = _projection(c, data, root)
+                if not pj:
+                    continue
+                series = pj.pop("series")
+                entry.update(type="line", proj=pj, series=series, unit="% ggü. Vorjahresquartal", freq="Q", decimals=1, recessions=False,
+                             adjustment="preisbereinigt, nicht saison- und kalenderbereinigt (wie die Jahresrate der Projektion)",
+                             refs=[{"y": pj["target"], "x0": f"{pj['year']}-01-01", "label": f"{pj['round']}: {str(round(pj['target'], 1)).replace('.', ',')} %"}],
+                             sources=["Eurostat (BIP des Statistischen Bundesamts)", f"Bundesregierung ({pj['round']})", "eigene Berechnung"],
+                             licenses=[SOURCE_LICENSES["eurostat"]])
             elif typ == "forecast":
                 key = {"gdp": "values", "inflation": "inflation", "core": "core"}[c.get("measure", "gdp")]
                 fs = [dict(f, values=f[key], by=f["by"] + (f" ({f['inflation_measure']})" if key != "values" and f.get("inflation_measure") else ""))

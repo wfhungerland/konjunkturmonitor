@@ -330,10 +330,30 @@ def _subject(label: str) -> str:
     return label if keep else "the " + label[:1].lower() + label[1:]
 
 
+PROJ_EN = {"Herbstprojektion": "autumn projection", "Frühjahrsprojektion": "spring projection", "Jahresprojektion": "annual projection"}
+
+
 def _special_en(c: dict) -> list[str] | None:
     """Sätze für Sonderabbildungen (Karte, Wärmetabelle, Uhr, Saison, Balken, Prognosen, Beiträge, Ereignisse); None für Linien."""
     typ, d = c.get("type"), int(c.get("decimals", 1))
     sg = lambda v, k=1: num(v, k, True)
+    if c.get("proj"):  # projection of the Federal Government
+        p = c["proj"]
+        rnd = lambda r: " ".join(r.split()[1:]) + " " + PROJ_EN.get(r.split()[0], r.split()[0])  # „Herbstprojektion 2026“ -> „2026 autumn projection“
+        ordn = {1: "first", 2: "second", 3: "third", 4: "fourth"}
+        qs = lambda l: f"in the {ordn[l[0]]} quarter" if len(l) == 1 else "in each of the " + ", ".join(ordn[q] for q in l[:-1]) + f" and {ordn[l[-1]]} quarters"
+        if p["rest"]:
+            k = p["known"][-1] if p["known"] else None
+            out = [f"To meet the Federal Government's {rnd(p['round'])} of {num(p['target'])}% for {p['year']}, GDP would have to be {num(p['need'])}% above "
+                   f"the same quarter a year earlier {qs(p['rest'])}" + (f"; in the {ordn[k['q']]} quarter it was {num(k['v'])}%." if k else ".")]
+            if p.get("need_qoq") is not None and p.get("last_qoq") is not None:
+                out.append(f"Seasonally and calendar adjusted, that would mean growth of {num(p['need_qoq'])}% on the previous quarter in the {ordn[p['rest'][0]]} quarter; "
+                           f"the latest figure was {num(p['last_qoq'])}%.")
+        else:
+            out = [f"Over the four quarters, GDP grew by about {num(p['done_rate'])}% in {p['year']}; the Federal Government's {rnd(p['round'])} expected {num(p['target'])}%."]
+        if p.get("prev"):
+            out.append(f"The {rnd(p['prev']['round'])} had expected {num(p['prev']['value'])}% for {p['year']}.")
+        return out
     if typ == "tiles":
         w = c["tiles"]
         if w.get("measure") == "diff":
@@ -668,6 +688,13 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                         lab_map[de_lab] = s["label"]
                     if s.get("unit"):
                         s["unit"] = tr.get("series", s.get("id"), "unit", tr.s(s["unit"]))
+            if c.get("proj"):  # Projektion: Bezeichnungen der Runde übersetzen
+                pj, rnd = c["proj"], lambda r: PROJ_EN.get(r.split()[0], r.split()[0]).capitalize() + " " + " ".join(r.split()[1:])
+                c["refs"] = [{"y": pj["target"], "x0": f"{pj['year']}-01-01", "label": f"{rnd(pj['round'])}: {num(pj['target'])}%"}]
+                c["adjustment"] = "price adjusted, not seasonally or calendar adjusted (like the annual rate of the projection)"
+                for s_ in c["series"]:
+                    s_["label"] = "GDP on the same quarter a year earlier"
+                c["sources"] = ["Eurostat (GDP of the Federal Statistical Office)", f"Federal Government ({rnd(pj['round'])})", "own calculation"]
             c["outliers"] = [dict(o, label=tr.lab(lab_map.get(o.get("label"), o.get("label")))) for o in c.get("outliers") or []]
             c["notes"] = [dict(n, text=en) for n in c.get("notes") or [] if (en := tr.note(n.get("text", "")))]
             if isinstance(c.get("heat"), dict):

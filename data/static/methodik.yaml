@@ -47,6 +47,12 @@ charts:
     methode: "Die Konjunkturuhr verbindet zwei Fragen der EU-Unternehmensumfrage in der Industrie: die Beurteilung der Auftragsbestände (waagerecht) und die Produktionserwartungen für die nächsten drei Monate (senkrecht). Beide Salden werden als Abstand zu ihrem Mittel 2005 bis 2019 gezeigt; im typischen Zyklus läuft der Punkt im Uhrzeigersinn durch Aufschwung, Boom, Abschwung und Rezession."
     grenzen:
       - "Umfragesalden messen die Richtung, nicht die Höhe der Produktion."
+  proj_gap:
+    methode: "Die Projektion der Bundesregierung nennt eine Jahresrate des realen BIP, unbereinigt. Diese Rate ist näherungsweise das gewogene Mittel der unbereinigten Raten ggü. dem Vorjahresquartal; Gewicht jedes Quartals ist sein Anteil am BIP des Vorjahres (aus dem saison- und kalenderbereinigten Index). Aus den schon gemeldeten Quartalen und dem Jahresziel folgt die Rate, die jedes noch fehlende Quartal erreichen müsste. Für das nächste Quartal rechnet der Monitor diese Rate zusätzlich in eine bereinigte Rate ggü. dem Vorquartal um: nötiges Niveau = Vorjahresquartal mal (1 + nötige Rate), verglichen mit dem jüngsten bereinigten Stand. Maßgeblich ist die jüngste Projektion, die eine Zahl für das Jahr des jüngsten Quartals enthält (data/static/prognosen.yaml); für 2025 ergibt die Näherung 0,2 % wie die amtliche Jahresrate."
+    grenzen:
+      - "Die Quartalsraten sind auf eine Nachkommastelle gerundet; die Näherung weicht deshalb um bis zu etwa 0,1 Prozentpunkte ab."
+      - "Die Umrechnung in eine Rate ggü. dem Vorquartal unterstellt, dass das Quartal keinen Kalendereffekt hat."
+      - "Revisionen früherer Quartale verschieben die nötige Rate; die Projektion selbst rechnet mit dem Datenstand ihres Stichtags."
   forecast:
     methode: "Der Monitor sammelt die jüngsten Prognosen von Bundesregierung, Instituten und internationalen Organisationen (data/static/prognosen.yaml) mit Datum und Quelle. Je Herausgeber gilt die jüngste Prognose; die Bundesregierung ist hervorgehoben, weil ihre Projektion Grundlage für Haushalt und Steuerschätzung ist."
     grenzen:

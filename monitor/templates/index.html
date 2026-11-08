@@ -406,7 +406,7 @@ function withGaps(s, f) {
 }
 const plotC = c => Object.assign({}, c, { series: c.series.map(s => { const f = s.freq || c.freq, g = withGaps(s, f); return Object.assign({}, g, { x: g.x.map(x => midP(x, f)) }); }) });
 const MTXT = { m: ["Mittel der letzten 3 Monate", "der letzten 12 Monate"], q: "Mittel der letzten 4 Quartale", w: ["Mittel der letzten 4 Wochen", "der letzten 52 Wochen"] };
-const SCALE_TXT = { own: "Eigene Skala je Feld", common: "Gemeinsame Skala", zoom: "Skala auf die jüngsten Jahre", full: "Skala über den ganzen Zeitraum", note: "Skala nach den letzten {n} Jahren; ältere Werte teils abgeschnitten", partial: "laufendes Jahr", mad: "mittlere Korrektur ±{m} Pp" };
+const SCALE_TXT = { own: "Eigene Skala je Feld", common: "Gemeinsame Skala", zoom: "Skala auf die jüngsten Jahre", full: "Skala über den ganzen Zeitraum", note: "Skala nach den letzten {n} Jahren; ältere Werte teils abgeschnitten", partial: "laufendes Jahr", mad: "mittlere Korrektur ±{m} Pp", need: " (nötig für die Projektion)", needlab: "nötig" };
 const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten, Quellen, Rechenschritte und Methode dieser Abbildung auf einer Seite";
 const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
 const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "Struktur", service: "Service" }, overview: "Übersicht", brief: "Kurzfassung", all: "Alles zeigen",
@@ -462,10 +462,12 @@ function pad(x0, x1, freq) { // Rand: halbe Periode Luft
 
 function timeChart(el, c) {
   c = plotC(c);
-  const traces = [], all = [];
+  const traces = [], all = [], annotations0 = [];
   const lines = c.series.filter(s => s.style !== "bar"), bars = c.series.filter(s => s.style === "bar");
-  bars.forEach((s, i) => { traces.push({ type: "bar", x: s.x, y: s.y, name: s.label, marker: { color: BAR_PAL[i % BAR_PAL.length], line: { width: 0 }, opacity: c.partial_last ? s.x.map((_, j) => j === s.x.length - 1 ? 0.4 : 1) : 1 },
-    hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` }); all.push(...s.y); });
+  bars.forEach((s, i) => { traces.push({ type: "bar", x: s.x, y: s.y, name: s.label, marker: { color: BAR_PAL[i % BAR_PAL.length], line: { width: 0 }, opacity: c.partial_last ? s.x.map((_, j) => j === s.x.length - 1 ? 0.4 : 1) : s.req ? s.x.map((_, j) => j >= s.x.length - s.req ? 0.35 : 1) : 1 },
+    customdata: s.x.map((_, j) => s.req && j >= s.x.length - s.req ? SCALE_TXT.need : ""),
+    hovertemplate: `%{y:,.${c.decimals}f}%{customdata}<extra>${esc(s.label)}</extra>` }); all.push(...s.y);
+    if (s.req) s.x.slice(-s.req).forEach((x, k) => annotations0.push({ xref: "x", yref: "y", x, y: s.y[s.y.length - s.req + k], text: SCALE_TXT.needlab, showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" } })); });
   lines.forEach((s, i) => {
     const col = c.type === "stacked" ? "#000" : PAL[i % PAL.length];
     const many = !c.emphasis && lines.length >= 5, strong = many ? i === 0 : (!c.emphasis || c.emphasis === s.id);
@@ -517,7 +519,7 @@ function timeChart(el, c) {
   if (c.threshold != null) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.threshold, y1: c.threshold, line: { color: WARN, width: 1.5, dash: "dash" } });
   if (c._rec ?? c.recessions_on) recIn(c, r).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak < r[0] ? r[0] : rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.22)", line: { width: 0 }, layer: "below" }));
   (c.crisis_years || []).forEach(y => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: `${y}-01-01`, x1: `${+y + 1}-01-01`, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.2)", line: { width: 0 }, layer: "below" }));  // Bankenkrisen
-  const LY = DATA.layout || {}, annotations = [];
+  const LY = DATA.layout || {}, annotations = annotations0;
   if (c.threshold != null && c.threshold_label) annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.threshold, text: esc(c.threshold_label), showarrow: false, xanchor: "left", yanchor: "bottom",
     font: { family: HS.font, size: 12, color: WARN }, bgcolor: "rgba(255,255,255,0.85)" });
   if (c._zoom) annotations.push({ xref: "paper", yref: "paper", x: 0.005, y: 0.995, xanchor: "left", yanchor: "top", showarrow: false, text: SCALE_TXT.note.replace("{n}", c.zoom_years || 3),
@@ -528,8 +530,8 @@ function timeChart(el, c) {
     shapes.push({ type: "rect", xref: "paper", yref: "y", x0: 0, x1: 1, y0: -m, y1: m, fillcolor: "rgba(120,120,120,0.14)", line: { width: 0 }, layer: "below" });
     annotations.push({ xref: "paper", yref: "y", x: 0.995, y: m, text: SCALE_TXT.mad.replace("{m}", fmt(m, 2)), showarrow: false, xanchor: "right", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); }
   (c.refs || []).forEach(q => { // Referenzwerte, etwa die Grenzen des Maastricht-Vertrags: grau gestrichelt mit Beschriftung
-    shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: q.y, y1: q.y, line: { color: "#595959", width: 1, dash: "dash" } });
-    annotations.push({ xref: "paper", yref: "y", x: 0.005, y: q.y, text: esc(q.label), showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); });
+    shapes.push({ type: "line", xref: q.x0 ? "x" : "paper", yref: "y", x0: q.x0 || 0, x1: q.x0 ? r[1] : 1, y0: q.y, y1: q.y, line: { color: "#595959", width: 1, dash: "dash" } });  // x0: nur ab diesem Datum, etwa ein Jahresziel
+    annotations.push({ xref: q.x0 ? "x" : "paper", yref: "y", x: q.x0 || 0.005, y: q.y, text: esc(q.label), showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); });
   (c._shownotes ? c.notes || [] : []).forEach((n, k) => { shapes.push({ type: "line", xref: "x", yref: "paper", x0: n.date, x1: n.date, y0: 0, y1: 1, line: { color: "#595959", width: 1, dash: "dot" } });
     annotations.push({ xref: "x", yref: "paper", x: n.date, y: 1, text: String(k + 1), showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" } }); });
   if (c.band && LY.compare_band) {
