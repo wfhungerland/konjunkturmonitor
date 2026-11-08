@@ -12,6 +12,7 @@ from pathlib import Path
 
 TITLE = "Datenabruf: Ausfälle"
 TITLE_JUMP = "Datenabruf: auffällige Werte"
+TITLE_TEXT = "Automatische Sätze: Auffälligkeiten"
 
 
 def gh(*args: str) -> str:
@@ -73,6 +74,11 @@ def main() -> None:
     sync(TITLE_JUMP, ("Diese Reihen haben sich im letzten Lauf stärker verändert als je zuvor. Das kann echt sein (etwa ein Preisschock), "
                       "aber auch auf eine geänderte Einheit, eine neue Basis oder einen Abruffehler hindeuten. Bitte prüfen.\n\n" + "\n".join(j)) if j else None,
          "Keine auffälligen Werte mehr im letzten Lauf.")
+    site = Path("site/data.json")
+    ti = json.loads(site.read_text(encoding="utf-8")).get("text_issues") or [] if site.exists() else []
+    sync(TITLE_TEXT, ("Diese automatischen Sätze haben die Satzprüfung nicht bestanden und erscheinen nicht auf der Seite. "
+                      "Meist steckt ein Datenproblem oder ein Sonderfall in der Satzbildung dahinter. Bitte prüfen.\n\n" + "\n".join(ti)) if ti else None,
+         "Alle automatischen Sätze haben die Prüfung im letzten Lauf bestanden.")
     text = body(run)
     found = gh("issue", "list", "--state", "open", "--search", f'"{TITLE}" in:title', "--json", "number", "--jq", ".[0].number")
     if text is None:

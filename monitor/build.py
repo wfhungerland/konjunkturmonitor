@@ -1551,12 +1551,16 @@ def build_payload(root: Path = ROOT) -> dict:
                 n["text"] = tidy(n["text"])
             if c.get("alt"):
                 c["alt"] = dict(c["alt"], label=tidy(c["alt"]["label"]), base=tidy(c["alt"]["base"]), unit=tidy(c["alt"]["unit"]))
+    from .satzpruefung import apply as check_sentences
+    text_issues = check_sentences(topics)  # durchgefallene Sätze entfallen, Funde gehen ins Ticket
+    for line in text_issues:
+        print("Satzprüfung:", line)
     health = _health(root, topics, meta)
     geo = _geo(root)
     return {"layout": layout, "health": health, "start": _start_rows(cfg, data, meta, {t["id"]: t["title"] for t in cfg["topics"]}), "geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
             "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "questions": questions, "topics": topics, "overview": tidy(overview({q["id"]: q["answer"] for q in questions})),
-            "content_license": cfg["site"].get("license", "")}
+            "content_license": cfg["site"].get("license", ""), "text_issues": text_issues}
 
 
 def write_embeds(payload: dict, tpl: str, out: Path) -> int:
