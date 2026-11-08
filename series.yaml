@@ -18,6 +18,7 @@ blocks:
   - {id: struktur, title: Struktur, sheet: Struktur}
   - {id: einkommen, title: Einkommen, sheet: Einkommen}
   - {id: welt, title: Weltwirtschaft, sheet: Welt}
+  - {id: berlin, title: Berlin, sheet: Berlin}
   - {id: staat, title: Staatsfinanzen, sheet: Staat}
   - {id: dienstleistungen, title: Dienstleistungen, sheet: Dienstleistungen}
   - {id: wetter, title: Wetter und Pegel, sheet: Wetter}
@@ -64,6 +65,7 @@ names:
     EA20: Euroraum
     EA21: Euroraum
     EA: Euroraum
+    DE30: Berlin
   cit:
     deu: Deutschland
     fra: Frankreich
@@ -98,6 +100,13 @@ names:
     "16": Thüringen
 
 charts:
+  be_gdp: {title: "Wirtschaftswachstum in Berlin", decimals: 1}
+  be_cpi: {title: "Verbraucherpreise und Mieten in Berlin", decimals: 1}
+  be_feel: {title: "Teuerung bei Lebensmitteln und Energie in Berlin", decimals: 1}
+  be_jobs: {title: "Beschäftigung in Berlin", decimals: 1}
+  be_tourism: {title: "Übernachtungen in Berlin", decimals: 0}
+  be_trade: {title: "Einzelhandel und Gastgewerbe in Berlin", decimals: 1}
+  be_permits: {title: "Genehmigte Wohnungen in Berlin", decimals: 0}
   gdp_qoq: {title: "Wirtschaftsleistung, Veränderung gegenüber dem Vorquartal", decimals: 1}
   gdp_contrib: {title: "Woraus das Wachstum besteht", kind: stacked, decimals: 1}
   gdp_level: {title: "Wirtschaftsleistung, Niveau", decimals: 0}
@@ -3079,3 +3088,239 @@ series:
     start: "1850-01-01"
     chart: long_rr
     label: "Realzins"
+
+# Berlin (Anhang). Länderreihen aus GENESIS (Tabellen mit Merkmal DLAND, 11 = Berlin), BIP von Eurostat (NUTS DE30).
+  - id: be_gdp
+    expand: {geo: [DE30, DE]}
+    block: berlin
+    source: eurostat
+    key: nama_10r_2gvagr
+    params: {geo: "{geo}", na_item: B1GQ, unit: PCH_PRE}
+    title: "Reales BIP {geo_name}, % ggü. Vorjahr"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "2001-01-01"
+    stale_after_months: 30
+    chart: be_gdp
+    label: "{geo_name}"
+    note: "Volkswirtschaftliche Gesamtrechnungen der Länder, über Eurostat (Regionaldaten, NUTS 2). Eurostat übernimmt die Länderwerte mit einigen Monaten Verzug."
+
+  - id: be_vpi
+    block: berlin
+    source: genesis
+    key: "61111-0011"
+    params: {value_variable: PREIS1, filters: {DLAND: "11"}}
+    title: "Verbraucherpreisindex Berlin"
+    unit: "Index 2020=100"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    note: "GENESIS-Tabelle 61111-0011, Merkmal DLAND 11 (Berlin)."
+
+  - id: be_vpi_yoy
+    block: berlin
+    source: derived
+    derive: {from: be_vpi, op: yoy_pct}
+    title: "Inflationsrate Berlin"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    label: "Berlin, insgesamt"
+
+  - id: be_rent
+    block: berlin
+    source: genesis
+    key: "61111-0021"
+    params: {value_variable: PRE034, filters: {DLAND: "11"}}
+    title: "Index der Nettokaltmieten Berlin"
+    unit: "Index 2020=100"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    note: "GENESIS-Tabelle 61111-0021, Merkmal DLAND 11 (Berlin)."
+
+  - id: be_rent_yoy
+    block: berlin
+    source: derived
+    derive: {from: be_rent, op: yoy_pct}
+    title: "Nettokaltmieten Berlin, Veränderung ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    label: "Berlin, Nettokaltmieten"
+
+  - id: be_afs_gesamt
+    block: berlin
+    source: static
+    key: afs_vpi_be_gesamt
+    params: {source_name: "Amt für Statistik Berlin-Brandenburg, Statistischer Bericht M I 2"}
+    title: "Verbraucherpreisindex Berlin: Verbraucherpreisindex insgesamt"
+    unit: "Index 2020=100"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    stale_after_months: 3
+    note: "Aus dem monatlichen Statistischen Bericht M I 2 des Amts für Statistik Berlin-Brandenburg (Excel), Blätter 6 bis 8, Indexstände."
+
+  - id: be_afs_gesamt_yoy
+    block: berlin
+    source: derived
+    derive: {from: be_afs_gesamt, op: yoy_pct}
+    title: "Verbraucherpreise Berlin: Verbraucherpreisindex insgesamt, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: be_feel
+    label: "Insgesamt"
+
+  - id: be_afs_nahrung
+    block: berlin
+    source: static
+    key: afs_vpi_be_nahrung
+    params: {source_name: "Amt für Statistik Berlin-Brandenburg, Statistischer Bericht M I 2"}
+    title: "Verbraucherpreisindex Berlin: Nahrungsmittel und alkoholfreie Getränke"
+    unit: "Index 2020=100"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2016-01-01"
+    stale_after_months: 3
+    note: "Aus dem monatlichen Statistischen Bericht M I 2 des Amts für Statistik Berlin-Brandenburg (Excel), Blätter 6 bis 8, Indexstände."
+
+  - id: be_afs_nahrung_yoy
+    block: berlin
+    source: derived
+    derive: {from: be_afs_nahrung, op: yoy_pct}
+    title: "Verbraucherpreise Berlin: Nahrungsmittel und alkoholfreie Getränke, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: be_feel
+    label: "Nahrungsmittel"
+
+  - id: be_afs_energie
+    block: berlin
+    source: static
+    key: afs_vpi_be_energie
+    params: {source_name: "Amt für Statistik Berlin-Brandenburg, Statistischer Bericht M I 2"}
+    title: "Verbraucherpreisindex Berlin: Energie (Haushaltsenergie und Kraftstoffe)"
+    unit: "Index 2020=100"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2016-01-01"
+    stale_after_months: 3
+    note: "Aus dem monatlichen Statistischen Bericht M I 2 des Amts für Statistik Berlin-Brandenburg (Excel), Blätter 6 bis 8, Indexstände."
+
+  - id: be_afs_energie_yoy
+    block: berlin
+    source: derived
+    derive: {from: be_afs_energie, op: yoy_pct}
+    title: "Verbraucherpreise Berlin: Energie (Haushaltsenergie und Kraftstoffe), % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: be_feel
+    label: "Energie"
+
+  - id: be_sv_m
+    block: berlin
+    source: genesis
+    key: "13111-0005"
+    params: {value_variable: ERW065, filters: {DLAND: "11", GES: GESM}}
+    title: "Sozialversicherungspflichtig Beschäftigte am Arbeitsort Berlin, Männer"
+    unit: "Personen"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2008-01-01"
+    note: "GENESIS-Tabelle 13111-0005, Merkmal DLAND 11 (Berlin)."
+
+  - id: be_sv_w
+    block: berlin
+    source: genesis
+    key: "13111-0005"
+    params: {value_variable: ERW065, filters: {DLAND: "11", GES: GESW}}
+    title: "Sozialversicherungspflichtig Beschäftigte am Arbeitsort Berlin, Frauen"
+    unit: "Personen"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2008-01-01"
+    note: "GENESIS-Tabelle 13111-0005, Merkmal DLAND 11 (Berlin)."
+
+  - id: be_sv
+    block: berlin
+    source: derived
+    derive: {from: be_sv_m, plus: be_sv_w, op: sum}
+    title: "Sozialversicherungspflichtig Beschäftigte am Arbeitsort Berlin"
+    unit: "Personen"
+    frequency: Q
+    adjustment: nicht bereinigt
+
+  - id: be_overnight
+    block: berlin
+    source: genesis
+    key: "45412-0025"
+    params: {value_variable: GAST02, filters: {DLAND: "11"}, scale: 0.001}
+    title: "Übernachtungen in Beherbergungsbetrieben Berlin"
+    unit: "Tsd. Übernachtungen"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    note: "GENESIS-Tabelle 45412-0025, Merkmal DLAND 11 (Berlin)."
+
+  - id: be_retail
+    block: berlin
+    source: genesis
+    key: "45212-0014"
+    params: {value_variable: UMS103, filters: {DLAND: "11", WERTE4: REAL}}
+    title: "Umsatz im Einzelhandel Berlin, real"
+    unit: "Index 2015=100"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    note: "GENESIS-Tabelle 45212-0014, Merkmal DLAND 11 (Berlin)."
+
+  - id: be_retail_yoy
+    block: berlin
+    source: derived
+    derive: {from: be_retail, op: yoy_pct}
+    title: "Umsatz im Einzelhandel Berlin, real, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: be_trade
+    label: "Einzelhandel"
+
+  - id: be_hosp
+    block: berlin
+    source: genesis
+    key: "45213-0014"
+    params: {value_variable: UMS103, filters: {DLAND: "11", WERTE4: REAL}}
+    title: "Umsatz im Gastgewerbe Berlin, real"
+    unit: "Index 2015=100"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2010-01-01"
+    note: "GENESIS-Tabelle 45213-0014, Merkmal DLAND 11 (Berlin)."
+
+  - id: be_hosp_yoy
+    block: berlin
+    source: derived
+    derive: {from: be_hosp, op: yoy_pct}
+    title: "Umsatz im Gastgewerbe Berlin, real, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: be_trade
+    label: "Gastgewerbe"
+
+  - id: be_permits
+    block: berlin
+    source: genesis
+    key: "31111-0120"
+    params: {value_variable: WOHN01, filters: {DLAND: "11", BAUTK1: BTK-GEB, BAUGB1: GBD-W-NW}}
+    title: "Baugenehmigungen Berlin: Wohnungen (Neubau und Baumaßnahmen an bestehenden Gebäuden)"
+    unit: "Wohnungen"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    note: "GENESIS-Tabelle 31111-0120, Merkmal DLAND 11 (Berlin)."
