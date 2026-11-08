@@ -7,7 +7,7 @@
 - date: 2026-11-08
   art: Methode
   charts: []
-  text: "Zeitreihen beginnen an festen Jahresanfängen statt rückgezählt vom jüngsten Wert: kurze Fenster ab Januar 2019 (ein Jahr vor Corona), mittlere ab Januar 2005 (vor der Finanzkrise), lange ab dem Anfang ihres Startjahrs. Die Werte selbst ändern sich nicht. Wo der Corona-Einbruch die Skala streckt, lässt sie sich auf die jüngsten Jahre beschränken."
+  text: "Zeitreihen beginnen an festen Jahresanfängen statt rückgezählt vom jüngsten Wert: kurze Fenster ab Januar 2019 (ein Jahr vor Corona), mittlere ab Januar 2005 (vor der Finanzkrise), lange ab dem Anfang ihres Startjahrs. Die Werte selbst ändern sich nicht. Wo der Corona-Einbruch die Skala streckt, richtet sie sich zunächst nach den jüngsten drei Jahren; ein Knopf zeigt die volle Skala."
 - date: 2026-11-08
   art: Methode
   charts: []
