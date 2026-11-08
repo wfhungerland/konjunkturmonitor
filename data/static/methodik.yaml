@@ -69,9 +69,11 @@ charts:
     grenzen:
       - "VPI und HVPI unterscheiden sich in Abgrenzung und Gewichten, meist nur wenig."
   potential:
-    methode: "Das Produktionspotenzial schätzt die Europäische Kommission (AMECO) mit einer Produktionsfunktion aus Arbeitsvolumen, Kapitalbestand und Produktivität. Gezeigt sind dessen Wachstumsrate und die Wachstumsrate des realen BIP."
+    methode: "Drei Institutionen schätzen das Produktionspotenzial Deutschlands und veröffentlichen die Reihen frei: die Europäische Kommission (AMECO, Potenzial-BIP OVGD, Produktionsfunktion aus Arbeitsvolumen, Kapitalbestand und Produktivität), die OECD (Economic Outlook, Potenzial-BIP GDPVTR, ebenfalls Produktionsfunktion) und der IWF (World Economic Outlook). Der IWF veröffentlicht das Potenzial nicht direkt; der Monitor leitet sein Wachstum aus dem realen BIP-Wachstum g und der Produktionslücke L in % des Potenzials ab: (1 + g) mal (1 + L Vorjahr) geteilt durch (1 + L) minus 1. Aus den Niveaus von AMECO und OECD rechnet der Monitor die Wachstumsrate ggü. dem Vorjahr. Die Fläche reicht je Jahr von der niedrigsten bis zur höchsten Schätzung, sobald mindestens zwei vorliegen. Alle drei Reihen ruft der Monitor wöchentlich ab; eine neue Ausgabe ersetzt die alte vollständig."
     grenzen:
-      - "Das Potenzial ist nicht beobachtbar; Schätzungen werden oft deutlich überarbeitet."
+      - "Das Potenzial ist nicht beobachtbar; Schätzungen werden oft deutlich überarbeitet, gerade für die jüngsten Jahre."
+      - "Die drei Schätzungen haben verschiedene Stichtage; die Spanne mischt deshalb Ausgaben aus Frühjahr und Herbst."
+      - "Die Spanne zeigt die Uneinigkeit der Schätzer, keine statistische Unsicherheit."
   esi:
     methode: "Exportähnlichkeitsindex nach Finger und Kreinin (1979): je Warengruppe zählt der kleinere der beiden Exportanteile; die Summe über alle Gruppen ergibt einen Wert zwischen 0 (keine Überschneidung) und 100 (identische Warenstruktur)."
     grenzen:

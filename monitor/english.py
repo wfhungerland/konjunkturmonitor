@@ -337,6 +337,26 @@ def _special_en(c: dict) -> list[str] | None:
     """Sätze für Sonderabbildungen (Karte, Wärmetabelle, Uhr, Saison, Balken, Prognosen, Beiträge, Ereignisse); None für Linien."""
     typ, d = c.get("type"), int(c.get("decimals", 1))
     sg = lambda v, k=1: num(v, k, True)
+    if c.get("pot_names"):  # momentum: GDP growth against the range of potential growth estimates
+        bar = next(x for x in c["series"] if x.get("style") == "bar")
+        lo, hi = (next(x for x in c["series"] if x.get("style") == st) for st in ("band_lo", "band_hi"))
+        band = {d[:4]: (a, b) for d, a, b in zip(lo["x"], lo["y"], hi["y"])}
+        y, g = bar["x"][-1][:4], bar["y"][-1]
+        who = ", ".join(n.split("(")[-1].rstrip(")").replace("IWF", "IMF") for n in c["pot_names"])
+        who = " and ".join(who.rsplit(", ", 1))
+        out = []
+        if y in band:
+            a, b = band[y]
+            cmp = "slower than" if g < a else "faster than" if g > b else "about as fast as"
+            out.append(f"In {y}, GDP grew by {num(g)}%, {cmp} potential output as estimated by {who} ({num(a)} to {num(b)}%).")
+        y1 = str(int(y) + 1)
+        if y1 in band:
+            a, b = band[y1]
+            gv = (c.get("gov_values") or {}).get(y1)
+            rnd = c.get("gov_round") or ""
+            rnd = " ".join(rnd.split()[1:]) + " " + PROJ_EN.get(rnd.split()[0], "") if rnd else ""
+            out.append(f"For {y1}, they put potential growth at {num(a)} to {num(b)}%" + (f"; the Federal Government's {rnd} expects GDP growth of {num(gv)}%." if gv is not None else "."))
+        return out
     if c.get("diff"):  # breadth: number of industries growing
         parts = []
         for label, k in c["diff"].items():
@@ -692,7 +712,7 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                     s["unit_de"] = s.get("unit")
                     if s.get("label") and s.get("id"):
                         de_lab = s["label"]
-                        s["label"] = tr.label(s["id"], s["label"])
+                        s["label"] = {"band_lo": "Range of estimates, lower bound", "band_hi": "Range of estimates, upper bound"}.get(s.get("style")) or tr.label(s["id"], s["label"])
                         lab_map[de_lab] = s["label"]
                     if s.get("unit"):
                         s["unit"] = tr.get("series", s.get("id"), "unit", tr.s(s["unit"]))

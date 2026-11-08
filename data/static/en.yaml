@@ -445,7 +445,7 @@ charts:
   potential:
     title: "Growth and potential output"
     ask: "Is the economy growing faster than its potential?"
-    caption: "Potential output is the economic output that would be possible with normal utilisation of labour and machinery. It cannot be observed but has to be estimated, here by the European Commission (AMECO, spring 2026 forecast) from labour input, the capital stock and productivity. If GDP (bars) grows faster than potential (line), utilisation rises; the difference between the levels is called the output gap. If it is positive, inflation becomes more likely; if it is negative, capacity is unused. Dashed: forecast years."
+    caption: "Potential output is the economic output that would be possible with normal utilisation of labour and machinery. It cannot be observed but has to be estimated. The shaded area shows the range of estimates by the European Commission (AMECO), the OECD and the IMF; the individual values are in the tooltip; lighter: forecast years. The estimates differ in method and vintage and are revised with every edition. If GDP (bars) grows faster than potential, utilisation rises; the difference between the levels is called the output gap. If it is positive, inflation becomes more likely; if it is negative, capacity is unused."
   productivity:
     title: "Labour productivity"
     ask: "How is productivity developing?"
@@ -656,7 +656,9 @@ series:
   de_prod_wz: {title: "Production: {wz_name}", label: "{wz} {wz_name}", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
   de_wai: {title: "Weekly activity index of the Bundesbank", label: "Activity index", unit: "%", note: "Estimated GDP growth rate over the latest 13 weeks compared with the 13 weeks before, from high-frequency indicators.", adjustment: "weekly data (Bundesbank)"}
   de_gdp_a: {title: "Real GDP, % on previous year (annual data)", label: "GDP growth", unit: "% on previous year", adjustment: "price adjusted"}
-  de_potential: {title: "Growth of potential output (AMECO)", label: "Potential output", unit: "% on previous year", note: "Change in potential output (AMECO series OVGDP) on the previous year; AMECO spring 2026 vintage, retrieved via DBnomics on 3.11.2026. Updated by hand twice a year.", adjustment: "price adjusted"}
+  de_potential: {title: "Growth of potential output (AMECO)", label: "Potential (AMECO)", unit: "% on previous year", note: "Change in potential output (AMECO series OVGD) on the previous year; retrieved weekly via DBnomics, initial vintage spring 2026 from 3.11.2026.", adjustment: "price adjusted"}
+  de_potential_oecd: {title: "Growth of potential output (OECD)", label: "Potential (OECD)", unit: "% on previous year", note: "Change in potential GDP at constant prices (OECD Economic Outlook, series GDPVTR) on the previous year; retrieved weekly.", adjustment: "price adjusted"}
+  de_potential_imf: {title: "Growth of potential output (IMF)", label: "Potential (IMF)", unit: "% on previous year", note: "Derived from real GDP growth and the output gap in % of potential (IMF World Economic Outlook, NGDP_RPCH and NGAP_NPGDP); retrieved weekly.", adjustment: "price adjusted"}
   de_lp_hour: {title: "Labour productivity per hour worked, real", label: "per hour", unit: "Index 2020=100", adjustment: "seasonally and calendar adjusted"}
   de_lp_person: {title: "Labour productivity per person employed, real", label: "per person employed", unit: "Index 2020=100", adjustment: "seasonally and calendar adjusted"}
   inv_ratio: {title: "Gross fixed capital formation in % of GDP ({geo_name})", label: "{geo_name}", unit: "% of GDP", adjustment: "nominal"}
