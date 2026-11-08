@@ -93,6 +93,9 @@ PAIRS: list[tuple[str, str]] = [
      'no: "Part I", title: "Business cycle", text: "How is the economy doing right now? Monthly and quarterly figures on output, prices, labour, demand and sentiment."'),
     ('no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen."',
      'no: "Part II", title: "Structure", text: "What drives growth in the longer run? Annual figures on potential output, productivity, investment, immigration, taxes and public finances."'),
+    ('no: "Teil III", title: "Anhang", text: "Lange Reihen seit 1870 und Sonderfaktoren wie Wetter und Rheinpegel: zur Einordnung, nicht für die laufende Lage. Die Abbildungen sind eingeklappt."',
+     'no: "Part III", title: "Appendix", text: "Long-run series since 1870 and special factors such as weather and the Rhine water level: for context, not for the current situation. The charts are collapsed."'),
+    ('const ANH = { show: "Abbildungen anzeigen" };', 'const ANH = { show: "Show charts" };'),
     ('title: "Termine", text: ""', 'title: "Release dates", text: ""'),
     # Startseite
     ("`<b>Heute neu:</b> ", "`<b>New today:</b> "),
