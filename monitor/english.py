@@ -753,7 +753,8 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                     e["name"], e["source"] = tr.lab(e.get("name")), tr.lab(e.get("source"))
                 for l in c["calendar"].get("links") or []:
                     l["name"] = tr.lab(l.get("name"))
-            texts = chart_sentences_en(c)
+            from .satzpruefung import BAD
+            texts = [x for x in chart_sentences_en(c) if not BAD.search(x)]  # Platzhalter oder Rechenreste: Satz entfällt
             c["texts"], c["text"] = texts, " ".join(texts)
             if isinstance(c.get("files"), dict):
                 c["files"] = {k: _rel(v) for k, v in c["files"].items()}
