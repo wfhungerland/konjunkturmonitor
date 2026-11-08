@@ -672,7 +672,7 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                 ans[q["id"]] = dict(q["answer"])
             else:
                 q["answer"].update(head="", more=[])
-        for c in t["charts"]:
+        for c in [x for c0 in t["charts"] for x in [c0] + ([c0["variant"]] if isinstance(c0.get("variant"), dict) else [])]:
             cid = c.get("chart")
             if c.get("type") == "heatbars" and cid not in (tr.d.get("charts") or {}):  # aus der Wärmetabelle abgeleitet
                 w = BARS["Auftragseingang" if "order" in cid else "Produktion"]
@@ -764,6 +764,16 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
             nu = c.get("next_update")
             if isinstance(nu, dict) and nu.get("period"):
                 nu["period"] = de_period_to_en(nu["period"])
+    for t in p["topics"]:  # zwei Abbildungen in einer Karte: Sätze und Erläuterung der zweiten Ansicht anhängen
+        for c in t["charts"]:
+            o = c.get("variant")
+            if isinstance(o, dict):
+                c["texts"] = list(c.get("texts") or []) + list(o.get("texts") or [])
+                c["text"] = " ".join(c["texts"])
+                tg = c.get("toggle") or {}
+                tg["base"], tg["label"] = tg.get("base_en", tg.get("base")), tg.get("label_en", tg.get("label"))
+                if o.get("caption"):
+                    c["caption"] = f"{c.get('caption', '')} View “{tg['label']}”: {o['caption']}".strip()
     for q in p.get("questions") or []:
         q["ask"] = tr.get("questions", q["id"], "ask", q["ask"])
         if q["id"] in ans:

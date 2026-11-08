@@ -107,7 +107,7 @@ charts:
   labour_flows: {title: "Arbeitslose und offene Stellen", decimals: 0}
   sahm: {title: "Rezessionssignal", decimals: 2}
   industry: {title: "Produktion und Aufträge der Industrie", decimals: 0}
-  orders_split: {title: "Aufträge aus dem Inland und aus dem Ausland", decimals: 0}
+  orders_split: {title: "Aufträge aus dem Inland, dem Euroraum und von außerhalb", decimals: 0}
   retail: {title: "Einzelhandel, real", decimals: 0}
   consumer: {title: "Verbrauchervertrauen", decimals: 1}
   trade: {title: "Warenhandel", decimals: 0}

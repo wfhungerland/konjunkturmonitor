@@ -215,6 +215,29 @@ def _diffusion(c: dict, data: dict, meta: dict) -> dict | None:
     return {"series": series, "counts": counts} if series else None
 
 
+def _merge_toggles(topics: list[dict]) -> None:
+    """Abbildungen mit toggle: {chart, label, base} nehmen die genannte Abbildung als zweite Ansicht auf.
+    Die zweite Abbildung verschwindet aus dem Abschnitt; Sätze, Quellen und Erläuterung beider stehen in der Karte."""
+    where = {c["chart"]: t for t in topics for c in t["charts"] if c.get("chart")}
+    for t in topics:
+        for c in list(t["charts"]):
+            tg = c.get("toggle")
+            if not isinstance(tg, dict) or tg.get("chart") not in where:
+                continue
+            src = where[tg["chart"]]
+            o = next((x for x in src["charts"] if x.get("chart") == tg["chart"]), None)
+            if o is None or o is c:
+                continue
+            src["charts"].remove(o)
+            c["variant"] = o
+            c["texts"] = list(c.get("texts") or []) + list(o.get("texts") or [])
+            c["text"] = " ".join(c["texts"])
+            if o.get("caption"):
+                c["caption"] = f"{c.get('caption', '')} Ansicht „{tg['label']}“: {o['caption']}".strip()
+            for k in ("sources", "licenses"):
+                c[k] = list(dict.fromkeys(list(c.get(k) or []) + list(o.get(k) or [])))
+
+
 def _contrib(cfg: dict, data: dict) -> dict | None:
     """Beiträge zur Inflationsrate aus Teilindizes (2020 = 100).
 
@@ -1520,6 +1543,7 @@ def build_payload(root: Path = ROOT) -> dict:
             c["notes"] = notes.get(c["chart"], []) + _weather_notes(c, data)
             if c.get("ma3") or c.get("outliers"):
                 c["outliers"] = _outliers(c)
+    _merge_toggles(topics)  # zwei Abbildungen mit Umschalter in einer Karte
     no = 0
     for t in topics:
         for c in t["charts"]:
