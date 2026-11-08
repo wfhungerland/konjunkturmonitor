@@ -8,6 +8,7 @@ site:
   author: "Hungerland, Wolf-Fabian"
   license: "Texte und eigene Abbildungen: CC BY 4.0 (Namensnennung: Wolf-Fabian Hungerland, Konjunkturmonitor). Die Daten unterliegen den Lizenzen der jeweiligen Quellen."
   url: "https://wfhungerland.github.io/konjunkturmonitor/"
+  repo: "https://github.com/wfhungerland/konjunkturmonitor"
 
 # Darstellung nach Tufte. Jeder Schalter lässt sich einzeln mit false zurücknehmen.
 layout:
@@ -19,6 +20,7 @@ layout:
   uniform_years: 6        # einheitliches Zeitfenster in Jahren für Abbildungen mit 3 bis 8 Jahren (false: wie je Abbildung angegeben)
   lead_chart_only: true   # je Thema eine Leitgrafik, weitere Abbildungen aufklappbar
   overview: true          # Antwort auf die Titelfrage in zwei bis drei Sätzen über der Tabelle
+  brief_topics: [wachstum, preise, arbeit, industrie, konsum, export, stimmung, zinsen]  # Kurzfassung: Leitabbildungen dieser Abschnitte
   red_zero_line: true     # Nulllinie rot wie im Grafikstandard (false: dunkelgrau)
 
 # Kennzahlentabelle der Startseite, gruppiert nach den Abschnitten der Seite (topic).

@@ -237,7 +237,7 @@ ol, ul {{ margin: 4px 0; padding-left: 20px; }} li {{ margin: 2px 0; }} .ask {{ 
 <h2>Grenzen und Hinweise</h2>
 <ul>{''.join(f'<li>{escape(x)}</li>' for x in limits)}</ul>
 <h2>Zitieren und weiterverwenden</h2>
-<p class="small">Zitiervorschlag: {escape(cite)}<br>Lizenz der Abbildung: <a href="{lic_url}">{escape(lic)}</a>; die Daten unterliegen den oben genannten Lizenzen der Quellen.{('<br>Downloads: ' + dl) if dl else ''}</p>
+<p class="small">Zitiervorschlag: {escape(cite)}<br>Lizenz der Abbildung: <a href="{lic_url}">{escape(lic)}</a>; die Daten unterliegen den oben genannten Lizenzen der Quellen.<br>Berechnet mit dem Code-Stand {escape(c.get('_code', ''))}. Frühere Datenstände: <a href="{escape(payload['site'].get('repo', ''), True)}/releases">wöchentliche Archive</a>.{('<br>Downloads: ' + dl) if dl else ''}</p>
 </body></html>
 """
 

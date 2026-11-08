@@ -1,0 +1,26 @@
+name: Wächter
+
+# Prüft täglich, ob die veröffentlichte Seite erreichbar und aktuell ist; meldet Probleme als Issue und schließt es wieder.
+on:
+  schedule:
+    - cron: "41 10 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml pandas
+      - name: Seite prüfen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -m monitor.waechter

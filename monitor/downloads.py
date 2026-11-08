@@ -203,7 +203,7 @@ def write_xlsx(c: dict, df: pd.DataFrame, plan: dict, path: Path, stand: str, ci
         info.set_column(1, 1, 110)
         for r, (k, v) in enumerate([("Datei", c.get("_stem", "")), ("Abbildung", title), ("Zeitraum und Bereinigung", sub), ("Einheit", unit),
                                     ("Erläuterung", c.get("caption", "")), ("Quelle", source_line(c)),
-                                    ("Datenstand", c.get("datenstand", "")), ("Abrufdatum", stand), ("Zitiervorschlag", cite), ("Lizenz", NCSA_LICENSE if c.get("content_license") == "CC BY-NC-SA 4.0" else CONTENT_LICENSE)]):
+                                    ("Datenstand", c.get("datenstand", "")), ("Abrufdatum", stand), ("Zitiervorschlag", cite), ("Code-Stand", c.get("_code", "")), ("Lizenz", NCSA_LICENSE if c.get("content_license") == "CC BY-NC-SA 4.0" else CONTENT_LICENSE)]):
             info.write(r, 0, k, wb.add_format({"bold": True, "font_name": FONT}))
             info.write(r, 1, v, wrap)
         sheet.activate()
