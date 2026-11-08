@@ -244,7 +244,14 @@
   #nav details.navgrp > summary.cur { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
   #nav .navlist { width: max-content; position: absolute; left: 0; top: 1.9em; background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 10px 16px; display: grid; grid-template-columns: repeat(2, max-content); gap: 5px 26px; box-shadow: 0 4px 14px rgba(0,0,0,.08); z-index: 10; font-size: 14.5px; line-height: 1.4; }
   #nav details.navgrp[data-g="lage"] .navlist, #nav details.navgrp[data-g="service"] .navlist, #nav details.navgrp[data-g="struktur"] .navlist { grid-template-columns: max-content; }
-  .menubtn { display: none; } body.menuopen .fab { display: none; } .briefbtn[aria-pressed="true"] { font-weight: 700; }
+  .menubtn { display: none; }
+  .answer b.kern { font-weight: 600; }
+  details.moretxt { margin: -4px 0 10px; } details.moretxt > summary { cursor: pointer; font-size: 14px; } details.moretxt p { margin: 6px 0 0; font-size: 16px; max-width: 46em; }
+  body.brief details.moretxt { display: none; }
+  body.embed header, body.embed #overview, body.embed #news, body.embed #grid, body.embed #starttable, body.embed #legendhint, body.embed .parthead, body.embed .rail,
+    body.embed .fab, body.embed #quellen, body.embed footer, body.embed .weekrev, body.embed details.dl, body.embed .explain { display: none !important; }
+  body.embed main { padding-top: 4px; } body.embed section.topic { margin-top: 0 !important; padding-top: 0 !important; }
+  .embedsrc { font-size: 13.5px; margin: 6px 0 0; } body.menuopen .fab { display: none; } .briefbtn[aria-pressed="true"] { font-weight: 700; }
   body.brief section.topic:not(.brieftopic), body.brief .parthead, body.brief details.morecharts, body.brief .weekrev, body.brief details.moretable, body.brief .explain { display: none !important; }
   @media (max-width: 600px) {
     #nav { display: none; }
@@ -404,6 +411,8 @@ const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten
 const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
 const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "Struktur", service: "Service" }, overview: "Übersicht", brief: "Kurzfassung", all: "Alles zeigen",
   week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü" };
+const KERN = { more: "Mehr Zahlen" };
+const EMB = { label: "Einbetten", title: "HTML-Code kopieren, um diese Abbildung auf einer eigenen Seite einzubetten", done: "Code kopiert", src: "Konjunkturmonitor", full: "ganze Seite" };
 const HFMT = { A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
 function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 5, 10].map(m => m * p).find(s => s >= raw); }
 function decs(step) { return step >= 1 ? 0 : step >= 0.1 ? 1 : 2; }
@@ -1046,10 +1055,16 @@ function card(c, no) {
   if (!["heat", "heatbars", "calendar", "event"].includes(c.type)) acts.push(`<button type="button" class="png">PNG</button>`);
   if (f.csv) acts.push(`<a href="${u(f.csv)}" download>CSV</a>`);
   acts.push(`<button type="button" class="lnk" title="Direkten Link auf diese Abbildung kopieren">Link kopieren</button>`);
+  if (c.chart) acts.push(`<button type="button" class="emb" title="${EMB.title}">${EMB.label}</button>`);
   if (c.chart) acts.push(`<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${METH_LABEL}</a>`);  // Daten, Quellen, Rechenschritte, Methode
   tools.insertAdjacentHTML("beforeend", `<details class="dl"><summary title="Herunterladen, Link kopieren oder Methodenblatt öffnen">⤓ Download, Link und Methode</summary><div class="dlmenu">${acts.join("")}</div></details>`);
   // Direkter Link auf diese Abbildung zum Teilen
   const lk = tools.querySelector("button.lnk");
+  const eb = tools.querySelector("button.emb");
+  if (eb) eb.onclick = () => { const src = (DATA.site.url || "").replace(/en\/$/, "") + "abb/" + encodeURIComponent(c.chart) + ".html";
+    const code = `<iframe src="${src}" title="${esc(`Abb. ${no} ${c.title || ""} (Konjunkturmonitor)`)}" width="100%" height="620" style="border:0" loading="lazy"></iframe>`;
+    const done = () => { const o = eb.textContent; eb.textContent = EMB.done; setTimeout(() => eb.textContent = o, 1500); };
+    if (navigator.clipboard) navigator.clipboard.writeText(code).then(done, () => prompt(EMB.label, code)); else prompt(EMB.label, code); };
   lk.onclick = () => { const url = (DATA.site.url || location.href.split("#")[0]).replace(/#.*$/, "") + "#abb-" + no;
     const done = () => { lk.textContent = "Link kopiert"; setTimeout(() => lk.textContent = "Link kopieren", 1500); };
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => prompt("Link kopieren:", url)); else prompt("Link kopieren:", url); };
@@ -1228,6 +1243,7 @@ function build() {
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const LY = DATA.layout || {};
   if (LY.minimal) document.body.classList.add("minimal");
+  if (DATA.embed) document.body.classList.add("embed");  // Einzelseite zum Einbetten: nur diese Abbildung
   const grid = document.getElementById("grid"), nav = document.getElementById("nav"), topics = document.getElementById("topics");
   if (LY.start_table && startTable(document.getElementById("starttable"))) grid.style.display = "none";
   else DATA.questions.forEach(q => {
@@ -1254,7 +1270,8 @@ function build() {
     const leadTexts = t.charts[0] && !dup(t.charts[0]) ? (t.charts[0].texts || []) : [];
     const ans = (q ? [q.answer.head, ...q.answer.more] : []).concat(leadTexts);
     sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))}</h2>`
-      + (ans.length ? `<div class="intro"><p class="answer">${sentHtml(ans, " ", false)} <button type="button" class="copy" title="Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren">⧉ Textbaustein</button></p>`
+      + (ans.length ? `<div class="intro"><div class="ansbox"><p class="answer"><b class="kern">${esc(ans[0])}</b> <button type="button" class="copy" title="Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren">⧉ Textbaustein</button></p>`
+        + (ans.length > 1 ? `<details class="moretxt"><summary>${KERN.more}</summary><p>${sentHtml(ans.slice(1), " ", false)}</p></details>` : "") + `</div>`
         + (q ? `<div class="explain">${esc(q.explain)}</div>` : "") + `</div>` : "");
     if (t.charts[0]) t.charts[0]._lead = true;
     // Textbaustein: Antwort und die Sätze aller Abbildungen des Abschnitts als ein zusammenhängender Text
@@ -1324,6 +1341,7 @@ function build() {
   ex.onclick = () => { opened = !opened; document.querySelectorAll("details.morecharts").forEach(d => d.open = opened); exLab(); };
   document.querySelector("header .bar").append(searchBox(), bb, ex, mb);
   document.body.insertAdjacentHTML("beforeend", `<a class="fab" href="#top" aria-label="Zur Übersicht">↑ Übersicht</a>`);
+  if (DATA.embed) { const c0 = DATA.topics[0].charts[0]; topics.insertAdjacentHTML("afterend", `<p class="embedsrc">${EMB.src} · <a href="${esc(DATA.site.url)}#abb-${c0.no}" target="_blank" rel="noopener">${EMB.full}</a></p>`); }
 }
 build();
 function openHash() { const el = location.hash && document.querySelector(location.hash); const d = el && el.closest("details"); if (d) d.open = true; }
