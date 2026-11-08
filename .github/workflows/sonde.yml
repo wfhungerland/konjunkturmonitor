@@ -1,0 +1,20 @@
+name: Sonde Berlin (einmalig, wird wieder entfernt)
+on:
+  push:
+    branches: [claude/konjunkturmonitor-aufbau]
+    paths: [tools/sonde_berlin.py, .github/workflows/sonde.yml]
+permissions:
+  contents: read
+jobs:
+  sonde:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - env:
+          GENESIS_USER: ${{ secrets.GENESIS_USER }}
+          GENESIS_PASSWORD: ${{ secrets.GENESIS_PASSWORD }}
+        run: python tools/sonde_berlin.py
