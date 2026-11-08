@@ -94,11 +94,14 @@ Der Workflow `update.yml` läuft werktags zweimal (7:23 und 12:23 UTC), bei Änd
 ### Was automatisch läuft
 - **Datenlauf** (`.github/workflows/update.yml`): werktags 7:23 und 12:23 UTC Daten holen, Seite bauen, testen, veröffentlichen.
 - **Datenarchiv:** der erste geplante Lauf jeder Woche legt den vollständigen Datenstand (`observations.csv.gz`, `run_status.json`, Katalog, Seitenaufbau) als Release `daten-JJJJ-KWnn` ab, mit dem Code-Stand in der Beschreibung.
-- **Tickets:** `monitor/alert.py` pflegt zwei Issues: „Datenabruf: Ausfälle“ (fehlgeschlagene oder veraltete Reihen) und „Datenabruf: auffällige Werte“ (jüngste Veränderung weit außerhalb des Bisherigen). Beide schließen sich selbst, sobald alles wieder stimmt.
+- **Tickets:** `monitor/alert.py` pflegt drei Issues: „Datenabruf: Ausfälle“ (fehlgeschlagene oder veraltete Reihen) , „Datenabruf: auffällige Werte“ (jüngste Veränderung weit außerhalb des Bisherigen) und „Automatische Sätze: Auffälligkeiten“ (Sätze, die die Satzprüfung in `monitor/satzpruefung.py` nicht bestehen und deshalb entfallen). Alle schließen sich selbst, sobald alles wieder stimmt.
 - **Wächter** (`.github/workflows/waechter.yml`, täglich): prüft, ob die veröffentlichte Seite erreichbar ist und ihr Stand höchstens drei Werktage alt ist; sonst Issue „Wächter: Seite veraltet oder nicht erreichbar“.
 - **Pipeline-Stand** (`.github/workflows/pipeline-stand.yml`, montags): konjunkturwolf ist in `pyproject.toml` auf einen Commit festgelegt. Gibt es einen neueren Stand, testet der Lauf ihn und öffnet einen Pull Request. Dafür einmalig unter Settings › Actions › General „Allow GitHub Actions to create and approve pull requests“ aktivieren.
 
 Damit Tickets ankommen: Repository auf „Watch“ stellen (mindestens „Issues“) und Benachrichtigungen per E-Mail einschalten.
+
+### Korrekturen dokumentieren
+Jede Änderung, die Zahlen oder Aussagen berührt (behobener Fehler, neue Quelle, geänderte Rechnung), bekommt einen Eintrag in `data/static/korrekturen.yaml`: Datum, Art, betroffene Abbildungen, ein bis zwei Sätze und die Nummer des Pull Requests. Daraus entstehen die Seite `korrekturen.html` und der Abschnitt „Änderungen“ im Methodenblatt der Abbildung.
 
 ### Was zu tun ist, wenn …
 - **eine Quelle ausfällt** (Ticket „Ausfälle“): Meldung im Ticket lesen. Bei Zeitüberschreitung oder Serverfehler reicht meist Abwarten; die Seite zeigt solange den letzten Stand mit Hinweis. Bei geänderter Tabelle oder Kennung die Reihe in `series.yaml` anpassen (Schlüssel, `params`, bei GENESIS `query`), lokal mit `python -m monitor run` prüfen, Pull Request.

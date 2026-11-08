@@ -1671,6 +1671,8 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
     from .methodik import write_method_pages
     write_method_pages(payload, meta, root, out, _license)  # Methodenblatt je Abbildung (site/methodik/)
     preview_image(payload, out / "vorschau.png")
+    from .korrekturen import load as load_corr, write_page as write_corr
+    write_corr(load_corr(root), payload, out)  # Korrekturen und Änderungen (site/korrekturen.html)
     for page in ("impressum.html", "datenschutz.html"):
         (out / page).write_text(resources.files("monitor").joinpath(f"templates/{page}").read_text(encoding="utf-8"), encoding="utf-8")
     (out / "data.json").write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
