@@ -147,6 +147,74 @@ def _forecasts(root: Path) -> list[dict]:
     return sorted((dict(r, latest=r["date"] == newest[r["by"]]) for r in rows), key=lambda r: r["date"])
 
 
+def _projection(c: dict, data: dict, root: Path) -> dict | None:
+    """Abgleich mit der jüngsten Projektion der Bundesregierung für das Jahr des jüngsten BIP-Quartals.
+
+    Die Jahresrate der Projektion ist unbereinigt. Sie entspricht näherungsweise dem gewogenen Mittel der unbereinigten
+    Raten ggü. Vorjahresquartal, gewichtet mit dem Anteil jedes Quartals am Vorjahr (Gewichte aus dem bereinigten Index).
+    Für die noch fehlenden Quartale folgt daraus die gleiche Rate je Quartal, die das Jahresziel gerade erreicht.
+    """
+    yoy_id, idx_id = c.get("yoy", "de_gdp_yoy"), c.get("index", "de_gdp_index")
+    if yoy_id not in data or idx_id not in data:
+        return None
+    yoy, idx = data[yoy_id].dropna(), data[idx_id].dropna()
+    year = int(yoy.index[-1].year)
+    rounds = [f for f in _forecasts(root) if f["by"] == "Bundesregierung" and year in (f.get("values") or {})]
+    if not rounds:
+        return None
+    rounds.sort(key=lambda f: f["date"])
+    cur, prev = rounds[-1], (rounds[-2] if len(rounds) > 1 else None)
+    target = float(cur["values"][year])
+    base = idx[idx.index.year == year - 1]
+    if len(base) != 4:
+        return None
+    w = {d.month: float(v) / float(base.sum()) for d, v in base.items()}  # Anteil je Quartal am Vorjahr
+    known = yoy[yoy.index.year == year]
+    done = sum(w[d.month] * float(v) for d, v in known.items())
+    rest = [m for m in (1, 4, 7, 10) if m not in {d.month for d in known.index}]
+    need = (target - done) / sum(w[m] for m in rest) if rest else None
+    need_qoq = None
+    if rest:  # bereinigt: nötiges Niveau im nächsten Quartal ggü. dem jüngsten bereinigten Stand, ohne Kalendereffekt
+        nxt = pd.Timestamp(year=year, month=rest[0], day=1)
+        ago = idx.get(nxt - pd.DateOffset(years=1))
+        if ago is not None and idx.index[-1] == nxt - pd.DateOffset(months=3):
+            need_qoq = (float(ago) * (1 + need / 100) / float(idx.iloc[-1]) - 1) * 100
+    hist = yoy[yoy.index.year >= year - 1]
+    xs = [d.strftime("%Y-%m-%d") for d in hist.index] + [f"{year}-{m:02d}-01" for m in rest]
+    ys = [round(float(v), 4) for v in hist.values] + [round(need, 2)] * len(rest)
+    return {"year": year, "target": target, "round": cur["round"], "date": cur["date"], "source": cur.get("source"),
+            "prev": {"round": prev["round"], "value": float(prev["values"][year])} if prev else None,
+            "known": [{"q": (d.month + 2) // 3, "v": float(v)} for d, v in known.items()], "rest": [(m + 2) // 3 for m in rest],
+            "need": need, "need_qoq": need_qoq, "done_rate": done if not rest else None,
+            "last_qoq": float(data["de_gdp_qoq"].dropna().iloc[-1]) if "de_gdp_qoq" in data else None,
+            "series": [{"id": yoy_id, "label": "BIP ggü. Vorjahresquartal", "unit": "% ggü. Vorjahresquartal", "freq": "Q", "style": "bar",
+                        "x": xs, "y": ys, "req": len(rest)}]}
+
+
+def _diffusion(c: dict, data: dict, meta: dict) -> dict | None:
+    """Breite: Anteil der Branchen, deren Dreimonatsdurchschnitt über dem der drei Monate davor liegt, in %.
+    Ungewichtet: jede Branche zählt gleich, unabhängig von ihrer Größe."""
+    series, counts = [], {}
+    for label, chart in (c.get("groups") or {}).items():
+        cols = {s.id: data[s.id].dropna() for s in meta.values() if s.chart_id == chart and s.id in data}
+        if len(cols) < 5:
+            continue
+        w = pd.DataFrame(cols)
+        m = w.rolling(3).mean()
+        g = (m / m.shift(3) - 1) * 100
+        n = g.notna().sum(axis=1)
+        up = (g > 0).sum(axis=1)
+        share = (up / n * 100)[n >= max(5, len(cols) // 2)].dropna()
+        if share.empty:
+            continue
+        last, ago = share.index[-1], share.index[-1] - pd.DateOffset(years=1)
+        counts[label] = {"up": int(up[last]), "n": int(n[last]), "period": last.strftime("%Y-%m-%d"),
+                         "up_ago": int(up[ago]) if ago in up.index and n.get(ago, 0) else None, "n_ago": int(n[ago]) if ago in n.index else None,
+                         "ma3": round(float(share.iloc[-3:].mean()), 1)}
+        series.append(dict(id=f"diff_{chart}", label=f"{label} ({len(cols)} Branchen)", unit="% der Branchen", freq="M", style="line", **_xy(share, c.get("years"))))
+    return {"series": series, "counts": counts} if series else None
+
+
 def _contrib(cfg: dict, data: dict) -> dict | None:
     """Beiträge zur Inflationsrate aus Teilindizes (2020 = 100).
 
@@ -534,6 +602,49 @@ def chart_sentences(c: dict) -> list[str]:
         lab = s.get("label") or ""
         return f"der Wert für „{lab}“" if lab else "der Wert"
     try:
+        if c.get("pot_names"):  # Dynamik: BIP-Wachstum gegenüber der Spanne der Potenzialschätzungen
+            bar = next(x for x in c["series"] if x.get("style") == "bar")
+            lo, hi = (next(x for x in c["series"] if x.get("style") == st) for st in ("band_lo", "band_hi"))
+            band = {d[:4]: (a, b) for d, a, b in zip(lo["x"], lo["y"], hi["y"])}
+            y, g = bar["x"][-1][:4], bar["y"][-1]
+            who = ", ".join(n.split("(")[-1].rstrip(")") for n in c["pot_names"])
+            who = " und ".join(who.rsplit(", ", 1))
+            out = []
+            if y in band:
+                a, b = band[y]
+                cmp = "langsamer als" if g < a else "schneller als" if g > b else "etwa so schnell wie"
+                out.append(f"{y} wuchs das BIP um {num(g, 1)} % und damit {cmp} das Produktionspotenzial nach den Schätzungen von {who} ({num(a, 1)} bis {num(b, 1)} %).")
+            y1 = str(int(y) + 1)
+            if y1 in band:
+                a, b = band[y1]
+                s1 = f"Für {y1} schätzen sie das Potenzialwachstum auf {num(a, 1)} bis {num(b, 1)} %"
+                gv = (c.get("gov_values") or {}).get(y1)
+                out.append(s1 + (f"; die {c['gov_round']} der Bundesregierung erwartet ein BIP-Wachstum von {num(gv, 1)} %." if gv is not None else "."))
+            return out
+        if c.get("diff"):  # Breite: Zahl der Branchen mit Zuwachs
+            parts = []
+            for label, k in c["diff"].items():
+                inv = {"Produktion": ("wuchs die Produktion", "die Produktion wuchs"), "Auftragseingang": ("stieg der Auftragseingang", "der Auftragseingang stieg")}
+                verb = inv.get(label, (f"stieg {label}", f"{label} stieg"))[0 if not parts else 1]  # nach Semikolon Subjekt zuerst
+                ago = f", ein Jahr zuvor in {k['up_ago']}" if k.get("up_ago") is not None else ""
+                parts.append(f"{verb} in {k['up']} von {k['n']} Branchen{ago}")
+            t = pd.Timestamp(max(k["period"] for k in c["diff"].values()))
+            return [f"Im Dreimonatsvergleich bis {MONTHS[t.month - 1]} {t.year} " + "; ".join(parts) + "."]
+        if c.get("proj"):  # Abgleich mit der Projektion der Bundesregierung
+            p = c["proj"]
+            qs = lambda l: f"im {l[0]}. Quartal" if len(l) == 1 else f"im {l[0]}. bis {l[-1]}. Quartal je" if len(l) > 2 else f"im {l[0]}. und {l[1]}. Quartal je"
+            if p["rest"]:
+                k = p["known"][-1] if p["known"] else None
+                out = [f"Um die {p['round']} der Bundesregierung von {num(p['target'], 1)} % für {p['year']} zu erreichen, müsste das BIP {qs(p['rest'])} um "
+                       f"{num(p['need'], 1)} % über dem Vorjahresquartal liegen" + (f"; im {k['q']}. Quartal waren es {num(k['v'], 1)} %." if k else ".")]
+                if p.get("need_qoq") is not None and p.get("last_qoq") is not None:
+                    out.append(f"Saison- und kalenderbereinigt entspräche das im {p['rest'][0]}. Quartal einem Anstieg ggü. dem Vorquartal um "
+                               f"{num(p['need_qoq'], 1)} %; zuletzt waren es {num(p['last_qoq'], 1)} %.")
+            else:
+                out = [f"Nach den vier Quartalen wuchs das BIP {p['year']} um etwa {num(p['done_rate'], 1)} %; die {p['round']} der Bundesregierung erwartete {num(p['target'], 1)} %."]
+            if p.get("prev"):
+                out.append(f"Die {p['prev']['round']} hatte für {p['year']} {num(p['prev']['value'], 1)} % erwartet.")
+            return out
         if typ == "tiles" and c["tiles"].get("measure") == "diff":
             w = c["tiles"]
             loc = lambda n: {"Saarland": "im Saarland"}.get(n, "in " + n)
@@ -1251,6 +1362,24 @@ def build_payload(root: Path = ROOT) -> dict:
                 if not cal:
                     continue
                 entry.update(calendar=cal, sources=["Eigene Zusammenstellung nach dem üblichen Veröffentlichungsrhythmus der Quellen"], licenses=[])
+            elif typ == "diffusion":
+                df_ = _diffusion(c, data, meta)
+                if not df_:
+                    continue
+                entry.update(type="line", diff=df_["counts"], series=df_["series"], unit="% der Branchen mit Zuwachs", freq="M", decimals=0, ma3=True, raw_hidden=True, y_range=[0, 100],
+                             refs=[{"y": 50, "label": "Hälfte der Branchen"}], adjustment="saison- und kalenderbereinigt (Bundesbank)",
+                             sources=["Deutsche Bundesbank (Produktion und Auftragseingang des Statistischen Bundesamts)", "eigene Berechnung"],
+                             licenses=[SOURCE_LICENSES["bundesbank"]])
+            elif typ == "projection":
+                pj = _projection(c, data, root)
+                if not pj:
+                    continue
+                series = pj.pop("series")
+                entry.update(type="line", proj=pj, series=series, unit="% ggü. Vorjahresquartal", freq="Q", decimals=1, recessions=False,
+                             adjustment="preisbereinigt, nicht saison- und kalenderbereinigt (wie die Jahresrate der Projektion)",
+                             refs=[{"y": pj["target"], "x0": f"{pj['year']}-01-01", "label": f"{pj['round']}: {str(round(pj['target'], 1)).replace('.', ',')} %"}],
+                             sources=["Eurostat (BIP des Statistischen Bundesamts)", f"Bundesregierung ({pj['round']})", "eigene Berechnung"],
+                             licenses=[SOURCE_LICENSES["eurostat"]])
             elif typ == "forecast":
                 key = {"gdp": "values", "inflation": "inflation", "core": "core"}[c.get("measure", "gdp")]
                 fs = [dict(f, values=f[key], by=f["by"] + (f" ({f['inflation_measure']})" if key != "values" and f.get("inflation_measure") else ""))
@@ -1321,6 +1450,23 @@ def build_payload(root: Path = ROOT) -> dict:
                         vals = [round(sum(m["y"][m["x"].index(x)] for m in members), 4) for x in xs]
                         grouped.append(dict(members[0], id=f"group_{label}", label=label, x=xs, y=vals))
                     series = grouped + [s for s in series if s.get("style") != "bar"]
+                if c.get("pot_band"):  # Spanne mehrerer Schätzungen als Band; die Einzelschätzungen nur im Tooltip
+                    ps = [x for x in series if x["id"] in c["pot_band"]]
+                    if len(ps) >= 2:
+                        vals = {}
+                        for x in ps:
+                            for d, v in zip(x["x"], x["y"]):
+                                vals.setdefault(d, []).append(v)
+                        xs = sorted(d for d, v in vals.items() if len(v) >= 2)
+                        band = dict(ps[0], unit=ps[0]["unit"], freq=ps[0]["freq"], x=xs)
+                        cut = lambda x: dict(x, style="hover", x=[d for d in x["x"] if d <= xs[-1]], y=[v for d, v in zip(x["x"], x["y"]) if d <= xs[-1]])  # nicht über das Band hinaus
+                        series = [cut(x) if x in ps else x for x in series] + [
+                            dict(band, id="band_lo", label="Spanne der Schätzungen, untere Grenze", style="band_lo", y=[round(min(vals[d]), 3) for d in xs]),
+                            dict(band, id="band_hi", label="Spanne der Schätzungen, obere Grenze", style="band_hi", y=[round(max(vals[d]), 3) for d in xs])]
+                        entry["pot_names"] = [x["label"] for x in ps]
+                        gov = sorted((f for f in _forecasts(root) if f["by"] == "Bundesregierung"), key=lambda f: f["date"])
+                        entry["gov_values"] = {str(k): v for k, v in gov[-1]["values"].items()} if gov else {}
+                        entry["gov_round"] = gov[-1]["round"] if gov else None
                 entry["series"] = series
                 if layout.get("compare_band") and typ in ("line",) and not c.get("ma3") and (len(series) == 1 or c.get("emphasis")):
                     lead = next((s for s in specs if s.id == c.get("emphasis")), None) or next((s for s in specs if s.id in data), None)

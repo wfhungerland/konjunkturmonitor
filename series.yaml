@@ -2008,7 +2008,7 @@ series:
     unit: Index 2021=100
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
-    start: "2015-01-01"
+    start: "2005-01-01"
     chart: branch_heat
     label: "{wz} {wz_name}"
 
@@ -2044,7 +2044,7 @@ series:
     block: struktur
     source: static
     key: ameco_potential_de
-    params: {source_name: "Europäische Kommission, AMECO (über DBnomics), eigene Berechnung"}
+    params: {source_name: "Europäische Kommission, AMECO, eigene Berechnung"}
     title: "Wachstum des Produktionspotenzials (AMECO)"
     unit: "% ggü. Vorjahr"
     frequency: A
@@ -2052,9 +2052,41 @@ series:
     start: "1996-01-01"
     stale_after_months: 24
     chart: potential
-    label: "Produktionspotenzial"
+    label: "Potenzial (AMECO)"
     license: "Europäische Kommission, AMECO: Wiederverwendung mit Quellenangabe"
-    note: "Veränderung des Produktionspotenzials (AMECO-Reihe OVGDP) gegenüber dem Vorjahr; AMECO-Stand Frühjahr 2026, abgerufen über DBnomics am 3.11.2026. Aktualisierung zweimal jährlich von Hand."
+    note: "Veränderung des Potenzial-BIP zu Preisen von 2020 (AMECO-Reihe OVGDP) gegenüber dem Vorjahr; wöchentlich über den AMECO-Abfragedienst der Europäischen Kommission abgerufen."
+
+  - id: de_potential_oecd
+    block: struktur
+    source: static
+    key: oecd_potential_de
+    params: {source_name: "OECD, Economic Outlook, eigene Berechnung"}
+    title: "Wachstum des Produktionspotenzials (OECD)"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1996-01-01"
+    stale_after_months: 24
+    chart: potential
+    label: "Potenzial (OECD)"
+    license: "OECD: CC BY 4.0"
+    note: "Veränderung des Potenzial-BIP in konstanten Preisen (OECD Economic Outlook, Reihe GDPVTR) gegenüber dem Vorjahr; wöchentlich abgerufen."
+
+  - id: de_potential_imf
+    block: struktur
+    source: static
+    key: imf_potential_de
+    params: {source_name: "IWF, World Economic Outlook, eigene Berechnung"}
+    title: "Wachstum des Produktionspotenzials (IWF)"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1996-01-01"
+    stale_after_months: 24
+    chart: potential
+    label: "Potenzial (IWF)"
+    license: "IWF: Nutzung mit Quellenangabe"
+    note: "Aus dem realen BIP-Wachstum und der Produktionslücke in % des Potenzials (IWF World Economic Outlook, NGDP_RPCH und NGAP_NPGDP) abgeleitet; wöchentlich abgerufen."
 
   - id: de_lp_hour
     block: struktur
@@ -2377,7 +2409,7 @@ series:
     unit: Index 2021=100
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
-    start: "2015-01-01"
+    start: "2005-01-01"
     chart: orders_heat
     label: "{wz_name}"
 

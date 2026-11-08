@@ -280,10 +280,15 @@ def update_revisions(static: Path) -> None:
     log.info("Echtzeitdaten BIP: %d Quartale mit erster Meldung", len(first))
 
 
+def _potential(static: Path) -> None:
+    from .potenzial import update_potential
+    update_potential(static)
+
+
 def update_all(root: Path) -> None:
     static = root / "data" / "static"
     static.mkdir(parents=True, exist_ok=True)
-    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions)):
+    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf

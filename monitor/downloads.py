@@ -62,6 +62,11 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
                 cols[s["label"]] = pd.Series(_ma3(s["y"]), index=x)
                 thin.append(s["label"] + " (Monatswert)")
                 lines.append(s["label"])
+            elif s.get("req"):  # Projektion: gemeldete und nötige Quartale in getrennten Spalten
+                k, need = len(s["y"]) - s["req"], s["label"] + " (nötig für die Projektion)"
+                cols[s["label"]] = pd.Series(s["y"][:k] + [None] * s["req"], index=x)
+                cols[need] = pd.Series([None] * k + s["y"][k:], index=x)
+                bars += [s["label"], need]
             else:
                 cols[s["label"]] = pd.Series(s["y"], index=x)
                 (bars if s.get("style") == "bar" else lines).append(s["label"])
@@ -75,6 +80,8 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
                 dashed.append(name)
         for r in c.get("refs") or []:  # Referenzwerte mit eigener Beschriftung, etwa Maastricht-Grenzen
             df[r["label"]] = r["y"]
+            if r.get("x0"):  # Referenz erst ab diesem Datum, etwa ein Jahresziel
+                df.loc[df.index < pd.Timestamp(r["x0"]), r["label"]] = None
             lines.append(r["label"])
             dashed.append(r["label"])
         df.index.name = "Datum"
