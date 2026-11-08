@@ -1552,6 +1552,27 @@ def build_payload(root: Path = ROOT) -> dict:
                 n["text"] = tidy(n["text"])
             if c.get("alt"):
                 c["alt"] = dict(c["alt"], label=tidy(c["alt"]["label"]), base=tidy(c["alt"]["base"]), unit=tidy(c["alt"]["unit"]))
+    if recs:  # Erfolgsbilanz der Signale gegen die Rezessionsdatierung des Sachverständigenrats
+        from .bilanz import evaluate
+        for tp in topics:
+            for c in tp["charts"]:
+                rule, flag = None, None
+                if c["chart"] == "sahm" and "de_sahm" in data:
+                    thr = float(c.get("threshold", 0.25))
+                    flag, rule = data["de_sahm"] >= thr, f"Signal ab {str(thr).replace('.', ',')} Pp"
+                elif c["chart"] == "diffusion" and c.get("series"):
+                    s0 = c["series"][0]
+                    m3 = pd.Series(s0["y"], index=pd.to_datetime(s0["x"])).rolling(3).mean()
+                    flag, rule = (m3 < 40).where(m3.notna()), "Dreimonatsmittel der Produktion unter 40 % der Branchen"
+                elif c.get("type") == "clock" and c.get("x") in data and c.get("y") in data:
+                    df = pd.concat({"x": data[c["x"]], "y": data[c["y"]]}, axis=1).dropna()
+                    dev = df - df[(df.index >= "2005-01-01") & (df.index < "2020-01-01")].mean()
+                    both = (dev["x"] < 0) & (dev["y"] < 0)
+                    flag, rule = both & both.shift(1, fill_value=False), "zwei Monate in Folge im Feld „Rezession“ (Aufträge und Erwartungen unter dem Mittel)"
+                if flag is not None:
+                    b = evaluate(flag, recs, 12 if c["chart"] == "sahm" else 0)
+                    if b:
+                        c["bilanz"] = dict(b, rule=rule)
     from .satzpruefung import apply as check_sentences
     text_issues = check_sentences(topics)  # durchgefallene Sätze entfallen, Funde gehen ins Ticket
     for line in text_issues:
