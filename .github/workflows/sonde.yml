@@ -17,4 +17,4 @@ jobs:
       - env:
           GENESIS_USER: ${{ secrets.GENESIS_USER }}
           GENESIS_PASSWORD: ${{ secrets.GENESIS_PASSWORD }}
-        run: python tools/sonde_berlin.py
+        run: pip install -q pandas openpyxl && python tools/sonde_berlin.py
