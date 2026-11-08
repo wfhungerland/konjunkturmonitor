@@ -17,38 +17,20 @@ if not H["username"]:
 import io
 import pandas as pd
 
-for sel in ["45212-*"]:
-    txt = post("catalogue/tables", selection=sel, area="all", pagelength="200", language="de")
-    for code, content in re.findall(r'"Code"\s*:\s*"([^"]+)"\s*,\s*"Content"\s*:\s*"([^"]+)"', txt):
-        print(f"{code}\t{content[:150]}")
-
-
-def walk(o, depth=0):
-    if isinstance(o, dict):
-        if o.get("Type") == "Merkmal":
-            print("  " * depth + f"- {o.get('Code')}: {o.get('Content')} ({o.get('Values')})")
-        for v in o.values():
-            walk(v, depth + 1)
-    elif isinstance(o, list):
-        for v in o:
-            walk(v, depth)
-
-
-import json
-for name in ["45412-0025", "45213-0014", "31111-0120", "61111-0021", "13111-0005", "45212-0011", "45212-0012", "45212-0014", "45212-0015"]:
+for name in ["61111-0011", "61111-0021", "45412-0025", "45213-0014", "45212-0014", "31111-0120", "13111-0005"]:
     try:
-        j = json.loads(post("metadata/table", name=name, area="all", language="de"))
-        print(f"\n## {name}: {(j.get('Object') or {}).get('Content')} {(j.get('Object') or {}).get('Time')}")
-        walk(j.get("Object"))
+        txt = post("data/tablefile", name=name, area="all", compress="false", format="ffcsv", language="en", startyear="2025")
+        lines = txt.splitlines()
+        h = next(i for i, l in enumerate(lines[:60]) if l.count(";") >= 3 and ("time" in l.lower()))
+        df = pd.read_csv(io.StringIO("\n".join(lines[h:])), sep=";", dtype=str, keep_default_na=False)
+        print(f"\n## Daten {name}: {df.shape}\nSpalten: {list(df.columns)}")
+        for c in df.columns:
+            if c.endswith("attribute_code") or c.endswith("variable_code") or c in ("time", "value_unit", "value_variable_code", "time_code"):
+                u = sorted(df[c].unique())
+                print(f"  {c}: {len(u)} -> {u[:40]}")
+        print(df.head(3).to_csv(sep="|", index=False))
     except Exception as e:
-        print(f"\n## {name}: Fehler {e}")
-for var in ["BAUTK1", "GEBAT1", "BAU004", "BAU005", "BAU002", "PREIS1", "WERT01"]:
-    try:
-        txt = post("catalogue/values2variable", name=var, area="all", pagelength="60", language="de")
-        vals = re.findall(r'"Code"\s*:\s*"([^"]+)"\s*,\s*"Content"\s*:\s*"([^"]+)"', txt)
-        print(f"\n## Werte {var}:", vals[:40])
-    except Exception as e:
-        print(f"\n## Werte {var}: Fehler {e}")
+        print(f"\n## Daten {name}: Fehler {type(e).__name__} {str(e)[:300]}")
 
 
 def get(url):
@@ -59,19 +41,11 @@ def get(url):
 
 page = get("https://www.statistik-berlin-brandenburg.de/m-i-2-m").decode("utf-8", "replace")
 be = sorted(set(re.findall(r'https://download\.statistik-berlin-brandenburg\.de/[^"]+_BE\.xlsx', page)))[-1]
-for url in [be, "https://www.statistikportal.de/sites/default/files/2026-09/vgrdl_hjr_bs2026_0.xlsx",
-            "https://www.statistikportal.de/sites/default/files/2026-03/vgrdl_r1b1_bs2025.xlsx"]:
-    try:
-        x = pd.ExcelFile(io.BytesIO(get(url)))
-        print(f"\n## {url}\nBlätter: {x.sheet_names}")
-        for sh in x.sheet_names[:12]:
-            df = x.parse(sh, header=None, nrows=60)
-            if df.empty:
-                continue
-            txt = df.fillna("").astype(str)
-            hit = txt.apply(lambda r: r.str.contains("Berlin|Nahrung|Energie|Kraftstoff|Gaststätt|Verbraucherpreisindex|Deutschland|Halbjahr", regex=True)).any(axis=1)
-            print(f"\n### Blatt {sh}: {df.shape}")
-            for i in list(range(min(6, len(df)))) + list(txt[hit].index[:25]):
-                print(i, " | ".join(v[:28] for v in txt.iloc[i].tolist()[:12]))
-    except Exception as e:
-        print(f"\n## {url}: Fehler {e}")
+x = pd.ExcelFile(io.BytesIO(get(be)))
+for sh in ["3", "5", "6", "7", "8"]:
+    df = pd.read_excel(x, sh, header=None).astype(object)
+    print(f"\n## AfS Blatt {sh}: {df.shape}")
+    for i, row in df.iterrows():
+        vals = ["" if pd.isna(v) else str(v).replace("\n", " ")[:22] for v in row.tolist()[:14]]
+        if any(vals):
+            print(i, "|".join(vals))
