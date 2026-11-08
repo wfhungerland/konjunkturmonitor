@@ -1413,6 +1413,36 @@ def build_payload(root: Path = ROOT) -> dict:
             "content_license": cfg["site"].get("license", "")}
 
 
+def write_embeds(payload: dict, tpl: str, out: Path) -> int:
+    from html import escape
+    """Je Abbildung site/abb/<abbildung>.html: dieselbe Vorlage, aber nur diese Abbildung, ohne Kopf und Fuß, zum Einbetten per iframe.
+    Pfade zu Plotly, Schrift, Downloads und Methodenblättern zeigen eine Ebene höher."""
+    d = out / "abb"
+    d.mkdir(parents=True, exist_ok=True)
+    base = (tpl.replace('const PLOTLY_SRC = "plotly.min.js";', 'const PLOTLY_SRC = "../plotly.min.js";').replace('url("fonts/', 'url("../fonts/')
+            .replace('METH_BASE = "methodik/"', 'METH_BASE = "../methodik/"'))
+    url = payload["site"].get("url", "")
+    n = 0
+    for t in payload["topics"]:
+        for c in t["charts"]:
+            if not c.get("chart") or c.get("type") == "calendar":
+                continue
+            cc = dict(c, files={k: "../" + v for k, v in (c.get("files") or {}).items() if isinstance(v, str)})
+            p = dict(payload, topics=[dict(t, charts=[cc], question=None, ask=c.get("ask") or t.get("ask"))], start=[], questions=[], news=[], week=[], overview="", embed=True,
+                     geo=payload.get("geo") if c.get("type") == "tiles" else None, all_series={}, deck=None)
+            js = json.dumps(p, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+            title = f"Abb. {c.get('no')} {c.get('title', '')} · Konjunkturmonitor"
+            desc = (c.get("texts") or [""])[0] or c.get("caption", "")
+            html = (base.replace("/*__DATA__*/null", js).replace("/*__STATIC__*/", "").replace("/*__OVERVIEW__*/", "")
+                    .replace("/*__DESC__*/", escape(desc, quote=True)).replace("/*__URL__*/", escape(f"{url}abb/{c['chart']}.html", quote=True))
+                    .replace("/*__OGIMG__*/", escape(url + "vorschau.png", quote=True))
+                    .replace("<title>Konjunkturmonitor</title>", f"<title>{escape(title)}</title>")
+                    .replace('<meta property="og:title" content="Konjunkturmonitor: Wie steht es um die deutsche Wirtschaft?">', f'<meta property="og:title" content="{escape(title, quote=True)}">'))
+            (d / f"{c['chart']}.html").write_text(html, encoding="utf-8")
+            n += 1
+    return n
+
+
 def code_versions(root: Path = ROOT) -> dict:
     """Code-Stand für Reproduzierbarkeit: Commit des Monitors (GITHUB_SHA oder git) und der installierten Pipeline konjunkturwolf."""
     import os
@@ -1473,6 +1503,7 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
             .replace("/*__OVERVIEW__*/", escape(payload.get("overview", ""))).replace("/*__DESC__*/", escape(desc, quote=True))
             .replace("/*__URL__*/", escape(url, quote=True)).replace("/*__OGIMG__*/", escape(url + "vorschau.png", quote=True)))
     (out / "index.html").write_text(html, encoding="utf-8")
+    write_embeds(payload, tpl, out)  # je Abbildung eine Einzelseite zum Einbetten (site/abb/)
     if payload["has_en"]:  # englische Fassung unter site/en/
         from .english import english_payload
         from .ui_en import apply
