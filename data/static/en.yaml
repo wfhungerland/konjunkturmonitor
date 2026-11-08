@@ -422,6 +422,10 @@ charts:
     title: "Natural gas price in Europe"
     ask: "How expensive is natural gas?"
     caption: "Wholesale price of natural gas in Europe (TTF trading hub), monthly average. The IMF reports the price in US dollars per MMBtu; converted into euros per megawatt hour, the unit customary in Europe, using the monthly average of the ECB reference rate (1 MMBtu = 0.293071 MWh)."
+  diffusion:
+    title: "Breadth: share of manufacturing industries growing"
+    ask: "Is industry growing across the board or only in a few industries?"
+    caption: "Share of manufacturing industries whose output (24 industries) or orders (9 industries) in the last three months exceeded the three months before, in %. Each industry counts equally, regardless of its size. Above 50%, most industries are growing. Lines: three-month moving average; monthly values can be shown. Grey areas: recessions as dated by the German Council of Economic Experts."
   proj_gap:
     title: "GDP and the Federal Government's projection"
     ask: "Is growth on track for the Federal Government's projection?"

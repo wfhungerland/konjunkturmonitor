@@ -47,6 +47,12 @@ charts:
     methode: "Die Konjunkturuhr verbindet zwei Fragen der EU-Unternehmensumfrage in der Industrie: die Beurteilung der Auftragsbestände (waagerecht) und die Produktionserwartungen für die nächsten drei Monate (senkrecht). Beide Salden werden als Abstand zu ihrem Mittel 2005 bis 2019 gezeigt; im typischen Zyklus läuft der Punkt im Uhrzeigersinn durch Aufschwung, Boom, Abschwung und Rezession."
     grenzen:
       - "Umfragesalden messen die Richtung, nicht die Höhe der Produktion."
+  diffusion:
+    methode: "Ein Diffusionsindex misst, wie breit eine Bewegung ist. Für jede Branche des Verarbeitenden Gewerbes vergleicht der Monitor den Durchschnitt der letzten drei Monate mit dem der drei Monate davor (saison- und kalenderbereinigte Indizes der Bundesbank). Der Index ist der Anteil der Branchen mit einem Zuwachs, in %. Grundlage sind 24 Branchen der Produktion (Wirtschaftszweige 10 bis 33) und 9 Branchen des Auftragseingangs, für die die Bundesbank Indizes veröffentlicht."
+    grenzen:
+      - "Ungewichtet: eine kleine Branche wie die Tabakverarbeitung zählt so viel wie der Maschinenbau. Der Index zeigt die Breite, nicht die Stärke des Wachstums."
+      - "Kleine Branchen schwanken stark; die Monatswerte springen deshalb. Aussagekräftiger ist das Dreimonatsmittel."
+      - "Beim Auftragseingang beruhen die Werte auf nur 9 Branchen und ändern sich in Schritten von rund 11 Prozentpunkten."
   proj_gap:
     methode: "Die Projektion der Bundesregierung nennt eine Jahresrate des realen BIP, unbereinigt. Diese Rate ist näherungsweise das gewogene Mittel der unbereinigten Raten ggü. dem Vorjahresquartal; Gewicht jedes Quartals ist sein Anteil am BIP des Vorjahres (aus dem saison- und kalenderbereinigten Index). Aus den schon gemeldeten Quartalen und dem Jahresziel folgt die Rate, die jedes noch fehlende Quartal erreichen müsste. Für das nächste Quartal rechnet der Monitor diese Rate zusätzlich in eine bereinigte Rate ggü. dem Vorquartal um: nötiges Niveau = Vorjahresquartal mal (1 + nötige Rate), verglichen mit dem jüngsten bereinigten Stand. Maßgeblich ist die jüngste Projektion, die eine Zahl für das Jahr des jüngsten Quartals enthält (data/static/prognosen.yaml); für 2025 ergibt die Näherung 0,2 % wie die amtliche Jahresrate."
     grenzen:

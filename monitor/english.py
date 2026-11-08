@@ -337,6 +337,14 @@ def _special_en(c: dict) -> list[str] | None:
     """Sätze für Sonderabbildungen (Karte, Wärmetabelle, Uhr, Saison, Balken, Prognosen, Beiträge, Ereignisse); None für Linien."""
     typ, d = c.get("type"), int(c.get("decimals", 1))
     sg = lambda v, k=1: num(v, k, True)
+    if c.get("diff"):  # breadth: number of industries growing
+        parts = []
+        for label, k in c["diff"].items():
+            what = {"Produktion": "output", "Auftragseingang": "orders"}.get(label, label)
+            ago = f", a year earlier in {k['up_ago']}" if k.get("up_ago") is not None else ""
+            parts.append(f"{what} rose in {k['up']} of {k['n']} industries{ago}")
+        t = pd.Timestamp(max(k["period"] for k in c["diff"].values()))
+        return [f"In the three months to {period(t, 'M')} on the three months before, " + "; ".join(parts) + "."]
     if c.get("proj"):  # projection of the Federal Government
         p = c["proj"]
         rnd = lambda r: " ".join(r.split()[1:]) + " " + PROJ_EN.get(r.split()[0], r.split()[0])  # „Herbstprojektion 2026“ -> „2026 autumn projection“
@@ -688,6 +696,12 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                         lab_map[de_lab] = s["label"]
                     if s.get("unit"):
                         s["unit"] = tr.get("series", s.get("id"), "unit", tr.s(s["unit"]))
+            if c.get("diff"):
+                for s_ in c["series"]:
+                    s_["label"] = s_["label"].replace("Produktion", "Output").replace("Auftragseingang", "Orders").replace("Branchen", "industries")
+                c["refs"] = [{"y": 50, "label": "Half of industries"}]
+                c["adjustment"] = "seasonally and calendar adjusted (Bundesbank)"
+                c["sources"] = ["Deutsche Bundesbank (output and orders of the Federal Statistical Office)", "own calculation"]
             if c.get("proj"):  # Projektion: Bezeichnungen der Runde übersetzen
                 pj, rnd = c["proj"], lambda r: PROJ_EN.get(r.split()[0], r.split()[0]).capitalize() + " " + " ".join(r.split()[1:])
                 c["refs"] = [{"y": pj["target"], "x0": f"{pj['year']}-01-01", "label": f"{rnd(pj['round'])}: {num(pj['target'])}%"}]

@@ -2008,7 +2008,7 @@ series:
     unit: Index 2021=100
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
-    start: "2015-01-01"
+    start: "2005-01-01"
     chart: branch_heat
     label: "{wz} {wz_name}"
 
@@ -2377,7 +2377,7 @@ series:
     unit: Index 2021=100
     frequency: M
     adjustment: saison- und kalenderbereinigt (Bundesbank)
-    start: "2015-01-01"
+    start: "2005-01-01"
     chart: orders_heat
     label: "{wz_name}"
 

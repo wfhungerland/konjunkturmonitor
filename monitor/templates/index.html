@@ -472,7 +472,7 @@ function timeChart(el, c) {
     const col = c.type === "stacked" ? "#000" : PAL[i % PAL.length];
     const many = !c.emphasis && lines.length >= 5, strong = many ? i === 0 : (!c.emphasis || c.emphasis === s.id);
     if (c.ma3) {
-      if (c._raw ?? true) traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, meta: s.id, showlegend: false, hoverinfo: "skip", line: { color: col, width: 1 }, opacity: 0.45 });
+      if (c._raw ?? !c.raw_hidden) traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, meta: s.id, showlegend: false, hoverinfo: "skip", line: { color: col, width: 1 }, opacity: 0.45 });
       const m = ma3(s.y); traces.push({ type: "scatter", mode: "lines", x: s.x, y: m, name: s.label, meta: s.id, line: { color: col, width: 3 },
         hovertemplate: `%{y:,.${c.decimals}f} (3-Monats-Mittel)<extra>${esc(s.label)}</extra>` });
     } else if (c.forecast_after_bars && bars.length) { // Prognosejahre: nach dem letzten Ist-Wert der Balken gestrichelt
@@ -1027,8 +1027,8 @@ function card(c, no) {
   main.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}${c.content_license ? `. <b>${LIC_NOTE} ${esc(c.content_license)}</b>` : ""}</div>`);
   const redraw = () => { Plotly.purge(ch); ch.innerHTML = ""; ch.classList.remove("multi"); (c.type === "seasonal" ? seasonalChart : c.multiples && (DATA.layout || {}).small_multiples && (c.series.length > 2 || c.own_scale) ? multiplesChart : timeChart)(ch, c); };
   if (c.ma3) {
-    const tg = document.createElement("button"); tg.type = "button"; tg.className = "btn rawtoggle"; tg.textContent = "Monatswerte ausblenden";
-    tg.onclick = () => { c._raw = !(c._raw ?? true); tg.textContent = c._raw ? "Monatswerte ausblenden" : "Monatswerte einblenden"; redraw(); };
+    const tg = document.createElement("button"); tg.type = "button"; tg.className = "btn rawtoggle"; tg.textContent = c.raw_hidden ? "Monatswerte einblenden" : "Monatswerte ausblenden";
+    tg.onclick = () => { c._raw = !(c._raw ?? !c.raw_hidden); tg.textContent = c._raw ? "Monatswerte ausblenden" : "Monatswerte einblenden"; redraw(); };
     tools.appendChild(tg); }
   if (c.scale_toggle && c.multiples) { // gemeinsame Skala über alle Felder oder eigene je Feld
     const sb = document.createElement("button"); sb.type = "button"; sb.className = "btn";

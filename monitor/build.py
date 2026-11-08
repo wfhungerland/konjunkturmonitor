@@ -191,6 +191,30 @@ def _projection(c: dict, data: dict, root: Path) -> dict | None:
                         "x": xs, "y": ys, "req": len(rest)}]}
 
 
+def _diffusion(c: dict, data: dict, meta: dict) -> dict | None:
+    """Breite: Anteil der Branchen, deren Dreimonatsdurchschnitt über dem der drei Monate davor liegt, in %.
+    Ungewichtet: jede Branche zählt gleich, unabhängig von ihrer Größe."""
+    series, counts = [], {}
+    for label, chart in (c.get("groups") or {}).items():
+        cols = {s.id: data[s.id].dropna() for s in meta.values() if s.chart_id == chart and s.id in data}
+        if len(cols) < 5:
+            continue
+        w = pd.DataFrame(cols)
+        m = w.rolling(3).mean()
+        g = (m / m.shift(3) - 1) * 100
+        n = g.notna().sum(axis=1)
+        up = (g > 0).sum(axis=1)
+        share = (up / n * 100)[n >= max(5, len(cols) // 2)].dropna()
+        if share.empty:
+            continue
+        last, ago = share.index[-1], share.index[-1] - pd.DateOffset(years=1)
+        counts[label] = {"up": int(up[last]), "n": int(n[last]), "period": last.strftime("%Y-%m-%d"),
+                         "up_ago": int(up[ago]) if ago in up.index and n.get(ago, 0) else None, "n_ago": int(n[ago]) if ago in n.index else None,
+                         "ma3": round(float(share.iloc[-3:].mean()), 1)}
+        series.append(dict(id=f"diff_{chart}", label=f"{label} ({len(cols)} Branchen)", unit="% der Branchen", freq="M", style="line", **_xy(share, c.get("years"))))
+    return {"series": series, "counts": counts} if series else None
+
+
 def _contrib(cfg: dict, data: dict) -> dict | None:
     """Beiträge zur Inflationsrate aus Teilindizes (2020 = 100).
 
@@ -578,6 +602,15 @@ def chart_sentences(c: dict) -> list[str]:
         lab = s.get("label") or ""
         return f"der Wert für „{lab}“" if lab else "der Wert"
     try:
+        if c.get("diff"):  # Breite: Zahl der Branchen mit Zuwachs
+            parts = []
+            for label, k in c["diff"].items():
+                inv = {"Produktion": ("wuchs die Produktion", "die Produktion wuchs"), "Auftragseingang": ("stieg der Auftragseingang", "der Auftragseingang stieg")}
+                verb = inv.get(label, (f"stieg {label}", f"{label} stieg"))[0 if not parts else 1]  # nach Semikolon Subjekt zuerst
+                ago = f", ein Jahr zuvor in {k['up_ago']}" if k.get("up_ago") is not None else ""
+                parts.append(f"{verb} in {k['up']} von {k['n']} Branchen{ago}")
+            t = pd.Timestamp(max(k["period"] for k in c["diff"].values()))
+            return [f"Im Dreimonatsvergleich bis {MONTHS[t.month - 1]} {t.year} " + "; ".join(parts) + "."]
         if c.get("proj"):  # Abgleich mit der Projektion der Bundesregierung
             p = c["proj"]
             qs = lambda l: f"im {l[0]}. Quartal" if len(l) == 1 else f"im {l[0]}. bis {l[-1]}. Quartal je" if len(l) > 2 else f"im {l[0]}. und {l[1]}. Quartal je"
@@ -1310,6 +1343,14 @@ def build_payload(root: Path = ROOT) -> dict:
                 if not cal:
                     continue
                 entry.update(calendar=cal, sources=["Eigene Zusammenstellung nach dem üblichen Veröffentlichungsrhythmus der Quellen"], licenses=[])
+            elif typ == "diffusion":
+                df_ = _diffusion(c, data, meta)
+                if not df_:
+                    continue
+                entry.update(type="line", diff=df_["counts"], series=df_["series"], unit="% der Branchen mit Zuwachs", freq="M", decimals=0, ma3=True, raw_hidden=True, y_range=[0, 100],
+                             refs=[{"y": 50, "label": "Hälfte der Branchen"}], adjustment="saison- und kalenderbereinigt (Bundesbank)",
+                             sources=["Deutsche Bundesbank (Produktion und Auftragseingang des Statistischen Bundesamts)", "eigene Berechnung"],
+                             licenses=[SOURCE_LICENSES["bundesbank"]])
             elif typ == "projection":
                 pj = _projection(c, data, root)
                 if not pj:
