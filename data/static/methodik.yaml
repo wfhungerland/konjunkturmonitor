@@ -53,6 +53,16 @@ charts:
       - "Ungewichtet: eine kleine Branche wie die Tabakverarbeitung zählt so viel wie der Maschinenbau. Der Index zeigt die Breite, nicht die Stärke des Wachstums."
       - "Kleine Branchen schwanken stark; die Monatswerte springen deshalb. Aussagekräftiger ist das Dreimonatsmittel."
       - "Beim Auftragseingang beruhen die Werte auf nur 9 Branchen und ändern sich in Schritten von rund 11 Prozentpunkten."
+  ez_ip:
+    methode: "Eurostat veröffentlicht die Produktion im Verarbeitenden Gewerbe (NACE C) für alle EU-Länder nach einheitlicher Methode. Gezeigt ist die Veränderung ggü. dem Vorjahresmonat aus kalenderbereinigten Indizes (Datensatz sts_inpr_m, Einheit PCH_SM). Der Euroraum umfasst seit Januar 2026 einschließlich Bulgarien 21 Länder (EA21)."
+    grenzen:
+      - "Für Deutschland meldet die Bundesbank saison- und kalenderbereinigte Werte; Eurostat zeigt hier nur kalenderbereinigte. Die Raten ggü. dem Vorjahresmonat liegen deshalb nahe beieinander, aber nicht gleich."
+      - "Großaufträge und Sondereffekte einzelner Länder, etwa in Irland, schlagen auf den Euroraum durch."
+  ez_esi:
+    methode: "Die Wirtschaftliche Einschätzung (Economic Sentiment Indicator, ESI) der EU-Kommission fasst die Vertrauensindikatoren aus Industrie (Gewicht 40 %), Dienstleistungen (30 %), Verbrauchern (20 %), Einzelhandel (5 %) und Bau (5 %) zusammen. Jedes Land ist auf seinen eigenen langjährigen Durchschnitt = 100 normiert, mit einer Standardabweichung von 10. Datensatz ei_bssi_m_r2, saisonbereinigt."
+    grenzen:
+      - "Der Vergleich zeigt, wo die Stimmung besser oder schlechter als üblich ist, nicht, wo sie absolut besser ist."
+      - "Umfragen messen Einschätzungen, keine Produktion; sie laufen der Produktion oft voraus, aber nicht immer."
   proj_gap:
     methode: "Die Projektion der Bundesregierung nennt eine Jahresrate des realen BIP, unbereinigt. Diese Rate ist näherungsweise das gewogene Mittel der unbereinigten Raten ggü. dem Vorjahresquartal; Gewicht jedes Quartals ist sein Anteil am BIP des Vorjahres (aus dem saison- und kalenderbereinigten Index). Aus den schon gemeldeten Quartalen und dem Jahresziel folgt die Rate, die jedes noch fehlende Quartal erreichen müsste. Für das nächste Quartal rechnet der Monitor diese Rate zusätzlich in eine bereinigte Rate ggü. dem Vorquartal um: nötiges Niveau = Vorjahresquartal mal (1 + nötige Rate), verglichen mit dem jüngsten bereinigten Stand. Maßgeblich ist die jüngste Projektion, die eine Zahl für das Jahr des jüngsten Quartals enthält (data/static/prognosen.yaml); für 2025 ergibt die Näherung 0,2 % wie die amtliche Jahresrate."
     grenzen:

@@ -327,6 +327,14 @@ charts:
     title: "Unemployment compared across the euro area"
     ask: "How high is unemployment by comparison?"
     caption: "Unemployment rate as defined by the International Labour Organization (ILO), seasonally adjusted (Eurostat; euro area: ECB): the unemployed as a share of the labour force. It is internationally comparable and in Germany is markedly below the registered unemployment rate of the Federal Employment Agency. One country highlighted per panel, all panels on the same scale."
+  ez_ip:
+    title: "Industrial production compared across the euro area"
+    ask: "Is German industry doing worse than its neighbours?"
+    caption: "Manufacturing output on the same month a year earlier, calendar adjusted (Eurostat), for Germany, France, Italy, Spain and the euro area (21 countries since 2026). The figures for Germany may differ slightly from the Bundesbank data in the industry section because of different adjustment. One country highlighted per panel, all panels on the same scale."
+  ez_esi:
+    title: "Economic sentiment compared across the euro area (ESI)"
+    ask: "Is sentiment in Germany worse than in neighbouring countries?"
+    caption: "Economic Sentiment Indicator (ESI) of the European Commission, seasonally adjusted: weighted average of surveys in industry, services, retail, construction and among consumers. 100 is each country's long-term average (dashed); the indicator therefore shows whether sentiment is better or worse than usual, not the gap between countries. One country highlighted per panel, all panels on the same scale."
   uncertainty:
     title: "Economic policy uncertainty"
     ask: "How uncertain is economic policy?"
@@ -694,6 +702,8 @@ series:
   de_gdp_yoy_world: {title: "Real GDP Germany, % on same quarter a year earlier (seasonally and calendar adjusted)", label: "Germany", unit: "% on same quarter a year earlier", adjustment: "price, seasonally and calendar adjusted"}
   ez_gdp: {title: "Real GDP, {geo_name}, % on same quarter a year earlier", label: "{geo_name}", unit: "% on same quarter a year earlier", adjustment: "price, seasonally and calendar adjusted"}
   ez_hicp: {title: "HICP, {geo_name}, % on a year earlier", label: "{geo_name}", unit: "% on a year earlier", adjustment: "not adjusted"}
+  ez_ip: {title: "Manufacturing output, {geo_name}, % on a year earlier", label: "{geo_name}", unit: "% on same month a year earlier", adjustment: "calendar adjusted"}
+  ez_esi: {title: "Economic Sentiment Indicator (ESI), {geo_name}, long-term average = 100", label: "{geo_name}", unit: "Index, long-term average = 100", adjustment: "seasonally adjusted"}
   ez_unemp: {title: "Unemployment rate, {geo_name} (ILO)", label: "{geo_name}", unit: "% of labour force", adjustment: "seasonally adjusted"}
   ez_unemp_ea20: {title: "Unemployment rate, euro area (ILO)", label: "Euro area", unit: "% of labour force", adjustment: "seasonally adjusted"}
   ea_gdp_yoy: {title: "Real GDP, euro area, % on same quarter a year earlier", label: "Euro area", unit: "% on same quarter a year earlier", adjustment: "price, seasonally and calendar adjusted"}

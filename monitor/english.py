@@ -527,7 +527,7 @@ def chart_sentences_en(c: dict) -> list[str]:
         if c.get("emphasis"):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         freq = c.get("freq", "M")
-        if c.get("combine") and (c.get("unit_de") or "").startswith("Index"):  # gleich gebaute Reihen in einem Satz
+        if c.get("combine") and not isinstance(c.get("combine"), dict) and (c.get("unit_de") or "").startswith("Index"):  # gleich gebaute Reihen in einem Satz
             last = max(s["x"][-1] for s in series)
             parts = [(re.sub(r"^\d+\s+", "", s.get("label", "")), (s["y"][-1] / s["y"][-13] - 1) * 100)
                      for s in series if s["x"][-1] == last and len(s["y"]) > 12 and s["y"][-13]]
@@ -554,10 +554,12 @@ def chart_sentences_en(c: dict) -> list[str]:
         cb = c.get("combine")
         if isinstance(cb, dict) and cb.get("lead_en"):  # gleich gebaute Reihen in einem Satz
             su0 = (c.get("unit_de") or "").split(",")[0]
-            sym = "%" if su0.startswith("%") else " pp" if su0.startswith(("Pp", "Saldo")) else " " + (c.get("unit") or "").split(",")[0]
-            items = [f"{cb.get('pre_en', '')}{s.get('label', '')} {num(s['y'][-1], d, cb.get('sign', True))}{sym}" for s in series if s["x"][-1] == last and s["y"][-1] is not None]
+            sym = "%" if su0.startswith("%") else " pp" if su0.startswith(("Pp", "Saldo")) else "" if su0.startswith("Index") else " " + (c.get("unit") or "").split(",")[0]
+            last_c = min(s["x"][-1] for s in series) if cb.get("common") else last
+            at = lambda s: s["y"][s["x"].index(last_c)] if last_c in s["x"] else None
+            items = [f"{cb.get('pre_en', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))}{sym}" for s in series if at(s) is not None]
             if items:
-                return [f"{w}, {cb['lead_en']} " + (", ".join(items[:-1]) + " and " + items[-1] if len(items) > 1 else items[0]) + "."]
+                return [f"{when(last_c, freq) if cb.get('common') else w}, {cb['lead_en']} " + (", ".join(items[:-1]) + " and " + items[-1] if len(items) > 1 else items[0]) + "."]
         mig = {"de_netmig_de": "Germans", "de_netmig_eu": "people from other EU countries", "de_netmig_neu": "people from outside the EU"}
         prev_lbl = {"M": "in the previous month", "Q": "in the previous quarter", "A": "in the previous year", "D": "in the previous week", "B": "on the previous day"}
         out = []
@@ -754,7 +756,8 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                 for l in c["calendar"].get("links") or []:
                     l["name"] = tr.lab(l.get("name"))
             from .satzpruefung import BAD
-            texts = [x for x in chart_sentences_en(c) if not BAD.search(x)]  # Platzhalter oder Rechenreste: Satz entfällt
+            texts = [x.replace("in Euro area", "in the euro area").replace("in European Union", "in the European Union")
+                     for x in chart_sentences_en(c) if not BAD.search(x)]  # Platzhalter oder Rechenreste: Satz entfällt
             c["texts"], c["text"] = texts, " ".join(texts)
             if isinstance(c.get("files"), dict):
                 c["files"] = {k: _rel(v) for k, v in c["files"].items()}

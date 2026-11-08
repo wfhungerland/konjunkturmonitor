@@ -853,9 +853,10 @@ def chart_sentences(c: dict) -> list[str]:
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         cb = c.get("combine")
         if isinstance(cb, dict):  # gleich gebaute Reihen in einem Satz, etwa Länder oder Bereiche
-            last = max(s["x"][-1] for s in series)
+            last = min(s["x"][-1] for s in series) if cb.get("common") else max(s["x"][-1] for s in series)  # common: jüngster Zeitraum, den alle haben
             sym = "%" if unit.startswith("%") else "Pp" if unit.startswith(("Pp", "Saldo")) else u
-            items = [f"{cb.get('pre', '')}{s.get('label', '')} {num(s['y'][-1], d, cb.get('sign', True))} {sym}".strip() for s in series if s["x"][-1] == last and s["y"][-1] is not None]
+            at = lambda s: s["y"][s["x"].index(last)] if last in s["x"] else None
+            items = [f"{cb.get('pre', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))} {sym}".strip() for s in series if at(s) is not None]
             if items:
                 return [f"{_when(last, freq)} {cb['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0]) + "."]
         if c.get("combine") and unit.startswith("Index"):  # gleich gebaute Reihen, etwa Branchen: ein Satz mit allen Werten

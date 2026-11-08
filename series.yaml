@@ -62,6 +62,7 @@ names:
     IT: Italien
     ES: Spanien
     EA20: Euroraum
+    EA21: Euroraum
     EA: Euroraum
   cit:
     deu: Deutschland
@@ -122,6 +123,8 @@ charts:
   ez_gdp: {title: "Wachstum im Euroraum-Vergleich", decimals: 1}
   ez_hicp: {title: "Inflation im Euroraum-Vergleich (HVPI)", decimals: 1}
   ez_unemp: {title: "Erwerbslosigkeit im Euroraum-Vergleich", decimals: 1}
+  ez_ip: {title: "Industrieproduktion im Euroraum-Vergleich", decimals: 1}
+  ez_esi: {title: "Wirtschaftsstimmung im Euroraum-Vergleich (ESI)", decimals: 1}
   power: {title: "Strom: Verbrauch und Großhandelspreis", decimals: 1}
   permits: {title: "Baugenehmigungen für Wohnungen", decimals: 1}
   house_prices: {title: "Preise für Wohnimmobilien", decimals: 1}
@@ -2554,6 +2557,34 @@ series:
     start: "2015-01-01"
     chart: ez_unemp
     label: "Euroraum"
+
+  - id: ez_ip
+    expand: {geo: [DE, FR, IT, ES, EA21]}
+    block: welt
+    source: eurostat
+    key: sts_inpr_m
+    params: {geo: "{geo}", nace_r2: C, unit: PCH_SM, s_adj: CA}
+    title: "Produktion im Verarbeitenden Gewerbe {geo_name}, % ggü. Vorjahresmonat"
+    unit: "% ggü. Vorjahresmonat"
+    frequency: M
+    adjustment: kalenderbereinigt
+    start: "2015-01-01"
+    chart: ez_ip
+    label: "{geo_name}"
+
+  - id: ez_esi
+    expand: {geo: [DE, FR, IT, ES, EA21]}
+    block: welt
+    source: eurostat
+    key: ei_bssi_m_r2
+    params: {geo: "{geo}", indic: BS-ESI-I, s_adj: SA}
+    title: "Wirtschaftliche Einschätzung (ESI) {geo_name}, langjähriger Durchschnitt = 100"
+    unit: "Index, langjähriger Durchschnitt = 100"
+    frequency: M
+    adjustment: saisonbereinigt
+    start: "2015-01-01"
+    chart: ez_esi
+    label: "{geo_name}"
 
   - id: ea_gdp_yoy
     block: welt
