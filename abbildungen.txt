@@ -109,5 +109,4 @@ be_cpi;Preise Mieten Berlin;2026-11-08;
 be_feel;Lebensmittel Energie Berlin;2026-11-08;
 be_jobs;Beschaeftigung Berlin;2026-11-08;
 be_tourism;Uebernachtungen Berlin;2026-11-08;
-be_trade;Handel Gastgewerbe Berlin;2026-11-08;
 be_permits;Baugenehmigungen Berlin;2026-11-08;

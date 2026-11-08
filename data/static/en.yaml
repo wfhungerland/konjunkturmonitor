@@ -80,10 +80,6 @@ charts:
     title: "Overnight stays in Berlin"
     ask: "Are visitors coming to Berlin?"
     caption: "Overnight stays in accommodation establishments with at least ten beds per month. Thin: monthly values. Thick: 12-month moving average. Dashed: usual level of the same month 2015 to 2019."
-  be_trade:
-    title: "Retail trade and hospitality in Berlin"
-    ask: "Are Berliners shopping and eating out more?"
-    caption: "Real turnover in retail trade and in hospitality in Berlin on the same month a year earlier in %. Thick: 3-month moving average, thin: monthly values. The figures for the federal states are not seasonally adjusted and are often revised."
   be_permits:
     title: "Dwellings approved in Berlin"
     ask: "How many dwellings are approved in Berlin?"
@@ -545,10 +541,6 @@ series:
   be_sv_w: {title: "Employees subject to social insurance at place of work, Berlin, women", unit: "Persons", adjustment: "not adjusted"}
   be_sv: {title: "Employees subject to social insurance at place of work, Berlin", label: "Berlin", unit: "Persons", adjustment: "not adjusted"}
   be_overnight: {title: "Overnight stays in accommodation establishments, Berlin", unit: "Thousand overnight stays", adjustment: "not adjusted"}
-  be_retail: {title: "Retail turnover, Berlin, real", unit: "Index 2015=100", adjustment: "price adjusted"}
-  be_retail_yoy: {title: "Retail turnover, Berlin, real, % on same month a year earlier", label: "Retail trade", unit: "% on same month a year earlier", adjustment: "price adjusted"}
-  be_hosp: {title: "Hospitality turnover, Berlin, real", unit: "Index 2015=100", adjustment: "price adjusted"}
-  be_hosp_yoy: {title: "Hospitality turnover, Berlin, real, % on same month a year earlier", label: "Hospitality", unit: "% on same month a year earlier", adjustment: "price adjusted"}
   be_permits: {title: "Building permits, Berlin: dwellings (new construction and work on existing buildings)", unit: "Dwellings", adjustment: "not adjusted"}
   gdp_rt_first: {label: "first release", title: "GDP growth on previous quarter, first release"}
   gdp_rt_latest: {label: "current vintage", title: "GDP growth on previous quarter, latest vintage"}

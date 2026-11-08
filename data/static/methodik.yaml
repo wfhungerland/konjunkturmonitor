@@ -27,11 +27,6 @@ charts:
     methode: "Die Monatserhebung im Tourismus erfasst Ankünfte und Übernachtungen in Beherbergungsbetrieben mit mindestens zehn Schlafgelegenheiten (GENESIS-Tabelle 45412-0025, Berlin). Das Zwölfmonatsmittel gleicht die starke Saison aus."
     grenzen:
       - "Private Ferienwohnungen über Plattformen sind nur teilweise erfasst."
-  be_trade:
-    methode: "Die Umsatzindizes im Einzelhandel (GENESIS-Tabelle 45212-0014) und im Gastgewerbe (45213-0014) liegen je Land preisbereinigt, aber nicht saisonbereinigt vor. Der Monitor berechnet daher die Veränderung ggü. dem Vorjahresmonat, die Saisoneinflüsse weitgehend ausgleicht, und glättet sie mit einem Dreimonatsmittel."
-    grenzen:
-      - "Die Länderwerte beruhen auf kleineren Stichproben als der Wert für Deutschland und werden oft revidiert."
-      - "Die Lage von Feiertagen und Ostern verschiebt einzelne Monatswerte."
   be_permits:
     methode: "Die Bautätigkeitsstatistik zählt die genehmigten Wohnungen in Wohn- und Nichtwohngebäuden, im Neubau und bei Baumaßnahmen an bestehenden Gebäuden (GENESIS-Tabelle 31111-0120, Berlin)."
     grenzen:

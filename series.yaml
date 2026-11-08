@@ -105,7 +105,6 @@ charts:
   be_feel: {title: "Teuerung bei Lebensmitteln und Energie in Berlin", decimals: 1}
   be_jobs: {title: "Beschäftigung in Berlin", decimals: 1}
   be_tourism: {title: "Übernachtungen in Berlin", decimals: 0}
-  be_trade: {title: "Einzelhandel und Gastgewerbe in Berlin", decimals: 1}
   be_permits: {title: "Genehmigte Wohnungen in Berlin", decimals: 0}
   gdp_qoq: {title: "Wirtschaftsleistung, Veränderung gegenüber dem Vorquartal", decimals: 1}
   gdp_contrib: {title: "Woraus das Wachstum besteht", kind: stacked, decimals: 1}
@@ -3266,52 +3265,6 @@ series:
     adjustment: nicht bereinigt
     start: "2010-01-01"
     note: "GENESIS-Tabelle 45412-0025, Merkmal DLAND 11 (Berlin)."
-
-  - id: be_retail
-    block: berlin
-    source: genesis
-    key: "45212-0014"
-    params: {value_variable: UMS103, filters: {DLAND: "11", WERTE4: REAL}, query: {contents: UMS103, regionalvariable: DLAND, regionalkey: "11"}}
-    title: "Umsatz im Einzelhandel Berlin, real"
-    unit: "Index 2015=100"
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2015-01-01"
-    note: "GENESIS-Tabelle 45212-0014, Merkmal DLAND 11 (Berlin)."
-
-  - id: be_retail_yoy
-    block: berlin
-    source: derived
-    derive: {from: be_retail, op: yoy_pct}
-    title: "Umsatz im Einzelhandel Berlin, real, % ggü. Vorjahresmonat"
-    unit: "% ggü. Vorjahresmonat"
-    frequency: M
-    adjustment: nicht bereinigt
-    chart: be_trade
-    label: "Einzelhandel"
-
-  - id: be_hosp
-    block: berlin
-    source: genesis
-    key: "45213-0014"
-    params: {value_variable: UMS103, filters: {DLAND: "11", WERTE4: REAL}, query: {contents: UMS103, regionalvariable: DLAND, regionalkey: "11"}}
-    title: "Umsatz im Gastgewerbe Berlin, real"
-    unit: "Index 2015=100"
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2015-01-01"
-    note: "GENESIS-Tabelle 45213-0014, Merkmal DLAND 11 (Berlin)."
-
-  - id: be_hosp_yoy
-    block: berlin
-    source: derived
-    derive: {from: be_hosp, op: yoy_pct}
-    title: "Umsatz im Gastgewerbe Berlin, real, % ggü. Vorjahresmonat"
-    unit: "% ggü. Vorjahresmonat"
-    frequency: M
-    adjustment: nicht bereinigt
-    chart: be_trade
-    label: "Gastgewerbe"
 
   - id: be_permits
     block: berlin

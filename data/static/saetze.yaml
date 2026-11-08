@@ -17,8 +17,6 @@ series:
   be_afs_energie_yoy: [die Energiepreise in Berlin, p]
   be_sv: [die Zahl der Beschäftigten in Berlin, s]
   be_overnight: [die Zahl der Übernachtungen in Berlin, s]
-  be_retail_yoy: [der reale Umsatz im Berliner Einzelhandel, s]
-  be_hosp_yoy: [der reale Umsatz im Berliner Gastgewerbe, s]
   be_permits: [die Zahl der genehmigten Wohnungen in Berlin, s]
   gdp_rt_first: {tpl: "{when} lag das zuerst gemeldete BIP-Wachstum bei {v} ggü. dem Vorquartal."}
   gdp_rt_latest: {tpl: "{when} liegt das BIP-Wachstum im heutigen Datenstand bei {v} ggü. dem Vorquartal."}
