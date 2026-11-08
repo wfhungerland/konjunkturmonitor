@@ -215,6 +215,29 @@ def _diffusion(c: dict, data: dict, meta: dict) -> dict | None:
     return {"series": series, "counts": counts} if series else None
 
 
+def _merge_toggles(topics: list[dict]) -> None:
+    """Abbildungen mit toggle: {chart, label, base} nehmen die genannte Abbildung als zweite Ansicht auf.
+    Die zweite Abbildung verschwindet aus dem Abschnitt; Sätze, Quellen und Erläuterung beider stehen in der Karte."""
+    where = {c["chart"]: t for t in topics for c in t["charts"] if c.get("chart")}
+    for t in topics:
+        for c in list(t["charts"]):
+            tg = c.get("toggle")
+            if not isinstance(tg, dict) or tg.get("chart") not in where:
+                continue
+            src = where[tg["chart"]]
+            o = next((x for x in src["charts"] if x.get("chart") == tg["chart"]), None)
+            if o is None or o is c:
+                continue
+            src["charts"].remove(o)
+            c["variant"] = o
+            c["texts"] = list(c.get("texts") or []) + list(o.get("texts") or [])
+            c["text"] = " ".join(c["texts"])
+            if o.get("caption"):
+                c["caption"] = f"{c.get('caption', '')} Ansicht „{tg['label']}“: {o['caption']}".strip()
+            for k in ("sources", "licenses"):
+                c[k] = list(dict.fromkeys(list(c.get(k) or []) + list(o.get(k) or [])))
+
+
 def _contrib(cfg: dict, data: dict) -> dict | None:
     """Beiträge zur Inflationsrate aus Teilindizes (2020 = 100).
 
@@ -853,9 +876,10 @@ def chart_sentences(c: dict) -> list[str]:
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         cb = c.get("combine")
         if isinstance(cb, dict):  # gleich gebaute Reihen in einem Satz, etwa Länder oder Bereiche
-            last = max(s["x"][-1] for s in series)
+            last = min(s["x"][-1] for s in series) if cb.get("common") else max(s["x"][-1] for s in series)  # common: jüngster Zeitraum, den alle haben
             sym = "%" if unit.startswith("%") else "Pp" if unit.startswith(("Pp", "Saldo")) else u
-            items = [f"{cb.get('pre', '')}{s.get('label', '')} {num(s['y'][-1], d, cb.get('sign', True))} {sym}".strip() for s in series if s["x"][-1] == last and s["y"][-1] is not None]
+            at = lambda s: s["y"][s["x"].index(last)] if last in s["x"] else None
+            items = [f"{cb.get('pre', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))} {sym}".strip() for s in series if at(s) is not None]
             if items:
                 return [f"{_when(last, freq)} {cb['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0]) + "."]
         if c.get("combine") and unit.startswith("Index"):  # gleich gebaute Reihen, etwa Branchen: ein Satz mit allen Werten
@@ -1519,6 +1543,7 @@ def build_payload(root: Path = ROOT) -> dict:
             c["notes"] = notes.get(c["chart"], []) + _weather_notes(c, data)
             if c.get("ma3") or c.get("outliers"):
                 c["outliers"] = _outliers(c)
+    _merge_toggles(topics)  # zwei Abbildungen mit Umschalter in einer Karte
     no = 0
     for t in topics:
         for c in t["charts"]:
@@ -1551,6 +1576,27 @@ def build_payload(root: Path = ROOT) -> dict:
                 n["text"] = tidy(n["text"])
             if c.get("alt"):
                 c["alt"] = dict(c["alt"], label=tidy(c["alt"]["label"]), base=tidy(c["alt"]["base"]), unit=tidy(c["alt"]["unit"]))
+    if recs:  # Erfolgsbilanz der Signale gegen die Rezessionsdatierung des Sachverständigenrats
+        from .bilanz import evaluate
+        for tp in topics:
+            for c in tp["charts"]:
+                rule, flag = None, None
+                if c["chart"] == "sahm" and "de_sahm" in data:
+                    thr = float(c.get("threshold", 0.25))
+                    flag, rule = data["de_sahm"] >= thr, f"Signal ab {str(thr).replace('.', ',')} Pp"
+                elif c["chart"] == "diffusion" and c.get("series"):
+                    s0 = c["series"][0]
+                    m3 = pd.Series(s0["y"], index=pd.to_datetime(s0["x"])).rolling(3).mean()
+                    flag, rule = (m3 < 40).where(m3.notna()), "Dreimonatsmittel der Produktion unter 40 % der Branchen"
+                elif c.get("type") == "clock" and c.get("x") in data and c.get("y") in data:
+                    df = pd.concat({"x": data[c["x"]], "y": data[c["y"]]}, axis=1).dropna()
+                    dev = df - df[(df.index >= "2005-01-01") & (df.index < "2020-01-01")].mean()
+                    both = (dev["x"] < 0) & (dev["y"] < 0)
+                    flag, rule = both & both.shift(1, fill_value=False), "zwei Monate in Folge im Feld „Rezession“ (Aufträge und Erwartungen unter dem Mittel)"
+                if flag is not None:
+                    b = evaluate(flag, recs, 12 if c["chart"] == "sahm" else 0)
+                    if b:
+                        c["bilanz"] = dict(b, rule=rule)
     from .satzpruefung import apply as check_sentences
     text_issues = check_sentences(topics)  # durchgefallene Sätze entfallen, Funde gehen ins Ticket
     for line in text_issues:

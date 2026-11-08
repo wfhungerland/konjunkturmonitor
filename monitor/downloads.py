@@ -744,9 +744,15 @@ def write_all(payload: dict, out: Path, root: Path | None = None) -> None:
     shorts = short_titles(root or Path.cwd())
     total = sum(len(t["charts"]) for t in payload["topics"])
     width = 3 if total >= 100 else 2
+    flat = []
     for t in payload["topics"]:
         for c in t["charts"]:
-            number += 1
+            flat.append((t, c, False))
+            if isinstance(c.get("variant"), dict):  # zweite Ansicht einer Karte: eigene Dateien, gleiche Nummer
+                c["variant"]["no"] = c.get("no")
+                flat.append((t, c["variant"], True))
+    for t, c, is_variant in flat:
+            number += 0 if is_variant else 1
             c["topic_title"] = t.get("title", "")
             df, plan = chart_table(c)
             stem = file_stem(c, date, width, shorts)

@@ -157,6 +157,25 @@ def _steps(c: dict, meta: dict, ids: list[str]) -> list[str]:
     return st
 
 
+def _bilanz(b: dict | None) -> str:
+    """Abschnitt Erfolgsbilanz: Treffer, Vorlauf und Signale ohne Rezession."""
+    if not b:
+        return ""
+    ym = lambda x: f"{x[5:7]}/{x[:4]}"
+    lead = lambda v: "gleichzeitig" if v == 0 else f"{v} Monate vorher" if v > 0 else f"{-v} Monate danach"
+    rows = "".join(f"<tr><td>{ym(r['peak'])} bis {ym(r['trough'])}</td><td>{ym(r['signal']) if r['signal'] else 'kein Signal'}</td>"
+                   f"<td>{lead(r['lead']) if r['lead'] is not None else '–'}</td></tr>" for r in b["rows"])
+    fa = ", ".join(ym(x) for x in b["false"]) or "keine"
+    return (f"<h2>Erfolgsbilanz</h2><p>Regel: {escape(b['rule'])}. Geprüft von {ym(b['from'])} bis {ym(b['to'])} gegen die Rezessionen nach der Datierung "
+            f"des Sachverständigenrats. Ein Signal gab es bei {b['hits']} von {b['n']} Rezessionen, "
+            f"rechtzeitig (spätestens zu ihrem Beginn) bei {sum(1 for r in b['rows'] if r['lead'] is not None and r['lead'] >= 0)}.</p>"
+            + (f"<table><tr><th>Rezession</th><th>erstes Signal</th><th>Vorlauf</th></tr>{rows}</table>" if rows else "")
+            + f"<p>Signale ohne Rezession (Beginn): {fa}.</p><p class=small>Ein Signal zählt als Treffer, wenn es zwischen zwölf Monaten vor dem Beginn "
+            "und zwölf Monaten nach dem Ende einer Rezession aktiv ist; Vorlauf ist der Abstand seines Beginns zum Beginn der Rezession. Die Rechnung nutzt die heutigen Datenstände; in Echtzeit lagen die Werte teils anders. "
+            "Wenige Rezessionen im Zeitraum: Die Bilanz ist ein Anhaltspunkt, kein Test. Die jüngste Datierung des Sachverständigenrats reicht bis 2020; "
+            "spätere Schwächephasen gelten hier nicht als Rezession.</p>")
+
+
 def _page(c: dict, topic: dict, meta: dict, status: dict, texts: dict, payload: dict, lic_of=lambda s: s.license, corr: list | None = None) -> str:
     corr = corr or []
     ids = chart_series_ids(c, meta, status.keys())
@@ -235,6 +254,7 @@ ol, ul {{ margin: 4px 0; padding-left: 20px; }} li {{ margin: 2px 0; }} .ask {{ 
 <h2>Rechenschritte</h2>
 <ol>{steps}</ol>
 {f'<h2>Methode</h2><p>{escape(method)}</p>' if method else ''}
+{_bilanz(c.get('bilanz'))}
 <h2>Grenzen und Hinweise</h2>
 <ul>{''.join(f'<li>{escape(x)}</li>' for x in limits)}</ul>
 {('<h2>Änderungen</h2><ul>' + ''.join(f"<li>{r['date'][8:10]}.{r['date'][5:7]}.{r['date'][:4]}, {escape(r['art'])}: {escape(r['text'])}</li>" for r in corr) + '</ul><p class="small noprint"><a href="../korrekturen.html">Alle Korrekturen und Änderungen</a></p>') if corr else ''}

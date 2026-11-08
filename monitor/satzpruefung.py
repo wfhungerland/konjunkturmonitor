@@ -43,7 +43,8 @@ def check(c: dict, text: str) -> str | None:
     """Grund, warum der Satz nicht erscheinen darf, sonst None."""
     if BAD.search(text):
         return "Platzhalter oder Rechenrest"
-    last = (c.get("last_x") or "")[:7]
+    v = c.get("variant") or {}
+    last = max((c.get("last_x") or "")[:7], (v.get("last_x") or "")[:7])
     if last and c.get("chart") not in FORWARD and not c.get("forecast_after_bars"):
         late = [p for p in _periods(text) if p > last]
         if late:
@@ -55,7 +56,7 @@ def check(c: dict, text: str) -> str | None:
             return "Richtungswort passt nicht zum Vorzeichen"
     if c.get("type") == "line" and isinstance(c.get("series"), list):
         lasts = set()
-        for s in c["series"]:
+        for s in list(c["series"]) + [x for x in (v.get("series") or []) if isinstance(x, dict)]:
             ys = [v for v in (s.get("y") or []) if v is not None]
             if ys:
                 lasts |= {round(ys[-1], k) for k in range(4)}

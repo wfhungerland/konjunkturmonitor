@@ -29,8 +29,8 @@ sahm;Rezessionssignal;2026-11-04;
 kurzarbeit;Kurzarbeit;2026-11-04;
 sv_yoy;Beschaeftigung Bereiche;2026-11-04;
 industry;Produktion Auftraege Industrie;2026-11-04;
-orders_split;Auftraege Inland Ausland;2026-11-04;
-orders_euro;Auftraege Euroraum;2026-11-04;
+orders_split;Auftraege Herkunft;2026-11-04;
+orders_euro;Auftraege Euroraum;2026-11-04;2026-11-08
 rhine;Rheinpegel Kaub;2026-11-05;
 rhine_low;Niedrigwassertage Rhein;2026-11-06;
 branch_heat;Produktion Branchen;2026-11-04;
@@ -38,7 +38,7 @@ branch_heat_bars;Produktion Branchen Balken;2026-11-04;
 orders_heat;Auftraege Branchen;2026-11-04;
 orders_heat_bars;Auftraege Branchen Balken;2026-11-04;
 prod_groups;Produktion Guetergruppen;2026-11-04;
-sales;Umsatz Industrie;2026-11-04;
+sales;Umsatz Industrie;2026-11-04;2026-11-08
 bau_orders;Auftraege Bau;2026-11-04;
 permits;Baugenehmigungen Wohnungen;2026-11-05;
 house_prices;Preise Wohnimmobilien;2026-11-05;
@@ -78,7 +78,7 @@ aufgabe_land;Betriebsaufgaben Laender;2026-11-04;
 credit_rates;Kreditzinsen;2026-11-05;
 credit_growth;Kreditwachstum;2026-11-05;
 yields;Rendite Bundesanleihen;2026-11-04;
-fx_usd;Euro US-Dollar;2026-11-05;
+fx_usd;Euro US-Dollar;2026-11-05;2026-11-08
 fx_eer;Effektiver Wechselkurs Euro;2026-11-05;
 fx;Euro Waehrungen;2026-11-05;
 oil;Oelpreis;2026-11-04;
@@ -100,3 +100,7 @@ gov_balance;Finanzierungssaldo Staat;2026-11-04;
 gov_spend;Zinsen Investitionen Staat;2026-11-04;
 gov_debt;Schuldenstand Staat;2026-11-04;
 calendar;Veroeffentlichungskalender;2026-11-04;
+proj_gap;BIP Projektion;2026-11-08;
+diffusion;Breite Industrie;2026-11-08;
+ez_ip;Industrie Euroraum;2026-11-08;
+ez_esi;Stimmung Euroraum;2026-11-08;

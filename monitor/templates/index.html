@@ -412,6 +412,7 @@ const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
 const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "Struktur", service: "Service" }, overview: "Übersicht", brief: "Kurzfassung", all: "Alles zeigen",
   week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü" };
 const KERN = { more: "Mehr Zahlen" };
+const ANH = { show: "Abbildungen anzeigen" };
 const EMB = { label: "Einbetten", title: "HTML-Code kopieren, um diese Abbildung auf einer eigenen Seite einzubetten", done: "Code kopiert", src: "Konjunkturmonitor", full: "ganze Seite" };
 const HFMT = { A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
 function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 5, 10].map(m => m * p).find(s => s >= raw); }
@@ -1067,6 +1068,9 @@ function card(c, no) {
   if (f.pptx) acts.push(`<a href="${u(f.pptx)}" download>PPTX</a>`);
   if (!["heat", "heatbars", "calendar", "event"].includes(c.type)) acts.push(`<button type="button" class="png">PNG</button>`);
   if (f.csv) acts.push(`<a href="${u(f.csv)}" download>CSV</a>`);
+  const fv = (c.variant && c.variant.files) || {};  // zweite Ansicht der Karte
+  if (fv.xlsx) acts.push(`<a href="${u(fv.xlsx)}" download>XLSX (${esc(c.toggle.label)})</a>`);
+  if (fv.csv) acts.push(`<a href="${u(fv.csv)}" download>CSV (${esc(c.toggle.label)})</a>`);
   acts.push(`<button type="button" class="lnk" title="Direkten Link auf diese Abbildung kopieren">Link kopieren</button>`);
   if (c.chart) acts.push(`<button type="button" class="emb" title="${EMB.title}">${EMB.label}</button>`);
   if (c.chart) acts.push(`<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${METH_LABEL}</a>`);  // Daten, Quellen, Rechenschritte, Methode
@@ -1102,6 +1106,17 @@ function render(ch) {
     days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], shortDays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], periods: ["AM", "PM"],
     dateTime: "%a %b %e %X %Y", date: "%d.%m.%Y", time: "%H:%M:%S", decimal: ",", thousands: ".", grouping: [3], currency: ["", " €"], year: "%Y", month: "%b %Y", dayMonth: "%-d. %b", dayMonthYear: "%-d. %b %Y" } }); }
   const c = ch._c;
+  if (c.variant && !ch._vseg) { // zwei Abbildungen in einer Karte: Umschalter
+    const seg = document.createElement("div"), base = c; seg.className = "seg"; seg.setAttribute("role", "group");
+    [c.toggle.base, c.toggle.label].forEach((lab, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = lab; b.setAttribute("aria-pressed", i === 0);
+      b.onclick = () => { seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+        if (window.Plotly) Plotly.purge(ch); ch.innerHTML = ""; delete ch.dataset.done; ch._c = i ? base.variant : base;
+        const cd = ch.closest(".card"), ue = cd?.querySelector(".unit"); if (ue) ue.textContent = ch._c.unit || "";
+        const h = cd?.querySelector("h3"); if (h && base.title && ch._c.title) for (const n of h.childNodes) if (n.nodeType === 3 && n.textContent.includes(i ? base.title : base.variant.title)) n.textContent = n.textContent.replace(i ? base.title : base.variant.title, ch._c.title);
+        render(ch); };
+      seg.appendChild(b); });
+    ch.parentNode.insertBefore(seg, ch); ch._vseg = seg;
+  }
   if (c.alt && !ch._seg) { // Umschalter, etwa Vorjahres- und Vormonatsvergleich der Inflationsbeiträge
     const base = { series: c.series, unit: c.unit, label: c.alt.base }, seg = document.createElement("div");
     seg.className = "seg"; seg.setAttribute("role", "group");
@@ -1269,6 +1284,7 @@ function build() {
   const NAV_ITEMS = { lage: [], konjunktur: [], struktur: [], service: [] }, NAV_OF = { top: "lage" };  // Menü in vier Gruppen
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     struktur: { no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
+    anhang: { no: "Teil III", title: "Anhang", text: "Lange Reihen seit 1870 und Sonderfaktoren wie Wetter und Rheinpegel: zur Einordnung, nicht für die laufende Lage. Die Abbildungen sind eingeklappt." },
     service: { no: "", title: "Termine", text: "" } };
   const railObs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
     if (!e.isIntersecting) return; const r = e.target.closest("section.topic").querySelector(".rail");
@@ -1295,7 +1311,12 @@ function build() {
     const wrap = document.createElement("div"); wrap.className = "charts"; sec.appendChild(wrap);
     let target = wrap;
     t.charts.forEach((c, i) => {
-      if (i === 1 && LY.lead_chart_only && t.charts.length > 1) {
+      if (i === 0 && t.part === "anhang") { // Anhang: alle Abbildungen eingeklappt
+        const det = document.createElement("details"); det.className = "morecharts";
+        det.innerHTML = `<summary>${ANH.show} (${t.charts.length})<span class="list">${t.charts.map(x => `Abb. ${x.no} ${esc(x.title || "")}`).join("<br>")}</span></summary>`;
+        target = document.createElement("div"); target.className = "charts"; det.appendChild(target); sec.appendChild(det);
+      }
+      if (i === 1 && LY.lead_chart_only && t.charts.length > 1 && t.part !== "anhang") {
         const det = document.createElement("details"); det.className = "morecharts";
         det.innerHTML = `<summary>Weitere Abbildungen (${t.charts.length - 1})<span class="list">${t.charts.slice(1).map(x => `Abb. ${x.no} ${esc(x.title || "")}`).join("<br>")}</span></summary>`;
         target = document.createElement("div"); target.className = "charts"; det.appendChild(target); sec.appendChild(det);
@@ -1315,7 +1336,7 @@ function build() {
       topics.insertAdjacentHTML("beforeend", `<div class="parthead" id="teil-${part}">${P.no ? `<span>${esc(P.no)}</span> ` : ""}${esc(P.title)}${P.text ? `<p>${esc(P.text)}</p>` : ""}</div>`);
     }
     topics.appendChild(sec);
-    const g = part === "service" ? "lage" : NAV_ITEMS[part] ? part : "konjunktur";
+    const g = part === "service" ? "lage" : part === "anhang" ? "struktur" : NAV_ITEMS[part] ? part : "konjunktur";
     NAV_ITEMS[g].push(`<a href="#${t.id}">${esc(t.title)}</a>`); NAV_OF[t.id] = g;
     if ((LY.brief_topics || []).includes(t.id)) sec.classList.add("brieftopic");
   });
