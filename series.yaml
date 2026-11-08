@@ -3271,12 +3271,12 @@ series:
     block: berlin
     source: genesis
     key: "45212-0014"
-    params: {value_variable: UMS103, filters: {DLAND: "11", WERTE4: REAL}}
+    params: {value_variable: UMS103, filters: {DLAND: "11", WERTE4: REAL}, query: {contents: UMS103, regionalvariable: DLAND, regionalkey: "11"}}
     title: "Umsatz im Einzelhandel Berlin, real"
     unit: "Index 2015=100"
     frequency: M
     adjustment: nicht bereinigt
-    start: "2010-01-01"
+    start: "2015-01-01"
     note: "GENESIS-Tabelle 45212-0014, Merkmal DLAND 11 (Berlin)."
 
   - id: be_retail_yoy
@@ -3294,12 +3294,12 @@ series:
     block: berlin
     source: genesis
     key: "45213-0014"
-    params: {value_variable: UMS103, filters: {DLAND: "11", WERTE4: REAL}}
+    params: {value_variable: UMS103, filters: {DLAND: "11", WERTE4: REAL}, query: {contents: UMS103, regionalvariable: DLAND, regionalkey: "11"}}
     title: "Umsatz im Gastgewerbe Berlin, real"
     unit: "Index 2015=100"
     frequency: M
     adjustment: nicht bereinigt
-    start: "2010-01-01"
+    start: "2015-01-01"
     note: "GENESIS-Tabelle 45213-0014, Merkmal DLAND 11 (Berlin)."
 
   - id: be_hosp_yoy
@@ -3317,7 +3317,7 @@ series:
     block: berlin
     source: genesis
     key: "31111-0120"
-    params: {value_variable: WOHN01, filters: {DLAND: "11", BAUTK1: BTK-GEB, BAUGB1: GBD-W-NW}}
+    params: {value_variable: WOHN01, filters: {DLAND: "11", BAUTK1: BTK-GEB, BAUGB1: GBD-W-NW}, query: {contents: WOHN01, regionalvariable: DLAND, regionalkey: "11", classifyingvariable1: BAUTK1, classifyingkey1: BTK-GEB, classifyingvariable2: BAUGB1, classifyingkey2: GBD-W-NW}}
     title: "Baugenehmigungen Berlin: Wohnungen (Neubau und Baumaßnahmen an bestehenden Gebäuden)"
     unit: "Wohnungen"
     frequency: M
