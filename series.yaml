@@ -2044,7 +2044,7 @@ series:
     block: struktur
     source: static
     key: ameco_potential_de
-    params: {source_name: "Europäische Kommission, AMECO (über DBnomics), eigene Berechnung"}
+    params: {source_name: "Europäische Kommission, AMECO, eigene Berechnung"}
     title: "Wachstum des Produktionspotenzials (AMECO)"
     unit: "% ggü. Vorjahr"
     frequency: A
@@ -2054,7 +2054,7 @@ series:
     chart: potential
     label: "Potenzial (AMECO)"
     license: "Europäische Kommission, AMECO: Wiederverwendung mit Quellenangabe"
-    note: "Veränderung des Produktionspotenzials (AMECO-Reihe OVGD) gegenüber dem Vorjahr; über DBnomics wöchentlich abgerufen, Startstand Frühjahr 2026 vom 3.11.2026."
+    note: "Veränderung des Potenzial-BIP zu Preisen von 2020 (AMECO-Reihe OVGDP) gegenüber dem Vorjahr; wöchentlich über den AMECO-Abfragedienst der Europäischen Kommission abgerufen."
 
   - id: de_potential_oecd
     block: struktur

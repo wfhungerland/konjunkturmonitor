@@ -1,7 +1,7 @@
 """Schätzungen des Produktionspotenzials für Deutschland als statische Reihen (Wachstum ggü. Vorjahr in %).
 
 Läuft vor dem Datenabruf (python -m monitor run) und schreibt nach data/static/<key>.csv (date,value):
-- ameco_potential_de: Europäische Kommission, AMECO, Potenzial-BIP (OVGD) über DBnomics.
+- ameco_potential_de: Europäische Kommission, AMECO, Potenzial-BIP zu Preisen von 2020 (OVGDP), AMECO-Abfragedienst.
 - oecd_potential_de: OECD Economic Outlook, Potenzial-BIP in konstanten Preisen (GDPVTR).
 - imf_potential_de: IWF World Economic Outlook; Potenzialwachstum aus realem BIP-Wachstum (NGDP_RPCH) und
   Produktionslücke in % des Potenzials (NGAP_NPGDP): (1 + g) * (1 + Lücke Vorjahr) / (1 + Lücke) - 1.
@@ -21,8 +21,9 @@ import pandas as pd
 log = logging.getLogger(__name__)
 OECD = ("https://sdmx.oecd.org/public/rest/data/OECD.ECO.MAD,DSD_EO@DF_EO,/DEU.GDPVTR.A?startPeriod=1991",
         {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"})
-IMF = "https://www.imf.org/external/datamapper/api/v1/{ind}/DEU"
-AMECO = 'https://api.db.nomics.world/v22/series/AMECO/OVGD?dimensions={"geo":["deu"]}&observations=1&format=json'
+IMF = "https://api.imf.org/external/sdmx/2.1/data/IMF.RES,WEO/DEU.{ind}.A?startPeriod=1991"
+AMECO = ("https://ec.europa.eu/economy_finance/ameco/wq/series?fullVariable=1.0.0.0.OVGDP&countries=DEU&years={years}"
+         "&defaultCountries=0&Lastyear=0&Yearorder=ASC")
 
 
 def _get(url: str, headers: dict | None = None) -> str:
@@ -43,9 +44,11 @@ def oecd() -> pd.Series:
 
 
 def imf() -> pd.Series:
+    import re
+
     def ind(name):
-        v = json.loads(_get(IMF.format(ind=name)))["values"][name]["DEU"]
-        return pd.Series({int(k): float(x) for k, x in v.items() if x is not None})
+        xml = _get(IMF.format(ind=name))
+        return pd.Series({int(y): float(v) for y, v in re.findall(r'<Obs TIME_PERIOD="(\d{4})" OBS_VALUE="([-0-9.eE]+)"', xml)})
     g, gap = ind("NGDP_RPCH"), ind("NGAP_NPGDP")
     df = pd.DataFrame({"g": g, "gap": gap}).dropna().sort_index()
     pot = ((1 + df["g"] / 100) * (1 + df["gap"].shift(1) / 100) / (1 + df["gap"] / 100) - 1) * 100
@@ -53,9 +56,15 @@ def imf() -> pd.Series:
 
 
 def ameco() -> pd.Series:
-    docs = json.loads(_get(AMECO))["series"]["docs"]
-    doc = next(d for d in docs if d.get("dimensions", {}).get("unit", "").startswith("mrd"))  # Niveau in Mrd. Euro, konstante Preise
-    s = pd.Series([v for v in doc["value"]], index=[int(p) for p in doc["period"]]).replace("NA", None).dropna()
+    import re
+    from datetime import date
+    years = ",".join(str(y) for y in range(1991, date.today().year + 3))
+    html = _get(AMECO.format(years=years))
+    head = re.findall(r"<th>(\d{4})</th>", html)
+    vals = re.findall(r'<td formula="[^"]*">([-0-9.]*)</td>', html)  # leere Zelle: Jahr ohne Wert
+    if not head or len(vals) != len(head):
+        raise ValueError("Tabelle nicht lesbar")
+    s = pd.Series([float(v) if v else None for v in vals], index=[int(y) for y in head], dtype=float).dropna()
     return _growth(s)
 
 

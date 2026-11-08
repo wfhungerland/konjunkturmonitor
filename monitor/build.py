@@ -1459,7 +1459,8 @@ def build_payload(root: Path = ROOT) -> dict:
                                 vals.setdefault(d, []).append(v)
                         xs = sorted(d for d, v in vals.items() if len(v) >= 2)
                         band = dict(ps[0], unit=ps[0]["unit"], freq=ps[0]["freq"], x=xs)
-                        series = [dict(x, style="hover") if x in ps else x for x in series] + [
+                        cut = lambda x: dict(x, style="hover", x=[d for d in x["x"] if d <= xs[-1]], y=[v for d, v in zip(x["x"], x["y"]) if d <= xs[-1]])  # nicht über das Band hinaus
+                        series = [cut(x) if x in ps else x for x in series] + [
                             dict(band, id="band_lo", label="Spanne der Schätzungen, untere Grenze", style="band_lo", y=[round(min(vals[d]), 3) for d in xs]),
                             dict(band, id="band_hi", label="Spanne der Schätzungen, obere Grenze", style="band_hi", y=[round(max(vals[d]), 3) for d in xs])]
                         entry["pot_names"] = [x["label"] for x in ps]
