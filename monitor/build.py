@@ -60,9 +60,14 @@ def _series_meta(catalog_path: Path) -> tuple[dict, dict]:
     return {s.id: s for s in cat.series}, raw.get("charts", {})
 
 
-def _xy(s: pd.Series, years: int | None) -> dict:
+def _xy(s: pd.Series, years: int | None, start: str | None = None) -> dict:
+    """Werte ab start (Jahresanfang, siehe layout.window_start), sonst die letzten years Jahre."""
     s = s.dropna()
-    if years:
+    if start == "year" and years and len(s):  # lange Fenster: rund years Jahre, ab Anfang des Startjahrs
+        s = s[s.index.year >= (s.index[-1] - pd.DateOffset(years=years)).year]
+    elif start:
+        s = s[s.index >= start]
+    elif years:
         s = s[s.index >= s.index[-1] - pd.DateOffset(years=years)]
     return {"x": [d.strftime("%Y-%m-%d") for d in s.index], "y": [round(float(v), 4) for v in s.values]}
 
@@ -1295,6 +1300,13 @@ def build_payload(root: Path = ROOT) -> dict:
             uy = layout.get("uniform_years")
             if uy and c.get("years") and 3 <= c["years"] <= 8 and not c.get("keep_years"):
                 c = dict(c, years=int(uy))
+            ws = layout.get("window_start") or {}
+            if ws and typ == "line" and c.get("years") and not c.get("keep_years") and not c.get("x_start"):
+                # feste Startjahre statt Rückzählen vom jüngsten Wert: kurz bis 8 Jahre, mittel 10 bis 12, lang ab 20 auf Jahresanfang
+                y = int(c["years"])
+                start = ws.get("short") if y <= 8 else ws.get("mid") if y <= 12 else "year"
+                if start:
+                    c = dict(c, x_start=str(start))
             entry = dict(c, type=typ, title=(charts_cfg.get(c["chart"], {}) or {}).get("title", c.get("title", "")),
                          decimals=c.get("decimals", (charts_cfg.get(c["chart"], {}) or {}).get("decimals", 1)))
             if typ == "clock":
@@ -1439,13 +1451,13 @@ def build_payload(root: Path = ROOT) -> dict:
                         ser = pd.Series(((ser.values / ago.values) ** 0.1 - 1) * 100, index=ser.index).dropna()
                     for y0, y1 in c.get("blank_years") or []:  # Kriegs- und Inflationsjahre auslassen: Lücke statt Werte
                         ser = ser[(ser.index.year < int(y0)) | (ser.index.year > int(y1))]
-                    xy = _xy(ser * float(c.get("scale", 1)), c.get("years"))
+                    xy = _xy(ser * float(c.get("scale", 1)), c.get("years"), c.get("x_start"))
                     series.append(dict(id=s.id, label=s.label or s.title, unit=c.get("unit", s.unit), freq="B" if c.get("daily") else s.frequency,
                                        style=(c.get("styles") or {}).get(s.id) or getattr(s, "style", None) or "line", **xy))
                 if c.get("total") and c["total"] in data:
                     s = meta[c["total"]]
                     series.append(dict(id=s.id, label="BIP insgesamt", unit=s.unit, freq=s.frequency, style="line",
-                                       **_xy(data[s.id], c.get("years"))))
+                                       **_xy(data[s.id], c.get("years"), c.get("x_start"))))
                 if not series:
                     continue
                 if c.get("ref_mean"):  # Mittel eines Zeitraums als graue Referenzlinie

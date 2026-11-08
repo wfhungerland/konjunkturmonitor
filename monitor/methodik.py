@@ -218,7 +218,10 @@ def _page(c: dict, topic: dict, meta: dict, status: dict, texts: dict, payload: 
     if c.get("multiples"):
         form = "Kleine Einzeldiagramme (Small Multiples), je Reihe eines; die übrigen Reihen stehen grau dahinter. Die Skala ist gemeinsam oder je Feld umschaltbar."
     years = c.get("years")
-    window = f"Zeitfenster: rund {years} Jahre." if years and c.get("type") in (None, "line", "stacked", "threshold") else ""
+    MON = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
+    st0 = c.get("x_start")
+    window = (f"Zeitfenster: rund {years} Jahre, ab Jahresanfang." if st0 == "year" else f"Zeitfenster: ab {MON[int(st0[5:7]) - 1]} {st0[:4]}." if st0 else
+              f"Zeitfenster: rund {years} Jahre." if years and c.get("type") in (None, "line", "stacked", "threshold") else "")
     files = c.get("files") or {}
     dl = " · ".join(f'<a href="../{escape(v, True)}">{k.upper()}</a>' for k, v in files.items() if isinstance(v, str))
     cite = f"{payload['site'].get('author', '')} ({stand[:4]}): Konjunkturmonitor, Abb. {no} {title}. Stand {stand_de}. {payload['site'].get('url', '')}"
