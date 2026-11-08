@@ -152,12 +152,13 @@
   details.morecharts > summary .list { display: block; color: var(--muted); font-size: 13.5px; margin: 2px 0 0 1.1em; }
   details.morecharts[open] > summary .list { display: none; }
   @media (min-width: 1240px) { details.morecharts > summary .list { display: none; } }  /* steht dann links */
-  @media (max-width: 700px) { .card .chart { aspect-ratio: auto; height: 300px; min-height: 0; } .charts.single .card .chart { aspect-ratio: auto; height: 300px; } .card .chart.square { height: auto; aspect-ratio: 1 / 1; } .card .chart.multi { height: auto; } section.topic .secmain > h2 { font-size: 22px; } }
+  @media (max-width: 700px) { .card .chart { aspect-ratio: auto; height: 225px; min-height: 0; } .charts.single .card .chart { aspect-ratio: auto; height: 225px; } .card .chart.square { height: auto; aspect-ratio: 4 / 3; } .card .chart.multi { height: auto; } section.topic .secmain > h2 { font-size: 22px; } }
   .multiples { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 10px 16px; }
   .multiples { gap: 14px 22px; }
   .evlegend { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0 0 10px; font-size: 13.5px; }
   .evlegend i { display: inline-block; width: 22px; vertical-align: middle; margin-right: 6px; }
   .multiples .mini { height: 170px; }
+  @media (max-width: 700px) { .multiples .mini { height: 128px; } .card .chart { width: 75%; margin-left: auto; margin-right: auto; } }
   .multiples .mt { font: 13.5px/1.3 var(--ff); margin: 0; }
   .multiples .mt span.mtsub { color: var(--muted); }
   .heat { overflow-x: auto; }
@@ -516,7 +517,7 @@ function timeChart(el, c) {
   const xs = c.series.flatMap(s => s.x).sort(), freq = c.freq;
   const r = pad(xs[0], xs[xs.length - 1], freq);
   const zx = xs[xs.length - 1], zcut = (+zx.slice(0, 4) - (c.zoom_years || 3)) + zx.slice(4);  // Skala nur nach den jüngsten Jahren
-  const zv = c._zoom ? traces.filter(tr => tr.x && tr.y).flatMap(tr => tr.x.map((x, i) => x >= zcut ? tr.y[i] : null)).filter(v => v != null) : null;
+  const zv = (c._zoom ?? c.zoom_default) ? traces.filter(tr => tr.x && tr.y).flatMap(tr => tr.x.map((x, i) => x >= zcut ? tr.y[i] : null)).filter(v => v != null) : null;
   const yr = c.y_range || [], ya = yAxis(zv && zv.length ? zv : all, c.unit, [...yr.filter(v => v != null), ...(bars.length ? [0] : []), c.ref, c.threshold, ...(c.refs || []).map(q => q.y), ...((c.band && (DATA.layout || {}).compare_band) ? [c.band.lo, c.band.hi] : [])].filter(v => v != null));
   if (yr.length) { // feste Achsengrenzen, etwa 0 bis 100 % beim Füllstand
     const st = ya.tickvals.length > 1 ? ya.tickvals[1] - ya.tickvals[0] : 1, keep = ya.tickvals.map((v, i) => (yr[0] == null || v >= yr[0] - 1e-9) && (yr[1] == null || v <= yr[1] + 1e-9));
@@ -534,7 +535,7 @@ function timeChart(el, c) {
   const LY = DATA.layout || {}, annotations = annotations0;
   if (c.threshold != null && c.threshold_label) annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.threshold, text: esc(c.threshold_label), showarrow: false, xanchor: "left", yanchor: "bottom",
     font: { family: HS.font, size: 12, color: WARN }, bgcolor: "rgba(255,255,255,0.85)" });
-  if (c._zoom) annotations.push({ xref: "paper", yref: "paper", x: 0.005, y: 0.995, xanchor: "left", yanchor: "top", showarrow: false, text: SCALE_TXT.note.replace("{n}", c.zoom_years || 3),
+  if (c._zoom ?? c.zoom_default) annotations.push({ xref: "paper", yref: "paper", x: 0.005, y: 0.995, xanchor: "left", yanchor: "top", showarrow: false, text: SCALE_TXT.note.replace("{n}", c.zoom_years || 3),
     font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" });
   if (c.partial_last && bars.length) { const s = bars[0], j = s.x.length - 1; annotations.push({ xref: "x", yref: "y", x: s.x[j], y: s.y[j], text: SCALE_TXT.partial, showarrow: false, yanchor: "bottom", xanchor: "right", font: { family: HS.font, size: 11, color: "#595959" } }); }
   if (c.mad_band && bars.length) { // mittlere absolute Korrektur als graues Band
@@ -1048,8 +1049,8 @@ function card(c, no) {
     sb.onclick = () => { c._own = !(c._own ?? c.own_scale); sb.textContent = lab(); redraw(); }; tools.appendChild(sb); }
   if (c.zoom_toggle) { // Ausreißer: Skala auf die jüngsten Jahre
     const zb = document.createElement("button"); zb.type = "button"; zb.className = "btn";
-    const lab = () => c._zoom ? SCALE_TXT.full : SCALE_TXT.zoom; zb.textContent = lab();
-    zb.onclick = () => { c._zoom = !c._zoom; zb.textContent = lab(); redraw(); }; tools.appendChild(zb); }
+    const lab = () => (c._zoom ?? c.zoom_default) ? SCALE_TXT.full : SCALE_TXT.zoom; zb.textContent = lab();
+    zb.onclick = () => { c._zoom = !(c._zoom ?? c.zoom_default); zb.textContent = lab(); redraw(); }; tools.appendChild(zb); }
   if (labelable(c)) {
     const lb = document.createElement("button"); lb.type = "button"; lb.className = "btn"; lb.textContent = "Jüngste Werte einblenden";
     lb.onclick = () => { c._labels = !c._labels; lb.textContent = c._labels ? "Jüngste Werte ausblenden" : "Jüngste Werte einblenden"; redraw(); };
