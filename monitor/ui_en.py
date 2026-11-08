@@ -11,6 +11,7 @@ PAIRS: list[tuple[str, str]] = [
     ('url("fonts/', 'url("../fonts/'),
     ('href="feed.xml"', 'href="../feed.xml"'),
     ('href="impressum.html"', 'href="../impressum.html"'),
+    ('href="korrekturen.html"', 'href="../korrekturen.html"'),
     ('href="datenschutz.html"', 'href="../datenschutz.html"'),
     ('deed.de"', 'deed.en"'),
     ('"de-DE"', '"en-GB"'),
@@ -76,6 +77,7 @@ PAIRS: list[tuple[str, str]] = [
     (">Produktraum-Monitor</a>", ">Product Space Monitor</a>"),
     (">Impressum</a>", ">Legal notice</a>"),
     (">Datenschutz</a>", ">Privacy</a>"),
+    (">Korrekturen</a>", ">Corrections (German)</a>"),
     ("· Texte und Abbildungen: <a", "· Text and charts: <a"),
     # Kopfzeile, Navigation, Suche
     ('aria-label="Zur Übersicht">↑ Übersicht</a>', 'aria-label="Back to overview">↑ Overview</a>'),

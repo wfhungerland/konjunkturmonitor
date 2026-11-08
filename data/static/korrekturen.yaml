@@ -1,0 +1,31 @@
+# Korrekturen und Änderungen an Daten und Methoden des Konjunkturmonitors, jüngste zuerst.
+# Je Eintrag: date (JJJJ-MM-TT), art (Korrektur: ein Fehler wurde behoben; Quelle: Daten kommen von anderswo;
+# Methode: Rechnung oder Darstellung der Zahlen geändert), charts (Abbildungen, leer = ganze Seite),
+# text (was sich geändert hat und was das für die Zahlen bedeutet), pr (Nummer des Pull Requests, optional).
+# Reine Gestaltung ohne Folgen für Zahlen oder Aussagen gehört nicht hierher.
+
+- date: 2026-11-08
+  art: Methode
+  charts: []
+  text: "Automatische Sätze werden vor der Ausgabe geprüft: keine Platzhalter, kein Zeitraum nach dem jüngsten Wert, Richtungswort passend zum Vorzeichen, genannter Wert gleich dem gezeigten. Ein Satz, der durchfällt, erscheint nicht."
+  pr: 51
+- date: 2026-11-08
+  art: Quelle
+  charts: [potential]
+  text: "Das Potenzialwachstum zeigt nun die Spanne der Schätzungen von Europäischer Kommission (AMECO), OECD und IWF statt nur AMECO. Alle drei werden wöchentlich abgerufen; AMECO direkt beim Abfragedienst der Kommission statt einmalig über DBnomics."
+  pr: 50
+- date: 2026-11-08
+  art: Quelle
+  charts: [branch_heat, branch_heat_bars, orders_heat, orders_heat_bars]
+  text: "Die Branchenreihen für Produktion und Auftragseingang reichen nun bis 2005 zurück statt bis 2015. Die gezeigten Werte ändern sich dadurch nicht."
+  pr: 50
+- date: 2026-11-07
+  art: Quelle
+  charts: [retail_split]
+  text: "Der Einzelhandelsumsatz nach Sortimenten kommt von Eurostat (sts_trtu_m) statt aus der GENESIS-Datenbank des Statistischen Bundesamts, weil der GENESIS-Abruf wiederholt scheiterte. Die Werte beruhen auf denselben Meldungen des Statistischen Bundesamts; Bereinigung und Stand können leicht abweichen."
+  pr: 45
+- date: 2026-11-03
+  art: Korrektur
+  charts: [trade]
+  text: "Korrektur am Tag der ersten Fassung: Die Warenexporte werden seither in Mrd. € ausgewiesen."
+  pr: 2

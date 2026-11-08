@@ -157,7 +157,8 @@ def _steps(c: dict, meta: dict, ids: list[str]) -> list[str]:
     return st
 
 
-def _page(c: dict, topic: dict, meta: dict, status: dict, texts: dict, payload: dict, lic_of=lambda s: s.license) -> str:
+def _page(c: dict, topic: dict, meta: dict, status: dict, texts: dict, payload: dict, lic_of=lambda s: s.license, corr: list | None = None) -> str:
+    corr = corr or []
     ids = chart_series_ids(c, meta, status.keys())
     stand = payload.get("stand", "")
     stand_de = f"{stand[8:10]}.{stand[5:7]}.{stand[:4]}" if len(stand) >= 10 else stand
@@ -236,6 +237,7 @@ ol, ul {{ margin: 4px 0; padding-left: 20px; }} li {{ margin: 2px 0; }} .ask {{ 
 {f'<h2>Methode</h2><p>{escape(method)}</p>' if method else ''}
 <h2>Grenzen und Hinweise</h2>
 <ul>{''.join(f'<li>{escape(x)}</li>' for x in limits)}</ul>
+{('<h2>Änderungen</h2><ul>' + ''.join(f"<li>{r['date'][8:10]}.{r['date'][5:7]}.{r['date'][:4]}, {escape(r['art'])}: {escape(r['text'])}</li>" for r in corr) + '</ul><p class="small noprint"><a href="../korrekturen.html">Alle Korrekturen und Änderungen</a></p>') if corr else ''}
 <h2>Zitieren und weiterverwenden</h2>
 <p class="small">Zitiervorschlag: {escape(cite)}<br>Lizenz der Abbildung: <a href="{lic_url}">{escape(lic)}</a>; die Daten unterliegen den oben genannten Lizenzen der Quellen.<br>Berechnet mit dem Code-Stand {escape(c.get('_code', ''))}. Frühere Datenstände: <a href="{escape(payload['site'].get('repo', ''), True)}/releases">wöchentliche Archive</a>.{('<br>Downloads: ' + dl) if dl else ''}</p>
 </body></html>
@@ -248,6 +250,8 @@ def write_method_pages(payload: dict, meta: dict, root: Path, out: Path, lic_of=
     status = {s["series_id"]: s for s in json.loads(st_path.read_text(encoding="utf-8")).get("series", [])} if st_path.exists() else {}
     tp = root / "data" / "static" / "methodik.yaml"
     texts = (yaml.safe_load(tp.read_text(encoding="utf-8")) or {}).get("charts", {}) if tp.exists() else {}
+    from .korrekturen import for_chart, load as load_corr
+    corr = load_corr(root)
     d = out / "methodik"
     d.mkdir(parents=True, exist_ok=True)
     items = []
@@ -255,7 +259,7 @@ def write_method_pages(payload: dict, meta: dict, root: Path, out: Path, lic_of=
         for c in topic["charts"]:
             if not c.get("chart"):
                 continue
-            (d / f"{c['chart']}.html").write_text(_page(c, topic, meta, status, texts, payload, lic_of or (lambda s: s.license)), encoding="utf-8")
+            (d / f"{c['chart']}.html").write_text(_page(c, topic, meta, status, texts, payload, lic_of or (lambda s: s.license), for_chart(corr, c["chart"])), encoding="utf-8")
             items.append(f'<li><a href="{escape(c["chart"])}.html">Abb. {c.get("no")}: {escape(c.get("title", ""))}</a></li>')
     (d / "index.html").write_text(f"""<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Methodenblätter · Konjunkturmonitor</title><style>body {{ font-family: "Source Sans 3", Arial, sans-serif; max-width: 820px; margin: 24px auto; padding: 0 16px; line-height: 1.5; }} a {{ color: #000; }}</style></head>
