@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [series.yaml, monitor.yaml, "monitor/**", "data/static/**", .github/workflows/update.yml]
+    paths: [series.yaml, monitor.yaml, pyproject.toml, "monitor/**", "data/static/**", .github/workflows/update.yml]
   pull_request:
 
 permissions:
@@ -48,6 +48,17 @@ jobs:
           git diff --cached --quiet && exit 0
           git commit -m "Daten aktualisiert ($(date -u +%Y-%m-%d))"
           git push origin "HEAD:${{ github.ref_name }}" || echo "::warning::Push abgelehnt (Branch geändert); nächster Lauf holt das nach."
+      - name: Wöchentlicher Datenstand (Archiv)
+        if: github.event_name == 'schedule' && github.ref_name == github.event.repository.default_branch
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="daten-$(date -u +%G-KW%V)"
+          gh release view "$tag" > /dev/null 2>&1 && exit 0
+          mkdir -p archiv && gzip -c data/processed/observations.csv > archiv/observations.csv.gz
+          cp data/processed/run_status.json series.yaml monitor.yaml archiv/
+          gh release create "$tag" archiv/* --title "Datenstand $(date -u +%d.%m.%Y) (KW $(date -u +%V))" --notes "Vollständiger Datenstand des Konjunkturmonitors, Code-Stand ${GITHUB_SHA}. Nachrechnen: Repository auf diesen Commit setzen, observations.csv.gz nach data/processed/observations.csv entpacken, python -m monitor build."
       - name: Seitentest im Browser
         run: |
           npm install --no-save --silent playwright@1.63.0

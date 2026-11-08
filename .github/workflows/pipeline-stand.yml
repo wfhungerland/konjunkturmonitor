@@ -1,0 +1,48 @@
+name: Pipeline-Stand aktualisieren
+
+# Der Monitor nutzt einen festen Stand von konjunkturwolf (pyproject.toml). Einmal pro Woche prüft dieser Lauf, ob es einen
+# neueren Stand gibt, testet ihn (Tests und Bau aus den vorhandenen Daten) und öffnet einen Pull Request zum Aktualisieren.
+# Voraussetzung: Settings > Actions > General > „Allow GitHub Actions to create and approve pull requests“.
+on:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Neuen Stand ermitteln
+        id: sha
+        run: |
+          new=$(git ls-remote https://github.com/wfhungerland/konjunkturwolf.git refs/heads/main | cut -f1)
+          old=$(grep -o 'konjunkturwolf@[0-9a-f]\{40\}' pyproject.toml | cut -d@ -f2)
+          echo "new=$new" >> "$GITHUB_OUTPUT"; echo "old=$old" >> "$GITHUB_OUTPUT"
+          [ -n "$new" ] && [ "$new" != "$old" ] && echo "change=1" >> "$GITHUB_OUTPUT" || echo "Kein neuer Stand."
+      - name: Testen und Pull Request öffnen
+        if: steps.sha.outputs.change == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OLD: ${{ steps.sha.outputs.old }}
+          NEW: ${{ steps.sha.outputs.new }}
+        run: |
+          sed -i "s/konjunkturwolf@$OLD/konjunkturwolf@$NEW/" pyproject.toml
+          pip install -e ".[dev]"
+          pytest -q
+          python -m monitor build
+          branch="pipeline-${NEW:0:7}"
+          git config user.name "konjunkturmonitor-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git commit -am "konjunkturwolf auf ${NEW:0:7} aktualisieren"
+          git push origin "$branch"
+          gh pr create --title "konjunkturwolf auf ${NEW:0:7} aktualisieren" --body "Neuer Stand der Pipeline: https://github.com/wfhungerland/konjunkturwolf/compare/$OLD...$NEW. Tests und der Bau aus den vorhandenen Daten liefen in diesem Lauf durch. Nach dem Merge holt der nächste Datenlauf die Daten mit dem neuen Stand."

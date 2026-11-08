@@ -235,6 +235,26 @@
     nav .navlist { position: fixed; top: 54px; right: 8px; left: auto; grid-template-columns: max-content; max-height: 70vh; overflow-y: auto; }
   }
   .navpart { color: var(--muted); font-size: 13.5px; margin-left: 6px; }
+  /* Menü: vier Gruppen, jede öffnet ihre Abschnitte */
+  #nav { display: flex; flex-wrap: nowrap; gap: 0 22px; align-items: center; }
+  #nav details.navgrp { position: relative; }
+  #nav details.navgrp > summary { cursor: pointer; list-style: none; font: 600 15px var(--ff); padding: 2px 0; white-space: nowrap; }
+  #nav details.navgrp > summary::-webkit-details-marker { display: none; }
+  #nav details.navgrp > summary::after { content: " ▾"; font-weight: 400; font-size: 12px; }
+  #nav details.navgrp > summary.cur { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
+  #nav .navlist { width: max-content; position: absolute; left: 0; top: 1.9em; background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 10px 16px; display: grid; grid-template-columns: repeat(2, max-content); gap: 5px 26px; box-shadow: 0 4px 14px rgba(0,0,0,.08); z-index: 10; font-size: 14.5px; line-height: 1.4; }
+  #nav details.navgrp[data-g="lage"] .navlist, #nav details.navgrp[data-g="service"] .navlist, #nav details.navgrp[data-g="struktur"] .navlist { grid-template-columns: max-content; }
+  .menubtn { display: none; } body.menuopen .fab { display: none; } .briefbtn[aria-pressed="true"] { font-weight: 700; }
+  body.brief section.topic:not(.brieftopic), body.brief .parthead, body.brief details.morecharts, body.brief .weekrev, body.brief details.moretable, body.brief .explain { display: none !important; }
+  @media (max-width: 600px) {
+    #nav { display: none; }
+    .menubtn { display: inline-block; }
+    header.menuopen #nav { display: block; position: fixed; left: 0; right: 0; bottom: 0; background: #fff; overflow-y: auto; padding: 12px 18px 48px; z-index: 30; border-top: 1px solid var(--line); }
+    header.menuopen #nav details.navgrp { margin: 0 0 16px; }
+    header.menuopen #nav details.navgrp > summary { pointer-events: none; font-size: 17px; }
+    header.menuopen #nav details.navgrp > summary::after { content: ""; }
+    header.menuopen #nav .navlist { width: auto; position: static; border: 0; box-shadow: none; padding: 6px 0 0; grid-template-columns: 1fr 1fr; gap: 8px 16px; font-size: 16px; }
+  }
   ul.missing { padding-left: 18px; } ul.missing li { margin-bottom: 6px; }
   .news { font: 15px/1.4 var(--ff); color: var(--muted); margin: 0 0 8px; max-width: 60em; }
   .news b { color: var(--dark); }
@@ -322,6 +342,7 @@
   </details>
   <details class="fold"><summary>Datenquellen und Lizenzen</summary>
   <p>Alle Zahlen stammen aus offenen, amtlichen Quellen: Deutsche Bundesbank (saisonbereinigte Reihen von Statistischem Bundesamt und Bundesagentur für Arbeit), Eurostat (Volkswirtschaftliche Gesamtrechnungen, Verbraucherpreise, EU-Unternehmens- und Verbraucherumfragen) und Statistik der Bundesagentur für Arbeit. Prognosen stammen aus den verlinkten Veröffentlichungen. Die Texte sind eigene Erläuterungen und keine amtliche Bewertung.</p>
+  <p><b>Frühere Datenstände.</b> Jeden Montag wird der vollständige Datenstand mit dem Code-Stand als <a id="releases" href="#">Archiv</a> abgelegt; damit lässt sich jede frühere Fassung der Seite nachrechnen.</p>
   <p><b>Methodenblätter.</b> Zu jeder Abbildung gibt es ein Blatt mit Daten, Quellen, Rechenschritten und Methode, für sich lesbar und auf eine A4-Seite druckbar: <a href="methodik/index.html">alle Methodenblätter</a>.</p>
   <p><b>Lizenz.</b> Texte und eigene Abbildungen stehen unter <a href="https://creativecommons.org/licenses/by/4.0/deed.de" rel="license">CC BY 4.0</a>; Namensnennung: Wolf-Fabian Hungerland, Konjunkturmonitor. Die Daten unterliegen den Lizenzen der Quellen, die bei jeder Abbildung stehen. Ausnahme: Abbildungen mit Daten der Global Macro Database stehen samt Download unter <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" rel="license">CC BY-NC-SA 4.0</a>, weil die Datenbank diese Lizenz verlangt.</p>
   </details>
@@ -381,6 +402,8 @@ const MTXT = { m: ["Mittel der letzten 3 Monate", "der letzten 12 Monate"], q: "
 const SCALE_TXT = { own: "Eigene Skala je Feld", common: "Gemeinsame Skala", zoom: "Skala auf die jüngsten Jahre", full: "Skala über den ganzen Zeitraum", note: "Skala nach den letzten {n} Jahren; ältere Werte teils abgeschnitten", partial: "laufendes Jahr", mad: "mittlere Korrektur ±{m} Pp" };
 const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten, Quellen, Rechenschritte und Methode dieser Abbildung auf einer Seite";
 const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
+const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "Struktur", service: "Service" }, overview: "Übersicht", brief: "Kurzfassung", all: "Alles zeigen",
+  week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü" };
 const HFMT = { A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
 function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 5, 10].map(m => m * p).find(s => s >= raw); }
 function decs(step) { return step >= 1 ? 0 : step >= 0.1 ? 1 : 2; }
@@ -397,7 +420,7 @@ function yAxis(vals, unit, extra) {
 // Zeitachse: Jahreszahl mittig unter dem Jahr, Gitterlinie an der Jahresgrenze, Jahresbänder
 function xAxis(x0, x1, width) {
   const y0 = +x0.slice(0, 4), y1 = +x1.slice(0, 4), n = y1 - y0 + 1;
-  const every = [1, 2, 5, 10].find(k => n / k <= Math.max(3, Math.floor(width / 46))) || 10;
+  const every = [1, 2, 5, 10, 20, 25, 50].find(k => n / k <= Math.max(3, Math.floor(width / 46))) || 50;
   const tv = [], tt = [], shapes = [];
   for (let y = y0; y <= y1; y++) {
     const a = `${y}-01-01`, b = `${y + 1}-01-01`, lo = a < x0 ? x0 : a, hi = b > x1 ? x1 : b;
@@ -450,7 +473,8 @@ function timeChart(el, c) {
       traces.push({ type: "scatter", mode: "markers", x: s.x, y: s.y, name: s.label, meta: s.id, showlegend: false, marker: { size: 1, opacity: 0 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
       return;
     } else if (s.style === "norm") { // Vergleichsmarke je Periode, etwa Mittel desselben Monats 2015 bis 2019
-      traces.push({ type: "scatter", mode: "markers", x: s.x, y: s.y, name: s.label, meta: s.id, marker: { symbol: "line-ew-open", size: 11, color: "#000", line: { color: "#000", width: 2 } },
+      const mw = Math.max(4, Math.min(11, ((el.clientWidth || 600) - 60) / Math.max(1, s.x.length) * 0.85));  // Strich so breit wie ein Balken
+      traces.push({ type: "scatter", mode: "markers", x: s.x, y: s.y, name: s.label, meta: s.id, marker: { symbol: "line-ew-open", size: mw, color: "#000", line: { color: "#000", width: 2 } },
         hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
     } else {
       const grey = (c.context_grey || many) && !strong;
@@ -489,11 +513,11 @@ function timeChart(el, c) {
     font: { family: HS.font, size: 12, color: WARN }, bgcolor: "rgba(255,255,255,0.85)" });
   if (c._zoom) annotations.push({ xref: "paper", yref: "paper", x: 0.005, y: 0.995, xanchor: "left", yanchor: "top", showarrow: false, text: SCALE_TXT.note.replace("{n}", c.zoom_years || 3),
     font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" });
-  if (c.partial_last && bars.length) { const s = bars[0], j = s.x.length - 1; annotations.push({ xref: "x", yref: "y", x: s.x[j], y: s.y[j], text: SCALE_TXT.partial, showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 11, color: "#595959" } }); }
+  if (c.partial_last && bars.length) { const s = bars[0], j = s.x.length - 1; annotations.push({ xref: "x", yref: "y", x: s.x[j], y: s.y[j], text: SCALE_TXT.partial, showarrow: false, yanchor: "bottom", xanchor: "right", font: { family: HS.font, size: 11, color: "#595959" } }); }
   if (c.mad_band && bars.length) { // mittlere absolute Korrektur als graues Band
     const v = bars[0].y.filter(q => q != null), m = v.reduce((p, q) => p + Math.abs(q), 0) / Math.max(1, v.length);
     shapes.push({ type: "rect", xref: "paper", yref: "y", x0: 0, x1: 1, y0: -m, y1: m, fillcolor: "rgba(120,120,120,0.14)", line: { width: 0 }, layer: "below" });
-    annotations.push({ xref: "paper", yref: "y", x: 0.005, y: m, text: SCALE_TXT.mad.replace("{m}", fmt(m, 2)), showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); }
+    annotations.push({ xref: "paper", yref: "y", x: 0.995, y: m, text: SCALE_TXT.mad.replace("{m}", fmt(m, 2)), showarrow: false, xanchor: "right", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); }
   (c.refs || []).forEach(q => { // Referenzwerte, etwa die Grenzen des Maastricht-Vertrags: grau gestrichelt mit Beschriftung
     shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: q.y, y1: q.y, line: { color: "#595959", width: 1, dash: "dash" } });
     annotations.push({ xref: "paper", yref: "y", x: 0.005, y: q.y, text: esc(q.label), showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); });
@@ -504,7 +528,7 @@ function timeChart(el, c) {
     annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.band.hi, text: "Spanne 2015–2019", showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#7f7f7f" } });
   }
   const named = traces.filter(t => t.showlegend !== false && t.type === "scatter");
-  const nameOnly = !c._labels && c.name_labels && LY.direct_labels && labelable(c) && named.length >= 2;  // Namen am Linienende statt Legende
+  const nameOnly = !c._labels && c.name_labels && LY.direct_labels && labelable(c) && named.length >= 2 && (el.clientWidth || 600) >= 520;  // schmal: Legende  // Namen am Linienende statt Legende
   const direct = (LY.direct_labels && c._labels && labelable(c) && named.length >= 1) || nameOnly;
   let rMargin = 6;
   if (direct) { // Beschriftung in der Zeichenfläche links über dem Linienende, bei Bedarf mit Bezugslinie und ohne Überlappung
@@ -604,6 +628,7 @@ function multiplesChart(el, c) {
 
 // Wärmetabelle: Zeilen Branchen, Spalten Monate, Farbe nach Veränderung
 function heatChart(el, c) {
+  el.style.overflowX = "auto";  // breite Tabelle auf dem Handy waagerecht wischbar
   const H = c.heat, m = 15, cell = v => { if (v == null) return `<td></td>`; const col = tileColor(Math.max(-m, Math.min(m, v)), m), r = Math.round(v); return `<td style="background:${col.bg};color:${col.fg}">${fmt(r === 0 ? 0 : r, 0)}</td>`; };
   const head = H.cols.map(d => `<th>${MONTHS[+d.slice(5, 7) - 1]}<br>${d.slice(0, 4)}</th>`).join("");
   const sg = v => (v > 0 ? "+" : "") + fmt(v, 1);
@@ -624,7 +649,7 @@ function heatbarsChart(el, c) {
   const note = document.createElement("p"); note.className = "tnote"; const bx = document.createElement("div"); bx.className = "heatbars";
   const draw = v => {
     const rows = H.rows.filter(r => r[v.key] != null).slice().sort((p, q) => p[v.key] - q[v.key]);
-    const xsv = rows.map(r => r[v.key]), lo = Math.min(0, ...xsv), hi = Math.max(0, ...xsv), padv = (hi - lo) * 0.16 || 1;
+    const xsv = rows.map(r => r[v.key]), lo = Math.min(0, ...xsv), hi = Math.max(0, ...xsv), padv = (hi - lo) * ((el.clientWidth || 600) < 520 ? 0.3 : 0.16) || 1;
     const tr = { type: "bar", orientation: "h", y: rows.map(r => r.label), x: xsv, marker: { color: xsv.map(x => tileColor(x, Math.max(...xsv.map(Math.abs), 1)).bg), line: { width: 0 } },
       text: xsv.map(sg), textposition: "outside", cliponaxis: false, hovertemplate: `%{x:+,.1f} %<extra>%{y}</extra>` };
     const L = baseLayout(bx); bx.style.height = Math.max(240, 24 * rows.length + 50) + "px";
@@ -674,7 +699,7 @@ function clockChart(el, c) {
       ...k.t.map((tt, i) => ({ tt, i })).filter(o => o.i === 0).map(o => ({ x: k.x[o.i], y: k.y[o.i], text: o.i === 0 ? `Start ${MONTHS_L[+o.tt.slice(5, 7) - 1]} ${o.tt.slice(0, 4)}` : o.tt.slice(0, 4), showarrow: true, arrowhead: 0, arrowcolor: "#a6a6a6", arrowwidth: 0.5, ax: -26, ay: 18, font: { family: HS.font, size: 12, color: "#595959" } })),
       ...[0.25, 0.5, 0.75].map(f => Math.max(1, Math.round(f * last))).map(i => ({ x: k.x[i], y: k.y[i], ax: k.x[i - 1], ay: k.y[i - 1], axref: "x", ayref: "y", xref: "x", yref: "y", showarrow: true, arrowhead: 2, arrowsize: 1.2, arrowwidth: 1.5, arrowcolor: "#6f8fb8", text: "" })),
       { x: m * 0.98, y: 0, text: "Lage besser →", showarrow: false, xanchor: "right", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#7f7f7f" } },
-      { x: 0, y: m * 0.98, text: "Erwartungen besser ↑", showarrow: false, xanchor: "left", yanchor: "top", font: { family: HS.font, size: 12, color: "#7f7f7f" } }] });
+      { x: 0, y: m * 0.8, text: "Erwartungen besser ↑", showarrow: false, xanchor: "left", yanchor: "top", font: { family: HS.font, size: 12, color: "#7f7f7f" } }] });
   Plotly.newPlot(el, traces, L, CFG);
 }
 
@@ -735,7 +760,7 @@ function dumbbellChart(el, c) {
   const L = baseLayout(el);
   Object.assign(L, { height: Math.max(260, 30 * rows.length + 80), hovermode: "closest", showlegend: true, shapes, margin: { l: 6, r: 16, t: 34, b: 30 },
     legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { size: 12 }, itemclick: false, itemdoubleclick: false },
-    xaxis: { range: [Math.max(0, lo - p * 2), hi + p * 2], showgrid: true, gridcolor: HS.gridH, zeroline: false, fixedrange: true, ticksuffix: "\u202f%" },
+    xaxis: { range: [Math.max(0, lo - p * 3.5), hi + p * 2], showgrid: true, gridcolor: HS.gridH, zeroline: false, fixedrange: true, ticksuffix: "\u202f%" },
     yaxis: { tickmode: "array", tickvals: rows.map((_, i) => i), ticktext: rows.map((r, i) => emph(r) ? `<b>${esc(lab[i])}</b>` : esc(lab[i])), range: [-0.7, rows.length - 0.3], automargin: true, fixedrange: true, ticks: "", showgrid: false, zeroline: false } });
   el.style.aspectRatio = "auto"; el.style.height = L.height + "px";
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";  // Einheit steht an der Achse
@@ -807,11 +832,12 @@ function latestChart(el, c) {
     ...(b.some(x => x.prev != null) ? [{ type: "scatter", mode: "markers", y: lab, x: b.map(x => x.prev), marker: { symbol: "diamond", size: 9, color: PAL[2] }, name: "Quartal davor",
       hovertemplate: `%{x:,.${c.decimals}f} (davor)<extra>%{y}</extra>` }] : [])];
   if (c.bar_name) traces[0].name = c.bar_name;
-  const all = b.flatMap(x => [x.value, x.prev]).filter(v => v != null), lo = Math.min(0, ...all), hi = Math.max(0, ...all), padv = (hi - lo) * (b.some(x => x.pct != null) ? 0.32 : 0.18) || 1;
+  const all = b.flatMap(x => [x.value, x.prev]).filter(v => v != null), lo = Math.min(0, ...all), hi = Math.max(0, ...all), narrow = (el.clientWidth || 600) < 520, padv = (hi - lo) * (b.some(x => x.pct != null) ? (narrow ? 0.5 : 0.32) : (narrow ? 0.3 : 0.18)) || 1;
   const L = baseLayout(el);
-  Object.assign(L, { height: Math.max(220, 34 * b.length + 70), showlegend: traces.length > 1, bargap: 0.35, hovermode: "closest",
+  Object.assign(L, { height: Math.max(220, (narrow ? 52 : 34) * b.length + 70), showlegend: traces.length > 1, bargap: narrow ? 0.55 : 0.35, hovermode: "closest",
     xaxis: { range: [lo - padv, hi + padv], zeroline: true, zerolinecolor: HS.zero, showgrid: true, gridcolor: HS.gridH, fixedrange: true, ticksuffix: "" },
-    yaxis: { automargin: true, fixedrange: true, ticks: "" } });
+    yaxis: { automargin: true, fixedrange: true, ticks: "", showticklabels: !narrow } });
+  if (narrow) L.annotations = lab.map(t => ({ xref: "paper", yref: "y", x: 0, y: t, yshift: 15, xanchor: "left", yanchor: "bottom", showarrow: false, text: esc(t), font: { family: HS.font, size: 12.5, color: "#000" } }));  // schmal: Namen über den Balken
   el.style.height = L.height + "px";
   Plotly.newPlot(el, traces, L, CFG);
 }
@@ -820,7 +846,7 @@ function latestChart(el, c) {
 const TILE_POS = { SH: [0, 2], HB: [1, 1], HH: [1, 2], MV: [1, 3], NW: [2, 0], NI: [2, 1], ST: [2, 2], BE: [2, 3], BB: [2, 4],
   RP: [3, 0], HE: [3, 1], TH: [3, 2], SN: [3, 3], SL: [4, 0], BW: [4, 1], BY: [4, 2] };
 function tileColor(v, m) {
-  if (Math.abs(v) < 0.5) return { bg: "#e6e6e6", fg: "#000" };  // gerundet null: weder Zu- noch Abnahme
+  if (Math.abs(v) < Math.min(0.5, 0.04 * m)) return { bg: "#e6e6e6", fg: "#000" };  // praktisch null: weder Zu- noch Abnahme (Schwelle relativ zur Skala, damit Prozentpunkte nicht verschwinden)
   const k = Math.min(1, Math.abs(v) / m), base = v >= 0 ? [227, 108, 10] : [0, 112, 192];
   const c = base.map(x => Math.round(255 - (255 - x) * k * 0.85));
   return { bg: `rgb(${c.join(",")})`, fg: k > 0.55 ? "#fff" : "#000" };
@@ -1198,6 +1224,7 @@ function build() {
   document.getElementById("deck").innerHTML = [DATA.deck ? `<a href="${encodeURI(DATA.deck)}" download>Alle Abbildungen als PowerPoint</a>` : ""].filter(Boolean).join(" · ");
   const HL = DATA.health || {};
   if (HL.n) document.getElementById("reuse").insertAdjacentHTML("afterend", `<p class="tnote">Letzter Datenabruf: ${new Date(HL.finished_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })} Uhr; ${HL.ok} von ${HL.n} Reihen erfolgreich${HL.failed.length ? `, fehlgeschlagen: ${HL.failed.length}` : ""}${HL.outdated.length ? `, länger ohne neue Werte: ${HL.outdated.length}` : ""}. Betroffene Abbildungen tragen einen Hinweis.</p>`);
+  if (S.repo) document.getElementById("releases").href = S.repo + "/releases";
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const LY = DATA.layout || {};
   if (LY.minimal) document.body.classList.add("minimal");
@@ -1210,6 +1237,7 @@ function build() {
       <span class="head">${esc(a.head)}</span>${spark(a.spark_data, a.ref)}<span class="per">${esc(a.period)}</span></a>`);
   });
   let no = 0, curPart = null;
+  const NAV_ITEMS = { lage: [], konjunktur: [], struktur: [], service: [] }, NAV_OF = { top: "lage" };  // Menü in vier Gruppen
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     struktur: { no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
     service: { no: "", title: "Termine", text: "" } };
@@ -1257,7 +1285,9 @@ function build() {
       topics.insertAdjacentHTML("beforeend", `<div class="parthead" id="teil-${part}">${P.no ? `<span>${esc(P.no)}</span> ` : ""}${esc(P.title)}${P.text ? `<p>${esc(P.text)}</p>` : ""}</div>`);
     }
     topics.appendChild(sec);
-    nav.insertAdjacentHTML("beforeend", `<a href="#${t.id}">${esc(t.title)}</a>`);
+    const g = part === "service" ? "lage" : NAV_ITEMS[part] ? part : "konjunktur";
+    NAV_ITEMS[g].push(`<a href="#${t.id}">${esc(t.title)}</a>`); NAV_OF[t.id] = g;
+    if ((LY.brief_topics || []).includes(t.id)) sec.classList.add("brieftopic");
   });
   // Wochenrückblick: Abbildungen mit neuen Daten in den letzten sieben Tagen
   const W = DATA.week || [];
@@ -1265,15 +1295,34 @@ function build() {
     const dd = s => `${+s.slice(8, 10)}.${+s.slice(5, 7)}.`;
     topics.insertAdjacentHTML("afterend", `<section class="weekrev" id="woche"><h2>Diese Woche neu</h2><p class="tnote">Abbildungen, die in den letzten sieben Tagen neue Daten erhalten haben, jüngste zuerst.</p><ol>`
       + W.map(w => `<li><a href="#abb-${w.no}">Abb. ${w.no} ${esc(w.title)}</a><span>neue Daten am ${dd(w.date)}</span></li>`).join("") + `</ol></section>`);
-    nav.insertAdjacentHTML("beforeend", `<a href="#woche">Diese Woche</a>`);
+    NAV_ITEMS.lage.splice(0, 0, `<a href="#woche">${NAVTXT.week}</a>`); NAV_OF.woche = "lage";
   }
-  nav.insertAdjacentHTML("beforeend", `<a href="#quellen">Quellen</a>`);
-  nav.insertAdjacentHTML("afterbegin", `<a href="#top"><b>Übersicht</b></a>`);
+  NAV_ITEMS.lage.unshift(`<a href="#top">${NAVTXT.overview}</a>`, `<a href="#top" class="brieflink">${NAVTXT.brief}</a>`);
+  NAV_ITEMS.service.push(`<a href="#quellen">${NAVTXT.sources}</a>`, `<a href="${METH_BASE}index.html">${NAVTXT.method}</a>`);
+  NAV_OF.quellen = "service";
+  nav.innerHTML = Object.entries(NAVTXT.groups).map(([k, lab]) => `<details class="navgrp" data-g="${k}"><summary>${esc(lab)}</summary><div class="navlist">${NAV_ITEMS[k].join("")}</div></details>`).join("");
+  const header = document.querySelector("header"), groups = [...nav.querySelectorAll("details.navgrp")];
+  const closeAll = () => { groups.forEach(d => d.open = false); header.classList.remove("menuopen"); document.body.classList.remove("menuopen"); mb.setAttribute("aria-expanded", "false"); };
+  groups.forEach(d => d.addEventListener("toggle", () => { if (d.open && !header.classList.contains("menuopen")) groups.forEach(o => { if (o !== d) o.open = false; }); }));
+  nav.addEventListener("click", e => { if (e.target.closest("a")) setTimeout(closeAll, 0); });
+  document.addEventListener("click", e => { if (!e.target.closest("header")) closeAll(); });
+  const mb = document.createElement("button"); mb.type = "button"; mb.className = "btn menubtn"; mb.textContent = NAVTXT.menu; mb.setAttribute("aria-expanded", "false");
+  mb.onclick = () => { const op = !header.classList.contains("menuopen"); header.classList.toggle("menuopen", op); document.body.classList.toggle("menuopen", op); groups.forEach(d => d.open = op);
+    nav.style.top = header.getBoundingClientRect().bottom + "px"; mb.setAttribute("aria-expanded", String(op)); };
+  // Kurzfassung: nur die Leitabbildungen der wichtigsten Abschnitte
+  const setBrief = on => { document.body.classList.toggle("brief", on); bb.textContent = on ? NAVTXT.all : NAVTXT.brief; bb.setAttribute("aria-pressed", String(on)); };
+  const bb = document.createElement("button"); bb.type = "button"; bb.className = "btn briefbtn"; bb.onclick = () => { setBrief(!document.body.classList.contains("brief")); scrollTo(0, 0); };
+  nav.querySelector(".brieflink").onclick = e => { e.preventDefault(); setBrief(true); scrollTo(0, 0); };
+  setBrief(/[?&]kurz=1/.test(location.search));
+  // die Gruppe des gerade gelesenen Abschnitts hervorheben
+  if ("IntersectionObserver" in window) { const spy = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return;
+      const g = NAV_OF[e.target.id] || "konjunktur"; groups.forEach(d => d.querySelector("summary").classList.toggle("cur", d.dataset.g === g)); }), { rootMargin: "-30% 0px -65% 0px" });
+    document.querySelectorAll("section.topic, #top, #woche, #quellen").forEach(s => spy.observe(s)); }
   const ex = document.createElement("button"); ex.type = "button"; ex.className = "btn expandall"; let opened = false;
   const exLab = () => ex.innerHTML = `<span class="long">Alle Abbildungen ${opened ? "einklappen" : "ausklappen"}</span><span class="short">${opened ? "Einklappen" : "Ausklappen"}</span>`;
   exLab(); ex.title = "Alle Abbildungen aus- oder einklappen";
   ex.onclick = () => { opened = !opened; document.querySelectorAll("details.morecharts").forEach(d => d.open = opened); exLab(); };
-  document.querySelector("header .bar").append(searchBox(), ex);
+  document.querySelector("header .bar").append(searchBox(), bb, ex, mb);
   document.body.insertAdjacentHTML("beforeend", `<a class="fab" href="#top" aria-label="Zur Übersicht">↑ Übersicht</a>`);
 }
 build();

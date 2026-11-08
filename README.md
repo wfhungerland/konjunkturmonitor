@@ -89,6 +89,33 @@ python -m monitor build
 
 Der Workflow `update.yml` läuft werktags zweimal (7:23 und 12:23 UTC), bei Änderungen auf `main`, in Pull Requests und von Hand. Er committet die Daten, prüft die fertige Seite im Browser (`tests/smoke.js`, deutsch und englisch) und veröffentlicht `site/` auf GitHub Pages; unter Settings, Pages muss als Quelle „GitHub Actions“ gewählt sein. Fallen Reihen aus, legt er ein Issue „Datenabruf: Ausfälle“ an.
 
+## Betrieb
+
+### Was automatisch läuft
+- **Datenlauf** (`.github/workflows/update.yml`): werktags 7:23 und 12:23 UTC Daten holen, Seite bauen, testen, veröffentlichen.
+- **Datenarchiv:** der erste geplante Lauf jeder Woche legt den vollständigen Datenstand (`observations.csv.gz`, `run_status.json`, Katalog, Seitenaufbau) als Release `daten-JJJJ-KWnn` ab, mit dem Code-Stand in der Beschreibung.
+- **Tickets:** `monitor/alert.py` pflegt zwei Issues: „Datenabruf: Ausfälle“ (fehlgeschlagene oder veraltete Reihen) und „Datenabruf: auffällige Werte“ (jüngste Veränderung weit außerhalb des Bisherigen). Beide schließen sich selbst, sobald alles wieder stimmt.
+- **Wächter** (`.github/workflows/waechter.yml`, täglich): prüft, ob die veröffentlichte Seite erreichbar ist und ihr Stand höchstens drei Werktage alt ist; sonst Issue „Wächter: Seite veraltet oder nicht erreichbar“.
+- **Pipeline-Stand** (`.github/workflows/pipeline-stand.yml`, montags): konjunkturwolf ist in `pyproject.toml` auf einen Commit festgelegt. Gibt es einen neueren Stand, testet der Lauf ihn und öffnet einen Pull Request. Dafür einmalig unter Settings › Actions › General „Allow GitHub Actions to create and approve pull requests“ aktivieren.
+
+Damit Tickets ankommen: Repository auf „Watch“ stellen (mindestens „Issues“) und Benachrichtigungen per E-Mail einschalten.
+
+### Was zu tun ist, wenn …
+- **eine Quelle ausfällt** (Ticket „Ausfälle“): Meldung im Ticket lesen. Bei Zeitüberschreitung oder Serverfehler reicht meist Abwarten; die Seite zeigt solange den letzten Stand mit Hinweis. Bei geänderter Tabelle oder Kennung die Reihe in `series.yaml` anpassen (Schlüssel, `params`, bei GENESIS `query`), lokal mit `python -m monitor run` prüfen, Pull Request.
+- **Werte auffällig springen** (Ticket „auffällige Werte“): bei der Quelle nachsehen, ob sich Einheit, Basisjahr oder Abgrenzung geändert haben. Echte Ausschläge brauchen nichts; das Ticket schließt sich, sobald der Sprung nicht mehr der jüngste Wert ist.
+- **die Seite veraltet ist** (Ticket „Wächter“): unter Actions den letzten Lauf von „Daten holen und Seite veröffentlichen“ öffnen; meist bricht ein Schritt ab (Test, Seitentest, Veröffentlichung). Nach der Korrektur den Lauf über „Run workflow“ neu starten.
+- **Zugangsdaten ablaufen** (GENESIS, GIE): unter Settings › Secrets and variables › Actions `GENESIS_USER`, `GENESIS_PASSWORD` oder `GIE_API_KEY` neu setzen. Die Werte nie in Dateien oder Tickets schreiben.
+- **eine Abbildung dazukommt:** Reihe in `series.yaml`, Abbildung in `monitor.yaml`, englische Texte in `data/static/en.yaml`, bei besonderer Rechnung einen Methodentext in `data/static/methodik.yaml`. Lokal bauen und `node tests/smoke.js site/index.html`.
+- **ein früherer Stand nachgerechnet werden soll:** Release `daten-JJJJ-KWnn` laden, das Repository auf den dort genannten Commit setzen, `observations.csv.gz` nach `data/processed/observations.csv` entpacken, `python -m monitor build`.
+
+### Lokal bauen
+```
+pip install -e ".[dev]"
+python -m monitor build      # Seite aus vorhandenen Daten
+python -m monitor run        # Daten holen (GENESIS nur mit GENESIS_USER/GENESIS_PASSWORD) und bauen
+pytest -q && node tests/smoke.js site/index.html
+```
+
 ## Prognosen pflegen
 
 Neue Prognoserunde: in `data/static/prognosen.yaml` einen Eintrag mit Herausgeber, Runde, Datum, Werten und Link zur Veröffentlichung ergänzen. Der Monitor zeigt je Herausgeber die jüngste Runde voll, frühere Runden hohl.

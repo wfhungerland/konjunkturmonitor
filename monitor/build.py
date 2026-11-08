@@ -1413,10 +1413,35 @@ def build_payload(root: Path = ROOT) -> dict:
             "content_license": cfg["site"].get("license", "")}
 
 
+def code_versions(root: Path = ROOT) -> dict:
+    """Code-Stand für Reproduzierbarkeit: Commit des Monitors (GITHUB_SHA oder git) und der installierten Pipeline konjunkturwolf."""
+    import os
+    import subprocess
+    mon = os.environ.get("GITHUB_SHA", "")
+    if not mon:
+        try:
+            mon = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"], capture_output=True, text=True, timeout=5).stdout.strip()
+        except (OSError, subprocess.SubprocessError):
+            mon = ""
+    kw = ""
+    try:
+        from importlib.metadata import distribution
+        du = json.loads(distribution("konjunkturwolf").read_text("direct_url.json") or "{}")
+        kw = (du.get("vcs_info") or {}).get("commit_id", "")
+    except Exception:  # lokale Installation ohne Angabe
+        kw = ""
+    return {"monitor": mon[:12], "konjunkturwolf": kw[:12]}
+
+
 def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
     out = out or root / "site"
     out.mkdir(parents=True, exist_ok=True)
     payload = build_payload(root)
+    payload["code"] = code_versions(root)
+    code_txt = f"Konjunkturmonitor {payload['code']['monitor'][:7] or 'lokal'}, konjunkturwolf {payload['code']['konjunkturwolf'][:7] or 'lokal'}"
+    for t in payload["topics"]:
+        for c in t["charts"]:
+            c["_code"] = code_txt
     from .downloads import write_all
     from .reuse import mark_revisions, news, update_archive, write_all_series, write_feed
 
