@@ -53,7 +53,6 @@
   /* Breite Bildschirme: Abbildungsübersicht des Abschnitts läuft links mit */
   .rail { display: none; position: sticky; top: 72px; align-self: start; max-height: calc(100vh - 90px); overflow: auto; font: 13.5px/1.35 var(--ff); border-top: 1px solid var(--line); padding-top: 10px; }
   .rail .rh { font: 600 16.5px/1.25 var(--ff); color: var(--dark); margin: 0 0 8px; }
-  .rail a { display: grid !important; grid-template-columns: 2.1em minmax(0, 1fr); }  /* Nummer und Titel in zwei Spalten */
   .flags { display: flex; gap: 8px; align-items: center; margin: 0 0 10px; } .flags a, .flags b { display: inline-flex; line-height: 0; border-radius: 2px; }
   .flags svg { height: 15px; width: auto; box-shadow: 0 0 0 1px rgba(0,0,0,.18); } .flags a { opacity: .55; } .flags a:hover { opacity: 1; } .flags b { outline: 2px solid var(--accent); outline-offset: 2px; }
   .topflags { display: none; } .bar .flags { margin: 2px 0 0; }
@@ -61,7 +60,7 @@
   @media (max-width: 600px) { header .bar { position: relative; } .bar .flags { position: absolute; right: 10px; top: 9px; margin: 0; }
     .brand { width: 100%; } header a.btn.colllink { font-size: 12px; padding: 0 5px; line-height: inherit; } #nav { order: 1; } .briefbtn { order: 2; } header .colllink { order: 3; } }
   @media (max-width: 1239px) { .rail .flags { display: none; } }
-  .rail a { display: block; color: var(--muted); padding: 3px 0; }
+  .rail a { display: grid; grid-template-columns: 2.1em minmax(0, 1fr); color: var(--muted); padding: 3px 0; }  /* Nummer und Titel in zwei Spalten */
   .rail a:hover { color: var(--text); text-decoration: none; }
   .rail a.on { color: var(--accent); font-weight: 600; }
   .rail a b { font-weight: 600; }
