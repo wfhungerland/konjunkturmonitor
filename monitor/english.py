@@ -766,8 +766,10 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
             if isinstance(c.get("alt"), dict):
                 for s in c["alt"].get("series") or []:
                     s["label"] = tr.lab(s.get("label"))
-                c["alt"]["label"], c["alt"]["base"] = "on previous month", "on a year earlier"
+                c["alt"]["label"], c["alt"]["base"] = c["alt"].get("label_en", "on previous month"), c["alt"].get("base_en", "on a year earlier")
                 c["alt"]["unit"] = tr.s(c["alt"].get("unit"))
+                if c["alt"].get("sub_en"):
+                    c["alt"]["sub"] = c["alt"]["sub_en"]
             for w in (c.get("tiles"), c.get("tiles6")):
                 for r in (w or {}).get("rows") or []:
                     r["name"] = tr.lab(r.get("name"))
