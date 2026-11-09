@@ -1,7 +1,8 @@
 """Downloads je Abbildung: Excel (Daten und Diagramm), PowerPoint-Folie (bearbeitbares Diagramm), CSV.
 
-Die Folie folgt der Geometrie des vorgegebenen Folienmasters (16:9, grauer Rahmen, weiße Fläche,
-Übertitel, Titel, Inhaltsbereich, Quellenzeile, Fußzeile), ohne Logo und ohne Behördenkennzeichnung.
+Die Folie nutzt den leeren Standard-Folienmaster von PowerPoint (Office-Design, 16:9, 33,867 × 19,05 cm),
+Layout „Nur Titel“: Titel im Titelplatzhalter, darunter Untertitel, Einheit, Diagramm, Quellenzeile und Fußzeile.
+So lässt sich die Folie in jede eigene Vorlage übernehmen.
 Diagramme nach dem Grafikstandard: Werteachse rechts, feine graue Gitterlinien, Legende oben links,
 keine Überschrift im Diagramm, Arial Narrow, Hausfarben.
 """
@@ -18,24 +19,22 @@ PALETTE = ["#002060", "#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#4
 FONT = "Arial Narrow"
 GRID = "#BFBFBF"
 MUTED = "#576164"
-FRAME = "#E5E8E9"
 BAR_PALETTE = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"]  # kontrastreich für gestapelte Balken
 CONTENT_LICENSE = "Abbildung und Erläuterung: CC BY 4.0, Wolf-Fabian Hungerland, Konjunkturmonitor (https://creativecommons.org/licenses/by/4.0/deed.de)"
 # Abbildungen mit Daten unter ShareAlike-Lizenz (Global Macro Database) übernehmen deren Lizenz
 NCSA_LICENSE = "Abbildung, Erläuterung und Daten: CC BY-NC-SA 4.0, Wolf-Fabian Hungerland, Konjunkturmonitor, nach der Global Macro Database (https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de)"
 
-# Geometrie des Folienmasters (EMU)
-SLIDE_W, SLIDE_H = 9144000, 5143500
-WHITE = (360000, 360000, 8424000, 4219591)
-OVERTITLE = (360000, 400000, 7900000, 195343)
-TITLE = (360000, 600000, 8423954, 420000)
-SUB = (360000, 1030000, 8423954, 230000)
-UNIT = (360000, 1240000, 8423954, 200000)
-CHART = (360000, 1419622, 8424000, 3020000)
-SOURCE = (420000, 4440000, 8300000, 130000)
-FOOT_L = (360000, 4700000, 4000000, 300000)
-FOOT_R = (5400000, 4759833, 3384000, 215444)
-NUMBER = (8280000, 420000, 432000, 116100)
+# Geometrie auf dem Standard-Folienmaster 16:9 (EMU); Titel steht im Titelplatzhalter des Layouts „Nur Titel“
+SLIDE_W, SLIDE_H = 12192000, 6858000
+LEFT, WIDTH = 609600, 10972800
+OVERTITLE = (LEFT, 120000, WIDTH, 220000)
+SUB = (LEFT, 1440000, WIDTH, 300000)
+UNIT = (LEFT, 1760000, WIDTH, 260000)
+CHART = (LEFT, 2030000, WIDTH, 3880000)
+SOURCE = (LEFT, 5960000, WIDTH, 300000)
+FOOT_L = (LEFT, 6356350, 5800000, 365125)
+FOOT_R = (6500000, 6356350, 4000000, 365125)
+NUMBER = (10600000, 6356350, 982400, 365125)
 
 
 # ---------------------------------------------------------------------------
@@ -290,7 +289,7 @@ def _rgb(hexcolor: str):
     return RGBColor.from_string(hexcolor.lstrip("#").upper())
 
 
-def _text(slide, box, text, size, color="#000000", bold=False, align=None, font="Arial", italic=False):
+def _text(slide, box, text, size, color="#000000", bold=False, align=None, font=None, italic=False):
     from pptx.util import Pt
 
     tb = slide.shapes.add_textbox(*box)
@@ -302,38 +301,33 @@ def _text(slide, box, text, size, color="#000000", bold=False, align=None, font=
         p.alignment = align
     r = p.add_run()
     r.text = text
-    r.font.size, r.font.bold, r.font.italic, r.font.name = Pt(size), bold, italic, font
+    r.font.size, r.font.bold, r.font.italic = Pt(size), bold, italic
+    if font:
+        r.font.name = font
     r.font.color.rgb = _rgb(color)
     return tb
 
 
 def _frame(slide, stand: str, number: int, lic: str = "CC BY 4.0"):
-    from pptx.enum.shapes import MSO_SHAPE
+    """Fußzeile in den Positionen der Fußzeilenplatzhalter des Standardmasters; kein Rahmen, kein Hintergrund."""
     from pptx.enum.text import PP_ALIGN
 
-    bg = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, SLIDE_W, SLIDE_H)
-    white = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, *WHITE)
-    for shp, color in ((bg, FRAME), (white, "#FFFFFF")):
-        shp.fill.solid()
-        shp.fill.fore_color.rgb = _rgb(color)
-        shp.line.fill.background()
-        shp.shadow.inherit = False
-    _text(slide, FOOT_L, f"Konjunkturmonitor · {lic}, Wolf-Fabian Hungerland", 9, MUTED)
-    _text(slide, FOOT_R, f"Letzte Aktualisierung: {stand}", 9, MUTED, align=PP_ALIGN.RIGHT)
-    _text(slide, NUMBER, str(number), 9, MUTED, italic=True, align=PP_ALIGN.RIGHT)
+    _text(slide, FOOT_L, f"Konjunkturmonitor · {lic}, Wolf-Fabian Hungerland", 10, MUTED)
+    _text(slide, FOOT_R, f"Letzte Aktualisierung: {stand}", 10, MUTED, align=PP_ALIGN.RIGHT)
+    _text(slide, NUMBER, str(number), 10, MUTED, align=PP_ALIGN.RIGHT)
 
 
 def _style_chart(chart, c: dict, plan: dict):
     from pptx.enum.chart import XL_LEGEND_POSITION, XL_TICK_LABEL_POSITION, XL_TICK_MARK
     from pptx.util import Pt
 
-    chart.font.name, chart.font.size = FONT, Pt(10)
+    chart.font.name, chart.font.size = FONT, Pt(12)
     chart.has_title = False
     chart.has_legend = plan["kind"] not in ("scatter",) and len(chart.plots[0].series) + sum(len(p.series) for p in chart.plots[1:]) > 1
     if chart.has_legend:
         chart.legend.position = XL_LEGEND_POSITION.TOP
         chart.legend.include_in_layout = False
-        chart.legend.font.size = Pt(10)
+        chart.legend.font.size = Pt(12)
     va = chart.value_axis
     va.has_major_gridlines = True
     va.major_gridlines.format.line.color.rgb = _rgb(GRID)
@@ -476,15 +470,21 @@ def add_slide(prs, c: dict, df: pd.DataFrame, plan: dict, stand: str, number: in
     from pptx.enum.chart import XL_CHART_TYPE
     from pptx.enum.text import PP_ALIGN
 
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    from pptx.util import Pt
+
+    slide = prs.slides.add_slide(prs.slide_layouts[5])  # Standardmaster, Layout „Nur Titel“
     _frame(slide, stand, number, c.get("content_license") or "CC BY 4.0")
     sub, unit = header_lines(c)
-    _text(slide, OVERTITLE, f"Abb. {c['no']} · {c.get('topic_title', '')}", 10, MUTED)
-    _text(slide, TITLE, c.get("title", ""), 22, "#000000", font="Arial")
+    _text(slide, OVERTITLE, f"Abb. {c['no']} · {c.get('topic_title', '')}", 12, MUTED)
+    title = slide.shapes.title
+    title.text = c.get("title", "")
+    for p in title.text_frame.paragraphs:  # Schrift aus dem Master, nur kleiner, damit lange Titel passen
+        for r in p.runs:
+            r.font.size = Pt(28)
     if sub:
-        _text(slide, SUB, sub, 11, MUTED)
-    _text(slide, UNIT, unit, 10, "#000000", align=PP_ALIGN.RIGHT)
-    _text(slide, SOURCE, source_line(c), 8, MUTED)
+        _text(slide, SUB, sub, 14, MUTED)
+    _text(slide, UNIT, unit, 12, "#000000", align=PP_ALIGN.RIGHT)
+    _text(slide, SOURCE, source_line(c), 10, MUTED)
     if c.get("caption"):
         slide.notes_slide.notes_text_frame.text = (c.get("_stem", "") + "\n\n" + c["caption"]).strip()
     kind = plan["kind"]
@@ -610,7 +610,7 @@ def _map(slide, c: dict) -> None:
             p.alignment = PP_ALIGN.CENTER
             run = p.add_run()
             run.text = txt
-            run.font.size, run.font.bold, run.font.name = Pt(9), b, FONT
+            run.font.size, run.font.bold, run.font.name = Pt(11), b, FONT
             run.font.color.rgb = _rgb(fg)
 
 
@@ -623,7 +623,7 @@ def _tiles(slide, c: dict):
 
     rows = c["tiles"]["rows"]
     m = max([10.0, *[abs(r["change"]) for r in rows]])
-    size, gap = 560000, 50000
+    size, gap = 740000, 66000
     x0 = CHART[0] + (CHART[2] - 5 * size - 4 * gap) // 2
     y0 = CHART[1] + 40000
     for r in rows:
@@ -653,11 +653,11 @@ def _table(slide, df: pd.DataFrame) -> None:
     from pptx.util import Pt
 
     rows, cols = len(df) + 1, len(df.columns)
-    shape = slide.shapes.add_table(rows, cols, CHART[0], CHART[1], CHART[2], min(CHART[3], 110000 * rows))
+    shape = slide.shapes.add_table(rows, cols, CHART[0], CHART[1], CHART[2], min(CHART[3], 145000 * rows))
     tbl = shape.table
-    tbl.columns[0].width = 1900000
+    tbl.columns[0].width = 2500000
     for j in range(1, cols):
-        tbl.columns[j].width = int((CHART[2] - 1900000) / (cols - 1))
+        tbl.columns[j].width = int((CHART[2] - 2500000) / (cols - 1))
     for j, name in enumerate(df.columns):
         cell = tbl.cell(0, j)
         cell.text = str(name).replace(", %", "")
@@ -685,7 +685,7 @@ def _table(slide, df: pd.DataFrame) -> None:
                 cell.fill.fore_color.rgb = _rgb("#FFFFFF")
             for p in cell.text_frame.paragraphs:
                 for r in p.runs:
-                    r.font.size, r.font.name = Pt(7), FONT
+                    r.font.size, r.font.name = Pt(9), FONT
                     if i == 0 or not (1 <= j < cols - 2):
                         r.font.color.rgb = _rgb("#000000")
 
@@ -693,8 +693,14 @@ def _table(slide, df: pd.DataFrame) -> None:
 def new_presentation():
     from pptx import Presentation
 
-    prs = Presentation()
+    prs = Presentation()  # leerer Standardmaster (Office-Design), von 4:3 auf 16:9 verbreitert
+    k = SLIDE_W / prs.slide_width
     prs.slide_width, prs.slide_height = SLIDE_W, SLIDE_H
+    for part in [prs.slide_master, *prs.slide_layouts]:
+        for off in part.element.xpath(".//p:spTree//a:xfrm/a:off"):
+            off.set("x", str(round(int(off.get("x")) * k)))
+        for ext in part.element.xpath(".//p:spTree//a:xfrm/a:ext"):
+            ext.set("cx", str(round(int(ext.get("cx")) * k)))
     return prs
 
 
