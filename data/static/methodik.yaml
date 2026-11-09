@@ -3,6 +3,12 @@
 # Alles Übrige (Quellen, Kennungen, Einheiten, Rechenschritte aus der Konfiguration) erzeugt der Bau automatisch.
 
 charts:
+  enso_comm:
+    methode: "Für jeden Monat seit 1975 ordnet der Monitor die Phase nach dem Relativen Oceanic Niño Index (RONI) der NOAA ein: El Niño ab 0,5 °C, neutral zwischen −0,5 und 0,5 °C, La Niña wird nicht gezeigt. Für jeden dieser Monate nimmt er die Veränderung des Weltmarktpreises ggü. dem Vorjahr, gemessen sechs Monate später, und mittelt sie getrennt nach Phasen. Die Preise stammen aus dem Pink Sheet der Weltbank (Monatswerte in US-Dollar). Ein Welch-t-Test vergleicht die Mittelwerte; ein Stern markiert |t| > 1,96. Die Idee folgt einer Auswertung der Weltbank (Prospects Group, Daten 1970 bis 2025, Niño-3.4-Index); hier rechnet der Monitor selbst und laufend neu."
+    grenzen:
+      - "Aufeinanderfolgende Monate hängen eng zusammen; der t-Test überschätzt deshalb die Zahl unabhängiger Beobachtungen, die Sterne sind eher großzügig."
+      - "El Niño fällt oft mit anderen Ereignissen zusammen, etwa Ölpreisschocks oder Wechselkursbewegungen; die Abbildung zeigt einen Zusammenhang, keinen Beweis."
+      - "Der RONI misst die Temperatur im Pazifik relativ zum tropischen Mittel und weicht leicht vom klassischen ONI ab, den die Weltbank verwendet."
   gdp_contrib:
     methode: "Das Statistische Bundesamt meldet das reale BIP und seine Verwendungsseite: Konsum der Haushalte und des Staates, Investitionen, Vorratsveränderung, Exporte und Importe. Der Beitrag eines Bestandteils ist seine Veränderung gegenüber dem Vorquartal, gewichtet mit seinem Anteil am BIP; Eurostat veröffentlicht diese Beiträge aus den Daten des Statistischen Bundesamts saison- und kalenderbereinigt. Importe gehen mit negativem Vorzeichen ein, weil sie nicht im Inland erzeugt wurden. Der Monitor fasst Bestandteile zu Gruppen zusammen und stellt sie neben die Wachstumsrate des BIP."
     grenzen:

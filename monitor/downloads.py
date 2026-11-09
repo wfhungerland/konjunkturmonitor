@@ -118,6 +118,11 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
         ev = c["calendar"]["events"]
         df = pd.DataFrame({"Datum (geschätzt)": [e["date"] for e in ev], "Veröffentlichung": [e["name"] for e in ev], "Quelle": [e["source"] for e in ev]})
         return df, {"kind": "list"}
+    if typ == "enso_comm" and c.get("enso"):
+        E = c["enso"]
+        rows = [{"Rohstoff": r["label"], f"nach El Niño, % ggü. Vorjahr ({E['lag']} Monate später)": r["nino"], "nach neutralen Monaten, %": r["neutral"],
+                 "Monate El Niño": r["n_nino"], "Monate neutral": r["n_neutral"], "t-Wert": r["t"], "deutlich (|t| > 1,96)": "ja" if r["sig"] else "nein"} for r in E["rows"]]
+        return pd.DataFrame(rows), {"kind": "list"}
     if typ == "event" and c.get("event"):
         rows = [{"Größe": p["title"], "Ereignis": l["label"] + (" (laufend)" if l["current"] else ""), "Beginn": l["start"], "Monat": x, "Index (Monat 0 = 100)": y}
                 for p in c["event"]["panels"] for l in p["lines"] for x, y in zip(l["x"], l["y"])]

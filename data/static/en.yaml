@@ -59,6 +59,10 @@ topics:
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
 
 charts:
+  enso_comm:
+    title: "Commodity prices after El Niño and in neutral phases"
+    ask: "Which commodities become dearer after El Niño?"
+    caption: "Average change in world market prices on a year earlier, measured six months after months with El Niño (dark) and after neutral months (grey). El Niño: NOAA Relative Oceanic Niño Index (RONI) of at least 0.5 °C; neutral: between −0.5 and 0.5 °C. Prices in US dollars from the World Bank Pink Sheet. Star: difference statistically clear (Welch t-test, |t| > 1.96). Idea after an analysis by the World Bank (Prospects Group); the calculation is our own."
   downturns_hist:
     title: "Downturns since 1879 compared, annual data"
     ask: "How deep were the downturns since the 19th century?"
@@ -501,6 +505,14 @@ charts:
     caption: "Dates are estimated from the sources' usual release schedules and marked with a superscript e. The linked calendars of the sources are authoritative. The links lead to the charts that receive new values on that date."
 
 series:
+  wb_soybeans: {title: "World market price, Soybeans (World Bank: Soybeans)", label: "Soybeans", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
+  wb_maize: {title: "World market price, Maize (World Bank: Maize)", label: "Maize", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
+  wb_rice: {title: "World market price, Rice (World Bank: Rice, Thai 5%)", label: "Rice", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
+  wb_wheat: {title: "World market price, Wheat (World Bank: Wheat, US HRW)", label: "Wheat", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
+  wb_cocoa: {title: "World market price, Cocoa (World Bank: Cocoa)", label: "Cocoa", unit: "US dollars ($/kg)", adjustment: "not adjusted"}
+  wb_coffee: {title: "World market price, Coffee (Robusta) (World Bank: Coffee, Robusta)", label: "Coffee (Robusta)", unit: "US dollars ($/kg)", adjustment: "not adjusted"}
+  wb_palmoil: {title: "World market price, Palm oil (World Bank: Palm oil)", label: "Palm oil", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
+  wb_sugar: {title: "World market price, Sugar (World Bank: Sugar, world)", label: "Sugar", unit: "US dollars ($/kg)", adjustment: "not adjusted"}
   gdp_rt_first: {label: "first release", title: "GDP growth on previous quarter, first release"}
   gdp_rt_latest: {label: "current vintage", title: "GDP growth on previous quarter, latest vintage"}
   gdp_rt_rev: {label: "Revision", title: "Revision of GDP growth since first release"}

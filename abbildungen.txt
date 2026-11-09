@@ -110,3 +110,4 @@ be_feel;Lebensmittel Energie Berlin;2026-11-08;2026-11-09
 be_jobs;Beschaeftigung Berlin;2026-11-08;2026-11-09
 be_tourism;Uebernachtungen Berlin;2026-11-08;2026-11-09
 be_permits;Baugenehmigungen Berlin;2026-11-08;2026-11-09
+enso_comm;Rohstoffe El Nino;2026-11-09;

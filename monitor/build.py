@@ -607,6 +607,41 @@ def _cap(s: str) -> str:
     return s[:1].upper() + s[1:]
 
 
+def _enso_comm(c: dict, data: dict) -> dict | None:
+    """Rohstoffpreise nach El Niño: mittlere Veränderung ggü. Vorjahr, lag Monate nach Monaten mit El Niño
+    (RONI >= 0,5) und nach neutralen Monaten (|RONI| < 0,5), seit dem ersten gemeinsamen Jahr.
+    Unterschied mit Welch-t-Test; |t| > 1,96 gilt als deutlich (Näherung, aufeinanderfolgende Monate sind nicht unabhängig)."""
+    roni = data.get("enso_roni")
+    if roni is None:
+        return None
+    roni = roni.dropna()
+    roni.index = roni.index.to_period("M").to_timestamp()
+    lag, rows, first, last = int(c.get("lag", 6)), [], None, None
+    for sid, label in (c.get("items") or {}).items():
+        s = data.get(sid)
+        if s is None or s.dropna().empty:
+            continue
+        s = s.dropna()
+        s.index = s.index.to_period("M").to_timestamp()
+        yoy = (s / s.reindex(s.index - pd.DateOffset(years=1)).values - 1) * 100
+        ahead = pd.Series(yoy.values, index=yoy.index - pd.DateOffset(months=lag))  # Veränderung lag Monate später, am Ausgangsmonat
+        df = pd.concat({"roni": roni, "chg": ahead}, axis=1).dropna()
+        if len(df) < 120:
+            continue
+        nino, neut = df.loc[df.roni >= 0.5, "chg"], df.loc[df.roni.abs() < 0.5, "chg"]
+        if len(nino) < 24 or len(neut) < 24:
+            continue
+        se = (nino.var() / len(nino) + neut.var() / len(neut)) ** 0.5
+        t = (nino.mean() - neut.mean()) / se if se else 0.0
+        first = min(first or df.index[0], df.index[0]); last = max(last or df.index[-1], df.index[-1])
+        rows.append({"id": sid, "label": label, "nino": round(float(nino.mean()), 2), "neutral": round(float(neut.mean()), 2),
+                     "n_nino": int(len(nino)), "n_neutral": int(len(neut)), "t": round(float(t), 2), "sig": bool(abs(t) > 1.96)})
+    if len(rows) < 3:
+        return None
+    rows.sort(key=lambda r: r["nino"] - r["neutral"])
+    return {"rows": rows, "lag": lag, "from": first.strftime("%Y-%m"), "to": last.strftime("%Y-%m")}
+
+
 def chart_sentences(c: dict) -> list[str]:
     """Kopierfertige Sätze zum jüngsten Stand einer Abbildung. Jeder Satz steht für sich: Zeitraum, Größe, Wert, Vergleich."""
     from .answers import MONTHS
@@ -694,6 +729,20 @@ def chart_sentences(c: dict) -> list[str]:
             low = rows[0]
             loc = lambda n: {"Saarland": "im Saarland"}.get(n, "in " + n)
             out.append(f"Am {'stärksten gesunken' if low['change'] < 0 else 'wenigsten gestiegen'} ist die {what} {loc(low['name'])} mit {num(low['change'], 1, True)} %{cnt(low)}.")
+            return out
+        if typ == "enso_comm" and c.get("enso"):
+            E = c["enso"]
+            und = lambda xs: ", ".join(xs[:-1]) + " und " + xs[-1] if len(xs) > 1 else xs[0]
+            up = [r["label"] for r in reversed(E["rows"]) if r["sig"] and r["nino"] > r["neutral"]]
+            dn = [r["label"] for r in E["rows"] if r["sig"] and r["nino"] < r["neutral"]]
+            span = f"Von {E['from'][:4]} bis {E['to'][:4]}"
+            out = [f"{span} stiegen die Preise von {und(up)} {E['lag']} Monate nach El-Niño-Monaten deutlich stärker als nach neutralen Monaten." if up else
+                   f"{span} stiegen die Preise {E['lag']} Monate nach El-Niño-Monaten bei keinem der Rohstoffe deutlich stärker als nach neutralen Monaten."]
+            if dn:
+                out.append(f"Bei {und(dn)} war der Anstieg nach El Niño deutlich schwächer.")
+            top = E["rows"][-1]
+            if top["nino"] > top["neutral"]:
+                out.append(f"Den größten Vorsprung nach El Niño zeigt {top['label']}: {num(top['nino'], 1, True)} % ggü. Vorjahr nach El Niño, {num(top['neutral'], 1, True)} % nach neutralen Monaten.")
             return out
         if typ == "event" and c.get("kind") == "history":
             out = []
@@ -1384,6 +1433,13 @@ def build_payload(root: Path = ROOT) -> dict:
                 entry.update(event=ev, freq="M", unit="Hoch = 100", adjustment="saison- und kalenderbereinigt",
                              sources=["Deutsche Bundesbank (Produktion, Arbeitslosenquote)", "Eurostat (BIP)", "eigene Berechnung"],
                              licenses=[SOURCE_LICENSES["bundesbank"], SOURCE_LICENSES["eurostat"]])
+            elif typ == "enso_comm":
+                ec = _enso_comm(c, data)
+                if not ec:
+                    continue
+                entry.update(enso=ec, freq="M", unit="% ggü. Vorjahr", adjustment="nicht bereinigt", last_x=ec["to"] + "-01",
+                             sources=["Weltbank, Commodity Price Data (Pink Sheet)", "NOAA Climate Prediction Center (RONI)", "eigene Berechnung"],
+                             licenses=["CC BY 4.0 (Weltbank)", "NOAA: gemeinfrei, mit Quellenangabe"])
             elif typ == "event":
                 ev = _enso_event(data)
                 if not ev:
