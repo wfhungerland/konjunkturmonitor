@@ -58,7 +58,8 @@
   .rail a { display: grid; grid-template-columns: 2.1em minmax(0, 1fr); color: var(--muted); padding: 3px 0; }  /* Nummer und Titel in zwei Spalten */
   .rail a:hover { color: var(--text); text-decoration: none; }
   .rail a.on { color: var(--accent); font-weight: 600; }
-  .rail a b { font-weight: 600; }
+  .rail a b { font-weight: 400; color: var(--grey); } .rail a.on b { color: var(--accent); }  /* Nummern grau, Titel vorn */
+  .card .sub .nxt, .card .sub .nxt a { color: var(--grey); }
   @media (min-width: 1240px) {
     main, .bar { max-width: 1320px; }
     section.topic { display: grid; grid-template-columns: 210px minmax(0, 1fr); column-gap: 40px; }
@@ -1049,7 +1050,7 @@ function card(c, no) {
   const lead = c._lead;  // Leitgrafik: Frage und Satz stehen schon in der Antwort des Abschnitts
   let next = "";
   if (c.next_update) { const nd = new Date(c.next_update.date + "T12:00:00Z"), dd = `${String(nd.getUTCDate()).padStart(2, "0")}.${String(nd.getUTCMonth() + 1).padStart(2, "0")}.${nd.getUTCFullYear()}`;
-    next = `Neue Daten${c.next_update.period ? ", dann für " + esc(c.next_update.period) + "," : ""} am ${dd} (<a href="#abb-${c.next_update.calendar}">Kalender</a>)`; }
+    next = `<span class="nxt">Neue Daten${c.next_update.period ? ", dann für " + esc(c.next_update.period) + "," : ""} am ${dd} (<a href="#abb-${c.next_update.calendar}">Kalender</a>)</span>`; }
   const meta = [sub ? esc(sub) : "", next].filter(Boolean).join(" · ");
   const texts = c.texts || [];
   el.innerHTML = `${!lead && c.ask ? `<h4 class="cask">${esc(c.ask)}</h4>` : ""}${!lead && texts.length ? `<p class="ctext">${sentHtml(texts)}</p>` : ""}`
