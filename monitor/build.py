@@ -639,6 +639,8 @@ def _enso_comm(c: dict, data: dict) -> dict | None:
     if len(rows) < 3:
         return None
     rows.sort(key=lambda r: r["nino"] - r["neutral"])
+    print("Rohstoffe nach El Niño (% ggü. Vorjahr, El Niño / neutral / t):",
+          "; ".join(f"{r['label']} {r['nino']:+.1f} / {r['neutral']:+.1f} / {r['t']:+.1f}" for r in reversed(rows)))
     return {"rows": rows, "lag": lag, "from": first.strftime("%Y-%m"), "to": last.strftime("%Y-%m")}
 
 
