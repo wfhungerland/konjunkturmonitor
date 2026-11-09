@@ -650,11 +650,12 @@ def chart_sentences_en(c: dict) -> list[str]:
         if c.get("long_mean") and out and series:
             su0 = (c.get("unit_de") or "").split(",")[0]
             u0 = "%" if su0.startswith("%") and not su0.startswith(("% des", "% der")) else " " + (c.get("unit") or "").split(",")[0]
-            parts = [(s.get("label", ""), [v for v in s["y"] if v is not None]) for s in series if s.get("y")]
+            skip = lambda x: any(int(a) <= int(x[:4]) <= int(b) for a, b in c.get("mean_skip") or [])  # etwa Hyperinflation beim Realzins
+            parts = [(s.get("label", ""), [v for x, v in zip(s["x"], s["y"]) if v is not None and not skip(x)]) for s in series if s.get("y")]
             parts = [(lab, v) for lab, v in parts if v]
             if parts:
                 many = len(parts) > 1
-                out.append(f"For comparison, average {series[0]['x'][0][:4]} to {series[0]['x'][-1][:4]} excluding war years: "
+                out.append(f"For comparison, average {series[0]['x'][0][:4]} to {series[0]['x'][-1][:4]} {c.get('mean_note_en', 'excluding war years')}: "
                            + "; ".join(f"{lab + ' ' if many else ''}{num(sum(v) / len(v), d)}{u0}" for lab, v in parts) + ".")
         if c.get("type") == "threshold" and c.get("threshold") is not None and out and series and series[0]["y"][-1] is not None:
             out.append("This is a recession signal." if series[0]["y"][-1] >= float(c["threshold"]) else "This is not a recession signal.")

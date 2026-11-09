@@ -12,7 +12,7 @@ Wie läuft die deutsche Wirtschaft gerade? Der Konjunkturmonitor beantwortet die
 
 Die Daten kommen ausschließlich aus offenen Quellen: Statistisches Bundesamt, Bundesbank, Eurostat, EZB, Bundesagentur für Arbeit, Deutscher Wetterdienst, OECD, IWF, Weltbank und weitere. Werktags läuft der Monitor zweimal automatisch, holt neue Werte, rechnet und veröffentlicht die Seite neu. Jede Woche wird ein Datenstand archiviert, damit sich frühere Aussagen nachprüfen lassen.
 
-Die Seite gliedert sich in drei Teile: Teil I Konjunktur (Monats- und Quartalszahlen), Teil II Struktur (Jahreszahlen zu den Grundlagen des Wachstums), Teil III Anhang (lange Reihen seit 1870 und Sonderfaktoren). Dazu kommen ein Kalender der nächsten Veröffentlichungen und eine englische Fassung.
+Die Seite gliedert sich in drei Teile: Teil I Konjunktur (Monats- und Quartalszahlen), Teil II Struktur (Jahreszahlen zu den Grundlagen des Wachstums), Teil III Anhang (Sonderfaktoren). Dazu kommen ein Kalender der nächsten Veröffentlichungen und eine englische Fassung.
 
 ---
 
@@ -138,7 +138,7 @@ Quellen: Europäische Kommission (AMECO), OECD, IWF, Statistisches Bundesamt, Eu
 
 ## 16. Lange Reihen: 150 Jahre Wirtschaftsgeschichte
 
-Ist die aktuelle Wachstumsschwäche historisch ungewöhnlich? Der Anhang ordnet die Lage seit 1870 ein: Abschwünge seit 1879 im Vergleich, Inflationsschübe seit 1945, reale Hauspreise, Exportquote, Realzins, Wachstum je Einwohner, Investitionsquote und Staatsschulden. Die Daten stammen aus der Global Macro Database (Müller, Xu, Lehbib und Chen 2025).
+Ist die aktuelle Wachstumsschwäche historisch ungewöhnlich? Lange Reihen seit 1870 stehen jeweils im passenden Kapitel: Abschwünge seit 1879 im Vergleich, Inflationsschübe seit 1945, reale Hauspreise, Exportquote, Realzins, Wachstum je Einwohner, Investitionsquote und Staatsschulden. Die Daten stammen aus der Global Macro Database (Müller, Xu, Lehbib und Chen 2025).
 
 Quelle: Global Macro Database (CC BY-NC-SA 4.0).
 
