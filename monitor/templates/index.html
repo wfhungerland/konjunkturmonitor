@@ -622,55 +622,31 @@ function timeChart(el, c) {
     annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.band.hi, text: "Spanne 2015–2019", showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#7f7f7f" } });
   }
   const named = traces.filter(t => t.showlegend !== false && t.type === "scatter");
-  // Reihennamen stehen an den Linien, dort wo Platz ist (keine Legende); „Aktueller Rand“ zeigt zusätzlich die jüngsten Werte am Linienende
-  const inline = LY.direct_labels && labelable(c) && named.length >= 2 && named.length <= 6 && c.name_labels !== false && (el.clientWidth || 600) >= 360;
-  const direct = (LY.direct_labels && c._labels && labelable(c) && named.length >= 1) || inline;
-  let rMargin = 6;
+  // Reihennamen: feste Regel, immer rechts neben dem Linienende außerhalb der Zeichenfläche, bei Enge auseinandergerückt mit Haltelinie.
+  // „Aktueller Rand“ ergänzt dort den jüngsten Wert. Die Werteachse steht dann links. Schmale Grafiken (Handy) behalten die Legende.
+  const endNames = LY.direct_labels && labelable(c) && named.length >= 2 && named.length <= 6 && c.name_labels !== false && (el.clientWidth || 600) >= 480;
+  const direct = (LY.direct_labels && c._labels && labelable(c) && named.length >= 1) || endNames;
+  let rMargin = 6, lMargin = 0;
   if (direct) {
     const sgn = /ggü\.|gegenüber|Veränderung|^Pp|^Saldo/.test(c.unit || "") || ya.zero;
-    const plotH = Math.max(140, (el.clientHeight || 300) - 34 - 24), pyOf = v => (1 - (v - ya.range[0]) / (ya.range[1] - ya.range[0])) * plotH;
-    const plotW = Math.max(160, (el.clientWidth || 500) - 50), t0 = Date.parse(r[0]), t1 = Date.parse(r[1]);
-    const pxX = t => (t - t0) / (t1 - t0) * plotW, tOf = px => new Date(t0 + px / plotW * (t1 - t0)).toISOString().slice(0, 10), vOf = py => ya.range[0] + (1 - py / plotH) * (ya.range[1] - ya.range[0]);
-    const obs = traces.filter(tr => tr.type === "scatter" && tr.x && tr.y && (tr.mode || "").includes("lines") && (tr.opacity == null || tr.opacity > 0.5) && !(tr.line && tr.line.width === 0))
-      .map(tr => ({ tr, pts: tr.x.map((x, i) => [pxX(Date.parse(x)), tr.y[i] == null ? null : pyOf(tr.y[i])]) }));
-    const yAt = (o, px) => { const p = o.pts, k = p.findIndex(q => q[0] >= px); if (k < 0) return null; if (k === 0) return p[0][0] - px < 4 ? p[0][1] : null;
-      const a = p[k - 1], b = p[k]; if (a[1] == null || b[1] == null) return null; return a[1] + (b[1] - a[1]) * (px - a[0]) / ((b[0] - a[0]) || 1); };
-    const boxes = [];  // schon belegte Flächen (Namen)
-    if (inline) named.forEach(tr => {
-      const me = obs.find(o => o.tr === tr); if (!me) return;
-      const w = tr.name.length * 6.3 + 8, h = 15; let best = null;
-      for (let px = plotW * 0.04; px + w < plotW * 0.8; px += 5) {
-        let top = Infinity, bot = -Infinity, ok = true;
-        for (let q = px; q <= px + w; q += 4) { const m = yAt(me, q); if (m == null) { ok = false; break; } top = Math.min(top, m); bot = Math.max(bot, m); }
-        if (!ok) continue;
-        [[top - 3 - h, top - 3], [bot + 3, bot + 3 + h]].forEach(([b0, b1], side) => {
-          if (b0 < 0 || b1 > plotH) return;
-          let clear = 40;
-          for (let q = px; q <= px + w; q += 4) obs.forEach(o => { if (o === me) return; const v = yAt(o, q); if (v == null) return; clear = Math.min(clear, v < b0 ? b0 - v : v > b1 ? v - b1 : -10); });
-          boxes.forEach(bx => { if (px < bx[2] && px + w > bx[0] && b0 < bx[3] && b1 > bx[1]) clear = Math.min(clear, -20); });
-          const score = Math.min(clear, 24) - Math.abs(px + w / 2 - plotW * 0.45) / plotW * 6;
-          if (!best || score > best.score) best = { score, px, b0, b1, side };
-        });
-      }
-      if (!best) return;
-      boxes.push([best.px, best.b0, best.px + w, best.b1]);
-      annotations.push({ xref: "x", yref: "y", x: tOf(best.px + w / 2), y: vOf((best.b0 + best.b1) / 2), showarrow: false, xanchor: "center", yanchor: "middle",
-        text: esc(tr.name), font: { family: HS.font, size: 12, color: tr.line.color } });
-    });
-    if (c._labels) { // jüngste Werte: oberste Linie darüber, unterste darunter
-      const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const v = tr.y[i]; if (v == null) return null;
-        const td = tendOf(tr.y, c.decimals ?? 1), arrow = td ? ` <span style="color:${tendColor(td, isBad(c, tr.meta))}">${{ up: "▲", down: "▼", flat: "■" }[td]}</span>` : "";
-        const f0 = fmtU(v, c.decimals ?? 1, c.unit), val = (sgn && +v.toFixed(c.decimals ?? 1) > 0 && !f0.startsWith("+") ? "+" : "") + f0;
-        return { tr, i, y: v, py: pyOf(v), text: `${inline ? "" : esc(tr.name) + " "}${esc(val)}${arrow} ${esc(perIn(tr.x[i], c.freq))}` }; }).filter(Boolean).sort((p, q) => p.py - q.py);
-      const n = ends.length;
-      ends.forEach((e, k) => e.ly = n > 1 && k >= n / 2 ? e.py + 11 : e.py - 11);
-      ends.sort((p, q) => p.ly - q.ly);
-      for (let k = 1; k < n; k++) if (ends[k].ly - ends[k - 1].ly < 15) ends[k].ly = ends[k - 1].ly + 15;
-      const over = n ? ends[n - 1].ly - (plotH - 8) : 0; if (over > 0) ends.forEach(e => e.ly -= over);
-      const under = n ? 8 - ends[0].ly : 0; if (under > 0) ends.forEach(e => e.ly += under);
-      ends.forEach(e => annotations.push({ xref: "x", yref: "y", x: e.tr.x[e.i], y: e.y, ax: -6, ay: e.ly - e.py, showarrow: true, arrowhead: 0, arrowwidth: 0.5, arrowcolor: "rgba(166,166,166,0.6)", standoff: 2,
-        text: e.text, xanchor: "right", yanchor: "middle", align: "right", bgcolor: "rgba(255,255,255,0.85)", borderpad: 1, font: { family: HS.font, size: 12, color: e.tr.line.color } }));
-    }
+    const plotH = Math.max(140, (el.clientHeight || 300) - 34 - 24), pyOf = v => (1 - (v - ya.range[0]) / (ya.range[1] - ya.range[0])) * plotH, vOf = py => ya.range[0] + (1 - py / plotH) * (ya.range[1] - ya.range[0]);
+    const wrap2 = t => { if (t.length <= 24) return [t]; const m = t.length / 2; let k = -1; for (let q = 0; q < t.length; q++) if (t[q] === " " && (k < 0 || Math.abs(q - m) < Math.abs(k - m))) k = q; return k < 0 ? [t] : [t.slice(0, k), t.slice(k + 1)]; };
+    const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const v = tr.y[i]; if (v == null) return null;
+      const td = tendOf(tr.y, c.decimals ?? 1), arrow = td ? ` <span style="color:${tendColor(td, isBad(c, tr.meta))}">${{ up: "▲", down: "▼", flat: "■" }[td]}</span>` : "";
+      const f0 = fmtU(v, c.decimals ?? 1, c.unit), val = (sgn && +v.toFixed(c.decimals ?? 1) > 0 && !f0.startsWith("+") ? "+" : "") + f0;
+      const lines = [...wrap2(tr.name)]; if (c._labels) lines.push(`${val} ${perIn(tr.x[i], c.freq)}`);
+      const w = Math.max(...lines.map(l => l.length)) * 6.3 + 4;
+      const text = lines.map((l, k) => k === lines.length - 1 && c._labels ? `${esc(val)}${arrow} ${esc(perIn(tr.x[i], c.freq))}` : esc(l)).join("<br>");
+      return { tr, i, y: v, py: pyOf(v), h: lines.length * 14, w, text }; }).filter(Boolean).sort((p, q) => p.py - q.py);
+    // senkrecht ordnen: Mitte jeder Beschriftung möglichst auf Höhe ihres Linienendes, ohne Überlappung
+    ends.forEach(e => e.ly = e.py);
+    for (let k = 1; k < ends.length; k++) { const a = ends[k - 1], b = ends[k], gap = (a.h + b.h) / 2 + (a.h > 14 || b.h > 14 ? 7 : 2); if (b.ly - a.ly < gap) b.ly = a.ly + gap; }
+    const last = ends[ends.length - 1], over = last ? last.ly + last.h / 2 - plotH : 0; if (over > 0) ends.forEach(e => e.ly -= over);
+    const first = ends[0], under = first ? first.h / 2 - first.ly : 0; if (under > 0) ends.forEach(e => e.ly += under);
+    const tEnd = Date.parse(r[1]), tail = new Date(tEnd + (tEnd - Date.parse(r[0])) * 0.012).toISOString().slice(0, 10);
+    ends.forEach(e => annotations.push({ xref: "x", yref: "y", x: e.tr.x[e.i], y: e.y, axref: "x", ayref: "y", ax: tail, ay: vOf(e.ly), showarrow: true, arrowhead: 0, arrowwidth: 0.6,
+      arrowcolor: "rgba(150,150,150,0.7)", standoff: 2, text: e.text, xanchor: "left", yanchor: "middle", align: "left", font: { family: HS.font, size: 12, color: e.tr.line.color } }));
+    rMargin = Math.max(...ends.map(e => e.w)) + 16; lMargin = 1;
   }
   // Jahresmittel je Jahresband (eine Leitreihe mit Monats- oder Quartalswerten). Unten, wo die Linien unten verlaufen oben;
   // entfällt, wenn das Jahresband zu schmal für die Zahl ist.
@@ -691,16 +667,17 @@ function timeChart(el, c) {
         font: { family: HS.font, size: 12, color: "#595959" }, bordercolor: "#a6a6a6", borderwidth: 1, borderpad: 2, bgcolor: "rgba(255,255,255,0.9)" }); });
   }
   const card0 = el.closest(".card"), uEl = card0 && card0.querySelector(".unit");
-  const tickW0 = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;  // Einheit rechtsbündig über den Achsenzahlen
+  const tickW0 = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;  // Einheit bündig über den Achsenzahlen
+  const axLeft = lMargin > 0;  // Namen rechts am Linienende: Werteachse links
   const legendShown = !direct && traces.filter(tr => tr.showlegend !== false).length > 1;  // mit Legende bleibt die Einheit über der Grafik
-  if (uEl && uEl.textContent && !legendShown) { annotations.push({ xref: "paper", yref: "paper", x: 1, y: 1, xanchor: "right", yanchor: "bottom", xshift: tickW0, yshift: 6, showarrow: false, align: "right",
+  if (uEl && uEl.textContent && !legendShown) { annotations.push({ xref: "paper", yref: "paper", x: axLeft ? 0 : 1, y: 1, xanchor: axLeft ? "left" : "right", yanchor: "bottom", xshift: axLeft ? -tickW0 : tickW0, yshift: 6, showarrow: false, align: axLeft ? "left" : "right",
     text: esc(uEl.textContent), font: { family: HS.font, size: 12, color: "#3f4752" } }); uEl.style.display = "none"; }
   const L = baseLayout(el);
-  L.margin = Object.assign({}, L.margin, { r: Math.max(rMargin, tickW0), t: Math.max(L.margin.t, 34) });
-  const xa2 = xAxis(r[0], r[1], Math.max(120, (el.clientWidth || 500) - Math.max(rMargin, tickW0) - 10));  // Jahreszahlen nach der tatsächlichen Zeichenbreite
+  L.margin = Object.assign({}, L.margin, axLeft ? { l: tickW0, r: rMargin, t: Math.max(L.margin.t, 34) } : { r: Math.max(rMargin, tickW0), t: Math.max(L.margin.t, 34) });
+  const xa2 = xAxis(r[0], r[1], Math.max(120, (el.clientWidth || 500) - (axLeft ? tickW0 + rMargin : Math.max(rMargin, tickW0)) - 10));  // Jahreszahlen nach der tatsächlichen Zeichenbreite
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa2.tickvals, ticktext: xa2.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true, hoverformat: HFMT[c.freq] || "" },
-    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
+    yaxis: { side: axLeft ? "left" : "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
   Plotly.newPlot(el, traces, L, CFG);
 }
 
