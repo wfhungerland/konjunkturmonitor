@@ -930,7 +930,7 @@ def chart_sentences(c: dict) -> list[str]:
                 continue
             if sp and sp.get("tpl"):  # ganzer Satz als Vorlage
                 chg = num((v / yago - 1) * 100, 1, True) + " %" if yago else ""
-                out.append(sp["tpl"].format(when=when, v=vv, n=num(v, d), abs=num(abs(v), d), ueber="über" if v >= 0 else "unter", zu_ab="zu" if v >= 0 else "ab",
+                out.append(sp["tpl"].format(when=when, year=s["x"][-1][:4], v=vv, n=num(v, d), abs=num(abs(v), d), ueber="über" if v >= 0 else "unter", zu_ab="zu" if v >= 0 else "ab",
                                             waermer="wärmer" if v >= 0 else "kälter", hoeher="höher" if v >= 0 else "niedriger", oben_unten="oben" if v >= 0 else "unten", chg=chg).replace(" ( ggü. Vorjahr)", ""))
                 continue
             if not sp:  # Rückfall: neutrale Formulierung mit Beschriftung
@@ -1455,7 +1455,7 @@ def build_payload(root: Path = ROOT) -> dict:
                         ser = ser[(ser.index.year < int(y0)) | (ser.index.year > int(y1))]
                     xy = _xy(ser * float(c.get("scale", 1)), c.get("years"), c.get("x_start"))
                     series.append(dict(id=s.id, label=(c.get("labels") or {}).get(s.id) or s.label or s.title, unit=c.get("unit", s.unit), freq="B" if c.get("daily") else s.frequency,
-                                       style=(c.get("styles") or {}).get(s.id) or getattr(s, "style", None) or "line", **xy))
+                                       style=(c.get("styles") or {}).get(s.id) or getattr(s, "style", None) or "line", **({"of": c["of"][s.id]} if s.id in (c.get("of") or {}) else {}), **xy))
                 if c.get("total") and c["total"] in data:
                     s = meta[c["total"]]
                     series.append(dict(id=s.id, label="BIP insgesamt", unit=s.unit, freq=s.frequency, style="line",

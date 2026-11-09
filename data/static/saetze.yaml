@@ -1,6 +1,6 @@
 # Satzbausteine für die automatischen Sätze: grammatischer Satzgegenstand je Reihe.
 # series: Reihen-ID -> [Satzgegenstand mit Artikel im Nominativ, s (Einzahl) oder p (Mehrzahl)]
-#         oder {tpl: "..."} für einen ganzen Satz. Platzhalter: {when} (Im Oktober 2026), {v} (Wert mit Einheit), {zu_ab} (zu/ab),
+#         oder {tpl: "..."} für einen ganzen Satz. Platzhalter: {when} (Im Oktober 2026), {year} (Jahr des jüngsten Werts), {v} (Wert mit Einheit), {zu_ab} (zu/ab),
 #         {abs} (Betrag ohne Vorzeichen), {ueber} (über/unter), {hoeher} (höher/niedriger).
 # charts: Abbildung -> Muster mit {label} für Reihen, die gleich gebaut sind (etwa Länder).
 # labels: Beschriftung -> Satzgegenstand, für Beitragsbalken und Balken der jüngsten Veränderung.
@@ -8,16 +8,6 @@
 # Quoten und Salden „lag bei …, … Pp höher als ein Jahr zuvor“, Mengen „lag bei …, … mehr als ein Jahr zuvor“.
 
 series:
-  be_gdp_de30: [das reale BIP in Berlin, s]
-  be_gdp_de: [das reale BIP in Deutschland, s]
-  be_vpi_yoy: [die Verbraucherpreise in Berlin, p]
-  be_rent_yoy: [die Nettokaltmieten in Berlin, p]
-  be_afs_gesamt_yoy: [die Verbraucherpreise in Berlin insgesamt, p]
-  be_afs_nahrung_yoy: [die Preise für Nahrungsmittel in Berlin, p]
-  be_afs_energie_yoy: [die Energiepreise in Berlin, p]
-  be_sv: [die Zahl der Beschäftigten in Berlin, s]
-  be_overnight: [die Zahl der Übernachtungen in Berlin, s]
-  be_permits: [die Zahl der genehmigten Wohnungen in Berlin, s]
   gdp_rt_first: {tpl: "{when} lag das zuerst gemeldete BIP-Wachstum bei {v} ggü. dem Vorquartal."}
   gdp_rt_latest: {tpl: "{when} liegt das BIP-Wachstum im heutigen Datenstand bei {v} ggü. dem Vorquartal."}
   gdp_rt_rev: {tpl: "{when} wurde das BIP-Wachstum seit der ersten Meldung um {abs} Pp nach {oben_unten} korrigiert.", tpl0: "{when} ist das BIP-Wachstum seit der ersten Meldung unverändert."}

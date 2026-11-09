@@ -56,34 +56,9 @@ topics:
   aussichten: {title: "Outlook", ask: "What do the forecasts expect?"}
   struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
   staat: {title: "Government", ask: "What state are the public finances in?"}
-  berlin: {title: "Berlin", ask: "How is the Berlin economy doing?"}
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
 
 charts:
-  be_gdp:
-    title: "Economic growth in Berlin"
-    ask: "Is Berlin growing faster than Germany?"
-    caption: "Real gross domestic product on the previous year in %, Berlin and Germany. Results for the federal states are only available annually and for the first half of the year; Eurostat takes over the annual figures with a delay of some months."
-  be_cpi:
-    title: "Consumer prices and rents in Berlin"
-    ask: "Are prices rising faster in Berlin?"
-    caption: "Inflation rate according to the consumer price index in %, Berlin and Germany, plus the change in net rents in Berlin. The rents in the index are existing rents, not asking rents for new lettings."
-  be_feel:
-    title: "Food and energy inflation in Berlin"
-    ask: "What do Berliners notice when shopping?"
-    caption: "Price change for food and energy (household energy and fuels) in Berlin on the same month a year earlier in %, with the overall index for comparison. These goods are bought often, and their prices shape perceived inflation strongly. There is no official perceived inflation by federal state; the chart is an approximation."
-  be_jobs:
-    title: "Employment in Berlin"
-    ask: "Is employment growing in Berlin?"
-    caption: "Employees subject to social insurance contributions on a year earlier in %. Berlin: at place of work, at the end of each quarter. Germany: monthly figures of the Federal Employment Agency."
-  be_tourism:
-    title: "Overnight stays in Berlin"
-    ask: "Are visitors coming to Berlin?"
-    caption: "Overnight stays in accommodation establishments with at least ten beds per month. Thin: monthly values. Thick: 12-month moving average. Dashed: usual level of the same month 2015 to 2019."
-  be_permits:
-    title: "Dwellings approved in Berlin"
-    ask: "How many dwellings are approved in Berlin?"
-    caption: "Dwellings approved in residential and non-residential buildings per month, new construction and work on existing buildings. Thin: monthly values. Thick: 12-month moving average. Dashed: usual level of the same month 2015 to 2019."
   downturns_hist:
     title: "Downturns since 1879 compared, annual data"
     ask: "How deep were the downturns since the 19th century?"
@@ -526,22 +501,6 @@ charts:
     caption: "Dates are estimated from the sources' usual release schedules and marked with a superscript e. The linked calendars of the sources are authoritative. The links lead to the charts that receive new values on that date."
 
 series:
-  be_gdp: {title: "Real GDP, {geo_name}, % on a year earlier", label: "{geo_name}", unit: "% on a year earlier", adjustment: "price adjusted"}
-  be_vpi: {title: "Consumer price index, Berlin", label: "Berlin", unit: "Index 2020=100", adjustment: "not adjusted"}
-  be_vpi_yoy: {title: "Inflation rate, Berlin", label: "Berlin, total", unit: "% on same month a year earlier", adjustment: "not adjusted"}
-  be_rent: {title: "Index of net rents, Berlin", unit: "Index 2020=100", adjustment: "not adjusted"}
-  be_rent_yoy: {title: "Net rents, Berlin, % on same month a year earlier", label: "Berlin, net rents", unit: "% on same month a year earlier", adjustment: "not adjusted"}
-  be_afs_gesamt: {title: "Consumer price index, Berlin: total", unit: "Index 2020=100", adjustment: "not adjusted"}
-  be_afs_nahrung: {title: "Consumer price index, Berlin: food and non-alcoholic beverages", unit: "Index 2020=100", adjustment: "not adjusted"}
-  be_afs_energie: {title: "Consumer price index, Berlin: energy (household energy and fuels)", unit: "Index 2020=100", adjustment: "not adjusted"}
-  be_afs_gesamt_yoy: {title: "Consumer prices, Berlin: total, % on same month a year earlier", label: "Total", unit: "% on same month a year earlier", adjustment: "not adjusted"}
-  be_afs_nahrung_yoy: {title: "Consumer prices, Berlin: food, % on same month a year earlier", label: "Food", unit: "% on same month a year earlier", adjustment: "not adjusted"}
-  be_afs_energie_yoy: {title: "Consumer prices, Berlin: energy, % on same month a year earlier", label: "Energy", unit: "% on same month a year earlier", adjustment: "not adjusted"}
-  be_sv_m: {title: "Employees subject to social insurance at place of work, Berlin, men", unit: "Persons", adjustment: "not adjusted"}
-  be_sv_w: {title: "Employees subject to social insurance at place of work, Berlin, women", unit: "Persons", adjustment: "not adjusted"}
-  be_sv: {title: "Employees subject to social insurance at place of work, Berlin", label: "Berlin", unit: "Persons", adjustment: "not adjusted"}
-  be_overnight: {title: "Overnight stays in accommodation establishments, Berlin", unit: "Thousand overnight stays", adjustment: "not adjusted"}
-  be_permits: {title: "Building permits, Berlin: dwellings (new construction and work on existing buildings)", unit: "Dwellings", adjustment: "not adjusted"}
   gdp_rt_first: {label: "first release", title: "GDP growth on previous quarter, first release"}
   gdp_rt_latest: {label: "current vintage", title: "GDP growth on previous quarter, latest vintage"}
   gdp_rt_rev: {label: "Revision", title: "Revision of GDP growth since first release"}
@@ -777,7 +736,6 @@ geo:
   IT: "Italy"
   ES: "Spain"
   EA20: "Euro area"
-  DE30: "Berlin"
   EA: "Euro area"
 
 strings:
@@ -930,12 +888,6 @@ names:
     "16": "Thuringia"
 # Feste Beschriftungen und Kalendertermine (deutsch: englisch), für Grafiken, Kalender und Gruppen
 labels:
-  "Berlin, Nettokaltmieten": "Berlin, net rents"
-  "Nahrungsmittel": "Food"
-  "Energie": "Energy"
-  "Insgesamt": "Total"
-  "Einzelhandel": "Retail trade"
-  "Gastgewerbe": "Hospitality"
   "Mittel 2015–2019": "2015–2019 average"
   "Referenzwert −3 %": "Reference value −3%"
   "Referenzwert 60 %": "Reference value 60%"

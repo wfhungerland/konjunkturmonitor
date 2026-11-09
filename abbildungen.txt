@@ -104,9 +104,9 @@ proj_gap;BIP Projektion;2026-11-08;
 diffusion;Breite Industrie;2026-11-08;
 ez_ip;Industrie Euroraum;2026-11-08;
 ez_esi;Stimmung Euroraum;2026-11-08;
-be_gdp;Wachstum Berlin;2026-11-08;
-be_cpi;Preise Mieten Berlin;2026-11-08;
-be_feel;Lebensmittel Energie Berlin;2026-11-08;
-be_jobs;Beschaeftigung Berlin;2026-11-08;
-be_tourism;Uebernachtungen Berlin;2026-11-08;
-be_permits;Baugenehmigungen Berlin;2026-11-08;
+be_gdp;Wachstum Berlin;2026-11-08;2026-11-09
+be_cpi;Preise Mieten Berlin;2026-11-08;2026-11-09
+be_feel;Lebensmittel Energie Berlin;2026-11-08;2026-11-09
+be_jobs;Beschaeftigung Berlin;2026-11-08;2026-11-09
+be_tourism;Uebernachtungen Berlin;2026-11-08;2026-11-09
+be_permits;Baugenehmigungen Berlin;2026-11-08;2026-11-09
