@@ -184,6 +184,27 @@ def _projection(c: dict, data: dict, root: Path) -> dict | None:
         ago = idx.get(nxt - pd.DateOffset(years=1))
         if ago is not None and idx.index[-1] == nxt - pd.DateOffset(months=3):
             need_qoq = (float(ago) * (1 + need / 100) / float(idx.iloc[-1]) - 1) * 100
+    alt = None
+    if "de_gdp_qoq" in data and rest and idx.index[-1] == pd.Timestamp(year=year, month=rest[0], day=1) - pd.DateOffset(months=3):
+        # zweite Ansicht: bereinigt ggü. Vorquartal. Nötiges bereinigtes Niveau je fehlendem Quartal = Vorjahresquartal mal (1 + nötige Rate),
+        # wie bei need_qoq; daraus die Raten ggü. dem jeweiligen Vorquartal
+        prev_lv, path = float(idx.iloc[-1]), []
+        for m in rest:
+            ago = idx.get(pd.Timestamp(year=year - 1, month=m, day=1))
+            if ago is None:
+                path = []
+                break
+            lv = float(ago) * (1 + need / 100)
+            path.append(round((lv / prev_lv - 1) * 100, 2))
+            prev_lv = lv
+        if path:
+            q = data["de_gdp_qoq"].dropna()
+            q = q[q.index.year >= year - 1]
+            alt = {"label": "ggü. Vorquartal", "base": "ggü. Vorjahresquartal", "label_en": "on previous quarter", "base_en": "on same quarter a year earlier",
+                   "unit": "% ggü. Vorquartal", "refs": [], "sub": "Vierteljährlich · preis-, saison- und kalenderbereinigt", "sub_en": "Quarterly · price, seasonally and calendar adjusted",
+                   "series": [{"id": "de_gdp_qoq", "label": "BIP ggü. Vorquartal", "unit": "% ggü. Vorquartal", "freq": "Q", "style": "bar",
+                               "x": [d.strftime("%Y-%m-%d") for d in q.index] + [f"{year}-{m:02d}-01" for m in rest],
+                               "y": [round(float(v), 4) for v in q.values] + path, "req": len(rest)}]}
     hist = yoy[yoy.index.year >= year - 1]
     xs = [d.strftime("%Y-%m-%d") for d in hist.index] + [f"{year}-{m:02d}-01" for m in rest]
     ys = [round(float(v), 4) for v in hist.values] + [round(need, 2)] * len(rest)
@@ -192,6 +213,7 @@ def _projection(c: dict, data: dict, root: Path) -> dict | None:
             "known": [{"q": (d.month + 2) // 3, "v": float(v)} for d, v in known.items()], "rest": [(m + 2) // 3 for m in rest],
             "need": need, "need_qoq": need_qoq, "done_rate": done if not rest else None,
             "last_qoq": float(data["de_gdp_qoq"].dropna().iloc[-1]) if "de_gdp_qoq" in data else None,
+            "alt": alt,
             "series": [{"id": yoy_id, "label": "BIP ggü. Vorjahresquartal", "unit": "% ggü. Vorjahresquartal", "freq": "Q", "style": "bar",
                         "x": xs, "y": ys, "req": len(rest)}]}
 
@@ -1469,6 +1491,10 @@ def build_payload(root: Path = ROOT) -> dict:
                 if not pj:
                     continue
                 series = pj.pop("series")
+                if pj.get("alt"):
+                    entry["alt"] = pj.pop("alt")
+                else:
+                    pj.pop("alt", None)
                 entry.update(type="line", proj=pj, series=series, unit="% ggü. Vorjahresquartal", freq="Q", decimals=1, recessions=False,
                              adjustment="preisbereinigt, nicht saison- und kalenderbereinigt (wie die Jahresrate der Projektion)",
                              refs=[{"y": pj["target"], "x0": f"{pj['year']}-01-01", "label": f"{pj['round']}: {str(round(pj['target'], 1)).replace('.', ',')} %"}],

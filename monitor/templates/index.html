@@ -1179,10 +1179,10 @@ function render(ch) {
     ch.parentNode.insertBefore(seg, ch); ch._vseg = seg;
   }
   if (c.alt && !ch._seg) { // Umschalter, etwa Vorjahres- und Vormonatsvergleich der Inflationsbeiträge
-    const base = { series: c.series, unit: c.unit, label: c.alt.base }, seg = document.createElement("div");
+    const sb0 = ch.closest(".card") && ch.closest(".card").querySelector(".sub"), base = { series: c.series, unit: c.unit, refs: c.refs, label: c.alt.base, sub: sb0 ? sb0.textContent : undefined }, seg = document.createElement("div");
     seg.className = "seg"; seg.setAttribute("role", "group");
     [base, c.alt].forEach((v, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = v.label; b.setAttribute("aria-pressed", i === 0);
-      b.onclick = () => { seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); c.series = v.series; c.unit = v.unit;
+      b.onclick = () => { seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); c.series = v.series; c.unit = v.unit; if ("refs" in v) c.refs = v.refs; if (v.sub && sb0) sb0.textContent = v.sub;
         const card = ch.closest(".card"); if (card) { const ue = card.querySelector(".unit"); ue.textContent = v.unit; ue.style.display = ""; } Plotly.purge(ch); timeChart(ch, c); };
       seg.appendChild(b); });
     ch.parentNode.insertBefore(seg, ch); ch._seg = seg;
