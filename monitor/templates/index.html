@@ -1140,9 +1140,17 @@ function card(c, no) {
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => prompt("Link kopieren:", url)); else prompt("Link kopieren:", url); };
   ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `Abb. ${no} ${c.title || ""}. ${c.text || ""}`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
-  ch._c = c;
+  ch._c = c; placeTools(el);
   return el;
 }
+// Handy: Ansichtsknöpfe unter die Grafik (vor „Download, Link und Methode“), oben bleibt nur der Stern
+const PHONE = matchMedia("(max-width: 600px)");
+function placeTools(el) {
+  const top = el.querySelector(".htools"), bottom = el.querySelector(".tools"); if (!top || !bottom) return;
+  if (PHONE.matches) top.querySelectorAll(".btn").forEach(b => bottom.insertBefore(b, bottom.querySelector("details.dl")));
+  else bottom.querySelectorAll(".btn").forEach(b => top.insertBefore(b, top.querySelector(".pin")));
+}
+PHONE.addEventListener("change", () => document.querySelectorAll(".card").forEach(placeTools));
 
 // Plotly (Linien und Balken, plotly.js-basic) wird erst nach der ersten Darstellung geladen, damit Text und Kennzahlen sofort erscheinen
 const PLOTLY_SRC = "plotly.min.js";
