@@ -30,7 +30,9 @@
   .bar { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
   .bar h1 { font-size: 23px; margin: 0; line-height: 1.15; }
   .brand { flex: none; } .brand .meta { font-size: 12px; color: var(--grey); line-height: 1.3; }
-  .lang a, .lang b { padding: 0 1px; } .lang a { color: var(--grey); } .lang b { color: var(--text); } .lang:not(:empty)::after { content: " · "; }
+  .lang a, .lang b { padding: 0 1px; } .lang a { color: var(--grey); } .lang b { color: var(--text); } .lang { font: 15px var(--ff); margin-left: 12px; letter-spacing: .02em; } .lang b { font-weight: 700; } .lang a:hover { color: var(--text); text-decoration: none; }
+  .tline { display: flex; align-items: baseline; }
+  @media (max-width: 600px) { .brand { width: 100%; } #nav { order: 1; } .briefbtn { order: 2; } header .colllink { order: 3; } header a.btn.colllink { font-size: 12px; padding: 0 5px; line-height: inherit; } }
   .bar { align-items: center; }
   @media (min-width: 601px) { nav { flex: 1; font-size: 13px; gap: 0 10px; line-height: 1.6; } }
   .bar .stand { color: var(--grey); font-size: 12px; }
@@ -53,17 +55,11 @@
   /* Breite Bildschirme: Abbildungsübersicht des Abschnitts läuft links mit */
   .rail { display: none; position: sticky; top: 72px; align-self: start; max-height: calc(100vh - 90px); overflow: auto; font: 13.5px/1.35 var(--ff); border-top: 1px solid var(--line); padding-top: 10px; }
   .rail .rh { font: 600 16.5px/1.25 var(--ff); color: var(--dark); margin: 0 0 8px; }
-  .flags { display: flex; gap: 8px; align-items: center; margin: 0 0 10px; } .flags a, .flags b { display: inline-flex; line-height: 0; border-radius: 2px; }
-  .flags svg { height: 15px; width: auto; box-shadow: 0 0 0 1px rgba(0,0,0,.18); } .flags a { opacity: .55; } .flags a:hover { opacity: 1; } .flags b { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .topflags { display: none; } .bar .flags { margin: 2px 0 0; }
-  @media (min-width: 601px) { .topflags { display: flex; } .bar .flags { display: none; } }
-  @media (max-width: 600px) { header .bar { position: relative; } .bar .flags { position: absolute; right: 10px; top: 9px; margin: 0; }
-    .brand { width: 100%; } header a.btn.colllink { font-size: 12px; padding: 0 5px; line-height: inherit; } #nav { order: 1; } .briefbtn { order: 2; } header .colllink { order: 3; } }
-  @media (max-width: 1239px) { .rail .flags { display: none; } }
   .rail a { display: grid; grid-template-columns: 2.1em minmax(0, 1fr); color: var(--muted); padding: 3px 0; }  /* Nummer und Titel in zwei Spalten */
   .rail a:hover { color: var(--text); text-decoration: none; }
   .rail a.on { color: var(--accent); font-weight: 600; }
-  .rail a b { font-weight: 600; }
+  .rail a b { font-weight: 400; color: var(--grey); } .rail a.on b { color: var(--accent); }  /* Nummern grau, Titel vorn */
+  .card .sub .nxt, .card .sub .nxt a { color: var(--grey); }
   @media (min-width: 1240px) {
     main, .bar { max-width: 1320px; }
     section.topic { display: grid; grid-template-columns: 210px minmax(0, 1fr); column-gap: 40px; }
@@ -354,9 +350,8 @@
 </style>
 </head>
 <body>
-<header id="top"><div class="bar"><div class="brand"><h1>Konjunkturmonitor</h1><div class="meta"><span class="stand" id="stand"></span></div><div class="flags" id="flagsh"></div></div><nav id="nav"></nav></div></header>
+<header id="top"><div class="bar"><div class="brand"><div class="tline"><h1>Konjunkturmonitor</h1><span class="lang" id="lang"></span></div><div class="meta"><span class="stand" id="stand"></span></div></div><nav id="nav"></nav></div></header>
 <main>
-  <div class="flags topflags" id="flagst"></div>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
   <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
@@ -433,13 +428,6 @@ const MTXT = { m: ["Mittel der letzten 3 Monate", "der letzten 12 Monate"], q: "
 const SCALE_TXT = { own: "Eigene Skala je Feld", common: "Gemeinsame Skala", zoom: "Skala auf die jüngsten Jahre", full: "Skala über den ganzen Zeitraum", note: "Skala nach den letzten {n} Jahren; ältere Werte teils abgeschnitten", partial: "laufendes Jahr", mad: "mittlere Korrektur ±{m} Pp", need: " (nötig für die Projektion)", needlab: "nötig", band: "Potenzialwachstum: Spanne der Schätzungen", fc: " (Prognose)" };
 const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten, Quellen, Rechenschritte und Methode dieser Abbildung auf einer Seite";
 const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
-// Sprachwahl als kleine Flaggen (Grafik statt Emoji: Windows zeigt keine Flaggen-Emojis)
-let FLAGS_HTML = () => "", FLAG_N = 0;
-function flagsHtml() {
-  const de = () => `<svg viewBox="0 0 5 3" role="img" aria-label="Deutsch"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>`;
-  const uk = () => { const k = ++FLAG_N; return `<svg viewBox="0 0 60 30" role="img" aria-label="English"><clipPath id="ukt${k}"><path d="M30,15h30v15zv15h-30zh-30v-15zv-15h30z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0,0L60,30M60,0L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0L60,30M60,0L0,30" clip-path="url(#ukt${k})" stroke="#C8102E" stroke-width="4"/><path d="M30,0v30M0,15h60" stroke="#fff" stroke-width="10"/><path d="M30,0v30M0,15h60" stroke="#C8102E" stroke-width="6"/></svg>`; };
-  return () => DATA.lang === "en" ? `<a href="../" hreflang="de" lang="de" title="Deutsch">${de()}</a><b title="English">${uk()}</b>` : `<b title="Deutsch">${de()}</b><a href="en/" hreflang="en" lang="en" title="English">${uk()}</a>`;
-}
 const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "Struktur", service: "Service" }, overview: "Übersicht", brief: "Das Wichtigste", all: "Alles zeigen",
   week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü", contents: "Inhalt" };
 const KERN = { more: "Mehr Zahlen" };
@@ -1062,7 +1050,7 @@ function card(c, no) {
   const lead = c._lead;  // Leitgrafik: Frage und Satz stehen schon in der Antwort des Abschnitts
   let next = "";
   if (c.next_update) { const nd = new Date(c.next_update.date + "T12:00:00Z"), dd = `${String(nd.getUTCDate()).padStart(2, "0")}.${String(nd.getUTCMonth() + 1).padStart(2, "0")}.${nd.getUTCFullYear()}`;
-    next = `Neue Daten${c.next_update.period ? ", dann für " + esc(c.next_update.period) + "," : ""} am ${dd} (<a href="#abb-${c.next_update.calendar}">Kalender</a>)`; }
+    next = `<span class="nxt">Neue Daten${c.next_update.period ? ", dann für " + esc(c.next_update.period) + "," : ""} am ${dd} (<a href="#abb-${c.next_update.calendar}">Kalender</a>)</span>`; }
   const meta = [sub ? esc(sub) : "", next].filter(Boolean).join(" · ");
   const texts = c.texts || [];
   el.innerHTML = `${!lead && c.ask ? `<h4 class="cask">${esc(c.ask)}</h4>` : ""}${!lead && texts.length ? `<p class="ctext">${sentHtml(texts)}</p>` : ""}`
@@ -1316,7 +1304,7 @@ function build() {
   const nw = document.getElementById("news");
   if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
   const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
-  if (DATA.has_en || DATA.lang === "en") { FLAGS_HTML = flagsHtml(); ["flagsh", "flagst"].forEach(id => { const f = document.getElementById(id); if (f) f.innerHTML = FLAGS_HTML(); }); }
+  if (DATA.has_en || DATA.lang === "en") document.getElementById("lang").innerHTML = DATA.lang === "en" ? `<a href="../" hreflang="de" lang="de" title="Deutsch">DE</a> <b>EN</b>` : `<b>DE</b> <a href="en/" hreflang="en" lang="en" title="English">EN</a>`;
   const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `Stand ${d.toLocaleDateString("de-DE")}`;
   const AS = DATA.all_series || {};
   document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${encodeURI(AS.xlsx)}" download>Excel</a> · <a href="${encodeURI(AS.csv)}" download>CSV</a>` : "",
@@ -1385,7 +1373,7 @@ function build() {
     const secMain = document.createElement("div"); secMain.className = "secmain";
     while (sec.firstChild) secMain.appendChild(sec.firstChild);
     const rail = document.createElement("nav"); rail.className = "rail"; rail.setAttribute("aria-label", "Abbildungen dieses Abschnitts");
-    rail.innerHTML = `<div class="flags">${FLAGS_HTML()}</div><p class="rh">${esc(t.title)}</p>` + t.charts.map(x => `<a href="#abb-${x.no}"><b>${x.no}</b><span>${esc(x.title || "")}</span></a>`).join("");
+    rail.innerHTML = `<p class="rh">${esc(t.title)}</p>` + t.charts.map(x => `<a href="#abb-${x.no}"><b>${x.no}</b><span>${esc(x.title || "")}</span></a>`).join("");
     sec.append(rail, secMain);
     if (railObs) secMain.querySelectorAll(".card").forEach(cd => railObs.observe(cd));
     const part = t.part || "konjunktur";
