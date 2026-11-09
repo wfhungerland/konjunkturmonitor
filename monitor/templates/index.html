@@ -101,10 +101,10 @@
   .htools .btn:hover, .tools .btn:hover { color: var(--text); text-decoration: none; background: none; }
   .htools .btn[aria-pressed="true"]::before, .tools .btn[aria-pressed="true"]::before { background: currentColor; }
   .card .src, .card .nxtline { text-align: left; }
-  @media (min-width: 601px) { .card .src, .card .nxtline { text-align: right; } }
+  @media (min-width: 601px) { .card .src, .card .nxtline { text-align: right; padding-right: var(--pr, 0px); } }  /* bündig mit der rechten Kante der Zeichenfläche */
   .card .nxtline { font: 13px/1.4 var(--ff); color: var(--grey); margin-top: 6px; } .card .nxtline a { color: var(--grey); }
   .card .sub, .card .unit, .card .cap, .card .src { font: 13.5px/1.4 var(--ff); color: var(--muted); }
-  .card .unit { text-align: right; margin-top: 2px; }
+  .card .unit { text-align: left; margin-top: 2px; }
   .card .acts { font: 13.5px/1.4 var(--ff); color: var(--muted); margin-top: 6px; }
   .card .acts a, .card .acts button { color: var(--accent); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
   .card .acts a:hover, .card .acts button:hover { text-decoration: underline; }
@@ -668,7 +668,7 @@ function timeChart(el, c) {
   }
   const card0 = el.closest(".card"), uEl = card0 && card0.querySelector(".unit");
   const tickW0 = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;  // Einheit bündig über den Achsenzahlen
-  const axLeft = lMargin > 0;  // Namen rechts am Linienende: Werteachse links
+  const axLeft = true;  // Werteachse immer links; rechts stehen die Reihennamen
   const legendShown = !direct && traces.filter(tr => tr.showlegend !== false).length > 1;  // mit Legende bleibt die Einheit über der Grafik
   if (uEl && uEl.textContent && !legendShown) { annotations.push({ xref: "paper", yref: "paper", x: axLeft ? 0 : 1, y: 1, xanchor: axLeft ? "left" : "right", yanchor: "bottom", xshift: axLeft ? -tickW0 : tickW0, yshift: 6, showarrow: false, align: axLeft ? "left" : "right",
     text: esc(uEl.textContent), font: { family: HS.font, size: 12, color: "#3f4752" } }); uEl.style.display = "none"; }
@@ -719,7 +719,7 @@ function multiplesChart(el, c) {
     const annotations = rl ? [{ xref: "paper", yref: "y", x: 0.01, y: rf ?? c.ref ?? 0, text: esc(rl), showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 11, color: "#595959" }, bgcolor: "rgba(255,255,255,0.8)" }] : [];
     Object.assign(L, { margin: { l: 2, r: 2, t: 4, b: 20 }, showlegend: false, shapes, annotations, hovermode: "closest", font: { family: HS.font, size: 12 },
       xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, fixedrange: true, ticks: "" },
-      yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showticklabels: true, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
+      yaxis: { side: "left", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showticklabels: true, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
     Plotly.newPlot(m, traces, L, CFG);
   });
 }
@@ -835,7 +835,7 @@ function forecastChart(el, c) {
   Object.assign(L, { margin: { l: 6, r: 6, t: 30, b: 28 }, hovermode: "closest", showlegend: true, shapes,
     legend: { orientation: "h", x: 0, y: -0.1, yanchor: "top", font: { size: 12 }, traceorder: "reversed", itemclick: false, itemdoubleclick: false },
     xaxis: { range: [-0.5, years.length - 0.5], tickmode: "array", tickvals: years.map((_, i) => i), ticktext: years.map(String), showgrid: false, zeroline: false, fixedrange: true, ticks: "" },
-    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true, automargin: true } });
+    yaxis: { side: "left", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true, automargin: true } });
   el.style.aspectRatio = "auto"; el.style.height = (el.clientWidth < 600 ? 360 : 400) + "px";
   Plotly.newPlot(el, traces, L, CFG);
 }
@@ -912,7 +912,7 @@ function eventChart(el, c) {
       shapes: [{ type: "line", xref: "x", yref: "paper", x0: 0, x1: 0, y0: 0, y1: 1, line: { color: "#000", width: 1 } },
         { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: b0, y1: b0, line: { color: b0 === 0 ? HS.zero : "#595959", width: 1 } }],
       xaxis: { range: [p.x[0] - 0.5, p.x[p.x.length - 1] + 0.5], dtick: p.x.length > 26 ? 6 : 2, showgrid: false, zeroline: false, fixedrange: true },
-      yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
+      yaxis: { side: "left", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
     Plotly.newPlot(m, traces, L, CFG);
   });
 }
@@ -935,7 +935,7 @@ function seasonalChart(el, c) {
   const L = baseLayout(el);
   Object.assign(L, { shapes,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
-    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
+    yaxis: { side: "left", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
   Plotly.newPlot(el, traces, L, CFG);
 }
 // Letzter Wert je Reihe als waagerechte Balken, Raute: Wert der Vorperiode
@@ -1215,7 +1215,11 @@ function render(ch) {
   if (ch.dataset.done) return;
   if (!window.Plotly) { ch.dataset.done = "wait"; plotlyReady().then(() => { delete ch.dataset.done; render(ch); }); return; }
   ch.dataset.done = 1;
-  if (!render.loc) { render.loc = 1; Plotly.register({ moduleType: "locale", name: "site", dictionary: {}, format: { months: MONTHS_L, shortMonths: MONTHS,
+  if (!render.loc) { render.loc = 1;
+    // Quelle und Lizenz enden an der rechten Kante der Zeichenfläche: rechten Rand der Grafik an die Karte geben
+    const np = Plotly.newPlot; Plotly.newPlot = (gd, ...a) => np(gd, ...a).then(g => { const z = gd._fullLayout && gd._fullLayout._size, cd = gd.closest && gd.closest(".card");
+      if (z && cd && !gd.closest(".multi")) cd.style.setProperty("--pr", Math.round(z.r) + "px"); return g; });
+    Plotly.register({ moduleType: "locale", name: "site", dictionary: {}, format: { months: MONTHS_L, shortMonths: MONTHS,
     days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], shortDays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], periods: ["AM", "PM"],
     dateTime: "%a %b %e %X %Y", date: "%d.%m.%Y", time: "%H:%M:%S", decimal: ",", thousands: ".", grouping: [3], currency: ["", " €"], year: "%Y", month: "%b %Y", dayMonth: "%-d. %b", dayMonthYear: "%-d. %b %Y" } }); }
   const c = ch._c;
