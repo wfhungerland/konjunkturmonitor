@@ -65,8 +65,8 @@
     section.topic { display: grid; grid-template-columns: 210px minmax(0, 1fr); column-gap: 40px; }
     .rail { display: block; }
   }
-  section.topic .secmain > h2 { font-size: 26px; margin: 0 0 4px; }
-  @media (min-width: 601px) { section.topic .secmain > h2 { position: sticky; top: var(--hdr, 64px); z-index: 3; background: var(--bg); padding: 6px 0 8px; } body.minimal section.topic .secmain > h2 { background: #fff; box-shadow: 0 1px 0 var(--line); } }
+  section.topic > h2 { font-size: 26px; margin: 0 0 4px; grid-column: 1 / -1; }
+  @media (min-width: 601px) { section.topic > h2 { position: sticky; top: var(--hdr, 64px); z-index: 3; background: var(--bg); padding: 6px 0 8px; } body.minimal section.topic > h2 { background: #fff; box-shadow: 0 1px 0 var(--line); } }
   .answer { font-size: 19px; margin: 4px 0 6px; max-width: 48em; }
   .more { color: var(--text); margin: 0 0 8px; padding-left: 18px; max-width: 48em; }
   .explain { background: var(--card); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 8px 0 14px; max-width: 48em; font-size: 15px; }
@@ -75,12 +75,36 @@
   @media (max-width: 900px) { .charts { grid-template-columns: 1fr; } }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px 8px; min-width: 0; }
   .card h3 { font-size: 15px; margin: 0 0 2px; }
-  .chead { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 16px; flex-wrap: wrap; }
-  .htools { display: flex; flex-wrap: wrap; gap: 2px 14px; align-items: baseline; margin-left: auto; }
-  .htools .btn { border: 0; background: none; padding: 0; color: var(--grey); font: 13px var(--ff); cursor: pointer; } .htools .btn:hover { color: var(--accent); text-decoration: underline; }
-  .card .nxtline { font: 13px/1.4 var(--ff); color: var(--grey); margin-top: 4px; } .card .nxtline a { color: var(--grey); }
+  /* Abbildungskarte: links Nummer, Stern, Download, Methode, Link; Mitte Titel und Grafik; rechts Erläuterung */
+  .cgrid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: baseline; column-gap: 22px; }
+  .gut { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; font: 13.5px/1.6 var(--ff); order: 2; margin-top: 6px; }
+  .gut .cno { display: none; }
+  .gut a, .gut button.gl, .gut details.dl > summary { color: var(--text); background: none; border: 0; padding: 0; font: inherit; cursor: pointer; border-radius: 0; }
+  .gut a:hover, .gut button.gl:hover, .gut details.dl > summary:hover { color: var(--accent); text-decoration: underline; }
+  .cin { min-width: 0; }
+  .cside { order: 3; }
+  @media (min-width: 601px) {
+    .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr); }
+    .gut { order: 0; flex-direction: column; flex-wrap: nowrap; align-items: center; text-align: center; gap: 0; margin-top: 0; }
+    .gut .cno { display: block; font: 600 19px/1.2 var(--ff); color: var(--dark); }
+    .cin .abbno { display: none; }
+    .cside { grid-column: 2; }
+  }
+  @media (min-width: 980px) { .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr) 290px; } .cside { grid-column: 3; grid-row: 1; } .card.full .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr); } .card.full .cside { grid-column: 2; grid-row: auto; max-width: 52em; } }
+  :root { --gutw: 64px; }
+  .chead { display: flex; justify-content: space-between; align-items: flex-start; gap: 4px 16px; } .ctitle { min-width: 0; }
+  .htools { display: flex; flex-direction: column; align-items: stretch; gap: 6px; margin-left: auto; }
+  /* Schalter: nur Text mit kleinem Quadrat davor, leer = aus, gefüllt = an */
+  .htools { align-items: flex-start; gap: 3px; }
+  .htools .btn, .tools .btn { display: inline-flex; align-items: center; gap: 7px; border: 0; border-radius: 0; background: none; padding: 0; color: var(--grey); font: 13px/1.4 var(--ff); cursor: pointer; white-space: nowrap; }
+  .htools .btn::before, .tools .btn::before { content: ""; width: 8px; height: 8px; border: 1.5px solid currentColor; box-sizing: border-box; flex: none; }
+  .htools .btn:hover, .tools .btn:hover { color: var(--text); text-decoration: none; background: none; }
+  .htools .btn[aria-pressed="true"]::before, .tools .btn[aria-pressed="true"]::before { background: currentColor; }
+  .card .src, .card .nxtline { text-align: left; }
+  @media (min-width: 601px) { .card .src, .card .nxtline { text-align: right; padding-right: var(--pr, 0px); } }  /* bündig mit der rechten Kante der Zeichenfläche */
+  .card .nxtline { font: 13px/1.4 var(--ff); color: var(--grey); margin-top: 6px; } .card .nxtline a { color: var(--grey); }
   .card .sub, .card .unit, .card .cap, .card .src { font: 13.5px/1.4 var(--ff); color: var(--muted); }
-  .card .unit { text-align: right; margin-top: 2px; }
+  .card .unit { text-align: left; margin-top: 2px; }
   .card .acts { font: 13.5px/1.4 var(--ff); color: var(--muted); margin-top: 6px; }
   .card .acts a, .card .acts button { color: var(--accent); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
   .card .acts a:hover, .card .acts button:hover { text-decoration: underline; }
@@ -145,7 +169,7 @@
   @media (min-width: 761px) { .stable td.cmp { display: none; } }
   body.minimal { background: #fff; }
   body.minimal header { border-bottom-color: var(--line); }
-  body.minimal .card { border: 0; border-radius: 0; padding: 4px 0 8px; background: transparent; }
+  body.minimal .card { border: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-radius: 0; padding: 14px 0 12px; background: transparent; }
   body.minimal .q { border-color: var(--line); }
   body.minimal .verdict { background: none; padding: 0; color: var(--muted); font-style: italic; }
   body.minimal .explain { background: none; border-left: 0; padding: 0; border-radius: 0; color: var(--text); font: italic 15px/1.45 var(--ff); }
@@ -186,8 +210,8 @@
   .calm td.today { background: var(--tint); } .calm td.past a { color: var(--grey); }
   .callinks { font: 13.5px var(--ff); color: var(--muted); }
   .answer button.copy, .ctext button.copy { font: 12px var(--ff); color: var(--accent); background: none; border: 1px solid var(--line); border-radius: var(--r); padding: 0 6px; cursor: pointer; vertical-align: 1px; }
-  .card .cask { font: 600 19px/1.3 var(--ff); margin: 2px 0 4px; }
-  .card .ctext { font: 15px/1.45 var(--ff); margin: 2px 0 8px; color: var(--text); }
+  .card .cask { font: 600 19px/1.3 var(--ff); margin-block: 2px 4px; }
+  .card .ctext { font: 15px/1.45 var(--ff); margin-block: 2px 8px; color: var(--text); }
   .chartbox { position: relative; }
   .notebox { width: fit-content; max-width: 62%; margin: 2px 0 4px auto; background: var(--box); border: 0; border-radius: var(--r); padding: 8px 12px; font: 13.5px/1.4 var(--ff); color: var(--text); }
   @media (max-width: 600px) { .notebox { max-width: none; margin: 4px 0; } }
@@ -215,6 +239,7 @@
   .search li.on, .search li:hover { background: var(--tint); }
   .search li mark { background: none; color: var(--accent); font-weight: 600; }
   .search + .expandall { margin-left: 0; }
+  @media (min-width: 1000px) { header .bar { position: relative; } .search { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(380px, 34vw); margin: 0; } }  /* Suche in der Mitte der Kopfleiste */
   @media (max-width: 600px) { .search { order: 6; width: 100%; margin: 2px 0 0; } .search input { width: 100%; } .search ul { left: 0; width: auto; } }
   @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
   .parthead { margin: 96px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 17px var(--ff); color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
@@ -311,16 +336,17 @@
   .btn, a.btn, details.dl > summary { font: 13.5px/1.5 var(--ff); color: var(--accent); background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 1px 9px; cursor: pointer; }
   .btn[aria-pressed="true"] { background: var(--tint); }
   .tools { gap: 4px 18px; }
-  .tools .btn, .tools details.dl > summary, .answer button.copy, .ctext button.copy { border: 0; background: none; padding: 0; color: var(--grey); font-size: 13.5px; }
-  .tools .btn:hover, .tools details.dl > summary:hover, .answer button.copy:hover, .ctext button.copy:hover { color: var(--accent); text-decoration: underline; }
+  .tools details.dl > summary, .answer button.copy, .ctext button.copy { border: 0; background: none; padding: 0; color: var(--grey); font-size: 13.5px; }
+  .tools details.dl > summary:hover, .answer button.copy:hover, .ctext button.copy:hover { color: var(--accent); text-decoration: underline; }
+  .answer button.copy, .ctext button.copy { font-size: 12px; opacity: .45; } .answer button.copy:hover, .ctext button.copy:hover { opacity: 1; text-decoration: none; }
+  .tools:empty { display: none; }
   .rawtoggle { margin: 0; }
   .card .ctext .sent, .answer .sent { display: inline; }
-  button.copy1 { font: 12px/1 var(--ff); color: var(--accent); background: none; border: 0; padding: 0 2px; margin: 0 2px 0 1px; cursor: pointer; vertical-align: 1px; opacity: .75; }
-  button.copy1:hover { opacity: 1; }
-  .cbody { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 22px; margin-top: 4px; }
-  @media (min-width: 980px) { .cbody { grid-template-columns: minmax(0, 1fr) 290px; } .card.full .cbody { grid-template-columns: minmax(0, 1fr); } .card.full .cside { max-width: 52em; } }
-  .cside { font: 13.5px/1.45 var(--ff); display: flex; flex-direction: column; gap: 8px; }
-  @media (min-width: 980px) { .cside { padding-top: 24px; } }  /* beginnt auf Höhe der Grafik, unter der Einheitenzeile */
+  button.copy1 { font: 10.5px/1 var(--ff); color: var(--grey); background: none; border: 0; padding: 0 2px; margin: 0 2px 0 1px; cursor: pointer; vertical-align: 1px; opacity: .45; }
+  button.copy1:hover, button.copy1:focus-visible { opacity: 1; color: var(--accent); }
+  .cbody { margin-top: 4px; }
+  .cside { font: 13.5px/1.45 var(--ff); display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  @media (min-width: 980px) { .cside { margin-top: 0; } .card.full .cside { margin-top: 10px; } }  /* beginnt auf Höhe des Titels */
   .cside .capnote { font-style: italic; margin: 0; }
   .cside .notebox { background: var(--box); border-radius: var(--r); padding: 9px 12px; margin: 0; max-width: none; width: auto; }
   .cside .capbox b, .cside .notebox b { display: block; margin-bottom: 2px; }
@@ -331,12 +357,12 @@
   .tside { flex: 0 1 260px; } .tside .tlegend { justify-content: flex-start; margin-bottom: 6px; }
   .tlist { list-style: none; padding: 0; margin: 4px 0; columns: 1; font-size: 13.5px; }
   .tlist li { display: flex; justify-content: space-between; gap: 8px; break-inside: avoid; white-space: nowrap; }
-  .htools .pin { font: 17px/1 var(--ff); background: none; border: 0; color: var(--grey); cursor: pointer; padding: 0 0 0 4px; } .htools .pin:hover { color: var(--accent); }
-  .htools .pin[aria-pressed="true"] { color: #C9A100; }
+  .gut .pin { font: 17px/1.5 var(--ff); background: none; border: 0; color: #0070C0; cursor: pointer; padding: 0; }
+  .gut .pin[aria-pressed="true"] { color: #0070C0; }  /* royalblau wie die Pfeile nach oben */
   .collection:empty { display: none; }
   .collection { margin: 8px 0 32px; } .collection .colbar { display: flex; flex-wrap: wrap; gap: 8px 16px; }
   body.coll #overview, body.coll #news, body.coll #grid, body.coll #starttable, body.coll #legendhint, body.coll #topics, body.coll .weekrev, body.coll .fab { display: none !important; }
-  @media print { .htools, .collection .colbar { display: none; } }
+  @media print { .htools, .gut .pin, .gut details.dl, .gut a, .gut button, .collection .colbar { display: none; } }
   @media print {
     header, nav, .fab, .totop, details.dl, .rawtoggle, .btn, button.copy, button.copy1, .seg, .navmore { display: none !important; }
     body { background: #fff; font-size: 11pt; }
@@ -436,9 +462,12 @@ const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten
 const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
 const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "Struktur", service: "Service" }, overview: "Übersicht", brief: "Das Wichtigste", all: "Alles zeigen",
   week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü", contents: "Inhalt" };
-const KERN = { more: "Mehr Zahlen" };
+const KERN = { more: "Weiterlesen" };
 const ANH = { show: "Abbildungen anzeigen" };
-const LONGTXT = { crisis: ["Bankenkrisen einblenden", "Bankenkrisen ausblenden"], rec: ["Rezessionen einblenden", "Rezessionen ausblenden"], dec: "Mittel" };
+const LONGTXT = { crisis: "Bankenkrisen", rec: "Rezessionen", dec: "Mittel" };
+const VIEWTXT = { raw: "Monatswerte", rawt: "Dünne Linie mit den einzelnen Monatswerten zeigen", edge: "Aktueller Rand", edget: "Jüngste Werte an den Linienenden zeigen", rec: "Rezessionen" };
+const GUTTXT = { dl: "Download", dlt: "XLSX, PPTX, PNG, CSV oder Code zum Einbetten", meth: "Methode", link: "Link" };
+const pressed = (b, on) => b.setAttribute("aria-pressed", String(!!on));
 const COLTXT = { pin: "Als Lesezeichen merken", pinned: "Lesezeichen entfernen", title: "Lesezeichen", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. Der Stern ☆ oben rechts an einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Lesezeichen übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
 const EMB = { label: "Einbetten", title: "HTML-Code kopieren, um diese Abbildung auf einer eigenen Seite einzubetten", done: "Code kopiert", src: "Konjunkturmonitor", full: "ganze Seite" };
 const HFMT = { A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
@@ -593,31 +622,31 @@ function timeChart(el, c) {
     annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.band.hi, text: "Spanne 2015–2019", showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#7f7f7f" } });
   }
   const named = traces.filter(t => t.showlegend !== false && t.type === "scatter");
-  const nameOnly = !c._labels && c.name_labels && LY.direct_labels && labelable(c) && named.length >= 2 && (el.clientWidth || 600) >= 520;  // schmal: Legende  // Namen am Linienende statt Legende
-  const direct = (LY.direct_labels && c._labels && labelable(c) && named.length >= 1) || nameOnly;
-  let rMargin = 6;
-  if (direct) { // Beschriftung in der Zeichenfläche links über dem Linienende, bei Bedarf mit Bezugslinie und ohne Überlappung
+  // Reihennamen: feste Regel, immer rechts neben dem Linienende außerhalb der Zeichenfläche, bei Enge auseinandergerückt mit Haltelinie.
+  // „Aktueller Rand“ ergänzt dort den jüngsten Wert. Die Werteachse steht dann links. Schmale Grafiken (Handy) behalten die Legende.
+  const endNames = LY.direct_labels && labelable(c) && named.length >= 2 && named.length <= 6 && c.name_labels !== false && (el.clientWidth || 600) >= 480;
+  const direct = (LY.direct_labels && c._labels && labelable(c) && named.length >= 1) || endNames;
+  let rMargin = 6, lMargin = 0;
+  if (direct) {
     const sgn = /ggü\.|gegenüber|Veränderung|^Pp|^Saldo/.test(c.unit || "") || ya.zero;
-    const plotH = Math.max(140, (el.clientHeight || 300) - 34 - 24), pyOf = v => (1 - (v - ya.range[0]) / (ya.range[1] - ya.range[0])) * plotH;
+    const plotH = Math.max(140, (el.clientHeight || 300) - 34 - 24), pyOf = v => (1 - (v - ya.range[0]) / (ya.range[1] - ya.range[0])) * plotH, vOf = py => ya.range[0] + (1 - py / plotH) * (ya.range[1] - ya.range[0]);
+    const wrap2 = t => { if (t.length <= 24) return [t]; const m = t.length / 2; let k = -1; for (let q = 0; q < t.length; q++) if (t[q] === " " && (k < 0 || Math.abs(q - m) < Math.abs(k - m))) k = q; return k < 0 ? [t] : [t.slice(0, k), t.slice(k + 1)]; };
     const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const v = tr.y[i]; if (v == null) return null;
       const td = tendOf(tr.y, c.decimals ?? 1), arrow = td ? ` <span style="color:${tendColor(td, isBad(c, tr.meta))}">${{ up: "▲", down: "▼", flat: "■" }[td]}</span>` : "";
       const f0 = fmtU(v, c.decimals ?? 1, c.unit), val = (sgn && +v.toFixed(c.decimals ?? 1) > 0 && !f0.startsWith("+") ? "+" : "") + f0;
-      return { tr, i, y: v, py: pyOf(v), text: nameOnly ? esc(tr.name) : `${esc(tr.name)} ${esc(val)}${arrow} ${esc(perIn(tr.x[i], c.freq))}` }; }).filter(Boolean).sort((p, q) => p.py - q.py);
-    // Freie Fläche suchen: über oder unter allen Linien im Bereich, den die Beschriftungen waagerecht einnehmen
-    const plotW = Math.max(160, (el.clientWidth || 500) - 50), t0 = Date.parse(r[0]), t1 = Date.parse(r[1]);
-    const txtW = Math.max(...ends.map(e => e.text.replace(/<[^>]+>/g, "").length)) * 6.4 + 16, tFrom = t1 - txtW / plotW * (t1 - t0);
-    const inWin = traces.filter(tr => tr.type === "scatter" && tr.x).flatMap(tr => tr.x.map((x, i) => Date.parse(x) >= tFrom ? tr.y[i] : null)).filter(v => v != null).map(pyOf);
-    const topPx = Math.min(...inWin, plotH), botPx = Math.max(...inWin, 0), need = ends.length * 16 + 6;
-    if (topPx - 6 >= need) ends.forEach((e, k) => e.ly = topPx - 6 - (ends.length - 1 - k) * 16 - 8);
-    else if (plotH - botPx - 6 >= need) ends.forEach((e, k) => e.ly = botPx + 6 + k * 16 + 8);
-    else {
-      ends.forEach(e => e.ly = e.py - 13);
-      for (let k = 1; k < ends.length; k++) if (ends[k].ly - ends[k - 1].ly < 16) ends[k].ly = ends[k - 1].ly + 16;
-      const over = ends.length ? ends[ends.length - 1].ly - (plotH - 8) : 0; if (over > 0) ends.forEach(e => e.ly -= over);
-      const under = ends.length ? 8 - ends[0].ly : 0; if (under > 0) ends.forEach(e => e.ly += under);
-    }
-    ends.forEach(e => annotations.push({ xref: "x", yref: "y", x: e.tr.x[e.i], y: e.y, ax: -8, ay: e.ly - e.py, showarrow: true, arrowhead: 0, arrowwidth: 0.5, arrowcolor: "#a6a6a6", standoff: 3,
-      text: e.text, xanchor: "right", yanchor: "middle", align: "right", bgcolor: "rgba(255,255,255,0.85)", borderpad: 1, font: { family: HS.font, size: 12, color: e.tr.line.color } }));
+      const lines = [...wrap2(tr.name)]; if (c._labels) lines.push(`${val} ${perIn(tr.x[i], c.freq)}`);
+      const w = Math.max(...lines.map(l => l.length)) * 6.3 + 4;
+      const text = lines.map((l, k) => k === lines.length - 1 && c._labels ? `${esc(val)}${arrow} ${esc(perIn(tr.x[i], c.freq))}` : esc(l)).join("<br>");
+      return { tr, i, y: v, py: pyOf(v), h: lines.length * 14, w, text }; }).filter(Boolean).sort((p, q) => p.py - q.py);
+    // senkrecht ordnen: Mitte jeder Beschriftung möglichst auf Höhe ihres Linienendes, ohne Überlappung
+    ends.forEach(e => e.ly = e.py);
+    for (let k = 1; k < ends.length; k++) { const a = ends[k - 1], b = ends[k], gap = (a.h + b.h) / 2 + (a.h > 14 || b.h > 14 ? 7 : 2); if (b.ly - a.ly < gap) b.ly = a.ly + gap; }
+    const last = ends[ends.length - 1], over = last ? last.ly + last.h / 2 - plotH : 0; if (over > 0) ends.forEach(e => e.ly -= over);
+    const first = ends[0], under = first ? first.h / 2 - first.ly : 0; if (under > 0) ends.forEach(e => e.ly += under);
+    const tEnd = Date.parse(r[1]), tail = new Date(tEnd + (tEnd - Date.parse(r[0])) * 0.012).toISOString().slice(0, 10);
+    ends.forEach(e => annotations.push({ xref: "x", yref: "y", x: e.tr.x[e.i], y: e.y, axref: "x", ayref: "y", ax: tail, ay: vOf(e.ly), showarrow: true, arrowhead: 0, arrowwidth: 0.6,
+      arrowcolor: "rgba(150,150,150,0.7)", standoff: 2, text: e.text, xanchor: "left", yanchor: "middle", align: "left", font: { family: HS.font, size: 12, color: e.tr.line.color } }));
+    rMargin = Math.max(...ends.map(e => e.w)) + 16; lMargin = 1;
   }
   // Jahresmittel je Jahresband (eine Leitreihe mit Monats- oder Quartalswerten). Unten, wo die Linien unten verlaufen oben;
   // entfällt, wenn das Jahresband zu schmal für die Zahl ist.
@@ -638,16 +667,17 @@ function timeChart(el, c) {
         font: { family: HS.font, size: 12, color: "#595959" }, bordercolor: "#a6a6a6", borderwidth: 1, borderpad: 2, bgcolor: "rgba(255,255,255,0.9)" }); });
   }
   const card0 = el.closest(".card"), uEl = card0 && card0.querySelector(".unit");
-  const tickW0 = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;  // Einheit rechtsbündig über den Achsenzahlen
+  const tickW0 = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;  // Einheit bündig über den Achsenzahlen
+  const axLeft = true;  // Werteachse immer links; rechts stehen die Reihennamen
   const legendShown = !direct && traces.filter(tr => tr.showlegend !== false).length > 1;  // mit Legende bleibt die Einheit über der Grafik
-  if (uEl && uEl.textContent && !legendShown) { annotations.push({ xref: "paper", yref: "paper", x: 1, y: 1, xanchor: "right", yanchor: "bottom", xshift: tickW0, yshift: 6, showarrow: false, align: "right",
+  if (uEl && uEl.textContent && !legendShown) { annotations.push({ xref: "paper", yref: "paper", x: axLeft ? 0 : 1, y: 1, xanchor: axLeft ? "left" : "right", yanchor: "bottom", xshift: axLeft ? -tickW0 : tickW0, yshift: 6, showarrow: false, align: axLeft ? "left" : "right",
     text: esc(uEl.textContent), font: { family: HS.font, size: 12, color: "#3f4752" } }); uEl.style.display = "none"; }
   const L = baseLayout(el);
-  L.margin = Object.assign({}, L.margin, { r: Math.max(rMargin, tickW0), t: Math.max(L.margin.t, 34) });
-  const xa2 = xAxis(r[0], r[1], Math.max(120, (el.clientWidth || 500) - Math.max(rMargin, tickW0) - 10));  // Jahreszahlen nach der tatsächlichen Zeichenbreite
+  L.margin = Object.assign({}, L.margin, axLeft ? { l: tickW0, r: rMargin, t: Math.max(L.margin.t, 34) } : { r: Math.max(rMargin, tickW0), t: Math.max(L.margin.t, 34) });
+  const xa2 = xAxis(r[0], r[1], Math.max(120, (el.clientWidth || 500) - (axLeft ? tickW0 + rMargin : Math.max(rMargin, tickW0)) - 10));  // Jahreszahlen nach der tatsächlichen Zeichenbreite
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa2.tickvals, ticktext: xa2.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true, hoverformat: HFMT[c.freq] || "" },
-    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
+    yaxis: { side: axLeft ? "left" : "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
   Plotly.newPlot(el, traces, L, CFG);
 }
 
@@ -689,7 +719,7 @@ function multiplesChart(el, c) {
     const annotations = rl ? [{ xref: "paper", yref: "y", x: 0.01, y: rf ?? c.ref ?? 0, text: esc(rl), showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 11, color: "#595959" }, bgcolor: "rgba(255,255,255,0.8)" }] : [];
     Object.assign(L, { margin: { l: 2, r: 2, t: 4, b: 20 }, showlegend: false, shapes, annotations, hovermode: "closest", font: { family: HS.font, size: 12 },
       xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, fixedrange: true, ticks: "" },
-      yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showticklabels: true, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
+      yaxis: { side: "left", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showticklabels: true, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
     Plotly.newPlot(m, traces, L, CFG);
   });
 }
@@ -805,7 +835,7 @@ function forecastChart(el, c) {
   Object.assign(L, { margin: { l: 6, r: 6, t: 30, b: 28 }, hovermode: "closest", showlegend: true, shapes,
     legend: { orientation: "h", x: 0, y: -0.1, yanchor: "top", font: { size: 12 }, traceorder: "reversed", itemclick: false, itemdoubleclick: false },
     xaxis: { range: [-0.5, years.length - 0.5], tickmode: "array", tickvals: years.map((_, i) => i), ticktext: years.map(String), showgrid: false, zeroline: false, fixedrange: true, ticks: "" },
-    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true, automargin: true } });
+    yaxis: { side: "left", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, fixedrange: true, automargin: true } });
   el.style.aspectRatio = "auto"; el.style.height = (el.clientWidth < 600 ? 360 : 400) + "px";
   Plotly.newPlot(el, traces, L, CFG);
 }
@@ -882,7 +912,7 @@ function eventChart(el, c) {
       shapes: [{ type: "line", xref: "x", yref: "paper", x0: 0, x1: 0, y0: 0, y1: 1, line: { color: "#000", width: 1 } },
         { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: b0, y1: b0, line: { color: b0 === 0 ? HS.zero : "#595959", width: 1 } }],
       xaxis: { range: [p.x[0] - 0.5, p.x[p.x.length - 1] + 0.5], dtick: p.x.length > 26 ? 6 : 2, showgrid: false, zeroline: false, fixedrange: true },
-      yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
+      yaxis: { side: "left", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
     Plotly.newPlot(m, traces, L, CFG);
   });
 }
@@ -905,7 +935,7 @@ function seasonalChart(el, c) {
   const L = baseLayout(el);
   Object.assign(L, { shapes,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
-    yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
+    yaxis: { side: "left", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
   Plotly.newPlot(el, traces, L, CFG);
 }
 // Letzter Wert je Reihe als waagerechte Balken, Raute: Wert der Vorperiode
@@ -1076,16 +1106,17 @@ function card(c, no) {
   const meta = sub ? esc(sub) : "";  // Hinweis auf neue Daten steht unter der Grafik
   const texts = c.texts || [];
   el.innerHTML = `${!lead && c.ask ? `<h4 class="cask">${esc(c.ask)}</h4>` : ""}${!lead && texts.length ? `<p class="ctext">${sentHtml(texts)}</p>` : ""}`
-    + `<div class="chead"><h3>Abb. ${no} ${esc(c.title || "")}</h3><div class="htools"></div></div>${meta ? `<div class="sub">${meta}</div>` : ""}`;
+    + `<div class="cgrid"><div class="gut"><b class="cno">${no}</b></div><div class="cin"><div class="chead"><div class="ctitle"><h3><span class="abbno">Abb. ${no} </span>${esc(c.title || "")}</h3>${meta ? `<div class="sub">${meta}</div>` : ""}</div><div class="htools"></div></div></div></div>`;
   if (!lead) bindCopies(el, texts, `Abb. ${no}`);
-  if (c.warn) el.insertAdjacentHTML("beforeend", `<div class="warn">⚠ ${esc(c.warn)}</div>`);
-  const body = document.createElement("div"); body.className = "cbody"; el.appendChild(body);
+  const cin = el.querySelector(".cin"), gut = el.querySelector(".gut");
+  if (c.warn) cin.insertAdjacentHTML("beforeend", `<div class="warn">⚠ ${esc(c.warn)}</div>`);
+  const body = document.createElement("div"); body.className = "cbody"; cin.appendChild(body);
   const main = document.createElement("div"); main.className = "cmain"; body.appendChild(main);
   main.insertAdjacentHTML("beforeend", `<div class="unit">${c.own_scale ? "" : esc(unit)}</div>`);
   const box = document.createElement("div"); box.className = "chartbox"; main.appendChild(box);
   const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
-  const side = document.createElement("aside"); side.className = "cside"; body.appendChild(side);
+  const side = document.createElement("aside"); side.className = "cside"; el.querySelector(".cgrid").appendChild(side);
   const capx = (c.caption || "") + ((c.notes || []).length ? " Über „Ausschläge und Sondereffekte“ erscheinen nummerierte, gepunktete Linien an den betroffenen Monaten." : "");
   if (capx) side.insertAdjacentHTML("beforeend", `<div class="capnote cap">${esc(capx.trim())}</div>`);
   const nts = (c.notes || []).map((n, k) => `${k + 1} ${n.text}`).concat((c.outliers || []).map(o => `${o.label} im ${MONTHS_L[+o.date.slice(5, 7) - 1]} ${o.date.slice(0, 4)}: ${(o.change > 0 ? "+" : "") + fmt(o.change, 1)} % ggü. Vormonat${(c.notes || []).length ? "" : " (automatisch markiert)"}`));
@@ -1104,11 +1135,12 @@ function card(c, no) {
   const tools = document.createElement("div"); tools.className = "tools"; main.appendChild(tools);
   const htools = el.querySelector(".htools");  // Ansichtsknöpfe oben rechts
   if (next) main.insertAdjacentHTML("beforeend", `<div class="nxtline">${next}</div>`);
-  main.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}${c.content_license ? `. ${LIC_NOTE} ${esc(c.content_license)}` : ""}</div>`);
+  const lic = [(c.licenses || []).length ? esc(c.licenses.join("; ")) : "", c.content_license ? `${LIC_NOTE} ${esc(c.content_license)}` : ""].filter(Boolean).join(". ");
+  main.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}.</div>${lic ? `<div class="src">Lizenz: ${lic}</div>` : ""}`);
   const redraw = () => { Plotly.purge(ch); ch.innerHTML = ""; ch.classList.remove("multi"); (c.type === "seasonal" ? seasonalChart : c.multiples && (DATA.layout || {}).small_multiples && (c.series.length > 2 || c.own_scale) ? multiplesChart : timeChart)(ch, c); };
   if (c.ma3) {
-    const tg = document.createElement("button"); tg.type = "button"; tg.className = "btn rawtoggle"; tg.textContent = c.raw_hidden ? "Monatswerte einblenden" : "Monatswerte ausblenden";
-    tg.onclick = () => { c._raw = !(c._raw ?? !c.raw_hidden); tg.textContent = c._raw ? "Monatswerte ausblenden" : "Monatswerte einblenden"; redraw(); };
+    const tg = document.createElement("button"); tg.type = "button"; tg.className = "btn rawtoggle"; tg.textContent = VIEWTXT.raw; tg.title = VIEWTXT.rawt; pressed(tg, !c.raw_hidden);
+    tg.onclick = () => { c._raw = !(c._raw ?? !c.raw_hidden); pressed(tg, c._raw); redraw(); };
     htools.appendChild(tg); }
   if (c.scale_toggle && c.multiples) { // gemeinsame Skala über alle Felder oder eigene je Feld
     const sb = document.createElement("button"); sb.type = "button"; sb.className = "btn";
@@ -1119,23 +1151,22 @@ function card(c, no) {
     const lab = () => (c._zoom ?? c.zoom_default) ? SCALE_TXT.full : SCALE_TXT.zoom; zb.textContent = lab();
     zb.onclick = () => { c._zoom = !(c._zoom ?? c.zoom_default); zb.textContent = lab(); redraw(); }; htools.appendChild(zb); }
   if (labelable(c)) {
-    const lb = document.createElement("button"); lb.type = "button"; lb.className = "btn"; lb.textContent = "Jüngste Werte einblenden";
-    lb.onclick = () => { c._labels = !c._labels; lb.textContent = c._labels ? "Jüngste Werte ausblenden" : "Jüngste Werte einblenden"; redraw(); };
+    const lb = document.createElement("button"); lb.type = "button"; lb.className = "btn"; lb.textContent = VIEWTXT.edge; lb.title = VIEWTXT.edget; pressed(lb, false);
+    lb.onclick = () => { c._labels = !c._labels; pressed(lb, c._labels); redraw(); };
     htools.appendChild(lb); }
   if ((c.recessions || []).length) {
     const xs = (Array.isArray(c.series) ? c.series.flatMap(s => s.x || []) : (c.x || [])).sort();
     if (xs.length && recIn(c, [xs[0], xs[xs.length - 1]]).length) {
       const rb = document.createElement("button"); rb.type = "button"; rb.className = "btn";
-      const lab = () => (c._rec ?? c.recessions_on) ? "Rezessionen ausblenden" : "Rezessionen einblenden"; rb.textContent = lab();
+      rb.textContent = VIEWTXT.rec; pressed(rb, c.recessions_on);
       rb.title = "Rezessionen nach der Datierung des Sachverständigenrats (graue Flächen)";
-      rb.onclick = () => { c._rec = !(c._rec ?? c.recessions_on); rb.textContent = lab(); redraw(); };
+      rb.onclick = () => { c._rec = !(c._rec ?? c.recessions_on); pressed(rb, c._rec); redraw(); };
       htools.appendChild(rb); }
   }
   if (c.crisis_toggle) { // lange Reihen: Bankenkrisen (rot) und Rezessionen (grau) einblendbar
     [["_crisis", LONGTXT.crisis, c.crisis_years], ["_recy", LONGTXT.rec, c.recession_years]].forEach(([k, lab, ys]) => { if (!(ys || []).length) return;
-      const b = document.createElement("button"); b.type = "button"; b.className = "btn";
-      const t = () => b.textContent = lab[c[k] ? 1 : 0]; t();
-      b.onclick = () => { c[k] = !c[k]; t(); redraw(); }; htools.appendChild(b); }); }
+      const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = lab; pressed(b, c[k]);
+      b.onclick = () => { c[k] = !c[k]; pressed(b, c[k]); redraw(); }; htools.appendChild(b); }); }
   const f = c.files || {}, acts = [], u = x => encodeURI(x);
   if (f.xlsx) acts.push(`<a href="${u(f.xlsx)}" download>XLSX</a>`);
   if (f.pptx) acts.push(`<a href="${u(f.pptx)}" download>PPTX</a>`);
@@ -1144,31 +1175,32 @@ function card(c, no) {
   const fv = (c.variant && c.variant.files) || {};  // zweite Ansicht der Karte
   if (fv.xlsx) acts.push(`<a href="${u(fv.xlsx)}" download>XLSX (${esc(c.toggle.label)})</a>`);
   if (fv.csv) acts.push(`<a href="${u(fv.csv)}" download>CSV (${esc(c.toggle.label)})</a>`);
-  acts.push(`<button type="button" class="lnk" title="Direkten Link auf diese Abbildung kopieren">Link kopieren</button>`);
   if (c.chart) acts.push(`<button type="button" class="emb" title="${EMB.title}">${EMB.label}</button>`);
-  if (c.chart) acts.push(`<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${METH_LABEL}</a>`);  // Daten, Quellen, Rechenschritte, Methode
-  tools.insertAdjacentHTML("beforeend", `<details class="dl"><summary title="Herunterladen, Link kopieren oder Methodenblatt öffnen">⤓ Download, Link und Methode</summary><div class="dlmenu">${acts.join("")}</div></details>`);
+  // Linke Spalte: Download (Dateien und Einbettcode), Methodenblatt, Link
+  gut.insertAdjacentHTML("beforeend", `<details class="dl"><summary title="${GUTTXT.dlt}">${GUTTXT.dl}</summary><div class="dlmenu">${acts.join("")}</div></details>`
+    + (c.chart ? `<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${GUTTXT.meth}</a>` : "")
+    + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button>`);
   // Direkter Link auf diese Abbildung zum Teilen
-  const lk = tools.querySelector("button.lnk");
-  const eb = tools.querySelector("button.emb");
+  const lk = gut.querySelector("button.lnk");
+  const eb = gut.querySelector("button.emb");
   if (eb) eb.onclick = () => { const src = (DATA.site.url || "").replace(/en\/$/, "") + "abb/" + encodeURIComponent(c.chart) + ".html";
     const code = `<iframe src="${src}" title="${esc(`Abb. ${no} ${c.title || ""} (Konjunkturmonitor)`)}" width="100%" height="620" style="border:0" loading="lazy"></iframe>`;
     const done = () => { const o = eb.textContent; eb.textContent = EMB.done; setTimeout(() => eb.textContent = o, 1500); };
     if (navigator.clipboard) navigator.clipboard.writeText(code).then(done, () => prompt(EMB.label, code)); else prompt(EMB.label, code); };
   lk.onclick = () => { const url = (DATA.site.url || location.href.split("#")[0]).replace(/#.*$/, "") + "#abb-" + no;
-    const done = () => { lk.textContent = "Link kopiert"; setTimeout(() => lk.textContent = "Link kopieren", 1500); };
+    const done = () => { lk.textContent = "Link kopiert"; setTimeout(() => lk.textContent = GUTTXT.link, 1500); };
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => prompt("Link kopieren:", url)); else prompt("Link kopieren:", url); };
   ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `Abb. ${no} ${c.title || ""}. ${c.text || ""}`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
   ch._c = c; placeTools(el);
   return el;
 }
-// Handy: Ansichtsknöpfe unter die Grafik (vor „Download, Link und Methode“), oben bleibt nur der Stern
+// Handy: Ansichtsknöpfe unter die Grafik
 const PHONE = matchMedia("(max-width: 600px)");
 function placeTools(el) {
   const top = el.querySelector(".htools"), bottom = el.querySelector(".tools"); if (!top || !bottom) return;
-  if (PHONE.matches) top.querySelectorAll(".btn").forEach(b => bottom.insertBefore(b, bottom.querySelector("details.dl")));
-  else bottom.querySelectorAll(".btn").forEach(b => top.insertBefore(b, top.querySelector(".pin")));
+  if (PHONE.matches) top.querySelectorAll(".btn").forEach(b => bottom.appendChild(b));
+  else bottom.querySelectorAll(".btn").forEach(b => top.appendChild(b));
 }
 PHONE.addEventListener("change", () => document.querySelectorAll(".card").forEach(placeTools));
 
@@ -1183,7 +1215,11 @@ function render(ch) {
   if (ch.dataset.done) return;
   if (!window.Plotly) { ch.dataset.done = "wait"; plotlyReady().then(() => { delete ch.dataset.done; render(ch); }); return; }
   ch.dataset.done = 1;
-  if (!render.loc) { render.loc = 1; Plotly.register({ moduleType: "locale", name: "site", dictionary: {}, format: { months: MONTHS_L, shortMonths: MONTHS,
+  if (!render.loc) { render.loc = 1;
+    // Quelle und Lizenz enden an der rechten Kante der Zeichenfläche: rechten Rand der Grafik an die Karte geben
+    const np = Plotly.newPlot; Plotly.newPlot = (gd, ...a) => np(gd, ...a).then(g => { const z = gd._fullLayout && gd._fullLayout._size, cd = gd.closest && gd.closest(".card");
+      if (z && cd && !gd.closest(".multi")) cd.style.setProperty("--pr", Math.round(z.r) + "px"); return g; });
+    Plotly.register({ moduleType: "locale", name: "site", dictionary: {}, format: { months: MONTHS_L, shortMonths: MONTHS,
     days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], shortDays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], periods: ["AM", "PM"],
     dateTime: "%a %b %e %X %Y", date: "%d.%m.%Y", time: "%H:%M:%S", decimal: ",", thousands: ".", grouping: [3], currency: ["", " €"], year: "%Y", month: "%b %Y", dayMonth: "%-d. %b", dayMonthYear: "%-d. %b %Y" } }); }
   const c = ch._c;
@@ -1382,7 +1418,7 @@ function build() {
     const leadTexts = t.charts[0] && !dup(t.charts[0]) ? (t.charts[0].texts || []) : [];
     const ans = (q ? [q.answer.head, ...q.answer.more] : []).concat(leadTexts);
     sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))}</h2>`
-      + (ans.length ? `<div class="intro"><div class="ansbox"><p class="answer"><b class="kern">${esc(ans[0])}</b> <button type="button" class="copy" title="Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren">⧉ Textbaustein</button></p>`
+      + (ans.length ? `<div class="intro"><div class="ansbox"><p class="answer"><b class="kern">${esc(ans[0])}</b> <button type="button" class="copy" title="Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren" aria-label="Textbaustein kopieren">⧉</button></p>`
         + (ans.length > 1 ? `<details class="moretxt"><summary>${KERN.more}</summary><p>${sentHtml(ans.slice(1), " ", false)}</p></details>` : "") + `</div>`
         + (q ? `<div class="explain">${esc(q.explain)}</div>` : "") + `</div>` : "");
     if (t.charts[0]) t.charts[0]._lead = true;
@@ -1390,7 +1426,7 @@ function build() {
     const allText = () => [ans.join(" "), ...t.charts.slice(1).map(x => (x.texts || []).length ? `${x.texts.join(" ")} (Abb. ${x.no})` : "")].filter(Boolean).join(" ");
     const cpb = sec.querySelector(".answer button.copy");
     if (cpb) cpb.onclick = () => copyText(allText(), cpb, t.title);
-    else if (t.charts.some(x => (x.texts || []).length)) { sec.insertAdjacentHTML("beforeend", `<p class="answer"><button type="button" class="copy">⧉ Textbaustein</button></p>`); const b2 = sec.querySelector(".answer button.copy"); b2.onclick = () => copyText(allText(), b2, t.title); }
+    else if (t.charts.some(x => (x.texts || []).length)) { sec.insertAdjacentHTML("beforeend", `<p class="answer"><button type="button" class="copy" title="Textbaustein kopieren" aria-label="Textbaustein kopieren">⧉</button></p>`); const b2 = sec.querySelector(".answer button.copy"); b2.onclick = () => copyText(allText(), b2, t.title); }
     const wrap = document.createElement("div"); wrap.className = "charts"; sec.appendChild(wrap);
     let target = wrap;
     t.charts.forEach((c, i) => {
@@ -1409,10 +1445,12 @@ function build() {
     if (LY.lead_chart_only && wrap.children.length === 1) wrap.classList.add("single");
     // Linke Spalte: alle Abbildungen des Abschnitts, die gerade sichtbare hervorgehoben
     const secMain = document.createElement("div"); secMain.className = "secmain";
+    const h2 = sec.querySelector(":scope > h2");
     while (sec.firstChild) secMain.appendChild(sec.firstChild);
+    if (h2) sec.appendChild(h2);
     const rail = document.createElement("nav"); rail.className = "rail"; rail.setAttribute("aria-label", "Abbildungen dieses Abschnitts");
-    rail.innerHTML = `<p class="rh">${esc(t.title)}</p>` + t.charts.map(x => `<a href="#abb-${x.no}"><b>${x.no}</b><span>${esc(x.title || "")}</span></a>`).join("");
-    sec.append(rail, secMain);
+    rail.innerHTML = t.charts.map(x => `<a href="#abb-${x.no}"><b>${x.no}</b><span>${esc(x.title || "")}</span></a>`).join("");
+    sec.append(rail, secMain);  // Frage über beide Spalten, darunter Übersicht und Inhalt
     if (railObs) secMain.querySelectorAll(".card").forEach(cd => railObs.observe(cd));
     const part = t.part || "konjunktur";
     if (part !== curPart) { curPart = part; const P = PARTS[part];
@@ -1473,7 +1511,7 @@ function build() {
     colSec.innerHTML = `<h2>${esc(COLTXT.title)}</h2><p class="tnote">${esc(shared ? COLTXT.shared : ids.length ? COLTXT.intro : COLTXT.empty)}${gone ? " " + esc(COLTXT.gone(gone)) : ""}</p><p class="colbar"></p><div class="charts collcharts"></div>`;
     const bar = colSec.querySelector(".colbar"), wrapC = colSec.querySelector(".collcharts");
     const btn = (txt, f) => { const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = txt; b.onclick = f; bar.appendChild(b); return b; };
-    if (shared && shared.some(id => !mine.includes(id))) btn(COLTXT.take, () => { mine = [...new Set([...mine, ...shared])]; colSave(mine); document.querySelectorAll(".htools .pin").forEach(pinLab); updCount(); location.hash = "#sammlung"; });
+    if (shared && shared.some(id => !mine.includes(id))) btn(COLTXT.take, () => { mine = [...new Set([...mine, ...shared])]; colSave(mine); document.querySelectorAll(".gut .pin").forEach(pinLab); updCount(); location.hash = "#sammlung"; });
     if (found.length) {
       const url = location.href.split("#")[0] + "#sammlung=" + found.map(cd => encodeURIComponent(cd.dataset.chart)).join(",");
       const lb = btn(COLTXT.link, () => (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => { lb.textContent = COLTXT.copied; }, () => prompt(COLTXT.link, url)));
@@ -1484,10 +1522,10 @@ function build() {
     document.body.classList.add("coll"); resize(found); scrollTo(0, 0);
   };
   const hideColl = () => { restore(); colSec.innerHTML = ""; document.body.classList.remove("coll"); };
-  document.querySelectorAll(".card[data-chart] .htools").forEach(h => { const b = document.createElement("button"); b.type = "button"; b.className = "pin"; b.dataset.chart = h.closest(".card").dataset.chart; pinLab(b);
+  document.querySelectorAll(".card[data-chart] .gut").forEach(h => { const b = document.createElement("button"); b.type = "button"; b.className = "pin"; b.dataset.chart = h.closest(".card").dataset.chart; pinLab(b);
     b.onclick = () => { const id = b.dataset.chart; mine = mine.includes(id) ? mine.filter(x => x !== id) : [...mine, id]; colSave(mine);
-      document.querySelectorAll(`.htools .pin[data-chart="${CSS.escape(id)}"]`).forEach(pinLab); updCount(); if (document.body.classList.contains("coll") && !shared) showColl(mine); };
-    h.appendChild(b); });
+      document.querySelectorAll(`.gut .pin[data-chart="${CSS.escape(id)}"]`).forEach(pinLab); updCount(); if (document.body.classList.contains("coll") && !shared) showColl(mine); };
+    h.querySelector(".cno").after(b); });
   // Höhe der Kopfzeile für die stehenbleibenden Abschnittsfragen
   const setHdr = () => document.documentElement.style.setProperty("--hdr", document.querySelector("header").offsetHeight + "px");
   setHdr(); addEventListener("resize", setHdr);
