@@ -28,7 +28,7 @@
   a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
   header { background: var(--card); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; }
   .bar { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
-  .bar h1 { font-size: 19px; margin: 0; line-height: 1.15; }
+  .bar h1 { font-size: 23px; margin: 0; line-height: 1.15; }
   .brand { flex: none; } .brand .meta { font-size: 12px; color: var(--grey); line-height: 1.3; }
   .lang a, .lang b { padding: 0 1px; } .lang a { color: var(--grey); } .lang b { color: var(--text); } .lang:not(:empty)::after { content: " · "; }
   .bar { align-items: center; }
@@ -51,8 +51,16 @@
   /* Themen */
   section.topic { margin-top: 112px; scroll-margin-top: 60px; }
   /* Breite Bildschirme: Abbildungsübersicht des Abschnitts läuft links mit */
-  .rail { display: none; position: sticky; top: 72px; align-self: start; max-height: calc(100vh - 90px); overflow: auto; font: 13.5px/1.35 var(--ff); border-top: 3px solid var(--line); padding-top: 8px; }
-  .rail .rh { font-weight: 600; color: var(--dark); margin: 0 0 6px; }
+  .rail { display: none; position: sticky; top: 72px; align-self: start; max-height: calc(100vh - 90px); overflow: auto; font: 13.5px/1.35 var(--ff); border-top: 1px solid var(--line); padding-top: 10px; }
+  .rail .rh { font: 600 16.5px/1.25 var(--ff); color: var(--dark); margin: 0 0 8px; }
+  .rail a { display: grid !important; grid-template-columns: 2.1em minmax(0, 1fr); }  /* Nummer und Titel in zwei Spalten */
+  .flags { display: flex; gap: 8px; align-items: center; margin: 0 0 10px; } .flags a, .flags b { display: inline-flex; line-height: 0; border-radius: 2px; }
+  .flags svg { height: 15px; width: auto; box-shadow: 0 0 0 1px rgba(0,0,0,.18); } .flags a { opacity: .55; } .flags a:hover { opacity: 1; } .flags b { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .topflags { display: none; } .bar .flags { margin: 2px 0 0; }
+  @media (min-width: 601px) { .topflags { display: flex; } .bar .flags { display: none; } }
+  @media (max-width: 600px) { header .bar { position: relative; } .bar .flags { position: absolute; right: 10px; top: 9px; margin: 0; }
+    .brand { width: 100%; } header a.btn.colllink { font-size: 12px; padding: 0 5px; line-height: inherit; } #nav { order: 1; } .briefbtn { order: 2; } header .colllink { order: 3; } }
+  @media (max-width: 1239px) { .rail .flags { display: none; } }
   .rail a { display: block; color: var(--muted); padding: 3px 0; }
   .rail a:hover { color: var(--text); text-decoration: none; }
   .rail a.on { color: var(--accent); font-weight: 600; }
@@ -246,6 +254,15 @@
   #nav .navlist { width: max-content; position: absolute; left: 0; top: 1.9em; background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 10px 16px; display: grid; grid-template-columns: repeat(2, max-content); gap: 5px 26px; box-shadow: 0 4px 14px rgba(0,0,0,.08); z-index: 10; font-size: 14.5px; line-height: 1.4; }
   #nav details.navgrp[data-g="lage"] .navlist, #nav details.navgrp[data-g="service"] .navlist, #nav details.navgrp[data-g="struktur"] .navlist { grid-template-columns: max-content; }
   .menubtn { display: none; }
+  .navbtn { font-weight: 600; } .navbtn::after { content: " ▾"; font-weight: 400; font-size: 12px; }
+  .navpanel { position: fixed; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--line); box-shadow: 0 8px 24px rgba(0,0,0,.08); z-index: 30; max-height: calc(100vh - 70px); overflow-y: auto; }
+  .navpanel[hidden] { display: none; }
+  .navpanel .nvin { max-width: 1320px; margin: 0 auto; padding: 16px 16px 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px 32px; }
+  .navpanel .nvh { font: 600 13px var(--ff); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin: 10px 0 4px; grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 10px; }
+  .navpanel .nvh:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+  .navpanel a { display: block; color: var(--text); padding: 4px 0; font: 15px/1.3 var(--ff); } .navpanel a b { display: block; font-weight: 600; }
+  .navpanel a span { display: block; color: var(--muted); font-size: 13.5px; } .navpanel a:hover b { color: var(--accent); } .navpanel a.cur b { color: var(--accent); }
+  header .colllink { white-space: nowrap; }
   .answer b.kern { font-weight: 600; }
   details.moretxt { margin: -4px 0 10px; } details.moretxt > summary { cursor: pointer; font-size: 14px; } details.moretxt p { margin: 6px 0 0; font-size: 16px; max-width: 46em; }
   body.brief details.moretxt { display: none; }
@@ -255,8 +272,8 @@
   .embedsrc { font-size: 13.5px; margin: 6px 0 0; } body.menuopen .fab { display: none; } .briefbtn[aria-pressed="true"] { font-weight: 700; }
   body.brief section.topic:not(.brieftopic), body.brief .parthead, body.brief details.morecharts, body.brief .weekrev, body.brief details.moretable, body.brief .explain { display: none !important; }
   @media (max-width: 600px) {
-    #nav { display: none; }
-    .menubtn { display: inline-block; }
+    #nav { order: 2; width: auto; overflow: visible; }
+    .navpanel .nvin { grid-template-columns: 1fr; }
     header.menuopen #nav { display: block; position: fixed; left: 0; right: 0; bottom: 0; background: #fff; overflow-y: auto; padding: 12px 18px 48px; z-index: 30; border-top: 1px solid var(--line); }
     header.menuopen #nav details.navgrp { margin: 0 0 16px; }
     header.menuopen #nav details.navgrp > summary { pointer-events: none; font-size: 17px; }
@@ -338,8 +355,9 @@
 </style>
 </head>
 <body>
-<header id="top"><div class="bar"><div class="brand"><h1>Konjunkturmonitor</h1><div class="meta"><span class="lang" id="lang"></span><span class="stand" id="stand"></span></div></div><nav id="nav"></nav></div></header>
+<header id="top"><div class="bar"><div class="brand"><h1>Konjunkturmonitor</h1><div class="meta"><span class="stand" id="stand"></span></div><div class="flags" id="flagsh"></div></div><nav id="nav"></nav></div></header>
 <main>
+  <div class="flags topflags" id="flagst"></div>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
   <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
@@ -416,8 +434,15 @@ const MTXT = { m: ["Mittel der letzten 3 Monate", "der letzten 12 Monate"], q: "
 const SCALE_TXT = { own: "Eigene Skala je Feld", common: "Gemeinsame Skala", zoom: "Skala auf die jüngsten Jahre", full: "Skala über den ganzen Zeitraum", note: "Skala nach den letzten {n} Jahren; ältere Werte teils abgeschnitten", partial: "laufendes Jahr", mad: "mittlere Korrektur ±{m} Pp", need: " (nötig für die Projektion)", needlab: "nötig", band: "Potenzialwachstum: Spanne der Schätzungen", fc: " (Prognose)" };
 const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten, Quellen, Rechenschritte und Methode dieser Abbildung auf einer Seite";
 const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
-const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "Struktur", service: "Service" }, overview: "Übersicht", brief: "Kurzfassung", all: "Alles zeigen",
-  week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü" };
+// Sprachwahl als kleine Flaggen (Grafik statt Emoji: Windows zeigt keine Flaggen-Emojis)
+let FLAGS_HTML = () => "", FLAG_N = 0;
+function flagsHtml() {
+  const de = () => `<svg viewBox="0 0 5 3" role="img" aria-label="Deutsch"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>`;
+  const uk = () => { const k = ++FLAG_N; return `<svg viewBox="0 0 60 30" role="img" aria-label="English"><clipPath id="ukt${k}"><path d="M30,15h30v15zv15h-30zh-30v-15zv-15h30z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0,0L60,30M60,0L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0L60,30M60,0L0,30" clip-path="url(#ukt${k})" stroke="#C8102E" stroke-width="4"/><path d="M30,0v30M0,15h60" stroke="#fff" stroke-width="10"/><path d="M30,0v30M0,15h60" stroke="#C8102E" stroke-width="6"/></svg>`; };
+  return () => DATA.lang === "en" ? `<a href="../" hreflang="de" lang="de" title="Deutsch">${de()}</a><b title="English">${uk()}</b>` : `<b title="Deutsch">${de()}</b><a href="en/" hreflang="en" lang="en" title="English">${uk()}</a>`;
+}
+const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "Struktur", service: "Service" }, overview: "Übersicht", brief: "Das Wichtigste", all: "Alles zeigen",
+  week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü", contents: "Inhalt" };
 const KERN = { more: "Mehr Zahlen" };
 const ANH = { show: "Abbildungen anzeigen" };
 const COLTXT = { pin: "Merken", pinned: "Gemerkt", title: "Meine Sammlung", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. „Merken“ neben dem Titel einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Sammlung übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
@@ -1271,7 +1296,7 @@ function build() {
   const nw = document.getElementById("news");
   if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
   const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
-  if (DATA.has_en || DATA.lang === "en") document.getElementById("lang").innerHTML = DATA.lang === "en" ? `<a href="../" hreflang="de" lang="de">DE</a> <b>EN</b>` : `<b>DE</b> <a href="en/" hreflang="en" lang="en">EN</a>`;
+  if (DATA.has_en || DATA.lang === "en") { FLAGS_HTML = flagsHtml(); ["flagsh", "flagst"].forEach(id => { const f = document.getElementById(id); if (f) f.innerHTML = FLAGS_HTML(); }); }
   const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `Stand ${d.toLocaleDateString("de-DE")}`;
   const AS = DATA.all_series || {};
   document.getElementById("reuse").innerHTML = [AS.xlsx ? `Alle ${AS.n} Reihen: <a href="${encodeURI(AS.xlsx)}" download>Excel</a> · <a href="${encodeURI(AS.csv)}" download>CSV</a>` : "",
@@ -1340,7 +1365,7 @@ function build() {
     const secMain = document.createElement("div"); secMain.className = "secmain";
     while (sec.firstChild) secMain.appendChild(sec.firstChild);
     const rail = document.createElement("nav"); rail.className = "rail"; rail.setAttribute("aria-label", "Abbildungen dieses Abschnitts");
-    rail.innerHTML = `<p class="rh">Abbildungen</p>` + t.charts.map(x => `<a href="#abb-${x.no}"><b>${x.no}</b> ${esc(x.title || "")}</a>`).join("");
+    rail.innerHTML = `<div class="flags">${FLAGS_HTML()}</div><p class="rh">${esc(t.title)}</p>` + t.charts.map(x => `<a href="#abb-${x.no}"><b>${x.no}</b><span>${esc(x.title || "")}</span></a>`).join("");
     sec.append(rail, secMain);
     if (railObs) secMain.querySelectorAll(".card").forEach(cd => railObs.observe(cd));
     const part = t.part || "konjunktur";
@@ -1349,7 +1374,7 @@ function build() {
     }
     topics.appendChild(sec);
     const g = part === "service" ? "lage" : part === "anhang" ? "struktur" : NAV_ITEMS[part] ? part : "konjunktur";
-    NAV_ITEMS[g].push(`<a href="#${t.id}">${esc(t.title)}</a>`); NAV_OF[t.id] = g;
+    NAV_ITEMS[g].push(`<a href="#${t.id}" data-t="${t.id}"><b>${esc(t.title)}</b>${(q ? q.ask : t.ask) ? `<span>${esc(q ? q.ask : t.ask)}</span>` : ""}</a>`); NAV_OF[t.id] = g;
     if ((LY.brief_topics || []).includes(t.id)) sec.classList.add("brieftopic");
   });
   // Wochenrückblick: Abbildungen mit neuen Daten in den letzten sieben Tagen
@@ -1358,34 +1383,33 @@ function build() {
     const dd = s => `${+s.slice(8, 10)}.${+s.slice(5, 7)}.`;
     topics.insertAdjacentHTML("afterend", `<section class="weekrev" id="woche"><h2>Diese Woche neu</h2><p class="tnote">Abbildungen, die in den letzten sieben Tagen neue Daten erhalten haben, jüngste zuerst.</p><ol>`
       + W.map(w => `<li><a href="#abb-${w.no}">Abb. ${w.no} ${esc(w.title)}</a><span>neue Daten am ${dd(w.date)}</span></li>`).join("") + `</ol></section>`);
-    NAV_ITEMS.lage.splice(0, 0, `<a href="#woche">${NAVTXT.week}</a>`); NAV_OF.woche = "lage";
+    NAV_ITEMS.lage.splice(0, 0, `<a href="#woche"><b>${NAVTXT.week}</b></a>`); NAV_OF.woche = "lage";
   }
-  NAV_ITEMS.lage.unshift(`<a href="#top">${NAVTXT.overview}</a>`, `<a href="#top" class="brieflink">${NAVTXT.brief}</a>`, `<a href="#sammlung" class="colllink">${COLTXT.title}</a>`);
-  NAV_ITEMS.service.push(`<a href="#quellen">${NAVTXT.sources}</a>`, `<a href="${METH_BASE}index.html">${NAVTXT.method}</a>`);
+  NAV_ITEMS.lage.unshift(`<a href="#top"><b>${NAVTXT.overview}</b></a>`, `<a href="#top" class="brieflink"><b>${NAVTXT.brief}</b></a>`, `<a href="#sammlung"><b class="colllink">${COLTXT.title}</b></a>`);
+  NAV_ITEMS.service.push(`<a href="#quellen"><b>${NAVTXT.sources}</b></a>`, `<a href="${METH_BASE}index.html"><b>${NAVTXT.method}</b></a>`);
   NAV_OF.quellen = "service";
-  nav.innerHTML = Object.entries(NAVTXT.groups).map(([k, lab]) => `<details class="navgrp" data-g="${k}"><summary>${esc(lab)}</summary><div class="navlist">${NAV_ITEMS[k].join("")}</div></details>`).join("");
-  const header = document.querySelector("header"), groups = [...nav.querySelectorAll("details.navgrp")];
-  const closeAll = () => { groups.forEach(d => d.open = false); header.classList.remove("menuopen"); document.body.classList.remove("menuopen"); mb.setAttribute("aria-expanded", "false"); };
-  groups.forEach(d => d.addEventListener("toggle", () => { if (d.open && !header.classList.contains("menuopen")) groups.forEach(o => { if (o !== d) o.open = false; }); }));
-  nav.addEventListener("click", e => { if (e.target.closest("a")) setTimeout(closeAll, 0); });
+  // Menü: ein Knopf „Inhalt“ öffnet eine Tafel mit allen Abschnitten und ihrer Frage
+  nav.innerHTML = `<button type="button" class="btn navbtn" aria-expanded="false" aria-controls="navpanel">${NAVTXT.contents}</button>`;
+  const panel = document.createElement("div"); panel.className = "navpanel"; panel.id = "navpanel"; panel.hidden = true;
+  panel.innerHTML = `<div class="nvin">` + Object.entries(NAVTXT.groups).map(([k, lab]) => `<p class="nvh">${esc(lab)}</p>${NAV_ITEMS[k].join("")}`).join("") + `</div>`;
+  const header = document.querySelector("header"); header.appendChild(panel);
+  const nb = nav.querySelector(".navbtn");
+  const closeAll = () => { panel.hidden = true; nb.setAttribute("aria-expanded", "false"); document.body.classList.remove("menuopen"); };
+  nb.onclick = () => { const op = panel.hidden; panel.hidden = !op; nb.setAttribute("aria-expanded", String(op)); document.body.classList.toggle("menuopen", op); panel.style.top = header.getBoundingClientRect().bottom + "px"; };
+  panel.addEventListener("click", e => { if (e.target.closest("a")) setTimeout(closeAll, 0); });
   document.addEventListener("click", e => { if (!e.target.closest("header")) closeAll(); });
-  const mb = document.createElement("button"); mb.type = "button"; mb.className = "btn menubtn"; mb.textContent = NAVTXT.menu; mb.setAttribute("aria-expanded", "false");
-  mb.onclick = () => { const op = !header.classList.contains("menuopen"); header.classList.toggle("menuopen", op); document.body.classList.toggle("menuopen", op); groups.forEach(d => d.open = op);
-    nav.style.top = header.getBoundingClientRect().bottom + "px"; mb.setAttribute("aria-expanded", String(op)); };
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
   // Kurzfassung: nur die Leitabbildungen der wichtigsten Abschnitte
   const setBrief = on => { document.body.classList.toggle("brief", on); bb.textContent = on ? NAVTXT.all : NAVTXT.brief; bb.setAttribute("aria-pressed", String(on)); };
   const bb = document.createElement("button"); bb.type = "button"; bb.className = "btn briefbtn"; bb.onclick = () => { setBrief(!document.body.classList.contains("brief")); scrollTo(0, 0); };
-  nav.querySelector(".brieflink").onclick = e => { e.preventDefault(); setBrief(true); scrollTo(0, 0); };
+  panel.querySelector(".brieflink").onclick = e => { e.preventDefault(); setBrief(true); scrollTo(0, 0); };
   setBrief(/[?&]kurz=1/.test(location.search));
-  // die Gruppe des gerade gelesenen Abschnitts hervorheben
+  // den gerade gelesenen Abschnitt in der Tafel hervorheben
   if ("IntersectionObserver" in window) { const spy = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return;
-      const g = NAV_OF[e.target.id] || "konjunktur"; groups.forEach(d => d.querySelector("summary").classList.toggle("cur", d.dataset.g === g)); }), { rootMargin: "-30% 0px -65% 0px" });
-    document.querySelectorAll("section.topic, #top, #woche, #quellen").forEach(s => spy.observe(s)); }
-  const ex = document.createElement("button"); ex.type = "button"; ex.className = "btn expandall"; let opened = false;
-  const exLab = () => ex.innerHTML = `<span class="long">Alle Abbildungen ${opened ? "einklappen" : "ausklappen"}</span><span class="short">${opened ? "Einklappen" : "Ausklappen"}</span>`;
-  exLab(); ex.title = "Alle Abbildungen aus- oder einklappen";
-  ex.onclick = () => { opened = !opened; document.querySelectorAll("details.morecharts").forEach(d => d.open = opened); exLab(); };
-  document.querySelector("header .bar").append(searchBox(), bb, ex, mb);
+      panel.querySelectorAll("a[data-t]").forEach(a => a.classList.toggle("cur", a.dataset.t === e.target.id)); }), { rootMargin: "-30% 0px -65% 0px" });
+    document.querySelectorAll("section.topic").forEach(s => spy.observe(s)); }
+  const cl = document.createElement("a"); cl.className = "btn colllink"; cl.href = "#sammlung";
+  document.querySelector("header .bar").append(searchBox(), bb, cl);
   // Eigene Sammlung: gemerkte Abbildungen (Kennungen im Browser), eigene Ansicht und teilbarer Link #sammlung=a,b,c
   const COLKEY = "km.sammlung";
   const colLoad = () => { try { const a = JSON.parse(localStorage.getItem(COLKEY) || "[]"); return Array.isArray(a) ? a.filter(x => typeof x === "string") : []; } catch (e) { return []; } };
@@ -1393,7 +1417,7 @@ function build() {
   let mine = colLoad(), shared = null;
   const sel = id => `.card[data-chart="${CSS.escape(id)}"]`, homes = new Map();
   const colSec = document.createElement("section"); colSec.id = "sammlung"; colSec.className = "collection"; topics.before(colSec);
-  const updCount = () => nav.querySelectorAll(".colllink").forEach(a => a.textContent = COLTXT.title + (mine.length ? ` (${mine.length})` : ""));
+  const updCount = () => document.querySelectorAll(".colllink").forEach(a => a.textContent = COLTXT.title + (mine.length ? ` (${mine.length})` : ""));
   const pinLab = b => { const on = mine.includes(b.dataset.chart); b.textContent = (on ? "★ " : "☆ ") + (on ? COLTXT.pinned : COLTXT.pin); b.setAttribute("aria-pressed", String(on)); };
   const resize = els => requestAnimationFrame(() => { if (window.Plotly) els.forEach(cd => cd.querySelectorAll(".js-plotly-plot").forEach(p => { try { Plotly.Plots.resize(p); } catch (e) {} })); });
   const restore = () => { const back = [...homes.keys()]; homes.forEach((ph, cd) => ph.replaceWith(cd)); homes.clear(); resize(back); };
