@@ -1049,11 +1049,12 @@ def chart_sentences(c: dict) -> list[str]:
         if c.get("long_mean") and out and series:  # lange Reihen: Einordnung gegenüber dem Durchschnitt des ganzen Zeitraums
             su0 = unit
             u0 = "%" if su0.startswith("%") and not su0.startswith(("% des", "% der")) else su0
-            parts = [(s.get("label", ""), [v for v in s["y"] if v is not None]) for s in series if s.get("y")]
+            skip = lambda x: any(int(a) <= int(x[:4]) <= int(b) for a, b in c.get("mean_skip") or [])  # etwa Hyperinflation beim Realzins
+            parts = [(s.get("label", ""), [v for x, v in zip(s["x"], s["y"]) if v is not None and not skip(x)]) for s in series if s.get("y")]
             parts = [(lab, v) for lab, v in parts if v]
             if parts:
                 many = len(parts) > 1
-                out.append(f"Zum Vergleich, Durchschnitt {series[0]['x'][0][:4]} bis {series[0]['x'][-1][:4]} ohne Kriegsjahre: "
+                out.append(f"Zum Vergleich, Durchschnitt {series[0]['x'][0][:4]} bis {series[0]['x'][-1][:4]} {c.get('mean_note', 'ohne Kriegsjahre')}: "
                            + "; ".join(f"{lab + ' ' if many else ''}{num(sum(v) / len(v), d)} {u0}".strip() for lab, v in parts) + ".")
         if typ == "threshold" and c.get("threshold") is not None and out and series and series[0]["y"][-1] is not None:
             th = float(c["threshold"])
@@ -1607,6 +1608,11 @@ def build_payload(root: Path = ROOT) -> dict:
                     cs = data[c["crises"]].dropna()
                     x0 = min(s["x"][0] for s in series)
                     entry["crisis_years"] = [d.strftime("%Y") for d, v in cs.items() if v >= 1 and d.strftime("%Y-%m-%d") >= x0]
+                    gdp = data.get(c.get("recession_from", "hist_rgdp_deu"))
+                    if gdp is not None:  # Rezessionen in langen Reihen: Jahre mit sinkendem realem BIP
+                        g = gdp.dropna()
+                        g = g.groupby(g.index.year).last()
+                        entry["recession_years"] = [str(y) for y in g.index[1:] if g[y] < g[y - 1] and y - 1 in g.index and f"{y}-01-01" >= x0]
                 if typ == "latest":
                     entry["bars"] = [dict(label=s["label"], value=s["y"][-1], prev=s["y"][-2] if len(s["y"]) > 1 else None,
                                           period=s["x"][-1]) for s in series]

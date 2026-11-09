@@ -4,6 +4,10 @@
 # text (was sich geändert hat und was das für die Zahlen bedeutet), pr (Nummer des Pull Requests, optional).
 # Reine Gestaltung ohne Folgen für Zahlen oder Aussagen gehört nicht hierher.
 
+- date: 2026-11-09
+  art: Methode
+  charts: [long_hpi, long_open, long_rr, long_growth, long_inv, long_debt]
+  text: "Die langen Reihen lassen nur noch die Weltkriege 1914 bis 1918 und 1939 bis 1945 aus, nicht mehr 1919 bis 1924 und 1946 bis 1950. Die Durchschnitte im Satz ändern sich dadurch leicht; beim Realzins bleibt die Hyperinflation 1919 bis 1924 aus dem Durchschnitt heraus. Bankenkrisen und Rezessionen sind nun einblendbar statt fest gezeigt."
 - date: 2026-11-08
   art: Methode
   charts: []
