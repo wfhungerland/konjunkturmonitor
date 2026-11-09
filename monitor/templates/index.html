@@ -438,7 +438,7 @@ const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "St
   week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü", contents: "Inhalt" };
 const KERN = { more: "Mehr Zahlen" };
 const ANH = { show: "Abbildungen anzeigen" };
-const LONGTXT = { crisis: ["Bankenkrisen einblenden", "Bankenkrisen ausblenden"], rec: ["Rezessionen einblenden", "Rezessionen ausblenden"] };
+const LONGTXT = { crisis: ["Bankenkrisen einblenden", "Bankenkrisen ausblenden"], rec: ["Rezessionen einblenden", "Rezessionen ausblenden"], dec: "Mittel" };
 const COLTXT = { pin: "Als Lesezeichen merken", pinned: "Lesezeichen entfernen", title: "Lesezeichen", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. Der Stern ☆ oben rechts an einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Lesezeichen übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
 const EMB = { label: "Einbetten", title: "HTML-Code kopieren, um diese Abbildung auf einer eigenen Seite einzubetten", done: "Code kopiert", src: "Konjunkturmonitor", full: "ganze Seite" };
 const HFMT = { A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
@@ -506,6 +506,15 @@ function timeChart(el, c) {
         name: SCALE_TXT.band, showlegend: j === 0, hoverinfo: "skip" });  // heller Teil: Prognosejahre, erklärt im Text
     });
     all.push(...blo.y, ...bhi.y);
+  }
+  if (c.decade_mean) { // lange Reihen: Mittel je Jahrzehnt als hellgraue Stufe hinter der Jahreslinie, laufendes Jahrzehnt gestrichelt
+    const skip = y => (c.mean_skip || []).some(([a, b]) => y >= a && y <= b), now = new Date().getFullYear();
+    lines.filter(s => !s.style || s.style === "line").forEach(s => {
+      const dec = {}; s.x.forEach((x, j) => { const y = +x.slice(0, 4), v = s.y[j]; if (v == null || skip(y)) return; (dec[y - y % 10] = dec[y - y % 10] || []).push(v); });
+      Object.entries(dec).forEach(([d, v]) => { if (v.length < 5) return; d = +d; const m = v.reduce((a, b) => a + b, 0) / v.length, open = d + 9 >= now;
+        traces.push({ type: "scatter", mode: "lines", x: [`${d}-01-01`, `${d + 9}-12-31`], y: [m, m], showlegend: false, line: { color: "#bdbdbd", width: 4, dash: open ? "dot" : "solid" },
+          hovertemplate: `${LONGTXT.dec} ${d}${open ? "–" : "–" + (d + 9)}: %{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` }); });
+    });
   }
   lines.filter(s => !s.style || !s.style.startsWith("band_")).forEach((s, i) => {
     const col = c.type === "stacked" ? "#000" : PAL[i % PAL.length];
@@ -1358,7 +1367,7 @@ function build() {
   const NAV_ITEMS = { lage: [], konjunktur: [], struktur: [], service: [] }, NAV_OF = { top: "lage" };  // Menü in vier Gruppen
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     struktur: { no: "Teil II", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
-    anhang: { no: "Teil III", title: "Anhang", text: "Lange Reihen seit 1870 und Sonderfaktoren wie Wetter und Rheinpegel: zur Einordnung, nicht für die laufende Lage. Die Abbildungen sind eingeklappt." },
+    anhang: { no: "Teil III", title: "Anhang", text: "Sonderfaktoren wie Wetter und Rheinpegel: zur Einordnung, nicht für die laufende Lage. Die Abbildungen sind eingeklappt." },
     service: { no: "", title: "Termine", text: "" } };
   const railObs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
     const sec = e.target.closest("section.topic"); if (!e.isIntersecting || !sec) return; const r = sec.querySelector(".rail");
