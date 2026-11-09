@@ -85,3 +85,43 @@ def update_afs_berlin(static: Path) -> None:
         merged = pd.concat([old[~old.index.isin(s.index)], s]).sort_index()
         pd.DataFrame({"date": merged.index.strftime("%Y-%m-%d"), "value": merged.values}).to_csv(f, index=False)
     log.info("AfS Berlin: %s", url.rsplit("/", 1)[-1])
+
+
+# BIP im ersten Halbjahr je Land: Arbeitskreis VGR der Länder, eine Excel-Datei je Jahr (Blatt „1.Hj<Jahr>“),
+# Spalten Land, Veränderung in jeweiligen Preisen, preisbereinigt. Jedes Jahr kommt ein Wert dazu; frühere bleiben stehen.
+VGRDL = "https://www.statistikportal.de/de/vgrdl/ergebnisse-laenderebene/bruttoinlandsprodukt-bruttowertschoepfung"
+H1_ROWS = {"de30": "Berlin", "de": "Deutschland"}
+
+
+def parse_h1(xlsx: bytes) -> tuple[int, dict[str, float]]:
+    x = pd.ExcelFile(io.BytesIO(xlsx))
+    sheet = next(s for s in x.sheet_names if re.search(r"Hj\s*\d{4}", s))
+    year = int(re.search(r"(\d{4})", sheet).group(1))
+    df = pd.read_excel(x, sheet, header=None)
+    out = {}
+    for key, name in H1_ROWS.items():
+        hit = df[df[0].astype(str).str.strip() == name]
+        if hit.empty:
+            raise ValueError(f"Zeile {name} fehlt")
+        v = _num(hit.iloc[0, 2])
+        if v is None or not -15 < v < 15:
+            raise ValueError(f"{name}: unplausibler Wert {hit.iloc[0, 2]!r}")
+        out[key] = round(v, 1)
+    return year, out
+
+
+def update_vgrdl_h1(static: Path) -> None:
+    page = _get(VGRDL).decode("utf-8", "replace")
+    links = re.findall(r'href="([^"]*vgrdl_hjr[^"]*\.xlsx)"', page)
+    if not links:
+        raise ValueError("keine Halbjahresdatei auf der Seite gefunden")
+    url = sorted(links)[-1]
+    url = url if url.startswith("http") else "https://www.statistikportal.de" + url
+    year, vals = parse_h1(_get(url))
+    for key, v in vals.items():
+        f = static / f"vgrdl_h1_{key}.csv"
+        old = pd.read_csv(f, parse_dates=["date"]).set_index("date")["value"] if f.exists() else pd.Series(dtype=float)
+        old[pd.Timestamp(year, 1, 1)] = v
+        old = old.sort_index()
+        pd.DataFrame({"date": old.index.strftime("%Y-%m-%d"), "value": old.values}).to_csv(f, index=False)
+    log.info("VGR der Länder, 1. Halbjahr %s: %s", year, vals)

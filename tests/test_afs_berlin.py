@@ -28,3 +28,15 @@ def test_index_block_takes_only_index_rows_of_named_block():
     assert s[pd.Timestamp("2026-02-01")] == 161.0
     assert len(s) == 14  # 12 Monate 2024 + 2 Monate 2026; Tippfehlerjahr 2926 und Veränderungen nicht
     assert 110.0 not in s.values
+
+
+def test_parse_h1_reads_berlin_and_germany(tmp_path):
+    import io
+    from monitor.afs_berlin import parse_h1
+    rows = [["Arbeitskreis VGR der Länder", None, None], ["Bruttoinlandsprodukt, 1. Halbjahr 2026", None, None],
+            ["Land/", "Veränderungsrate", None], ["Gebiet", "in jeweiligen Preisen", "preisbereinigt"],
+            ["Bayern", 3.8, 1.0], ["Berlin", 3.6, 0.8999999999999999], ["Deutschland", 3.7, 0.9], ["mit Berlin", 3.8, 1.0]]
+    buf = io.BytesIO()
+    pd.DataFrame(rows).to_excel(buf, sheet_name="1.Hj2026", header=False, index=False)
+    year, vals = parse_h1(buf.getvalue())
+    assert year == 2026 and vals == {"de30": 0.9, "de": 0.9}

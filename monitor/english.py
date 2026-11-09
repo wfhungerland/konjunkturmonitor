@@ -518,6 +518,12 @@ def chart_sentences_en(c: dict) -> list[str]:
         return []
     if sp is not None:
         return sp
+    halves = [s for s in (c.get("series") or []) if isinstance(s, dict) and s.get("style") == "half" and s.get("y")]
+    if halves:  # erstes Halbjahr eines Jahres, etwa BIP Berlin: eigener Satz
+        y0 = halves[0]
+        out = [f"In the first half of {y0['x'][-1][:4]}, real GDP growth in {y0.get('label', 'Berlin').split(',')[0]} was {num(y0['y'][-1], d)}% on a year earlier, according to a first estimate."]
+        out += [f"In {h.get('label', 'Germany').split(',')[0]} it was {num(h['y'][-1], d)}% over the same period." for h in halves[1:]]
+        return out
     if typ not in ("line", "dumbbell", None) or not isinstance(c.get("series"), list):
         return []
     try:

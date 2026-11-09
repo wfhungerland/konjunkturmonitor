@@ -313,6 +313,12 @@
   .tside { flex: 0 1 260px; } .tside .tlegend { justify-content: flex-start; margin-bottom: 6px; }
   .tlist { list-style: none; padding: 0; margin: 4px 0; columns: 1; font-size: 13.5px; }
   .tlist li { display: flex; justify-content: space-between; gap: 8px; break-inside: avoid; white-space: nowrap; }
+  h3 .pin { float: right; font: 13.5px var(--ff); font-weight: 400; background: none; border: 0; color: var(--muted); cursor: pointer; padding: 2px 0 2px 10px; }
+  h3 .pin[aria-pressed="true"] { color: var(--accent); }
+  .collection:empty { display: none; }
+  .collection { margin: 8px 0 32px; } .collection .colbar { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+  body.coll #overview, body.coll #news, body.coll #grid, body.coll #starttable, body.coll #legendhint, body.coll #topics, body.coll .weekrev, body.coll .fab { display: none !important; }
+  @media print { h3 .pin, .collection .colbar { display: none; } }
   @media print {
     header, nav, .fab, .totop, details.dl, .rawtoggle, .btn, button.copy, button.copy1, .seg, .navmore { display: none !important; }
     body { background: #fff; font-size: 11pt; }
@@ -414,6 +420,7 @@ const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "St
   week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü" };
 const KERN = { more: "Mehr Zahlen" };
 const ANH = { show: "Abbildungen anzeigen" };
+const COLTXT = { pin: "Merken", pinned: "Gemerkt", title: "Meine Sammlung", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. „Merken“ neben dem Titel einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Sammlung übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
 const EMB = { label: "Einbetten", title: "HTML-Code kopieren, um diese Abbildung auf einer eigenen Seite einzubetten", done: "Code kopiert", src: "Konjunkturmonitor", full: "ganze Seite" };
 const HFMT = { A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
 function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 5, 10].map(m => m * p).find(s => s >= raw); }
@@ -493,6 +500,10 @@ function timeChart(el, c) {
       const cut = k < 0 ? s.x.length : k;
       traces.push({ type: "scatter", mode: "lines", x: s.x.slice(0, cut), y: s.y.slice(0, cut), name: s.label, meta: s.id, line: { color: col, width: 3 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
       if (k > 0) traces.push({ type: "scatter", mode: "lines+markers", x: s.x.slice(cut - 1), y: s.y.slice(cut - 1), name: s.label + ", Prognose", line: { color: col, width: 2, dash: "dot" }, marker: { size: 6, symbol: "circle-open" }, hovertemplate: `%{y:,.${c.decimals}f} (Prognose)<extra>${esc(s.label)}</extra>` });
+    } else if (s.style === "half") { // einzelner Zwischenwert, etwa erstes Halbjahr: offener Kreis in der Farbe der zugehörigen Linie
+      const k = lines.filter(t => !t.style || !t.style.startsWith("band_")).findIndex(t => t.id === s.of);
+      traces.push({ type: "scatter", mode: "markers", x: s.x, y: s.y, name: s.label, meta: s.id, showlegend: false, marker: { size: 10, symbol: "circle-open", color: k >= 0 ? PAL[k % PAL.length] : col, line: { width: 2 } },
+        hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
     } else if (s.style === "hover") { // nur im Tooltip, etwa erste Meldung und heutiger Stand zur Korrektur
       traces.push({ type: "scatter", mode: "markers", x: s.x, y: s.y, name: s.label, meta: s.id, showlegend: false, marker: { size: 1, opacity: 0 }, hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
       return;
@@ -999,7 +1010,7 @@ const sentHtml = (arr, sep = " ", btn = true) => arr.map(esc).join(sep) + (btn ?
 function bindCopies(root, arr, what) { root.querySelectorAll("button.copy1").forEach(b => b.onclick = () => copyText(arr.join(" "), b, what)); }
 
 function card(c, no) {
-  const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = `abb-${no}`;
+  const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = `abb-${no}`; if (c.chart) el.dataset.chart = c.chart;
   const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? "Täglich (Arbeitstage)" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Pp, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% ggü. Vorjahr"
@@ -1288,7 +1299,7 @@ function build() {
     anhang: { no: "Teil III", title: "Anhang", text: "Lange Reihen seit 1870 und Sonderfaktoren wie Wetter und Rheinpegel: zur Einordnung, nicht für die laufende Lage. Die Abbildungen sind eingeklappt." },
     service: { no: "", title: "Termine", text: "" } };
   const railObs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
-    if (!e.isIntersecting) return; const r = e.target.closest("section.topic").querySelector(".rail");
+    const sec = e.target.closest("section.topic"); if (!e.isIntersecting || !sec) return; const r = sec.querySelector(".rail");
     r.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id));
   }), { rootMargin: "-35% 0px -60% 0px" }) : null;
   const obs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { obs.unobserve(e.target); render(e.target); } }), { rootMargin: "300px" }) : null;
@@ -1349,7 +1360,7 @@ function build() {
       + W.map(w => `<li><a href="#abb-${w.no}">Abb. ${w.no} ${esc(w.title)}</a><span>neue Daten am ${dd(w.date)}</span></li>`).join("") + `</ol></section>`);
     NAV_ITEMS.lage.splice(0, 0, `<a href="#woche">${NAVTXT.week}</a>`); NAV_OF.woche = "lage";
   }
-  NAV_ITEMS.lage.unshift(`<a href="#top">${NAVTXT.overview}</a>`, `<a href="#top" class="brieflink">${NAVTXT.brief}</a>`);
+  NAV_ITEMS.lage.unshift(`<a href="#top">${NAVTXT.overview}</a>`, `<a href="#top" class="brieflink">${NAVTXT.brief}</a>`, `<a href="#sammlung" class="colllink">${COLTXT.title}</a>`);
   NAV_ITEMS.service.push(`<a href="#quellen">${NAVTXT.sources}</a>`, `<a href="${METH_BASE}index.html">${NAVTXT.method}</a>`);
   NAV_OF.quellen = "service";
   nav.innerHTML = Object.entries(NAVTXT.groups).map(([k, lab]) => `<details class="navgrp" data-g="${k}"><summary>${esc(lab)}</summary><div class="navlist">${NAV_ITEMS[k].join("")}</div></details>`).join("");
@@ -1375,11 +1386,48 @@ function build() {
   exLab(); ex.title = "Alle Abbildungen aus- oder einklappen";
   ex.onclick = () => { opened = !opened; document.querySelectorAll("details.morecharts").forEach(d => d.open = opened); exLab(); };
   document.querySelector("header .bar").append(searchBox(), bb, ex, mb);
+  // Eigene Sammlung: gemerkte Abbildungen (Kennungen im Browser), eigene Ansicht und teilbarer Link #sammlung=a,b,c
+  const COLKEY = "km.sammlung";
+  const colLoad = () => { try { const a = JSON.parse(localStorage.getItem(COLKEY) || "[]"); return Array.isArray(a) ? a.filter(x => typeof x === "string") : []; } catch (e) { return []; } };
+  const colSave = a => { try { localStorage.setItem(COLKEY, JSON.stringify(a)); } catch (e) { /* ohne Speicher gilt die Auswahl nur bis zum Neuladen */ } };
+  let mine = colLoad(), shared = null;
+  const sel = id => `.card[data-chart="${CSS.escape(id)}"]`, homes = new Map();
+  const colSec = document.createElement("section"); colSec.id = "sammlung"; colSec.className = "collection"; topics.before(colSec);
+  const updCount = () => nav.querySelectorAll(".colllink").forEach(a => a.textContent = COLTXT.title + (mine.length ? ` (${mine.length})` : ""));
+  const pinLab = b => { const on = mine.includes(b.dataset.chart); b.textContent = (on ? "★ " : "☆ ") + (on ? COLTXT.pinned : COLTXT.pin); b.setAttribute("aria-pressed", String(on)); };
+  const resize = els => requestAnimationFrame(() => { if (window.Plotly) els.forEach(cd => cd.querySelectorAll(".js-plotly-plot").forEach(p => { try { Plotly.Plots.resize(p); } catch (e) {} })); });
+  const restore = () => { const back = [...homes.keys()]; homes.forEach((ph, cd) => ph.replaceWith(cd)); homes.clear(); resize(back); };
+  const showColl = ids => {
+    restore();
+    const found = ids.map(id => document.querySelector(sel(id))).filter(Boolean), gone = ids.length - found.length;
+    colSec.innerHTML = `<h2>${esc(COLTXT.title)}</h2><p class="tnote">${esc(shared ? COLTXT.shared : ids.length ? COLTXT.intro : COLTXT.empty)}${gone ? " " + esc(COLTXT.gone(gone)) : ""}</p><p class="colbar"></p><div class="charts collcharts"></div>`;
+    const bar = colSec.querySelector(".colbar"), wrapC = colSec.querySelector(".collcharts");
+    const btn = (txt, f) => { const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = txt; b.onclick = f; bar.appendChild(b); return b; };
+    if (shared && shared.some(id => !mine.includes(id))) btn(COLTXT.take, () => { mine = [...new Set([...mine, ...shared])]; colSave(mine); document.querySelectorAll("h3 .pin").forEach(pinLab); updCount(); location.hash = "#sammlung"; });
+    if (found.length) {
+      const url = location.href.split("#")[0] + "#sammlung=" + found.map(cd => encodeURIComponent(cd.dataset.chart)).join(",");
+      const lb = btn(COLTXT.link, () => (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => { lb.textContent = COLTXT.copied; }, () => prompt(COLTXT.link, url)));
+      btn(COLTXT.print, () => print());
+    }
+    btn(COLTXT.back, () => { location.hash = "#top"; });
+    found.forEach(cd => { const ph = document.createComment(""); cd.before(ph); homes.set(cd, ph); wrapC.appendChild(cd); });
+    document.body.classList.add("coll"); resize(found); scrollTo(0, 0);
+  };
+  const hideColl = () => { restore(); colSec.innerHTML = ""; document.body.classList.remove("coll"); };
+  document.querySelectorAll(".card[data-chart] > h3").forEach(h => { const b = document.createElement("button"); b.type = "button"; b.className = "pin"; b.dataset.chart = h.parentNode.dataset.chart; pinLab(b);
+    b.onclick = () => { const id = b.dataset.chart; mine = mine.includes(id) ? mine.filter(x => x !== id) : [...mine, id]; colSave(mine);
+      document.querySelectorAll(`h3 .pin[data-chart="${CSS.escape(id)}"]`).forEach(pinLab); updCount(); if (document.body.classList.contains("coll") && !shared) showColl(mine); };
+    h.appendChild(b); });
+  const route = () => { const h = location.hash;
+    if (h.startsWith("#sammlung=")) { shared = h.slice(10).split(",").map(x => { try { return decodeURIComponent(x); } catch (e) { return ""; } }).filter(Boolean); showColl(shared); }
+    else if (h === "#sammlung") { shared = null; showColl(mine); }
+    else if (document.body.classList.contains("coll")) { shared = null; hideColl(); } };
+  addEventListener("hashchange", route); updCount(); route();
   document.body.insertAdjacentHTML("beforeend", `<a class="fab" href="#top" aria-label="Zur Übersicht">↑ Übersicht</a>`);
   if (DATA.embed) { const c0 = DATA.topics[0].charts[0]; topics.insertAdjacentHTML("afterend", `<p class="embedsrc">${EMB.src} · <a href="${esc(DATA.site.url)}#abb-${c0.no}" target="_blank" rel="noopener">${EMB.full}</a></p>`); }
 }
 build();
-function openHash() { const el = location.hash && document.querySelector(location.hash); const d = el && el.closest("details"); if (d) d.open = true; }
+function openHash() { let el = null; try { el = location.hash && document.querySelector(location.hash); } catch (e) { return; } const d = el && el.closest("details"); if (d) d.open = true; }
 addEventListener("hashchange", openHash); openHash();
 addEventListener("beforeprint", () => document.querySelectorAll("details.capfold").forEach(d => d.open = true));
 </script>

@@ -63,7 +63,7 @@ charts:
   be_gdp:
     title: "Economic growth in Berlin"
     ask: "Is Berlin growing faster than Germany?"
-    caption: "Real gross domestic product on the previous year in %, Berlin and Germany. Results for the federal states are only available annually and for the first half of the year; Eurostat takes over the annual figures with a delay of some months."
+    caption: "Real gross domestic product on the previous year in %, Berlin and Germany. Results for the federal states are only available annually and for the first half of the year; Eurostat takes over the annual figures with a delay of some months. Circles: first half of the current year on a year earlier, an early estimate."
   be_cpi:
     title: "Consumer prices and rents in Berlin"
     ask: "Are prices rising faster in Berlin?"
@@ -526,6 +526,8 @@ charts:
     caption: "Dates are estimated from the sources' usual release schedules and marked with a superscript e. The linked calendars of the sources are authoritative. The links lead to the charts that receive new values on that date."
 
 series:
+  be_gdp_h1_de30: {title: "Real GDP Berlin, first half-year, % on a year earlier", label: "Berlin, first half", unit: "% on a year earlier", adjustment: "price adjusted"}
+  be_gdp_h1_de: {title: "Real GDP Germany, first half-year, % on a year earlier", label: "Germany, first half", unit: "% on a year earlier", adjustment: "price adjusted"}
   be_gdp: {title: "Real GDP, {geo_name}, % on a year earlier", label: "{geo_name}", unit: "% on a year earlier", adjustment: "price adjusted"}
   be_vpi: {title: "Consumer price index, Berlin", label: "Berlin", unit: "Index 2020=100", adjustment: "not adjusted"}
   be_vpi_yoy: {title: "Inflation rate, Berlin", label: "Berlin, total", unit: "% on same month a year earlier", adjustment: "not adjusted"}

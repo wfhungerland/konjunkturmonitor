@@ -3100,7 +3100,7 @@ series:
     frequency: A
     adjustment: preisbereinigt
     start: "2001-01-01"
-    stale_after_months: 30
+    stale_after_months: 40
     chart: be_gdp
     label: "{geo_name}"
     note: "Volkswirtschaftliche Gesamtrechnungen der Länder, über Eurostat (Regionaldaten, NUTS 2). Eurostat übernimmt die Länderwerte mit einigen Monaten Verzug."
@@ -3277,3 +3277,33 @@ series:
     adjustment: nicht bereinigt
     start: "2005-01-01"
     note: "GENESIS-Tabelle 31111-0120, Merkmal DLAND 11 (Berlin)."
+
+  - id: be_gdp_h1_de30
+    block: berlin
+    source: static
+    key: vgrdl_h1_de30
+    params: {source_name: "Arbeitskreis Volkswirtschaftliche Gesamtrechnungen der Länder"}
+    title: "Reales BIP Berlin, 1. Halbjahr, % ggü. Vorjahreszeitraum"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "2026-01-01"
+    stale_after_months: 15
+    chart: be_gdp
+    label: "Berlin, 1. Halbjahr"
+    note: "Erstes Halbjahresergebnis des Arbeitskreises VGR der Länder (statistikportal.de), jeweils im September; der Wert ist am Jahresanfang eingetragen."
+
+  - id: be_gdp_h1_de
+    block: berlin
+    source: static
+    key: vgrdl_h1_de
+    params: {source_name: "Arbeitskreis Volkswirtschaftliche Gesamtrechnungen der Länder"}
+    title: "Reales BIP Deutschland, 1. Halbjahr, % ggü. Vorjahreszeitraum"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "2026-01-01"
+    stale_after_months: 15
+    chart: be_gdp
+    label: "Deutschland, 1. Halbjahr"
+    note: "Erstes Halbjahresergebnis des Arbeitskreises VGR der Länder (statistikportal.de), jeweils im September; der Wert ist am Jahresanfang eingetragen."
