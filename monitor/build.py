@@ -1428,6 +1428,8 @@ def build_payload(root: Path = ROOT) -> dict:
                 if len({f["by"] for f in fs}) < 2:
                     continue
             else:
+                if any(x not in data for x in c.get("need") or []):  # Abbildung nur mit diesen Reihen zeigen (etwa Berlin ohne Berliner Werte)
+                    continue
                 specs = [meta[x] for x in c["pick"] if x in meta] if c.get("pick") else [s for s in meta.values() if s.chart_id == c["chart"]]
                 series = []
                 for s in specs:
@@ -1452,7 +1454,7 @@ def build_payload(root: Path = ROOT) -> dict:
                     for y0, y1 in c.get("blank_years") or []:  # Kriegs- und Inflationsjahre auslassen: Lücke statt Werte
                         ser = ser[(ser.index.year < int(y0)) | (ser.index.year > int(y1))]
                     xy = _xy(ser * float(c.get("scale", 1)), c.get("years"), c.get("x_start"))
-                    series.append(dict(id=s.id, label=s.label or s.title, unit=c.get("unit", s.unit), freq="B" if c.get("daily") else s.frequency,
+                    series.append(dict(id=s.id, label=(c.get("labels") or {}).get(s.id) or s.label or s.title, unit=c.get("unit", s.unit), freq="B" if c.get("daily") else s.frequency,
                                        style=(c.get("styles") or {}).get(s.id) or getattr(s, "style", None) or "line", **xy))
                 if c.get("total") and c["total"] in data:
                     s = meta[c["total"]]
@@ -1538,6 +1540,8 @@ def build_payload(root: Path = ROOT) -> dict:
                                    caption=f"{what} je Branche als Balken, umschaltbar. Dreimonatsvergleich: letzte drei Monate ggü. den drei Monaten davor, saisonbereinigt. "
                                            "Niveau ggü. 2019: jüngster Monat ggü. dem Durchschnitt 2019, dem letzten vollen Jahr vor der Pandemie und vor dem Energiepreisschock 2022; "
                                            "der Vergleich zeigt, welche Branchen ihr Vorkrisenniveau wieder erreicht haben. Orange: Zunahme, blau: Abnahme."))
+        if t.get("charts") and not charts and t.get("part") == "anhang":
+            continue  # Anhang-Abschnitt ohne Daten (etwa Berlin, wenn GENESIS ausfällt) nicht als leere Überschrift zeigen
         q = next((x for x in questions if x.get("topic") == t["id"]), None)
         topics.append(dict(t, charts=charts, question=q))
     notes = _notes(root)
