@@ -30,8 +30,8 @@
   .bar { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
   .bar h1 { font-size: 23px; margin: 0; line-height: 1.15; }
   .brand { flex: none; } .brand .meta { font-size: 12px; color: var(--grey); line-height: 1.3; }
-  .lang a, .lang b { padding: 0 1px; } .lang a { color: var(--grey); } .lang b { color: var(--text); } .lang { font: 15px var(--ff); margin-left: 12px; letter-spacing: .02em; } .lang b { font-weight: 700; } .lang a:hover { color: var(--text); text-decoration: none; }
-  .tline { display: flex; align-items: baseline; }
+  .lang a, .lang b { padding: 0 1px; } .lang a { color: var(--grey); } .lang b { color: var(--text); } .lang { font: 12px var(--ff); letter-spacing: .03em; } .lang b { font-weight: 700; } .lang a:hover { color: var(--text); text-decoration: none; }
+  .brand .meta { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
   @media (max-width: 600px) { .brand { width: 100%; } #nav { order: 1; } .briefbtn { order: 2; } header .colllink { order: 3; } header a.btn.colllink { font-size: 12px; padding: 0 5px; line-height: inherit; } }
   .bar { align-items: center; }
   @media (min-width: 601px) { nav { flex: 1; font-size: 13px; gap: 0 10px; line-height: 1.6; } }
@@ -53,7 +53,7 @@
   /* Themen */
   section.topic { margin-top: 112px; scroll-margin-top: 60px; }
   /* Breite Bildschirme: Abbildungsübersicht des Abschnitts läuft links mit */
-  .rail { display: none; position: sticky; top: 72px; align-self: start; max-height: calc(100vh - 90px); overflow: auto; font: 13.5px/1.35 var(--ff); border-top: 1px solid var(--line); padding-top: 10px; }
+  .rail { display: none; position: sticky; top: calc(var(--hdr, 64px) + 6px); align-self: start; max-height: calc(100vh - 90px); overflow: auto; font: 13.5px/1.35 var(--ff); border-top: 1px solid var(--line); padding-top: 10px; }
   .rail .rh { font: 600 16.5px/1.25 var(--ff); color: var(--dark); margin: 0 0 8px; }
   .rail a { display: grid; grid-template-columns: 2.1em minmax(0, 1fr); color: var(--muted); padding: 3px 0; }  /* Nummer und Titel in zwei Spalten */
   .rail a:hover { color: var(--text); text-decoration: none; }
@@ -66,6 +66,7 @@
     .rail { display: block; }
   }
   section.topic .secmain > h2 { font-size: 26px; margin: 0 0 4px; }
+  @media (min-width: 601px) { section.topic .secmain > h2 { position: sticky; top: var(--hdr, 64px); z-index: 3; background: var(--bg); padding: 6px 0 8px; } body.minimal section.topic .secmain > h2 { background: #fff; box-shadow: 0 1px 0 var(--line); } }
   .answer { font-size: 19px; margin: 4px 0 6px; max-width: 48em; }
   .more { color: var(--text); margin: 0 0 8px; padding-left: 18px; max-width: 48em; }
   .explain { background: var(--card); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 8px 0 14px; max-width: 48em; font-size: 15px; }
@@ -74,6 +75,10 @@
   @media (max-width: 900px) { .charts { grid-template-columns: 1fr; } }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px 8px; min-width: 0; }
   .card h3 { font-size: 15px; margin: 0 0 2px; }
+  .chead { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 16px; flex-wrap: wrap; }
+  .htools { display: flex; flex-wrap: wrap; gap: 2px 14px; align-items: baseline; margin-left: auto; }
+  .htools .btn { border: 0; background: none; padding: 0; color: var(--grey); font: 13px var(--ff); cursor: pointer; } .htools .btn:hover { color: var(--accent); text-decoration: underline; }
+  .card .nxtline { font: 13px/1.4 var(--ff); color: var(--grey); margin-top: 4px; } .card .nxtline a { color: var(--grey); }
   .card .sub, .card .unit, .card .cap, .card .src { font: 13.5px/1.4 var(--ff); color: var(--muted); }
   .card .unit { text-align: right; margin-top: 2px; }
   .card .acts { font: 13.5px/1.4 var(--ff); color: var(--muted); margin-top: 6px; }
@@ -147,8 +152,8 @@
   .explain .ico, .card .cap .ico { margin-right: 4px; }
   body.minimal .explain b { color: var(--muted); }
   @media (min-width: 1100px) {
-    body.minimal .intro { display: grid; grid-template-columns: minmax(0, 48em) minmax(0, 1fr); column-gap: 32px; }
-    body.minimal .intro .explain { grid-column: 2; grid-row: 1 / span 3; margin-top: 6px; }
+    body.minimal .intro { display: grid; grid-template-columns: minmax(0, 1fr) 290px; column-gap: 22px; }
+    body.minimal .intro .explain { grid-column: 2; grid-row: 1 / span 3; margin: 4px 0 0; font: italic 13.5px/1.45 var(--ff); text-align: left; align-self: start; }
   }
   details.morecharts { margin-top: 10px; }
   details.morecharts > summary { cursor: pointer; font: 15px var(--ff); color: var(--accent); margin: 4px 0 10px; }
@@ -200,8 +205,8 @@
   ol.callist sup.e { font-size: 12px; margin-left: 1px; }
   .expandall { margin-left: auto; }
   /* Suche mit Vorschlägen in der Kopfzeile */
-  .search { position: relative; margin-left: auto; flex: none; }
-  .search input { font: 13.5px/1.5 var(--ff); width: 150px; padding: 1px 9px; border: 1px solid var(--line); border-radius: var(--r); background: #fff; color: var(--text); }
+  .search { position: relative; margin: 0 auto; flex: 0 1 380px; }
+  .search input { font: 13.5px/1.5 var(--ff); width: 100%; box-sizing: border-box; padding: 1px 9px; border: 1px solid var(--line); border-radius: var(--r); background: #fff; color: var(--text); }
   .search input:focus { outline: none; border-color: var(--accent); }
   .search ul { position: absolute; right: 0; top: 1.9em; z-index: 10; list-style: none; margin: 0; padding: 4px 0; width: 380px; max-height: 70vh; overflow-y: auto;
     background: #fff; border: 1px solid var(--line); border-radius: var(--r); box-shadow: 0 4px 12px rgba(0,0,0,.08); font: 13.5px/1.35 var(--ff); }
@@ -315,6 +320,7 @@
   .cbody { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px 22px; margin-top: 4px; }
   @media (min-width: 980px) { .cbody { grid-template-columns: minmax(0, 1fr) 290px; } .card.full .cbody { grid-template-columns: minmax(0, 1fr); } .card.full .cside { max-width: 52em; } }
   .cside { font: 13.5px/1.45 var(--ff); display: flex; flex-direction: column; gap: 8px; }
+  @media (min-width: 980px) { .cside { padding-top: 24px; } }  /* beginnt auf Höhe der Grafik, unter der Einheitenzeile */
   .cside .capnote { font-style: italic; margin: 0; }
   .cside .notebox { background: var(--box); border-radius: var(--r); padding: 9px 12px; margin: 0; max-width: none; width: auto; }
   .cside .capbox b, .cside .notebox b { display: block; margin-bottom: 2px; }
@@ -325,12 +331,12 @@
   .tside { flex: 0 1 260px; } .tside .tlegend { justify-content: flex-start; margin-bottom: 6px; }
   .tlist { list-style: none; padding: 0; margin: 4px 0; columns: 1; font-size: 13.5px; }
   .tlist li { display: flex; justify-content: space-between; gap: 8px; break-inside: avoid; white-space: nowrap; }
-  h3 .pin { float: right; font: 13.5px var(--ff); font-weight: 400; background: none; border: 0; color: var(--muted); cursor: pointer; padding: 2px 0 2px 10px; }
-  h3 .pin[aria-pressed="true"] { color: var(--accent); }
+  .htools .pin { font: 17px/1 var(--ff); background: none; border: 0; color: var(--grey); cursor: pointer; padding: 0 0 0 4px; } .htools .pin:hover { color: var(--accent); }
+  .htools .pin[aria-pressed="true"] { color: #C9A100; }
   .collection:empty { display: none; }
   .collection { margin: 8px 0 32px; } .collection .colbar { display: flex; flex-wrap: wrap; gap: 8px 16px; }
   body.coll #overview, body.coll #news, body.coll #grid, body.coll #starttable, body.coll #legendhint, body.coll #topics, body.coll .weekrev, body.coll .fab { display: none !important; }
-  @media print { h3 .pin, .collection .colbar { display: none; } }
+  @media print { .htools, .collection .colbar { display: none; } }
   @media print {
     header, nav, .fab, .totop, details.dl, .rawtoggle, .btn, button.copy, button.copy1, .seg, .navmore { display: none !important; }
     body { background: #fff; font-size: 11pt; }
@@ -350,7 +356,7 @@
 </style>
 </head>
 <body>
-<header id="top"><div class="bar"><div class="brand"><div class="tline"><h1>Konjunkturmonitor</h1><span class="lang" id="lang"></span></div><div class="meta"><span class="stand" id="stand"></span></div></div><nav id="nav"></nav></div></header>
+<header id="top"><div class="bar"><div class="brand"><h1>Konjunkturmonitor</h1><div class="meta"><span class="stand" id="stand"></span><span class="lang" id="lang"></span></div></div><nav id="nav"></nav></div></header>
 <main>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
   <p class="news" id="news"></p>
@@ -432,7 +438,7 @@ const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "St
   week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü", contents: "Inhalt" };
 const KERN = { more: "Mehr Zahlen" };
 const ANH = { show: "Abbildungen anzeigen" };
-const COLTXT = { pin: "Merken", pinned: "Gemerkt", title: "Meine Sammlung", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. „Merken“ neben dem Titel einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Sammlung übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
+const COLTXT = { pin: "Als Lesezeichen merken", pinned: "Lesezeichen entfernen", title: "Lesezeichen", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. Der Stern ☆ oben rechts an einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Lesezeichen übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
 const EMB = { label: "Einbetten", title: "HTML-Code kopieren, um diese Abbildung auf einer eigenen Seite einzubetten", done: "Code kopiert", src: "Konjunkturmonitor", full: "ganze Seite" };
 const HFMT = { A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
 function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 5, 10].map(m => m * p).find(s => s >= raw); }
@@ -648,6 +654,7 @@ function multiplesChart(el, c) {
   c.series.forEach((s, k) => {
     const ok = s.y.map((v, i) => [v, s.x[i]]).filter(p => p[0] != null), last = ok.length ? ok[ok.length - 1] : null;
     const own = c._own ?? c.own_scale, rf = (c.series_ref || {})[s.id];
+    const col = c.multi_colors ? PAL[k % PAL.length] : PAL[0];  // eigene Farbe je Feld, etwa bei der Inflation
     const vals = ok.map(p => p[0]), d = c.decimals, tend = tendOf(vals, d), un = own && s.unit ? s.unit : c.unit;
     const ya = own ? yAxis(s.y.filter(v => v != null).concat(rf != null ? [rf] : []), un, []) : ya0;
     const box = document.createElement("div");
@@ -655,12 +662,12 @@ function multiplesChart(el, c) {
     const sub = c.freq === "Q" ? mean(4, MTXT.q) : c.freq === "A" ? "" : c.freq === "D" ? mean(4, MTXT.w[0]) + ", " + mean(52, MTXT.w[1]) : mean(nM(3), MTXT.m[0]) + ", " + mean(nM(12), MTXT.m[1]);
     const sg = (c.signed || []).includes(s.id) && last && last[0] > 0 ? "+" : "";  // Abweichungen mit Vorzeichen, etwa +1,3 °C
     const head = last ? ` ${sg}${fmtU(last[0], d, un)} ${c.no_tend ? "" : tendHtml(tend, isBad(c, s.id))} ${esc(perIn(last[1], c.freq))}${sub ? `<br><span class="mtsub">${sub}</span>` : ""}` : "";
-    box.innerHTML = `<p class="mt"><b>${esc(s.label)}</b>${head}</p>`;
+    box.innerHTML = `<p class="mt"><b${c.multi_colors ? ` style="color:${col}"` : ""}>${esc(s.label)}</b>${head}</p>`;
     const m = document.createElement("div"); m.className = "mini"; box.appendChild(m); grid.appendChild(box);
     const sm = y => c.ma3 ? ma3(y) : y, ht = `%{x|${HFMT[c.freq] || "%Y"}}: %{y:,.${c.decimals}f}`;
-    const traces = own ? [] : c.series.filter(o => o !== s).map(o => ({ type: "scatter", mode: "lines", x: o.x, y: sm(o.y), line: { color: "#d0d0d0", width: 1 }, hoverinfo: "skip" }));
-    if (c.ma3) traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, line: { color: PAL[0], width: 1 }, opacity: 0.4, hovertemplate: `${ht}<extra>${esc(s.label)}</extra>` });  // dünn: Monatswerte
-    traces.push({ type: "scatter", mode: "lines", x: s.x, y: sm(s.y), line: { color: PAL[0], width: c.ma3 ? 2.5 : 2 }, hovertemplate: `${ht}${c.ma3 ? " (3-Monats-Mittel)" : ""}<extra>${esc(s.label)}</extra>` });
+    const traces = own ? [] : c.series.filter(o => o !== s).map(o => ({ type: "scatter", mode: "lines", x: o.x, y: sm(o.y), line: { color: c.multi_colors ? "#e4e4e4" : "#d0d0d0", width: c.multi_colors ? 0.8 : 1 }, hoverinfo: "skip" }));
+    if (c.ma3) traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, line: { color: col, width: 1 }, opacity: 0.4, hovertemplate: `${ht}<extra>${esc(s.label)}</extra>` });  // dünn: Monatswerte
+    traces.push({ type: "scatter", mode: "lines", x: s.x, y: sm(s.y), line: { color: col, width: c.ma3 ? 2.5 : 2 }, hovertemplate: `${ht}${c.ma3 ? " (3-Monats-Mittel)" : ""}<extra>${esc(s.label)}</extra>` });
     const w = Math.max(160, (el.clientWidth || 600) / cols - 50), xa = xAxis(r[0], r[1], w), shapes = xa.shapes.filter(sh => sh.type === "rect");
     if (ya.zero || (c.ref === 0 && rf == null)) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
     if (c.ref != null && c.ref !== 0) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1, dash: "dash" } });
@@ -1051,10 +1058,10 @@ function card(c, no) {
   let next = "";
   if (c.next_update) { const nd = new Date(c.next_update.date + "T12:00:00Z"), dd = `${String(nd.getUTCDate()).padStart(2, "0")}.${String(nd.getUTCMonth() + 1).padStart(2, "0")}.${nd.getUTCFullYear()}`;
     next = `<span class="nxt">Neue Daten${c.next_update.period ? ", dann für " + esc(c.next_update.period) + "," : ""} am ${dd} (<a href="#abb-${c.next_update.calendar}">Kalender</a>)</span>`; }
-  const meta = [sub ? esc(sub) : "", next].filter(Boolean).join(" · ");
+  const meta = sub ? esc(sub) : "";  // Hinweis auf neue Daten steht unter der Grafik
   const texts = c.texts || [];
   el.innerHTML = `${!lead && c.ask ? `<h4 class="cask">${esc(c.ask)}</h4>` : ""}${!lead && texts.length ? `<p class="ctext">${sentHtml(texts)}</p>` : ""}`
-    + `<h3>Abb. ${no} ${esc(c.title || "")}</h3>${meta ? `<div class="sub">${meta}</div>` : ""}`;
+    + `<div class="chead"><h3>Abb. ${no} ${esc(c.title || "")}</h3><div class="htools"></div></div>${meta ? `<div class="sub">${meta}</div>` : ""}`;
   if (!lead) bindCopies(el, texts, `Abb. ${no}`);
   if (c.warn) el.insertAdjacentHTML("beforeend", `<div class="warn">⚠ ${esc(c.warn)}</div>`);
   const body = document.createElement("div"); body.className = "cbody"; el.appendChild(body);
@@ -1080,24 +1087,26 @@ function card(c, no) {
   else src = esc(src);
   // Knöpfe unter der Grafik: Monatswerte, Rezessionen, Download, alle gleich gestaltet
   const tools = document.createElement("div"); tools.className = "tools"; main.appendChild(tools);
+  const htools = el.querySelector(".htools");  // Ansichtsknöpfe oben rechts
+  if (next) main.insertAdjacentHTML("beforeend", `<div class="nxtline">${next}</div>`);
   main.insertAdjacentHTML("beforeend", `<div class="src">Quelle: ${src}${(c.licenses || []).length ? ". Lizenz: " + esc(c.licenses.join("; ")) : ""}${c.type === "tiles" && DATA.geo ? ". " + esc(DATA.geo_source) : ""}${c.content_license ? `. <b>${LIC_NOTE} ${esc(c.content_license)}</b>` : ""}</div>`);
   const redraw = () => { Plotly.purge(ch); ch.innerHTML = ""; ch.classList.remove("multi"); (c.type === "seasonal" ? seasonalChart : c.multiples && (DATA.layout || {}).small_multiples && (c.series.length > 2 || c.own_scale) ? multiplesChart : timeChart)(ch, c); };
   if (c.ma3) {
     const tg = document.createElement("button"); tg.type = "button"; tg.className = "btn rawtoggle"; tg.textContent = c.raw_hidden ? "Monatswerte einblenden" : "Monatswerte ausblenden";
     tg.onclick = () => { c._raw = !(c._raw ?? !c.raw_hidden); tg.textContent = c._raw ? "Monatswerte ausblenden" : "Monatswerte einblenden"; redraw(); };
-    tools.appendChild(tg); }
+    htools.appendChild(tg); }
   if (c.scale_toggle && c.multiples) { // gemeinsame Skala über alle Felder oder eigene je Feld
     const sb = document.createElement("button"); sb.type = "button"; sb.className = "btn";
     const lab = () => (c._own ?? c.own_scale) ? SCALE_TXT.common : SCALE_TXT.own; sb.textContent = lab();
-    sb.onclick = () => { c._own = !(c._own ?? c.own_scale); sb.textContent = lab(); redraw(); }; tools.appendChild(sb); }
+    sb.onclick = () => { c._own = !(c._own ?? c.own_scale); sb.textContent = lab(); redraw(); }; htools.appendChild(sb); }
   if (c.zoom_toggle) { // Ausreißer: Skala auf die jüngsten Jahre
     const zb = document.createElement("button"); zb.type = "button"; zb.className = "btn";
     const lab = () => (c._zoom ?? c.zoom_default) ? SCALE_TXT.full : SCALE_TXT.zoom; zb.textContent = lab();
-    zb.onclick = () => { c._zoom = !(c._zoom ?? c.zoom_default); zb.textContent = lab(); redraw(); }; tools.appendChild(zb); }
+    zb.onclick = () => { c._zoom = !(c._zoom ?? c.zoom_default); zb.textContent = lab(); redraw(); }; htools.appendChild(zb); }
   if (labelable(c)) {
     const lb = document.createElement("button"); lb.type = "button"; lb.className = "btn"; lb.textContent = "Jüngste Werte einblenden";
     lb.onclick = () => { c._labels = !c._labels; lb.textContent = c._labels ? "Jüngste Werte ausblenden" : "Jüngste Werte einblenden"; redraw(); };
-    tools.appendChild(lb); }
+    htools.appendChild(lb); }
   if ((c.recessions || []).length) {
     const xs = (Array.isArray(c.series) ? c.series.flatMap(s => s.x || []) : (c.x || [])).sort();
     if (xs.length && recIn(c, [xs[0], xs[xs.length - 1]]).length) {
@@ -1105,7 +1114,7 @@ function card(c, no) {
       const lab = () => (c._rec ?? c.recessions_on) ? "Rezessionen ausblenden" : "Rezessionen einblenden"; rb.textContent = lab();
       rb.title = "Rezessionen nach der Datierung des Sachverständigenrats (graue Flächen)";
       rb.onclick = () => { c._rec = !(c._rec ?? c.recessions_on); rb.textContent = lab(); redraw(); };
-      tools.appendChild(rb); }
+      htools.appendChild(rb); }
   }
   const f = c.files || {}, acts = [], u = x => encodeURI(x);
   if (f.xlsx) acts.push(`<a href="${u(f.xlsx)}" download>XLSX</a>`);
@@ -1131,9 +1140,17 @@ function card(c, no) {
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => prompt("Link kopieren:", url)); else prompt("Link kopieren:", url); };
   ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `Abb. ${no} ${c.title || ""}. ${c.text || ""}`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
-  ch._c = c;
+  ch._c = c; placeTools(el);
   return el;
 }
+// Handy: Ansichtsknöpfe unter die Grafik (vor „Download, Link und Methode“), oben bleibt nur der Stern
+const PHONE = matchMedia("(max-width: 600px)");
+function placeTools(el) {
+  const top = el.querySelector(".htools"), bottom = el.querySelector(".tools"); if (!top || !bottom) return;
+  if (PHONE.matches) top.querySelectorAll(".btn").forEach(b => bottom.insertBefore(b, bottom.querySelector("details.dl")));
+  else bottom.querySelectorAll(".btn").forEach(b => top.insertBefore(b, top.querySelector(".pin")));
+}
+PHONE.addEventListener("change", () => document.querySelectorAll(".card").forEach(placeTools));
 
 // Plotly (Linien und Balken, plotly.js-basic) wird erst nach der ersten Darstellung geladen, damit Text und Kennzahlen sofort erscheinen
 const PLOTLY_SRC = "plotly.min.js";
@@ -1426,7 +1443,7 @@ function build() {
   const sel = id => `.card[data-chart="${CSS.escape(id)}"]`, homes = new Map();
   const colSec = document.createElement("section"); colSec.id = "sammlung"; colSec.className = "collection"; topics.before(colSec);
   const updCount = () => document.querySelectorAll(".colllink").forEach(a => a.textContent = COLTXT.title + (mine.length ? ` (${mine.length})` : ""));
-  const pinLab = b => { const on = mine.includes(b.dataset.chart); b.textContent = (on ? "★ " : "☆ ") + (on ? COLTXT.pinned : COLTXT.pin); b.setAttribute("aria-pressed", String(on)); };
+  const pinLab = b => { const on = mine.includes(b.dataset.chart); b.textContent = on ? "★" : "☆"; b.title = on ? COLTXT.pinned : COLTXT.pin; b.setAttribute("aria-label", b.title); b.setAttribute("aria-pressed", String(on)); };
   const resize = els => requestAnimationFrame(() => { if (window.Plotly) els.forEach(cd => cd.querySelectorAll(".js-plotly-plot").forEach(p => { try { Plotly.Plots.resize(p); } catch (e) {} })); });
   const restore = () => { const back = [...homes.keys()]; homes.forEach((ph, cd) => ph.replaceWith(cd)); homes.clear(); resize(back); };
   const showColl = ids => {
@@ -1435,7 +1452,7 @@ function build() {
     colSec.innerHTML = `<h2>${esc(COLTXT.title)}</h2><p class="tnote">${esc(shared ? COLTXT.shared : ids.length ? COLTXT.intro : COLTXT.empty)}${gone ? " " + esc(COLTXT.gone(gone)) : ""}</p><p class="colbar"></p><div class="charts collcharts"></div>`;
     const bar = colSec.querySelector(".colbar"), wrapC = colSec.querySelector(".collcharts");
     const btn = (txt, f) => { const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = txt; b.onclick = f; bar.appendChild(b); return b; };
-    if (shared && shared.some(id => !mine.includes(id))) btn(COLTXT.take, () => { mine = [...new Set([...mine, ...shared])]; colSave(mine); document.querySelectorAll("h3 .pin").forEach(pinLab); updCount(); location.hash = "#sammlung"; });
+    if (shared && shared.some(id => !mine.includes(id))) btn(COLTXT.take, () => { mine = [...new Set([...mine, ...shared])]; colSave(mine); document.querySelectorAll(".htools .pin").forEach(pinLab); updCount(); location.hash = "#sammlung"; });
     if (found.length) {
       const url = location.href.split("#")[0] + "#sammlung=" + found.map(cd => encodeURIComponent(cd.dataset.chart)).join(",");
       const lb = btn(COLTXT.link, () => (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => { lb.textContent = COLTXT.copied; }, () => prompt(COLTXT.link, url)));
@@ -1446,10 +1463,13 @@ function build() {
     document.body.classList.add("coll"); resize(found); scrollTo(0, 0);
   };
   const hideColl = () => { restore(); colSec.innerHTML = ""; document.body.classList.remove("coll"); };
-  document.querySelectorAll(".card[data-chart] > h3").forEach(h => { const b = document.createElement("button"); b.type = "button"; b.className = "pin"; b.dataset.chart = h.parentNode.dataset.chart; pinLab(b);
+  document.querySelectorAll(".card[data-chart] .htools").forEach(h => { const b = document.createElement("button"); b.type = "button"; b.className = "pin"; b.dataset.chart = h.closest(".card").dataset.chart; pinLab(b);
     b.onclick = () => { const id = b.dataset.chart; mine = mine.includes(id) ? mine.filter(x => x !== id) : [...mine, id]; colSave(mine);
-      document.querySelectorAll(`h3 .pin[data-chart="${CSS.escape(id)}"]`).forEach(pinLab); updCount(); if (document.body.classList.contains("coll") && !shared) showColl(mine); };
+      document.querySelectorAll(`.htools .pin[data-chart="${CSS.escape(id)}"]`).forEach(pinLab); updCount(); if (document.body.classList.contains("coll") && !shared) showColl(mine); };
     h.appendChild(b); });
+  // Höhe der Kopfzeile für die stehenbleibenden Abschnittsfragen
+  const setHdr = () => document.documentElement.style.setProperty("--hdr", document.querySelector("header").offsetHeight + "px");
+  setHdr(); addEventListener("resize", setHdr);
   const route = () => { const h = location.hash;
     if (h.startsWith("#sammlung=")) { shared = h.slice(10).split(",").map(x => { try { return decodeURIComponent(x); } catch (e) { return ""; } }).filter(Boolean); showColl(shared); }
     else if (h === "#sammlung") { shared = null; showColl(mine); }
