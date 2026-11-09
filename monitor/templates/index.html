@@ -665,7 +665,8 @@ function multiplesChart(el, c) {
     const box = document.createElement("div");
     const mean = (k, txt) => `${txt} ${fmtU(avg(vals.slice(-k)), d, un)}`;  // Mittel je Frequenz: Quartale nicht als Monate zählen
     const sub = c.freq === "Q" ? mean(4, MTXT.q) : c.freq === "A" ? "" : c.freq === "D" ? mean(4, MTXT.w[0]) + ", " + mean(52, MTXT.w[1]) : mean(nM(3), MTXT.m[0]) + ", " + mean(nM(12), MTXT.m[1]);
-    const head = last ? ` ${fmtU(last[0], d, un)} ${tendHtml(tend, isBad(c, s.id))} ${esc(perIn(last[1], c.freq))}${sub ? `<br><span class="mtsub">${sub}</span>` : ""}` : "";
+    const sg = (c.signed || []).includes(s.id) && last && last[0] > 0 ? "+" : "";  // Abweichungen mit Vorzeichen, etwa +1,3 °C
+    const head = last ? ` ${sg}${fmtU(last[0], d, un)} ${c.no_tend ? "" : tendHtml(tend, isBad(c, s.id))} ${esc(perIn(last[1], c.freq))}${sub ? `<br><span class="mtsub">${sub}</span>` : ""}` : "";
     box.innerHTML = `<p class="mt"><b>${esc(s.label)}</b>${head}</p>`;
     const m = document.createElement("div"); m.className = "mini"; box.appendChild(m); grid.appendChild(box);
     const sm = y => c.ma3 ? ma3(y) : y, ht = `%{x|${HFMT[c.freq] || "%Y"}}: %{y:,.${c.decimals}f}`;
@@ -677,8 +678,9 @@ function multiplesChart(el, c) {
     if (c.ref != null && c.ref !== 0) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: c.ref, y1: c.ref, line: { color: PAL[1], width: 1, dash: "dash" } });
     if (rf != null && rf !== 0) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: rf, y1: rf, line: { color: "#595959", width: 1, dash: "dash" } });  // Bezug je Feld, etwa 100 % des Mittels
     if (c._rec ?? c.recessions_on) recIn(c, r).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak < r[0] ? r[0] : rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.22)", line: { width: 0 }, layer: "below" }));
-    const L = baseLayout(m);
-    Object.assign(L, { margin: { l: 2, r: 2, t: 4, b: 20 }, showlegend: false, shapes, hovermode: "closest", font: { family: HS.font, size: 12 },
+    const L = baseLayout(m), rl = (c.ref_labels || {})[s.id];  // Bezugslinie benennen, etwa „Mittel 1991–2020“
+    const annotations = rl ? [{ xref: "paper", yref: "y", x: 0.01, y: rf ?? c.ref ?? 0, text: esc(rl), showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 11, color: "#595959" }, bgcolor: "rgba(255,255,255,0.8)" }] : [];
+    Object.assign(L, { margin: { l: 2, r: 2, t: 4, b: 20 }, showlegend: false, shapes, annotations, hovermode: "closest", font: { family: HS.font, size: 12 },
       xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, fixedrange: true, ticks: "" },
       yaxis: { side: "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showticklabels: true, showgrid: true, gridcolor: "#e6e6e6", zeroline: false, fixedrange: true, automargin: true } });
     Plotly.newPlot(m, traces, L, CFG);

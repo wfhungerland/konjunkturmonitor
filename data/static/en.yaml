@@ -623,8 +623,8 @@ series:
   fx_chf: {title: "ECB reference rate: Swiss francs per euro", label: "Swiss franc", unit: "CHF per €", adjustment: "not adjusted"}
   fx_eer41: {title: "Nominal effective exchange rate of the euro against 41 trading partners (ECB, EER-41)", label: "Against 41 trading partners", unit: "Index 1999 Q1 = 100", adjustment: "not adjusted"}
   fx_eer18: {title: "Nominal effective exchange rate of the euro against 18 trading partners (ECB, EER-18)", label: "Against 18 trading partners", unit: "Index 1999 Q1 = 100", adjustment: "not adjusted"}
-  de_temp_anom: {title: "Air temperature in Germany, deviation from the 1991–2020 average", label: "Temperature", unit: "°C", note: "Area average for Germany from the German Weather Service (DWD); deviation from the average for the same calendar month 1991 to 2020.", adjustment: "not adjusted"}
-  de_rain_pct: {title: "Precipitation in Germany in % of the 1991–2020 average", label: "Precipitation", unit: "% of 1991–2020 average", note: "Area average for Germany from the German Weather Service (DWD); in % of the average for the same calendar month 1991 to 2020.", adjustment: "not adjusted"}
+  de_temp_anom: {title: "Air temperature in Germany, deviation from the 1991–2020 average", label: "Temperature, deviation from average", unit: "°C", note: "Area average for Germany from the German Weather Service (DWD); deviation from the average for the same calendar month 1991 to 2020.", adjustment: "not adjusted"}
+  de_rain_pct: {title: "Precipitation in Germany in % of the 1991–2020 average", label: "Precipitation in % of the usual amount", unit: "% of 1991–2020 average", note: "Area average for Germany from the German Weather Service (DWD); in % of the average for the same calendar month 1991 to 2020.", adjustment: "not adjusted"}
   hist_rr_deu: {title: "Real interest rate Germany, long series", label: "Real interest rate", unit: "%"}
   hist_debt_deu: {title: "Government debt Germany, long series", label: "Government debt", unit: "% of GDP"}
   hist_rgdppc_deu: {title: "Real GDP per capita Germany, long series", label: "Growth per capita, ten-year average", unit: "% p. a."}
@@ -888,6 +888,8 @@ names:
     "16": "Thuringia"
 # Feste Beschriftungen und Kalendertermine (deutsch: englisch), für Grafiken, Kalender und Gruppen
 labels:
+  "Temperatur, Abweichung vom Mittel": "Temperature, deviation from average"
+  "Niederschlag in % der üblichen Menge": "Precipitation in % of the usual amount"
   "Mittel 2015–2019": "2015–2019 average"
   "Referenzwert −3 %": "Reference value −3%"
   "Referenzwert 60 %": "Reference value 60%"

@@ -780,6 +780,10 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                 tg["base"], tg["label"] = tg.get("base_en", tg.get("base")), tg.get("label_en", tg.get("label"))
                 if o.get("caption"):
                     c["caption"] = f"{c.get('caption', '')} View “{tg['label']}”: {o['caption']}".strip()
+    for t in p["topics"]:  # beschriftete Bezugslinien
+        for c in t["charts"]:
+            if c.get("ref_labels_en"):
+                c["ref_labels"] = c["ref_labels_en"]
     for q in p.get("questions") or []:
         q["ask"] = tr.get("questions", q["id"], "ask", q["ask"])
         if q["id"] in ans:
