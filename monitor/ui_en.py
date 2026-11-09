@@ -162,7 +162,7 @@ PAIRS: list[tuple[str, str]] = [
     (" Über „Ausschläge und Sondereffekte“ erscheinen nummerierte, gepunktete Linien an den betroffenen Monaten.", " “Outliers and special effects” shows numbered dotted lines at the months concerned."),
     ('" (automatisch markiert)"', '" (flagged automatically)"'),
     ("% ggü. Vormonat${", "% on previous month${"),
-    ('const KERN = { more: "Mehr Zahlen" };', 'const KERN = { more: "More figures" };'),
+    ('const KERN = { more: "Weiterlesen" };', 'const KERN = { more: "Read more" };'),
     ('const EMB = { label: "Einbetten", title: "HTML-Code kopieren, um diese Abbildung auf einer eigenen Seite einzubetten", done: "Code kopiert", src: "Konjunkturmonitor", full: "ganze Seite" };',
      'const EMB = { label: "Embed (German)", title: "Copy HTML code to embed this chart on your own page (German version)", done: "Code copied", src: "Konjunkturmonitor", full: "full page" };'),
     ('const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "Struktur", service: "Service" }, overview: "Übersicht", brief: "Das Wichtigste", all: "Alles zeigen",\n  week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü", contents: "Inhalt" };',

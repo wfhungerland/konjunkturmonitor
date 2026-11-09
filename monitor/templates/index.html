@@ -85,20 +85,23 @@
   .cside { order: 3; }
   @media (min-width: 601px) {
     .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr); }
-    .gut { order: 0; flex-direction: column; flex-wrap: nowrap; align-items: flex-start; gap: 0; margin-top: 0; }
+    .gut { order: 0; flex-direction: column; flex-wrap: nowrap; align-items: center; text-align: center; gap: 0; margin-top: 0; }
     .gut .cno { display: block; font: 600 19px/1.2 var(--ff); color: var(--dark); }
     .cin .abbno { display: none; }
     .cside { grid-column: 2; }
   }
   @media (min-width: 980px) { .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr) 290px; } .cside { grid-column: 3; grid-row: 1; } .card.full .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr); } .card.full .cside { grid-column: 2; grid-row: auto; max-width: 52em; } }
-  :root { --gutw: 56px; }
+  :root { --gutw: 64px; }
   .chead { display: flex; justify-content: space-between; align-items: flex-start; gap: 4px 16px; } .ctitle { min-width: 0; }
   .htools { display: flex; flex-direction: column; align-items: stretch; gap: 6px; margin-left: auto; }
-  .htools .btn, .tools .btn { border: 1px solid var(--line); border-radius: 0; background: none; padding: 2px 10px; color: var(--text); font: 13px/1.35 var(--ff); text-align: center; cursor: pointer; white-space: nowrap; }
-  .htools .btn:hover, .tools .btn:hover { border-color: var(--grey); text-decoration: none; color: var(--text); }
-  .htools .btn[aria-pressed="true"], .tools .btn[aria-pressed="true"] { border-color: var(--text); background: #f2f2f2; }
+  /* Schalter: nur Text mit kleinem Quadrat davor, leer = aus, gefüllt = an */
+  .htools { align-items: flex-start; gap: 3px; }
+  .htools .btn, .tools .btn { display: inline-flex; align-items: center; gap: 7px; border: 0; border-radius: 0; background: none; padding: 0; color: var(--text); font: 13px/1.4 var(--ff); cursor: pointer; white-space: nowrap; }
+  .htools .btn::before, .tools .btn::before { content: ""; width: 8px; height: 8px; border: 1.5px solid currentColor; box-sizing: border-box; flex: none; }
+  .htools .btn:hover, .tools .btn:hover { color: #0070C0; text-decoration: none; background: none; }
+  .htools .btn[aria-pressed="true"]::before, .tools .btn[aria-pressed="true"]::before { background: #0070C0; border-color: #0070C0; }
   .card .src, .card .nxtline { text-align: left; }
-  @media (min-width: 601px) { .card .src, .card .nxtline { text-align: right; } .intro, .secmain > .answer, .card > .cask, .card > .ctext { margin-left: calc(var(--gutw) + 22px); } }
+  @media (min-width: 601px) { .card .src, .card .nxtline { text-align: right; } }
   .card .nxtline { font: 13px/1.4 var(--ff); color: var(--grey); margin-top: 6px; } .card .nxtline a { color: var(--grey); }
   .card .sub, .card .unit, .card .cap, .card .src { font: 13.5px/1.4 var(--ff); color: var(--muted); }
   .card .unit { text-align: right; margin-top: 2px; }
@@ -236,6 +239,7 @@
   .search li.on, .search li:hover { background: var(--tint); }
   .search li mark { background: none; color: var(--accent); font-weight: 600; }
   .search + .expandall { margin-left: 0; }
+  @media (min-width: 1000px) { header .bar { position: relative; } .search { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(380px, 34vw); margin: 0; } }  /* Suche in der Mitte der Kopfleiste */
   @media (max-width: 600px) { .search { order: 6; width: 100%; margin: 2px 0 0; } .search input { width: 100%; } .search ul { left: 0; width: auto; } }
   @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
   .parthead { margin: 96px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 17px var(--ff); color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
@@ -334,11 +338,12 @@
   .tools { gap: 4px 18px; }
   .tools details.dl > summary, .answer button.copy, .ctext button.copy { border: 0; background: none; padding: 0; color: var(--grey); font-size: 13.5px; }
   .tools details.dl > summary:hover, .answer button.copy:hover, .ctext button.copy:hover { color: var(--accent); text-decoration: underline; }
+  .answer button.copy, .ctext button.copy { font-size: 12px; opacity: .45; } .answer button.copy:hover, .ctext button.copy:hover { opacity: 1; text-decoration: none; }
   .tools:empty { display: none; }
   .rawtoggle { margin: 0; }
   .card .ctext .sent, .answer .sent { display: inline; }
-  button.copy1 { font: 12px/1 var(--ff); color: var(--accent); background: none; border: 0; padding: 0 2px; margin: 0 2px 0 1px; cursor: pointer; vertical-align: 1px; opacity: .75; }
-  button.copy1:hover { opacity: 1; }
+  button.copy1 { font: 10.5px/1 var(--ff); color: var(--grey); background: none; border: 0; padding: 0 2px; margin: 0 2px 0 1px; cursor: pointer; vertical-align: 1px; opacity: .45; }
+  button.copy1:hover, button.copy1:focus-visible { opacity: 1; color: var(--accent); }
   .cbody { margin-top: 4px; }
   .cside { font: 13.5px/1.45 var(--ff); display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
   @media (min-width: 980px) { .cside { margin-top: 0; } .card.full .cside { margin-top: 10px; } }  /* beginnt auf Höhe des Titels */
@@ -352,7 +357,7 @@
   .tside { flex: 0 1 260px; } .tside .tlegend { justify-content: flex-start; margin-bottom: 6px; }
   .tlist { list-style: none; padding: 0; margin: 4px 0; columns: 1; font-size: 13.5px; }
   .tlist li { display: flex; justify-content: space-between; gap: 8px; break-inside: avoid; white-space: nowrap; }
-  .gut .pin { font: 17px/1.5 var(--ff); background: none; border: 0; color: var(--grey); cursor: pointer; padding: 0; } .gut .pin:hover { color: #0070C0; }
+  .gut .pin { font: 17px/1.5 var(--ff); background: none; border: 0; color: #0070C0; cursor: pointer; padding: 0; }
   .gut .pin[aria-pressed="true"] { color: #0070C0; }  /* royalblau wie die Pfeile nach oben */
   .collection:empty { display: none; }
   .collection { margin: 8px 0 32px; } .collection .colbar { display: flex; flex-wrap: wrap; gap: 8px 16px; }
@@ -457,7 +462,7 @@ const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten
 const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
 const NAVTXT = { groups: { lage: "Lage", konjunktur: "Konjunktur", struktur: "Struktur", service: "Service" }, overview: "Übersicht", brief: "Das Wichtigste", all: "Alles zeigen",
   week: "Diese Woche", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü", contents: "Inhalt" };
-const KERN = { more: "Mehr Zahlen" };
+const KERN = { more: "Weiterlesen" };
 const ANH = { show: "Abbildungen anzeigen" };
 const LONGTXT = { crisis: "Bankenkrisen", rec: "Rezessionen", dec: "Mittel" };
 const VIEWTXT = { raw: "Monatswerte", rawt: "Dünne Linie mit den einzelnen Monatswerten zeigen", edge: "Aktueller Rand", edget: "Jüngste Werte an den Linienenden zeigen", rec: "Rezessionen" };
