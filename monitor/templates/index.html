@@ -828,6 +828,24 @@ function dumbbellChart(el, c) {
   Plotly.newPlot(el, traces, L, CFG);
 }
 
+// Rohstoffpreise nach El Niño: je Rohstoff zwei Balken, El Niño (dunkel) und neutral (grau); Stern = deutlicher Unterschied
+function ensoCommChart(el, c) {
+  const E = c.enso, rows = E.rows, lab = rows.map(r => esc(r.label) + (r.sig ? " *" : ""));
+  const tr = (k, name, col) => ({ type: "bar", orientation: "h", y: lab, x: rows.map(r => r[k]), name, marker: { color: col },
+    text: rows.map(r => fmt(r[k], 1)), textposition: "outside", cliponaxis: false, textfont: { family: HS.font, size: 11, color: "#404040" },
+    hovertemplate: `%{y}: %{x:,.1f} %<extra>${esc(name)}</extra>` });
+  const L = baseLayout(el), v = rows.flatMap(r => [r.nino, r.neutral]), lo = Math.min(0, ...v), hi = Math.max(0, ...v), p = (hi - lo) * 0.12;
+  Object.assign(L, { height: Math.max(300, 46 * rows.length + 90), barmode: "group", bargap: 0.3, bargroupgap: 0.05, hovermode: "closest", showlegend: true,
+    margin: { l: 6, r: 24, t: 34, b: 30 }, legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { size: 12 }, traceorder: "normal", itemclick: false, itemdoubleclick: false },
+    shapes: [{ type: "line", xref: "x", yref: "paper", x0: 0, x1: 0, y0: 0, y1: 1, line: { color: HS.zero, width: 1 } }],
+    xaxis: { range: [lo - p, hi + p], showgrid: true, gridcolor: HS.gridH, zeroline: false, fixedrange: true, ticksuffix: " %" },
+    yaxis: { automargin: true, fixedrange: true, ticks: "", showgrid: false, zeroline: false } });
+  el.style.aspectRatio = "auto"; el.style.height = L.height + "px";
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+  Plotly.newPlot(el, [tr("neutral", ENSO_TXT.neutral, "#a6a6a6"), tr("nino", ENSO_TXT.nino, PAL[0])], L, CFG);
+}
+const ENSO_TXT = { nino: "nach El-Niño-Monaten", neutral: "nach neutralen Monaten" };
+
 // Ereignisstudie: je Feld eine Größe, Monat 0 = 100, graue Fläche = Spanne früherer Ereignisse, dick = laufendes Ereignis
 function eventChart(el, c) {
   el.classList.add("multi");
@@ -1170,6 +1188,7 @@ function render(ch) {
   else if (c.type === "heat") heatChart(ch, c);
   else if (c.type === "heatbars") heatbarsChart(ch, c);
   else if (c.type === "event") eventChart(ch, c);
+  else if (c.type === "enso_comm") ensoCommChart(ch, c);
   else if (c.type === "calendar") calendarChart(ch, c);
   else if (c.type === "seasonal") seasonalChart(ch, c); else if (c.type === "tiles") tilesChart(ch, c);
   else if (c.multiples && (DATA.layout || {}).small_multiples && c.series && (c.series.length > 2 || c.own_scale)) multiplesChart(ch, c);

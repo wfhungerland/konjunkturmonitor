@@ -98,6 +98,7 @@ names:
     "16": Thüringen
 
 charts:
+  enso_comm: {title: "Rohstoffpreise nach El Niño und in neutralen Phasen", decimals: 1}
   gdp_qoq: {title: "Wirtschaftsleistung, Veränderung gegenüber dem Vorquartal", decimals: 1}
   gdp_contrib: {title: "Woraus das Wachstum besteht", kind: stacked, decimals: 1}
   gdp_level: {title: "Wirtschaftsleistung, Niveau", decimals: 0}
@@ -3079,3 +3080,116 @@ series:
     start: "1850-01-01"
     chart: long_rr
     label: "Realzins"
+
+# Weltmarktpreise der Weltbank (Pink Sheet) für die El-Niño-Auswertung
+  - id: wb_soybeans
+    block: wetter
+    source: static
+    key: wb_soybeans
+    params: {source_name: "Weltbank, Commodity Price Data (Pink Sheet)"}
+    license: "CC BY 4.0 (Weltbank)"
+    title: "Weltmarktpreis Sojabohnen (Weltbank: Soybeans)"
+    unit: "US-Dollar ($/mt)"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1970-01-01"
+    stale_after_months: 3
+    label: "Sojabohnen"
+
+  - id: wb_maize
+    block: wetter
+    source: static
+    key: wb_maize
+    params: {source_name: "Weltbank, Commodity Price Data (Pink Sheet)"}
+    license: "CC BY 4.0 (Weltbank)"
+    title: "Weltmarktpreis Mais (Weltbank: Maize)"
+    unit: "US-Dollar ($/mt)"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1970-01-01"
+    stale_after_months: 3
+    label: "Mais"
+
+  - id: wb_rice
+    block: wetter
+    source: static
+    key: wb_rice
+    params: {source_name: "Weltbank, Commodity Price Data (Pink Sheet)"}
+    license: "CC BY 4.0 (Weltbank)"
+    title: "Weltmarktpreis Reis (Weltbank: Rice, Thai 5%)"
+    unit: "US-Dollar ($/mt)"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1970-01-01"
+    stale_after_months: 3
+    label: "Reis"
+
+  - id: wb_wheat
+    block: wetter
+    source: static
+    key: wb_wheat
+    params: {source_name: "Weltbank, Commodity Price Data (Pink Sheet)"}
+    license: "CC BY 4.0 (Weltbank)"
+    title: "Weltmarktpreis Weizen (Weltbank: Wheat, US HRW)"
+    unit: "US-Dollar ($/mt)"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1970-01-01"
+    stale_after_months: 3
+    label: "Weizen"
+
+  - id: wb_cocoa
+    block: wetter
+    source: static
+    key: wb_cocoa
+    params: {source_name: "Weltbank, Commodity Price Data (Pink Sheet)"}
+    license: "CC BY 4.0 (Weltbank)"
+    title: "Weltmarktpreis Kakao (Weltbank: Cocoa)"
+    unit: "US-Dollar ($/kg)"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1970-01-01"
+    stale_after_months: 3
+    label: "Kakao"
+
+  - id: wb_coffee
+    block: wetter
+    source: static
+    key: wb_coffee
+    params: {source_name: "Weltbank, Commodity Price Data (Pink Sheet)"}
+    license: "CC BY 4.0 (Weltbank)"
+    title: "Weltmarktpreis Kaffee (Robusta) (Weltbank: Coffee, Robusta)"
+    unit: "US-Dollar ($/kg)"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1970-01-01"
+    stale_after_months: 3
+    label: "Kaffee (Robusta)"
+
+  - id: wb_palmoil
+    block: wetter
+    source: static
+    key: wb_palmoil
+    params: {source_name: "Weltbank, Commodity Price Data (Pink Sheet)"}
+    license: "CC BY 4.0 (Weltbank)"
+    title: "Weltmarktpreis Palmöl (Weltbank: Palm oil)"
+    unit: "US-Dollar ($/mt)"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1970-01-01"
+    stale_after_months: 3
+    label: "Palmöl"
+
+  - id: wb_sugar
+    block: wetter
+    source: static
+    key: wb_sugar
+    params: {source_name: "Weltbank, Commodity Price Data (Pink Sheet)"}
+    license: "CC BY 4.0 (Weltbank)"
+    title: "Weltmarktpreis Zucker (Weltbank: Sugar, world)"
+    unit: "US-Dollar ($/kg)"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1970-01-01"
+    stale_after_months: 3
+    label: "Zucker"

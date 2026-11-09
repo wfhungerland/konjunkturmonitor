@@ -89,6 +89,7 @@ WORDS = [
     ("Europäische Kommission", "European Commission"), ("EU-Kommission", "European Commission"),
     ("des Statistischen Bundesamts", "of the Federal Statistical Office"), ("Statistisches Bundesamt", "Federal Statistical Office"),
     ("Bundesagentur für Arbeit", "Federal Employment Agency"), ("Bundesnetzagentur", "Federal Network Agency"),
+    ("Weltbank", "World Bank"), ("gemeinfrei", "public domain"),
     ("Deutscher Wetterdienst", "German Weather Service"), ("Sachverständigenrat", "German Council of Economic Experts"),
     ("Frühjahrsprognose", "spring forecast"), ("Herbstprognose", "autumn forecast"), ("Herbstprojektion", "autumn projection"),
     ("Frühjahrsprojektion", "spring projection"), ("Konjunkturprognose", "economic forecast"), ("Gemeinschaftsdiagnose", "Joint Economic Forecast"),
@@ -518,6 +519,22 @@ def chart_sentences_en(c: dict) -> list[str]:
         return []
     if sp is not None:
         return sp
+    if typ == "enso_comm" and c.get("enso"):
+        E = c["enso"]
+        for r in E["rows"]:  # Rohstoffnamen englisch (die englische Fassung ist eine eigene Kopie)
+            r["label"] = (c.get("items_en") or {}).get(r["id"], r["label"])
+        und = lambda xs: ", ".join(xs[:-1]) + " and " + xs[-1] if len(xs) > 1 else xs[0]
+        up = [r["label"] for r in reversed(E["rows"]) if r["sig"] and r["nino"] > r["neutral"]]
+        dn = [r["label"] for r in E["rows"] if r["sig"] and r["nino"] < r["neutral"]]
+        span = f"From {E['from'][:4]} to {E['to'][:4]}"
+        out = [f"{span}, prices of {und(up)} rose clearly more {E['lag']} months after El Niño months than after neutral months." if up else
+               f"{span}, no commodity rose clearly more {E['lag']} months after El Niño months than after neutral months."]
+        if dn:
+            out.append(f"For {und(dn)} the rise after El Niño was clearly weaker.")
+        top = E["rows"][-1]
+        if top["nino"] > top["neutral"]:
+            out.append(f"The largest lead after El Niño is for {top['label']}: {num(top['nino'], 1, True)}% on a year earlier after El Niño, {num(top['neutral'], 1, True)}% after neutral months.")
+        return out
     halves = [s for s in (c.get("series") or []) if isinstance(s, dict) and s.get("style") == "half" and s.get("y")]
     if halves:  # erstes Halbjahr eines Jahres, etwa BIP Berlin: eigener Satz
         y0 = halves[0]
