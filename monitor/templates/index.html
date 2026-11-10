@@ -935,7 +935,24 @@ function seasonalChart(el, c) {
   if (ya.zero) shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: HS.zero, width: 1 } });
   if (c._rec ?? c.recessions_on) recIn(c, r).forEach(rc => shapes.push({ type: "rect", xref: "x", yref: "paper", x0: rc.peak < r[0] ? r[0] : rc.peak, x1: rc.trough, y0: 0, y1: 1, fillcolor: "rgba(90,90,90,0.22)", line: { width: 0 }, layer: "below" }));
   const L = baseLayout(el);
-  Object.assign(L, { shapes,
+  // Reihennamen rechts am Linienende wie bei den übrigen Liniengrafiken; schmal: Legende
+  const annotations = [], wide = (DATA.layout || {}).direct_labels && (el.clientWidth || 600) >= 480;
+  if (wide) {
+    const plotH = Math.max(140, (el.clientHeight || 300) - 34 - 24), pyOf = v => (1 - (v - ya.range[0]) / (ya.range[1] - ya.range[0])) * plotH, vOf = py => ya.range[0] + (1 - py / plotH) * (ya.range[1] - ya.range[0]);
+    const wrap2 = t => { if (t.length <= 24) return [t]; const m = t.length / 2; let k = -1; for (let q = 0; q < t.length; q++) if (t[q] === " " && (k < 0 || Math.abs(q - m) < Math.abs(k - m))) k = q; return k < 0 ? [t] : [t.slice(0, k), t.slice(k + 1)]; };
+    const ends = traces.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; if (tr.y[i] == null) return null; const lines = wrap2(tr.name);
+      return { tr, i, y: tr.y[i], py: pyOf(tr.y[i]), h: lines.length * 14, w: Math.max(...lines.map(l => l.length)) * 6.3 + 4, text: lines.map(esc).join("<br>") }; }).filter(Boolean).sort((p, q) => p.py - q.py);
+    ends.forEach(e => e.ly = e.py);
+    for (let k = 1; k < ends.length; k++) { const g = (ends[k - 1].h + ends[k].h) / 2 + 4; if (ends[k].ly - ends[k - 1].ly < g) ends[k].ly = ends[k - 1].ly + g; }
+    const lo = ends[ends.length - 1], over = lo ? lo.ly + lo.h / 2 - plotH : 0; if (over > 0) ends.forEach(e => e.ly -= over);
+    const hi = ends[0], under = hi ? hi.h / 2 - hi.ly : 0; if (under > 0) ends.forEach(e => e.ly += under);
+    const tEnd = Date.parse(r[1]), tail = new Date(tEnd + (tEnd - Date.parse(r[0])) * 0.012).toISOString().slice(0, 10);
+    ends.forEach(e => annotations.push({ xref: "x", yref: "y", x: e.tr.x[e.i], y: e.y, axref: "x", ayref: "y", ax: tail, ay: vOf(e.ly), showarrow: true, arrowhead: 0, arrowwidth: 0.6,
+      arrowcolor: "rgba(150,150,150,0.7)", standoff: 2, text: e.text, xanchor: "left", yanchor: "middle", align: "left", font: { family: HS.font, size: 12, color: e.tr.line.color === "#7f7f7f" ? "#595959" : e.tr.line.color } }));
+    L.margin = Object.assign({}, L.margin, { r: Math.max(...ends.map(e => e.w)) + 16 });
+    L.showlegend = false;
+  }
+  Object.assign(L, { shapes, annotations,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa.tickvals, ticktext: xa.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true },
     yaxis: { side: "left", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
   Plotly.newPlot(el, traces, L, CFG);
