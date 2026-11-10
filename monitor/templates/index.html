@@ -53,6 +53,7 @@
   /* Themen */
   section.topic { margin-top: 112px; scroll-margin-top: var(--hdr, 64px); }
   .card { scroll-margin-top: calc(var(--hdr, 64px) + var(--h2, 46px) + 14px); }  /* Sprung auf eine Abbildung: unter Kopf und stehender Kapitelüberschrift */
+  section.weekrev, #quellen, #kalender { scroll-margin-top: calc(var(--hdr, 64px) + 12px); }  /* Sprung aus dem Menü: nicht unter den Kopf */
   /* Breite Bildschirme: Abbildungsübersicht des Abschnitts läuft links mit */
   .rail { display: none; position: sticky; top: calc(var(--hdr, 64px) + var(--h2, 46px) + 8px); align-self: start; max-height: calc(100vh - var(--hdr, 64px) - var(--h2, 46px) - 24px); overflow: auto; font: 13.5px/1.35 var(--ff); padding-top: 2px; }
   .rail .rh { font: 600 16.5px/1.25 var(--ff); color: var(--dark); margin: 0 0 8px; }
@@ -454,6 +455,9 @@ const fmt = (v, d = 1) => (v < 0 ? "-" : "") + Math.abs(v).toLocaleString("de-DE
 const shortUnit = u => u.startsWith("%") ? "%" : u.startsWith("Pp") || u.startsWith("Saldo") ? "Pp" : u.startsWith("Index") ? "" : u.startsWith("Tsd") ? "Tsd." : u.startsWith("Punkte") ? "Pkt." : u;
 // Wert mit Einheit; Salden (Anteil positiver minus negativer Antworten, in Prozentpunkten) stets mit Vorzeichen
 const fmtU = (v, d, unit, bare) => { v = +v.toFixed(d); if (v === 0) v = 0; const u = shortUnit(unit || ""), sg = (unit || "").startsWith("Saldo") && v > 0 ? "+" : ""; return sg + fmt(v, d) + (u && (!bare || u.length <= 3) ? "\u202f" + u : ""); };
+// Text für Plotly-Beschriftungen nach verfügbarer Breite (px) umbrechen
+const wrapPx = (t, px, cw = 6.6) => { const n = Math.max(12, Math.floor(px / cw)); if (t.length <= n) return t; const out = []; let line = "";
+  t.split(" ").forEach(w => { if (line && (line + " " + w).length > n) { out.push(line); line = w; } else line = line ? line + " " + w : w; }); if (line) out.push(line); return out.join("<br>"); };
 const unitLabel = u => (u || "").startsWith("Saldo") ? "Saldo in Pp (Anteil positiver minus Anteil negativer Antworten)" + u.slice(5).replace(/^ in Pp/, "") : (u || "");
 const MONTHS_L = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 // Zeitraum ausgeschrieben: „Oktober 2026“, „3. Quartal 2026“, „2025“, „Woche bis 4. November 2026“; perIn mit Präposition
@@ -625,7 +629,7 @@ function timeChart(el, c) {
   const LY = DATA.layout || {}, annotations = annotations0;
   if (c.threshold != null && c.threshold_label) annotations.push({ xref: "paper", yref: "y", x: 0.005, y: c.threshold, text: esc(c.threshold_label), showarrow: false, xanchor: "left", yanchor: "bottom",
     font: { family: HS.font, size: 12, color: WARN }, bgcolor: "rgba(255,255,255,0.85)" });
-  if (c._zoom ?? c.zoom_default) annotations.push({ xref: "paper", yref: "paper", x: 0.005, y: 0.995, xanchor: "left", yanchor: "top", showarrow: false, text: SCALE_TXT.note.replace("{n}", c.zoom_years || 3),
+  if (c._zoom ?? c.zoom_default) annotations.push({ xref: "paper", yref: "paper", x: 0.005, y: 0.995, xanchor: "left", yanchor: "top", showarrow: false, text: SCALE_TXT.note.replace("{n}", c.zoom_years || 3).replace("; ", (el.clientWidth || 600) < 560 ? ";<br>" : "; "), align: "left",
     font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" });
   if (c.partial_last && bars.length) { const s = bars[0], j = s.x.length - 1; annotations.push({ xref: "x", yref: "y", x: s.x[j], y: s.y[j], text: SCALE_TXT.partial, showarrow: false, yanchor: "bottom", xanchor: "right", font: { family: HS.font, size: 11, color: "#595959" } }); }
   if (c.mad_band && bars.length) { // mittlere absolute Korrektur als graues Band
@@ -634,7 +638,8 @@ function timeChart(el, c) {
     annotations.push({ xref: "paper", yref: "y", x: 0.995, y: m, text: SCALE_TXT.mad.replace("{m}", fmt(m, 2)), showarrow: false, xanchor: "right", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); }
   (c.refs || []).forEach(q => { // Referenzwerte, etwa die Grenzen des Maastricht-Vertrags: grau gestrichelt mit Beschriftung
     shapes.push({ type: "line", xref: q.x0 ? "x" : "paper", yref: "y", x0: q.x0 || 0, x1: q.x0 ? r[1] : 1, y0: q.y, y1: q.y, line: { color: "#595959", width: 1, dash: "dash" } });  // x0: nur ab diesem Datum, etwa ein Jahresziel
-    annotations.push({ xref: q.x0 ? "x" : "paper", yref: "y", x: q.x0 || 0.005, y: q.y, text: esc(q.label), showarrow: false, xanchor: "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); });
+    const qr = q.x0 && (el.clientWidth || 600) < 560;  // schmal: am Linienende rechtsbündig, damit nichts abgeschnitten wird
+    annotations.push({ xref: q.x0 ? "x" : "paper", yref: "y", x: qr ? r[1] : q.x0 || 0.005, y: q.y, text: esc(q.label), showarrow: false, xanchor: qr ? "right" : "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); });
   (c._shownotes ? c.notes || [] : []).forEach((n, k) => { shapes.push({ type: "line", xref: "x", yref: "paper", x0: n.date, x1: n.date, y0: 0, y1: 1, line: { color: "#595959", width: 1, dash: "dot" } });
     annotations.push({ xref: "x", yref: "paper", x: n.date, y: 1, text: String(k + 1), showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" } }); });
   if (c.band && LY.compare_band) {
@@ -690,10 +695,11 @@ function timeChart(el, c) {
   const tickW0 = Math.max(...ya.ticktext.map(s => s.length)) * 7 + 10;  // Einheit bündig über den Achsenzahlen
   const axLeft = true;  // Werteachse immer links; rechts stehen die Reihennamen
   const legendShown = !direct && traces.filter(tr => tr.showlegend !== false).length > 1;  // mit Legende bleibt die Einheit über der Grafik
-  if (uEl && uEl.textContent && !legendShown) { annotations.push({ xref: "paper", yref: "paper", x: axLeft ? 0 : 1, y: 1, xanchor: axLeft ? "left" : "right", yanchor: "bottom", xshift: axLeft ? -tickW0 : tickW0, yshift: 6, showarrow: false, align: axLeft ? "left" : "right",
-    text: esc(uEl.textContent), font: { family: HS.font, size: 12, color: "#3f4752" } }); uEl.style.display = "none"; }
+  let uLines = 1;
+  if (uEl && uEl.textContent && !legendShown) { const ut = wrapPx(esc(uEl.textContent), (el.clientWidth || 600) - 10); uLines = ut.split("<br>").length; annotations.push({ xref: "paper", yref: "paper", x: axLeft ? 0 : 1, y: 1, xanchor: axLeft ? "left" : "right", yanchor: "bottom", xshift: axLeft ? -tickW0 : tickW0, yshift: 6, showarrow: false, align: axLeft ? "left" : "right",
+    text: ut, font: { family: HS.font, size: 12, color: "#3f4752" } }); uEl.style.display = "none"; }
   const L = baseLayout(el);
-  L.margin = Object.assign({}, L.margin, axLeft ? { l: tickW0, r: rMargin, t: Math.max(L.margin.t, 34) } : { r: Math.max(rMargin, tickW0), t: Math.max(L.margin.t, 34) });
+  L.margin = Object.assign({}, L.margin, axLeft ? { l: tickW0, r: rMargin, t: Math.max(L.margin.t, 34 + 15 * (uLines - 1)) } : { r: Math.max(rMargin, tickW0), t: Math.max(L.margin.t, 34 + 15 * (uLines - 1)) });
   const xa2 = xAxis(r[0], r[1], Math.max(120, (el.clientWidth || 500) - (axLeft ? tickW0 + rMargin : Math.max(rMargin, tickW0)) - 10));  // Jahreszahlen nach der tatsächlichen Zeichenbreite
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa2.tickvals, ticktext: xa2.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true, hoverformat: HFMT[c.freq] || "" },
@@ -817,7 +823,7 @@ function clockChart(el, c) {
       ...k.t.map((tt, i) => ({ tt, i })).filter(o => o.i === 0).map(o => ({ x: k.x[o.i], y: k.y[o.i], text: o.i === 0 ? `Start ${MONTHS_L[+o.tt.slice(5, 7) - 1]} ${o.tt.slice(0, 4)}` : o.tt.slice(0, 4), showarrow: true, arrowhead: 0, arrowcolor: "#a6a6a6", arrowwidth: 0.5, ax: -26, ay: 18, font: { family: HS.font, size: 12, color: "#595959" } })),
       ...[0.25, 0.5, 0.75].map(f => Math.max(1, Math.round(f * last))).map(i => ({ x: k.x[i], y: k.y[i], ax: k.x[i - 1], ay: k.y[i - 1], axref: "x", ayref: "y", xref: "x", yref: "y", showarrow: true, arrowhead: 2, arrowsize: 1.2, arrowwidth: 1.5, arrowcolor: "#6f8fb8", text: "" })),
       { x: m * 0.98, y: 0, text: "Lage besser →", showarrow: false, xanchor: "right", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#7f7f7f" } },
-      { x: 0, y: m * 0.8, text: "Erwartungen besser ↑", showarrow: false, xanchor: "left", yanchor: "top", font: { family: HS.font, size: 12, color: "#7f7f7f" } }] });
+      { x: 0, y: m * ((el.clientWidth || 600) < 480 ? 0.62 : 0.8), text: "Erwartungen besser ↑", showarrow: false, xanchor: "left", yanchor: "top", font: { family: HS.font, size: 12, color: "#7f7f7f" } }] });
   Plotly.newPlot(el, traces, L, CFG);
 }
 

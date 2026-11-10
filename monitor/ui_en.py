@@ -191,6 +191,7 @@ PAIRS: list[tuple[str, str]] = [
     ("const dd = s => `${+s.slice(8, 10)}.${+s.slice(5, 7)}.`;", "const dd = s => `${+s.slice(8, 10)} ${MONTHS[+s.slice(5, 7) - 1]}`;"),
     ('sub ?? "real, Monat 0 = Beginn des Ereignisses = 100; waagerecht: Monate seit Beginn"', 'sub ?? "real, month 0 = start of the event = 100; horizontal: months since start"'),
     ("`Zahl: Quote ${w.span} in %; Farbe: Veränderung ggü. dem Vorjahr in Pp`", "`Number: rate ${w.span} in %; colour: change on the previous year in pp`"),
+    ("`Veränderung ggü. denselben ${w.months} Monaten ein Jahr zuvor, %`", "`change on the same ${w.months} months a year earlier, %`"),
     ('diff ? "Jahr " + w.span', 'diff ? "Year " + w.span'),
     ('fmt(r.change, 1) + " Pp)"', 'fmt(r.change, 1) + " pp)"'),
     ('fmt(r.change, 1)} Pp)`', 'fmt(r.change, 1)} pp)`'),
