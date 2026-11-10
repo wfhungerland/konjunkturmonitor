@@ -81,6 +81,7 @@ PAIRS: list[tuple[str, str]] = [
     ("· Texte und Abbildungen: <a", "· Text and charts: <a"),
     # Kopfzeile, Navigation, Suche
     ('aria-label="Nach oben">↑ Nach oben</a>', 'aria-label="Back to top">↑ Top</a>'),
+    ('title="Nach oben">Konjunkturmonitor</a>', 'title="Back to top">Konjunkturmonitor</a>'),
     ('placeholder="Suchen, z. B. Inflation" aria-label="Abbildungen und Themen durchsuchen"', 'placeholder="Search, e.g. inflation" aria-label="Search charts and topics"'),
     ("<small>Keine Treffer</small>", "<small>No results</small>"),
     (': "Abschnitt"', ': "Section"'),
