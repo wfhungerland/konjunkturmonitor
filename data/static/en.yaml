@@ -792,6 +792,8 @@ geo:
 strings:
   # units
   "%": "%"
+  "% der Branchen": "% of industries"
+  "% der Branchen mit Zuwachs": "% of industries with growth"
   "% der Bruttowertschöpfung": "% of gross value added"
   "% der Erwerbspersonen": "% of labour force"
   "% der Kapazität": "% of capacity"
@@ -848,6 +850,7 @@ strings:
   "Regelsatz, Zentralstaat und nachgeordnete Ebenen": "standard rate, central and sub-central government"
   "Wochenwerte (Bundesbank)": "weekly data (Bundesbank)"
   "kalender- und saisonbereinigt (Destatis)": "calendar and seasonally adjusted (Destatis)"
+  "kalender- und saisonbereinigt (Eurostat)": "calendar and seasonally adjusted (Eurostat)"
   "nicht bereinigt": "not adjusted"
   "nominal": "nominal"
   "preis- und saisonbereinigt": "price and seasonally adjusted"
