@@ -1385,6 +1385,8 @@ def build_payload(root: Path = ROOT) -> dict:
                     c = dict(c, x_start=str(start))
             entry = dict(c, type=typ, title=(charts_cfg.get(c["chart"], {}) or {}).get("title", c.get("title", "")),
                          decimals=c.get("decimals", (charts_cfg.get(c["chart"], {}) or {}).get("decimals", 1)))
+            if c.get("attach"):  # Zusatzdaten aus data/static, etwa Sätze und Fundstellen für den Tooltip
+                entry["attach"] = json.loads((root / "data" / "static" / c["attach"]).read_text(encoding="utf-8"))
             if typ == "clock":
                 entry["clock"] = _clock(c, data)
                 entry["sources"] = ["Europäische Kommission, Unternehmensumfrage Industrie (Eurostat ei_bsin_m_r2)"]

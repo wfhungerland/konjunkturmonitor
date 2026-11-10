@@ -55,6 +55,7 @@ topics:
   aussichten: {title: "Outlook", ask: "What do the forecasts expect?"}
   struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
   staat: {title: "Government", ask: "What state are the public finances in?"}
+  sachverstaendigenrat: {title: "Council of Economic Experts", ask: "What did the Council of Economic Experts forecast and recommend?"}
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
 
 charts:
@@ -503,6 +504,32 @@ charts:
     ask: "When are which figures released?"
     caption: "Dates are estimated from the sources' usual release schedules and marked with a superscript e. The linked calendars of the sources are authoritative. The links lead to the charts that receive new values on that date."
 
+  svr_bip:
+    title: "Growth forecasts of the Council of Economic Experts and first release"
+    ask: "How well did the Council of Economic Experts forecast growth?"
+    caption: "Forecast of the German Council of Economic Experts (Sachverständigenrat) for real GDP growth in the following year, from its annual report each November, and the first release for the same year as printed in the annual report a year later. Purple area: usual range around the forecast; in two thirds of the years since 1966 the first release fell inside it. The area is asymmetric because the Council overestimated growth on average (forecast minus 1.7 to plus 1.0 percentage points). West Germany until 1991; until about 1990 mostly real GNP. Every value is documented with paragraph or table and printed page in data/static/svr_prognosen.csv."
+    unit: "% on previous year"
+  svr_vpi:
+    title: "Inflation forecasts of the Council of Economic Experts and first release"
+    ask: "How well did the Council of Economic Experts forecast inflation?"
+    caption: "Forecast of the Council of Economic Experts for the annual average rise in consumer prices in the following year and the first release from the next annual report. Where the Council forecast only the private consumption deflator, the deflator is also used as outcome. West Germany until 1991."
+    unit: "% on previous year"
+  svr_alo:
+    title: "Unemployment forecasts of the Council of Economic Experts and first release"
+    ask: "How well did the Council of Economic Experts forecast unemployment?"
+    caption: "Forecast of the Council of Economic Experts for registered unemployment (annual average) in the following year and the first release from the next annual report. West Germany until 1991, Germany afterwards. From 2005 recipients of unemployment benefit II are included, which raises the count. The forecast line shows only years with a printed level."
+    unit: "thousand people"
+  svr_rat:
+    title: "Recommendations of the Council of Economic Experts on four standing questions"
+    ask: "What did the Council of Economic Experts recommend on wages, money, public finances and the labour market?"
+    caption: "Recommendation of the Council majority for the following year, on a fixed scale per question. Wages: blue below the distributive margin (productivity plus price rise), grey within, red above. Monetary policy: blue tighter, grey unchanged, red looser. Fiscal policy: blue consolidation, grey cyclically neutral, red stimulus. Labour market and welfare: blue more protection or benefits, grey unchanged, red more flexibility, benefit cuts or work incentives. White: no recommendation discernible. Tap for the recommendation in one sentence (German) with paragraph and page. Bars: passages with a minority vote per annual report, counted per topic. Own coding of all annual reports 1964/65 to 2025/26; the classification is an interpretation."
+    unit: "level -1, 0, +1"
+  svr_fiskal:
+    title: "Recommended fiscal stance and expected growth"
+    ask: "Did the Council of Economic Experts advise austerity even when growth was weak?"
+    caption: "Bars: real GDP growth the Council of Economic Experts expected for the following year. Colour: fiscal stance it recommended for that year in the same report; blue consolidation, grey cyclically neutral (let automatic stabilisers work), red stimulus, light grey no recommendation discernible. West Germany until 1991. Tap for the recommendation with paragraph and page."
+    unit: "% on previous year"
+
 series:
   wb_soybeans: {title: "World market price, Soybeans (World Bank: Soybeans)", label: "Soybeans", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
   wb_maize: {title: "World market price, Maize (World Bank: Maize)", label: "Maize", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
@@ -739,6 +766,19 @@ series:
   de_netmig_neu: {title: "Net migration, non-EU foreigners", label: "Non-EU foreigners", unit: "people", adjustment: "annual data"}
   de_reallohn_yoy: {title: "Real wage index, change on same quarter a year earlier", label: "Real wages", unit: "% on same quarter a year earlier", adjustment: "not adjusted"}
   de_nominallohn_yoy: {title: "Nominal wage index, change on same quarter a year earlier", label: "Nominal wages", unit: "% on same quarter a year earlier", adjustment: "not adjusted"}
+  svr_bip_prog: {title: "Real GDP growth: Council of Economic Experts forecast for the following year", label: "Council forecast", unit: "% on previous year", adjustment: "not adjusted"}
+  svr_bip_ist: {title: "Real GDP growth: first release, printed in the following annual report", label: "first release", unit: "% on previous year", adjustment: "not adjusted"}
+  svr_vpi_prog: {title: "Consumer prices: Council of Economic Experts forecast for the following year", label: "Council forecast", unit: "% on previous year", adjustment: "not adjusted"}
+  svr_vpi_ist: {title: "Consumer prices: first release, printed in the following annual report", label: "first release", unit: "% on previous year", adjustment: "not adjusted"}
+  svr_alo_prog: {title: "Registered unemployed: Council of Economic Experts forecast for the following year", label: "Council forecast", unit: "thousand people", adjustment: "not adjusted"}
+  svr_alo_ist: {title: "Registered unemployed: first release, printed in the following annual report", label: "first release", unit: "thousand people", adjustment: "not adjusted"}
+  svr_bip_band_lo: {title: "Growth: usual range around the Council forecast, lower bound", label: "usual range, lower bound", unit: "% on previous year", adjustment: "not adjusted"}
+  svr_bip_band_hi: {title: "Growth: usual range around the Council forecast, upper bound", label: "usual range, upper bound", unit: "% on previous year", adjustment: "not adjusted"}
+  svr_stance_l: {title: "Council recommendation: wage policy", label: "Wage policy", unit: "level -1, 0, +1", adjustment: "not adjusted"}
+  svr_stance_g: {title: "Council recommendation: monetary policy", label: "Monetary policy", unit: "level -1, 0, +1", adjustment: "not adjusted"}
+  svr_stance_f: {title: "Council recommendation: fiscal policy", label: "Fiscal policy", unit: "level -1, 0, +1", adjustment: "not adjusted"}
+  svr_stance_a: {title: "Council recommendation: labour market and welfare", label: "Labour market and welfare", unit: "level -1, 0, +1", adjustment: "not adjusted"}
+  svr_voten: {title: "Passages with a minority vote in the annual report", label: "Minority votes", unit: "count", adjustment: "not adjusted"}
 
 geo:
   DE: "Germany"

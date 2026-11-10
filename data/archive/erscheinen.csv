@@ -407,3 +407,10 @@ svr_vpi_prog,2026,2026-11-10
 svr_vpi_ist,2025,2026-11-10
 svr_alo_prog,2026,2026-11-10
 svr_alo_ist,2025,2026-11-10
+svr_bip_band_lo,2026,2026-11-10
+svr_bip_band_hi,2026,2026-11-10
+svr_stance_l,2011,2026-11-10
+svr_stance_g,2022,2026-11-10
+svr_stance_f,2022,2026-11-10
+svr_stance_a,2025,2026-11-10
+svr_voten,2025,2026-11-10
