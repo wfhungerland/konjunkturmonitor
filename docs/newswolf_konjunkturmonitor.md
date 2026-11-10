@@ -138,7 +138,7 @@ Quellen: Europäische Kommission (AMECO), OECD, IWF, Statistisches Bundesamt, Eu
 
 ## 16. Lange Reihen: 150 Jahre Wirtschaftsgeschichte
 
-Ist die aktuelle Wachstumsschwäche historisch ungewöhnlich? Lange Reihen seit 1870 stehen jeweils im passenden Kapitel: Abschwünge seit 1879 im Vergleich, Inflationsschübe seit 1945, reale Hauspreise, Exportquote, Realzins, Wachstum je Einwohner, Investitionsquote und Staatsschulden. Die Daten stammen aus der Global Macro Database (Müller, Xu, Lehbib und Chen 2025).
+Ist die aktuelle Wachstumsschwäche historisch ungewöhnlich? Lange Reihen seit 1871 stehen jeweils im passenden Kapitel: Abschwünge seit 1879 im Vergleich, Inflationsschübe seit 1945, reale Hauspreise, Exportquote, Realzins, Wachstum je Einwohner, Investitionsquote und Staatsschulden. Die Daten stammen aus der Global Macro Database (Müller, Xu, Lehbib und Chen 2025).
 
 Quelle: Global Macro Database (CC BY-NC-SA 4.0).
 

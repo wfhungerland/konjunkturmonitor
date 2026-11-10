@@ -60,6 +60,7 @@ PAIRS: list[tuple[str, str]] = [
     ('const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten, Quellen, Rechenschritte und Methode dieser Abbildung auf einer Seite";',
      'const METH_BASE = "../methodik/", METH_LABEL = "Method sheet (German)", METH_TITLE = "Data, sources, calculations and method of this chart on one page (in German)";'),
     ('const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";', 'const LIC_NOTE = "This chart and its download are licensed under";'),
+    ('const LIC_ALSO = "gilt auch für diese Abbildung und ihren Download";', 'const LIC_ALSO = "also applies to this chart and its download";'),
     ("<summary>Warum fehlen bekannte Indikatoren (ifo, ZEW und andere)?</summary>", "<summary>Why are well-known indicators (ifo, ZEW and others) missing?</summary>"),
     ("<p>Der Monitor zeigt nur Daten, die frei abrufbar sind und weiterverbreitet werden dürfen. Einige verbreitete Indikatoren fehlen deshalb:</p>",
      "<p>The monitor only shows data that are freely available and may be redistributed. Some widely used indicators are therefore missing:</p>"),

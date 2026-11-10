@@ -58,7 +58,7 @@ charts:
       - "Die Zeitpunkte der Hochs sind gesetzt und keine amtliche Datierung."
       - "Die Energiekrise ab Ende 2021 geht in den laufenden Abschwung über und ist deshalb nicht eigens gezeigt."
   downturns_hist:
-    methode: "Für Jahreswerte seit 1870 liefert die Global Macro Database (Müller, Xu, Lehbib und Chen 2025) reales BIP und Arbeitslosenquote für Deutschland. Als Hoch gilt das letzte Jahr vor einem Rückgang des realen BIP. Ab diesem Jahr zeigt die Abbildung den Verlauf über die folgenden Jahre: BIP als Index (Jahr des Hochs = 100), Arbeitslosenquote als Veränderung in Prozentpunkten. Den laufenden Abschwung rechnet der Monitor mit amtlichen Jahreswerten: Jahresmittel des vierteljährlichen BIP-Index und der Erwerbslosenquote nach ILO, jeweils nur für vollständige Jahre."
+    methode: "Für Jahreswerte seit 1871 liefert die Global Macro Database (Müller, Xu, Lehbib und Chen 2025) reales BIP und Arbeitslosenquote für Deutschland. Als Hoch gilt das letzte Jahr vor einem Rückgang des realen BIP. Ab diesem Jahr zeigt die Abbildung den Verlauf über die folgenden Jahre: BIP als Index (Jahr des Hochs = 100), Arbeitslosenquote als Veränderung in Prozentpunkten. Den laufenden Abschwung rechnet der Monitor mit amtlichen Jahreswerten: Jahresmittel des vierteljährlichen BIP-Index und der Erwerbslosenquote nach ILO, jeweils nur für vollständige Jahre."
     grenzen:
       - "Deutschland in den jeweiligen Grenzen: Gebietsänderungen 1871, 1918, 1945 und 1990 brechen die Reihen."
       - "Kriegsjahre sind ausgelassen; Verläufe enden vor 1914 und 1939."

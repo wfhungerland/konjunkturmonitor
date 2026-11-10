@@ -72,7 +72,7 @@ charts:
     ask: "How quickly did earlier inflation surges subside?"
     caption: "Annual inflation rate from the year of the inflation peak: after the Korean War boom in 1951 (grey), the oil crises of 1974 and 1981, reunification in 1992 and in the current surge since 2022 (thick). The chart shows how many years it took for the rate to return close to 2%. Historical values from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025); the current surge as the annual mean of the harmonised index of consumer prices (HICP, Deutsche Bundesbank), complete years only. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   long_rr:
-    title: "Real interest rate since 1870"
+    title: "Real interest rate since 1871"
     ask: "Are real interest rates high by historical standards?"
     caption: "Real interest rate: yield on long-term government bonds minus the inflation rate of the same year, in %. This is the ex-post real rate; the inflation investors expected when buying is not observable. The axis is limited to ±30%; during the hyperinflation of the early 1920s the real rate was far lower. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; gaps after them come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   long_debt:
@@ -80,11 +80,11 @@ charts:
     ask: "How high was government debt in the past?"
     caption: "General government gross debt as a percentage of GDP. After both world wars, debt was largely wiped out by inflation and currency reform. Dashed grey: Maastricht Treaty reference value. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; gaps after them come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   long_growth:
-    title: "Growth per capita since 1870, ten-year average"
+    title: "Growth per capita since 1871, ten-year average"
     ask: "Is such a long period of weak growth unusual by historical standards?"
     caption: "Average annual growth of real GDP per capita over the ten years up to the year shown, in %. Per capita, so that changes in population and territory do not distort the comparison. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; ten-year values after them still include the war years. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   long_inv:
-    title: "Investment ratio since 1870"
+    title: "Investment ratio since 1871"
     ask: "Does Germany invest less today than in the past?"
     caption: "Investment as a percentage of GDP, at current prices. Until 1950 gross investment from historical estimates, thereafter national accounts; definitions change over time. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; gaps after them come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   long_open:
@@ -92,7 +92,7 @@ charts:
     ask: "How dependent on foreign trade is Germany today?"
     caption: "Exports of goods and services and the current account balance, each as a percentage of GDP. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; gaps after them come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   long_hpi:
-    title: "Real house prices since 1870"
+    title: "Real house prices since 1871"
     ask: "How expensive is residential property in the long run?"
     caption: "House price index adjusted for consumer prices. The underlying price series change over time; the index shows trends, not exact levels. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; gaps after them come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   gdp_rev:
