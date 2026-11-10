@@ -185,6 +185,9 @@ charts:
   wages: {title: "Nominal- und Reallöhne", decimals: 1}
   ulc: {title: "Lohnstückkosten", decimals: 1}
   gdp_rev: {title: "Korrektur des BIP-Wachstums seit der ersten Meldung", decimals: 1}
+  svr_bip: {title: "Wachstumsprognosen des Sachverständigenrats und erste Meldung", decimals: 1}
+  svr_vpi: {title: "Inflationsprognosen des Sachverständigenrats und erste Meldung", decimals: 1}
+  svr_alo: {title: "Arbeitslosenprognosen des Sachverständigenrats und erste Meldung", decimals: 0}
   alq_land: {title: "Arbeitslosenquote nach Ländern", decimals: 1}
   tarif: {title: "Tarifverdienste und Verbraucherpreise", decimals: 1}
   spf: {title: "Langfristige Inflationserwartung der Fachleute", decimals: 2}
@@ -3193,3 +3196,99 @@ series:
     start: "1970-01-01"
     stale_after_months: 3
     label: "Zucker"
+
+  - id: svr_bip_prog
+    block: wachstum
+    source: static
+    key: svr_bip_prog
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Wachstum des realen BIP: Prognose des Sachverständigenrats für das Folgejahr"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1965-01-01"
+    stale_after_months: 24
+    chart: svr_bip
+    label: "Prognose des Rats"
+    note: "Jahresgutachten des Vorjahres (November); Fundstelle je Wert in data/static/svr_prognosen.csv."
+
+  - id: svr_bip_ist
+    block: wachstum
+    source: static
+    key: svr_bip_ist
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Wachstum des realen BIP: Erste Meldung, gedruckt im Jahresgutachten des Folgejahres"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1965-01-01"
+    stale_after_months: 24
+    chart: svr_bip
+    label: "erste Meldung"
+    note: "Wert für das abgelaufene Jahr, wie im nächsten Jahresgutachten gedruckt; 2025 amtlicher Stand 2026."
+
+  - id: svr_vpi_prog
+    block: preise
+    source: static
+    key: svr_vpi_prog
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Verbraucherpreise: Prognose des Sachverständigenrats für das Folgejahr"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1965-01-01"
+    stale_after_months: 24
+    chart: svr_vpi
+    label: "Prognose des Rats"
+    note: "Jahresgutachten des Vorjahres (November); Fundstelle je Wert in data/static/svr_prognosen.csv."
+
+  - id: svr_vpi_ist
+    block: preise
+    source: static
+    key: svr_vpi_ist
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Verbraucherpreise: Erste Meldung, gedruckt im Jahresgutachten des Folgejahres"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1965-01-01"
+    stale_after_months: 24
+    chart: svr_vpi
+    label: "erste Meldung"
+    note: "Wert für das abgelaufene Jahr, wie im nächsten Jahresgutachten gedruckt; 2025 amtlicher Stand 2026."
+
+  - id: svr_alo_prog
+    block: arbeit
+    source: static
+    key: svr_alo_prog
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Registrierte Arbeitslose: Prognose des Sachverständigenrats für das Folgejahr"
+    unit: "Tsd. Personen"
+    frequency: A
+    adjustment: Jahresdurchschnitt
+    start: "1965-01-01"
+    stale_after_months: 24
+    chart: svr_alo
+    label: "Prognose des Rats"
+    note: "Jahresgutachten des Vorjahres (November); Fundstelle je Wert in data/static/svr_prognosen.csv."
+
+  - id: svr_alo_ist
+    block: arbeit
+    source: static
+    key: svr_alo_ist
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Registrierte Arbeitslose: Erste Meldung, gedruckt im Jahresgutachten des Folgejahres"
+    unit: "Tsd. Personen"
+    frequency: A
+    adjustment: Jahresdurchschnitt
+    start: "1965-01-01"
+    stale_after_months: 24
+    chart: svr_alo
+    label: "erste Meldung"
+    note: "Wert für das abgelaufene Jahr, wie im nächsten Jahresgutachten gedruckt; 2025 amtlicher Stand 2026."
