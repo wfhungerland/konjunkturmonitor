@@ -9,7 +9,21 @@ charts:
       - "Bis etwa 1990 prognostizierte der Rat meist das reale Bruttosozialprodukt, danach das Bruttoinlandsprodukt; als Ist-Wert steht jeweils dieselbe Größe, soweit gedruckt."
       - "Bis 1991 gilt alles für Westdeutschland, die Wachstumsprognosen für 1992 bis 1994 für das frühere Bundesgebiet."
       - "Für 1965 und 1968 gab der Rat nur Halbjahresprognosen; diese Jahre fehlen."
+      - "Die violette Fläche nimmt an, dass künftige Fehler so verteilt sind wie die 59 Fehler seit 1966 (16. bis 84. Perzentil); sie ist keine Wahrscheinlichkeitsaussage des Rats."
       - "Spannen wie 3½ bis 4 vH stehen als Mitte, Angaben wie knapp oder gut als gedruckte Zahl; der Wortlaut steht in der Tabelle."
+  svr_rat:
+    methode: "Für jedes Jahresgutachten von 1964/65 bis 2025/26 wurde gelesen, was die Mehrheit des Sachverständigenrats für das folgende Jahr empfiehlt, getrennt nach vier Fragen: Lohnpolitik, Geldpolitik, Finanzpolitik sowie Arbeitsmarkt und Sozialstaat. Jede Empfehlung steht auf einer festen dreistufigen Skala, gemessen am damaligen Stand, mit einem Satz in eigenen Worten, Ziffer, gedruckter Seite und einer Angabe zur Sicherheit der Einordnung. Minderheitsvoten gehen nicht in die Einordnung ein; sie sind getrennt erfasst und als Zahl der Stellen je Gutachten gezählt, je Sachpunkt eine Stelle. Kurzfassungen, nachgedruckte Sondergutachten und bloße Verweise zählen nicht mit. Beide Tabellen stehen im Repository: data/static/svr_positionen_dauerfragen.csv und data/static/svr_minderheitsvoten.csv."
+    grenzen:
+      - "Die Einordnung ist eine Deutung des Textes; Grenzfälle zwischen zwei Stufen sind in der Tabelle als mittlere oder niedrige Sicherheit markiert."
+      - "Die Skala misst die Richtung der Empfehlung gegenüber dem damaligen Stand, nicht ihr Ausmaß."
+      - "Die Gutachten 1964 bis 1973 und 1999 wurden per Texterkennung gelesen; Ziffern aus zweispaltigem Satz können um eins abweichen."
+      - "Weiß heißt, dass keine Empfehlung erkennbar ist; in frühen Jahren beruht das beim Arbeitsmarkt teils auf einer Stichwortsuche."
+  svr_fiskal:
+    methode: "Die Balken zeigen die Wachstumsprognose des Sachverständigenrats für das Folgejahr aus dem Jahresgutachten im November. Die Farbe gibt den Kurs der Finanzpolitik an, den derselbe Rat im selben Gutachten für dieses Jahr empfahl, nach der Einordnung in der Abbildung zu den Empfehlungen. So zeigt die Abbildung, welchen Kurs der Rat bei welcher erwarteten Konjunktur riet. Von 56 Jahren mit Prognose und Einordnung erwartete er in zehn weniger als 1 % Wachstum; in sechs davon empfahl er eine restriktivere Finanzpolitik."
+    grenzen:
+      - "Gemessen wird die erwartete, nicht die tatsächliche Konjunktur; sie entspricht der Lage, in der der Rat seine Empfehlung gab."
+      - "Eine Konsolidierungsforderung kann mittelfristig gemeint sein; als Konsolidierung zählt sie nur, wenn sie für das Folgejahr gilt."
+      - "Bis 1991 Westdeutschland; bis etwa 1990 meist reales Bruttosozialprodukt."
   svr_vpi:
     methode: "Der Sachverständigenrat zur Begutachtung der gesamtwirtschaftlichen Entwicklung legt seit 1964 jedes Jahr im November ein Jahresgutachten vor. Darin steht eine Prognose für das folgende Jahr. Der Monitor hat für jedes Gutachten von 1964/65 bis 2025/26 die Prognose von Hand erfasst, mit Ziffer oder Tabelle und gedruckter Seite, und jeden Wert an der Druckfassung geprüft. Als Ist-Wert dient die erste Meldung: der Wert, den das Jahresgutachten ein Jahr später für das abgelaufene Jahr druckt. So kommen Prognose und Ist aus derselben Quelle, Gebiet und Rechenweg passen zusammen, und spätere Revisionen der Statistik gehen nicht zulasten des Rats. Für das Zieljahr 2025 fehlt das Folgegutachten; dort steht der amtliche Stand von 2026. Die Tabelle data/static/svr_prognosen.csv führt zusätzlich den heutigen Datenstand und beide Fehler. Über 59 Zieljahre lag die Inflationsprognose im Mittel fast genau auf der ersten Meldung, der mittlere absolute Fehler beträgt 0,7 Prozentpunkte. Die Regel, dass die Inflation so hoch bleibt wie im Vorjahr, hätte 0,9 Prozentpunkte erreicht."
     grenzen:

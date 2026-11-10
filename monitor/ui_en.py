@@ -5,6 +5,9 @@ damit Teilstücke nicht vorher ersetzt werden. Texte innerhalb der Abbildungen f
 """
 
 PAIRS: list[tuple[str, str]] = [
+    ('const STANCE_TXT = { fund: "Ziffer", page: "S.", none: "keine Empfehlung erkennbar", jg: "Jahresgutachten", votes: "Stellen mit Minderheitsvotum", exp: "erwartetes Wachstum" };',
+     'const STANCE_TXT = { fund: "para.", page: "p.", none: "no recommendation discernible", jg: "Annual report", votes: "passages with a minority vote", exp: "expected growth" };'),
+    ('name: c.band_label || SCALE_TXT.band', 'name: c.band_label_en || c.band_label || SCALE_TXT.band'),
     # Sprache, Formate, Pfade
     ('<html lang="de">', '<html lang="en">'),
     ('const PLOTLY_SRC = "plotly.min.js";', 'const PLOTLY_SRC = "../plotly.min.js";'),
