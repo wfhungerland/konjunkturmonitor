@@ -475,7 +475,7 @@ function withGaps(s, f) {
 }
 const plotC = c => Object.assign({}, c, { series: c.series.map(s => { const f = s.freq || c.freq, g = withGaps(s, f); return Object.assign({}, g, { x: g.x.map(x => midP(x, f)) }); }) });
 const MTXT = { m: ["Mittel der letzten 3 Monate", "der letzten 12 Monate"], q: "Mittel der letzten 4 Quartale", w: ["Mittel der letzten 4 Wochen", "der letzten 52 Wochen"] };
-const SCALE_TXT = { own: "Eigene Skala je Feld", common: "Gemeinsame Skala", zoom: "Skala auf die jüngsten Jahre", full: "Skala über den ganzen Zeitraum", note: "Skala nach den letzten {n} Jahren; ältere Werte teils abgeschnitten", partial: "laufendes Jahr", mad: "mittlere Korrektur ±{m} Pp", need: " (nötig für die Projektion)", needlab: "nötig", band: "Potenzialwachstum: Spanne der Schätzungen", fc: " (Prognose)" };
+const SCALE_TXT = { own: "Eigene Skala je Feld", common: "Gemeinsame Skala", zoom: "Jüngste Jahre", full: "Skala über den ganzen Zeitraum", note: "Skala nach den letzten {n} Jahren; ältere Werte teils abgeschnitten", partial: "laufendes Jahr", mad: "mittlere Korrektur ±{m} Pp", need: " (nötig für die Projektion)", needlab: "nötig", band: "Potenzialwachstum: Spanne der Schätzungen", fc: " (Prognose)" };
 const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten, Quellen, Rechenschritte und Methode dieser Abbildung auf einer Seite";
 const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
 const LIC_ALSO = "gilt auch für diese Abbildung und ihren Download";
@@ -1180,6 +1180,8 @@ function bindCopies(root, arr, what) { root.querySelectorAll("button.copy1").for
 // Untertitel einer Abbildung: Frequenz und Bereinigung
 function subOf(c) { return [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? "Täglich (Arbeitstage)" : "Monatlich", c.adjustment].filter(Boolean).join(" · "); }
 function card(c, no) {
+  const ownCfg = c.own_scale;  // so in monitor.yaml gesetzt (dann fehlt die gemeinsame Einheit über der Grafik)
+  if (c.multiples && (DATA.layout || {}).small_multiples && (c.series || []).length > 2) { if (c.own_scale == null) c.own_scale = true; c.scale_toggle = true; }  // Standard: eigene Skala je Feld, gemeinsam per Schalter
   const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = `abb-${no}`; if (c.chart) el.dataset.chart = c.chart;
   const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? "Täglich (Arbeitstage)" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
@@ -1198,7 +1200,7 @@ function card(c, no) {
   if (c.warn) cin.insertAdjacentHTML("beforeend", `<div class="warn">⚠ ${esc(c.warn)}</div>`);
   const body = document.createElement("div"); body.className = "cbody"; cin.appendChild(body);
   const main = document.createElement("div"); main.className = "cmain"; body.appendChild(main);
-  main.insertAdjacentHTML("beforeend", `<div class="unit">${c.own_scale ? "" : esc(unit)}</div>`);
+  main.insertAdjacentHTML("beforeend", `<div class="unit">${ownCfg ? "" : esc(unit)}</div>`);
   const box = document.createElement("div"); box.className = "chartbox"; main.appendChild(box);
   const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
@@ -1231,12 +1233,12 @@ function card(c, no) {
     htools.appendChild(tg); }
   if (c.scale_toggle && c.multiples) { // gemeinsame Skala über alle Felder oder eigene je Feld
     const sb = document.createElement("button"); sb.type = "button"; sb.className = "btn";
-    const lab = () => (c._own ?? c.own_scale) ? SCALE_TXT.common : SCALE_TXT.own; sb.textContent = lab();
-    sb.onclick = () => { c._own = !(c._own ?? c.own_scale); sb.textContent = lab(); redraw(); }; htools.appendChild(sb); }
+    sb.textContent = SCALE_TXT.common; pressed(sb, !c.own_scale);  // ein Schalter: an = gemeinsame Skala
+    sb.onclick = () => { c._own = !(c._own ?? c.own_scale); pressed(sb, !c._own); redraw(); }; htools.appendChild(sb); }
   if (c.zoom_toggle) { // Ausreißer: Skala auf die jüngsten Jahre
     const zb = document.createElement("button"); zb.type = "button"; zb.className = "btn";
-    const lab = () => (c._zoom ?? c.zoom_default) ? SCALE_TXT.full : SCALE_TXT.zoom; zb.textContent = lab();
-    zb.onclick = () => { c._zoom = !(c._zoom ?? c.zoom_default); zb.textContent = lab(); redraw(); }; htools.appendChild(zb); }
+    zb.textContent = SCALE_TXT.zoom; pressed(zb, c.zoom_default);  // ein Schalter: an = Skala nach den jüngsten Jahren
+    zb.onclick = () => { c._zoom = !(c._zoom ?? c.zoom_default); pressed(zb, c._zoom); redraw(); }; htools.appendChild(zb); }
   if (labelable(c)) {
     const lb = document.createElement("button"); lb.type = "button"; lb.className = "btn"; lb.textContent = VIEWTXT.edge; lb.title = VIEWTXT.edget; pressed(lb, false);
     lb.onclick = () => { c._labels = !c._labels; pressed(lb, c._labels); redraw(); };
@@ -1597,6 +1599,12 @@ function build() {
   const setBrief = on => { document.body.classList.toggle("brief", on); bb.textContent = on ? NAVTXT.all : NAVTXT.brief; bb.setAttribute("aria-pressed", String(on)); };
   const bb = document.createElement("button"); bb.type = "button"; bb.className = "btn briefbtn"; bb.onclick = () => { setBrief(!document.body.classList.contains("brief")); scrollTo(0, 0); };
   setBrief(/[?&]kurz=1/.test(location.search));
+  // Link auf ein Kapitel oder eine Abbildung, die „Das Wichtigste“ gerade ausblendet: erst wieder alles zeigen, dann genau dorthin springen
+  document.addEventListener("click", e => { const a = e.target.closest('a[href^="#"]'); if (!a || !document.body.classList.contains("brief")) return;
+    const h = a.getAttribute("href"); if (h === "#top" || h.length < 2) return; let el = null; try { el = document.querySelector(h); } catch (x) { return; }
+    if (!el || el.offsetParent !== null) return;
+    e.preventDefault(); setBrief(false); const d = el.closest("details"); if (d) d.open = true;
+    history.pushState(null, "", h); requestAnimationFrame(() => el.scrollIntoView()); }, true);
   // Ort im Kopf: „Inhalt · Arbeit“; dasselbe Kapitel ist in der Tafel hervorgehoben
   const secs = [...document.querySelectorAll("section.topic")].filter(x => NAV.some(n => n.id === x.id));
   let curId = null;

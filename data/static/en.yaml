@@ -123,7 +123,7 @@ charts:
   energy_intensive:
     title: "Output of energy-intensive industries"
     ask: "How are the energy-intensive industries producing?"
-    caption: "Production index of the five energy-intensive industries (Federal Statistical Office via Bundesbank, seasonally and calendar adjusted, 2021 = 100): paper, coke and refined petroleum, chemicals, glass and ceramics, and basic metals. They use most of the energy consumed by industry and react strongly to gas and electricity prices. Each panel highlights one industry in dark blue, with the others in grey behind it; all panels share the same scale. Thin: monthly values; thick: three-month moving average."
+    caption: "Production index of the five energy-intensive industries (Federal Statistical Office via Bundesbank, seasonally and calendar adjusted, 2021 = 100): paper, coke and refined petroleum, chemicals, glass and ceramics, and basic metals. They use most of the energy consumed by industry and react strongly to gas and electricity prices. Each panel highlights one industry in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Thin: monthly values; thick: three-month moving average."
   gdp_contrib:
     title: "Where growth comes from"
     ask: "Which components of demand are driving growth?"
@@ -147,7 +147,7 @@ charts:
   cpi:
     title: "Inflation rate (CPI) and components"
     ask: "Which areas are becoming more expensive?"
-    caption: "Inflation rate based on the consumer price index (CPI) of the Federal Statistical Office (Destatis), overall and for five components. In each panel one component is highlighted in dark blue, with the others in grey behind it for comparison; all panels share the same scale. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months. Dashed: 2%, the ECB's target (it refers to the European HICP, which in Germany is usually close to the CPI). ‘Services excluding rents’ excludes actual and imputed rents and therefore differs from the rate for services as a whole reported by the Federal Statistical Office."
+    caption: "Inflation rate based on the consumer price index (CPI) of the Federal Statistical Office (Destatis), overall and for five components. In each panel one component is highlighted in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months. Dashed: 2%, the ECB's target (it refers to the European HICP, which in Germany is usually close to the CPI). ‘Services excluding rents’ excludes actual and imputed rents and therefore differs from the rate for services as a whole reported by the Federal Statistical Office."
   cpi_contrib:
     title: "What the inflation rate is made of"
     ask: "What makes up the inflation rate?"
@@ -175,7 +175,7 @@ charts:
   price_exp:
     title: "Price expectations of businesses and consumers"
     ask: "What prices do businesses and consumers expect?"
-    caption: "Balance of the shares of respondents expecting rising and falling prices (EU surveys). Businesses: next three months; consumers: next twelve months. In each panel one sector is highlighted in dark blue, with the others in grey behind it for comparison; all panels share the same scale. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
+    caption: "Balance of the shares of respondents expecting rising and falling prices (EU surveys). Businesses: next three months; consumers: next twelve months. In each panel one sector is highlighted in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
   labour:
     title: "Unemployment rate"
     ask: "How high is unemployment?"
@@ -324,23 +324,23 @@ charts:
   ez_gdp:
     title: "Growth compared across the euro area"
     ask: "Is Germany growing faster or more slowly than its neighbours?"
-    caption: "Real GDP on the same quarter a year earlier, seasonally and calendar adjusted (Eurostat), for Germany, France, Italy, Spain and the euro area. In each panel one country is highlighted in dark blue, with the others in grey behind it; all panels share the same scale. Together the four countries generate about three-quarters of euro-area output."
+    caption: "Real GDP on the same quarter a year earlier, seasonally and calendar adjusted (Eurostat), for Germany, France, Italy, Spain and the euro area. In each panel one country is highlighted in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Together the four countries generate about three-quarters of euro-area output."
   ez_hicp:
     title: "Inflation compared across the euro area (HICP)"
     ask: "Is inflation in Germany higher than in neighbouring countries?"
-    caption: "Harmonised index of consumer prices (HICP) on the same month a year earlier (Eurostat; from 2026 based on the new product classification ECOICOP 2). The HICP is internationally comparable and is the basis of the ECB's inflation target of 2% (dashed). For Germany it usually differs only slightly from the national CPI. One country highlighted per panel, all panels on the same scale."
+    caption: "Harmonised index of consumer prices (HICP) on the same month a year earlier (Eurostat; from 2026 based on the new product classification ECOICOP 2). The HICP is internationally comparable and is the basis of the ECB's inflation target of 2% (dashed). For Germany it usually differs only slightly from the national CPI. One country per panel on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
   ez_unemp:
     title: "Unemployment compared across the euro area"
     ask: "How high is unemployment by comparison?"
-    caption: "Unemployment rate as defined by the International Labour Organization (ILO), seasonally adjusted (Eurostat; euro area: ECB): the unemployed as a share of the labour force. It is internationally comparable and in Germany is markedly below the registered unemployment rate of the Federal Employment Agency. One country highlighted per panel, all panels on the same scale."
+    caption: "Unemployment rate as defined by the International Labour Organization (ILO), seasonally adjusted (Eurostat; euro area: ECB): the unemployed as a share of the labour force. It is internationally comparable and in Germany is markedly below the registered unemployment rate of the Federal Employment Agency. One country per panel on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
   ez_ip:
     title: "Industrial production compared across the euro area"
     ask: "Is German industry doing worse than its neighbours?"
-    caption: "Manufacturing output on the same month a year earlier, calendar adjusted (Eurostat), for Germany, France, Italy, Spain and the euro area (21 countries since 2026). The figures for Germany may differ slightly from the Bundesbank data in the industry section because of different adjustment. One country highlighted per panel, all panels on the same scale."
+    caption: "Manufacturing output on the same month a year earlier, calendar adjusted (Eurostat), for Germany, France, Italy, Spain and the euro area (21 countries since 2026). The figures for Germany may differ slightly from the Bundesbank data in the industry section because of different adjustment. One country per panel on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
   ez_esi:
     title: "Economic sentiment compared across the euro area (ESI)"
     ask: "Is sentiment in Germany worse than in neighbouring countries?"
-    caption: "Economic Sentiment Indicator (ESI) of the European Commission, seasonally adjusted: weighted average of surveys in industry, services, retail, construction and among consumers. 100 is each country's long-term average (dashed); the indicator therefore shows whether sentiment is better or worse than usual, not the gap between countries. One country highlighted per panel, all panels on the same scale."
+    caption: "Economic Sentiment Indicator (ESI) of the European Commission, seasonally adjusted: weighted average of surveys in industry, services, retail, construction and among consumers. 100 is each country's long-term average (dashed); the indicator therefore shows whether sentiment is better or worse than usual, not the gap between countries. One country per panel on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
   uncertainty:
     title: "Economic policy uncertainty"
     ask: "How uncertain is economic policy?"
@@ -356,11 +356,11 @@ charts:
   sector_now:
     title: "Current situation by sector"
     ask: "How do the sectors assess their current situation?"
-    caption: "Assessment of business developments over the past three months, balance of positive and negative responses (EU surveys). In each panel one sector is highlighted in dark blue, with the others in grey behind it for comparison; all panels share the same scale. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
+    caption: "Assessment of business developments over the past three months, balance of positive and negative responses (EU surveys). In each panel one sector is highlighted in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
   sector_next:
     title: "Expectations by sector"
     ask: "What do the sectors expect for the coming months?"
-    caption: "Expectations for the coming three months, balance of positive and negative responses (EU surveys). For construction the survey records employment plans here. In each panel one sector is highlighted in dark blue, with the others in grey behind it for comparison; all panels share the same scale. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
+    caption: "Expectations for the coming three months, balance of positive and negative responses (EU surveys). For construction the survey records employment plans here. In each panel one sector is highlighted in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
   capacity:
     title: "Capacity utilisation in industry"
     ask: "How fully is industrial capacity being used?"
