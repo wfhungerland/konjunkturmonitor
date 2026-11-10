@@ -188,6 +188,8 @@ charts:
   svr_bip: {title: "Wachstumsprognosen des Sachverständigenrats und erste Meldung", decimals: 1}
   svr_vpi: {title: "Inflationsprognosen des Sachverständigenrats und erste Meldung", decimals: 1}
   svr_alo: {title: "Arbeitslosenprognosen des Sachverständigenrats und erste Meldung", decimals: 0}
+  svr_rat: {title: "Empfehlungen des Sachverständigenrats zu vier Dauerfragen", decimals: 0}
+  svr_fiskal: {title: "Empfohlener Kurs der Finanzpolitik und erwartetes Wachstum", decimals: 1}
   alq_land: {title: "Arbeitslosenquote nach Ländern", decimals: 1}
   tarif: {title: "Tarifverdienste und Verbraucherpreise", decimals: 1}
   spf: {title: "Langfristige Inflationserwartung der Fachleute", decimals: 2}
@@ -3292,3 +3294,115 @@ series:
     chart: svr_alo
     label: "erste Meldung"
     note: "Wert für das abgelaufene Jahr, wie im nächsten Jahresgutachten gedruckt; 2025 amtlicher Stand 2026."
+
+  - id: svr_bip_band_lo
+    block: wachstum
+    source: static
+    key: svr_bip_band_lo
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Wachstum: übliche Spanne um die Prognose des Sachverständigenrats, untere Grenze"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1965-01-01"
+    stale_after_months: 24
+    chart: svr_bip
+    label: "übliche Spanne, untere Grenze"
+    note: "Prognose minus 84. Perzentil der früheren Fehler gegen die erste Meldung, 1966 bis 2025."
+
+  - id: svr_bip_band_hi
+    block: wachstum
+    source: static
+    key: svr_bip_band_hi
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Wachstum: übliche Spanne um die Prognose des Sachverständigenrats, obere Grenze"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1965-01-01"
+    stale_after_months: 24
+    chart: svr_bip
+    label: "übliche Spanne, obere Grenze"
+    note: "Prognose minus 16. Perzentil der früheren Fehler gegen die erste Meldung, 1966 bis 2025."
+
+  - id: svr_stance_l
+    block: wachstum
+    source: static
+    key: svr_stance_l
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Empfehlung des Sachverständigenrats: Lohnpolitik"
+    unit: "Stufe -1, 0, +1"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1964-01-01"
+    stale_after_months: 1200
+    chart: svr_rat
+    label: "Lohnpolitik"
+    note: "Empfehlung der Ratsmehrheit für das Folgejahr, Jahrgang = Erscheinungsjahr; Satz und Fundstelle je Jahr in data/static/svr_positionen_dauerfragen.csv."
+
+  - id: svr_stance_g
+    block: wachstum
+    source: static
+    key: svr_stance_g
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Empfehlung des Sachverständigenrats: Geldpolitik"
+    unit: "Stufe -1, 0, +1"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1964-01-01"
+    stale_after_months: 1200
+    chart: svr_rat
+    label: "Geldpolitik"
+    note: "Empfehlung der Ratsmehrheit für das Folgejahr, Jahrgang = Erscheinungsjahr; Satz und Fundstelle je Jahr in data/static/svr_positionen_dauerfragen.csv."
+
+  - id: svr_stance_f
+    block: wachstum
+    source: static
+    key: svr_stance_f
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Empfehlung des Sachverständigenrats: Finanzpolitik"
+    unit: "Stufe -1, 0, +1"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1964-01-01"
+    stale_after_months: 1200
+    chart: svr_rat
+    label: "Finanzpolitik"
+    note: "Empfehlung der Ratsmehrheit für das Folgejahr, Jahrgang = Erscheinungsjahr; Satz und Fundstelle je Jahr in data/static/svr_positionen_dauerfragen.csv."
+
+  - id: svr_stance_a
+    block: wachstum
+    source: static
+    key: svr_stance_a
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Empfehlung des Sachverständigenrats: Arbeitsmarkt und Sozialstaat"
+    unit: "Stufe -1, 0, +1"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1964-01-01"
+    stale_after_months: 1200
+    chart: svr_rat
+    label: "Arbeitsmarkt und Sozialstaat"
+    note: "Empfehlung der Ratsmehrheit für das Folgejahr, Jahrgang = Erscheinungsjahr; Satz und Fundstelle je Jahr in data/static/svr_positionen_dauerfragen.csv."
+
+  - id: svr_voten
+    block: wachstum
+    source: static
+    key: svr_voten
+    params: {source_name: "Sachverständigenrat, Jahresgutachten 1964/65 bis 2025/26; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus amtlichen Druckschriften (Bundestagsdrucksachen); CC BY 4.0"
+    title: "Stellen mit Minderheitsvotum im Jahresgutachten"
+    unit: "Anzahl"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1964-01-01"
+    stale_after_months: 1200
+    chart: svr_rat
+    label: "Minderheitsvoten"
+    note: "Gezählt je Sachpunkt; Kurzfassungen und Nachdrucke nicht. Einzelnachweis in data/static/svr_minderheitsvoten.csv."

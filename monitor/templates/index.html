@@ -548,7 +548,7 @@ function timeChart(el, c) {
     segs.forEach(([a, b, op, tag], j) => {
       traces.push({ type: "scatter", mode: "lines", x: blo.x.slice(a, b), y: blo.y.slice(a, b), line: { width: 0 }, showlegend: false, hoverinfo: "skip" });
       traces.push({ type: "scatter", mode: "lines", x: bhi.x.slice(a, b), y: bhi.y.slice(a, b), fill: "tonexty", fillcolor: `rgba(112,48,160,${op})`, line: { width: 0 },
-        name: SCALE_TXT.band, showlegend: j === 0, hoverinfo: "skip" });  // heller Teil: Prognosejahre, erklärt im Text
+        name: c.band_label || SCALE_TXT.band, showlegend: j === 0, hoverinfo: "skip" });  // heller Teil: Prognosejahre, erklärt im Text
     });
     all.push(...blo.y, ...bhi.y);
   }
@@ -857,6 +857,55 @@ function forecastChart(el, c) {
 }
 
 // Hantelgrafik: je Land der Wert im ersten (hohl) und im jüngsten Jahr (voll), nach dem jüngsten Wert geordnet
+// Empfehlungen des Sachverständigenrats: je Frage ein Farbstreifen über die Jahre, Antippen zeigt Satz und Fundstelle; darunter Minderheitsvoten
+const STANCE_COL = { "-1": "#1F5F8B", "0": "#BDBDBD", "1": "#C8553D" };
+const STANCE_TXT = { fund: "Ziffer", page: "S.", none: "keine Empfehlung erkennbar", jg: "Jahresgutachten", votes: "Stellen mit Minderheitsvotum", exp: "erwartetes Wachstum" };
+function stanceWrap(t, n) { const w = String(t || "").split(" "), out = []; let l = ""; w.forEach(x => { if ((l + " " + x).trim().length > n) { out.push(l.trim()); l = x; } else l += " " + x; }); if (l.trim()) out.push(l.trim()); return out.join("<br>"); }
+function stanceHover(A, k, y) {
+  const r = (A[k] || {})[y]; if (!r) return `${y}`;
+  if (r.s === "NA") return `<b>${y}</b>: ${STANCE_TXT.none}`;
+  const f = [r.z ? `${STANCE_TXT.fund} ${r.z}` : "", r.seite ? `${STANCE_TXT.page} ${r.seite}` : ""].filter(Boolean).join(", ");
+  return `<b>${STANCE_TXT.jg} ${y}: ${esc(r.k)}</b><br>${stanceWrap(esc(r.p), 55)}${f ? `<br><span style="color:#595959">${f}</span>` : ""}`;
+}
+function stanceChart(el, c) {
+  const A = c.attach || {}, st = c.series.filter(s => s.id.startsWith("svr_stance_")), vt = c.series.find(s => s.id === "svr_voten");
+  const order = ["a", "f", "g", "l"], rows = order.map(k => st.find(s => s.id === "svr_stance_" + k)).filter(Boolean);
+  const ys = [...new Set(c.series.flatMap(s => s.x.map(x => +x.slice(0, 4))))].sort((a, b) => a - b), y0 = ys[0], y1 = ys[ys.length - 1], years = []; for (let y = y0; y <= y1; y++) years.push(y);
+  const narrow = (el.clientWidth || 700) < 560, bh = narrow ? 0.5 : 0.8, b0 = narrow ? -0.45 : -0.4, traces = [];
+  rows.forEach((s, i) => { const k = s.id.slice(-1).toUpperCase(), m = Object.fromEntries(s.x.map((x, j) => [+x.slice(0, 4), s.y[j]]));
+    [-1, 0, 1].forEach(v => { const yy = years.filter(y => m[y] === v); if (!yy.length) return;
+      traces.push({ type: "bar", x: yy, y: yy.map(() => bh), base: yy.map(() => i + b0), width: 0.92, yaxis: "y", marker: { color: STANCE_COL[String(v)], line: { width: 0 } }, showlegend: false,
+        hovertext: yy.map(y => stanceHover(A, k, y)), hoverinfo: "text", hoverlabel: { align: "left", bgcolor: "#fff", bordercolor: "#7f7f7f", font: { color: "#000" } } }); });
+    const na = years.filter(y => m[y] == null);
+    if (na.length) traces.push({ type: "bar", x: na, y: na.map(() => bh), base: na.map(() => i + b0), width: 0.92, yaxis: "y", marker: { color: "rgba(0,0,0,0)", line: { color: "#D9D9D9", width: 0.5 } }, showlegend: false,
+      hovertext: na.map(y => stanceHover(A, k, y)), hoverinfo: "text", hoverlabel: { align: "left", bgcolor: "#fff", bordercolor: "#7f7f7f", font: { color: "#000" } } }); });
+  if (vt) traces.push({ type: "bar", x: vt.x.map(x => +x.slice(0, 4)), y: vt.y, yaxis: "y2", marker: { color: "#595959", line: { width: 0 } }, width: 0.7, showlegend: false, hovertemplate: `%{x}: %{y} ${STANCE_TXT.votes}<extra></extra>` });
+  const L = baseLayout(el);
+  Object.assign(L, { height: narrow ? 400 : 340, barmode: "overlay", hovermode: "closest", showlegend: false, margin: { l: 6, r: 10, t: 8, b: 26 },
+    xaxis: { range: [y0 - 0.6, y1 + 0.6], fixedrange: true, showgrid: false, dtick: narrow ? 20 : 5, tickangle: 0, ticks: "outside", ticklen: 3 },
+    yaxis: { domain: [0.4, 1], range: [-0.55, rows.length - 0.45], tickmode: "array", tickvals: rows.map((_, i) => i), ticktext: rows.map(s => narrow ? "" : esc(s.label)), automargin: true, fixedrange: true, showgrid: false, zeroline: false, ticks: "" },
+    yaxis2: { domain: [0, 0.22], fixedrange: true, showgrid: true, gridcolor: HS.gridH, zeroline: false, rangemode: "tozero", nticks: 3, automargin: true },
+    annotations: [{ xref: "paper", yref: "paper", x: 0, y: 0.24, xanchor: "left", yanchor: "bottom", showarrow: false, text: STANCE_TXT.votes, font: { family: HS.font, size: 12, color: "#595959" } }] });
+  if (narrow) rows.forEach((r, i) => L.annotations.push({ xref: "paper", yref: "y", x: 0, y: i + 0.07, xanchor: "left", yanchor: "bottom", showarrow: false, text: esc(r.label), font: { family: HS.font, size: 12 } }));
+  if (narrow) L.yaxis.range = [-0.55, rows.length - 0.35];
+  el.style.aspectRatio = "auto"; el.style.height = L.height + "px";
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+  Plotly.react(el, traces, L, CFG);
+}
+// Kurs der Finanzpolitik gegen erwartetes Wachstum: Balken je Zieljahr, Farbe nach der Empfehlung im Gutachten des Vorjahres
+function stanceBarsChart(el, c) {
+  const A = c.attach || {}, g = c.series.find(s => s.id === "svr_bip_prog"), f = c.series.find(s => s.id === "svr_stance_f"); if (!g) return;
+  const fm = f ? Object.fromEntries(f.x.map((x, j) => [+x.slice(0, 4) + 1, f.y[j]])) : {};
+  const xs = g.x.map(x => +x.slice(0, 4)), col = xs.map(y => fm[y] == null ? "#E7E6E6" : STANCE_COL[String(fm[y])]);
+  const tr = { type: "bar", x: xs, y: g.y, marker: { color: col, line: { width: 0 } }, width: 0.75, showlegend: false, hoverlabel: { align: "left", bgcolor: "#fff", bordercolor: "#7f7f7f", font: { color: "#000" } }, hoverinfo: "text",
+    hovertext: xs.map((y, j) => `<b>${y}</b>: ${STANCE_TXT.exp} ${fmt(g.y[j], 1)} %<br>${stanceHover(A, "F", y - 1)}`) };
+  const L = baseLayout(el);
+  Object.assign(L, { hovermode: "closest", showlegend: false, margin: { l: 6, r: 10, t: 8, b: 26 },
+    xaxis: { range: [xs[0] - 0.7, xs[xs.length - 1] + 0.7], fixedrange: true, showgrid: false, ticks: "outside", ticklen: 3 },
+    yaxis: { fixedrange: true, showgrid: true, gridcolor: HS.gridH, zeroline: true, zerolinecolor: HS.zero, ticksuffix: " %", automargin: true } });
+  Plotly.react(el, [tr], L, CFG);
+}
+
 function dumbbellChart(el, c) {
   const pick = s => { const ok = s.x.map((x, i) => [x, s.y[i]]).filter(p => p[1] != null); return ok.length ? { a: ok[0], b: ok[ok.length - 1] } : null; };
   const rows = c.series.map(s => Object.assign({ s }, pick(s))).filter(r => r.a).sort((p, q) => p.b[1] - q.b[1]);
@@ -1280,6 +1329,8 @@ function render(ch) {
   if (c.type === "clock") clockChart(ch, c); else if (c.type === "forecast") forecastChart(ch, c);
   else if (c.type === "latest") latestChart(ch, c);
   else if (c.type === "dumbbell") dumbbellChart(ch, c);
+  else if (c.type === "stance") stanceChart(ch, c);
+  else if (c.type === "stance_bars") stanceBarsChart(ch, c);
   else if (c.type === "heat") heatChart(ch, c);
   else if (c.type === "heatbars") heatbarsChart(ch, c);
   else if (c.type === "event") eventChart(ch, c);
