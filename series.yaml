@@ -202,12 +202,12 @@ charts:
   gov_debt: {title: "Schuldenstand des Staates", decimals: 1}
   migration_groups: {title: "Nettozuwanderung nach Staatsangehörigkeit", decimals: 0}
 
-  long_rr: {title: "Realzins seit 1870", decimals: 1}
+  long_rr: {title: "Realzins seit 1871", decimals: 1}
   long_debt: {title: "Schuldenstand des Staates seit 1871", decimals: 0}
-  long_growth: {title: "Wachstum je Einwohner seit 1870, Zehnjahresdurchschnitt", decimals: 1}
-  long_inv: {title: "Investitionsquote seit 1870", decimals: 1}
+  long_growth: {title: "Wachstum je Einwohner seit 1871, Zehnjahresdurchschnitt", decimals: 1}
+  long_inv: {title: "Investitionsquote seit 1871", decimals: 1}
   long_open: {title: "Exportquote und Leistungsbilanz seit 1871", decimals: 1}
-  long_hpi: {title: "Reale Hauspreise seit 1870", decimals: 0}
+  long_hpi: {title: "Reale Hauspreise seit 1871", decimals: 0}
   infl_hist: {title: "Inflationsschübe seit 1945 im Vergleich, Jahreswerte", decimals: 1}
 series:
   # --- Wachstum ------------------------------------------------------------
