@@ -53,7 +53,7 @@
   /* Themen */
   section.topic { margin-top: 112px; scroll-margin-top: 60px; }
   /* Breite Bildschirme: Abbildungsübersicht des Abschnitts läuft links mit */
-  .rail { display: none; position: sticky; top: calc(var(--hdr, 64px) + 6px); align-self: start; max-height: calc(100vh - 90px); overflow: auto; font: 13.5px/1.35 var(--ff); border-top: 1px solid var(--line); padding-top: 10px; }
+  .rail { display: none; position: sticky; top: calc(var(--hdr, 64px) + 6px); align-self: start; max-height: calc(100vh - 90px); overflow: auto; font: 13.5px/1.35 var(--ff); padding-top: 2px; }
   .rail .rh { font: 600 16.5px/1.25 var(--ff); color: var(--dark); margin: 0 0 8px; }
   .rail a { display: grid; grid-template-columns: 2.1em minmax(0, 1fr); color: var(--muted); padding: 3px 0; }  /* Nummer und Titel in zwei Spalten */
   .rail a:hover { color: var(--text); text-decoration: none; }
@@ -65,8 +65,9 @@
     section.topic { display: grid; grid-template-columns: 210px minmax(0, 1fr); column-gap: 40px; }
     .rail { display: block; }
   }
-  section.topic > h2 { font-size: 26px; margin: 0 0 4px; grid-column: 1 / -1; }
-  @media (min-width: 601px) { section.topic > h2 { position: sticky; top: var(--hdr, 64px); z-index: 3; background: var(--bg); padding: 6px 0 8px; } body.minimal section.topic > h2 { background: #fff; box-shadow: 0 1px 0 var(--line); } }
+  section.topic > h2 { font-size: 26px; margin: 0; grid-column: 1 / -1; }
+  section.topic > .secask { grid-column: 1 / -1; font: 17px/1.35 var(--ff); color: var(--grey); margin: 0 0 14px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }  /* eine Linie, scrollt mit; Leitfrage klein und grau unter dem Schlagwort */
+  @media (min-width: 601px) { section.topic > h2 { position: sticky; top: var(--hdr, 64px); z-index: 3; background: var(--bg); padding: 6px 0 8px; } body.minimal section.topic > h2 { background: #fff; } }
   .answer { font-size: 19px; margin: 4px 0 6px; max-width: 48em; }
   .more { color: var(--text); margin: 0 0 8px; padding-left: 18px; max-width: 48em; }
   .explain { background: var(--card); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 8px 0 14px; max-width: 48em; font-size: 15px; }
@@ -79,7 +80,7 @@
   .cgrid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: baseline; column-gap: 22px; }
   .gut { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; font: 13.5px/1.6 var(--ff); order: 2; margin-top: 6px; }
   .gut .cno { display: none; }
-  .gut a, .gut button.gl, .gut details.dl > summary { color: var(--text); background: none; border: 0; padding: 0; font: inherit; cursor: pointer; border-radius: 0; }
+  .gut a, .gut button.gl, .gut details.dl > summary { color: var(--grey); font-size: 12.5px !important; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; border-radius: 0; }
   .gut a:hover, .gut button.gl:hover, .gut details.dl > summary:hover { color: var(--accent); text-decoration: underline; }
   .cin { min-width: 0; }
   .cside { order: 3; }
@@ -87,6 +88,7 @@
     .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr); }
     .gut { order: 0; flex-direction: column; flex-wrap: nowrap; align-items: center; text-align: center; gap: 0; margin-top: 0; }
     .gut .cno { display: block; font: 600 19px/1.2 var(--ff); color: var(--dark); }
+    .gut .pin { margin-bottom: 8px; }
     .cin .abbno { display: none; }
     .cside { grid-column: 2; }
   }
@@ -242,7 +244,7 @@
   @media (min-width: 1000px) { header .bar { position: relative; } .search { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(380px, 34vw); margin: 0; } }  /* Suche in der Mitte der Kopfleiste */
   @media (max-width: 600px) { .search { order: 6; width: 100%; margin: 2px 0 0; } .search input { width: 100%; } .search ul { left: 0; width: auto; } }
   @media (max-width: 600px) { ol.callist li { grid-template-columns: 1fr; } }
-  .parthead { margin: 96px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 17px var(--ff); color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
+  .parthead { margin: 96px 0 -16px; padding-top: 10px; border-top: 3px solid var(--dark); font: bold 23px var(--ff); color: var(--dark); text-transform: uppercase; letter-spacing: .05em; scroll-margin-top: 60px; }
   .parthead + section.topic { margin-top: 64px; }
   .weekrev { margin-top: 96px; padding-top: 10px; border-top: 3px solid var(--dark); }
   .weekrev h2 { font-size: 26px; margin: 0 0 4px; }
@@ -1417,7 +1419,7 @@ function build() {
     const dup = x => q && sidsOf(x).includes(q.series);  // Leitgrafik wiederholt die Antwort
     const leadTexts = t.charts[0] && !dup(t.charts[0]) ? (t.charts[0].texts || []) : [];
     const ans = (q ? [q.answer.head, ...q.answer.more] : []).concat(leadTexts);
-    sec.innerHTML = `<h2>${esc(q ? q.ask : (t.ask || t.title))}</h2>`
+    sec.innerHTML = `<h2>${esc(t.title)}</h2>${(q ? q.ask : t.ask) ? `<p class="secask">${esc(q ? q.ask : t.ask)}</p>` : ""}`
       + (ans.length ? `<div class="intro"><div class="ansbox"><p class="answer"><b class="kern">${esc(ans[0])}</b> <button type="button" class="copy" title="Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren" aria-label="Textbaustein kopieren">⧉</button></p>`
         + (ans.length > 1 ? `<details class="moretxt"><summary>${KERN.more}</summary><p>${sentHtml(ans.slice(1), " ", false)}</p></details>` : "") + `</div>`
         + (q ? `<div class="explain">${esc(q.explain)}</div>` : "") + `</div>` : "");
@@ -1445,9 +1447,9 @@ function build() {
     if (LY.lead_chart_only && wrap.children.length === 1) wrap.classList.add("single");
     // Linke Spalte: alle Abbildungen des Abschnitts, die gerade sichtbare hervorgehoben
     const secMain = document.createElement("div"); secMain.className = "secmain";
-    const h2 = sec.querySelector(":scope > h2");
+    const h2 = sec.querySelector(":scope > h2"), sq = sec.querySelector(":scope > .secask");
     while (sec.firstChild) secMain.appendChild(sec.firstChild);
-    if (h2) sec.appendChild(h2);
+    if (h2) sec.appendChild(h2); if (sq) sec.appendChild(sq);
     const rail = document.createElement("nav"); rail.className = "rail"; rail.setAttribute("aria-label", "Abbildungen dieses Abschnitts");
     rail.innerHTML = t.charts.map(x => `<a href="#abb-${x.no}"><b>${x.no}</b><span>${esc(x.title || "")}</span></a>`).join("");
     sec.append(rail, secMain);  // Frage über beide Spalten, darunter Übersicht und Inhalt
