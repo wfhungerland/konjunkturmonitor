@@ -53,7 +53,7 @@
   /* Themen */
   section.topic { margin-top: 112px; scroll-margin-top: 60px; }
   /* Breite Bildschirme: Abbildungsübersicht des Abschnitts läuft links mit */
-  .rail { display: none; position: sticky; top: calc(var(--hdr, 64px) + 6px); align-self: start; max-height: calc(100vh - 90px); overflow: auto; font: 13.5px/1.35 var(--ff); padding-top: 2px; }
+  .rail { display: none; position: sticky; top: calc(var(--hdr, 64px) + var(--h2, 46px) + 8px); align-self: start; max-height: calc(100vh - var(--hdr, 64px) - var(--h2, 46px) - 24px); overflow: auto; font: 13.5px/1.35 var(--ff); padding-top: 2px; }
   .rail .rh { font: 600 16.5px/1.25 var(--ff); color: var(--dark); margin: 0 0 8px; }
   .rail a { display: grid; grid-template-columns: 2.1em minmax(0, 1fr); color: var(--muted); padding: 3px 0; }  /* Nummer und Titel in zwei Spalten */
   .rail a:hover { color: var(--text); text-decoration: none; }
@@ -80,15 +80,16 @@
   .cgrid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: baseline; column-gap: 22px; }
   .gut { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; font: 13.5px/1.6 var(--ff); order: 2; margin-top: 6px; }
   .gut .cno { display: none; }
-  .gut a, .gut button.gl, .gut details.dl > summary { color: var(--grey); font-size: 12.5px !important; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; border-radius: 0; }
-  .gut a:hover, .gut button.gl:hover, .gut details.dl > summary:hover { color: var(--accent); text-decoration: underline; }
+  .gut .gopts { display: flex; flex-wrap: wrap; gap: 2px 14px; }
+  .gut .gopts a, .gut .gopts button { color: #a6a6a6; background: none; border: 0; padding: 0; font: 12.5px/1.6 var(--ff); cursor: pointer; border-radius: 0; text-align: inherit; }
+  .gut .gopts a:hover, .gut .gopts button:hover { color: var(--text); text-decoration: none; }
   .cin { min-width: 0; }
   .cside { order: 3; }
   @media (min-width: 601px) {
     .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr); }
     .gut { order: 0; flex-direction: column; flex-wrap: nowrap; align-items: center; text-align: center; gap: 0; margin-top: 0; }
     .gut .cno { display: block; font: 600 19px/1.2 var(--ff); color: var(--dark); }
-    .gut .pin { margin-bottom: 8px; }
+    .gut .gopts { flex-direction: column; align-items: center; gap: 0; margin-top: 16px; }
     .cin .abbno { display: none; }
     .cside { grid-column: 2; }
   }
@@ -378,7 +379,7 @@
   .collection:empty { display: none; }
   .collection { margin: 8px 0 32px; } .collection .colbar { display: flex; flex-wrap: wrap; gap: 8px 16px; }
   body.coll #overview, body.coll #news, body.coll #grid, body.coll #starttable, body.coll #legendhint, body.coll #topics, body.coll .weekrev, body.coll .fab { display: none !important; }
-  @media print { .htools, .gut .pin, .gut details.dl, .gut a, .gut button, .collection .colbar { display: none; } }
+  @media print { .htools, .gut .pin, .gut .gopts, .collection .colbar { display: none; } }
   @media print {
     header, nav, .fab, .totop, details.dl, .rawtoggle, .btn, button.copy, button.copy1, .seg, .navmore { display: none !important; }
     body { background: #fff; font-size: 11pt; }
@@ -1210,9 +1211,10 @@ function card(c, no) {
   if (fv.csv) acts.push(`<a href="${u(fv.csv)}" download>CSV (${esc(c.toggle.label)})</a>`);
   if (c.chart) acts.push(`<button type="button" class="emb" title="${EMB.title}">${EMB.label}</button>`);
   // Linke Spalte: Download (Dateien und Einbettcode), Methodenblatt, Link
-  gut.insertAdjacentHTML("beforeend", `<details class="dl"><summary title="${GUTTXT.dlt}">${GUTTXT.dl}</summary><div class="dlmenu">${acts.join("")}</div></details>`
+  // alle Optionen offen untereinander, beginnend auf Höhe der Zeichenfläche (siehe alignGut)
+  gut.insertAdjacentHTML("beforeend", `<div class="gopts" title="${GUTTXT.dlt}">${acts.join("")}`
     + (c.chart ? `<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${GUTTXT.meth}</a>` : "")
-    + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button>`);
+    + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button></div>`);
   // Direkter Link auf diese Abbildung zum Teilen
   const lk = gut.querySelector("button.lnk");
   const eb = gut.querySelector("button.emb");
@@ -1251,7 +1253,10 @@ function render(ch) {
   if (!render.loc) { render.loc = 1;
     // Quelle und Lizenz enden an der rechten Kante der Zeichenfläche: rechten Rand der Grafik an die Karte geben
     const np = Plotly.newPlot; Plotly.newPlot = (gd, ...a) => np(gd, ...a).then(g => { const z = gd._fullLayout && gd._fullLayout._size, cd = gd.closest && gd.closest(".card");
-      if (z && cd && !gd.closest(".multi")) cd.style.setProperty("--pr", Math.round(z.r) + "px"); return g; });
+      if (z && cd && !gd.closest(".multi")) cd.style.setProperty("--pr", Math.round(z.r) + "px");
+      const go = cd && cd.querySelector(".gut .gopts"); if (z && go && !PHONE.matches && !(gd.closest(".multi") && cd._gopt)) { cd._gopt = 1;  // obere Kante der ersten Zeichenfläche
+        go.style.marginTop = "0px"; const d = gd.getBoundingClientRect().top + z.t - go.getBoundingClientRect().top; go.style.marginTop = Math.max(8, Math.round(d)) + "px"; }
+      return g; });
     Plotly.register({ moduleType: "locale", name: "site", dictionary: {}, format: { months: MONTHS_L, shortMonths: MONTHS,
     days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], shortDays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], periods: ["AM", "PM"],
     dateTime: "%a %b %e %X %Y", date: "%d.%m.%Y", time: "%H:%M:%S", decimal: ",", thousands: ".", grouping: [3], currency: ["", " €"], year: "%Y", month: "%b %Y", dayMonth: "%-d. %b", dayMonthYear: "%-d. %b %Y" } }); }
@@ -1542,9 +1547,14 @@ function build() {
   let curId = null;
   const where = () => { const lim = innerHeight * 0.3; let id = null; for (const x of secs) { if (x.getBoundingClientRect().top < lim) id = x.id; else break; }
     if (id === curId) return; curId = id; const n = NAV.find(x => x.id === id);
-    nb.innerHTML = `${NAVTXT.contents}${n ? `<span class="navcur"> · ${esc(n.title)}</span>` : ""}`;
+    nb.innerHTML = `${NAVTXT.contents}${n ? `<span class="navcur"> &gt; ${esc(n.title)}</span>` : ""}`;
     panel.querySelectorAll("a[data-t]").forEach(a => a.classList.toggle("cur", a.dataset.t === id)); };
-  let wq = 0; addEventListener("scroll", () => { if (!wq) wq = requestAnimationFrame(() => { wq = 0; where(); }); }, { passive: true }); where();
+  // Kapitelüberschrift und Abbildungsliste links stehen fest wie eingefrorene Zeilen; am Kapitelende verlassen beide gemeinsam den Bildschirm
+  const freeze = () => { for (const x of secs) { const h = x.querySelector(":scope > h2"), rl = x.querySelector(".rail"); if (!h) continue;
+    const b = x.getBoundingClientRect(); if (b.bottom < 0 || b.top > innerHeight || !rl || !rl.offsetParent) { if (h.style.transform) h.style.transform = ""; continue; }
+    const want = parseFloat(getComputedStyle(rl).top) || 0, up = Math.max(0, want - rl.getBoundingClientRect().top);
+    h.style.transform = up > 0.5 ? `translateY(${-up}px)` : ""; } };
+  let wq = 0; addEventListener("scroll", () => { if (!wq) wq = requestAnimationFrame(() => { wq = 0; where(); freeze(); }); }, { passive: true }); where();
   const cl = document.createElement("a"); cl.className = "btn colllink"; cl.href = "#sammlung";
   document.querySelector("header .bar").append(searchBox(), bb, cl);
   // Eigene Sammlung: gemerkte Abbildungen (Kennungen im Browser), eigene Ansicht und teilbarer Link #sammlung=a,b,c
@@ -1580,7 +1590,8 @@ function build() {
       document.querySelectorAll(`.gut .pin[data-chart="${CSS.escape(id)}"]`).forEach(pinLab); updCount(); if (document.body.classList.contains("coll") && !shared) showColl(mine); };
     h.querySelector(".cno").after(b); });
   // Höhe der Kopfzeile für die stehenbleibenden Abschnittsfragen
-  const setHdr = () => document.documentElement.style.setProperty("--hdr", document.querySelector("header").offsetHeight + "px");
+  const setHdr = () => { const R = document.documentElement.style, h2 = document.querySelector("section.topic > h2");
+    R.setProperty("--hdr", document.querySelector("header").offsetHeight + "px"); if (h2) R.setProperty("--h2", h2.offsetHeight + "px"); };
   setHdr(); addEventListener("resize", setHdr);
   const route = () => { const h = location.hash;
     if (h.startsWith("#sammlung=")) { shared = h.slice(10).split(",").map(x => { try { return decodeURIComponent(x); } catch (e) { return ""; } }).filter(Boolean); showColl(shared); }
