@@ -15,6 +15,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from konjunkturwolf.downloads import stata_name
+
 PALETTE = ["#002060", "#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#47D359"]
 FONT = "Arial Narrow"
 GRID = "#BFBFBF"
@@ -741,6 +743,26 @@ def file_stem(c: dict, date: str, width: int, shorts: dict) -> str:
 # ---------------------------------------------------------------------------
 # Alles zusammen
 # ---------------------------------------------------------------------------
+def write_dta(df: pd.DataFrame, path: Path, title: str) -> bool:
+    """Stata-Datei (Version 118) mit Variablenlabels; False, wenn sich die Tabelle nicht abbilden lässt."""
+    used: set[str] = set()
+    names = {c: ("date" if c == "Datum" else stata_name(str(c), used)) for c in df.columns}
+    st = df.rename(columns=names).copy()
+    if "date" in st.columns:
+        st["date"] = pd.to_datetime(st["date"], errors="coerce")
+    for col in st.columns:
+        if st[col].dtype == object:
+            num = pd.to_numeric(st[col], errors="coerce")
+            st[col] = num if num.notna().sum() == st[col].notna().sum() else st[col].astype(str)
+    try:
+        st.to_stata(path, write_index=False, version=118, variable_labels={names[c]: str(c)[:80] for c in df.columns},
+                    data_label=title[:80], convert_dates={"date": "td"} if "date" in st.columns else None)
+        return True
+    except Exception:
+        path.unlink(missing_ok=True)
+        return False
+
+
 def write_all(payload: dict, out: Path, root: Path | None = None) -> None:
     global GEO
     GEO = payload.get("geo")
@@ -780,6 +802,8 @@ def write_all(payload: dict, out: Path, root: Path | None = None) -> None:
                     fh.write(stem + "\n")  # Regel 9: Stamm in der ersten Zeile
                     csv.to_csv(fh, sep=";", decimal=",", index=False)
                 files["csv"] = f"dl/{stem}.csv"
+                if write_dta(df, folder / f"{stem}.dta", stem):
+                    files["dta"] = f"dl/{stem}.dta"
                 write_xlsx(c, df, plan, folder / f"{stem}.xlsx", stand, cite)
                 files["xlsx"] = f"dl/{stem}.xlsx"
             prs = new_presentation()

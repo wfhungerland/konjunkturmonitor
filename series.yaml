@@ -2511,7 +2511,7 @@ series:
     label: "Deutschland"
 
   - id: ez_gdp
-    expand: {geo: [DE, FR, IT, ES, EA20]}
+    expand: {geo: [DE, FR, IT, ES, EA21]}
     block: welt
     source: eurostat
     key: namq_10_gdp
@@ -2596,7 +2596,7 @@ series:
     block: welt
     source: eurostat
     key: namq_10_gdp
-    params: {geo: EA20, na_item: B1GQ, unit: CLV_PCH_SM, s_adj: SCA}
+    params: {geo: EA21, na_item: B1GQ, unit: CLV_PCH_SM, s_adj: SCA}
     title: "BIP real Euroraum, % ggü. Vorjahresquartal"
     unit: "% ggü. Vorjahresquartal"
     frequency: Q
@@ -2880,7 +2880,7 @@ series:
     block: einkommen
     source: eurostat
     key: namq_10_lp_ulc
-    params: {geo: EA20, na_item: NULC_PER, unit: PCH_SM, s_adj: SCA}
+    params: {geo: EA21, na_item: NULC_PER, unit: PCH_SM, s_adj: SCA}
     title: "Lohnstückkosten (je Erwerbstätigen), Euroraum, % ggü. Vorjahresquartal"
     unit: "% ggü. Vorjahresquartal"
     frequency: Q

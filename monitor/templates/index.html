@@ -489,7 +489,7 @@ const KERN = { more: "Weiterlesen" };
 const ANH = { show: "Abbildungen anzeigen" };
 const LONGTXT = { crisis: "Bankenkrisen", rec: "Rezessionen", dec: "Mittel" };
 const VIEWTXT = { raw: "Monatswerte", rawt: "Dünne Linie mit den einzelnen Monatswerten zeigen", edge: "Aktueller Rand", edget: "Jüngste Werte an den Linienenden zeigen", rec: "Rezessionen" };
-const GUTTXT = { dl: "Download", dlt: "XLSX, PPTX, PNG, CSV oder Code zum Einbetten", meth: "Methode", link: "Link" };
+const GUTTXT = { dl: "Download", dlt: "XLSX, PPTX, PNG, CSV, Stata oder Code zum Einbetten", meth: "Methode", link: "Link" };
 const pressed = (b, on) => b.setAttribute("aria-pressed", String(!!on));
 const COLTXT = { pin: "Als Lesezeichen merken", pinned: "Lesezeichen entfernen", title: "Lesezeichen", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. Der Stern ☆ oben rechts an einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Lesezeichen übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
 const EMB = { label: "Einbetten", title: "HTML-Code kopieren, um diese Abbildung auf einer eigenen Seite einzubetten", done: "Code kopiert", src: "Konjunkturmonitor", full: "ganze Seite" };
@@ -1267,6 +1267,7 @@ function card(c, no) {
   if (f.pptx) acts.push(`<a href="${u(f.pptx)}" download>PPTX</a>`);
   if (!["heat", "heatbars", "calendar", "event"].includes(c.type)) acts.push(`<button type="button" class="png">PNG</button>`);
   if (f.csv) acts.push(`<a href="${u(f.csv)}" download>CSV</a>`);
+  if (f.dta) acts.push(`<a href="${u(f.dta)}" download>Stata</a>`);
   const fv = (c.variant && c.variant.files) || {};  // zweite Ansicht der Karte
   if (fv.xlsx) acts.push(`<a href="${u(fv.xlsx)}" download>XLSX (${esc(c.toggle.label)})</a>`);
   if (fv.csv) acts.push(`<a href="${u(fv.csv)}" download>CSV (${esc(c.toggle.label)})</a>`);

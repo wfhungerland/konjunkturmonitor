@@ -14,7 +14,7 @@ Eine lange Seite, deutsch unter `/` und englisch unter `/en/` (Sprachschalter un
 - **Diese Woche neu:** Abbildungen mit neuen Daten in den letzten sieben Tagen.
 - **Quellen und Hinweise:** Methodik, Quellen und Lizenzen, fehlende Indikatoren, Gesamtdownloads, Abrufstatus, Zitiervorschlag.
 
-Jede Abbildung hat Nummer, Unterfrage, Sätze zum jüngsten Stand, Titel, Erläuterung in der Randspalte, Quelle und Lizenz sowie das Menü „Download und Link“ (XLSX, PPTX, PNG, CSV, Link kopieren).
+Jede Abbildung hat Nummer, Unterfrage, Sätze zum jüngsten Stand, Titel, Erläuterung in der Randspalte, Quelle und Lizenz sowie das Menü „Download und Link“ (XLSX, PPTX, PNG, CSV, Stata, Link kopieren).
 
 ## Daten
 
@@ -63,7 +63,7 @@ Die Zuordnung der Abschnitte zu Teil I, Teil II und Termine steht je Abschnitt i
 
 Ein Export der ganzen Seite als Word-Datei war gebaut, ist aber auf Wiedervorlage; der Code liegt im Git-Verlauf (`monitor/worddoc.py`, `monitor/shots.py`, zuletzt in Commit 0acaf59).
 
-Zu jeder Abbildung erzeugt der Lauf Excel (Daten, Diagramm, Info), eine PowerPoint-Folie mit bearbeitbarem Diagramm und CSV (`site/dl/`); das PNG entsteht im Browser. Die Folie übernimmt Format und Aufteilung des vorgegebenen Folienmasters (16:9, grauer Rahmen, Übertitel, Titel, Quellenzeile), aber ohne Logo und Behördenkennzeichnung.
+Zu jeder Abbildung erzeugt der Lauf Excel (Daten, Diagramm, Info), eine PowerPoint-Folie mit bearbeitbarem Diagramm, CSV und eine Stata-Datei (`.dta`, Version 118, mit Variablenlabels; `site/dl/`); das PNG entsteht im Browser. Die Folie übernimmt Format und Aufteilung des vorgegebenen Folienmasters (16:9, grauer Rahmen, Übertitel, Titel, Quellenzeile), aber ohne Logo und Behördenkennzeichnung.
 
 ### Gesamtdownload, Archiv und Feed
 
