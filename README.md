@@ -33,6 +33,7 @@ Jede Abbildung hat Nummer, Unterfrage, Sätze zum jüngsten Stand, Titel, Erläu
 | Struktur | Eurostat (`nama_10_gdp`, `namq_10_lp_ulc`, `namq_10_a10_e`, `demo_gind`); AMECO-Produktionspotenzial (über DBnomics) und OECD-Körperschaftsteuersätze als statische Dateien, von Hand zu aktualisieren |
 | Kalender | `data/static/kalender.yaml`: Termine nach dem üblichen Rhythmus der Quellen, geschätzt |
 | Prognosen | `data/static/prognosen.yaml`, nur veröffentlichte Werte mit Link |
+| Gemeinschaftsdiagnose | `data/static/gd_prognosen.csv`: Prognosen der Wirtschaftsforschungsinstitute 1950 bis Frühjahr 2026 mit Fundstelle je Wert, abgeleitet aus den Gutachten; die Reihen der Abbildungen erzeugt `python -m monitor.gd` |
 | Karten | Ländergrenzen © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung 2.0, vereinfacht (`data/static/vg2500_laender.json`) |
 
 Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global, GfK-Detailreihen und Terminpreise. Die ifo-Zeitreihen setzen eine Anmeldung voraus. Die Stimmung kommt deshalb aus den offenen EU-Umfragen.

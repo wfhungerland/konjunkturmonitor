@@ -56,6 +56,7 @@ topics:
   struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
   staat: {title: "Government", ask: "What state are the public finances in?"}
   sachverstaendigenrat: {title: "Council of Economic Experts", ask: "What did the Council of Economic Experts forecast and recommend?"}
+  gemeinschaftsdiagnose: {title: "Joint Economic Forecast", ask: "How well did the economic research institutes forecast?"}
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
 
 charts:
@@ -529,6 +530,36 @@ charts:
     ask: "Did the Council of Economic Experts advise austerity even when growth was weak?"
     caption: "Bars: real GDP growth the Council of Economic Experts expected for the following year. Colour: fiscal stance it recommended for that year in the same report; blue consolidation, grey cyclically neutral (let automatic stabilisers work), red stimulus, light grey no recommendation discernible. West Germany until 1991. Tap for the recommendation with paragraph and page."
     unit: "% on previous year"
+  gd_bip:
+    title: "Growth forecasts of the Joint Economic Forecast and first release"
+    ask: "How well did the institutes forecast growth?"
+    caption: "Forecast of the Joint Economic Forecast (Gemeinschaftsdiagnose) of the economic research institutes for real GDP growth in the following year, from the autumn report, and the first release for the same year as printed in the spring report half a year later. West Germany until 1991, Germany from 1992; until about 1991 mostly real GNP. No autumn forecast with an annual figure exists for 1960-1962, 1964, 1965 and 1968. Where a report is missing (1970-1974, 1997-2006 and single rounds), values come from the archive of appendix tables. Tapping also shows today's data vintage. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    unit: "% on previous year"
+  gd_vpi:
+    title: "Inflation forecasts of the Joint Economic Forecast and first release"
+    ask: "How well did the institutes forecast inflation?"
+    caption: "Forecast of the Joint Economic Forecast for the annual average rise in consumer prices in the following year, from the autumn report, and the first release from the next spring report. Where a report gives no consumer price index (1960s, mostly autumn 1986 to spring 1996, all values from the appendix tables), the private consumption deflator is shown, with the same measure as first release. Where the measure changes between forecast and release, the first release is missing (for example 1976, 1978, 1979, 1986, 1997). For 2022 the first release follows the old weighting scheme (7.9%), on which the forecasts were based; the new scheme gives 6.9%. West Germany until 1991. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    unit: "% on previous year"
+  gd_alo:
+    title: "Unemployment forecasts of the Joint Economic Forecast and first release"
+    ask: "How well did the institutes forecast unemployment?"
+    caption: "Forecast of the Joint Economic Forecast for registered unemployment (annual average) in the following year, from the autumn report, and the first release from the next spring report. West Germany until 1991, Germany afterwards; the jump from 1991 to 1992 reflects the territory. From 2005 recipients of unemployment benefit II are included. No forecast for 1998-2007 and 2013, because only appendix tables without unemployment are available; no first release for 1981, 1996 and 1997. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    unit: "thousand people"
+  gd_saldo:
+    title: "Joint Economic Forecast: forecasts of the government balance"
+    ask: "How well did the institutes forecast the government balance?"
+    caption: "Forecast of the Joint Economic Forecast for the general government balance (revenue minus expenditure of federal, state and local government and social security) as a percentage of GDP in the following year, from the autumn report, and the first release from the next spring report. Negative values are deficits. Shown from 2008: earlier reports mostly print the balance only in billion D-Mark or euro; those values are in the dataset. No ratio is available for 2013. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    unit: "% of GDP"
+  gd_fehler:
+    title: "Errors of the Joint Economic Forecast growth forecasts"
+    ask: "Have growth forecasts become more accurate over the decades?"
+    caption: "Distance between the autumn forecast of the Joint Economic Forecast for real GDP growth in the following year and the first release, as an absolute value in percentage points, without direction. Grey steps: mean per decade where at least five years are available; the current decade dashed. The 1960s have only four values and no step. West Germany until 1991. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    unit: "percentage points"
+  gd_ziel:
+    title: "Joint Economic Forecast growth forecasts for a target year"
+    ask: "How did the institutes change their forecast for a given year?"
+    caption: "Each line shows the real GDP growth the Joint Economic Forecast expected for a given year, from the first forecast to the autumn of that year. Each point is one report, placed at its closing date. Open circle: first release in the spring report of the following year. Shown are the four most recent target years; the first release for 2026 is still pending. All target years since 1950 are in the dataset. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    unit: "% on previous year"
 
 series:
   wb_soybeans: {title: "World market price, Soybeans (World Bank: Soybeans)", label: "Soybeans", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
@@ -779,6 +810,26 @@ series:
   svr_stance_f: {title: "Council recommendation: fiscal policy", label: "Fiscal policy", unit: "level -1, 0, +1", adjustment: "not adjusted"}
   svr_stance_a: {title: "Council recommendation: labour market and welfare", label: "Labour market and welfare", unit: "level -1, 0, +1", adjustment: "not adjusted"}
   svr_voten: {title: "Passages with a minority vote in the annual report", label: "Minority votes", unit: "count", adjustment: "not adjusted"}
+  gd_bip_prog: {title: "Real GDP growth: Joint Economic Forecast for the following year", label: "institutes' forecast", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_bip_ist: {title: "Real GDP growth: first release, printed in the following spring report", label: "first release", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_bip_heute: {title: "Real GDP growth: today's data vintage", label: "today's vintage", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_vpi_prog: {title: "Consumer prices: Joint Economic Forecast for the following year", label: "institutes' forecast", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_vpi_ist: {title: "Consumer prices: first release, printed in the following spring report", label: "first release", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_vpi_heute: {title: "Consumer prices: today's data vintage", label: "today's vintage", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_alo_prog: {title: "Registered unemployed: Joint Economic Forecast for the following year", label: "institutes' forecast", unit: "thousand people", adjustment: "not adjusted"}
+  gd_alo_ist: {title: "Registered unemployed: first release, printed in the following spring report", label: "first release", unit: "thousand people", adjustment: "not adjusted"}
+  gd_alo_heute: {title: "Registered unemployed: today's data vintage", label: "today's vintage", unit: "thousand people", adjustment: "not adjusted"}
+  gd_saldo_prog: {title: "General government balance: Joint Economic Forecast for the following year", label: "institutes' forecast", unit: "% of GDP", adjustment: "not adjusted"}
+  gd_saldo_ist: {title: "General government balance: first release, printed in the following spring report", label: "first release", unit: "% of GDP", adjustment: "not adjusted"}
+  gd_saldo_heute: {title: "General government balance: today's data vintage", label: "today's vintage", unit: "% of GDP", adjustment: "not adjusted"}
+  gd_bip_fehler: {title: "Real GDP growth: distance of the Joint Economic Forecast autumn forecast from the first release", label: "forecast minus first release, absolute", unit: "percentage points", adjustment: "not adjusted"}
+  gd_ziel_2023: {title: "Real GDP growth 2023: forecasts of the Joint Economic Forecast", label: "Forecasts for 2023", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_ziel_2023_ist: {title: "Real GDP growth 2023: first release", label: "first release 2023", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_ziel_2024: {title: "Real GDP growth 2024: forecasts of the Joint Economic Forecast", label: "Forecasts for 2024", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_ziel_2024_ist: {title: "Real GDP growth 2024: first release", label: "first release 2024", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_ziel_2025: {title: "Real GDP growth 2025: forecasts of the Joint Economic Forecast", label: "Forecasts for 2025", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_ziel_2025_ist: {title: "Real GDP growth 2025: first release", label: "first release 2025", unit: "% on previous year", adjustment: "not adjusted"}
+  gd_ziel_2026: {title: "Real GDP growth 2026: forecasts of the Joint Economic Forecast", label: "Forecasts for 2026", unit: "% on previous year", adjustment: "not adjusted"}
 
 geo:
   DE: "Germany"

@@ -190,6 +190,12 @@ charts:
   svr_alo: {title: "Arbeitslosenprognosen des Sachverständigenrats und erste Meldung", decimals: 0}
   svr_rat: {title: "Empfehlungen des Sachverständigenrats zu vier Dauerfragen", decimals: 0}
   svr_fiskal: {title: "Empfohlener Kurs der Finanzpolitik und erwartetes Wachstum", decimals: 1}
+  gd_bip: {title: "Wachstumsprognosen der Gemeinschaftsdiagnose und erste Meldung", decimals: 1}
+  gd_vpi: {title: "Inflationsprognosen der Gemeinschaftsdiagnose und erste Meldung", decimals: 1}
+  gd_alo: {title: "Arbeitslosenprognosen der Gemeinschaftsdiagnose und erste Meldung", decimals: 0}
+  gd_saldo: {title: "Prognosen der Gemeinschaftsdiagnose zum Finanzierungssaldo des Staates", decimals: 1}
+  gd_fehler: {title: "Fehler der Wachstumsprognosen der Gemeinschaftsdiagnose", decimals: 1}
+  gd_ziel: {title: "Wachstumsprognosen der Gemeinschaftsdiagnose für ein Zieljahr", decimals: 1}
   alq_land: {title: "Arbeitslosenquote nach Ländern", decimals: 1}
   tarif: {title: "Tarifverdienste und Verbraucherpreise", decimals: 1}
   spf: {title: "Langfristige Inflationserwartung der Fachleute", decimals: 2}
@@ -3406,3 +3412,323 @@ series:
     chart: svr_rat
     label: "Minderheitsvoten"
     note: "Gezählt je Sachpunkt; Kurzfassungen und Nachdrucke nicht. Einzelnachweis in data/static/svr_minderheitsvoten.csv."
+
+  - id: gd_bip_prog
+    block: wachstum
+    source: static
+    key: gd_bip_prog
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Wachstum des realen BIP: Prognose der Gemeinschaftsdiagnose für das Folgejahr"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1960-01-01"
+    stale_after_months: 24
+    chart: gd_bip
+    label: "Prognose der Institute"
+    note: "Herbstgutachten des Vorjahres; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_bip_ist
+    block: wachstum
+    source: static
+    key: gd_bip_ist
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Wachstum des realen BIP: erste Meldung, gedruckt im Frühjahrsgutachten des Folgejahres"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1960-01-01"
+    stale_after_months: 24
+    chart: gd_bip
+    label: "erste Meldung"
+    note: "Wert für das abgelaufene Jahr, wie im nächsten Frühjahrsgutachten gedruckt; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_bip_heute
+    block: wachstum
+    source: static
+    key: gd_bip_heute
+    params: {source_name: "Statistisches Bundesamt (VGR, Verbraucherpreisindex); Bundesagentur für Arbeit; heutiger Stand, gesammelt im Datensatz der Gemeinschaftsdiagnose"}
+    license: "Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt); Statistik der Bundesagentur für Arbeit"
+    title: "Wachstum des realen BIP: heutiger Datenstand"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: preisbereinigt
+    start: "1960-01-01"
+    stale_after_months: 24
+    chart: gd_bip
+    label: "heutiger Stand"
+    note: "Heutiger Stand der amtlichen Statistik für dieselbe Größe; Quelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_vpi_prog
+    block: preise
+    source: static
+    key: gd_vpi_prog
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Verbraucherpreise: Prognose der Gemeinschaftsdiagnose für das Folgejahr"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1960-01-01"
+    stale_after_months: 24
+    chart: gd_vpi
+    label: "Prognose der Institute"
+    note: "Herbstgutachten des Vorjahres; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_vpi_ist
+    block: preise
+    source: static
+    key: gd_vpi_ist
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Verbraucherpreise: erste Meldung, gedruckt im Frühjahrsgutachten des Folgejahres"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1960-01-01"
+    stale_after_months: 24
+    chart: gd_vpi
+    label: "erste Meldung"
+    note: "Wert für das abgelaufene Jahr, wie im nächsten Frühjahrsgutachten gedruckt; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_vpi_heute
+    block: preise
+    source: static
+    key: gd_vpi_heute
+    params: {source_name: "Statistisches Bundesamt (VGR, Verbraucherpreisindex); Bundesagentur für Arbeit; heutiger Stand, gesammelt im Datensatz der Gemeinschaftsdiagnose"}
+    license: "Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt); Statistik der Bundesagentur für Arbeit"
+    title: "Verbraucherpreise: heutiger Datenstand"
+    unit: "% ggü. Vorjahr"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1960-01-01"
+    stale_after_months: 24
+    chart: gd_vpi
+    label: "heutiger Stand"
+    note: "Heutiger Stand der amtlichen Statistik für dieselbe Größe; Quelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_alo_prog
+    block: arbeit
+    source: static
+    key: gd_alo_prog
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Registrierte Arbeitslose: Prognose der Gemeinschaftsdiagnose für das Folgejahr"
+    unit: "Tsd. Personen"
+    frequency: A
+    adjustment: Jahresdurchschnitt
+    start: "1980-01-01"
+    stale_after_months: 24
+    chart: gd_alo
+    label: "Prognose der Institute"
+    note: "Herbstgutachten des Vorjahres; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_alo_ist
+    block: arbeit
+    source: static
+    key: gd_alo_ist
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Registrierte Arbeitslose: erste Meldung, gedruckt im Frühjahrsgutachten des Folgejahres"
+    unit: "Tsd. Personen"
+    frequency: A
+    adjustment: Jahresdurchschnitt
+    start: "1980-01-01"
+    stale_after_months: 24
+    chart: gd_alo
+    label: "erste Meldung"
+    note: "Wert für das abgelaufene Jahr, wie im nächsten Frühjahrsgutachten gedruckt; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_alo_heute
+    block: arbeit
+    source: static
+    key: gd_alo_heute
+    params: {source_name: "Statistisches Bundesamt (VGR, Verbraucherpreisindex); Bundesagentur für Arbeit; heutiger Stand, gesammelt im Datensatz der Gemeinschaftsdiagnose"}
+    license: "Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt); Statistik der Bundesagentur für Arbeit"
+    title: "Registrierte Arbeitslose: heutiger Datenstand"
+    unit: "Tsd. Personen"
+    frequency: A
+    adjustment: Jahresdurchschnitt
+    start: "1980-01-01"
+    stale_after_months: 24
+    chart: gd_alo
+    label: "heutiger Stand"
+    note: "Heutiger Stand der amtlichen Statistik für dieselbe Größe; Quelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_saldo_prog
+    block: staat
+    source: static
+    key: gd_saldo_prog
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Finanzierungssaldo des Staates: Prognose der Gemeinschaftsdiagnose für das Folgejahr"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1990-01-01"
+    stale_after_months: 24
+    chart: gd_saldo
+    label: "Prognose der Institute"
+    note: "Herbstgutachten des Vorjahres; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_saldo_ist
+    block: staat
+    source: static
+    key: gd_saldo_ist
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Finanzierungssaldo des Staates: erste Meldung, gedruckt im Frühjahrsgutachten des Folgejahres"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1990-01-01"
+    stale_after_months: 24
+    chart: gd_saldo
+    label: "erste Meldung"
+    note: "Wert für das abgelaufene Jahr, wie im nächsten Frühjahrsgutachten gedruckt; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_saldo_heute
+    block: staat
+    source: static
+    key: gd_saldo_heute
+    params: {source_name: "Statistisches Bundesamt (VGR, Verbraucherpreisindex); Bundesagentur für Arbeit; heutiger Stand, gesammelt im Datensatz der Gemeinschaftsdiagnose"}
+    license: "Datenlizenz Deutschland – Namensnennung – Version 2.0 (Statistisches Bundesamt); Statistik der Bundesagentur für Arbeit"
+    title: "Finanzierungssaldo des Staates: heutiger Datenstand"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1990-01-01"
+    stale_after_months: 24
+    chart: gd_saldo
+    label: "heutiger Stand"
+    note: "Heutiger Stand der amtlichen Statistik für dieselbe Größe; Quelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_bip_fehler
+    block: wachstum
+    source: static
+    key: gd_bip_fehler
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Wachstum des realen BIP: Abstand der Herbstprognose der Gemeinschaftsdiagnose von der ersten Meldung"
+    unit: "Prozentpunkte"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1960-01-01"
+    stale_after_months: 24
+    chart: gd_fehler
+    label: "Abstand Prognose zu erster Meldung"
+    note: "Betrag von Prognose minus erste Meldung; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_ziel_2023
+    block: wachstum
+    source: static
+    key: gd_ziel_2023
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Wachstum des realen BIP 2023: Prognosen der Gemeinschaftsdiagnose"
+    unit: "% ggü. Vorjahr"
+    frequency: S
+    adjustment: je Gutachten
+    start: "2020-01-01"
+    stale_after_months: 1200
+    chart: gd_ziel
+    label: "Prognosen für 2023"
+    note: "Datum = Abschluss des Gutachtens; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_ziel_2023_ist
+    block: wachstum
+    source: static
+    key: gd_ziel_2023_ist
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Wachstum des realen BIP 2023: erste Meldung"
+    unit: "% ggü. Vorjahr"
+    frequency: S
+    adjustment: je Gutachten
+    start: "2020-01-01"
+    stale_after_months: 1200
+    chart: gd_ziel
+    label: "erste Meldung 2023"
+    note: "Im Frühjahrsgutachten des Folgejahres gedruckt; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_ziel_2024
+    block: wachstum
+    source: static
+    key: gd_ziel_2024
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Wachstum des realen BIP 2024: Prognosen der Gemeinschaftsdiagnose"
+    unit: "% ggü. Vorjahr"
+    frequency: S
+    adjustment: je Gutachten
+    start: "2020-01-01"
+    stale_after_months: 1200
+    chart: gd_ziel
+    label: "Prognosen für 2024"
+    note: "Datum = Abschluss des Gutachtens; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_ziel_2024_ist
+    block: wachstum
+    source: static
+    key: gd_ziel_2024_ist
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Wachstum des realen BIP 2024: erste Meldung"
+    unit: "% ggü. Vorjahr"
+    frequency: S
+    adjustment: je Gutachten
+    start: "2020-01-01"
+    stale_after_months: 1200
+    chart: gd_ziel
+    label: "erste Meldung 2024"
+    note: "Im Frühjahrsgutachten des Folgejahres gedruckt; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_ziel_2025
+    block: wachstum
+    source: static
+    key: gd_ziel_2025
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Wachstum des realen BIP 2025: Prognosen der Gemeinschaftsdiagnose"
+    unit: "% ggü. Vorjahr"
+    frequency: S
+    adjustment: je Gutachten
+    start: "2020-01-01"
+    stale_after_months: 1200
+    chart: gd_ziel
+    label: "Prognosen für 2025"
+    note: "Datum = Abschluss des Gutachtens; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_ziel_2025_ist
+    block: wachstum
+    source: static
+    key: gd_ziel_2025_ist
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Wachstum des realen BIP 2025: erste Meldung"
+    unit: "% ggü. Vorjahr"
+    frequency: S
+    adjustment: je Gutachten
+    start: "2020-01-01"
+    stale_after_months: 1200
+    chart: gd_ziel
+    label: "erste Meldung 2025"
+    note: "Im Frühjahrsgutachten des Folgejahres gedruckt; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_ziel_2026
+    block: wachstum
+    source: static
+    key: gd_ziel_2026
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Wachstum des realen BIP 2026: Prognosen der Gemeinschaftsdiagnose"
+    unit: "% ggü. Vorjahr"
+    frequency: S
+    adjustment: je Gutachten
+    start: "2020-01-01"
+    stale_after_months: 1200
+    chart: gd_ziel
+    label: "Prognosen für 2026"
+    note: "Datum = Abschluss des Gutachtens; Fundstelle je Wert in data/static/gd_prognosen.csv."
