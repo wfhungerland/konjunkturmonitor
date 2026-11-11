@@ -35,8 +35,8 @@ PAIRS: list[tuple[str, str]] = [
     ('`Woche bis ${+x.slice(8, 10)}. ${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`', '`week to ${+x.slice(8, 10)} ${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`'),
     ('(f === "A" ? "im Jahr " : f === "D" ? "in der " : f === "B" ? "am " : "im ")', '(f === "A" ? "in " : f === "D" ? "in the " : f === "B" ? "on " : "in ")'),
     # Statischer Teil
-    ("Die Schalter über jeder Grafik, etwa „Aktueller Rand“ oder „Rezessionen“, blenden jüngste Werte oder Rezessionen ein. Die hellen Flächen im Hintergrund markieren jedes zweite Kalenderjahr.",
-     "The switches above each chart, such as “Latest values” or “Recessions”, show the latest values or recessions. The light background bands mark every other calendar year."),
+    ("Die Schalter über jeder Grafik, etwa „Aktueller Rand“ oder „Rezessionen“, blenden jüngste Werte oder Rezessionen ein.",
+     "The switches above each chart, such as “Latest values” or “Recessions”, show the latest values or recessions."),
     ("<h2>Quellen und Hinweise</h2>", "<h2>Sources and notes</h2>"),
     ("<summary>Methodik, Vergleichszeitraum und Zeichen</summary>", "<summary>Method, reference period and symbols</summary>"),
     ("<p><b>Vergleichszeitraum.</b> Wo der Monitor ein „übliches“ Niveau angibt, ist es der Durchschnitt der Jahre 2015 bis 2019: die fünf letzten vollen Jahre vor der Pandemie, nach der Euro-Schuldenkrise und vor dem Energiepreisschock 2022. Ausnahme ist die Konjunkturuhr; sie misst den Abstand zum langjährigen Mittel 2005 bis 2019, weil die Phasen eines Konjunkturzyklus nur über mehrere Zyklen bestimmt werden können.</p>",
