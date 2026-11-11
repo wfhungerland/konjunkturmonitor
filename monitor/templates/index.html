@@ -407,7 +407,7 @@
   <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
   <div id="starttable">/*__STATIC__*/</div>
-  <p class="tnote" id="legendhint">Die Schalter über jeder Grafik, etwa „Aktueller Rand“ oder „Rezessionen“, blenden jüngste Werte oder Rezessionen ein.</p>
+  <p class="tnote" id="legendhint">Die Schalter über jeder Grafik, etwa „Aktueller Rand“ oder „Rezessionen“, blenden jüngste Werte oder Rezessionen ein. <span class="tools"><button type="button" class="btn" id="ybtoggle" aria-pressed="false" title="Jedes zweite Kalenderjahr hell hinterlegen; das laufende Jahr bleibt frei">Jahresflächen</button></span></p>
   <div id="topics"></div>
 </main>
 <section class="refs" id="quellen">
@@ -440,7 +440,8 @@
 const DATA = /*__DATA__*/null;
 // Grafikstandard: Farben, Jahresbänder, Gitter, Nulllinie, Schrift
 const PAL = ["#002060", "#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#47D359"];
-const YEAR_BANDS = (DATA.layout || {}).year_bands === true;  // helle Flächen je zweites Kalenderjahr: aus, weil sie am Rand wie eine Rezession wirkten
+let YEAR_BANDS = (DATA.layout || {}).year_bands === true;  // helle Flächen je zweites Kalenderjahr: Standard aus, weil sie am Rand wie eine Rezession wirkten; Schalter unter den Kennzahlen
+try { if (localStorage.getItem("km_yb") === "1") YEAR_BANDS = true; } catch (e) {}
 const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero: DATA.layout && DATA.layout.red_zero_line ? "#FF0000" : "#595959", font: '"Source Sans 3", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif' };
 // Balken (etwa Wachstumsbeiträge): benachbarte Farben mit deutlichem Kontrast
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
@@ -517,7 +518,7 @@ function xAxis(x0, x1, width) {
     const a = `${y}-01-01`, b = `${y + 1}-01-01`, lo = a < x0 ? x0 : a, hi = b > x1 ? x1 : b;
     if (y % every === 0) { tv.push(new Date((Date.parse(lo) + Date.parse(hi)) / 2).toISOString().slice(0, 10)); tt.push(String(y)); }
     if (y > y0 && HS.gridV) shapes.push({ type: "line", xref: "x", yref: "paper", x0: a, x1: a, y0: 0, y1: 1, line: { color: HS.gridV, width: 1 }, layer: "below" });
-    if (YEAR_BANDS && (y - y0) % 2 === 0 && n <= 50) shapes.push({ type: "rect", xref: "x", yref: "paper", x0: lo, x1: hi, y0: 0, y1: 1, fillcolor: HS.band, line: { width: 0 }, layer: "below" });  // bei sehr langen Reihen ohne Jahresbänder
+    if (YEAR_BANDS && (y1 - y) % 2 === 1 && n <= 50) shapes.push({ type: "rect", xref: "x", yref: "paper", x0: lo, x1: hi, y0: 0, y1: 1, fillcolor: HS.band, line: { width: 0 }, layer: "below" });  // bei sehr langen Reihen ohne Jahresbänder
   }
   // angeschnittene Randjahre: Zahl weglassen, wenn sie mit der Nachbarzahl zusammenstieße
   const pxms = (width || 600) / Math.max(1, Date.parse(x1) - Date.parse(x0)), gap = i => Math.abs(Date.parse(tv[i]) - Date.parse(tv[i + (i ? -1 : 1)])) * pxms;
@@ -848,7 +849,7 @@ function forecastChart(el, c) {
   years.forEach((y, i) => {
     const pts = latest.filter(f => f.values[y] != null), oth = pts.filter(f => f.by !== GOV).sort((p, q) => p.values[y] - q.values[y] || (p.by < q.by ? -1 : 1));
     const v = pts.map(f => f.values[y]); all.push(...v);
-    if (YEAR_BANDS && i % 2 === 0) shapes.push({ type: "rect", xref: "x", yref: "paper", x0: i - 0.5, x1: i + 0.5, y0: 0, y1: 1, fillcolor: HS.band, line: { width: 0 }, layer: "below" });
+    if (YEAR_BANDS && (years.length - 1 - i) % 2 === 1) shapes.push({ type: "rect", xref: "x", yref: "paper", x0: i - 0.5, x1: i + 0.5, y0: 0, y1: 1, fillcolor: HS.band, line: { width: 0 }, layer: "below" });
     if (v.length > 1) shapes.push({ type: "rect", xref: "x", yref: "y", x0: i - 0.16, x1: i + 0.34, y0: Math.min(...v), y1: Math.max(...v), fillcolor: "rgba(150,150,150,0.16)", line: { width: 0 }, layer: "below" });
     const w = Math.min(0.06, 0.26 / Math.max(1, oth.length - 1));  // weitere Herausgeber rechts, Bundesregierung links mit Zahl
     oth.forEach((f, j) => { const g = old(f) ? grp.old : grp.now; g.x.push(i + 0.04 + j * w); g.y.push(f.values[y]); g.cd.push(who(f)); });
@@ -1310,6 +1311,10 @@ PHONE.addEventListener("change", () => document.querySelectorAll(".card").forEac
 
 // Plotly (Linien und Balken, plotly.js-basic) wird erst nach der ersten Darstellung geladen, damit Text und Kennzahlen sofort erscheinen
 const PLOTLY_SRC = "plotly.min.js";
+// Schalter „Jahresflächen“: alle schon gezeichneten Grafiken neu zeichnen, Wahl im Browser merken
+addEventListener("DOMContentLoaded", () => { const b = document.getElementById("ybtoggle"); if (!b) return; pressed(b, YEAR_BANDS);
+  b.addEventListener("click", () => { YEAR_BANDS = !YEAR_BANDS; pressed(b, YEAR_BANDS); try { localStorage.setItem("km_yb", YEAR_BANDS ? "1" : "0"); } catch (e) {}
+    document.querySelectorAll(".chart, .tilewrap").forEach(ch => { if (ch.dataset.done !== "1" || !ch._c) return; if (window.Plotly) Plotly.purge(ch); ch.innerHTML = ""; delete ch.dataset.done; render(ch); }); }); });
 let plotlyLoading = null;
 const plotlyReady = () => plotlyLoading || (plotlyLoading = new Promise((ok, fail) => {
   if (window.Plotly) return ok();

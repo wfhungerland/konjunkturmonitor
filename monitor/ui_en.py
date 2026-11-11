@@ -37,6 +37,8 @@ PAIRS: list[tuple[str, str]] = [
     # Statischer Teil
     ("Die Schalter über jeder Grafik, etwa „Aktueller Rand“ oder „Rezessionen“, blenden jüngste Werte oder Rezessionen ein.",
      "The switches above each chart, such as “Latest values” or “Recessions”, show the latest values or recessions."),
+    ('title="Jedes zweite Kalenderjahr hell hinterlegen; das laufende Jahr bleibt frei">Jahresflächen</button>',
+     'title="Shade every other calendar year; the current year stays clear">Year shading</button>'),
     ("<h2>Quellen und Hinweise</h2>", "<h2>Sources and notes</h2>"),
     ("<summary>Methodik, Vergleichszeitraum und Zeichen</summary>", "<summary>Method, reference period and symbols</summary>"),
     ("<p><b>Vergleichszeitraum.</b> Wo der Monitor ein „übliches“ Niveau angibt, ist es der Durchschnitt der Jahre 2015 bis 2019: die fünf letzten vollen Jahre vor der Pandemie, nach der Euro-Schuldenkrise und vor dem Energiepreisschock 2022. Ausnahme ist die Konjunkturuhr; sie misst den Abstand zum langjährigen Mittel 2005 bis 2019, weil die Phasen eines Konjunkturzyklus nur über mehrere Zyklen bestimmt werden können.</p>",
