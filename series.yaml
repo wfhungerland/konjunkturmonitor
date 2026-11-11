@@ -171,6 +171,9 @@ charts:
   yields: {title: "Zinsen für Bundesanleihen", decimals: 1}
   oil: {title: "Ölpreis", decimals: 0}
   oil_d: {title: "Ölpreis, Tageswerte", decimals: 1}
+  fuel: {title: "Preise für Benzin, Diesel und Heizöl", decimals: 2}
+  yields_d: {title: "Zinsen für Bundesanleihen und Tagesgeld, Tageswerte", decimals: 2}
+  indeed: {title: "Stellenanzeigen auf Indeed", decimals: 1}
   gas: {title: "Erdgaspreis in Europa", decimals: 0}
   insolv: {title: "Unternehmensinsolvenzen je Monat", decimals: 0}
   insolv_emp: {title: "Von Insolvenzen betroffene Beschäftigte je Monat", decimals: 0}
@@ -454,6 +457,21 @@ series:
     start: "1991-01-01"
     chart: labour_flows
     label: Offene Stellen (gemeldet)
+
+  - id: de_indeed
+    block: arbeit
+    source: static
+    key: indeed_de
+    params: {source_name: "Indeed Hiring Lab"}
+    license: "CC BY 4.0 (Indeed Hiring Lab)"
+    title: "Stellenanzeigen auf Indeed in Deutschland, Tageswerte"
+    unit: "Index 1.2.2020 = 100"
+    frequency: D
+    adjustment: saisonbereinigt (Indeed Hiring Lab)
+    start: "2020-02-01"
+    stale_after_months: 1
+    chart: indeed
+    label: "Stellenanzeigen"
 
   - id: de_ka_sa
     block: arbeit
@@ -1454,6 +1472,45 @@ series:
     chart: yields
     label: "2 Jahre"
 
+  - id: de_bund10_d
+    block: finanzen
+    source: bundesbank
+    key: BBSIS/D.I.ZST.ZI.EUR.S1311.B.A604.R10XX.R.A.A._Z._Z.A
+    title: "Rendite Bundeswertpapiere, Restlaufzeit 10 Jahre, Tageswerte"
+    unit: "% p. a."
+    frequency: D
+    adjustment: nicht bereinigt
+    start: "2019-01-01"
+    stale_after_months: 1
+    chart: yields_d
+    label: "10 Jahre"
+
+  - id: de_bund2_d
+    block: finanzen
+    source: bundesbank
+    key: BBSIS/D.I.ZST.ZI.EUR.S1311.B.A604.R02XX.R.A.A._Z._Z.A
+    title: "Rendite Bundeswertpapiere, Restlaufzeit 2 Jahre, Tageswerte"
+    unit: "% p. a."
+    frequency: D
+    adjustment: nicht bereinigt
+    start: "2019-01-01"
+    stale_after_months: 1
+    chart: yields_d
+    label: "2 Jahre"
+
+  - id: estr_d
+    block: finanzen
+    source: ecb
+    key: EST/B.EU000A2X2A25.WT
+    title: "Euro-Kurzfristzins €STR, Tageswerte"
+    unit: "% p. a."
+    frequency: D
+    adjustment: nicht bereinigt
+    start: "2019-10-01"
+    stale_after_months: 1
+    chart: yields_d
+    label: "€STR (Tagesgeld)"
+
   - id: fx_usd
     block: finanzen
     source: ecb
@@ -1892,6 +1949,51 @@ series:
     chart: oil_d
     label: "Brent"
     license: "Gemeinfrei (U.S. EIA); Quellenangabe"
+
+  - id: de_fuel_e95
+    block: finanzen
+    source: static
+    key: wob_de_e95
+    params: {source_name: "Europäische Kommission, Weekly Oil Bulletin"}
+    license: "Wiederverwendung mit Quellenangabe (Europäische Kommission)"
+    title: "Verbraucherpreis Super 95 in Deutschland"
+    unit: "€ je Liter"
+    frequency: D
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    stale_after_months: 1
+    chart: fuel
+    label: "Super 95"
+
+  - id: de_fuel_diesel
+    block: finanzen
+    source: static
+    key: wob_de_diesel
+    params: {source_name: "Europäische Kommission, Weekly Oil Bulletin"}
+    license: "Wiederverwendung mit Quellenangabe (Europäische Kommission)"
+    title: "Verbraucherpreis Diesel in Deutschland"
+    unit: "€ je Liter"
+    frequency: D
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    stale_after_months: 1
+    chart: fuel
+    label: "Diesel"
+
+  - id: de_fuel_heating
+    block: finanzen
+    source: static
+    key: wob_de_heating
+    params: {source_name: "Europäische Kommission, Weekly Oil Bulletin"}
+    license: "Wiederverwendung mit Quellenangabe (Europäische Kommission)"
+    title: "Verbraucherpreis Heizöl in Deutschland"
+    unit: "€ je Liter"
+    frequency: D
+    adjustment: nicht bereinigt
+    start: "2015-01-01"
+    stale_after_months: 1
+    chart: fuel
+    label: "Heizöl"
 
   - id: w_gas_eu
     block: finanzen
