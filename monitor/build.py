@@ -1647,7 +1647,7 @@ def build_payload(root: Path = ROOT) -> dict:
                 c["recessions"], c["recessions_on"] = recs, False  # etwa Inflationsbeiträge, die einen eigenen Zweig haben
             if c.get("recessions") is False:
                 c.pop("recessions")
-            c["texts"] = [x.replace(" in Euroraum", " im Euroraum").replace(" in Europäische Union", " in der Europäischen Union") for x in chart_sentences(c)]
+            c["texts"] = [] if c.get("no_texts") else [x.replace(" in Euroraum", " im Euroraum").replace(" in Europäische Union", " in der Europäischen Union") for x in chart_sentences(c)]  # no_texts: etwa Tageswerte, deren Einzeltag nur Rauschen zeigt
             c["text"] = " ".join(c["texts"])
             c["last_x"] = _last_x(c)
             c["notes"] = notes.get(c["chart"], []) + _weather_notes(c, data)

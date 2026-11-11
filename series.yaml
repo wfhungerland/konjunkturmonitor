@@ -127,6 +127,7 @@ charts:
   ez_ip: {title: "Industrieproduktion im Euroraum-Vergleich", decimals: 1}
   ez_esi: {title: "Wirtschaftsstimmung im Euroraum-Vergleich (ESI)", decimals: 1}
   power: {title: "Strom: Verbrauch und Großhandelspreis", decimals: 1}
+  power_d: {title: "Strom: Verbrauch und Großhandelspreis, Tageswerte", decimals: 0}
   permits: {title: "Baugenehmigungen für Wohnungen", decimals: 1}
   house_prices: {title: "Preise für Wohnimmobilien", decimals: 1}
   credit_rates: {title: "Zinsen für neue Bankkredite", decimals: 2}
@@ -169,6 +170,7 @@ charts:
   sector_next: {title: "Erwartungen nach Bereichen", decimals: 0}
   yields: {title: "Zinsen für Bundesanleihen", decimals: 1}
   oil: {title: "Ölpreis", decimals: 0}
+  oil_d: {title: "Ölpreis, Tageswerte", decimals: 1}
   gas: {title: "Erdgaspreis in Europa", decimals: 0}
   insolv: {title: "Unternehmensinsolvenzen je Monat", decimals: 0}
   insolv_emp: {title: "Von Insolvenzen betroffene Beschäftigte je Monat", decimals: 0}
@@ -177,6 +179,7 @@ charts:
   gruend_land: {title: "Betriebsgründungen nach Ländern", decimals: 0}
   aufgabe_land: {title: "Betriebsaufgaben nach Ländern", decimals: 0}
   maut: {title: "Lkw-Maut-Fahrleistungsindex", decimals: 1}
+  maut_d: {title: "Lkw-Maut-Fahrleistungsindex, Tageswerte", decimals: 1}
   kurzarbeit: {title: "Kurzarbeit aus konjunkturellen Gründen", decimals: 0}
   sv_yoy: {title: "Sozialversicherungspflichtige Beschäftigung nach Bereichen", decimals: 1}
   orders_heat: {title: "Auftragseingang nach Branchen", decimals: 1}
@@ -1736,6 +1739,34 @@ series:
     chart: power
     label: "Großhandelspreis"
 
+  - id: de_power_load_d
+    block: finanzen
+    source: static
+    key: smard_load_d
+    params: {source_name: "Bundesnetzagentur | SMARD.de"}
+    license: "CC BY 4.0 (Bundesnetzagentur | SMARD.de)"
+    title: "Stromverbrauch (Netzlast) in Deutschland, GWh je Tag"
+    unit: "GWh je Tag"
+    frequency: D
+    adjustment: nicht bereinigt
+    stale_after_months: 1
+    chart: power_d
+    label: "Stromverbrauch"
+
+  - id: de_power_price_d
+    block: finanzen
+    source: static
+    key: smard_price_d
+    params: {source_name: "Bundesnetzagentur | SMARD.de"}
+    license: "CC BY 4.0 (Bundesnetzagentur | SMARD.de)"
+    title: "Großhandelspreis Strom (Day-Ahead, DE/LU), Tagesmittel"
+    unit: "€ je MWh"
+    frequency: D
+    adjustment: nicht bereinigt
+    stale_after_months: 1
+    chart: power_d
+    label: "Großhandelspreis"
+
   - id: de_permits
     block: bau
     source: genesis
@@ -1844,6 +1875,21 @@ series:
     frequency: M
     adjustment: nicht bereinigt
     chart: oil
+    label: "Brent"
+    license: "Gemeinfrei (U.S. EIA); Quellenangabe"
+
+  - id: w_brent_d
+    block: finanzen
+    source: fred
+    key: DCOILBRENTEU
+    params: {source_name: "U.S. Energy Information Administration über FRED"}
+    title: "Rohöl Brent, Tageswerte"
+    unit: "US-Dollar je Barrel"
+    frequency: D
+    adjustment: nicht bereinigt
+    start: "2019-01-01"
+    stale_after_months: 1
+    chart: oil_d
     label: "Brent"
     license: "Gemeinfrei (U.S. EIA); Quellenangabe"
 
@@ -2310,6 +2356,21 @@ series:
     adjustment: saison- und kalenderbereinigt (Bundesbank)
     start: "2008-01-01"
     chart: maut
+    label: "Lkw-Maut-Fahrleistung"
+
+  - id: de_maut_d
+    block: wachstum
+    source: static
+    key: maut_daily
+    params: {source_name: "Statistisches Bundesamt (Destatis), Bundesamt für Logistik und Mobilität"}
+    license: "Vervielfältigung und Verbreitung mit Quellenangabe gestattet (Destatis)"
+    title: "Lkw-Maut-Fahrleistungsindex, Tageswerte (experimentell)"
+    unit: Index 2021=100
+    frequency: D
+    adjustment: kalender- und saisonbereinigt (Bundesbank, experimentell)
+    start: "2019-01-01"
+    stale_after_months: 1
+    chart: maut_d
     label: "Lkw-Maut-Fahrleistung"
 
   - id: de_ilo

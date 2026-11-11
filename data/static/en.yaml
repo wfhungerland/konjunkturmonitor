@@ -136,6 +136,10 @@ charts:
     title: "Truck toll mileage index"
     ask: "How much are trucks driving on the motorways?"
     caption: "Mileage of toll-liable trucks with four or more axles on motorways, derived from toll data. The index is available a few days after the end of the month and closely tracks industrial production, because these trucks mainly carry intermediate inputs and goods. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+  maut_d:
+    title: "Truck toll mileage index, daily"
+    ask: "How much are trucks driving in recent weeks?"
+    caption: "Daily index of mileage, calendar and seasonally adjusted (experimental; Destatis and BALM, adjusted by the Bundesbank). Available with a lag of five to twelve days and updated on Thursdays. Thin: daily values, thick: seven-day moving average. Daily values are volatile and not directly comparable with the monthly index."
   gdp_level:
     title: "Economic output, level"
     ask: "Where does economic output stand in a longer comparison?"
@@ -420,10 +424,18 @@ charts:
     title: "Oil price"
     ask: "How expensive is crude oil?"
     caption: "Price per barrel (159 litres) of North Sea Brent crude oil, monthly average, quoted in US dollars as is customary internationally."
+  oil_d:
+    title: "Oil price, daily"
+    ask: "How expensive is crude oil?"
+    caption: "Price per barrel (159 litres) of North Sea Brent crude oil in US dollars, as is customary internationally. Thin: daily values on trading days, thick: five-trading-day moving average. Daily values are available with a lag of about one week."
   power:
     title: "Electricity: consumption and wholesale price"
     ask: "How much electricity is being used, and what does it cost on the wholesale market?"
     caption: "Electricity consumption (grid load) in Germany on the same month a year earlier, and the wholesale electricity price on the day-ahead market (Germany/Luxembourg bidding zone), monthly average in € per MWh. Consumption closely tracks industrial production, but is available just a few days after the end of the month; weather and public holidays distort individual months. Source: Federal Network Agency | SMARD.de, licence CC BY 4.0."
+  power_d:
+    title: "Electricity: consumption and wholesale price, daily"
+    ask: "How much electricity has been used in recent weeks, and what does it cost?"
+    caption: "Electricity consumption (grid load) in GWh per day and wholesale price on the day-ahead market (bidding zone Germany/Luxembourg), daily average in € per MWh. Thin: daily values, thick: seven-day moving average. Weekends and public holidays depress consumption and price. Source: Bundesnetzagentur | SMARD.de, licence CC BY 4.0."
   gas_storage:
     title: "Gas storage fill level, daily values"
     ask: "How full are the gas storage facilities?"
@@ -678,6 +690,8 @@ series:
   de_power_load: {title: "Electricity consumption (grid load) in Germany, TWh per month", unit: "TWh", adjustment: "not adjusted"}
   de_power_load_yoy: {title: "Electricity consumption (grid load), % on a year earlier", label: "Electricity consumption", unit: "% on a year earlier", adjustment: "not adjusted"}
   de_power_price: {title: "Wholesale electricity price (day-ahead, DE/LU), monthly average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
+  de_power_price_d: {title: "Wholesale electricity price (day-ahead, DE/LU), daily average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
+  de_power_load_d: {title: "Electricity consumption (grid load) in Germany, GWh per day", label: "Electricity consumption", unit: "GWh per day", adjustment: "not adjusted"}
   de_permits: {title: "Building permits: dwellings (new buildings and work on existing buildings), thousands", label: "Dwellings approved", unit: "thousand dwellings", adjustment: "not adjusted"}
   de_hpi: {title: "House price index (residential property)", unit: "Index 2025=100", adjustment: "not adjusted"}
   de_hpi_yoy: {title: "House price index, % on same quarter a year earlier", label: "Residential property, total", unit: "% on same quarter a year earlier", adjustment: "not adjusted"}
@@ -687,6 +701,7 @@ series:
   de_loans_house_yoy: {title: "Housing loans to private households, % on a year earlier", label: "Housing loans", unit: "% on a year earlier", adjustment: "not adjusted"}
   de_gas_storage: {title: "Gas storage fill level in Germany, % of working gas capacity", label: "Fill level", unit: "% of storage capacity", adjustment: "not adjusted"}
   w_brent: {title: "Brent crude oil, monthly average", label: "Brent", unit: "US$ per barrel", adjustment: "not adjusted"}
+  w_brent_d: {title: "Brent crude oil, daily", label: "Brent", unit: "US$ per barrel", adjustment: "not adjusted"}
   w_gas_eu: {title: "Natural gas Europe, monthly average", label: "Natural gas Europe (TTF)", unit: "US$ per MMBtu", adjustment: "not adjusted"}
   de_ppi_xe: {title: "Producer prices excluding energy, index", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
   de_ppi_xe_yoy: {title: "Producer prices excluding energy, % on a year earlier", label: "Producer prices excluding energy", unit: "% on a year earlier", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
@@ -723,6 +738,7 @@ series:
   de_migration: {title: "Net migration (including statistical adjustment)", label: "Net migration", unit: "people", adjustment: "annual data"}
   cit: {title: "Combined statutory tax rate on corporate profits, {cit_name}", label: "{cit_name}", unit: "%", note: "OECD Corporate Tax Statistics, combined statutory tax rate (CIT_C), standard rate (ST). Retrieved via the OECD SDMX interface on 3.11.2026.", adjustment: "standard rate, central and sub-central government"}
   de_maut: {title: "Truck toll mileage index (motorways, vehicles with four or more axles)", label: "Truck toll mileage", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
+  de_maut_d: {title: "Truck toll mileage index, daily (experimental)", label: "Truck toll mileage", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Bundesbank, experimental)"}
   de_ilo: {title: "Unemployment rate (ILO definition)", label: "Unemployment rate (ILO)", unit: "% of labour force", adjustment: "seasonally adjusted"}
   de_sv_tot: {title: "Employees subject to social security contributions: total", unit: "people", adjustment: "not adjusted"}
   de_sv_tot_yoy: {title: "Employees subject to social security contributions: total, % on a year earlier", label: "Total", unit: "% on a year earlier", adjustment: "not adjusted"}
@@ -830,6 +846,7 @@ strings:
   "Pp ggü. Vorquartal": "pp on previous quarter"
   "Saldo": "balance"
   "TWh": "TWh"
+  "GWh je Tag": "GWh per day"
   "Tage": "days"
   "Tausend": "thousands"
   "Tsd. Personen": "thousand people"
@@ -859,6 +876,7 @@ strings:
   "preisbereinigt, nicht saison- und kalenderbereinigt": "price adjusted, not seasonally or calendar adjusted"
   "saison- und kalenderbereinigt": "seasonally and calendar adjusted"
   "saison- und kalenderbereinigt (Bundesbank)": "seasonally and calendar adjusted (Bundesbank)"
+  "kalender- und saisonbereinigt (Bundesbank, experimentell)": "calendar and seasonally adjusted (Bundesbank, experimental)"
   "saisonbereinigt": "seasonally adjusted"
   # frequencies
   "Monatlich": "Monthly"

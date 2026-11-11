@@ -786,6 +786,8 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
             from .satzpruefung import BAD
             texts = [x.replace("in Euro area", "in the euro area").replace("in European Union", "in the European Union")
                      for x in chart_sentences_en(c) if not BAD.search(x)]  # Platzhalter oder Rechenreste: Satz entfällt
+            if c.get("no_texts"):
+                texts = []
             c["texts"], c["text"] = texts, " ".join(texts)
             if isinstance(c.get("files"), dict):
                 c["files"] = {k: _rel(v) for k, v in c["files"].items()}
