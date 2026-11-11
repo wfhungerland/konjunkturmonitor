@@ -10,7 +10,7 @@ Eine lange Seite, deutsch unter `/` und englisch unter `/en/` (Sprachschalter un
 
 - **Kopfzeile (fixiert):** Titel, Sprachschalter und Stand; alle Themen als Links; Suche mit Vorschlägen (Taste `/`); Knopf zum Aus- und Einklappen aller Abbildungen.
 - **Start:** zwei bis drei Sätze zur Gesamtlage, „Heute neu“, sechs Kennzahl-Kacheln mit Fünfjahresverlauf, alle Kennzahlen als Tabelle (aufklappbar).
-- **Teil I Konjunktur, Teil II Struktur, Termine:** je Abschnitt eine Frage als Überschrift, ein Antwortsatz aus den Daten mit Erläuterung, eine Leitabbildung und weitere Abbildungen zum Aufklappen. Ab 1240 px Breite läuft links die Liste der Abbildungen des Abschnitts mit.
+- **Teil I Konjunktur, Teil II Analysen, Teil III Struktur, Teil IV Anhang, Termine:** je Abschnitt eine Frage als Überschrift, ein Antwortsatz aus den Daten mit Erläuterung, eine Leitabbildung und weitere Abbildungen zum Aufklappen. Ab 1240 px Breite läuft links die Liste der Abbildungen des Abschnitts mit.
 - **Diese Woche neu:** Abbildungen mit neuen Daten in den letzten sieben Tagen.
 - **Quellen und Hinweise:** Methodik, Quellen und Lizenzen, fehlende Indikatoren, Gesamtdownloads, Abrufstatus, Zitiervorschlag.
 
@@ -57,7 +57,7 @@ Die Seite enthält die Kernzahlen auch als statisches HTML und ein Vorschaubild 
 
 Alle Reihen werden bei jedem Lauf direkt bei der Quelle abgerufen: Bundesbank (SDMX-REST), Eurostat (JSON-API), Destatis (GENESIS-Webservice, Zugang über Repository-Secrets), FRED (CSV). Statische Reihen in `data/static` (AMECO, OECD-Steuersätze, Kartengrenzen, Kalenderregeln, Hinweise auf Sondereffekte) werden von Hand aktualisiert; der Abrufstand steht jeweils im Katalog (`note`). Nicht aufgenommen sind Daten, deren Weiterverbreitung eine Lizenz erfordert (ifo, ZEW, S&P Global PMI, GfK/NIM, HDE, IAB-Barometer, IWH-Insolvenztrend, EEX-Terminpreise, RWI/ISL-Containerindex), und Größen ohne abrufbare Zeitreihe (Unterbeschäftigung der BA, Finanzlage der Sozialversicherung, Investitionshemmnisse, Zerlegung des Produktionspotenzials). Die Seite nennt diese Lücken im Abschnitt „Was fehlt und warum“.
 
-Die Zuordnung der Abschnitte zu Teil I, Teil II und Termine steht je Abschnitt in `monitor.yaml` (`part`). Texte für die englische Seite stehen in `data/static/en.yaml`, Satzvorlagen in `data/static/saetze.yaml`.
+Die Zuordnung der Abschnitte zu den Teilen steht je Abschnitt in `monitor.yaml` (`part`: konjunktur, analysen, struktur, anhang, service). Teil II Analysen sammelt eigene Auswertungen wie Rezessionssignal, Konjunkturuhr, Revisionsanzeiger und Exportähnlichkeit. Texte für die englische Seite stehen in `data/static/en.yaml`, Satzvorlagen in `data/static/saetze.yaml`.
 
 ## Downloads
 

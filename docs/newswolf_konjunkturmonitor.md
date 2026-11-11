@@ -12,7 +12,7 @@ Wie läuft die deutsche Wirtschaft gerade? Der Konjunkturmonitor beantwortet die
 
 Die Daten kommen ausschließlich aus offenen Quellen: Statistisches Bundesamt, Bundesbank, Eurostat, EZB, Bundesagentur für Arbeit, Deutscher Wetterdienst, OECD, IWF, Weltbank und weitere. Werktags läuft der Monitor zweimal automatisch, holt neue Werte, rechnet und veröffentlicht die Seite neu. Jede Woche wird ein Datenstand archiviert, damit sich frühere Aussagen nachprüfen lassen.
 
-Die Seite gliedert sich in drei Teile: Teil I Konjunktur (Monats- und Quartalszahlen), Teil II Struktur (Jahreszahlen zu den Grundlagen des Wachstums), Teil III Anhang (Sonderfaktoren). Dazu kommen ein Kalender der nächsten Veröffentlichungen und eine englische Fassung.
+Die Seite gliedert sich in vier Teile: Teil I Konjunktur (Monats- und Quartalszahlen), Teil II Analysen (eigene Auswertungen wie Rezessionssignal, Konjunkturuhr und Treffsicherheit von Prognosen), Teil III Struktur (Jahreszahlen zu den Grundlagen des Wachstums), Teil IV Anhang (Sonderfaktoren). Dazu kommen ein Kalender der nächsten Veröffentlichungen und eine englische Fassung.
 
 ---
 
@@ -130,7 +130,7 @@ Quellen: veröffentlichte Prognosen der jeweiligen Herausgeber, Statistisches Bu
 
 ## 15. Struktur und Staat: Die Grundlagen des Wachstums
 
-Teil II blickt über die Konjunktur hinaus. Wächst die Wirtschaft schneller als ihr Potenzial? Die Abbildung zeigt die Spanne der Schätzungen von EU-Kommission, OECD und IWF. Dazu kommen Arbeitsproduktivität, Investitionsquote im EU-Vergleich, Erwerbstätige nach Bereichen, Zuwanderung und die Steuersätze auf Unternehmensgewinne im internationalen Vergleich. Der Abschnitt Staat zeigt Defizit, Zinsausgaben, Investitionen und Schuldenstand.
+Teil III blickt über die Konjunktur hinaus. Wächst die Wirtschaft schneller als ihr Potenzial? Die Abbildung zeigt die Spanne der Schätzungen von EU-Kommission, OECD und IWF. Dazu kommen Arbeitsproduktivität, Investitionsquote im EU-Vergleich, Erwerbstätige nach Bereichen, Zuwanderung und die Steuersätze auf Unternehmensgewinne im internationalen Vergleich. Der Abschnitt Staat zeigt Defizit, Zinsausgaben, Investitionen und Schuldenstand.
 
 Quellen: Europäische Kommission (AMECO), OECD, IWF, Statistisches Bundesamt, Eurostat.
 
