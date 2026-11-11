@@ -7,7 +7,7 @@
 - date: 2026-11-11
   art: Quelle
   charts: [gd_bip, gd_vpi, gd_alo, gd_saldo, gd_fehler, gd_ziel]
-  text: "Neuer Abschnitt Gemeinschaftsdiagnose: Prognosen der Wirtschaftsforschungsinstitute aus allen vorliegenden Gutachten 1950 bis Frühjahr 2026 und dem Archiv der Anhangstabellen, je Wert mit Fundstelle. Vergleich mit der ersten Meldung aus dem Frühjahrsgutachten des Folgejahres; der heutige Datenstand erscheint beim Antippen."
+  text: "Neuer Abschnitt Gemeinschaftsdiagnose: Prognosen der Wirtschaftsforschungsinstitute aus allen vorliegenden Gutachten 1950 bis Frühjahr 2026, ergänzt um frei zugängliche Fassungen für 1997-2007 und Herbst 2012 und um das Archiv der Anhangstabellen, je Wert mit Fundstelle. Vergleich mit der ersten Meldung aus dem Frühjahrsgutachten des Folgejahres; der heutige Datenstand erscheint beim Antippen."
 - date: 2026-11-09
   art: Methode
   charts: [long_hpi, long_open, long_rr, long_growth, long_inv, long_debt]
