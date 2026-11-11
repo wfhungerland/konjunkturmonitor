@@ -22,7 +22,7 @@ series:
   de_rate_house: [der Zinssatz für neue Wohnungsbaukredite, s]
   de_loans_nfc_yoy: [der Bestand an Bankkrediten an Unternehmen, s]
   de_loans_house_yoy: [der Bestand an Wohnungsbaukrediten, s]
-  ez_gdp_ea20: [die Wirtschaftsleistung im Euroraum, s]
+  ez_gdp_ea21: [die Wirtschaftsleistung im Euroraum, s]
   ez_hicp_ea: [die Verbraucherpreise (HVPI) im Euroraum, p]
   ez_unemp_ea20: [die Erwerbslosenquote im Euroraum, s]
   ez_ip_ea21: [die Produktion im Verarbeitenden Gewerbe im Euroraum, s]
