@@ -192,26 +192,56 @@ def update_enso(static: Path) -> None:
     log.info("RONI: %d Monate", len(vals))
 
 
-def _smard(filt: int, region: str) -> pd.Series:
-    """Monatswerte von SMARD (Bundesnetzagentur): Index der Jahresdateien, dann je Datei die Monatswerte."""
+def _smard(filt: int, region: str, res: str = "month", since: pd.Timestamp | None = None) -> pd.Series:
+    """Werte von SMARD (Bundesnetzagentur): Index der Dateien, dann je Datei die Werte.
+    res="month": Monatswerte, Datum = Monatserster; res="day": Tageswerte (ab since)."""
     base = "https://www.smard.de/app/chart_data"
-    stamps = json.loads(_get(f"{base}/{filt}/{region}/index_month.json"))["timestamps"]
+    stamps = json.loads(_get(f"{base}/{filt}/{region}/index_{res}.json"))["timestamps"]
+    if since is not None:  # Dateien beginnen mit ihrem Zeitstempel; die letzte vor since wird noch gebraucht
+        cut = since.tz_localize("Europe/Berlin").value // 10**6
+        older = [t for t in stamps if t < cut]
+        stamps = ([max(older)] if older else []) + [t for t in stamps if t >= cut]
     vals = {}
     for ts in stamps:
-        for t, v in json.loads(_get(f"{base}/{filt}/{region}/{filt}_{region}_month_{ts}.json")).get("series", []):
+        for t, v in json.loads(_get(f"{base}/{filt}/{region}/{filt}_{region}_{res}_{ts}.json")).get("series", []):
             if v is not None:
                 d = pd.Timestamp(t, unit="ms", tz="Europe/Berlin")
-                vals[pd.Timestamp(d.year, d.month, 1)] = float(v)
-    return pd.Series(vals).sort_index()
+                vals[pd.Timestamp(d.year, d.month, 1) if res == "month" else pd.Timestamp(d.year, d.month, d.day)] = float(v)
+    s = pd.Series(vals).sort_index()
+    return s[s.index >= since] if since is not None else s
 
 
 def update_smard(static: Path) -> None:
-    """Stromverbrauch (Netzlast) in TWh je Monat und Großhandelspreis Day-Ahead DE/LU in €/MWh. Lizenz CC BY 4.0."""
+    """Stromverbrauch (Netzlast) und Großhandelspreis Day-Ahead DE/LU, Lizenz CC BY 4.0.
+    Monatswerte (TWh, €/MWh) seit 2015 und Tageswerte (GWh, €/MWh) der letzten drei Jahre."""
     load = _smard(410, "DE") / 1e6
     _write(static / "smard_load.csv", load)
     price = _smard(4169, "DE-LU")
     _write(static / "smard_price.csv", price)
-    log.info("SMARD: %d Monate Verbrauch, %d Monate Preis", len(load), len(price))
+    since = pd.Timestamp.now().normalize() - pd.DateOffset(years=3)
+    load_d = _smard(410, "DE", "day", since) / 1e3
+    _write(static / "smard_load_d.csv", load_d)
+    price_d = _smard(4169, "DE-LU", "day", since)
+    _write(static / "smard_price_d.csv", price_d)
+    log.info("SMARD: %d Monate Verbrauch, %d Monate Preis, %d Tage Verbrauch, %d Tage Preis", len(load), len(price), len(load_d), len(price_d))
+
+
+MAUT_DAILY = ("https://www.destatis.de/DE/Themen/Branchen-Unternehmen/Industrie-Verarbeitendes-Gewerbe/Publikationen/"
+              "Downloads-Konjunktur/statistischer-bericht-lkw-maut-fahrleistungsindex-5421901.xlsx?__blob=publicationFile")
+
+
+def update_maut_daily(static: Path) -> None:
+    """Täglicher Lkw-Maut-Fahrleistungsindex (Destatis/BALM, experimentell), kalender- und saisonbereinigt,
+    2021 = 100. Quelle: Statistischer Bericht, Blatt csv-42191-b01; wöchentlich donnerstags aktualisiert."""
+    import io
+    req = urllib.request.Request(MAUT_DAILY, headers={"User-Agent": "Konjunkturmonitor/1.0"})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        raw = r.read()
+    df = pd.read_excel(io.BytesIO(raw), sheet_name="csv-42191-b01")
+    df = df[df["Saisonbereinigung"].astype(str).str.contains("KSB")]
+    s = pd.Series(pd.to_numeric(df["Indexwert"], errors="coerce").values, index=pd.to_datetime(df["Datum"]))
+    _write(static / "maut_daily.csv", s)
+    log.info("Lkw-Maut täglich: %d Tage bis %s", s.dropna().size, s.dropna().index.max().date())
 
 
 def update_gas_storage(static: Path) -> None:
@@ -293,7 +323,7 @@ def _pinksheet(static: Path) -> None:
 def update_all(root: Path) -> None:
     static = root / "data" / "static"
     static.mkdir(parents=True, exist_ok=True)
-    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet)):
+    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Lkw-Maut täglich", update_maut_daily), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf
