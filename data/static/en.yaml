@@ -53,6 +53,10 @@ topics:
   wechselkurse: {title: "Exchange rates", ask: "How is the euro doing?"}
   energie: {title: "Energy"}
   aussichten: {title: "Outlook", ask: "What do the forecasts expect?"}
+  rezession: {title: "Recession risk", ask: "Is a recession looming?"}
+  pruefung: {title: "Forecasts and revisions", ask: "How reliable are the first figures and the projection?"}
+  breite: {title: "Breadth and comparison", ask: "How broad is the development, and how unusual is it?"}
+  wettbewerb: {title: "Competition", ask: "Who competes with Germany on world markets?"}
   struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
   staat: {title: "Government", ask: "What state are the public finances in?"}
   sachverstaendigenrat: {title: "Council of Economic Experts", ask: "What did the Council of Economic Experts forecast and recommend?"}
