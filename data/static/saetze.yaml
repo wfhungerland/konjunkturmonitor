@@ -141,6 +141,13 @@ series:
   fx_eer18: [der effektive Wechselkurs des Euro gegenüber 18 Handelspartnern, s]
   w_brent: [der Preis für Rohöl der Sorte Brent, s]
   w_brent_d: [der Preis für Rohöl der Sorte Brent, s]
+  de_fuel_e95: [der Preis für Super 95, s]
+  de_fuel_diesel: [der Preis für Diesel, s]
+  de_fuel_heating: [der Preis für Heizöl, s]
+  de_bund10_d: [die Rendite zehnjähriger Bundesanleihen, s]
+  de_bund2_d: [die Rendite zweijähriger Bundesanleihen, s]
+  estr_d: [der Tagesgeldsatz €STR, s]
+  de_indeed: [die Zahl der Stellenanzeigen auf Indeed, s]
   hist_rr_deu: [der Realzins, s]
   hist_debt_deu: [der Schuldenstand des Staates, s]
   hist_rgdppc_deu: {tpl: "{when} lag das durchschnittliche jährliche Wachstum des realen BIP je Einwohner in den zehn Jahren davor bei {v}."}

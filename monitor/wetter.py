@@ -270,6 +270,49 @@ def update_gas_storage(static: Path) -> None:
     log.info("Gasspeicher: %d Tage", len(vals))
 
 
+INDEED_DE = "https://raw.githubusercontent.com/hiring-lab/job_postings_tracker/master/DE/aggregate_job_postings_DE.csv"
+
+
+def update_indeed(static: Path) -> None:
+    """Stellenanzeigen auf Indeed in Deutschland, täglich, saisonbereinigt (1.2.2020 = 100).
+    Quelle: Indeed Hiring Lab, Lizenz CC BY 4.0; wöchentlich aktualisiert."""
+    import io
+    df = pd.read_csv(io.StringIO(_get(INDEED_DE)))
+    df = df[df["variable"].astype(str).str.strip() == "total postings"]
+    s = pd.Series(pd.to_numeric(df["indeed_job_postings_index_SA"], errors="coerce").values, index=pd.to_datetime(df["date"]))
+    _write(static / "indeed_de.csv", s)
+    log.info("Indeed: %d Tage bis %s", s.dropna().size, s.dropna().index.max().date())
+
+
+WOB_PAGE = "https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en"
+
+
+def update_oil_bulletin(static: Path) -> None:
+    """Verbraucherpreise für Super 95, Diesel und Heizöl in Deutschland, wöchentlich (montags), in € je Liter.
+    Quelle: Europäische Kommission, Weekly Oil Bulletin (Preisgeschichte ab 2005, Blatt „Prices with taxes“).
+    Die Adresse der Datei wechselt; sie wird auf der Seite des Bulletins gesucht."""
+    import io, re
+    html = _get(WOB_PAGE)
+    m = re.search(r'href="([^"]*Prices_History[^"]*\.xlsx)"', html)
+    if not m:
+        raise RuntimeError("Link zur Preisgeschichte nicht gefunden")
+    url = m.group(1).replace("&amp;", "&")
+    url = url if url.startswith("http") else "https://energy.ec.europa.eu" + url
+    req = urllib.request.Request(url, headers={"User-Agent": "Konjunkturmonitor/1.0"})
+    with urllib.request.urlopen(req, timeout=180) as r:
+        raw = r.read()
+    d = pd.read_excel(io.BytesIO(raw), sheet_name="Prices with taxes", header=None)
+    head = [str(v) for v in d.iloc[0].tolist()]
+    dates = pd.to_datetime(d.iloc[3:, 0], errors="coerce")
+    for col, name in (("DE_price_with_tax_euro95", "wob_de_e95"), ("DE_price_with_tax_diesel", "wob_de_diesel"), ("DE_price_with_tax_heating_oil", "wob_de_heating")):
+        j = head.index(col)
+        v = pd.to_numeric(d.iloc[3:, j], errors="coerce") / 1000  # € je 1000 Liter -> € je Liter
+        s = pd.Series(v.values, index=dates.values).dropna()
+        s = s[~s.index.isna()]
+        _write(static / f"{name}.csv", s)
+    log.info("Oil Bulletin: Stand %s", dates.max().date())
+
+
 BBKRT = ("https://api.statistiken.bundesbank.de/rest/data/BBKRT/Q.DE.Y.A.AG1.CA010.A.I"
          "?startPeriod=2004-Q1&startVintage=2005-01-01&detail=dataonly")
 
@@ -323,7 +366,7 @@ def _pinksheet(static: Path) -> None:
 def update_all(root: Path) -> None:
     static = root / "data" / "static"
     static.mkdir(parents=True, exist_ok=True)
-    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Lkw-Maut täglich", update_maut_daily), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet)):
+    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Lkw-Maut täglich", update_maut_daily), ("Indeed", update_indeed), ("Oil Bulletin", update_oil_bulletin), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf

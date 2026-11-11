@@ -192,6 +192,10 @@ charts:
     title: "Unemployed and vacancies"
     ask: "How are unemployment and vacancies developing?"
     caption: "If unemployment rises while the number of vacancies falls, this points to a cooling labour market."
+  indeed:
+    title: "Job postings on Indeed"
+    ask: "Are firms advertising more or fewer jobs?"
+    caption: "Number of job postings on the Indeed platform in Germany, seasonally adjusted, 1 February 2020 = 100; seven-day trailing average, updated weekly. The series is available weeks before the statistics of the Federal Employment Agency but covers only one platform. Source: Indeed Hiring Lab, licence CC BY 4.0."
   employment_m:
     title: "Persons in employment and employees subject to social security contributions"
     ask: "How many people are in work?"
@@ -412,6 +416,10 @@ charts:
     title: "Federal bond yields"
     ask: "How high are yields on federal bonds?"
     caption: "Yield on federal bonds with residual maturities of 10 and 2 years, monthly average. It affects the financing costs of government, businesses and private home builders."
+  yields_d:
+    title: "Federal bond yields and overnight rate, daily"
+    ask: "How have interest rates moved in recent weeks?"
+    caption: "Yield on federal bonds with 10 and 2 years to maturity (Bundesbank term structure) and the euro short-term rate €STR, at which banks lend to each other overnight, daily values. The €STR closely follows the ECB deposit rate."
   fx_usd:
     title: "Euro in US dollars, daily values"
     ask: "How many US dollars does a euro cost?"
@@ -428,6 +436,10 @@ charts:
     title: "Oil price"
     ask: "How expensive is crude oil?"
     caption: "Price per barrel (159 litres) of North Sea Brent crude oil, monthly average, quoted in US dollars as is customary internationally."
+  fuel:
+    title: "Prices of petrol, diesel and heating oil"
+    ask: "How much do petrol, diesel and heating oil cost?"
+    caption: "Consumer prices in Germany including taxes and duties, in € per litre, as of Monday each week. Source: European Commission, Weekly Oil Bulletin."
   oil_d:
     title: "Oil price, daily"
     ask: "How expensive is crude oil?"
@@ -706,6 +718,13 @@ series:
   de_gas_storage: {title: "Gas storage fill level in Germany, % of working gas capacity", label: "Fill level", unit: "% of storage capacity", adjustment: "not adjusted"}
   w_brent: {title: "Brent crude oil, monthly average", label: "Brent", unit: "US$ per barrel", adjustment: "not adjusted"}
   w_brent_d: {title: "Brent crude oil, daily", label: "Brent", unit: "US$ per barrel", adjustment: "not adjusted"}
+  de_fuel_e95: {title: "Consumer price of Euro-super 95 in Germany", label: "Euro-super 95", unit: "€ per litre", adjustment: "not adjusted"}
+  de_fuel_diesel: {title: "Consumer price of diesel in Germany", label: "Diesel", unit: "€ per litre", adjustment: "not adjusted"}
+  de_fuel_heating: {title: "Consumer price of heating oil in Germany", label: "Heating oil", unit: "€ per litre", adjustment: "not adjusted"}
+  de_bund10_d: {title: "Yield on federal securities, 10 years to maturity, daily", label: "10 years", unit: "% p.a.", adjustment: "not adjusted"}
+  de_bund2_d: {title: "Yield on federal securities, 2 years to maturity, daily", label: "2 years", unit: "% p.a.", adjustment: "not adjusted"}
+  estr_d: {title: "Euro short-term rate €STR, daily", label: "€STR (overnight)", unit: "% p.a.", adjustment: "not adjusted"}
+  de_indeed: {title: "Job postings on Indeed in Germany, daily", label: "Job postings", unit: "Index 1 Feb 2020 = 100", adjustment: "seasonally adjusted (Indeed Hiring Lab)"}
   w_gas_eu: {title: "Natural gas Europe, monthly average", label: "Natural gas Europe (TTF)", unit: "US$ per MMBtu", adjustment: "not adjusted"}
   de_ppi_xe: {title: "Producer prices excluding energy, index", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
   de_ppi_xe_yoy: {title: "Producer prices excluding energy, % on a year earlier", label: "Producer prices excluding energy", unit: "% on a year earlier", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
@@ -850,6 +869,8 @@ strings:
   "Pp ggü. Vorquartal": "pp on previous quarter"
   "Saldo": "balance"
   "TWh": "TWh"
+  "€ je Liter": "€ per litre"
+  "Index 1.2.2020 = 100": "Index 1 Feb 2020 = 100"
   "GWh je Tag": "GWh per day"
   "Tage": "days"
   "Tausend": "thousands"
@@ -881,6 +902,7 @@ strings:
   "saison- und kalenderbereinigt": "seasonally and calendar adjusted"
   "saison- und kalenderbereinigt (Bundesbank)": "seasonally and calendar adjusted (Bundesbank)"
   "kalender- und saisonbereinigt (Bundesbank, experimentell)": "calendar and seasonally adjusted (Bundesbank, experimental)"
+  "saisonbereinigt (Indeed Hiring Lab)": "seasonally adjusted (Indeed Hiring Lab)"
   "saisonbereinigt": "seasonally adjusted"
   # frequencies
   "Monatlich": "Monthly"
