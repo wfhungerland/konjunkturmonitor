@@ -1335,7 +1335,7 @@ function card(c, no) {
   // Linke Spalte: Download (Dateien und Einbettcode), Methodenblatt, Link
   // alle Optionen offen untereinander, beginnend auf Höhe der Zeichenfläche (siehe alignGut)
   gut.insertAdjacentHTML("beforeend", `<div class="gopts"><button type="button" class="dl" aria-expanded="false" title="${GUTTXT.dlt}">${GUTTXT.dl}</button><div class="dlist" hidden>${acts.join("")}</div>`
-    + (c.chart ? `<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${GUTTXT.meth}</a>` : "")
+    + (c.chart && !capx ? `<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${GUTTXT.meth}</a>` : "")  // mit Erläuterung steht „Mehr zur Methode“ schon rechts
     + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button></div>`);
   // Direkter Link auf diese Abbildung zum Teilen
   const lk = gut.querySelector("button.lnk");
