@@ -581,12 +581,12 @@ charts:
   svr_rat:
     title: "Recommendations of the Council of Economic Experts on four standing questions"
     ask: "What did the Council of Economic Experts recommend on wages, money, public finances and the labour market?"
-    caption: "Each row shows what the Council of Economic Experts recommended for the following year in its annual report. Blue, grey and green stand for three directions in each row: wages restrained, within scope, stronger; monetary policy tighter, unchanged, looser; fiscal policy save, neutral, stimulate; labour market more protection, unchanged, more flexibility. White means: no recommendation. The bars below count the passages with a minority vote. Tapping shows the recommendation with its source; the classification is our own analysis."
+    caption: "Each row shows what the Council of Economic Experts recommended for the following year in its annual report. Red stands for socially progressive recommendations: stronger wages, looser monetary policy, fiscal stimulus, more protection in the labour market. Dark blue stands for conservative-liberal ones: wage restraint, tighter monetary policy, saving, more flexibility. Grey means unchanged. The political reading is our own. White means: no recommendation. The bars below count the passages with a minority vote. Tapping shows the recommendation with its source; the classification is our own analysis."
     unit: "level -1, 0, +1"
   svr_fiskal:
     title: "Recommended fiscal stance and expected growth"
     ask: "Did the Council of Economic Experts advise austerity even when growth was weak?"
-    caption: "The bars show the real gross domestic product growth the Council of Economic Experts expected in its annual report for the following year. The colour shows the fiscal stance it recommended for that year in the same report: blue consolidation (cutting the deficit), grey cyclically neutral (let automatic stabilisers work), green stimulus, light grey no recommendation discernible. West Germany until 1991. Tap for the recommendation with paragraph and page."
+    caption: "The bars show the real gross domestic product growth the Council of Economic Experts expected in its annual report for the following year. The colour shows the fiscal stance it recommended for that year in the same report: dark blue consolidation (cutting the deficit), grey cyclically neutral (let automatic stabilisers work), red stimulus, light grey no recommendation discernible. West Germany until 1991. Tap for the recommendation with paragraph and page."
     unit: "% on previous year"
   gd_bip:
     rail: "Growth forecasts"
@@ -675,13 +675,13 @@ charts:
     rail: "Recommendations"
     title: "Recommendations of the Joint Economic Forecast on four standing questions"
     ask: "What did the institutes recommend on wages, money, public finances and the labour market?"
-    caption: "The top line gives the institutes' latest recommendation in words. Below, each row shows what they recommended for the following year in their autumn report: blue brakes (wage restraint, tighter money, saving, more protection), grey holds, green loosens (stronger wages, looser money, stimulus, more flexibility). Wide bands are phases of three years or more, thin strokes single years, gaps years without a recommendation. The bars below count dissenting votes by individual institutes. At the bottom are the latest turning points with references. Two reviewers classified each recommendation independently; tap to see it with its reference."
+    caption: "The top line gives the institutes' latest recommendation in words. Below, each row shows what they recommended for the following year in their autumn report. Red stands for socially progressive recommendations: stronger wages, looser monetary policy, fiscal stimulus, more protection in the labour market. Dark blue stands for conservative-liberal ones: wage restraint, tighter monetary policy, saving, more flexibility. Grey means unchanged. The political reading is our own. Wide bands are phases of three years or more, thin strokes single years, gaps years without a recommendation. The bars below count dissenting votes by individual institutes. At the bottom are the latest turning points with references. Two reviewers classified each recommendation independently; tap to see it with its reference."
     unit: "level -1, 0, +1"
   gd_vergleich:
     rail: "Comparison with the Council"
     title: "Recommendations of the Joint Economic Forecast and the Council of Economic Experts compared"
     ask: "Did the institutes recommend the same as the Council of Economic Experts?"
-    caption: "Each question has two rows: the institutes on top, the Council of Economic Experts below. The same colour means: they gave the same advice. Blue, grey and green stand for three directions in each row: wages restrained, within scope, stronger; monetary policy tighter, unchanged, looser; fiscal policy save, neutral, stimulate; labour market more protection, unchanged, more flexibility. Only years in which both gave a recommendation are counted. Tapping shows the recommendation with its source."
+    caption: "Each question has two rows: the institutes on top, the Council of Economic Experts below. The same colour means: they gave the same advice. Red stands for socially progressive recommendations: stronger wages, looser monetary policy, fiscal stimulus, more protection in the labour market. Dark blue stands for conservative-liberal ones: wage restraint, tighter monetary policy, saving, more flexibility. Grey means unchanged. The political reading is our own. Only years in which both gave a recommendation are counted. Tapping shows the recommendation with its source."
     unit: "level -1, 0, +1"
   gd_themen:
     rail: "Topics"

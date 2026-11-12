@@ -960,7 +960,10 @@ function forecastChart(el, c) {
 
 // Hantelgrafik: je Land der Wert im ersten (hohl) und im jüngsten Jahr (voll), nach dem jüngsten Wert geordnet
 // Empfehlungen des Sachverständigenrats: je Frage ein Farbstreifen über die Jahre, Antippen zeigt Satz und Fundstelle; darunter Minderheitsvoten
-const STANCE_COL = { "-1": "#0070C0", "0": "#BFBFBF", "1": "#4CAF5A" };  // Hausfarben: Blau bremst, Grau hält, ruhiges Grün lockert
+// Politisch gelesen: Rot sozial-progressiv (kräftigere Löhne, lockere Geldpolitik, Impulse, mehr Schutz), Dunkelblau konservativ-liberal
+// (Lohnzurückhaltung, straffere Geldpolitik, sparen, Flexibilisierung), Grau beibehalten. Beim Arbeitsmarkt läuft die Stufe umgekehrt.
+const STANCE_COL = { "-1": "#002060", "0": "#BFBFBF", "1": "#D64541" }, STANCE_FLIP = { A: 1, GA: 1 };
+const stanceCol = (k, v) => STANCE_COL[String(STANCE_FLIP[k] ? -(+v) || 0 : +v)];
 // Kurzwörter je Frage und Richtung für „Heute“ und die Wendepunkte
 const STANCEW = { L: { "-1": "zurückhaltend", "0": "im Rahmen", "1": "kräftiger" }, G: { "-1": "straffer", "0": "gleich", "1": "lockerer" },
   F: { "-1": "sparen", "0": "neutral", "1": "anschieben" }, A: { "-1": "mehr Schutz", "0": "gleich", "1": "flexibler" } };
@@ -988,8 +991,8 @@ function stanceChart(el, c) {
     [-1, 0, 1].forEach(v => [true, false].forEach(long => { const yy = years.filter(y => m[y] === v && (!PH || (rl[y] >= 3) === long)); if (!yy.length || (!PH && !long)) return;
       const hh = long ? bh : bh * 0.38, bb = long ? i + b0 : i + b0 + (bh - hh) / 2;
       // Bänder als Flächen ohne Fugen; die Balken darüber bleiben unsichtbar und tragen nur die Erklärung beim Antippen
-      if (PH && long) yy.forEach(y => { if (m[y - 1] !== v || !(rl[y - 1] >= 3)) bandShapes.push({ type: "rect", xref: "x", yref: "y", x0: y - 0.5, x1: y + rl[y] - 0.5, y0: bb, y1: bb + hh, fillcolor: STANCE_COL[String(v)], line: { width: 0 }, layer: "below" }); });
-      traces.push({ type: "bar", x: yy, y: yy.map(() => hh), base: yy.map(() => bb), width: 0.92, yaxis: "y", opacity: long ? 1 : 0.75, marker: { color: PH && long ? "rgba(0,0,0,0)" : STANCE_COL[String(v)], line: { width: 0 } }, showlegend: false,
+      if (PH && long) yy.forEach(y => { if (m[y - 1] !== v || !(rl[y - 1] >= 3)) bandShapes.push({ type: "rect", xref: "x", yref: "y", x0: y - 0.5, x1: y + rl[y] - 0.5, y0: bb, y1: bb + hh, fillcolor: stanceCol(k, v), line: { width: 0 }, layer: "below" }); });
+      traces.push({ type: "bar", x: yy, y: yy.map(() => hh), base: yy.map(() => bb), width: 0.92, yaxis: "y", opacity: long ? 1 : 0.75, marker: { color: PH && long ? "rgba(0,0,0,0)" : stanceCol(k, v), line: { width: 0 } }, showlegend: false,
         hovertext: yy.map(y => stanceHover(A, k, y)), hoverinfo: "text", hoverlabel: { align: "left", bgcolor: "#fff", bordercolor: "#7f7f7f", font: { color: "#000" } } }); }));
     const na = years.filter(y => m[y] == null);
     if (na.length) traces.push({ type: "bar", x: na, y: na.map(() => bh), base: na.map(() => i + b0), width: 0.92, yaxis: "y", marker: { color: "rgba(0,0,0,0)", line: { color: PH ? "rgba(0,0,0,0)" : "#D9D9D9", width: 0.5 } }, showlegend: false,
@@ -1023,12 +1026,12 @@ function stanceChart(el, c) {
 }
 // „Heute“ über der Grafik (jüngste Empfehlung in Worten) und „Wendepunkte“ darunter (Jahre mit geänderter Empfehlung, mit Satz und Seite)
 function stanceExtras(el, A, qs) {
-  const ok = r => r && !r.x && !r.o && r.s != null && r.s !== "NA", sv = r => String(+r.s), col = v => v === "0" ? "#595959" : STANCE_COL[v];
+  const ok = r => r && !r.x && !r.o && r.s != null && r.s !== "NA", sv = r => String(+r.s), col = (k, v) => v === "0" ? "#595959" : stanceCol(k, v);
   const yAll = qs.flatMap(([k]) => Object.keys(A[k] || {}).map(Number)), Y1 = Math.max(...yAll); if (!isFinite(Y1)) return;
   const word = (k, v) => (STANCEW[k] || {})[v] || "";
   let h = "";
   qs.forEach(([k, lab]) => { const r = (A[k] || {})[Y1]; let sub = "", main;
-    if (ok(r)) { main = `<b style="color:${col(sv(r))}">${esc(word(k, sv(r)))}</b>`; sub = esc(Object.entries(STANCEV.labs).reduce((t, [a, b]) => t.replace(a, b), r.lab || String(Y1))); }
+    if (ok(r)) { main = `<b style="color:${col(k, sv(r))}">${esc(word(k, sv(r)))}</b>`; sub = esc(Object.entries(STANCEV.labs).reduce((t, [a, b]) => t.replace(a, b), r.lab || String(Y1))); }
     else { main = `<b style="color:#8c8c8c">${STANCEV.none}</b>`; const ys = Object.keys(A[k] || {}).map(Number).filter(y => ok(A[k][y])).sort((a, b) => b - a);
       if (ys.length) sub = `${STANCEV.last} ${ys[0]}: ${esc(word(k, sv(A[k][ys[0]])))}`; }
     h += `<div><span class="sq">${esc(lab)}</span>${main}<span class="ss">${sub}</span></div>`; });
@@ -1037,7 +1040,7 @@ function stanceExtras(el, A, qs) {
     if (y >= 2000 && prev != null && v !== prev) items.push({ y, k, lab, v, r }); prev = v; }); });
   items.sort((a, b) => b.y - a.y || a.lab.localeCompare(b.lab));
   const li = items.slice(0, 6).map(({ y, k, lab, v, r }) => { let p = STANCEV.quote ? String(r.p || "").split(/(?<=\.)\s/)[0] : "";
-    return `<li><b>${y}</b><span><span style="color:${col(v)};font-weight:700">${esc(lab)}: ${esc(word(k, v))}</span>${p ? ` <span class="sp">${esc(p)}</span>` : ""}${r.seite ? ` <span class="sp">(${STANCEV.page} ${esc(r.seite)})</span>` : ""}</span></li>`; }).join("");
+    return `<li><b>${y}</b><span><span style="color:${col(k, v)};font-weight:700">${esc(lab)}: ${esc(word(k, v))}</span>${p ? ` <span class="sp">${esc(p)}</span>` : ""}${r.seite ? ` <span class="sp">(${STANCEV.page} ${esc(r.seite)})</span>` : ""}</span></li>`; }).join("");
   let top = el._sxTop, bot = el._sxBot;
   if (!top) { top = el._sxTop = document.createElement("div"); top.className = "stnow"; el.parentNode.insertBefore(top, el);
     bot = el._sxBot = document.createElement("div"); bot.className = "stturn"; el.parentNode.insertBefore(bot, el.nextSibling); }
@@ -1078,7 +1081,7 @@ function cellChart(el, c) {
 function stanceBarsChart(el, c) {
   const A = c.attach || {}, g = c.series.find(s => s.id === "svr_bip_prog"), f = c.series.find(s => s.id === "svr_stance_f"); if (!g) return;
   const fm = f ? Object.fromEntries(f.x.map((x, j) => [+x.slice(0, 4) + 1, f.y[j]])) : {};
-  const xs = g.x.map(x => +x.slice(0, 4)), col = xs.map(y => fm[y] == null ? "#E7E6E6" : STANCE_COL[String(fm[y])]);
+  const xs = g.x.map(x => +x.slice(0, 4)), col = xs.map(y => fm[y] == null ? "#E7E6E6" : stanceCol("F", fm[y]));
   const tr = { type: "bar", x: xs, y: g.y, marker: { color: col, line: { width: 0 } }, width: 0.75, showlegend: false, hoverlabel: { align: "left", bgcolor: "#fff", bordercolor: "#7f7f7f", font: { color: "#000" } }, hoverinfo: "text",
     hovertext: xs.map((y, j) => `<b>${y}</b>: ${STANCE_TXT.exp} ${fmt(g.y[j], 1)} %<br>${stanceHover(A, "F", y - 1)}`) };
   const L = baseLayout(el);
