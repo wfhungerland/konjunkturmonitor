@@ -1242,6 +1242,8 @@ names:
     "16": "Thuringia"
 # Feste Beschriftungen und Kalendertermine (deutsch: englisch), für Grafiken, Kalender und Gruppen
 labels:
+  "Rendite zehnjähriger Bundesanleihen": "Ten-year Bund yield"
+  "Durchschnittszins der Schulden": "Average rate on debt"
   "NATO-Ziel 2 %": "NATO target 2%"
   "NATO-Ziel 3,5 % bis 2035": "NATO target 3.5% by 2035"
   "Mittel 1985–2019 = 100": "1985–2019 average = 100"
