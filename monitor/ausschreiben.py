@@ -49,6 +49,7 @@ GLOSSARY_EN = {
 # damit nichts umbricht. US-Dollar als $, Pfund als £; Yuan und Franken bleiben ausgeschrieben.
 _NBSP = "\u00a0"
 _RULES = [
+    (r"(\d) (cm|mm|°C|Tage|Tagen|Punkte|Prozentpunkte)\b", r"\1" + _NBSP + r"\2"),  # Zahl und Einheit bleiben in einer Zeile
     (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mrd."),
     (r"([+-]?)(\d[\d.,]*) (?:Millionen|Mio\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mio."),
     (r"([+-]?)(\d[\d.,]*) €", r"\1€\2"),
@@ -62,6 +63,7 @@ _RULES = [
     (r"\bBIP-Wachstum", "Wirtschaftswachstum"),
     (r"\bdes (realen |nominalen )?BIP\b(?!-)", r"des \1Bruttoinlandsprodukts"),
     (r"(?<![\w-])BIP\b(?!-)", "Bruttoinlandsprodukt"),
+    (r"\bder GD\b", "der Gemeinschaftsdiagnose"), (r"\bdie GD\b", "die Gemeinschaftsdiagnose"),
     (r"\(HVPI\)", "(EU-weit harmonisiert gemessen)"),
     (r"\(ESI; ", "(Indikator der EU-Kommission; "),
     (r"\(TTF\)", "(Handelspunkt TTF)"),

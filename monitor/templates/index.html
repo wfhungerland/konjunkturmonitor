@@ -65,7 +65,8 @@
   /* Breite Bildschirme: Abbildungsübersicht des Abschnitts läuft links mit */
   .rail { display: none; position: sticky; top: calc(var(--hdr, 64px) + var(--h2, 46px) + 8px); align-self: start; max-height: calc(100vh - var(--hdr, 64px) - var(--h2, 46px) - 24px); overflow: auto; font: 13.5px/1.35 var(--ff); padding-top: 2px; }
   .rail .rh { font: 600 16.5px/1.25 var(--ff); color: var(--dark); margin: 0 0 8px; }
-  .rail a { display: grid; grid-template-columns: 2.1em minmax(0, 1fr); color: var(--muted); padding: 3px 0; }  /* Nummer und Titel in zwei Spalten */
+  .rail a { display: grid; grid-template-columns: 2.1em minmax(0, 1fr); color: var(--muted); padding: 3px 0; }
+  .rail { overflow-x: hidden; } .rail a span { overflow-wrap: anywhere; hyphens: auto; -webkit-hyphens: auto; }  /* lange Wörter wie „sozialversicherungspflichtig“ trennen statt quer zu scrollen */  /* Nummer und Titel in zwei Spalten */
   .rail a:hover { color: var(--text); text-decoration: none; }
   .rail a.on { color: var(--accent); font-weight: 600; }
   .rail a b { font-weight: 400; color: var(--grey); } .rail a.on b { color: var(--accent); }  /* Nummern grau, Titel vorn */
@@ -114,10 +115,9 @@
   /* Schalter: nur Text mit kleinem Quadrat davor, leer = aus, gefüllt = an */
   .htools { align-items: flex-start; gap: 3px; }
   .htools .btn, .tools .btn { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 0; background: none; padding: 0; color: #8c8c8c; font: 13px/1.4 var(--ff); cursor: pointer; white-space: nowrap; }
-  .htools .btn::before, .tools .btn::before { content: "○"; font-size: 10px; line-height: 1; flex: none; }
+  .htools .btn::before, .tools .btn::before { content: none; }
   .htools .btn:hover, .tools .btn:hover { color: var(--text); text-decoration: none; background: none; }
-  .htools .btn[aria-pressed="true"], .tools .btn[aria-pressed="true"] { color: var(--text); }
-  .htools .btn[aria-pressed="true"]::before, .tools .btn[aria-pressed="true"]::before { content: "●"; }
+  .htools .btn[aria-pressed="true"], .tools .btn[aria-pressed="true"] { color: var(--text); font-weight: 700; }  /* aktiv: fett und schwarz, sonst grau */
   .card .src, .card .nxtline { text-align: left; }
   @media (min-width: 601px) { .card .src, .card .nxtline { text-align: right; padding-right: var(--pr, 0px); } }  /* bündig mit der rechten Kante der Zeichenfläche */
   .card .nxtline { font: 13px/1.4 var(--ff); color: var(--grey); margin-top: 6px; } .card .nxtline a { color: var(--grey); }
@@ -146,7 +146,7 @@
   .seg { display: flex; justify-content: center; gap: 12px; margin: 8px 0 0; }
   .seg button { font: inherit; font-size: 13px; line-height: 1.4; padding: 0 0 1px; border: 0; border-bottom: 1.5px solid transparent; border-radius: 0; background: none; color: #8c8c8c; cursor: pointer; }
   .seg button:hover { color: var(--text); }
-  .seg button[aria-pressed="true"] { color: var(--text); border-bottom-color: var(--text); }
+  .seg button[aria-pressed="true"] { color: var(--text); font-weight: 700; }
   .card details.ansicht summary { list-style: none; cursor: pointer; color: #8c8c8c; font: 13px/1.4 var(--ff); } .card details.ansicht summary:hover, .card details.ansicht[open] summary { color: var(--text); } .card details.ansicht summary::-webkit-details-marker { display: none; }
   .card details.ansicht summary::after { content: " ▾"; } .card details.ansicht[open] summary::after { content: " ▴"; } .card details.ansicht .ansl { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; margin-top: 3px; }
   .htools .seg { justify-content: flex-start; margin: 0 0 4px; }  /* entweder/oder: unterstrichen, ein/aus: ○ ●, beide oben rechts */
@@ -357,7 +357,7 @@
   /* Kopf: Text statt Kästen, das Aktive mit kurzem Strich darunter */
   header .bar .btn { border: 0; border-radius: 0; background: none; padding: 2px 0; color: var(--text); font: 14px/1.4 var(--ff); box-shadow: inset 0 -2px 0 transparent; }
   header .bar .btn:hover, header .bar .btn:focus-visible { box-shadow: inset 0 -2px 0 var(--grey); text-decoration: none; outline: none; }
-  header .bar .btn[aria-expanded="true"], header .bar .btn[aria-pressed="true"], body.coll header .bar .colllink { box-shadow: inset 0 -2px 0 var(--dark); }
+  header .bar .btn[aria-expanded="true"], body.coll header .bar .colllink { box-shadow: inset 0 -2px 0 var(--dark); } header .bar .btn[aria-pressed="true"] { font-weight: 700; box-shadow: none; }
   .answer b.kern { font-weight: 600; }
   details.moretxt { margin: -4px 0 10px; } details.moretxt > summary { cursor: pointer; font-size: 14px; } details.moretxt p { margin: 6px 0 0; font-size: 16px; max-width: 46em; }
   body.brief details.moretxt { display: none; }
@@ -504,19 +504,19 @@ const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
 const FAZTXT = { btn: "Kommentar", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Kommentar bleibt die Seite beschreibend." };
 const ABTXT = { close: "schließen" };
-const TOURTXT = { name: "Rundgang", ask: "Neu hier? Ein kurzer Rundgang in einer Minute.", go: "Rundgang starten", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
+const TOURTXT = { name: "Rundgang", ask: "Neu hier? Eine Minute Rundgang zeigt, wie die Seite funktioniert.", go: "Los geht’s", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
   steps: [
-    ["#nav", "„Inhalt“ öffnet alle Kapitel. Die Lupe daneben sucht jede Grafik; die Taste / springt direkt in die Suche."],
-    [".fazitbtn", "„Kommentar“ blendet eine Einordnung nach festen Regeln ein. Ohne den Knopf beschreibt die Seite nur, was die Zahlen zeigen."],
-    [".briefbtn", "Zuerst sehen Sie „Das Wichtigste“: acht Kapitel. Dieser Knopf zeigt alle Kapitel."],
-    ["#starttable", "Die Tabelle zeigt die Kernzahlen. ▲ heißt gestiegen, ▼ gesunken, ● unverändert; Rot markiert eine ungünstige Richtung. Ein Klick führt zum Kapitel."],
-    ["@card .htools", "Jede Grafik lässt sich als Tabelle der letzten zwölf Werte zeigen."],
-    ["@card .tools", "Unter der Grafik stehen Schalter: die ganze Reihe seit Beginn, Rezessionen und je nach Grafik weitere."],
-    ["@card .cside", "Rechts erklärt ein kurzer Text, was die Grafik zeigt. „Mehr zur Methode“ führt zu Quellen und Rechenschritten."],
-    ["@card .gut", "Links: „Daten“ zum Herunterladen (Excel, CSV, Stata, PowerPoint), „Link“ zum Teilen und der Stern für Ihre Lesezeichen."],
-    [".fbk", "Was fällt Ihnen auf? Hier geht Ihre Rückmeldung mit einem Klick direkt an den Autor."]] };
+    ["#nav", "Hier ist das Inhaltsverzeichnis. Ein Klick zeigt alle Kapitel. Die Lupe daneben findet jede Grafik."],
+    [".fazitbtn", "Die Seite beschreibt nur, was die Zahlen zeigen. Wer eine Einschätzung lesen will, schaltet hier den Kommentar ein."],
+    [".briefbtn", "Am Anfang sehen Sie nur das Wichtigste. Hier klappen Sie alle Kapitel auf."],
+    ["#starttable", "Die wichtigsten Zahlen auf einen Blick. ▲ heißt gestiegen, ▼ gesunken, ● gleich geblieben. Rot heißt: eher ungünstig. Ein Klick führt zum Kapitel."],
+    ["@card .htools", "Lieber Zahlen statt Linien? Mit „Tabelle“ sehen Sie die letzten zwölf Werte."],
+    ["@card .tools", "Mit diesen Schaltern sehen Sie mehr, etwa die ganze Geschichte einer Zahl oder frühere Krisen."],
+    ["@card .cside", "Hier steht in wenigen Sätzen, was die Grafik zeigt. Wer es genau wissen will, klickt auf „Mehr zur Methode“."],
+    ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik."],
+    [".fbk", "Fällt Ihnen etwas auf, gut oder schlecht? Schreiben Sie es hier hinein. Es kommt direkt beim Autor an."]] };
 const FBTXT = { btn: "Rückmeldung", ph: "Was fällt Ihnen auf? Was ist gut, was schlecht, was ließe sich besser machen?", mail: "E-Mail für eine Antwort (freiwillig)", send: "Senden", ok: "Danke, ist angekommen.", err: "Senden hat nicht geklappt. Bitte später noch einmal versuchen.", note: "Geht direkt an den Autor. <a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
-const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen im Download unter „Daten“." };
+const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen unter „Downloads“." };
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (↗) und Schwellen
 const isBad = (c, sid) => c.up_bad === true || (Array.isArray(c.up_bad) && c.up_bad.includes(sid));
 const tendOf = (y, d) => { const v = y.filter(q => q != null); if (v.length < 2) return null; const a = v[v.length - 1], b = v[v.length - 2]; return Math.round(Math.abs(a - b) * 10 ** d) === 0 ? "flat" : a > b ? "up" : "down"; };
@@ -567,7 +567,7 @@ const MATXT = "Mittel über {n} Tage";
 const ANH = { show: "Abbildungen anzeigen" };
 const LONGTXT = { crisis: "Bankenkrisen", rec: "Rezessionen", dec: "Mittel" };
 const VIEWTXT = { raw: "Monatswerte", rawt: "Dünne Linie mit den einzelnen Monatswerten zeigen", edge: "Aktueller Rand", edget: "Jüngste Werte an den Linienenden zeigen", rec: "Rezessionen", more: "Ansicht", all: "Ganze Reihe", allt: "Die Reihe ab ihrem Beginn zeigen" };
-const GUTTXT = { dl: "Daten", dlt: "XLSX, PPTX, PNG, CSV, Stata oder Code zum Einbetten", meth: "Methode", link: "Link" };
+const GUTTXT = { dl: "Downloads", dlt: "XLSX, PPTX, PNG, CSV, Stata oder Code zum Einbetten", meth: "Methode", link: "Link" };
 const pressed = (b, on) => b.setAttribute("aria-pressed", String(!!on));
 const COLTXT = { pin: "Als Lesezeichen merken", pinned: "Lesezeichen entfernen", title: "Lesezeichen", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. Der Stern ☆ oben rechts an einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Lesezeichen übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
 const EMB = { label: "Einbetten", title: "HTML-Code kopieren, um diese Abbildung auf einer eigenen Seite einzubetten", done: "Code kopiert", src: "Konjunkturmonitor", full: "ganze Seite" };
