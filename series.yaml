@@ -163,9 +163,13 @@ charts:
   hybrid: {title: "Russische Sabotage und Subversion in Europa", decimals: 0}
   gpr: {title: "Geopolitisches Risiko", decimals: 0}
   milex: {title: "Militärausgaben", decimals: 1}
-  cinc: {title: "Anteil an den materiellen Machtmitteln der Welt", decimals: 1}
+  cinc: {title: "Deutschlands Anteil an den Machtmitteln der Welt", decimals: 1}
   ukraine_aid: {title: "Hilfe Deutschlands für die Ukraine", decimals: 1}
   trade_harm: {title: "Schädliche Handelseingriffe gegen deutsche Interessen", decimals: 0}
+  arms_prod: {title: "Produktion von Waffen und Munition", decimals: 0}
+  milex_gov: {title: "Militärausgaben im Staatshaushalt", decimals: 1}
+  milex_eu_ru: {title: "Militärausgaben Europas und Russlands", decimals: 0}
+  trade_ru: {title: "Exporte nach Russland und in Nachbarländer", decimals: 1}
   pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}
   price_exp: {title: "Preiserwartungen von Unternehmen und Verbrauchern", decimals: 0}
   gdp_use: {title: "Verwendung der Wirtschaftsleistung im letzten Quartal", decimals: 1}
@@ -3676,7 +3680,7 @@ series:
     note: "Militärausgaben nach der SIPRI-Abgrenzung (einschließlich Militärrenten, paramilitärischer Kräfte und Militärhilfe) in % des BIP. Deutschland bis 1990 Bundesrepublik. Ausgabe April 2026 (Datei v1.2), von Hand übernommen."
 
   - id: cinc
-    expand: {staat: [deu, usa, chn, rus, gbr, fra]}
+    expand: {staat: [deu]}
     block: geopolitik
     source: static
     key: "cow_cinc_{staat}"
@@ -3739,7 +3743,6 @@ series:
     stale_after_months: 30
     chart: trade_harm
     label: "China"
-    style: bar
     license: "Global Trade Alert (St. Gallen Endowment), Nutzung nach den Bedingungen von Global Trade Alert mit Quellenangabe"
     note: "Eingriffe, die Global Trade Alert als schädlich (rot) oder wahrscheinlich schädlich (gelb) einstuft und bei denen Deutschland unter den betroffenen Ländern steht; gezählt nach dem Jahr des Inkrafttretens, nur abgeschlossene Jahre. Übrige Staaten einschließlich gemeinsamer Maßnahmen mehrerer Staaten. Export aller Eingriffe vom 10.11.2026, von Hand übernommen."
 
@@ -3756,7 +3759,6 @@ series:
     stale_after_months: 30
     chart: trade_harm
     label: "USA"
-    style: bar
     license: "Global Trade Alert (St. Gallen Endowment), Nutzung nach den Bedingungen von Global Trade Alert mit Quellenangabe"
     note: "Eingriffe, die Global Trade Alert als schädlich (rot) oder wahrscheinlich schädlich (gelb) einstuft und bei denen Deutschland unter den betroffenen Ländern steht; gezählt nach dem Jahr des Inkrafttretens, nur abgeschlossene Jahre. Übrige Staaten einschließlich gemeinsamer Maßnahmen mehrerer Staaten. Export aller Eingriffe vom 10.11.2026, von Hand übernommen."
 
@@ -3773,7 +3775,6 @@ series:
     stale_after_months: 30
     chart: trade_harm
     label: "übrige Staaten"
-    style: bar
     license: "Global Trade Alert (St. Gallen Endowment), Nutzung nach den Bedingungen von Global Trade Alert mit Quellenangabe"
     note: "Eingriffe, die Global Trade Alert als schädlich (rot) oder wahrscheinlich schädlich (gelb) einstuft und bei denen Deutschland unter den betroffenen Ländern steht; gezählt nach dem Jahr des Inkrafttretens, nur abgeschlossene Jahre. Übrige Staaten einschließlich gemeinsamer Maßnahmen mehrerer Staaten. Export aller Eingriffe vom 10.11.2026, von Hand übernommen."
 
@@ -4096,3 +4097,111 @@ series:
     chart: gd_ziel
     label: "Prognosen für 2026"
     note: "Datum = Abschluss des Gutachtens; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: de_arms_prod
+    block: geopolitik
+    source: eurostat
+    key: sts_inpr_m
+    params: {geo: DE, nace_r2: C254, unit: I21, s_adj: SCA}
+    title: "Produktion von Waffen und Munition, Index 2021 = 100"
+    unit: "Index 2021 = 100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: arms_prod
+    label: "Waffen und Munition"
+    note: "Wirtschaftszweig 25.4 der Klassifikation WZ 2008 (Herstellung von Waffen und Munition); Panzer, Flugzeuge und Schiffe gehören zu anderen Zweigen."
+
+  - id: de_manuf_prod
+    block: geopolitik
+    source: eurostat
+    key: sts_inpr_m
+    params: {geo: DE, nace_r2: C, unit: I21, s_adj: SCA}
+    title: "Produktion im Verarbeitenden Gewerbe, Index 2021 = 100"
+    unit: "Index 2021 = 100"
+    frequency: M
+    adjustment: saison- und kalenderbereinigt
+    start: "2015-01-01"
+    chart: arms_prod
+    label: "Industrie insgesamt"
+
+  - id: milex_gov
+    expand: {staat: [deu, fra, gbr, pol, usa]}
+    block: geopolitik
+    source: static
+    key: "sipri_gov_{staat}"
+    params: {source_name: "SIPRI Military Expenditure Database"}
+    title: "Militärausgaben in % der Staatsausgaben, {staat_name}"
+    unit: "% der Staatsausgaben"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "1990-01-01"
+    stale_after_months: 24
+    chart: milex_gov
+    label: "{staat_name}"
+    license: "SIPRI: nichtkommerzielle Nutzung mit Quellenangabe"
+    note: "Militärausgaben nach SIPRI-Abgrenzung in % der Ausgaben aller staatlichen Ebenen (Staatsausgaben nach IWF). Ausgabe April 2026, von Hand übernommen."
+
+  - id: sipri_usd_cwe
+    block: geopolitik
+    source: static
+    key: sipri_usd_cwe
+    params: {source_name: "SIPRI Military Expenditure Database"}
+    title: "Militärausgaben Mittel- und Westeuropas, Mrd. US-$ in Preisen von 2024"
+    unit: "Mrd. US-$, Preise 2024"
+    frequency: A
+    adjustment: "konstante Preise und Wechselkurse von 2024"
+    start: "1990-01-01"
+    stale_after_months: 24
+    chart: milex_eu_ru
+    label: "Mittel- und Westeuropa"
+    license: "SIPRI: nichtkommerzielle Nutzung mit Quellenangabe"
+    note: "SIPRI-Region Central and Western Europe: Europa ohne Russland, Belarus, Ukraine und Moldau. Ausgabe April 2026, von Hand übernommen."
+
+  - id: sipri_usd_rus
+    block: geopolitik
+    source: static
+    key: sipri_usd_rus
+    params: {source_name: "SIPRI Military Expenditure Database"}
+    title: "Militärausgaben Russlands, Mrd. US-$ in Preisen von 2024"
+    unit: "Mrd. US-$, Preise 2024"
+    frequency: A
+    adjustment: "konstante Preise und Wechselkurse von 2024"
+    start: "1990-01-01"
+    stale_after_months: 24
+    chart: milex_eu_ru
+    label: "Russland"
+    license: "SIPRI: nichtkommerzielle Nutzung mit Quellenangabe"
+    note: "Ab 2023 schätzt SIPRI wegen geheimer Haushaltsposten. Ausgabe April 2026, von Hand übernommen."
+
+  - id: de_exp_rusblr
+    block: geopolitik
+    source: static
+    key: de_exp_rusblr
+    params: {source_name: "Eurostat, Comext (DS-045409)"}
+    title: "Warenexporte Deutschlands nach Russland und Belarus, Summe über zwölf Monate"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2019-01-01"
+    stale_after_months: 4
+    chart: trade_ru
+    label: "Russland und Belarus"
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Exporte nach Partnerland, Summe der jeweils letzten zwölf Monate; werktäglich abgerufen."
+
+  - id: de_exp_cauca
+    block: geopolitik
+    source: static
+    key: de_exp_cauca
+    params: {source_name: "Eurostat, Comext (DS-045409)"}
+    title: "Warenexporte Deutschlands nach Armenien, Georgien, Kasachstan, Kirgisistan, Tadschikistan und Usbekistan, Summe über zwölf Monate"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2019-01-01"
+    stale_after_months: 4
+    chart: trade_ru
+    label: "Kaukasus und Zentralasien"
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Sechs Länder, über die nach Studien der Osteuropabank (EBRD) Waren nach Russland umgeleitet werden; Summe der jeweils letzten zwölf Monate; werktäglich abgerufen."

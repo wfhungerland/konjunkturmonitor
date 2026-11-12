@@ -12,6 +12,12 @@ series:
   gpr_world: {tpl: "{when} lag der weltweite Index des geopolitischen Risikos bei {v} Punkten."}
   kiel_de_mil: {tpl: "{when} teilte Deutschland der Ukraine Militärhilfe im Wert von {v} zu."}
   kiel_de_other: {tpl: "{when} kamen finanzielle und humanitäre Hilfe im Wert von {v} hinzu."}
+  de_arms_prod: {tpl: "{when} lag die Produktion von Waffen und Munition bei {n} Punkten (2021 = 100), {chg} ggü. dem Vorjahresmonat."}
+  de_manuf_prod: {tpl: "Die Industrie insgesamt kam auf {n} Punkte, {chg} ggü. dem Vorjahresmonat."}
+  sipri_usd_rus: {tpl: "{when} gab Russland nach Schätzung von SIPRI {v} für das Militär aus."}
+  sipri_usd_cwe: {tpl: "{when} kamen Mittel- und Westeuropa auf {v}."}
+  de_exp_rusblr: {tpl: "{when} summierten sich die Exporte nach Russland und Belarus über zwölf Monate auf {v}."}
+  de_exp_cauca: {tpl: "Nach Kaukasus und Zentralasien gingen im selben Zeitraum Waren für {v}."}
   gdp_rt_first: {tpl: "{when} lag das zuerst gemeldete BIP-Wachstum bei {v} ggü. dem Vorquartal."}
   gdp_rt_latest: {tpl: "{when} liegt das BIP-Wachstum im heutigen Datenstand bei {v} ggü. dem Vorquartal."}
   gdp_rt_rev: {tpl: "{when} wurde das BIP-Wachstum seit der ersten Meldung um {abs} Pp nach {oben_unten} korrigiert.", tpl0: "{when} ist das BIP-Wachstum seit der ersten Meldung unverändert."}
@@ -191,6 +197,7 @@ charts:
   esi: ["die Exportähnlichkeit von {label} mit Deutschland", s]
   inv_ratio: ["die Investitionsquote in {label}", s]
   milex: ["die Militärausgaben in {label}", p]
+  milex_gov: ["die Militärausgaben in {label}", p]
   cinc: ["der Anteil von {label} am Machtindex CINC", s]
   cit: ["die tarifliche Steuerbelastung von Unternehmensgewinnen in {label}", s]
   emp_sector: ["die Zahl der Erwerbstätigen im Bereich „{label}“", s]

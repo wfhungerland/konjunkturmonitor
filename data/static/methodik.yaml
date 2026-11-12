@@ -178,7 +178,7 @@ charts:
       - "Die NATO grenzt anders ab; ihre Quoten weichen ab, für Deutschland meist nach oben. Die NATO-Ziele beziehen sich auf die NATO-Abgrenzung."
       - "Für Russland schätzt SIPRI wegen geheimer Haushaltsposten; die Werte sind unsicher."
   cinc:
-    methode: "Composite Index of National Capability des Correlates-of-War-Projekts: Für jedes Land und Jahr wird der Anteil an der Weltsumme von sechs Größen bestimmt (Gesamtbevölkerung, Stadtbevölkerung, Eisen- und Stahlproduktion, Primärenergieverbrauch, Zahl der Soldaten, Militärausgaben). Der Index ist das Mittel dieser sechs Anteile. Für Deutschland addiert der Monitor 1955 bis 1989 die Werte von Bundesrepublik und DDR; 1946 bis 1954 fehlt ein Wert."
+    methode: "Composite Index of National Capability des Correlates-of-War-Projekts: Für jedes Land und Jahr wird der Anteil an der Weltsumme von sechs Größen bestimmt (Gesamtbevölkerung, Stadtbevölkerung, Eisen- und Stahlproduktion, Primärenergieverbrauch, Zahl der Soldaten, Militärausgaben). Der Index ist das Mittel dieser sechs Anteile. Für Deutschland addiert der Monitor 1955 bis 1989 die Werte von Bundesrepublik und DDR; 1946 bis 1954 fehlt ein Wert. Bis 1870 steht der Wert Preußens."
     grenzen:
       - "Der Index misst Masse und Rohstoffe, nicht Technik, Produktivität oder Bündnisse; China und Indien erscheinen dadurch sehr stark."
       - "Version 7.0 reicht bis 2022; neue Ausgaben erscheinen in Abständen von mehreren Jahren."
@@ -187,6 +187,25 @@ charts:
     grenzen:
       - "Ohne den deutschen Anteil an der Hilfe der EU und ohne Kosten für Geflüchtete in Deutschland; die Bundesregierung nennt deshalb höhere Summen."
       - "Mehrjährige Pakete erscheinen im Monat der Festlegung; die Quartale schwanken deshalb stark."
+  arms_prod:
+    methode: "Produktionsindex des Wirtschaftszweigs 25.4 (Herstellung von Waffen und Munition) und des Verarbeitenden Gewerbes insgesamt aus der Konjunkturstatistik von Eurostat, Index 2021 = 100, saison- und kalenderbereinigt. Der Monitor ruft beide Reihen werktäglich ab und zeigt dazu den gleitenden Durchschnitt über drei Monate."
+    grenzen:
+      - "Panzer, Kampfflugzeuge und Kriegsschiffe gehören zu den Zweigen 30.3, 30.4 und 30.1 und fehlen hier; für Deutschland veröffentlicht Eurostat dort keine eigenen Reihen."
+      - "Der Zweig ist klein; einzelne Großaufträge verschieben den Index stark."
+  milex_gov:
+    methode: "Militärausgaben nach SIPRI-Abgrenzung geteilt durch die Ausgaben aller staatlichen Ebenen nach dem World Economic Outlook des Internationalen Währungsfonds, wie SIPRI sie veröffentlicht."
+    grenzen:
+      - "Die Staatsausgaben schließen Sozialversicherungen ein; Länder mit großen Sozialhaushalten haben dadurch niedrigere Anteile."
+  milex_eu_ru:
+    methode: "Militärausgaben in US-Dollar zu konstanten Preisen und Wechselkursen von 2024 aus der SIPRI-Datenbank: die Regionalsumme Mittel- und Westeuropa und Russland. Für Russland schätzt SIPRI seit 2023 Teile des Haushalts."
+    grenzen:
+      - "Marktwechselkurse unterschätzen, wie viel Personal und Material ein Rubel im Inland kauft; in Kaufkraft gerechnet liegen Russlands Ausgaben höher."
+      - "Die Regionalsumme enthält Schätzungen für Länder mit lückenhaften Angaben."
+  trade_ru:
+    methode: "Warenexporte Deutschlands nach Partnerland aus der Außenhandelsdatenbank Comext von Eurostat, monatlich, in Euro. Der Monitor addiert Russland und Belarus sowie Armenien, Georgien, Kasachstan, Kirgisistan, Tadschikistan und Usbekistan und bildet die Summe der jeweils letzten zwölf Monate. Die Auswahl folgt Studien der Osteuropabank (EBRD) zur Umleitung von Exporten nach Russland."
+    grenzen:
+      - "Die Exporte in die sechs Länder steigen auch aus anderen Gründen; welcher Teil nach Russland weitergeht, zeigen die Zahlen nicht."
+      - "Jüngste Monate werden noch überarbeitet."
   trade_harm:
     methode: "Global Trade Alert (St. Gallen Endowment) erfasst seit November 2008 staatliche Eingriffe in Handel und Investitionen und stuft jeden als schädlich (rot), wahrscheinlich schädlich (gelb) oder liberalisierend (grün) ein. Zu jedem Eingriff nennt Global Trade Alert die betroffenen Länder, meist aus den Handelsströmen der betroffenen Waren abgeleitet. Der Monitor zählt rote und gelbe Eingriffe mit Deutschland unter den betroffenen Ländern je Jahr des Inkrafttretens und trennt China, die USA und alle übrigen Staaten. Grundlage ist ein vollständiger Export der Datenbank, den der Monitor von Hand übernimmt."
     grenzen:
