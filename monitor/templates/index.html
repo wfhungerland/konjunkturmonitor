@@ -1746,7 +1746,7 @@ function build() {
     while (sec.firstChild) secMain.appendChild(sec.firstChild);
     if (h2) sec.appendChild(h2); if (sq) sec.appendChild(sq);
     const rail = document.createElement("nav"); rail.className = "rail"; rail.setAttribute("aria-label", "Abbildungen dieses Abschnitts");
-    rail.innerHTML = t.charts.map(x => `<a href="#${FA(x.no)}"><b>${x.k ?? x.no}</b><span>${esc(x.title || "")}</span></a>`).join("");
+    rail.innerHTML = t.charts.map(x => `<a href="#${FA(x.no)}"><b>${x.k ?? x.no}</b><span>${esc(x.rail || x.title || "")}</span></a>`).join("");  // rail: kürzerer Eintrag für die mitlaufende Liste, etwa mit Kürzel
     sec.append(rail, secMain);  // Frage über beide Spalten, darunter Übersicht und Inhalt
     if (railObs) secMain.querySelectorAll(".card").forEach(cd => railObs.observe(cd));
     const part = t.part || "konjunktur";
