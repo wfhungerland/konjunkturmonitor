@@ -49,7 +49,6 @@ GLOSSARY_EN = {
 # damit nichts umbricht. US-Dollar als $, Pfund als £; Yuan und Franken bleiben ausgeschrieben.
 _NBSP = "\u00a0"
 _RULES = [
-    (r"(\d) (cm|mm|°C|Tage|Tagen|Punkte|Prozentpunkte)\b", r"\1" + _NBSP + r"\2"),  # Zahl und Einheit bleiben in einer Zeile
     (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mrd."),
     (r"([+-]?)(\d[\d.,]*) (?:Millionen|Mio\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mio."),
     (r"([+-]?)(\d[\d.,]*) €", r"\1€\2"),
@@ -77,6 +76,7 @@ _RULES = [
     (r"(?<= )Mio\.(?=\s)", "Millionen"),
     (r"(\d{1,3}(?:\.\d{3})+) Tsd\.", lambda m: f"{int(m.group(1).replace('.', '')) / 1000:.2f}".replace(".", ",") + " Millionen"),
     (r"\bTsd\.", "Tausend"),
+    (r"(\d) (cm|mm|°C|Tage|Tagen|Punkte|Prozentpunkten?|Prozentpunkt)\b", r"\1" + _NBSP + r"\2"),  # Zahl und Einheit bleiben in einer Zeile
 ]
 _COMPILED = [(re.compile(a), b) for a, b in _RULES]
 
