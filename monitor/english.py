@@ -321,6 +321,29 @@ def overview_en(ans: dict) -> str:
     return " ".join(out)
 
 
+def fazit_en(ans: dict) -> str:
+    """Assessment in one sentence (button "Verdict")."""
+    g, i, a, s = (ans.get(k) for k in ("wachstum", "preise", "arbeit", "stimmung"))
+    parts = []
+    if g:
+        parts.append({"shrinking": "The economy is shrinking", "stagnating": "The economy is marking time", "growing slightly": "The economy is growing slowly",
+                      "growing": "The economy is growing solidly", "growing strongly": "The economy is growing strongly"}.get(g["verdict"], ""))
+    if i:
+        parts.append({"below target": "inflation is below the 2% target", "close to target": "inflation is close to the 2% target",
+                      "above target": "inflation is above the 2% target", "high": "inflation is well above the 2% target"}.get(i["verdict"], ""))
+    if a:
+        v = a["verdict"].replace("unemployment ", "")
+        parts.append({"rising": "unemployment is rising", "falling": "unemployment is falling", "stable": "the labour market is holding up"}.get(v, ""))
+    parts = [p for p in parts if p]
+    if not parts:
+        return ""
+    parts[0] = parts[0][0].upper() + parts[0][1:]
+    out = (", ".join(parts[:-1]) + " and " + parts[-1] if len(parts) > 1 else parts[0]) + "."
+    if s and s.get("verdict"):
+        out += f" Business sentiment is {s['verdict'].replace('sentiment ', '').replace('climate ', '')}."
+    return out
+
+
 # --------------------------------------------------------------------------- Sätze zu den Abbildungen
 
 def _subject(label: str) -> str:
@@ -686,6 +709,10 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
     ans = {}
     for t in p["topics"]:
         t["title"] = tr.get("topics", t["id"], "title", t["title"])
+        lab = tr.get("topics", t["id"], "code", "") or t["title"].split()[0]  # Kurzzeichen englisch, Anker bleiben gleich
+        for c in t.get("charts", []):
+            if c.get("k"):
+                c["code"] = f"{lab}-{c['k']}"
         if t.get("ask"):
             t["ask"] = tr.get("topics", t["id"], "ask", t["ask"])
         q = t.get("question")
@@ -817,6 +844,9 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
         if q["id"] in ans:
             q["answer"] = ans[q["id"]]
     p["overview"] = overview_en(ans)
+    p["fazit"] = fazit_en(ans)
+    from .ausschreiben import GLOSSARY_EN
+    p["glossar"] = GLOSSARY_EN
     for r in p.get("start") or []:
         r["label"] = tr.label(r.get("series"), r["label"])
         r["unit"] = tr.s(r.get("unit"))

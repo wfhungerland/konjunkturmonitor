@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from .answers import answer, num, overview
+from .answers import answer, fazit, num, overview
 
 ROOT = Path.cwd()
 
@@ -1669,9 +1669,10 @@ def build_payload(root: Path = ROOT) -> dict:
     _merge_toggles(topics)  # zwei Abbildungen mit Umschalter in einer Karte
     no = 0
     for t in topics:
-        for c in t["charts"]:
+        lab = t.get("code") or t["title"].split()[0]  # festes Kurzzeichen je Abbildung: Kapitel und Platz im Kapitel, etwa „Preise-3“
+        for k, c in enumerate(t["charts"], 1):
             no += 1
-            c["no"] = no
+            c["no"], c["k"], c["code"], c["anchor"] = no, k, f"{lab}-{k}", f"{t['id']}-{k}"
     # Nächste voraussichtliche Aktualisierung je Abbildung und Verweise vom Kalender auf die Abbildungen
     numbers = {c["chart"]: c["no"] for t in topics for c in t["charts"]}
     cal = next((c["calendar"] for t in topics for c in t["charts"] if c.get("type") == "calendar"), None)
@@ -1724,11 +1725,24 @@ def build_payload(root: Path = ROOT) -> dict:
     text_issues = check_sentences(topics)  # durchgefallene Sätze entfallen, Funde gehen ins Ticket
     for line in text_issues:
         print("Satzprüfung:", line)
+    from .ausschreiben import spell, GLOSSAR
+    for q in questions:  # Abkürzungen in Sätzen ausschreiben, erst nach der Satzprüfung
+        a = q["answer"]
+        a["head"], a["more"], q["explain"] = spell(a["head"]), [spell(m) for m in a["more"]], spell(q.get("explain", ""))
+    for tp in topics:
+        for c in tp["charts"]:
+            c["texts"] = [spell(x) for x in c["texts"]]
+            c["text"] = " ".join(c["texts"])
+            if c.get("caption"):
+                c["caption"] = spell(c["caption"])
+            for n in c.get("notes", []):
+                n["text"] = spell(n["text"])
     health = _health(root, topics, meta)
     geo = _geo(root)
     return {"layout": layout, "health": health, "start": _start_rows(cfg, data, meta, {t["id"]: t["title"] for t in cfg["topics"]}), "geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
             "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "questions": questions, "topics": topics, "overview": tidy(overview({q["id"]: q["answer"] for q in questions})),
+            "questions": questions, "topics": topics, "overview": spell(tidy(overview({q["id"]: q["answer"] for q in questions}))),
+            "fazit": spell(tidy(fazit({q["id"]: q["answer"] for q in questions}))), "glossar": GLOSSAR,
             "content_license": cfg["site"].get("license", ""), "text_issues": text_issues}
 
 
@@ -1750,7 +1764,7 @@ def write_embeds(payload: dict, tpl: str, out: Path) -> int:
             p = dict(payload, topics=[dict(t, charts=[cc], question=None, ask=c.get("ask") or t.get("ask"))], start=[], questions=[], news=[], week=[], overview="", embed=True,
                      geo=payload.get("geo") if c.get("type") == "tiles" else None, all_series={}, deck=None)
             js = json.dumps(p, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
-            title = f"Abb. {c.get('no')} {c.get('title', '')} · Konjunkturmonitor"
+            title = f"{c.get('code') or 'Abb. ' + str(c.get('no'))} {c.get('title', '')} · Konjunkturmonitor"
             desc = (c.get("texts") or [""])[0] or c.get("caption", "")
             html = (base.replace("/*__DATA__*/null", js).replace("/*__STATIC__*/", "").replace("/*__OVERVIEW__*/", "")
                     .replace("/*__DESC__*/", escape(desc, quote=True)).replace("/*__URL__*/", escape(f"{url}abb/{c['chart']}.html", quote=True))

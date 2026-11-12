@@ -43,7 +43,10 @@ Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global
 - **Größen:** 12, 13,5, 15, 17, 19 und 26 px, Kennzahlen 32 px.
 - **Farben:** Text außerhalb der Grafiken schwarz, Links ohne Unterstrich. Datenfarben nur in Grafiken, erste Reihe #002060. Rot (#C00000) nur für Warnsignale: ungünstige Anstiege und Schwellen. Die Nulllinie ist schwarz.
 - **Grafiken (Plotly):** Werteachse rechts, runde Schritte, waagerechte Gitterlinien, Einheit über der obersten Zahl, keine Werkzeugleiste. Die hellen Flächen für jedes zweite Kalenderjahr sind standardmäßig aus, weil sie am rechten Rand wie eine Rezession wirkten. Der Schalter „Jahresflächen“ unter den Kennzahlen blendet sie ein (die Wahl merkt sich der Browser); das laufende Jahr bleibt dabei immer frei. `layout: year_bands: true` schaltet sie für alle ein.
-- **Tendenz:** ↗ ↘ → (gestiegen, gesunken, unverändert), blau günstig, rot ungünstig; in der Tabelle `kind: rate` als Differenz, `kind: level` prozentual; `up_bad: true` färbt einen Anstieg rot.
+- **Tendenz:** ▲ ▼ ● (gestiegen, gesunken, unverändert), blau günstig, rot ungünstig; in der Tabelle `kind: rate` als Differenz, `kind: level` prozentual; `up_bad: true` färbt einen Anstieg rot.
+- **Kurzzeichen:** Jede Abbildung heißt nach Kapitel und Platz, etwa „Preise-3“ (Anker `#preise-3`, englisch „Prices-3“). Abweichende Kapitelkürzel stehen als `code:` am Kapitel in `monitor.yaml` und `data/static/en.yaml`. Alte Links `#abb-12` lenkt die Seite um.
+- **Fazit:** Der Knopf im Kopf zeigt einen regelbasierten Urteilssatz (`answers.fazit`) und die Urteile an den Kacheln; ohne ihn bleibt die Seite neutral. Die Wahl merkt sich der Browser.
+- **Abkürzungen:** In Sätzen ausgeschrieben (`monitor/ausschreiben.py`, nach der Satzprüfung); in Köpfen, Einheiten und Kacheln gepunktet unterstrichen mit Erklärung beim Darauftippen (`GLOSSAR`).
 
 Weitere Schalter stehen im Bereich `layout` von `monitor.yaml`; jeder lässt sich einzeln mit `false` zurücknehmen:
 - `start_table`: Kennzahlentabelle statt Fragekarten
