@@ -256,8 +256,11 @@
   .tourask { position: fixed; left: 50%; transform: translateX(-50%); bottom: 16px; z-index: 65; background: #fff; border: 1px solid var(--grey); padding: 8px 14px; font: 14px var(--ff); box-shadow: 0 4px 16px rgba(0,0,0,.12); display: flex; gap: 14px; align-items: center; }
   .tourask button { font: inherit; background: none; border: 0; cursor: pointer; padding: 0; color: #8c8c8c; } .tourask button.go { color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
   /* Rückmeldung: ein Klick, ein Textfeld, kein Formular-Ballast */
-  .fbk { position: fixed; left: 14px; bottom: 14px; z-index: 6; background: #fff; color: var(--text); font: 13.5px var(--ff); padding: 5px 10px; border: 1px solid var(--grey); border-radius: 0; cursor: pointer; }
-  .fbk:hover { border-color: var(--text); } body.menuopen .fbk, body.embed .fbk { display: none; }
+  .htools .fbc { font: 13px/1.4 var(--ff); color: #0070C0; background: none; border: 0; padding: 0; cursor: pointer; text-align: left; white-space: nowrap; margin-top: 2px; }
+  @media (max-width: 600px) { .chead { flex-wrap: wrap; } .chead .htools { margin-left: 0; width: 100%; order: 2; } .chead .ctitle { width: 100%; } }  /* Handy: Knöpfe unter den Titel, der Titel behält die volle Breite */
+  .seg button.fbc, .seg button.fbc[aria-pressed] { color: #0070C0; font-weight: 400; margin-left: 10px; border: 0; }
+  .htools .fbc:hover { text-decoration: underline; text-underline-offset: 3px; } body.embed .fbc { display: none; }
+  .fbd .fbto { font: 600 13px var(--ff); color: #0070C0; margin: 0 24px 8px 0; }
   dialog.fbd { border: 1px solid var(--grey); border-radius: 0; padding: 18px 18px 14px; width: min(520px, calc(100vw - 32px)); font: 15px/1.45 var(--ff); color: var(--text); box-shadow: 0 8px 28px rgba(0,0,0,.18); }
   dialog.fbd::backdrop { background: rgba(0,0,0,.25); } .fbd form { margin-top: 14px; }
   .fbd textarea { width: 100%; box-sizing: border-box; min-height: 150px; font: 15px/1.45 var(--ff); border: 1px solid #cfcfcf; padding: 8px 10px; resize: vertical; }
@@ -515,8 +518,8 @@ const TOURTXT = { name: "Rundgang", ask: "Neu hier? Eine Minute Rundgang zeigt, 
     ["@card .tools", "Mit diesen Schaltern sehen Sie mehr, etwa die ganze Geschichte einer Zahl oder frühere Krisen."],
     ["@card .cside", "Hier steht in wenigen Sätzen, was die Grafik zeigt. Wer es genau wissen will, klickt auf „Mehr zur Methode“."],
     ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik."],
-    [".fbk", "Fällt Ihnen etwas auf, gut oder schlecht? Schreiben Sie es hier hinein. Es kommt direkt beim Autor an."]] };
-const FBTXT = { btn: "Rückmeldung", ph: "Was fällt Ihnen auf? Was ist gut, was schlecht, was ließe sich besser machen?", mail: "E-Mail für eine Antwort (freiwillig)", send: "Senden", ok: "Danke, ist angekommen.", err: "Senden hat nicht geklappt. Bitte später noch einmal versuchen.", note: "Geht direkt an den Autor. <a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
+    ["@card .fbc", "Fällt Ihnen an einer Grafik etwas auf, gut oder schlecht? Klicken Sie auf „Verbesserungsvorschlag?“. Es kommt direkt beim Autor an."]] };
+const FBTXT = { btn: "Verbesserungsvorschlag?", to: "Zu", ph: "Was fällt Ihnen an dieser Grafik auf? Was ist gut, was schlecht, was ließe sich besser machen?", mail: "E-Mail für eine Antwort (freiwillig)", send: "Senden", ok: "Danke, ist angekommen.", err: "Senden hat nicht geklappt. Bitte später noch einmal versuchen.", note: "Geht direkt an den Autor. <a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen unter „Downloads“." };
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (↗) und Schwellen
 const isBad = (c, sid) => c.up_bad === true || (Array.isArray(c.up_bad) && c.up_bad.includes(sid));
@@ -2021,21 +2024,26 @@ document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = documen
 // Rückmeldung: Knopf unten links öffnet ein Fenster mit einem Textfeld; Versand über den Formulardienst (site.feedback)
 (function feedback() {
   const id = (DATA.site || {}).feedback; if (!id || DATA.embed) return;
-  const b = document.createElement("button"); b.type = "button"; b.className = "fbk"; b.textContent = FBTXT.btn; document.body.append(b);
   const d = document.createElement("dialog"); d.className = "fbd"; d.setAttribute("aria-label", FBTXT.btn);
-  d.innerHTML = `<form method="dialog"><button type="button" class="fbx" aria-label="${FBTXT.close}">×</button><textarea name="message" required placeholder="${FBTXT.ph}" aria-label="${FBTXT.btn}"></textarea><input type="email" name="email" placeholder="${FBTXT.mail}" autocomplete="email"><div class="fbrow"><span class="fbnote">${FBTXT.note}</span><button type="submit" class="fbsend">${FBTXT.send}</button></div></form>`;
-  document.body.append(d);
-  const f = d.querySelector("form"), ta = f.querySelector("textarea");
-  b.onclick = () => { d.showModal(); ta.focus(); };
-  d.querySelector(".fbx").onclick = () => d.close();
+  const form = () => `<form method="dialog"><button type="button" class="fbx" aria-label="${FBTXT.close}">×</button><p class="fbto"></p><textarea name="message" required placeholder="${FBTXT.ph}" aria-label="${FBTXT.btn}"></textarea><input type="email" name="email" placeholder="${FBTXT.mail}" autocomplete="email"><div class="fbrow"><span class="fbnote">${FBTXT.note}</span><button type="submit" class="fbsend">${FBTXT.send}</button></div></form>`;
+  document.body.append(d); let ctx = null;
+  const open = c => { ctx = c; d.innerHTML = form(); const f = d.querySelector("form"), ta = f.querySelector("textarea");
+    f.querySelector(".fbto").textContent = `${FBTXT.to}: ${c.code} ${c.title}`;
+    f.querySelector(".fbx").onclick = () => d.close();
+    f.addEventListener("submit", async e => { e.preventDefault(); const msg = ta.value.trim(); if (!msg) return;
+      const sb = f.querySelector(".fbsend"); sb.disabled = true;
+      const body = { message: msg, email: f.email.value.trim(), grafik: `${c.code} ${c.title}`, link: location.href.split("#")[0] + "#" + c.anchor, sprache: DATA.lang || "de", _subject: `Konjunkturmonitor: Vorschlag zu ${c.code}` };
+      try { const r = await fetch(`https://formspree.io/f/${encodeURIComponent(id)}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) });
+        if (!r.ok) throw new Error(r.status);
+        f.innerHTML = `<button type="button" class="fbx" aria-label="${FBTXT.close}">×</button><p class="fbok">${FBTXT.ok}</p>`; f.querySelector(".fbx").onclick = () => d.close();
+      } catch (x) { sb.disabled = false; f.querySelector(".fbnote").textContent = FBTXT.err; } });
+    d.showModal(); ta.focus(); };
   d.addEventListener("click", e => { if (e.target === d) d.close(); });  // Klick daneben schließt
-  f.addEventListener("submit", async e => { e.preventDefault(); const msg = ta.value.trim(); if (!msg) return;
-    const sb = f.querySelector(".fbsend"); sb.disabled = true;
-    const body = { message: msg, email: f.email.value.trim(), seite: location.href, kapitel: (document.querySelector("#nav .navcur")?.textContent || "").replace(/^\s*>\s*/, ""), sprache: DATA.lang || "de", _subject: "Konjunkturmonitor: Rückmeldung" };
-    try { const r = await fetch(`https://formspree.io/f/${encodeURIComponent(id)}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) });
-      if (!r.ok) throw new Error(r.status);
-      f.innerHTML = `<button type="button" class="fbx" aria-label="${FBTXT.close}">×</button><p class="fbok">${FBTXT.ok}</p>`; f.querySelector(".fbx").onclick = () => d.close();
-    } catch (x) { sb.disabled = false; f.querySelector(".fbnote").textContent = FBTXT.err; } });
+  // je Grafik oben rechts neben „Grafik | Tabelle“; die Nachricht nennt die Grafik
+  document.querySelectorAll(".card[data-chart]").forEach(cd => { const ht = cd.querySelector(".htools"); if (!ht) return;
+    const b = document.createElement("button"); b.type = "button"; b.className = "fbc"; b.textContent = FBTXT.btn;
+    b.onclick = e => { e.stopPropagation(); const ab = cd.querySelector("h3 .abbno"); const t = cd.querySelector("h3"); open({ code: (ab?.textContent || "").trim(), title: (t?.textContent || "").replace(ab?.textContent || "", "").trim(), anchor: cd.id }); };
+    const sg = ht.querySelector(".tabseg") || ht.querySelector(".seg"); (sg || ht).append(b); });  // in derselben Zeile wie „Grafik | Tabelle“
 })();
 // Kurzformen in Köpfen, Einheiten und Kacheln: gepunktet unterstrichen, Erklärung beim Darauftippen oder Überfahren
 (function abbrify() {
