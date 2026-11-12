@@ -6,6 +6,10 @@
 
 - date: 2026-11-12
   art: Methode
+  charts: [proj_gap]
+  text: "Die nötige Rate rechnet nun exakt aus dem unbereinigten Volumenindex statt näherungsweise aus gerundeten Raten. Die Ansicht ggü. Vorquartal nutzt nur noch bereinigte Größen, mit der kalenderbereinigten Rate der Projektion als Ziel, und zeigt eine gleiche Rate je fehlendem Quartal. Für das 4. Quartal 2026 sinkt die nötige Rate ggü. Vorquartal dadurch von 1,1 % auf 0,1 %, weil die alte Rechnung den Kalendereffekt von 2026 (0,3 Prozentpunkte durch mehr Arbeitstage) nicht abzog; die Rate ggü. Vorjahresquartal bleibt bei 2,1 %."
+- date: 2026-11-12
+  art: Methode
   charts: [bund_tree]
   text: "Der Grundriss des Bundeshaushalts zeigt wahlweise drei Gliederungen: Funktion, Ausgabenart (Gruppierungsplan) und Ressort (Einzelpläne und Kapitel). Die Ausgaben ohne Funktion im Ist 2025 (0,14 Mrd. EUR) stehen nun als „ohne Zuordnung“ in der Karte."
 - date: 2026-11-12

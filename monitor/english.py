@@ -428,10 +428,10 @@ def _special_en(c: dict) -> list[str] | None:
             out = [f"To meet the Federal Government's {rnd(p['round'])} of {num(p['target'])}% for {p['year']}, GDP would have to be {num(p['need'])}% above "
                    f"the same quarter a year earlier {qs(p['rest'])}" + (f"; in the {ordn[k['q']]} quarter it was {num(k['v'])}%." if k else ".")]
             if p.get("need_qoq") is not None and p.get("last_qoq") is not None:
-                out.append(f"Seasonally and calendar adjusted, that would mean growth of {num(p['need_qoq'])}% on the previous quarter in the {ordn[p['rest'][0]]} quarter; "
-                           f"the latest figure was {num(p['last_qoq'])}%.")
+                out.append(f"Seasonally and calendar adjusted, with the projection's calendar-adjusted rate of {num(p['target_ka'])}% as the target, "
+                           f"GDP would have to grow by {num(p['need_qoq'])}% on the previous quarter {qs(p['rest'])}; the latest figure was {num(p['last_qoq'])}%.")
         else:
-            out = [f"Over the four quarters, GDP grew by about {num(p['done_rate'])}% in {p['year']}; the Federal Government's {rnd(p['round'])} expected {num(p['target'])}%."]
+            out = [f"Over the four quarters, GDP grew by {num(p['done_rate'])}% in {p['year']}; the Federal Government's {rnd(p['round'])} expected {num(p['target'])}%."]
         if p.get("prev"):
             out.append(f"The {rnd(p['prev']['round'])} had expected {num(p['prev']['value'])}% for {p['year']}.")
         return out

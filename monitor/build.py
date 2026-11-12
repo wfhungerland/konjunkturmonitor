@@ -143,7 +143,7 @@ def _forecasts(root: Path) -> list[dict]:
     if not path.exists():
         return []
     conv = lambda m: {int(k): float(v) for k, v in m.items()}
-    rows = [dict(r, date=str(r["date"]), **{k: conv(r[k]) for k in ("values", "inflation", "core") if r.get(k)})
+    rows = [dict(r, date=str(r["date"]), **{k: conv(r[k]) for k in ("values", "values_ka", "inflation", "core") if r.get(k)})
             for r in (yaml.safe_load(path.read_text(encoding="utf-8")) or [])]
     newest = {}
     for r in rows:
@@ -152,66 +152,67 @@ def _forecasts(root: Path) -> list[dict]:
     return sorted((dict(r, latest=r["date"] == newest[r["by"]]) for r in rows), key=lambda r: r["date"])
 
 
+def _nwj(known: float, last: float, n: int, goal: float) -> float | None:
+    """Gleiche Rate g ggü. Vorquartal für n fehlende Quartale, mit der die Jahressumme das Ziel erreicht:
+    known + last * ((1+g) + (1+g)^2 + ... + (1+g)^n) = goal. Die linke Seite steigt streng in g, die Lösung ist eindeutig."""
+    f = lambda g: known + last * sum((1 + g) ** j for j in range(1, n + 1)) - goal
+    lo, hi = -0.99, 1.0
+    if f(lo) > 0 or f(hi) < 0:
+        return None
+    for _ in range(200):  # Bisektion
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if f(mid) < 0 else (lo, mid)
+    return (lo + hi) / 2
+
+
 def _projection(c: dict, data: dict, root: Path) -> dict | None:
     """Abgleich mit der jüngsten Projektion der Bundesregierung für das Jahr des jüngsten BIP-Quartals.
 
-    Die Jahresrate der Projektion ist unbereinigt. Sie entspricht näherungsweise dem gewogenen Mittel der unbereinigten
-    Raten ggü. Vorjahresquartal, gewichtet mit dem Anteil jedes Quartals am Vorjahr (Gewichte aus dem bereinigten Index).
-    Für die noch fehlenden Quartale folgt daraus die gleiche Rate je Quartal, die das Jahresziel gerade erreicht.
+    Jahreswert des realen BIP = Summe der vier Quartale (Verkettung mit annual overlap). Unbereinigt: Die fehlenden Quartale
+    müssen zusammen (1 + Ziel) * Summe des Vorjahres - Summe der bekannten Quartale erreichen; verteilt mit gleicher Rate
+    ggü. dem Vorjahresquartal. Bereinigt: gleiche Rate ggü. dem Vorquartal (Null-Wert-J mit Zielrate), Ziel ist die
+    kalenderbereinigte Jahresrate der Projektion; ohne sie entfällt die bereinigte Ansicht.
     """
-    yoy_id, idx_id = c.get("yoy", "de_gdp_yoy"), c.get("index", "de_gdp_index")
-    if yoy_id not in data or idx_id not in data:
+    yoy_id, idx_id, nsa_id = c.get("yoy", "de_gdp_yoy"), c.get("index", "de_gdp_index"), c.get("index_nsa", "de_gdp_index_nsa")
+    if yoy_id not in data or idx_id not in data or nsa_id not in data:
         return None
-    yoy, idx = data[yoy_id].dropna(), data[idx_id].dropna()
-    year = int(yoy.index[-1].year)
+    yoy, idx, nsa = data[yoy_id].dropna(), data[idx_id].dropna(), data[nsa_id].dropna()
+    year = int(nsa.index[-1].year)
     rounds = [f for f in _forecasts(root) if f["by"] == "Bundesregierung" and year in (f.get("values") or {})]
     if not rounds:
         return None
     rounds.sort(key=lambda f: f["date"])
     cur, prev = rounds[-1], (rounds[-2] if len(rounds) > 1 else None)
     target = float(cur["values"][year])
-    base = idx[idx.index.year == year - 1]
+    base, known = nsa[nsa.index.year == year - 1], nsa[nsa.index.year == year]
     if len(base) != 4:
         return None
-    w = {d.month: float(v) / float(base.sum()) for d, v in base.items()}  # Anteil je Quartal am Vorjahr
-    known = yoy[yoy.index.year == year]
-    done = sum(w[d.month] * float(v) for d, v in known.items())
     rest = [m for m in (1, 4, 7, 10) if m not in {d.month for d in known.index}]
-    need = (target - done) / sum(w[m] for m in rest) if rest else None
-    need_qoq = None
-    if rest:  # bereinigt: nötiges Niveau im nächsten Quartal ggü. dem jüngsten bereinigten Stand, ohne Kalendereffekt
-        nxt = pd.Timestamp(year=year, month=rest[0], day=1)
-        ago = idx.get(nxt - pd.DateOffset(years=1))
-        if ago is not None and idx.index[-1] == nxt - pd.DateOffset(months=3):
-            need_qoq = (float(ago) * (1 + need / 100) / float(idx.iloc[-1]) - 1) * 100
-    alt = None
-    if "de_gdp_qoq" in data and rest and idx.index[-1] == pd.Timestamp(year=year, month=rest[0], day=1) - pd.DateOffset(months=3):
-        # zweite Ansicht: bereinigt ggü. Vorquartal. Nötiges bereinigtes Niveau je fehlendem Quartal = Vorjahresquartal mal (1 + nötige Rate),
-        # wie bei need_qoq; daraus die Raten ggü. dem jeweiligen Vorquartal
-        prev_lv, path = float(idx.iloc[-1]), []
-        for m in rest:
-            ago = idx.get(pd.Timestamp(year=year - 1, month=m, day=1))
-            if ago is None:
-                path = []
-                break
-            lv = float(ago) * (1 + need / 100)
-            path.append(round((lv / prev_lv - 1) * 100, 2))
-            prev_lv = lv
-        if path:
-            q = data["de_gdp_qoq"].dropna()
-            q = q[q.index.year >= year - 1]
-            alt = {"label": "ggü. Vorquartal", "base": "ggü. Vorjahresquartal", "label_en": "on previous quarter", "base_en": "on same quarter a year earlier",
-                   "unit": "% ggü. Vorquartal", "refs": [], "sub": "Vierteljährlich · preis-, saison- und kalenderbereinigt", "sub_en": "Quarterly · price, seasonally and calendar adjusted",
-                   "series": [{"id": "de_gdp_qoq", "label": "BIP ggü. Vorquartal", "unit": "% ggü. Vorquartal", "freq": "Q", "style": "bar",
-                               "x": [d.strftime("%Y-%m-%d") for d in q.index] + [f"{year}-{m:02d}-01" for m in rest],
-                               "y": [round(float(v), 4) for v in q.values] + path, "req": len(rest)}]}
+    rest_base = sum(float(v) for d, v in base.items() if d.month in rest)
+    need = (((1 + target / 100) * float(base.sum()) - float(known.sum())) / rest_base - 1) * 100 if rest else None
+    done = (float(known.sum()) / float(base.sum()) - 1) * 100 if not rest else None
+    target_ka = (cur.get("values_ka") or {}).get(year)
+    need_qoq, alt = None, None
+    sa_base, sa_known = idx[idx.index.year == year - 1], idx[idx.index.year == year]
+    if rest and target_ka is not None and len(sa_base) == 4 and list(sa_known.index) == list(known.index) \
+            and idx.index[-1] == pd.Timestamp(year=year, month=rest[0], day=1) - pd.DateOffset(months=3):
+        g = _nwj(float(sa_known.sum()), float(idx.iloc[-1]), len(rest), (1 + float(target_ka) / 100) * float(sa_base.sum()))
+        need_qoq = g * 100 if g is not None else None
+    if need_qoq is not None and "de_gdp_qoq" in data:
+        q = data["de_gdp_qoq"].dropna()
+        q = q[q.index.year >= year - 1]
+        alt = {"label": "ggü. Vorquartal", "base": "ggü. Vorjahresquartal", "label_en": "on previous quarter", "base_en": "on same quarter a year earlier",
+               "unit": "% ggü. Vorquartal", "refs": [], "sub": "Vierteljährlich · preis-, saison- und kalenderbereinigt", "sub_en": "Quarterly · price, seasonally and calendar adjusted",
+               "series": [{"id": "de_gdp_qoq", "label": "BIP ggü. Vorquartal", "unit": "% ggü. Vorquartal", "freq": "Q", "style": "bar",
+                           "x": [d.strftime("%Y-%m-%d") for d in q.index] + [f"{year}-{m:02d}-01" for m in rest],
+                           "y": [round(float(v), 4) for v in q.values] + [round(need_qoq, 2)] * len(rest), "req": len(rest)}]}
     hist = yoy[yoy.index.year >= year - 1]
     xs = [d.strftime("%Y-%m-%d") for d in hist.index] + [f"{year}-{m:02d}-01" for m in rest]
-    ys = [round(float(v), 4) for v in hist.values] + [round(need, 2)] * len(rest)
+    ys = [round(float(v), 4) for v in hist.values] + ([round(need, 2)] * len(rest) if rest else [])
     return {"year": year, "target": target, "round": cur["round"], "date": cur["date"], "source": cur.get("source"),
             "prev": {"round": prev["round"], "value": float(prev["values"][year])} if prev else None,
-            "known": [{"q": (d.month + 2) // 3, "v": float(v)} for d, v in known.items()], "rest": [(m + 2) // 3 for m in rest],
-            "need": need, "need_qoq": need_qoq, "done_rate": done if not rest else None,
+            "known": [{"q": (d.month + 2) // 3, "v": float(yoy[d])} for d in known.index if d in yoy.index], "rest": [(m + 2) // 3 for m in rest],
+            "need": need, "need_qoq": need_qoq, "target_ka": float(target_ka) if target_ka is not None else None, "done_rate": done,
             "last_qoq": float(data["de_gdp_qoq"].dropna().iloc[-1]) if "de_gdp_qoq" in data else None,
             "alt": alt,
             "series": [{"id": yoy_id, "label": "BIP ggü. Vorjahresquartal", "unit": "% ggü. Vorjahresquartal", "freq": "Q", "style": "bar",
@@ -750,10 +751,10 @@ def chart_sentences(c: dict) -> list[str]:
                 out = [f"Um die {p['round']} der Bundesregierung von {num(p['target'], 1)} % für {p['year']} zu erreichen, müsste das BIP {qs(p['rest'])} um "
                        f"{num(p['need'], 1)} % über dem Vorjahresquartal liegen" + (f"; im {k['q']}. Quartal waren es {num(k['v'], 1)} %." if k else ".")]
                 if p.get("need_qoq") is not None and p.get("last_qoq") is not None:
-                    out.append(f"Saison- und kalenderbereinigt entspräche das im {p['rest'][0]}. Quartal einem Anstieg ggü. dem Vorquartal um "
-                               f"{num(p['need_qoq'], 1)} %; zuletzt waren es {num(p['last_qoq'], 1)} %.")
+                    out.append(f"Saison- und kalenderbereinigt, mit der kalenderbereinigten Rate der Projektion von {num(p['target_ka'], 1)} % als Ziel, "
+                               f"müsste das BIP {qs(p['rest'])} um {num(p['need_qoq'], 1)} % ggü. dem Vorquartal wachsen; zuletzt waren es {num(p['last_qoq'], 1)} %.")
             else:
-                out = [f"Nach den vier Quartalen wuchs das BIP {p['year']} um etwa {num(p['done_rate'], 1)} %; die {p['round']} der Bundesregierung erwartete {num(p['target'], 1)} %."]
+                out = [f"Nach den vier Quartalen wuchs das BIP {p['year']} um {num(p['done_rate'], 1)} %; die {p['round']} der Bundesregierung erwartete {num(p['target'], 1)} %."]
             if p.get("prev"):
                 out.append(f"Die {p['prev']['round']} hatte für {p['year']} {num(p['prev']['value'], 1)} % erwartet.")
             return out

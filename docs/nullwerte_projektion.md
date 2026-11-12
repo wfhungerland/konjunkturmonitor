@@ -33,10 +33,10 @@ Die linke Seite steigt in g streng, es gibt also genau eine Lösung mit g > −1
 
 NWQ Fall 0 bis 2 und die Excel-Umsetzung (Fall nach Monat mod 3, Fall 0 über die reelle Lösung von x³ + 4x² + 6x + 3(1 − 3q/m_3) = 0) rechnen richtig.
 
-## Abgleich mit der Rechnung in `monitor/build.py` (`_projection`)
+## Umsetzung in `monitor/build.py` (`_projection`, seit 12.11.2026)
 
-Der Code rechnet anders als NWJ: Er sucht eine gleiche Rate ggü. Vorjahresquartal (unbereinigt) und gewichtet mit Vorjahresanteilen aus dem bereinigten Index. Das ist für das unbereinigte Jahresziel der Projektion der passende Ansatz. Drei Punkte bestimmen die Genauigkeit:
-
-1. Rundung: Die Vorjahresraten von Eurostat kommen auf eine Nachkommastelle. Fehlt nur ein Quartal, summieren sich die Rundungsfehler der drei bekannten Quartale in der nötigen Rate auf bis zu 0,15 Pp. Exakt wird es mit dem unbereinigten Volumenindex (Eurostat namq_10_gdp, s_adj = NSA): nötige Rate = (4·(1+T)·Mittel des Vorjahres − Summe der bekannten Quartale) / Summe der fehlenden Vorjahresquartale − 1. Dann entfällt auch die Gewichtung aus dem bereinigten Index.
-2. Schalter „ggü. Vorquartal“: Der Code setzt die unbereinigte nötige Rate auf das bereinigte Niveau des Vorjahresquartals. Das mischt bereinigt und unbereinigt; daher ändert sich die Quartalsrate von Quartal zu Quartal. Sauber ist NWJ auf dem bereinigten Index mit der kalenderbereinigten Jahresrate der Projektion als Ziel; ob die Projektion sie ausweist, ist je Runde zu prüfen. Dann gibt es eine einzige Rate für alle fehlenden Quartale.
-3. Datenstand 12.11.2026 (2026: drei Quartale, Ziel Herbstprojektion 1,3 %): Der Code ergibt für das 4. Quartal 2,1 % ggü. Vorjahresquartal und 1,1 % ggü. Vorquartal. NWJ auf dem bereinigten Index mit Ziel 1,3 % ergibt 1,33 % ggü. Vorquartal; ohne Wachstum im 4. Quartal käme das bereinigte Jahr auf 0,96 %. Der Abstand zwischen 1,1 und 1,33 ist im Kern der Kalendereffekt.
+1. Jahreswert = Summe der vier Quartale (Verkettung mit annual overlap). Probe: Die Summe der unbereinigten Quartale ergibt für 2025 die amtliche Jahresrate von 0,2 %.
+2. Unbereinigt: Die fehlenden Quartale müssen zusammen S = (1 + Z) × Summe des Vorjahres − Summe der bekannten Quartale erreichen (unbereinigter Volumenindex `de_gdp_index_nsa`, Z = Jahresrate der Projektion). Verteilt wird S mit gleicher Rate ggü. Vorjahresquartal. Keine gerundeten Raten, keine Gewichte aus der bereinigten Reihe.
+3. Bereinigt (Schalter „ggü. Vorquartal“): NWJ mit Zielrate auf dem saison- und kalenderbereinigten Index, Ziel ist die kalenderbereinigte Jahresrate der Projektion (`values_ka` in `data/static/prognosen.yaml`). Fehlt sie, entfällt der Schalter; bereinigte Werte und unbereinigtes Ziel werden nicht gemischt.
+4. Datenstand 12.11.2026 (Herbstprojektion 2026: 1,3 %, kalenderbereinigt 1,0 %): nötig im 4. Quartal 2,1 % ggü. Vorjahresquartal und 0,1 % ggü. Vorquartal. Die frühere Rechnung zeigte 1,1 % ggü. Vorquartal, weil sie den Kalendereffekt von 0,3 Prozentpunkten nicht abzog.
+5. Die Zielraten haben eine Nachkommastelle. Fehlt ein Quartal, bewegt das die nötige Rate um rund ±0,2 Prozentpunkte.
