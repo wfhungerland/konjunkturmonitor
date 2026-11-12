@@ -4,6 +4,10 @@
 # text (was sich geändert hat und was das für die Zahlen bedeutet), pr (Nummer des Pull Requests, optional).
 # Reine Gestaltung ohne Folgen für Zahlen oder Aussagen gehört nicht hierher.
 
+- date: 2026-11-12
+  art: Quelle
+  charts: [stx_share, stx_share_gdp, stx_tree, stx_levels, bund_tree]
+  text: "Neuer Abschnitt Staatsausgaben: Ausgaben des Staates nach Aufgaben (Eurostat, COFOG) als Anteil und in % des BIP, Ausgaben je Ebene des Staates und zwei Baumkarten, der Grundriss der Staatsausgaben (69 Unteraufgaben, preisbereinigt, 2000 bis 2024) und der Grundriss des Bundeshaushalts nach dem Funktionenplan (Ist 2024 und 2025, Soll 2026, Entwurf 2027, wahlweise mit Sondervermögen). Die Baumkarten übernehmen Daten und Rechnung aus dem Produktraum-Monitor."
 - date: 2026-11-11
   art: Quelle
   charts: [gd_bip, gd_vpi, gd_alo, gd_saldo, gd_fehler, gd_ziel]

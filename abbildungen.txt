@@ -122,3 +122,8 @@ gd_alo;Arbeitslosenprognosen;2026-11-11;
 gd_saldo;Finanzierungssaldo Prognosen;2026-11-11;
 gd_fehler;Prognosefehler Jahrzehnte;2026-11-11;
 gd_ziel;Prognosen Zieljahr;2026-11-11;
+stx_share;Staatsausgaben Aufgaben;2026-11-12;
+stx_share_gdp;Staatsausgaben Aufgaben BIP;2026-11-12;
+stx_tree;Grundriss Staatsausgaben;2026-11-12;
+stx_levels;Ausgaben Staatsebenen;2026-11-12;
+bund_tree;Grundriss Bundeshaushalt;2026-11-12;

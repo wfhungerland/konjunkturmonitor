@@ -63,6 +63,7 @@ topics:
   handel: {title: "Trade conflicts", code: "Trade-conflicts", ask: "How often do trade barriers hit German exports?"}
   struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
   staat: {title: "Government", ask: "What state are the public finances in?"}
+  staatsausgaben: {title: "Government spending", code: "Spending", ask: "What does the government spend its money on?"}
   sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What did the Council of Economic Experts forecast and recommend?"}
   gemeinschaftsdiagnose: {title: "Joint Economic Forecast", code: "JEF", ask: "How well did the economic research institutes forecast?"}
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
@@ -532,6 +533,26 @@ charts:
     title: "Government debt"
     ask: "How high is government debt?"
     caption: "The chart shows general government gross debt as a percentage of economic output, as defined in the Maastricht Treaty. Dashed grey is the treaty's reference value of 60%."
+  stx_share:
+    title: "Government spending by function, share of spending"
+    ask: "What does the government spend its money on?"
+    caption: "The panels show the share of the ten functions in government spending, in percent, as annual values. Government covers federal, state and local government and social security; payments between them are netted out. The functions follow the United Nations classification COFOG (Classification of the Functions of Government). Interest counts as administration. 1995 includes the federal takeover of the debt of the Treuhandanstalt (about EUR 130 billion, in economic affairs and transport)."
+  stx_share_gdp:
+    title: "Government spending by function, % of GDP"
+    ask: "How much does the government spend on each function, measured against economic output?"
+    caption: "The panels show government spending on each function as a percentage of economic output (gross domestic product)."
+  stx_tree:
+    title: "Floor plan of government spending"
+    ask: "How is government spending divided up in detail?"
+    caption: "The treemap shows government spending by ten functions and 69 groups; area equals spending. Each function has one colour, its groups lighter shades. Tap a function to zoom in; the slider picks the year. Values are converted to 2024 prices with the price index of government consumption; the area grows with real spending, the dashed frame marks the highest level. Eurostat publishes the groups from 2000. Group names in English, from Eurostat."
+  stx_levels:
+    title: "Spending of federal government, Länder, municipalities and social security"
+    ask: "How much do federal government, Länder, municipalities and social security spend?"
+    caption: "The lines show the spending of each level of government as a percentage of economic output. The values include payments to other levels, such as the federal grant to pension insurance or the Länder grants to municipalities. They therefore do not add up to total government spending; together they exceed it by 14 to 24%."
+  bund_tree:
+    title: "Floor plan of the federal budget"
+    ask: "What does the federal government spend on in detail?"
+    caption: "The treemap shows federal spending by the function plan of the budget, in three levels: main function, upper function, function; area equals spending. Tap a function to zoom in. Outturn is the result of the budget accounts, plan the adopted budget, draft the government draft. Outturn and plan are only partly comparable: the plan is a ceiling and contains global items that are spread over functions only in the outturn; negative items such as global spending cuts are missing from the map. Shown is the core budget. The switch ‘with special funds’ adds the spending of the special funds, mainly the Bundeswehr fund, the climate and transformation fund and the infrastructure and climate neutrality fund (hatched); payments from the core budget to special funds and between them are netted out. EU own resources, EU pass-through funds and the pension reserves for civil servants stay out. For 2024 the budget accounts file contains no special funds. Function names below the top level are in German, as published."
   calendar:
     title: "Release calendar: the next twelve weeks"
     ask: "When are which figures released?"
@@ -888,6 +909,30 @@ series:
   de_gov_interest: {title: "Government interest expenditure", label: "Interest expenditure", unit: "% of GDP", adjustment: "annual data"}
   de_gov_inv: {title: "Government gross fixed capital formation", label: "Investment", unit: "% of GDP", adjustment: "annual data"}
   de_gov_debt: {title: "General government gross debt (Maastricht definition)", label: "Debt", unit: "% of GDP", adjustment: "not adjusted"}
+  de_cofog_tot_gf10: {title: "Government expenditure on social protection", label: "Social protection", unit: "% of government expenditure", adjustment: "annual data"}
+  de_cofog_tot_gf07: {title: "Government expenditure on health", label: "Health", unit: "% of government expenditure", adjustment: "annual data"}
+  de_cofog_tot_gf01: {title: "Government expenditure on administration and interest", label: "Administration and interest", unit: "% of government expenditure", adjustment: "annual data"}
+  de_cofog_tot_gf04: {title: "Government expenditure on economy and transport", label: "Economy and transport", unit: "% of government expenditure", adjustment: "annual data"}
+  de_cofog_tot_gf09: {title: "Government expenditure on education", label: "Education", unit: "% of government expenditure", adjustment: "annual data"}
+  de_cofog_tot_gf03: {title: "Government expenditure on public order, safety", label: "Public order, safety", unit: "% of government expenditure", adjustment: "annual data"}
+  de_cofog_tot_gf02: {title: "Government expenditure on defence", label: "Defence", unit: "% of government expenditure", adjustment: "annual data"}
+  de_cofog_tot_gf08: {title: "Government expenditure on culture, sport, religion", label: "Culture, sport, religion", unit: "% of government expenditure", adjustment: "annual data"}
+  de_cofog_tot_gf06: {title: "Government expenditure on housing, community", label: "Housing, community", unit: "% of government expenditure", adjustment: "annual data"}
+  de_cofog_tot_gf05: {title: "Government expenditure on environmental protection", label: "Environmental protection", unit: "% of government expenditure", adjustment: "annual data"}
+  de_cofog_gdp_gf10: {title: "Government expenditure on social protection", label: "Social protection", unit: "% of GDP", adjustment: "annual data"}
+  de_cofog_gdp_gf07: {title: "Government expenditure on health", label: "Health", unit: "% of GDP", adjustment: "annual data"}
+  de_cofog_gdp_gf01: {title: "Government expenditure on administration and interest", label: "Administration and interest", unit: "% of GDP", adjustment: "annual data"}
+  de_cofog_gdp_gf04: {title: "Government expenditure on economy and transport", label: "Economy and transport", unit: "% of GDP", adjustment: "annual data"}
+  de_cofog_gdp_gf09: {title: "Government expenditure on education", label: "Education", unit: "% of GDP", adjustment: "annual data"}
+  de_cofog_gdp_gf03: {title: "Government expenditure on public order, safety", label: "Public order, safety", unit: "% of GDP", adjustment: "annual data"}
+  de_cofog_gdp_gf02: {title: "Government expenditure on defence", label: "Defence", unit: "% of GDP", adjustment: "annual data"}
+  de_cofog_gdp_gf08: {title: "Government expenditure on culture, sport, religion", label: "Culture, sport, religion", unit: "% of GDP", adjustment: "annual data"}
+  de_cofog_gdp_gf06: {title: "Government expenditure on housing, community", label: "Housing, community", unit: "% of GDP", adjustment: "annual data"}
+  de_cofog_gdp_gf05: {title: "Government expenditure on environmental protection", label: "Environmental protection", unit: "% of GDP", adjustment: "annual data"}
+  de_gov_te_s1311: {title: "Expenditure, federal (including payments to other levels)", label: "Federal", unit: "% of GDP", adjustment: "annual data"}
+  de_gov_te_s1312: {title: "Expenditure, Länder (including payments to other levels)", label: "Länder", unit: "% of GDP", adjustment: "annual data"}
+  de_gov_te_s1313: {title: "Expenditure, municipalities (including payments to other levels)", label: "Municipalities", unit: "% of GDP", adjustment: "annual data"}
+  de_gov_te_s1314: {title: "Expenditure, social security (including payments to other levels)", label: "Social security", unit: "% of GDP", adjustment: "annual data"}
   de_imm_de: {title: "Arrivals, Germans", unit: "people", adjustment: "annual data"}
   de_emi_de: {title: "Departures, Germans", unit: "people", adjustment: "annual data"}
   de_netmig_de: {title: "Net migration, Germans", label: "Germans", unit: "people", adjustment: "annual data"}
@@ -944,6 +989,13 @@ geo:
 
 strings:
   # units
+  "% der Staatsausgaben": "% of government expenditure"
+  "Mrd. EUR, in Preisen von 2024": "EUR bn, 2024 prices"
+  "Eurostat (gov_10a_exp, nama_10_gdp)": "Eurostat (gov_10a_exp, nama_10_gdp)"
+  "Bundesministerium der Finanzen (bundeshaushalt.de: Haushaltsplan, Regierungsentwurf, Haushaltsrechnung)": "Federal Ministry of Finance (bundeshaushalt.de: budget, government draft, budget accounts)"
+  "Datenlizenz Deutschland – Namensnennung – Version 2.0 (Bundesministerium der Finanzen)": "Data licence Germany – attribution – version 2.0 (Federal Ministry of Finance)"
+  "Anteil an den Ausgaben": "Share of spending"
+  "in % des BIP": "% of GDP"
   "%": "%"
   "% der Branchen": "% of industries"
   "% der Branchen mit Zuwachs": "% of industries with growth"
