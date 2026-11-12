@@ -876,7 +876,7 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
         if q["id"] in ans:
             q["answer"] = ans[q["id"]]
     p["overview"] = overview_en(ans)
-    p["fazit"] = fazit_en(ans)
+    p["fazit"] = fazit_en(ans) if p.get("fazit") else ""
     from .ausschreiben import GLOSSARY_EN
     p["glossar"] = GLOSSARY_EN
     for r in p.get("start") or []:

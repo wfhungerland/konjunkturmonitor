@@ -1778,7 +1778,7 @@ def build_payload(root: Path = ROOT) -> dict:
     return {"layout": layout, "health": health, "start": _start_rows(cfg, data, meta, {t["id"]: t["title"] for t in cfg["topics"]}), "geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
             "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "questions": questions, "topics": topics, "overview": spell(tidy(overview({q["id"]: q["answer"] for q in questions}))),
-            "fazit": spell(tidy(fazit({q["id"]: q["answer"] for q in questions}))), "glossar": GLOSSAR,
+            "fazit": spell(tidy(fazit({q["id"]: q["answer"] for q in questions}))) if cfg["site"].get("kommentar", True) else "", "glossar": GLOSSAR,
             "content_license": cfg["site"].get("license", ""), "text_issues": text_issues}
 
 

@@ -5,6 +5,10 @@ damit Teilstücke nicht vorher ersetzt werden. Texte innerhalb der Abbildungen f
 """
 
 PAIRS: list[tuple[str, str]] = [
+    ('const STANCEW = { L: { "-1": "zurückhaltend", "0": "im Rahmen", "1": "kräftiger" }, G: { "-1": "straffer", "0": "gleich", "1": "lockerer" },\n  F: { "-1": "sparen", "0": "neutral", "1": "anschieben" }, A: { "-1": "mehr Schutz", "0": "gleich", "1": "flexibler" } };',
+     'const STANCEW = { L: { "-1": "restraint", "0": "in line", "1": "stronger" }, G: { "-1": "tighter", "0": "unchanged", "1": "looser" },\n  F: { "-1": "save", "0": "neutral", "1": "stimulate" }, A: { "-1": "more protection", "0": "unchanged", "1": "more flexible" } };'),
+    ('const STANCEV = { now: "Heute", none: "keine Empfehlung", last: "zuletzt", turns: "Wendepunkte seit 2000", turnsSub: "Jahre, in denen sich eine Empfehlung änderte, jüngste zuerst", page: "S.", quote: true, labs: {} };',
+     'const STANCEV = { now: "Today", none: "no recommendation", last: "last", turns: "Turning points since 2000", turnsSub: "Years in which a recommendation changed, latest first", page: "p.", quote: false, labs: { "Herbstgutachten": "Autumn report", "Frühjahrsgutachten": "Spring report", "Jahresgutachten": "Annual report" } };'),
     ('const PHASETXT = { to: "–", L: { "-1": "Lohnzurückhaltung", "0": "Löhne im Spielraum", "1": "kräftigere Löhne" }, G: { "-1": "straffer", "0": "beibehalten", "1": "lockerer" },\n  F: { "-1": "Konsolidierung", "0": "neutral", "1": "Impulse" }, A: { "-1": "mehr Schutz", "0": "beibehalten", "1": "Flexibilisierung" } };',
      'const PHASETXT = { to: "–", L: { "-1": "Wage restraint", "0": "Wages within scope", "1": "Stronger wages" }, G: { "-1": "Tighter", "0": "Unchanged", "1": "Looser" },\n  F: { "-1": "Consolidation", "0": "Neutral", "1": "Stimulus" }, A: { "-1": "More protection", "0": "Unchanged", "1": "Flexibility" } };'),
     ('const STANCE_TXT = { fund: "Ziffer", page: "S.", none: "keine Empfehlung erkennbar", jg: "Jahresgutachten", votes: "Stellen mit Minderheitsvotum", exp: "erwartetes Wachstum", open: "Einordnung noch offen", notext: "kein Gutachtentext vorhanden" };',
