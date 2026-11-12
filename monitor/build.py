@@ -666,6 +666,10 @@ def _enso_comm(c: dict, data: dict) -> dict | None:
     return {"rows": rows, "lag": lag, "from": first.strftime("%Y-%m"), "to": last.strftime("%Y-%m")}
 
 
+def _und(xs: list[str]) -> str:
+    return ", ".join(xs[:-1]) + " und " + xs[-1] if len(xs) > 1 else xs[0]
+
+
 def chart_sentences(c: dict) -> list[str]:
     """Kopierfertige Sätze zum jüngsten Stand einer Abbildung. Jeder Satz steht für sich: Zeitraum, Größe, Wert, Vergleich."""
     from .answers import MONTHS
@@ -710,6 +714,25 @@ def chart_sentences(c: dict) -> list[str]:
                 gv = (c.get("gov_values") or {}).get(y1)
                 out.append(s1 + (f"; die {c['gov_round']} der Bundesregierung erwartet ein BIP-Wachstum von {num(gv, 1)} %." if gv is not None else "."))
             return out
+        if c.get("annual_count"):  # Zählreihen: Summe im jüngsten vollständigen Jahr und im Jahr davor
+            ac, sums = c["annual_count"], []
+            for s in c["series"]:
+                if s.get("id") not in ac["series"]:
+                    continue
+                by = {}
+                for x, y in zip(s["x"], s["y"]):
+                    if y is not None:
+                        by.setdefault(int(x[:4]), []).append(y)
+                sums.append((ac["series"][s["id"]], by))
+            full = [y for y in sums[0][1] if len(sums[0][1][y]) == ac.get("per_year", 4)]
+            if not full:
+                return []
+            y = max(full)
+            now = _und([f"{num(sum(by.get(y, [0])), 0)} {ph}" for ph, by in sums])
+            out = f"Im Jahr {y} {ac['verb']} {now}"
+            if y - 1 in sums[0][1]:
+                out += ", nach " + _und([num(sum(by.get(y - 1, [0])), 0) for _, by in sums]) + f" im Jahr {y - 1}"
+            return [out + "."]
         if c.get("diff"):  # Breite: Zahl der Branchen mit Zuwachs
             parts = []
             for label, k in c["diff"].items():

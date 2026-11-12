@@ -361,6 +361,35 @@ def _special_en(c: dict) -> list[str] | None:
     """Sätze für Sonderabbildungen (Karte, Wärmetabelle, Uhr, Saison, Balken, Prognosen, Beiträge, Ereignisse); None für Linien."""
     typ, d = c.get("type"), int(c.get("decimals", 1))
     sg = lambda v, k=1: num(v, k, True)
+    if c.get("tpl_en"):  # one sentence per series from monitor.yaml; {when}, {v}, {chg} (absolute change), {more} (more/less)
+        out, freq = [], c.get("freq", "M")
+        for s in c["series"]:
+            tpl = c["tpl_en"].get(s.get("id"))
+            pts = [(x, y) for x, y in zip(s.get("x") or [], s.get("y") or []) if y is not None]
+            if not tpl or not pts:
+                continue
+            x, y = pts[-1]
+            ch = y - pts[-2][1] if len(pts) > 1 else 0.0
+            out.append(tpl.format(when=when(x, freq), v=num(y, d), chg=num(abs(ch), d), more="more" if round(ch, d) > 0 else "less" if round(ch, d) < 0 else "the same"))
+        return out
+    if c.get("annual_count_en"):  # counts: sum in the latest complete year and the year before
+        ac, sums = c["annual_count_en"], []
+        for s in c["series"]:
+            if s.get("id") in ac["series"]:
+                by = {}
+                for x, y in zip(s["x"], s["y"]):
+                    if y is not None:
+                        by.setdefault(int(x[:4]), []).append(y)
+                sums.append((ac["series"][s["id"]], by))
+        full = [y for y in sums[0][1] if len(sums[0][1][y]) == ac.get("per_year", 4)]
+        if not full:
+            return []
+        y = max(full)
+        _and = lambda xs: ", ".join(xs[:-1]) + " and " + xs[-1] if len(xs) > 1 else xs[0]
+        out = f"In {y}, {ac['verb']} " + _and([f"{num(sum(by.get(y, [0])), 0)} {ph}" for ph, by in sums])
+        if y - 1 in sums[0][1]:
+            out += ", after " + _and([num(sum(by.get(y - 1, [0])), 0) for _, by in sums]) + f" in {y - 1}"
+        return [out + "."]
     if c.get("pot_names"):  # momentum: GDP growth against the range of potential growth estimates
         bar = next(x for x in c["series"] if x.get("style") == "bar")
         lo, hi = (next(x for x in c["series"] if x.get("style") == st) for st in ("band_lo", "band_hi"))

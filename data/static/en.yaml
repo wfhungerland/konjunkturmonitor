@@ -57,6 +57,10 @@ topics:
   pruefung: {title: "Forecasts and revisions", code: "Forecasts", ask: "How reliable are the first figures and the projection?"}
   breite: {title: "Breadth and comparison", code: "Breadth", ask: "How broad is the development, and how unusual is it?"}
   wettbewerb: {title: "Competition", ask: "Who competes with Germany on world markets?"}
+  bedrohung: {title: "Threats", code: "Threats", ask: "How much is Germany being targeted?"}
+  ruestung: {title: "Defence", code: "Defence", ask: "How much does Germany spend on defence?"}
+  ukraine: {title: "Aid to Ukraine", code: "Ukraine-aid", ask: "How much does Germany help Ukraine?"}
+  handel: {title: "Trade conflicts", code: "Trade-conflicts", ask: "How often do trade barriers hit German exports?"}
   struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
   staat: {title: "Government", ask: "What state are the public finances in?"}
   sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What did the Council of Economic Experts forecast and recommend?"}
@@ -67,161 +71,161 @@ charts:
   enso_comm:
     title: "Commodity prices after El Niño and in neutral phases"
     ask: "Which commodities become dearer after El Niño?"
-    caption: "Average change in world market prices on a year earlier, measured six months after months with El Niño (dark) and after neutral months (grey). El Niño: NOAA Relative Oceanic Niño Index (RONI) of at least 0.5 °C; neutral: between −0.5 and 0.5 °C. Prices in US dollars from the World Bank Pink Sheet. Star: difference statistically clear (Welch t-test, |t| > 1.96). Idea after an analysis by the World Bank (Prospects Group); the calculation is our own."
+    caption: "The chart shows the average change in world market prices on a year earlier, measured six months after months with El Niño (dark) and after neutral months (grey). El Niño here means NOAA's Relative Oceanic Niño Index (RONI) of at least 0.5 °C; neutral means between −0.5 and 0.5 °C. Prices in US dollars come from the World Bank Pink Sheet. A star marks a statistically clear difference that chance can hardly explain (Welch t-test, |t| > 1.96). The idea follows an analysis by the World Bank (Prospects Group); the calculation is our own."
   downturns_hist:
     title: "Downturns since 1879 compared, annual data"
     ask: "How deep were the downturns since the 19th century?"
-    caption: "Annual data from the last year before a fall in real GDP (peak year). Left: real GDP, peak year = 100. Right: change in the unemployment rate in percentage points since that year. Highlighted: the Great Depression, the financial crisis, COVID and the current downturn (thick); grey: range of the other downturns with peaks in 1879, 1898, 1966, 1974, 1981, 1992 and 2001. War years are left out; paths end before 1914 and 1939. Historical values from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time; the unemployment rate changes source and definition over time. The current downturn rests on official annual data (GDP from the Federal Statistical Office, ILO unemployment rate as an annual mean) and is therefore not fully comparable. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+    caption: "The chart shows annual data from the peak year, the last year before real economic output (gross domestic product) fell: on the left economic output with the peak year = 100, on the right the change in the unemployment rate in percentage points since that year. Highlighted are the Great Depression, the financial crisis, COVID and the current downturn (thick); grey is the range of the other downturns with peaks in 1879, 1898, 1966, 1974, 1981, 1992 and 2001. War years are left out, and the paths end before 1914 and 1939. Historical values come from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025), with Germany within its borders at the time and the unemployment rate changing source and definition over time; the current downturn rests on official annual data (gross domestic product from the Federal Statistical Office, ILO unemployment rate as an annual mean) and is therefore not fully comparable. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   infl_hist:
     title: "Inflation surges since 1945 compared, annual data"
     ask: "How quickly did earlier inflation surges subside?"
-    caption: "Annual inflation rate from the year of the inflation peak: after the Korean War boom in 1951 (grey), the oil crises of 1974 and 1981, reunification in 1992 and in the current surge since 2022 (thick). The chart shows how many years it took for the rate to return close to 2%. Historical values from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025); the current surge as the annual mean of the harmonised index of consumer prices (HICP, Deutsche Bundesbank), complete years only. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+    caption: "The lines show the annual inflation rate from the year of the inflation peak: after the Korean War boom in 1951 (grey), the oil crises of 1974 and 1981, reunification in 1992 and in the current surge since 2022 (thick). This shows how many years it took each time for the rate to return close to 2%. The historical values come from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025). The current surge is the annual mean of the harmonised index of consumer prices (Deutsche Bundesbank), complete years only. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   long_rr:
     title: "Real interest rate since 1871"
     ask: "Are real interest rates high by historical standards?"
-    caption: "Real interest rate: yield on long-term government bonds minus the inflation rate of the same year, in %. This is the ex-post real rate; the inflation investors expected when buying is not observable. The axis is limited to ±30%; during the hyperinflation of the early 1920s the real rate was far lower. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; gaps after them come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+    caption: "The real interest rate here is the yield on long-term government bonds minus the inflation rate of the same year, in %, so it is measured after the fact. The axis ends at plus and minus 30%; during the hyperinflation of the early 1920s, when money lost its value at breakneck speed, the real rate was far lower. Light grey is the average per decade, the current decade's average dotted; a switch shows banking crises (red) and recessions (grey), here years with falling real economic output. The world wars 1914 to 1918 and 1939 to 1945 are left out; later gaps come from the database. Source: the Global Macro Database (Müller, Xu, Lehbib and Chen 2025), also for the banking crises, Germany within its borders at the time; This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   long_debt:
     title: "Government debt since 1871"
     ask: "How high was government debt in the past?"
-    caption: "General government gross debt as a percentage of GDP. After both world wars, debt was largely wiped out by inflation and currency reform. Dashed grey: Maastricht Treaty reference value. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; gaps after them come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+    caption: "The chart shows general government gross debt as a percentage of economic output; dashed grey is the Maastricht Treaty reference value. After both world wars, inflation and currency reform largely wiped out the debt. Light grey is the average per decade, the current decade dotted; banking crises (red) and recessions (grey) can be shown, here years with falling real gross domestic product. The long series and the banking crises come from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025), for Germany within its borders at the time; the world wars 1914 to 1918 and 1939 to 1945 are left out, and later gaps come from the database. Because this database requires it, the chart and its download are licensed under CC BY-NC-SA 4.0."
   long_growth:
     title: "Growth per capita since 1871, ten-year average"
     ask: "Is such a long period of weak growth unusual by historical standards?"
-    caption: "Average annual growth of real GDP per capita over the ten years up to the year shown, in %. Per capita, so that changes in population and territory do not distort the comparison. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; ten-year values after them still include the war years. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+    caption: "The line shows the average annual growth of real economic output (gross domestic product) per person over the ten years up to the year shown, in %; per person, so that changes in population and territory do not distort the comparison. Light grey is the average per decade, the current decade's average dotted; a switch shows banking crises (red) and recessions (grey), here years with falling real economic output. The world wars 1914 to 1918 and 1939 to 1945 are left out; ten-year values after them still include the war years. Source: the Global Macro Database (Müller, Xu, Lehbib and Chen 2025), also for the banking crises, Germany within its borders at the time; This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   long_inv:
     title: "Investment ratio since 1871"
     ask: "Does Germany invest less today than in the past?"
-    caption: "Investment as a percentage of GDP, at current prices. Until 1950 gross investment from historical estimates, thereafter national accounts; definitions change over time. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; gaps after them come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+    caption: "The chart shows investment as a percentage of economic output, at current prices: until 1950 gross investment from historical estimates, thereafter national accounts figures, and the definitions change over time. Light grey is the average per decade, the current decade dotted; banking crises (red) and recessions (grey) can be shown, here years with falling real gross domestic product. The long series and the banking crises come from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025), for Germany within its borders at the time; the world wars 1914 to 1918 and 1939 to 1945 are left out, and later gaps come from the database. Because this database requires it, the chart and its download are licensed under CC BY-NC-SA 4.0."
   long_open:
     title: "Export ratio and current account since 1871"
     ask: "How dependent on foreign trade is Germany today?"
-    caption: "Exports of goods and services and the current account balance, each as a percentage of GDP. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; gaps after them come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+    caption: "The chart shows exports of goods and services and the current-account balance, each as a percentage of gross domestic product, that is economic output. The long series come from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025) and show Germany within its borders at the time. Light grey: average per decade, the current decade dotted; banking crises (red) according to the same database and recessions (grey), here years with falling real gross domestic product, can be shown. The world wars 1914 to 1918 and 1939 to 1945 are left out; gaps after them come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires this licence."
   long_hpi:
     title: "Real house prices since 1871"
     ask: "How expensive is residential property in the long run?"
-    caption: "House price index adjusted for consumer prices. The underlying price series change over time; the index shows trends, not exact levels. Long series: Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted. Can be shown: banking crises (red) according to the same database and recessions (grey), here years with falling real GDP. Left out: the world wars 1914 to 1918 and 1939 to 1945; gaps after them come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
+    caption: "The index shows house prices adjusted for consumer prices; because the underlying price series change over time, it shows trends and no exact levels. The long series come from the Global Macro Database (Müller, Xu, Lehbib and Chen 2025), Germany within its borders at the time. Light grey: average per decade, the current one dotted; banking crises (red) according to the same database and recessions (grey), here years with falling price-adjusted economic output, can be shown. The world wars 1914 to 1918 and 1939 to 1945 are left out; later gaps come from the database. This chart and its download are licensed under CC BY-NC-SA 4.0, as the Global Macro Database requires."
   gdp_rev:
     title: "Revision of GDP growth since the first release"
     ask: "How much is GDP growth revised after the first release?"
-    caption: "Bars: revision of real GDP growth on the previous quarter between the Federal Statistical Office's first release and the latest vintage, in percentage points (positive: revised up). Grey band: mean absolute revision over the period shown. The tooltip shows the first release and the current figure; both are also in the download. Based on the stored vintages of the Bundesbank's real-time database since 2005. The first release of a quarter rests on incomplete information; later vintages and benchmark revisions often change it by several tenths."
+    caption: "The bars show by how many percentage points growth in real economic output (gross domestic product) on the previous quarter was revised between the Federal Statistical Office's first release and the latest vintage; positive means revised up. The grey band shows the mean revision ignoring the sign over the period shown. The tooltip gives the first release and the current figure; both are also in the download. The basis is the stored vintages of the Bundesbank's real-time database since 2005. The first release of a quarter rests on incomplete information; later vintages and major revisions often change it by several tenths."
   alq_land:
     title: "Unemployment rate by state"
     ask: "In which states is unemployment high, where is it rising?"
     what: "unemployment rate"
-    caption: "Unemployment rate by state, annual average, relative to the civilian labour force (Federal Employment Agency via the Federal Statistical Office). The number gives the rate, the colour the change on the previous year: orange up, blue down. The official database offers no monthly figures by state, so the map changes once a year."
+    caption: "The map shows the unemployment rate by federal state, annual average, relative to the civilian labour force, that is, everyone who works or is looking for work, excluding soldiers (Federal Employment Agency via the Federal Statistical Office). The number gives the rate, the colour the change on the previous year: orange means up, blue down. The official database offers no monthly figures by state, so the map changes only once a year."
   tarif:
     title: "Agreed pay and consumer prices"
     ask: "Is agreed pay rising faster than prices?"
-    caption: "Collectively agreed monthly earnings including special payments in the economy as a whole (Federal Statistical Office) and consumer prices, each on the same month a year earlier. If agreed earnings rise faster than inflation, agreed pay rises in real terms. One-off payments such as the inflation compensation bonus in 2023 and 2024 cause jumps in the series."
+    caption: "Collectively agreed earnings are the wages that trade unions and employers agree in collective agreements. The chart shows collectively agreed monthly earnings including special payments in the economy as a whole (Federal Statistical Office) and consumer prices, each on the same month a year earlier. If agreed earnings rise faster than inflation, agreed pay rises in real terms, that is, even after allowing for price increases. One-off payments such as the inflation compensation bonus in 2023 and 2024 cause jumps in the series."
   ulc:
     title: "Unit labour costs"
     ask: "Are unit labour costs rising faster than in the euro area?"
-    caption: "Unit labour costs: compensation per employee relative to real output per person employed, on the same quarter a year earlier (Eurostat). If they rise persistently faster in Germany than in the euro area, the German economy loses price competitiveness; they rise when wages grow faster than productivity."
+    caption: "Unit labour costs show what labour costs per unit of output: compensation per employee relative to real output per person employed. The chart shows the change on the same quarter a year earlier (Eurostat). They rise when wages grow faster than productivity, that is, output per person employed. If they rise persistently faster in Germany than in the euro area, the German economy loses price competitiveness."
   spf:
     title: "Long-term inflation expectations of experts"
     ask: "Do experts trust that inflation will return to 2%?"
-    caption: "Expected euro area inflation in four to five years, average of point forecasts in the ECB's quarterly survey of experts from banks, research and associations (Survey of Professional Forecasters). Blue dashed: the ECB's 2% target. If expectations are close to the target, inflation expectations are considered anchored."
+    caption: "The chart shows the inflation rate that experts expect for the euro area in four to five years. It is the average of point forecasts from the European Central Bank's quarterly survey of experts from banks, research and associations (Survey of Professional Forecasters). Blue dashed: the European Central Bank's 2% target. If expectations are close to the target, inflation expectations are considered anchored, that is firmly tied to the target."
   downturns:
     title: "Downturns compared"
     ask: "How deep is the current downturn compared with earlier crises?"
-    caption: "Path from the peak in industrial production before earlier crises and in the current downturn (dark blue, thick). Production and GDP as an index with the peak = 100, unemployment rate as the change in percentage points since that peak. The current peak is the highest level of production in the last five years. The peak dates are set by the monitor, not an official dating."
+    caption: "The lines show the path from the peak in industrial production before earlier crises and in the current downturn (dark blue, thick). Production and economic output (gross domestic product) appear as an index with the peak = 100, the unemployment rate as the change in percentage points since that peak. The current peak is the highest level of production in the last five years. The peak dates are set by the monitor and are not an official dating. The energy crisis from late 2021 is not shown separately, because it runs into the current downturn."
   energy_intensive:
     title: "Output of energy-intensive industries"
     ask: "How are the energy-intensive industries producing?"
-    caption: "Production index of the five energy-intensive industries (Federal Statistical Office via Bundesbank, seasonally and calendar adjusted, 2021 = 100): paper, coke and refined petroleum, chemicals, glass and ceramics, and basic metals. They use most of the energy consumed by industry and react strongly to gas and electricity prices. Each panel highlights one industry in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Thin: monthly values; thick: three-month moving average."
+    caption: "The chart shows the output of the five energy-intensive industries: paper, coke and refined petroleum, chemicals, glass and ceramics, and basic metals. The index comes from the Federal Statistical Office via the Bundesbank, is seasonally and calendar adjusted and sets 2021 = 100. These industries use most of the energy consumed by industry and react strongly to gas and electricity prices. Each panel highlights one industry in dark blue and has its own scale; with “Common scale” the others appear in grey behind it for comparison. Thin: monthly values, thick: three-month moving average."
   gdp_contrib:
     title: "Where growth comes from"
     ask: "Which components of demand are driving growth?"
-    caption: "Bars: contributions of the expenditure components to growth on the previous quarter, in percentage points: household and government consumption, investment, net trade (exports minus imports) and change in inventories (stocks). Line: total GDP growth in %. Apart from rounding, the bars add up to the line."
+    caption: "The bars show how many percentage points each part of demand contributes to growth on the previous quarter. These parts are household and government consumption, investment, net trade (exports minus imports) and the change in inventories, that is, stocks built up or run down. The line shows total growth of gross domestic product (economic output) in per cent. Apart from rounding, the bars add up to the line."
   wai:
     title: "Weekly activity index"
     ask: "What do the weekly data show about economic output?"
-    caption: "The Bundesbank's activity index uses weekly data (such as truck tolls, electricity consumption and internet searches) to estimate how much economic output grew in the latest 13 weeks compared with the 13 weeks before. It is available earlier than GDP, but is an estimate."
+    caption: "The Bundesbank's activity index estimates how much economic output grew in the latest 13 weeks compared with the 13 weeks before. It uses weekly data for this, such as truck tolls, electricity consumption and internet searches. It is available earlier than gross domestic product, but remains an estimate."
   maut:
     title: "Truck toll mileage index"
     ask: "How much are trucks driving on the motorways?"
-    caption: "Mileage of toll-liable trucks with four or more axles on motorways, derived from toll data. The index is available a few days after the end of the month and closely tracks industrial production, because these trucks mainly carry intermediate inputs and goods. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "The index shows how much toll-liable trucks with four or more axles drive on motorways; it is based on toll data. It is available a few days after the end of the month. It closely tracks industrial production, because these trucks mainly carry intermediate inputs (parts and materials for other firms) and goods. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
   maut_d:
     title: "Truck toll mileage index, daily"
     ask: "How much are trucks driving in recent weeks?"
-    caption: "Daily index of mileage, calendar and seasonally adjusted (experimental; Destatis and BALM, adjusted by the Bundesbank). Available with a lag of five to twelve days and updated on Thursdays. Thin: daily values, thick: seven-day moving average. Daily values are volatile and not directly comparable with the monthly index."
+    caption: "The index shows the daily mileage of trucks, calendar and seasonally adjusted, that is, without the usual effects of public holidays and seasons. It is experimental and comes from Destatis and the Federal Office for Logistics and Mobility (BALM); the Bundesbank adjusts it. It is available with a delay of five to twelve days and is updated on Thursdays. Thin: daily values, thick: seven-day moving average. The daily values swing widely and cannot be compared directly with the monthly index."
   gdp_level:
     title: "Economic output, level"
     ask: "Where does economic output stand in a longer comparison?"
-    caption: "Economic output, price adjusted, 2020 = 100. The slump in 2020 was caused by the covid-19 pandemic. The change on a year earlier is seasonally and calendar adjusted here; like the flash estimate of the Federal Statistical Office (Destatis), the overview gives the unadjusted rate, so the two may differ by 0.1 percentage points."
+    caption: "The chart shows economic output, price adjusted (that is, without the effect of rising prices), 2020 = 100. The slump in 2020 was caused by the covid-19 pandemic. The change on a year earlier is seasonally and calendar adjusted here. The overview, like the flash estimate of the Federal Statistical Office, gives the unadjusted rate instead. So the two may differ by 0.1 percentage points."
   gdp_use:
     title: "Expenditure components of output in the latest quarter"
     ask: "How did the expenditure components develop in the latest quarter?"
-    caption: "Bars: change in the latest quarter, price adjusted. Diamond: the quarter before. Investment is split into equipment (machinery, vehicles, weapons systems), construction and other assets (mainly software and research)."
+    caption: "The bars show how each part of demand changed in the latest quarter, price adjusted. The diamond shows the value for the quarter before. Investment is split into equipment (machinery, vehicles, weapons systems), construction and other assets (mainly software and research)."
   cpi:
     title: "Inflation rate (CPI) and components"
     ask: "Which areas are becoming more expensive?"
-    caption: "Inflation rate based on the consumer price index (CPI) of the Federal Statistical Office (Destatis), overall and for five components. In each panel one component is highlighted in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months. Dashed: 2%, the ECB's target (it refers to the European HICP, which in Germany is usually close to the CPI). ‘Services excluding rents’ excludes actual and imputed rents and therefore differs from the rate for services as a whole reported by the Federal Statistical Office."
+    caption: "The chart shows the inflation rate based on the consumer price index of the Federal Statistical Office (Destatis), overall and for five components. Each panel highlights one component in dark blue and has its own scale; with “Common scale” the others appear in grey behind it for comparison. Above each panel are the latest value with the trend on the previous month and the averages of the last 3 and 12 months. Dashed: 2%, the target of the European Central Bank; it refers to the European harmonised index of consumer prices, which in Germany is usually close to the national index. ‘Services excluding rents’ leaves out actual and imputed rents (for owner-occupied housing) and therefore differs from the rate for all services reported by the Federal Statistical Office."
   cpi_contrib:
     title: "What the inflation rate is made of"
     ask: "What makes up the inflation rate?"
-    caption: "Contribution of each component to the inflation rate in percentage points; switchable between comparison with a year earlier and with the previous month. Own calculation: component weights estimated from the CPI sub-indices since 2020; the remainder covers rounding and parts not recorded separately."
+    caption: "The chart shows how many percentage points each component contributes to the inflation rate. You can switch between comparison with a year earlier and comparison with the previous month. The values are our own calculation: the component weights are estimated from the sub-indices of the consumer price index since 2020. The remainder covers rounding and parts not recorded separately."
   cpi_core:
     title: "Core rate compared with the HICP"
     ask: "How strong is underlying price pressure?"
-    caption: "Thick line: core rate, CPI inflation excluding the volatile prices of energy and food; it shows the underlying price trend. Thin lines: overall CPI and the European HICP, to which the ECB's target refers. Dashed: 2%, the ECB's target."
+    caption: "The thick line shows the core rate: inflation in the consumer price index excluding the volatile prices of energy and food. It shows the underlying price trend. The thin lines show the overall consumer price index and the European harmonised index of consumer prices, to which the European Central Bank's target refers. Dashed: 2%, that target."
   deflator:
     title: "Prices in the national accounts"
     ask: "How are prices developing in the national accounts?"
-    caption: "National accounts deflators: price development of all goods and services produced domestically (GDP deflator) and of private consumption."
+    caption: "The chart shows two national accounts deflators, that is price measures from the national accounts. The gross domestic product deflator shows how the prices of all goods and services produced domestically develop, the second deflator the prices of private consumption."
   pipeline_prices:
     title: "Upstream prices"
     ask: "Are prices rising at earlier stages?"
-    caption: "Prices at earlier stages: producer prices for domestic sales and import prices. They often lead consumer prices."
+    caption: "The chart shows prices at the stages before goods reach consumers: producer prices for domestic sales and import prices. Producer prices are the prices that manufacturers charge for their goods. These prices often lead consumer prices."
   pipeline_core:
     title: "Upstream prices excluding energy, and agricultural prices"
     ask: "Are cost increases spreading beyond energy?"
-    caption: "Upstream prices excluding energy show whether cost increases are spreading beyond energy. Agricultural prices feed through to food prices with a lag."
+    caption: "Upstream prices are prices before goods reach consumers. Excluding energy, they show whether cost increases are spreading beyond energy. Agricultural prices feed through to food prices with a lag."
   enso:
     title: "Food and agricultural prices after very strong El Niño events"
     ask: "Is El Niño driving food prices?"
-    caption: "Event study: price path from the start of very strong El Niño events (month 0 = 100), adjusted for general inflation. Left: food in the consumer price index relative to the overall index (from 1995). Right: producer prices of agricultural products relative to consumer prices (up to 1990 former West Germany, deflated there by the OECD consumer price index). Grey area: range of earlier very strong events; lines: individual events, the current one thick. Start: first month of a sequence in which NOAA's Relative Oceanic Niño Index (RONI) reaches at least 0.5 °C; very strong: peak of 2 °C or more. Through droughts and heavy rain, El Niño reduces harvests mainly in South Asia, Africa and South America; in Germany the effect works through world market prices for grain, vegetable oils, cocoa and coffee, damped and delayed."
+    caption: "The chart is an event study: it follows prices from the start of very strong El Niño events (month 0 = 100), adjusted for general inflation. On the left is food in the consumer price index relative to the overall index (from 1995), on the right producer prices of agricultural products relative to consumer prices (up to 1990 former West Germany, there relative to the OECD consumer price index). The grey area shows the range of earlier very strong events, the lines individual events, the current one thick. An event starts in the first month of a sequence in which NOAA's Relative Oceanic Niño Index (RONI) reaches at least 0.5 °C; very strong means a peak of 2 °C or more. El Niño, a warming of the tropical Pacific, reduces harvests through droughts and heavy rain, mainly in South Asia, Africa and South America; in Germany the effect works through world market prices for grain, vegetable oils, cocoa and coffee, damped and delayed."
   price_exp:
     title: "Price expectations of businesses and consumers"
     ask: "What prices do businesses and consumers expect?"
-    caption: "Balance of the shares of respondents expecting rising and falling prices (EU surveys). Businesses: next three months; consumers: next twelve months. In each panel one sector is highlighted in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
+    caption: "The chart shows the balance of the share of respondents expecting rising prices and the share expecting falling prices (EU surveys). Businesses look at the next three months, consumers at the next twelve months. Each panel highlights one sector in dark blue and has its own scale; with “Common scale” the others appear in grey behind it for comparison. Above each panel are the latest value with the trend on the previous month and the averages of the last 3 and 12 months."
   labour:
     title: "Unemployment rate"
     ask: "How high is unemployment?"
-    caption: "Two measures of unemployment. The registered rate of the Federal Employment Agency counts people registered as unemployed with an employment agency or a job centre. The unemployment rate as defined by the International Labour Organization (ILO) is based on a survey: a person is unemployed if they have no work, are actively looking and are available at short notice. In Germany it is markedly lower and is internationally comparable. Both seasonally adjusted."
+    caption: "The chart shows two measures of unemployment, both seasonally adjusted. The registered rate of the Federal Employment Agency counts people registered as unemployed with an employment agency or a job centre. The unemployment rate as defined by the International Labour Organization (ILO) is based on a survey: a person is unemployed if they have no work, are actively looking and are available at short notice. In Germany it is markedly lower and is internationally comparable. Since 2020 it has been based on the redesigned microcensus, a large official household survey; the switch is a break in the series."
   labour_flows:
     title: "Unemployed and vacancies"
     ask: "How are unemployment and vacancies developing?"
-    caption: "If unemployment rises while the number of vacancies falls, this points to a cooling labour market."
+    caption: "The chart shows the number of unemployed people and of vacancies. If unemployment rises while the number of vacancies falls, this points to a cooling labour market."
   indeed:
     title: "Job postings on Indeed"
     ask: "Are firms advertising more or fewer jobs?"
-    caption: "Number of job postings on the Indeed platform in Germany, seasonally adjusted, 1 February 2020 = 100; seven-day trailing average, updated weekly. The series is available weeks before the statistics of the Federal Employment Agency but covers only one platform. Source: Indeed Hiring Lab, licence CC BY 4.0."
+    caption: "The chart shows the number of job postings on the Indeed platform in Germany, seasonally adjusted, 1 February 2020 = 100. The values are a trailing seven-day average and are updated weekly. The series is available weeks before the statistics of the Federal Employment Agency, but covers only one platform. Source: Indeed Hiring Lab, licence CC BY 4.0."
   employment_m:
     title: "Persons in employment and employees subject to social security contributions"
     ask: "How many people are in work?"
-    caption: "Persons in employment also include the self-employed and civil servants; employees subject to social security contributions make up the largest part."
+    caption: "Persons in employment also include the self-employed and civil servants; employees subject to social security contributions make up the largest part. The chart shows the change on the same month a year earlier, in per cent."
   sahm:
     title: "Recession signal"
     ask: "Is the labour market pointing to a recession?"
-    caption: "Own calculation following Michaillat and Saez (2025). The signal is the smaller of two values. First: the unemployment rate including short-time work (in full-time equivalents), three-month moving average, minus its low over the past twelve months. Second: the high of the vacancy rate over the past twelve months minus its current three-month average. The signal therefore rises only if unemployment increases and vacancies decrease at the same time. The threshold of 0.25 percentage points is our own choice for Germany; Michaillat and Saez give 0.29 for the United States. Red dashed: threshold. Grey areas: recessions as dated by the German Council of Economic Experts. Every recession since 2001 crossed the threshold, some with a considerable lag. References: Michaillat, P. and Saez, E. (2025), Has the Recession Started?, Oxford Bulletin of Economics and Statistics; Sahm, C. (2019), Direct Stimulus Payments to Individuals, Brookings Institution."
+    caption: "Own calculation following Michaillat and Saez (2025): the signal rises only if unemployment increases and vacancies decrease at the same time. It is the smaller of two values, namely the rise of the unemployment rate including short-time work above its low of the past twelve months and the fall of the vacancy rate below its high of the past twelve months, each using three-month moving averages. Red dashed is the threshold of 0.25 percentage points, our own choice for Germany; Michaillat and Saez give 0.29 for the United States. Grey areas show recessions as dated by the German Council of Economic Experts; every recession since 2001 crossed the threshold, some with a considerable lag. References: Michaillat, P. and Saez, E. (2025), Has the Recession Started?, Oxford Bulletin of Economics and Statistics; Sahm, C. (2019), Direct Stimulus Payments to Individuals, Brookings Institution."
   kurzarbeit:
     title: "Short-time work for cyclical reasons"
     ask: "How many employees are on short-time work?"
-    caption: "Employees on short-time work for economic reasons (§ 96 SGB III), in thousands. Short-time work keeps employees in the firm when orders are temporarily lacking; in downturns it rises earlier than unemployment. The latest months are based on projections by the Federal Employment Agency."
+    caption: "The chart shows employees on short-time work for cyclical, that is, economic reasons (§ 96 of Book III of the Social Code), in thousands. Short-time work keeps employees in the firm when orders are temporarily lacking. In downturns it rises earlier than unemployment. The latest months are based on projections by the Federal Employment Agency."
     unit: "thousand people"
   sv_yoy:
     title: "Employment subject to social security contributions by sector"
     ask: "In which sectors is employment growing?"
-    caption: "Employees subject to social security contributions by sector, change on the same month a year earlier. Temporary agency work is the first to react to weaker demand, because firms shed agency workers first."
+    caption: "The chart shows employees subject to social security contributions by sector, as the change on the same month a year earlier. Temporary agency work is the first to react to weaker demand, because firms shed agency workers first."
   industry:
     title: "Industrial production and orders"
     ask: "How are industrial production and orders developing?"
-    caption: "Thin: monthly values. Thick: three-month moving average. New orders lead production."
+    caption: "Thin: monthly values, thick: three-month moving average. New orders lead production, because what is ordered today is usually made later."
   orders_split:
     title: "Orders from Germany, the euro area and elsewhere"
     ask: "Where do orders come from: Germany, the euro area or elsewhere?"
-    caption: "New manufacturing orders by origin: domestic, euro area and rest of the world, price, seasonally and calendar adjusted. Large orders, for example for aircraft, ships or military equipment, cause occasional sharp spikes. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "The lines show new manufacturing orders by origin: domestic, euro area and rest of the world. They are adjusted for prices, season and calendar. Large orders, for example for aircraft, ships or military equipment, cause occasional sharp spikes. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
   orders_euro:
     title: "Orders from the euro area and from outside"
     ask: "How are orders from the euro area and from outside developing?"
@@ -229,23 +233,23 @@ charts:
   rhine:
     title: "Rhine at the Kaub gauge, daily mean"
     ask: "Is the Rhine easily navigable for cargo ships?"
-    caption: "Water level at the Kaub gauge, the bottleneck for Rhine shipping between Mainz and Koblenz, daily mean in cm. The chemical, steel, oil and coal industries ship large volumes on the Rhine. Red dashed: 78 cm. According to a rule of thumb from the Kiel Institute (IfW Kiel), industrial production falls by about 1% if the level stays below this mark for a month. Up to the end of the previous year, verified gauge data from the Federal Waterways and Shipping Administration (WSV) (Federal Institute of Hydrology, BfG); thereafter PEGELONLINE."
+    caption: "The chart shows the water level at the Kaub gauge as a daily mean, in centimetres; Kaub is the bottleneck for Rhine shipping between Mainz and Koblenz. The chemical, steel, oil and coal industries ship large volumes on the Rhine. Red dashed is the 78 centimetre mark: if the level stays below it for a month, industrial production falls by about 1%, according to a rule of thumb from the Kiel Institute (IfW Kiel). Up to the end of the previous year the values come from verified gauge data of the Federal Waterways and Shipping Administration (WSV, Federal Institute of Hydrology), thereafter from PEGELONLINE."
   rhine_low:
     title: "Low-water days on the Rhine per year"
     ask: "How often has the Rhine been too shallow since 1970?"
-    caption: "Number of days per calendar year on which the daily mean water level at the Kaub gauge was below 78 cm; current year up to the latest day. Long low-water spells such as in 2018 and 2022 made transport more expensive and held back industry. Source: verified gauge data from the WSV, provided by the Federal Institute of Hydrology (BfG) (R package hyd1d); latest values from PEGELONLINE."
+    caption: "The chart counts, per calendar year, the days on which the daily mean water level at the Kaub gauge was below 78 centimetres; the current year runs up to the latest day. Long low-water spells such as in 2018 and 2022 made transport more expensive and held back industry. The values are verified gauge data of the Federal Waterways and Shipping Administration (WSV), provided by the Federal Institute of Hydrology (R package hyd1d); the latest values come from PEGELONLINE."
   branch_heat:
     title: "Production by industry"
     ask: "Which industries are producing more, and which less?"
-    caption: "Table: production by industry, % on the same month a year earlier; orange: increase, blue: decrease. Sorted by the three-month comparison (last three months vs. the three months before). Right-hand columns: three-month comparison and level vs. the 2019 average; both shown as bars in the following chart."
+    caption: "The table shows production by industry, in per cent on the same month a year earlier; orange means an increase, blue a decrease. It is sorted by the three-month comparison, that is, the last three months against the three months before. The right-hand columns show this three-month comparison and the level against the 2019 average. Both values appear as bars in the following chart."
   orders_heat:
     title: "New orders by industry"
     ask: "Which industries are receiving more orders?"
-    caption: "Table: new orders by industry, % on the same month a year earlier, price adjusted; orange: increase, blue: decrease. Sorted by the three-month comparison. Right-hand columns: three-month comparison and level vs. the 2019 average; both shown as bars in the following chart. Large orders, especially in other transport equipment, distort individual months."
+    caption: "The table shows new orders by industry, in per cent on the same month a year earlier, price adjusted; orange means an increase, blue a decrease. It is sorted by the three-month comparison, that is, the last three months against the three months before. The right-hand columns show this three-month comparison and the level against the 2019 average; both appear as bars in the following chart. Large orders, especially in other transport equipment (such as aircraft, ships and rail vehicles), distort individual months."
   prod_groups:
     title: "Production by type of goods"
     ask: "Which types of goods are carrying production?"
-    caption: "Intermediate goods are processed further (such as steel and chemicals), capital goods are mainly machinery and vehicles, and consumer goods are bought by private households. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "Intermediate goods are processed further, such as steel or chemicals. Capital goods are mainly machinery and vehicles. Consumer goods are bought by private households. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
   sales:
     title: "Industrial turnover, nominal"
     ask: "How is industrial turnover developing?"
@@ -253,174 +257,174 @@ charts:
   bau_orders:
     title: "Orders in the main construction sector"
     ask: "How are construction orders developing?"
-    caption: "Orders in the main construction sector, price adjusted, total and by type of construction. Individual large projects cause sharp spikes. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "The lines show orders in the main construction sector (mainly building and civil engineering), price adjusted, in total and by type of construction. Individual large projects cause sharp spikes. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
   permits:
     title: "Building permits for dwellings"
     ask: "Will more be built soon?"
-    caption: "Number of dwellings approved per month, in thousands (Federal Statistical Office), in new buildings and through construction work on existing buildings. Permits lead housing construction by about one to two years; not every permit is built."
+    caption: "The chart shows how many dwellings are approved each month, in thousands (Federal Statistical Office). It counts dwellings in new buildings and those created by construction work on existing buildings. Permits lead housing construction by about one to two years. Not every permit is actually built."
   house_prices:
     title: "Residential property prices"
     ask: "How are residential property prices developing?"
-    caption: "House price index of the Federal Statistical Office: prices of newly built and existing residential property (houses and owner-occupied flats), on the same quarter a year earlier. Published about three months after the end of the quarter."
+    caption: "The house price index of the Federal Statistical Office shows prices of newly built and existing residential property, that is, houses and owner-occupied flats. The chart shows the change on the same quarter a year earlier. The figures are published about three months after the end of a quarter."
   weather:
     title: "Weather in Germany"
     ask: "Was the weather unusual for construction?"
-    caption: "Monthly values from the German Weather Service (DWD) for Germany as a whole. Temperature: deviation from the 1991 to 2020 average for the same month, in °C. Precipitation: in % of the 1991 to 2020 average for the same month. A very cold, frosty or wet winter month depresses construction output, a mild one lifts it; the swings usually even out in the following months. Unusual months appear in the construction output chart under ‘Swings and special effects’."
+    caption: "The chart shows monthly values from the German Weather Service for Germany as a whole. Temperature is shown as the deviation from the 1991 to 2020 average for the same month, in °C, precipitation as a percentage of the 1991 to 2020 average for the same month; the dashed line in the precipitation panel marks 100% of the average. A very cold, frosty or wet winter month depresses construction output, a mild one lifts it; the swings usually even out in the following months. Unusual months appear in the construction output chart under ‘Swings and special effects’."
   bau_prod:
     title: "Construction output"
     ask: "How much is being built?"
-    caption: "Construction output. The finishing trades cover installation, electrical work and interior finishing. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "The chart shows construction output. The finishing trades cover installation, electrical work and interior finishing. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
   services:
     title: "Output of service providers"
     ask: "How is output of service providers developing?"
-    caption: "Price-adjusted output of selected service sectors. ‘Total’ covers transport and storage, accommodation and food services, information and communication, real estate, and professional, technical and other business services; trade, finance and government are not included. Service providers generate a good two-thirds of value added, but monthly data cover them only patchily. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "The chart shows price-adjusted output of selected service sectors. ‘Total’ covers transport and storage, accommodation and food services, information and communication, real estate, and professional, technical and other business services. Trade, finance and government are not included. Service providers generate a good two-thirds of value added, but monthly data cover them only patchily. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
   retail:
     title: "Retail sales, real"
     ask: "How much are retailers selling?"
-    caption: "Retail sales excluding motor vehicles, price adjusted, i.e. the volume sold. Retail accounts for about a third of private consumption; services, rents and cars are not included. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "The chart shows retail sales excluding motor vehicle trade, price adjusted, that is, the volume sold. Retail accounts for about a third of private consumption; services, rents and cars are not included. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
   retail_split:
     title: "Retail sales by product range, real"
     ask: "Which product ranges are selling better?"
-    caption: "Sales by product range, price adjusted, Federal Statistical Office data via Eurostat. Food: retail sale of food, beverages and tobacco; non-food excluding fuel. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "The chart shows retail sales by product range, adjusted for price changes. The data come from the Federal Statistical Office via Eurostat. Food here means retail sale of food, beverages and tobacco; non-food excludes petrol stations. Thick: three-month moving average, that is the average over three months; thin: monthly values, which can be hidden with the button."
   hospitality:
     title: "Hospitality, real"
     ask: "How is the hospitality sector doing?"
-    caption: "Turnover of restaurants and hotels, price adjusted. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "The chart shows the turnover of restaurants and hotels, adjusted for price changes. Thick: three-month moving average, that is the average over three months; thin: monthly values, which can be hidden with the button."
   cars:
     title: "New cars registered by private owners"
     ask: "Are households buying new cars?"
-    caption: "New passenger cars registered by private owners, in thousands per month. An indicator of households' willingness to make larger purchases. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "The chart shows how many new passenger cars private owners register each month, in thousands. The number indicates whether households are willing to make larger purchases. Thick: three-month moving average, that is the average over three months; thin: monthly values, which can be hidden with the button."
   consumer:
     title: "Consumer confidence"
     ask: "How confident are consumers?"
-    caption: "Balance of positive and negative responses from households. Values below zero mean that negative assessments prevail."
+    caption: "The line shows the balance, that is the difference between positive and negative responses from households. If it is below zero, negative assessments prevail."
   wages:
     title: "Nominal and real wages"
     ask: "Are wages rising faster than prices?"
-    caption: "Nominal wage index: average gross monthly earnings including special payments; real wage index: nominal wage index adjusted for the change in consumer prices. If real wage growth is above zero, wages are rising faster than prices. Change on the same quarter a year earlier."
+    caption: "The nominal wage index measures average gross monthly earnings including special payments. The real wage index is the nominal wage index adjusted for the change in consumer prices. Each line shows the change on the same quarter a year earlier. If real wage growth is above zero, wages are rising faster than prices."
   hh_income:
     title: "Real disposable income per head"
     ask: "How are household incomes developing?"
-    caption: "Disposable income of private households per inhabitant, i.e. wages, profits, property income and social benefits after taxes and contributions, adjusted for the change in consumption prices. 2010 = 100."
+    caption: "The chart shows the disposable income of private households per inhabitant, 2010 = 100. It includes wages, profits, property income (such as interest and dividends) and social benefits, after taxes and contributions. The income is adjusted for the change in consumption prices."
   saving:
     title: "Household saving ratio"
     ask: "How much are households saving?"
-    caption: "Share of disposable income that households do not spend on consumption. A rising saving ratio dampens consumption, often out of caution in uncertain times."
+    caption: "The saving ratio is the share of disposable income that households do not spend on consumption. When it rises, this dampens consumption; households often save in this way out of caution in uncertain times. The chart shows the gross saving ratio as defined by Eurostat: saving including depreciation (the loss in value of buildings and equipment) relative to gross disposable income. The better-known saving ratio of the Federal Statistical Office is defined differently and is markedly lower."
   profit_share:
     title: "Corporate profit share"
     ask: "How is value added split between profits and wages?"
-    caption: "Gross operating surplus of non-financial corporations as a percentage of their value added. If the profit share rises, a larger part of value added goes to profits and a smaller part to wages."
+    caption: "The profit share is the gross operating surplus of non-financial corporations, that is, all firms except banks and insurers, as a percentage of their value added. If the profit share rises, a larger part of value added goes to profits and a smaller part to wages."
   trade:
     title: "Trade in goods"
     ask: "How are exports and imports developing?"
-    caption: "Goods exports, goods imports and their balance (exports minus imports), in billions of euros per month. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "The chart shows goods exports, goods imports and their balance (exports minus imports) in billions of euros per month. Thick: three-month moving average, that is the average over three months; thin: monthly values, which can be hidden with the button. The values are nominal, that is in current prices; part of the change is therefore due to prices (see the chart on foreign trade prices)."
   trade_region:
     title: "Exports by region"
     ask: "Where does Germany export to?"
-    caption: "Goods exports to the main customer regions, in billions of euros per month. Thick: three-month moving average; thin: monthly values (can be hidden with the button)."
+    caption: "The chart shows goods exports to the main customer regions in billions of euros per month. Thick: three-month moving average, that is the average over three months; thin: monthly values, which can be hidden with the button. The values are nominal, that is in current prices."
   trade_prices:
     title: "Foreign trade prices"
     ask: "How are foreign trade prices developing?"
-    caption: "Export prices and terms of trade, i.e. export prices relative to import prices. If the terms of trade rise, Germany can finance more imports with the same volume of exports."
+    caption: "The chart shows export prices and the terms of trade, that is export prices relative to import prices. If the terms of trade rise, Germany can pay for more imports with the same volume of exports."
   balances:
     title: "Current-account balance"
     ask: "How large is the current-account surplus?"
-    caption: "Current-account balance (goods, services, primary and secondary income) per month, not seasonally adjusted."
+    caption: "The chart shows the current-account balance in billions of euros. The current account covers goods, services, and primary and secondary income. Each value is the sum of the latest twelve months; this smooths out the strong seasonal swings in the monthly values."
   esi:
     title: "Export similarity with Germany"
     ask: "Who competes with goods similar to Germany's?"
-    caption: "Similarity of a country's export structure to Germany's: 0 means no overlap, 100 an identical structure (Finger and Kreinin 1979; for each product group the smaller share counts). High values mean that both countries compete with similar goods on world markets. Highlighted: China."
+    caption: "The value measures how similar a country's exports are to Germany's by type of goods: 0 means no overlap, 100 an identical mix. It is calculated following Finger and Kreinin (1979): for each product group the smaller of the two shares counts. High values mean that both countries compete with similar goods on world markets. China is highlighted."
   world_gdp:
     title: "Growth in major economies"
     ask: "How fast are the major economies growing?"
-    caption: "Real GDP on the same quarter a year earlier. The euro area takes about 37% of German goods exports, the United States about 10%."
+    caption: "The chart shows real gross domestic product, that is economic output without price effects, compared with the same quarter a year earlier. The euro area takes about 37% of German goods exports, the United States about 10%."
   ez_gdp:
     title: "Growth compared across the euro area"
     ask: "Is Germany growing faster or more slowly than its neighbours?"
-    caption: "Real GDP on the same quarter a year earlier, seasonally and calendar adjusted (Eurostat), for Germany, France, Italy, Spain and the euro area. In each panel one country is highlighted in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Together the four countries generate about three-quarters of euro-area output."
+    caption: "The chart shows real gross domestic product compared with the same quarter a year earlier for Germany, France, Italy, Spain and the euro area, seasonally and calendar adjusted (Eurostat). Each panel highlights one country in dark blue and has its own scale; with “Common scale” the others appear in grey behind it for comparison. Together the four countries generate about three-quarters of euro-area output."
   ez_hicp:
     title: "Inflation compared across the euro area (HICP)"
     ask: "Is inflation in Germany higher than in neighbouring countries?"
-    caption: "Harmonised index of consumer prices (HICP) on the same month a year earlier (Eurostat; from 2026 based on the new product classification ECOICOP 2). The HICP is internationally comparable and is the basis of the ECB's inflation target of 2% (dashed). For Germany it usually differs only slightly from the national CPI. One country per panel on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
+    caption: "The chart shows the harmonised index of consumer prices compared with the same month a year earlier (Eurostat; from 2026 based on the new product classification ECOICOP 2). This index is internationally comparable and is the basis of the European Central Bank's inflation target of 2% (dashed). For Germany it usually differs only slightly from the national consumer price index. Each panel shows one country on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
   ez_unemp:
     title: "Unemployment compared across the euro area"
     ask: "How high is unemployment by comparison?"
-    caption: "Unemployment rate as defined by the International Labour Organization (ILO), seasonally adjusted (Eurostat; euro area: ECB): the unemployed as a share of the labour force. It is internationally comparable and in Germany is markedly below the registered unemployment rate of the Federal Employment Agency. One country per panel on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
+    caption: "The chart shows the unemployment rate as defined by the International Labour Organization (ILO), seasonally adjusted (Eurostat; for the euro area: European Central Bank). It gives the unemployed as a share of the labour force, that is everyone who works or is looking for work. The rate is internationally comparable and in Germany is markedly below the registered unemployment rate of the Federal Employment Agency. Each panel shows one country on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
   ez_ip:
     title: "Industrial production compared across the euro area"
     ask: "Is German industry doing worse than its neighbours?"
-    caption: "Manufacturing output on the same month a year earlier, calendar adjusted (Eurostat), for Germany, France, Italy, Spain and the euro area (21 countries since 2026). The figures for Germany may differ slightly from the Bundesbank data in the industry section because of different adjustment. One country per panel on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
+    caption: "The chart shows manufacturing output compared with the same month a year earlier, calendar adjusted (Eurostat), for Germany, France, Italy, Spain and the euro area (21 countries since 2026). The figures for Germany may differ slightly from the Bundesbank data in the industry section because they are adjusted differently. Each panel shows one country on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
   ez_esi:
     title: "Economic sentiment compared across the euro area (ESI)"
     ask: "Is sentiment in Germany worse than in neighbouring countries?"
-    caption: "Economic Sentiment Indicator (ESI) of the European Commission, seasonally adjusted: weighted average of surveys in industry, services, retail, construction and among consumers. 100 is each country's long-term average (dashed); the indicator therefore shows whether sentiment is better or worse than usual, not the gap between countries. One country per panel on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
+    caption: "The chart shows the Economic Sentiment Indicator (ESI) of the European Commission, seasonally adjusted. The indicator is a weighted average of surveys in industry, services, retail and construction and among consumers. 100 is each country's long-term average (dashed); the indicator therefore shows whether sentiment is better or worse than usual. It does not show the gap between countries. Each panel shows one country on its own scale; with “Common scale” the other countries appear in grey behind it for comparison."
   uncertainty:
     title: "Economic policy uncertainty"
     ask: "How uncertain is economic policy?"
-    caption: "Economic policy uncertainty index of Baker, Bloom and Davis, derived from the frequency of relevant terms in newspaper articles; average 1997 to 2015 = 100. High uncertainty leads firms to postpone investment."
+    caption: "The index of Baker, Bloom and Davis measures economic policy uncertainty: it is based on how often relevant terms appear in newspaper articles; the 1997 to 2015 average is 100. When uncertainty is high, firms postpone investment. The series are updated with different time lags and so do not end in the same month."
   clock:
     title: "Business cycle clock for industry"
     ask: "Which phase of the business cycle is industry in?"
-    caption: "Horizontal: how do industrial firms assess their order books today? Vertical: what do they expect for the next three months? Both as deviation from the 2005 to 2019 average. The trail shows the last 24 months, the large dot the latest month, the arrows the direction. In a typical business cycle the dot moves clockwise through the four shaded phases: upswing, boom, downswing, recession."
+    caption: "Horizontally: how industrial firms rate their order books today; vertically: what they expect for the next three months, both as the gap to the 2005 to 2019 average. The trail shows the last 24 months, the large dot the latest month, the arrows the direction. In a typical business cycle the dot moves clockwise through the four shaded phases: upswing, boom, downswing, recession."
   sentiment:
     title: "Sentiment by sector"
     ask: "What is the mood in the different sectors?"
-    caption: "Balance of positive and negative responses by sector (EU surveys)."
+    caption: "The chart shows, for each sector, the balance of positive and negative responses in EU surveys. The levels of the sectors cannot be compared directly, because the questions differ. What matters is the change."
   sector_now:
     title: "Current situation by sector"
     ask: "How do the sectors assess their current situation?"
-    caption: "Assessment of business developments over the past three months, balance of positive and negative responses (EU surveys). In each panel one sector is highlighted in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
+    caption: "The chart shows how the sectors assess their business over the past three months, as the balance of positive and negative responses (EU surveys). Each panel highlights one sector in dark blue and has its own scale. With the “Common scale” button the other sectors appear in grey behind it for comparison. Above each panel are the latest value with the trend on the previous month and the averages of the last 3 and 12 months."
   sector_next:
     title: "Expectations by sector"
     ask: "What do the sectors expect for the coming months?"
-    caption: "Expectations for the coming three months, balance of positive and negative responses (EU surveys). For construction the survey records employment plans here. In each panel one sector is highlighted in dark blue, each panel has its own scale; with “Common scale” the others appear in grey behind it for comparison. Above each panel: latest value with the trend on the previous month, and the averages of the last 3 and 12 months."
+    caption: "The chart shows what the sectors expect for the coming three months, as the balance of positive and negative responses (EU surveys). For construction the survey asks about employment plans here. Each panel highlights one sector in dark blue and has its own scale. With the “Common scale” button the other sectors appear in grey behind it for comparison. Above each panel are the latest value with the trend on the previous month and the averages of the last 3 and 12 months."
   capacity:
     title: "Capacity utilisation in industry"
     ask: "How fully is industrial capacity being used?"
-    caption: "Utilisation of production capacity in industry in per cent, quarterly survey."
+    caption: "The chart shows in per cent how fully industry uses its production capacity, that is how much of what it could produce it actually produces. It is based on a survey held every quarter. Grey dashed: average 2005 to 2019."
   insolv:
     title: "Business insolvencies per month"
     ask: "How many businesses are filing for insolvency?"
-    caption: "Insolvency proceedings filed by businesses per month. Thin: monthly values. Thick: twelve-month moving average, which smooths out seasonal fluctuations. Dashed: pre-crisis level, measured as the average of the same month in 2015 to 2019."
+    caption: "The chart shows how many businesses file for insolvency proceedings each month. Thin: monthly values. Thick: twelve-month moving average, which smooths out seasonal swings. Dashed: pre-crisis level, the average of the same month in the years 2015 to 2019."
   insolv_land:
     title: "Insolvencies by state"
     ask: "In which states are insolvencies rising?"
-    caption: "Business insolvency filings by state, change on the same period a year earlier; switchable between 12 and 6 months. Orange: increase, blue: decrease. The list on the right ranks the states by change."
+    caption: "The chart shows for each state how business insolvency filings have changed on the same period a year earlier. A switch toggles between periods of 12 and 6 months. Orange means an increase, blue a decrease. The list on the right ranks the states by change."
     what: "Number of insolvency filings"
   insolv_emp:
     title: "Employees affected by insolvencies per month"
     ask: "How many employees are affected?"
-    caption: "Employees in businesses that have filed for insolvency. Individual large insolvencies cause sharp spikes. Thin: monthly values. Thick: twelve-month moving average, which smooths out seasonal fluctuations. Dashed: pre-crisis level, measured as the average of the same month in 2015 to 2019."
+    caption: "The chart shows how many people work in businesses that have filed for insolvency. Single large insolvencies cause sharp spikes. Thin: monthly values, thick: twelve-month moving average, which smooths out seasonal swings. Dashed: pre-crisis level, the average of the same month in the years 2015 to 2019."
   insolv_claims:
     title: "Expected creditor claims per month"
     ask: "How large are creditors' claims?"
-    caption: "Expected creditor claims in billions of euros. Thin: monthly values. Thick: twelve-month moving average, which smooths out seasonal fluctuations. Dashed: pre-crisis level, measured as the average of the same month in 2015 to 2019."
+    caption: "The chart shows how much money creditors in insolvency proceedings are expected to claim, in billions of euros. Thin: monthly values, thick: twelve-month moving average, which smooths out seasonal swings. Dashed: the usual level before COVID, the average of the same month in the years 2015 to 2019. The amounts are not adjusted for prices; prices have risen by about a quarter since 2019."
   gruend_land:
     title: "Business start-ups by state"
     ask: "Where are more businesses being started?"
-    caption: "Start-ups of businesses of greater economic significance (head offices) by state, change on the same period a year earlier. Orange: increase, blue: decrease. The list on the right ranks the states by change."
+    caption: "The chart shows for each state how start-ups of businesses of greater economic significance (head offices) have changed on the same period a year earlier. Orange means an increase, blue a decrease. The list on the right ranks the states by change."
     what: "Number of business start-ups"
   aufgabe_land:
     title: "Business closures by state"
     ask: "Where are more businesses closing?"
-    caption: "Complete closures of businesses of greater economic significance (head offices) by state, change on the same period a year earlier. Orange: increase, blue: decrease. The list on the right ranks the states by change."
+    caption: "The chart shows for each state how the number of businesses of greater economic significance (head offices) that close completely has changed on the same period a year earlier. Orange means an increase, blue a decrease. The list on the right ranks the states by change."
     what: "Number of business closures"
   credit_rates:
     title: "Interest rates on new bank loans"
     ask: "How expensive are loans?"
-    caption: "Effective interest rates charged by banks in Germany on newly granted loans (new business), weighted across all maturities: to non-financial corporations and to private households for house purchase (ECB, MFI interest rate statistics). They follow the ECB's policy rates and capital-market rates with a lag."
+    caption: "The chart shows the effective interest rate banks in Germany charge on newly granted loans, weighted across all maturities. It covers loans to companies outside the financial sector and loans to private households for house purchase. The rates follow the European Central Bank's policy rates and capital-market rates with a lag. Source: the European Central Bank's MFI interest rate statistics."
   credit_growth:
     title: "Growth in bank lending"
     ask: "Are banks lending more?"
-    caption: "Stock of bank loans to non-financial corporations and of housing loans to private households in Germany, on the same month a year earlier, adjusted for reclassifications and valuation changes (ECB, balance sheet statistics). Weak credit growth points to low investment or tight lending standards."
+    caption: "The chart shows how fast the stock of bank loans in Germany grows on the same month a year earlier: loans to companies outside the financial sector and housing loans to private households. The figures are adjusted for reclassifications and valuation changes (European Central Bank, balance sheet statistics). Weak credit growth points to low investment or tight lending."
   yields:
     title: "Federal bond yields"
     ask: "How high are yields on federal bonds?"
-    caption: "Yield on federal bonds with residual maturities of 10 and 2 years, monthly average. It affects the financing costs of government, businesses and private home builders."
+    caption: "The chart shows the yield on federal bonds with 10 or 2 years left until repayment, as a monthly average. The yield is the annual return a bond brings to someone buying it today. It affects how much government, businesses and private home builders pay for their financing."
   yields_d:
     title: "Federal bond yields and overnight rate, daily"
     ask: "How have interest rates moved in recent weeks?"
-    caption: "Yield on federal bonds with 10 and 2 years to maturity (Bundesbank term structure) and the euro short-term rate €STR, at which banks lend to each other overnight, daily values. The €STR closely follows the ECB deposit rate."
+    caption: "The chart shows daily values for the yield on federal bonds with 10 or 2 years left until repayment (Bundesbank term structure). It also shows the euro short-term rate €STR: the rate at which banks lend to each other overnight. The €STR closely follows the European Central Bank's deposit rate, the rate banks receive on money held at the central bank."
   fx_usd:
     title: "Euro in US dollars, daily values"
     ask: "How many US dollars does a euro cost?"
@@ -428,172 +432,197 @@ charts:
   fx_eer:
     title: "Effective exchange rate of the euro, daily values"
     ask: "Is the euro becoming more expensive against all trading partners?"
-    caption: "Nominal effective exchange rate of the ECB: a weighted average of the euro's exchange rates against the currencies of the euro area's trading partners, weighted by their share of trade. 1999 Q1 = 100. The broad group comprises 41 partners, the narrow one 18 (including the United States, China, the United Kingdom, Switzerland and Japan). If the index rises, the euro becomes more expensive on average; this makes exports dearer and imports cheaper. The broad group is higher because many emerging-market currencies have lost value against the euro since 1999."
+    caption: "The chart shows the European Central Bank's nominal effective exchange rate: an average of the euro's exchange rates against the currencies of the euro area's trading partners, weighted by their share of trade, with 1999 Q1 = 100. The broad group comprises 41 partners, the narrow one 18 (including the United States, China, the United Kingdom, Switzerland and Japan). If the index rises, the euro becomes more expensive on average; this makes exports dearer and imports cheaper. The broad group is higher because many emerging-market currencies have lost value against the euro since 1999. What matters for price competitiveness is the real rate, which also takes price developments into account."
   fx:
     title: "Euro against four currencies, daily values"
     ask: "How is the euro moving against major currencies?"
-    caption: "ECB reference rates: units of each currency per euro, on each working day. Each panel shows one currency on its own scale, because the rates differ widely in level. If a line rises, the euro becomes more expensive against that currency. Above each panel: latest rate with the trend on the previous day, and the averages of the last 3 and 12 months."
+    caption: "The chart shows the European Central Bank's reference rates for each working day: how many units of a currency you get for one euro. Each panel shows one currency on its own scale, because the rates differ widely in level. If a line rises, the euro becomes more expensive against that currency. Above each panel are the latest rate with the trend on the previous day and the averages of the last 3 and 12 months."
   oil:
     title: "Oil price"
     ask: "How expensive is crude oil?"
-    caption: "Price per barrel (159 litres) of North Sea Brent crude oil, monthly average, quoted in US dollars as is customary internationally."
+    caption: "The chart shows the price of a barrel (159 litres) of North Sea Brent crude oil as a monthly average. The price is quoted in US dollars, as is customary internationally."
   fuel:
     title: "Prices of petrol, diesel and heating oil"
     ask: "How much do petrol, diesel and heating oil cost?"
-    caption: "Consumer prices in Germany including taxes and duties, in € per litre, as of Monday each week. Source: European Commission, Weekly Oil Bulletin."
+    caption: "The chart shows consumer prices in Germany in euros per litre, including taxes and duties. The prices apply to Monday of each week. Source: European Commission, Weekly Oil Bulletin."
   oil_d:
     title: "Oil price, daily"
     ask: "How expensive is crude oil?"
-    caption: "Price per barrel (159 litres) of North Sea Brent crude oil in US dollars, as is customary internationally. Thin: daily values on trading days, thick: five-trading-day moving average. Daily values are available with a lag of about one week."
+    caption: "The chart shows the price of a barrel (159 litres) of North Sea Brent crude oil in US dollars, as is customary internationally. Thin: daily values on trading days, thick: moving average over five trading days. The daily values appear with a lag of about one week."
   power:
     title: "Electricity: consumption and wholesale price"
     ask: "How much electricity is being used, and what does it cost on the wholesale market?"
-    caption: "Electricity consumption (grid load) in Germany on the same month a year earlier, and the wholesale electricity price on the day-ahead market (Germany/Luxembourg bidding zone), monthly average in € per MWh. Consumption closely tracks industrial production, but is available just a few days after the end of the month; weather and public holidays distort individual months. Source: Federal Network Agency | SMARD.de, licence CC BY 4.0."
+    caption: "The chart shows electricity consumption (grid load) in Germany compared with the same month a year earlier, and the wholesale electricity price on the day-ahead market (Germany/Luxembourg bidding zone), as a monthly average in euros per megawatt hour. On the day-ahead market, electricity is traded for the next day. Consumption closely tracks industrial production, but is available just a few days after the end of the month. Weather and public holidays distort individual months. Source: Federal Network Agency | SMARD.de, licence CC BY 4.0."
   power_d:
     title: "Electricity: consumption and wholesale price, daily"
     ask: "How much electricity has been used in recent weeks, and what does it cost?"
-    caption: "Electricity consumption (grid load) in GWh per day and wholesale price on the day-ahead market (bidding zone Germany/Luxembourg), daily average in € per MWh. Thin: daily values, thick: seven-day moving average. Weekends and public holidays depress consumption and price. Source: Bundesnetzagentur | SMARD.de, licence CC BY 4.0."
+    caption: "The chart shows electricity consumption (grid load) in gigawatt hours per day and the wholesale price on the day-ahead market (Germany/Luxembourg bidding zone), as a daily average in euros per megawatt hour. On the day-ahead market, electricity is traded for the next day. Thin: daily values, thick: seven-day moving average. Weekends and public holidays push down consumption and price. Source: Bundesnetzagentur | SMARD.de, licence CC BY 4.0."
   gas_storage:
     title: "Gas storage fill level, daily values"
     ask: "How full are the gas storage facilities?"
-    caption: "Fill level of German gas storage facilities in % of working gas capacity, daily values. The facilities are filled in summer and drawn down in winter; a low level at the start of winter raises the risk of price spikes. The law sets minimum fill levels on reference dates in the autumn. Source: GIE (AGSI)."
+    caption: "The chart shows daily how full German gas storage facilities are, in % of working gas capacity, that is the usable storage volume. The facilities are filled in summer and drawn down in winter. If the level is low at the start of winter, the risk of price spikes rises. The law sets minimum fill levels on reference dates in the autumn. Source: GIE (AGSI)."
   hdd:
     title: "Heating degree days"
     ask: "How much heating is needed?"
-    caption: "Heating degree days measure heating demand: the colder a day below 15 °C, the more degree days (VDI 3807, room temperature 20 °C), here per month in kelvin times days. Bars: monthly values; black marks: average for the same month 2015 to 2019. A bar reaching above the mark means the month was colder than usual. Summer months carry little weight, as little heating is needed then. A cold winter raises consumption of gas and heating oil and energy generation, a mild one lowers them. Unweighted average of all stations of the German Weather Service (DWD), as the DWD does not publish a figure for Germany as a whole."
+    caption: "Heating degree days measure how much heating is needed: the colder a day below 15 °C, the more degree days it counts (VDI 3807, room temperature 20 °C), here per month in kelvin times days. The bars show the monthly values, the black marks the average for the same month 2015 to 2019; a bar reaching above the mark means the month was colder than usual. Summer months carry little weight, as little heating is needed then. A cold winter raises consumption of gas and heating oil and energy generation, a mild one lowers them. The values are the unweighted average of all stations of the German Weather Service, as it does not publish a figure for Germany as a whole."
   gas:
     title: "Natural gas price in Europe"
     ask: "How expensive is natural gas?"
-    caption: "Wholesale price of natural gas in Europe (TTF trading hub), monthly average. The IMF reports the price in US dollars per MMBtu; converted into euros per megawatt hour, the unit customary in Europe, using the monthly average of the ECB reference rate (1 MMBtu = 0.293071 MWh)."
+    caption: "The chart shows the wholesale price of natural gas in Europe at the TTF trading hub as a monthly average. The International Monetary Fund reports the price in US dollars per MMBtu, an energy unit common in the United States. Here it is converted into euros per megawatt hour, the unit customary in Europe, using the monthly average of the European Central Bank's reference rate (1 MMBtu = 0.293071 megawatt hours)."
   diffusion:
     title: "Breadth: share of manufacturing industries growing"
     ask: "Is industry growing across the board or only in a few industries?"
-    caption: "Share of manufacturing industries whose output (24 industries) or orders (9 industries) in the last three months exceeded the three months before, in %. Each industry counts equally, regardless of its size. Above 50%, most industries are growing. Lines: three-month moving average; monthly values can be shown. Grey areas: recessions as dated by the German Council of Economic Experts."
+    caption: "The lines show the share of manufacturing industries whose output (24 industries) or orders (9 industries) in the last three months were higher than in the three months before, in %. Each industry counts equally, whatever its size. Above 50%, most industries are growing. The lines are three-month moving averages; monthly values can be shown. Grey areas show recessions as dated by the German Council of Economic Experts."
   proj_gap:
     title: "GDP and the Federal Government's projection"
     ask: "Is growth on track for the Federal Government's projection?"
-    caption: "Bars: real GDP on the same quarter a year earlier in %, unadjusted like the annual rate of the projection. Light: rate GDP would have to reach in each remaining quarter of the year for the year to meet the latest projection of the Federal Government (dashed line). The annual rate is approximately the mean of the four quarterly rates, weighted by each quarter's share of the previous year. Revisions to earlier quarters change the required rate. Once all four quarters are in, the chart shows the outcome of the past year until the first quarter of the following year is published. Switchable to the seasonally and calendar adjusted rate on the previous quarter: the light bars then show how much adjusted GDP would have to grow in each missing quarter to reach the required rate on the same quarter a year earlier; calendar effects are not taken into account."
+    caption: "The bars show growth in real economic output (gross domestic product) on the same quarter a year earlier in %, unadjusted like the annual rate of the Federal Government's projection. The light bars show the rate each remaining quarter of the year would have to reach for the year to meet the latest projection (dashed line); revisions to earlier quarters change this required rate. The annual rate is roughly the mean of the four quarterly rates, weighted by each quarter's share of the previous year. Once all four quarters are in, the chart shows the outcome of the past year until the first quarter of the following year. A switch changes to the seasonally and calendar adjusted rate on the previous quarter: the light bars then show how much adjusted gross domestic product would have to grow in each missing quarter to reach the required rate on the same quarter a year earlier, without taking calendar effects into account."
   forecast:
     title: "Growth forecasts"
     ask: "What do the forecasts expect for growth?"
-    caption: "Forecasts for real GDP growth on the previous year, by target year. One dot per forecaster and target year, each the latest forecast. Dark blue with figure: projection of the Federal Government, the basis for the budget and the tax revenue estimate; grey: other forecasters, light grey if the forecast is more than four months old. Grey field: range from the lowest to the highest value. Forecaster and date in the tooltip. Joint Economic Forecast: joint forecast by DIW, ifo, IfW Kiel, IWH and RWI. Some values come from press reports on the publications and are marked in the tooltip."
+    caption: "Each dot is a forecaster's latest forecast for growth in real, that is price-adjusted, economic output (gross domestic product) on the previous year, by target year. Dark blue with figure is the Federal Government's projection, on which the budget and the tax revenue estimate are based; grey are other forecasters, light grey if their forecast is more than four months old. The grey field shows the range from the lowest to the highest value. The tooltip, the box that appears when you point at a dot, names forecaster and date and marks some values that come from press reports on the publications. The Joint Economic Forecast is the joint forecast by DIW, ifo, IfW Kiel, IWH and RWI."
   forecast_infl:
     title: "Inflation forecasts"
     ask: "What do the forecasts expect for inflation?"
-    caption: "Forecasts for the inflation rate on the previous year, by target year; usually measured by the consumer price index (CPI). The Bundesbank forecasts the European HICP, which is usually close to the CPI. One dot per forecaster and target year, each the latest forecast. Dark blue with figure: Federal Government; grey: other forecasters, light grey if more than four months old. Grey field: range of all latest forecasts. Forecaster and date in the tooltip. Some values come from press reports and are marked in the tooltip."
+    caption: "Each dot is a forecaster's latest forecast for the inflation rate on the previous year, by target year, usually measured by the consumer price index. The Bundesbank forecasts the European harmonised index of consumer prices, which is usually close to the consumer price index. Dark blue with figure is the Federal Government; grey are other forecasters, light grey if their forecast is more than four months old. The grey field shows the range of all latest forecasts. The tooltip that appears when you point at a dot names forecaster and date and marks some values taken from press reports."
   forecast_core:
     title: "Core inflation forecasts"
     ask: "What do the forecasts expect for core inflation?"
-    caption: "Forecasts for the inflation rate excluding energy and food. Shown once at least two forecasters have published a value."
+    caption: "The chart shows forecasts for the inflation rate excluding energy and food, known as core inflation. It is shown only once at least two forecasters have published a value."
   potential:
     title: "Growth and potential output"
     ask: "Is the economy growing faster than its potential?"
-    caption: "Potential output is the economic output that would be possible with normal utilisation of labour and machinery. It cannot be observed but has to be estimated. The shaded area shows the range of estimates by the European Commission (AMECO), the OECD and the IMF; the individual values are in the tooltip; lighter: forecast years. The estimates differ in method and vintage and are revised with every edition. If GDP (bars) grows faster than potential, utilisation rises; the difference between the levels is called the output gap. If it is positive, inflation becomes more likely; if it is negative, capacity is unused."
+    caption: "Potential output is the economic output that would be possible with normal use of workers and machinery; it cannot be observed, so it is estimated. The shaded area shows the range of estimates by the European Commission (AMECO), the OECD and the International Monetary Fund, lighter in forecast years; the individual values are in the tooltip. The estimates differ in method and data vintage and are revised with every edition. If economic output (bars) grows faster than potential, utilisation rises; the gap between the two levels is called the output gap. If it is positive, inflation becomes more likely; if it is negative, capacity is left unused."
   productivity:
     title: "Labour productivity"
     ask: "How is productivity developing?"
-    caption: "Real economic output per person employed and per hour worked. In the long run, productivity determines prosperity."
+    caption: "The chart shows real economic output per person employed and per hour worked, that is how much a person in work or an hour of work produces on average, adjusted for prices. In the long run, this productivity determines prosperity."
   inv_ratio:
     title: "Investment ratio"
     ask: "How much does Germany invest compared with the EU?"
-    caption: "Gross fixed capital formation (machinery, buildings, software and research) as a percentage of GDP, Germany compared with the European Union."
+    caption: "The chart shows how much Germany and the European Union invest, as a percentage of economic output (gross domestic product). This means gross fixed capital formation: spending on machinery, buildings, software and research."
   emp_sector:
     title: "Persons in employment by economic sector"
     ask: "In which sectors are jobs being created?"
-    caption: "Change in the number of persons in employment by economic sector since the second quarter of 2022, in thousands; in brackets as a percentage of the 2022 Q2 level. Shows the shift from industry to services."
+    caption: "The chart shows how the number of people in work in each economic sector has changed since the second quarter of 2022, in thousands. In brackets is the same change as a percentage of the 2022 second-quarter level. This shows how employment is shifting from industry to services."
     unit: "thousand people, change since 2022 Q2"
   migration:
     title: "Net migration"
     ask: "How many people are moving to Germany?"
-    caption: "Arrivals minus departures across Germany's borders, in millions of people, including statistical adjustment. Since 2011 immigration has contributed substantially to the growth of the labour force; 2015 and 2022 are marked by refugee flows from Syria and Ukraine."
+    caption: "The chart shows arrivals minus departures across Germany's borders, in millions of people and including statistical adjustment. Since 2011 immigration has contributed substantially to the growth of the labour force. The years 2015 and 2022 are marked by people fleeing Syria and Ukraine."
     unit: "million people"
   migration_groups:
     title: "Net migration by citizenship"
     ask: "Who is moving in, and who is moving out?"
-    caption: "Arrivals minus departures by citizenship, in thousands. Germans have been net emigrants for years; immigration from outside the EU is shaped by refugee flows, that from within the EU mainly by labour migration. Excluding statistical adjustment, so the total differs from the net migration chart."
+    caption: "The chart shows arrivals minus departures by citizenship, in thousands. Germans have been net emigrants for years: more Germans leave than arrive. Immigration from outside the EU is shaped by refugee flows, that from within the EU mainly by labour migration. The figures exclude statistical adjustment, so the total differs from the net migration chart."
     unit: "thousand people"
   cit:
     title: "Tax rates on corporate profits"
     ask: "How heavily does Germany tax corporate profits by comparison?"
-    caption: "Combined statutory tax rate on corporations (corporate income tax including surcharges and taxes at sub-central levels, in Germany the local business tax), according to the OECD. Hollow dot: rate in the first year of the series; filled dot with figure: latest rate; years in the legend. Ordered by the latest rate, Germany highlighted."
+    caption: "The chart compares, using OECD figures, the combined statutory tax rate on the profits of corporations. This covers corporate income tax with surcharges and taxes at sub-central levels, in Germany the local business tax. The hollow dot shows the rate in the first year of the series, the filled dot with figure the latest rate; the years are in the legend. Countries are ordered by the latest rate, with Germany highlighted."
   gov_balance:
     title: "General government balance"
     ask: "How large is the government deficit?"
-    caption: "Revenue minus expenditure of federal, state and local government and social security, as a percentage of GDP, quarterly, seasonally adjusted. Negative values mean a deficit. Dashed grey: Maastricht Treaty reference value of −3% of GDP; it applies to the deficit of a whole year, not to single quarters."
+    caption: "The chart shows revenue minus expenditure of federal, state and local government and social security, as a percentage of economic output, quarterly and seasonally adjusted (without the usual swings over the year). A value below zero means the state spends more than it takes in: it runs a deficit. Dashed grey is the Maastricht Treaty reference value of −3% of economic output. It applies to the deficit of a whole year, not to single quarters."
   gov_spend:
     title: "Government interest expenditure and investment"
     ask: "How much does the government spend on interest and investment?"
-    caption: "Government interest expenditure and gross fixed capital formation as a percentage of GDP, annual values. Rising interest rates narrow the scope for investment."
+    caption: "The chart shows how much the state spends on interest and how much it invests (gross fixed capital formation), each as a percentage of economic output and as annual values. When interest rates rise, less room is left for investment."
   gov_debt:
     title: "Government debt"
     ask: "How high is government debt?"
-    caption: "General government gross debt as defined in the Maastricht Treaty, as a percentage of GDP. Dashed grey: Maastricht Treaty reference value of 60%."
+    caption: "The chart shows general government gross debt as a percentage of economic output, as defined in the Maastricht Treaty. Dashed grey is the treaty's reference value of 60%."
   calendar:
     title: "Release calendar: the next twelve weeks"
     ask: "When are which figures released?"
-    caption: "Dates are estimated from the sources' usual release schedules and marked with a superscript e. The linked calendars of the sources are authoritative. The links lead to the charts that receive new values on that date."
+    caption: "The dates are estimated from the sources' usual release schedules and marked with a superscript e. The linked calendars of the sources are authoritative. The links lead to the charts that receive new values on that date."
 
   svr_bip:
     title: "Growth forecasts of the Council of Economic Experts and first release"
     ask: "How well did the Council of Economic Experts forecast growth?"
-    caption: "Forecast of the German Council of Economic Experts (Sachverständigenrat) for real GDP growth in the following year, from its annual report each November, and the first release for the same year as printed in the annual report a year later. Purple area: usual range around the forecast; in two thirds of the years since 1966 the first release fell inside it. The area is asymmetric because the Council overestimated growth on average (forecast minus 1.7 to plus 1.0 percentage points). West Germany until 1991; until about 1990 mostly real GNP. Every value is documented with paragraph or table and printed page in data/static/svr_prognosen.csv."
+    caption: "The chart compares the forecast of the German Council of Economic Experts (Sachverständigenrat) for real gross domestic product growth in the following year, from its annual report each November, with the first release for the same year as printed in the annual report a year later. The purple area shows the usual range around the forecast: in two thirds of the years since 1966 the first release fell inside it. The area reaches further down than up (forecast minus 1.7 to plus 1.0 percentage points), because the Council overestimated growth on average. Until 1991 the chart shows West Germany, and the forecasts for 1992 to 1994 also cover the former West German territory; until about 1990 it is mostly real gross national product. The forecast is missing for 1965 and 1968, as the Council gave only half-year forecasts then; all references are in the repository under data/static/svr_prognosen.csv."
     unit: "% on previous year"
   svr_vpi:
     title: "Inflation forecasts of the Council of Economic Experts and first release"
     ask: "How well did the Council of Economic Experts forecast inflation?"
-    caption: "Forecast of the Council of Economic Experts for the annual average rise in consumer prices in the following year and the first release from the next annual report. Where the Council forecast only the private consumption deflator, the deflator is also used as outcome. West Germany until 1991."
+    caption: "The chart compares the forecast of the Council of Economic Experts for the annual average rise in consumer prices in the following year with the first release from the annual report a year later. Where the Council forecast only the private consumption deflator, a price measure for private consumption, the deflator is also used as the outcome. West Germany until 1991. Where the next report gives no annual rate, today's figure is shown; the consumer price index is hardly ever revised."
     unit: "% on previous year"
   svr_alo:
     title: "Unemployment forecasts of the Council of Economic Experts and first release"
     ask: "How well did the Council of Economic Experts forecast unemployment?"
-    caption: "Forecast of the Council of Economic Experts for registered unemployment (annual average) in the following year and the first release from the next annual report. West Germany until 1991, Germany afterwards. From 2005 recipients of unemployment benefit II are included, which raises the count. The forecast line shows only years with a printed level."
+    caption: "The chart compares the forecast of the Council of Economic Experts for registered unemployment (annual average) in the following year with the first release from the annual report a year later. West Germany until 1991, Germany afterwards; the jump in 1991/92 comes from the change of territory. From 2005 recipients of unemployment benefit II are included, which raises the count. The forecast line shows only years for which the Council printed a figure; years with only a change or a vague threshold are missing there."
     unit: "thousand people"
   svr_rat:
     title: "Recommendations of the Council of Economic Experts on four standing questions"
     ask: "What did the Council of Economic Experts recommend on wages, money, public finances and the labour market?"
-    caption: "Recommendation of the Council majority for the following year, on a fixed scale per question. Wages: blue below the distributive margin (productivity plus price rise), grey within, red above. Monetary policy: blue tighter, grey unchanged, red looser. Fiscal policy: blue consolidation, grey cyclically neutral, red stimulus. Labour market and welfare: blue more protection or benefits, grey unchanged, red more flexibility, benefit cuts or work incentives. White: no recommendation discernible. Tap for the recommendation in one sentence (German) with paragraph and page. Bars: passages with a minority vote per annual report, counted per topic. Own coding of all annual reports 1964/65 to 2025/26; the classification is an interpretation."
+    caption: "The colours show, on a fixed scale per question, what the Council majority recommended in its annual report for the following year; white means no recommendation is discernible. Wages: blue below the distributive margin (productivity plus price rise), grey within it, red above; monetary policy: blue tighter, grey unchanged, red looser. Fiscal policy: blue consolidation (cutting the deficit), grey cyclically neutral, red stimulus; labour market and welfare: blue more protection or benefits, grey unchanged, red more flexibility, benefit cuts or incentives to take up work. Tap for the recommendation in one sentence (in German) with paragraph and page; the bars below count, per annual report, the passages with a minority vote (a dissenting opinion of one member), counted per topic. The classification rests on our own coding of all annual reports 1964/65 to 2025/26 and is an interpretation; the references are in data/static/svr_positionen_dauerfragen.csv."
     unit: "level -1, 0, +1"
   svr_fiskal:
     title: "Recommended fiscal stance and expected growth"
     ask: "Did the Council of Economic Experts advise austerity even when growth was weak?"
-    caption: "Bars: real GDP growth the Council of Economic Experts expected for the following year. Colour: fiscal stance it recommended for that year in the same report; blue consolidation, grey cyclically neutral (let automatic stabilisers work), red stimulus, light grey no recommendation discernible. West Germany until 1991. Tap for the recommendation with paragraph and page."
+    caption: "The bars show the real gross domestic product growth the Council of Economic Experts expected in its annual report for the following year. The colour shows the fiscal stance it recommended for that year in the same report: blue consolidation (cutting the deficit), grey cyclically neutral (let automatic stabilisers work), red stimulus, light grey no recommendation discernible. West Germany until 1991. Tap for the recommendation with paragraph and page."
     unit: "% on previous year"
   gd_bip:
     rail: "JEF growth forecasts"
     title: "Growth forecasts of the Joint Economic Forecast and first release"
     ask: "How well did the institutes forecast growth?"
-    caption: "Forecast of the Joint Economic Forecast (Gemeinschaftsdiagnose) of the economic research institutes for real GDP growth in the following year, from the autumn report, and the first release for the same year as printed in the spring report half a year later. West Germany until 1991, Germany from 1992; until about 1991 mostly real GNP. No autumn forecast with an annual figure exists for 1960-1962, 1964, 1965 and 1968. Where a report is missing (1970-1974 and single rounds), values come from the archive of appendix tables. Tapping also shows today's data vintage. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    caption: "The chart compares the forecast of the Joint Economic Forecast (Gemeinschaftsdiagnose), the shared forecast of the economic research institutes, for real gross domestic product growth in the following year from the autumn report with the first release for the same year as printed in the spring report half a year later. West Germany until 1991, Germany from 1992; until about 1991 it is mostly real gross national product. No autumn forecast with an annual figure exists for 1960 to 1962, 1964, 1965 and 1968; where a report is missing (1970 to 1974 and single rounds), values come from the archive of appendix tables. Tapping also shows today's data vintage. Every value is documented with file, page and table; all references are in the repository under data/static/gd_prognosen.csv."
     unit: "% on previous year"
   gd_vpi:
     rail: "JEF inflation forecasts"
     title: "Inflation forecasts of the Joint Economic Forecast and first release"
     ask: "How well did the institutes forecast inflation?"
-    caption: "Forecast of the Joint Economic Forecast for the annual average rise in consumer prices in the following year, from the autumn report, and the first release from the next spring report. Where a report gives no consumer price index (1960s, mostly autumn 1986 to spring 1996, all values from the appendix tables), the private consumption deflator is shown, with the same measure as first release. Where the measure changes between forecast and release, the first release is missing (1976, 1978, 1979 and 1986). For 2022 the first release follows the old weighting scheme (7.9%), on which the forecasts were based; the new scheme gives 6.9%. West Germany until 1991. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    caption: "The chart compares the forecast of the Joint Economic Forecast for the annual average rise in consumer prices in the following year from the autumn report with the first release from the next spring report. Where a report gives no consumer price index (1960s, mostly autumn 1986 to spring 1996, all values from the appendix tables), the private consumption deflator, a price measure for private consumption, is shown, with the same measure as first release. Where the measure changes between forecast and release, the first release is missing (1976, 1978, 1979 and 1986). For 2022 the first release follows the old weighting scheme, that is the old weights in the basket of goods (7.9%), because the forecasts were based on it; the new scheme gives 6.9%. West Germany until 1991; every value is documented with file, page and table, and all references are in the repository under data/static/gd_prognosen.csv."
     unit: "% on previous year"
   gd_alo:
     rail: "JEF unemployment forecasts"
     title: "Unemployment forecasts of the Joint Economic Forecast and first release"
     ask: "How well did the institutes forecast unemployment?"
-    caption: "Forecast of the Joint Economic Forecast for registered unemployment (annual average) in the following year, from the autumn report, and the first release from the next spring report. West Germany until 1991, Germany afterwards; the jump from 1991 to 1992 reflects the territory. From 2005 recipients of unemployment benefit II are included. No forecast with a firm figure for 1982; no first release for 1981. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    caption: "The chart compares the forecast of the Joint Economic Forecast for registered unemployment (annual average) in the following year from the autumn report with the first release from the next spring report. West Germany until 1991, Germany afterwards; the jump from 1991 to 1992 comes from the change of territory. From 2005 recipients of unemployment benefit II are included. There is no forecast with a firm figure for 1982, and no first release for 1981. Every value is documented with file, page and table; all references are in the repository under data/static/gd_prognosen.csv."
     unit: "thousand people"
   gd_saldo:
     rail: "JEF government balance forecasts"
     title: "Joint Economic Forecast: forecasts of the government balance"
     ask: "How well did the institutes forecast the government balance?"
-    caption: "Forecast of the Joint Economic Forecast for the general government balance (revenue minus expenditure of federal, state and local government and social security) as a percentage of GDP in the following year, from the autumn report, and the first release from the next spring report. Negative values are deficits. Until 1993 the reports print the balance only in billion D-Mark; the ratio is calculated there from the balance and nominal gross national product in the same report, for 1994 and 1995 from the balance and nominal GDP. The different denominator changes the ratio mostly by a few hundredths of a percentage point. Forecast and first release are always calculated the same way. Figures for 1974 and 1975 are missing. West Germany until 1991. For 2000 forecast and first release exclude the proceeds from UMTS licences. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    caption: "The chart compares the forecast of the Joint Economic Forecast for the general government balance in the following year from the autumn report with the first release from the next spring report. The balance is revenue minus expenditure of federal, state and local government and social security as a percentage of economic output; negative values are deficits. Until 1993 the reports print the balance only in billion D-Mark; the ratio is calculated there with the nominal gross national product in the same report, for 1994 and 1995 with nominal gross domestic product, with forecast and first release always calculated the same way. Figures for 1974 and 1975 are missing, West Germany until 1991, and for 2000 forecast and first release exclude the proceeds from the mobile phone (UMTS) licences. Every value is documented with file, page and table; all references are in the repository under data/static/gd_prognosen.csv."
     unit: "% of GDP, until 1993 of GNP"
   gd_fehler:
     rail: "JEF forecast errors by decade"
     title: "Errors of the Joint Economic Forecast growth forecasts"
     ask: "Have growth forecasts become more accurate over the decades?"
-    caption: "Distance between the autumn forecast of the Joint Economic Forecast for real GDP growth in the following year and the first release, as an absolute value in percentage points, without direction. Grey steps: mean per decade where at least five years are available; the current decade dashed. The 1960s have only four values and no step. West Germany until 1991. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    caption: "The chart shows how far the autumn forecast of the Joint Economic Forecast for real gross domestic product growth in the following year lay from the first release, in percentage points and without direction, that is whether too high or too low. The grey steps show the average per decade where at least five years are available, the current decade dotted; the 1960s have only four values and no step. West Germany until 1991. Every value is documented with file, page and table; all references are in the repository under data/static/gd_prognosen.csv."
     unit: "percentage points"
   gd_ziel:
     rail: "JEF forecasts for a target year"
     title: "Joint Economic Forecast growth forecasts for a target year"
     ask: "How did the institutes change their forecast for a given year?"
-    caption: "Each line shows the real GDP growth the Joint Economic Forecast expected for a given year, from the first forecast to the autumn of that year. Each point is one report, placed at its closing date. Open circle: first release in the spring report of the following year. Shown are the four most recent target years; the first release for 2026 is still pending. All target years since 1950 are in the dataset. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    caption: "Each line shows the real gross domestic product growth the Joint Economic Forecast expected for a given year, from the first forecast to the autumn of that year. Each point is one report, placed at its closing date; the open circle is the first release in the spring report of the following year. The four most recent target years are shown, and the first release for 2026 is still pending; all target years since 1950 are in the dataset. Every value is documented with file, page and table; all references are in the repository under data/static/gd_prognosen.csv."
     unit: "% on previous year"
+
+  hybrid:
+    title: "Russian sabotage and subversion in Europe"
+    ask: "How often does Russian sabotage hit targets in Europe?"
+    caption: "Incidents per quarter that authorities or reliable reports attribute to Russia: sabotage, arson, reconnaissance, assassinations and directed disruption in the physical domain, without most cyber attacks and espionage cases. Blue: incidents with a target in Germany. The count depends on attribution; other databases arrive at quite different figures with other definitions. Many cases only become known once investigations are closed, so the latest quarters are too low."
+  gpr:
+    title: "Geopolitical risk"
+    ask: "How much do newspapers report on geopolitical risks?"
+    caption: "Geopolitical Risk Index by Caldara and Iacoviello: share of articles in ten major English-language newspapers on war threats, wars, military build-ups and terrorism; the country index counts only articles that also mention Germany. 1985–2019 average = 100. In research, high values go along with lower investment and more caution among firms."
+  milex:
+    title: "Military expenditure"
+    ask: "How high is military spending by comparison?"
+    caption: "Military expenditure in % of GDP as defined by the Stockholm International Peace Research Institute (SIPRI), including military pensions and military aid. NATO uses a different definition; its ratios for Germany are usually somewhat higher. Grey dashed: the 2% target and the 3.5% target for core spending by 2035 agreed in The Hague in 2025. Highlighted: Germany."
+  cinc:
+    title: "Share of the world's material capabilities"
+    ask: "How much weight does Germany carry among the world's powers?"
+    caption: "Share in the Composite Index of National Capability of the Correlates of War project, in % of the world: average of world shares in population, urban population, steel production, energy consumption, military personnel and military expenditure. Germany 1955 to 1990 West and East Germany combined, Russia until 1991 the Soviet Union. The index measures mass, not technology or alliances."
+  trade_harm:
+    title: "Harmful trade interventions affecting German interests"
+    ask: "How many harmful trade interventions affect Germany?"
+    caption: "Number of interventions per year that Global Trade Alert rates as harmful or likely harmful to trade and that list Germany among the affected countries: tariffs, subsidies, public procurement rules, export restrictions and investment conditions. Counted by year of entry into force, complete years only. Each intervention counts once, regardless of how much trade it affects. Global Trade Alert often records new cases with a delay, so the latest year tends to be too low."
+  ukraine_aid:
+    title: "German aid to Ukraine"
+    ask: "How much aid does Germany allocate to Ukraine?"
+    caption: "Bilateral aid from Germany that has been delivered or specified for delivery, in billion euros per quarter by month of allocation. Military aid includes funds for arms purchases. Excluding Germany's share of EU aid and spending on refugees in Germany. Large packages are often fixed for years and then appear bundled."
 
 series:
   wb_soybeans: {title: "World market price, Soybeans (World Bank: Soybeans)", label: "Soybeans", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
@@ -797,6 +826,17 @@ series:
   emp_sector_ru: {title: "Persons in employment: other services", label: "Other services", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
   de_migration: {title: "Net migration (including statistical adjustment)", label: "Net migration", unit: "people", adjustment: "annual data"}
   cit: {title: "Combined statutory tax rate on corporate profits, {cit_name}", label: "{cit_name}", unit: "%", note: "OECD Corporate Tax Statistics, combined statutory tax rate (CIT_C), standard rate (ST). Retrieved via the OECD SDMX interface on 3.11.2026.", adjustment: "standard rate, central and sub-central government"}
+  leiden_ops_de: {title: "Russian operations against Europe with a target in Germany", label: "Germany", unit: "incidents per quarter", note: "Incidents in the physical domain (sabotage, arson, reconnaissance, assassinations, certain influence operations) attributed to Russia by authorities or reliable reports; most cyber attacks and espionage cases are missing. Counted by the start of the incident; incidents affecting several countries including Germany count here. One incident without a known month is missing. Data as of 12.1.2026, doi:10.7910/DVN/TQ0FMQ.", adjustment: "not adjusted"}
+  leiden_ops_eu: {title: "Russian operations against Europe without a target in Germany", label: "rest of Europe", unit: "incidents per quarter", note: "As the series for Germany, incidents without reference to Germany.", adjustment: "not adjusted"}
+  gpr_de: {title: "Geopolitical risk relating to Germany", label: "Germany", unit: "Index, 1985–2019 average = 100", note: "Country index GPRC_DEU: share of articles in ten major English-language newspapers that mention geopolitical tensions, wars or terrorism together with Germany; rescaled by the monitor to an average of 100 in 1985 to 2019. Retrieved every working day from matteoiacoviello.com.", adjustment: "not adjusted"}
+  gpr_world: {title: "Geopolitical risk, world", label: "World", unit: "Index, 1985–2019 average = 100", note: "Overall GPR index, rescaled by the monitor to an average of 100 in 1985 to 2019.", adjustment: "not adjusted"}
+  milex: {title: "Military expenditure in % of GDP, {staat_name}", label: "{staat_name}", unit: "% of GDP", note: "Military expenditure as defined by SIPRI (including military pensions, paramilitary forces and military aid) in % of GDP. Germany until 1990 West Germany. April 2026 edition (file v1.2), taken over by hand.", adjustment: "annual, current prices"}
+  cinc: {title: "Share in the CINC capability index, {staat_name}", label: "{staat_name}", unit: "% of world", note: "Composite Index of National Capability: average of a state's world shares in population, urban population, steel production, energy consumption, military personnel and military expenditure. Germany 1955 to 1990 West and East Germany combined, no value 1946 to 1954; Russia until 1991 the Soviet Union. Version 7.0, data up to 2022.", adjustment: "annual"}
+  kiel_de_mil: {title: "German military aid to Ukraine, allocated", label: "Military aid", unit: "€ bn", note: "Allocations: aid delivered or specified for delivery, by month of allocation, including earmarked financial aid for military purposes; excluding aid via the EU and costs of refugees in Germany. Complete quarters only. 31st release (data up to 31.8.2026), taken over by hand.", adjustment: "current prices"}
+  gta_de_chn: {title: "Harmful trade interventions affecting Germany, by China", label: "China", unit: "interventions per year", note: "Interventions rated harmful (red) or likely harmful (amber) by Global Trade Alert that list Germany among affected countries; by year of entry into force, complete years only. Export of all interventions of 10.11.2026, taken over by hand.", adjustment: "by year of entry into force"}
+  gta_de_usa: {title: "Harmful trade interventions affecting Germany, by the USA", label: "USA", unit: "interventions per year", note: "As for China.", adjustment: "by year of entry into force"}
+  gta_de_other: {title: "Harmful trade interventions affecting Germany, by other states", label: "other states", unit: "interventions per year", note: "As for China; including joint measures of several states.", adjustment: "by year of entry into force"}
+  kiel_de_other: {title: "German financial and humanitarian aid to Ukraine, allocated", label: "Financial and humanitarian aid", unit: "€ bn", note: "Total allocations minus military aid, otherwise as military aid.", adjustment: "current prices"}
   de_maut: {title: "Truck toll mileage index (motorways, vehicles with four or more axles)", label: "Truck toll mileage", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
   de_maut_d: {title: "Truck toll mileage index, daily (experimental)", label: "Truck toll mileage", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Bundesbank, experimental)"}
   de_ilo: {title: "Unemployment rate (ILO definition)", label: "Unemployment rate (ILO)", unit: "% of labour force", adjustment: "seasonally adjusted"}
@@ -969,6 +1009,7 @@ strings:
   "Wöchentlich": "Weekly"
 
 names:
+  staat: {deu: "Germany", fra: "France", gbr: "United Kingdom", pol: "Poland", usa: "USA", rus: "Russia", chn: "China"}
   item:
     P31_S14_S15: "Household consumption"
     P3_S13: "Government consumption"
@@ -1043,6 +1084,9 @@ names:
     "16": "Thuringia"
 # Feste Beschriftungen und Kalendertermine (deutsch: englisch), für Grafiken, Kalender und Gruppen
 labels:
+  "NATO-Ziel 2 %": "NATO target 2%"
+  "NATO-Ziel 3,5 % bis 2035": "NATO target 3.5% by 2035"
+  "Mittel 1985–2019 = 100": "1985–2019 average = 100"
   "BIP ggü. Vorquartal": "GDP on previous quarter"
   "BIP ggü. Vorjahresquartal": "GDP on same quarter a year earlier"
   "Temperatur, Abweichung vom Mittel": "Temperature, deviation from average"
