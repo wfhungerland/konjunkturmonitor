@@ -368,10 +368,15 @@ def _gpr(static: Path) -> None:
     update_gpr(static)
 
 
+def _trade(static: Path) -> None:
+    from .geopolitik import update_trade
+    update_trade(static)
+
+
 def update_all(root: Path) -> None:
     static = root / "data" / "static"
     static.mkdir(parents=True, exist_ok=True)
-    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Lkw-Maut täglich", update_maut_daily), ("Indeed", update_indeed), ("Oil Bulletin", update_oil_bulletin), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet), ("Geopolitisches Risiko", _gpr)):
+    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Lkw-Maut täglich", update_maut_daily), ("Indeed", update_indeed), ("Oil Bulletin", update_oil_bulletin), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet), ("Geopolitisches Risiko", _gpr), ("Handel mit Russland", _trade)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf

@@ -623,7 +623,7 @@ function timeChart(el, c) {
   c = plotC(c);
   const traces = [], all = [], annotations0 = [];
   const lines = c.series.filter(s => s.style !== "bar"), bars = c.series.filter(s => s.style === "bar");
-  bars.forEach((s, i) => { traces.push({ type: "bar", x: s.x, y: s.y, name: s.label, marker: { color: BAR_PAL[i % BAR_PAL.length], line: { width: 0 }, opacity: c.partial_last ? s.x.map((_, j) => j === s.x.length - 1 ? 0.4 : 1) : s.req ? s.x.map((_, j) => j >= s.x.length - s.req ? 0.35 : 1) : 1 },
+  bars.forEach((s, i) => { traces.push({ type: "bar", x: s.x, y: s.y, name: s.label, marker: { color: (c.bar_colors || BAR_PAL)[i % (c.bar_colors || BAR_PAL).length], line: { width: 0 }, opacity: c.partial_last ? s.x.map((_, j) => j === s.x.length - 1 ? 0.4 : 1) : s.req ? s.x.map((_, j) => j >= s.x.length - s.req ? 0.35 : 1) : 1 },
     customdata: s.x.map((_, j) => s.req && j >= s.x.length - s.req ? SCALE_TXT.need : ""),
     hovertemplate: `%{y:,.${c.decimals}f}%{customdata}<extra>${esc(s.label)}</extra>` }); all.push(...s.y);
     if (s.req) s.x.slice(-s.req).forEach((x, k) => annotations0.push({ xref: "x", yref: "y", x, y: s.y[s.y.length - s.req + k], text: SCALE_TXT.needlab, showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" } })); });
@@ -1026,7 +1026,7 @@ function dumbbellChart(el, c) {
 // Baumkarte (Grundriss): Fläche = Ausgaben, eine Farbe je oberster Gruppe, hellere Töne für Untergruppen.
 // Daten aus data/static (attach): steps je Jahr mit values je Blatt, parent (Code -> übergeordneter Code), labels, hue.
 // Antippen vergrößert eine Gruppe; Schieberegler oder Knöpfe wählen das Jahr; alt = zweite Abgrenzung (etwa mit Sondervermögen).
-const TM_TXT = { all: "Alle", hint: "Antippen vergrößert, Pfad oben führt zurück.", ist: "Ergebnis (Ist):", soll: "Plan (Soll):", of: "davon", bn: "Mrd.", peak: "gestrichelt: höchster Stand", lang: "de" };
+const TM_TXT = { view: "Gliederung:", all: "Alle", hint: "Antippen vergrößert, Pfad oben führt zurück.", ist: "Ergebnis (Ist):", soll: "Plan (Soll):", of: "davon", bn: "Mrd.", peak: "gestrichelt: höchster Stand", lang: "de" };
 function tmSquarify(items, rect) {
   const total = items.reduce((t, d) => t + d.v, 0), out = [];
   let r = { ...rect }, rest = items.map(d => ({ ...d, a: (d.v / total) * rect.w * rect.h }));
@@ -1042,8 +1042,10 @@ function tmSquarify(items, rect) {
   return out;
 }
 function treemapChart(el, c) {
-  const T = c.attach || {}, en = TM_TXT.lang === "en", lab = k => (en ? (T.labels_en || {})[k] : null) || (T.labels || {})[k] || k;
-  const P = T.parent || {}, steps = T.steps || [], st = el._tm || (el._tm = { si: steps.length - 1, path: [], alt: false });
+  const T0 = c.attach || {}, st0 = el._tm || (el._tm = { vi: 0, si: null, path: [], alt: false });
+  const T = T0.views ? Object.assign({}, T0, T0.views[st0.vi] || T0.views[0]) : T0;  // mehrere Gliederungen, etwa Funktion, Ausgabenart, Ressort
+  const en = TM_TXT.lang === "en", lab = k => (en ? (T.labels_en || {})[k] : null) || (T.labels || {})[k] || k;
+  const P = T.parent || {}, steps = T.steps || [], st = st0; if (st.si == null || st.si >= steps.length) st.si = steps.length - 1;
   if (!steps.length) return;
   const tint = (hex, t) => "#" + [1, 3, 5].map(o => Math.round(parseInt(hex.slice(o, o + 2), 16) + t * (255 - parseInt(hex.slice(o, o + 2), 16))).toString(16).padStart(2, "0")).join("");
   const dark = hex => { const v = [1, 3, 5].map(o => parseInt(hex.slice(o, o + 2), 16)); return 0.299 * v[0] + 0.587 * v[1] + 0.114 * v[2] < 140; };
@@ -1061,6 +1063,7 @@ function treemapChart(el, c) {
   const ord = a => a.sort((p, q) => rank(p.code) - rank(q.code));
   const fill = k => { const ch = chain(k), h = (T.hue || {})[ch[0]] || "#595959"; let t = 0;
     for (let d = 1; d < ch.length; d++) { const sib = kidsOf(ch[d - 1]); t += (d === 1 ? 0.5 : 0.3) * (sib.length > 1 ? sib.indexOf(ch[d]) / (sib.length - 1) : 0); }
+    if (T.light_rest && !(T.hue || {})[ch[0]]) t = Math.max(t, 0.35);  // kleine Blöcke ohne eigene Farbe: hellgrau
     return tint(h, Math.min(0.85, t)); };
   el.style.width = "100%"; el.style.marginLeft = "0";  // Baumkarte nutzt auch auf dem Handy die volle Breite
   const narrow = (el.parentElement || el).clientWidth < 600;
@@ -1093,6 +1096,7 @@ function treemapChart(el, c) {
   // Bedienung: Jahr (Schieberegler oder Knöpfe nach Ist und Plan), zweite Abgrenzung, Pfad
   const redraw = () => treemapChart(el, c);
   let ctl = `<div class="tmctl" style="display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin:0 0 6px;font-size:13.5px">`;
+  if (T0.views) ctl += `<span style="display:flex;align-items:center;gap:6px">${TM_TXT.view}<span class="seg" style="margin:0">${T0.views.map((v, i) => `<button type="button" data-v="${i}" aria-pressed="${i === st.vi}">${esc(en ? v.label_en || v.label : v.label)}</button>`).join("")}</span></span>`;
   if (T.slider) ctl += `<label style="display:flex;align-items:center;gap:8px"><input type="range" min="0" max="${steps.length - 1}" value="${st.si}" class="tmyr" style="width:220px" aria-label="Jahr"><b>${esc(S.label)}</b></label>`;
   else { const grp = (g, t) => { const ix = steps.map((x, i) => [x, i]).filter(([x]) => x.group === g); return ix.length ? `<span style="display:flex;align-items:center;gap:6px">${t}<span class="seg" style="margin:0">${ix.map(([x, i]) => `<button type="button" data-i="${i}" aria-pressed="${i === st.si}">${esc(en ? x.label_en || x.label : x.label)}</button>`).join("")}</span></span>` : ""; };
     ctl += grp("Ist", TM_TXT.ist) + grp("Soll", TM_TXT.soll); }
@@ -1101,7 +1105,8 @@ function treemapChart(el, c) {
   el.style.aspectRatio = "auto"; el.style.height = "auto";
   el.innerHTML = ctl + s;
   const yr = el.querySelector(".tmyr"); if (yr) yr.addEventListener("input", e => { st.si = +e.target.value; redraw(); });
-  el.querySelectorAll(".tmctl button").forEach(b => b.addEventListener("click", () => { st.si = +b.dataset.i; redraw(); }));
+  el.querySelectorAll(".tmctl button[data-i]").forEach(b => b.addEventListener("click", () => { st.si = +b.dataset.i; redraw(); }));
+  el.querySelectorAll(".tmctl button[data-v]").forEach(b => b.addEventListener("click", () => { st.vi = +b.dataset.v; st.path = []; redraw(); }));
   const ab = el.querySelector(".tmalt"); if (ab) ab.addEventListener("change", e => { st.alt = e.target.checked; redraw(); });
   el.querySelectorAll(".tmpath a").forEach(a => a.addEventListener("click", () => { st.path = a.dataset.p ? a.dataset.p.split(",") : []; redraw(); }));
   el.querySelectorAll(".tmblk").forEach(g => { const k = g.dataset.code; if (kids(k).length) g.addEventListener("click", () => { st.path = [...st.path, k]; redraw(); }); });
