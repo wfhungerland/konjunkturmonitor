@@ -13,7 +13,7 @@ from statistics import mean
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "data" / "static" / "gd_prognosen.csv"
 
-# Größe im Datensatz -> Kürzel der Reihen; Saldoquote nur auf das BIP bezogen
+# Größe im Datensatz -> Kürzel der Reihen; Saldoquote bis 1993 auf das BSP bezogen (Einheit je Zeile im Datensatz)
 GROESSEN = {"BIP real": "bip", "Verbraucherpreise": "vpi", "Arbeitslose": "alo", "Finanzierungssaldo % BIP": "saldo"}
 ZIELJAHRE = 4  # Verlauf für die jüngsten vier Zieljahre
 
@@ -35,8 +35,6 @@ def herbst(rows: list[dict], groesse: str) -> dict[int, dict]:
     out = {}
     for r in rows:
         if r["groesse"] != groesse or r["runde"] != "H" or r["horizont"] != "1" or r["variante"] != "Mehrheit":
-            continue
-        if groesse == "Finanzierungssaldo % BIP" and "BSP" in r["einheit"]:
             continue
         if _num(r["wert"]) is None:
             continue

@@ -3567,7 +3567,7 @@ series:
     unit: "% des BIP"
     frequency: A
     adjustment: nicht bereinigt
-    start: "1990-01-01"
+    start: "1965-01-01"
     stale_after_months: 24
     chart: gd_saldo
     label: "Prognose der Institute"
@@ -3583,7 +3583,7 @@ series:
     unit: "% des BIP"
     frequency: A
     adjustment: nicht bereinigt
-    start: "1990-01-01"
+    start: "1965-01-01"
     stale_after_months: 24
     chart: gd_saldo
     label: "erste Meldung"
@@ -3599,7 +3599,7 @@ series:
     unit: "% des BIP"
     frequency: A
     adjustment: nicht bereinigt
-    start: "1990-01-01"
+    start: "1965-01-01"
     stale_after_months: 24
     chart: gd_saldo
     label: "heutiger Stand"

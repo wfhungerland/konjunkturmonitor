@@ -548,8 +548,8 @@ charts:
   gd_saldo:
     title: "Joint Economic Forecast: forecasts of the government balance"
     ask: "How well did the institutes forecast the government balance?"
-    caption: "Forecast of the Joint Economic Forecast for the general government balance (revenue minus expenditure of federal, state and local government and social security) as a percentage of GDP in the following year, from the autumn report, and the first release from the next spring report. Negative values are deficits. Before 1992 the reports print the balance only in billion D-Mark; those values are in the dataset. For 1993 the ratio refers to gross national product and is therefore missing. The values for 1994 and 1995 are calculated from the balance and nominal GDP in the same report. For 2000 forecast and first release exclude the proceeds from UMTS licences. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
-    unit: "% of GDP"
+    caption: "Forecast of the Joint Economic Forecast for the general government balance (revenue minus expenditure of federal, state and local government and social security) as a percentage of GDP in the following year, from the autumn report, and the first release from the next spring report. Negative values are deficits. Until 1993 the reports print the balance only in billion D-Mark; the ratio is calculated there from the balance and nominal gross national product in the same report, for 1994 and 1995 from the balance and nominal GDP. The different denominator changes the ratio mostly by a few hundredths of a percentage point. Forecast and first release are always calculated the same way. Figures for 1974 and 1975 are missing. West Germany until 1991. For 2000 forecast and first release exclude the proceeds from UMTS licences. Every value is documented with file, page and table in data/static/gd_prognosen.csv."
+    unit: "% of GDP, until 1993 of GNP"
   gd_fehler:
     title: "Errors of the Joint Economic Forecast growth forecasts"
     ask: "Have growth forecasts become more accurate over the decades?"
