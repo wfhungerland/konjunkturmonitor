@@ -231,6 +231,11 @@ charts:
 
   long_rr: {title: "Realzins seit 1871", decimals: 1}
   long_debt: {title: "Schuldenstand des Staates seit 1871", decimals: 0}
+  stx_share: {title: "Staatsausgaben nach Aufgaben, Anteil an den Ausgaben", decimals: 1}
+  stx_share_gdp: {title: "Staatsausgaben nach Aufgaben, in % des BIP", decimals: 1}
+  stx_levels: {title: "Ausgaben von Bund, Ländern, Gemeinden und Sozialversicherung", decimals: 1}
+  stx_tree: {title: "Grundriss der Staatsausgaben", decimals: 1}
+  bund_tree: {title: "Grundriss des Bundeshaushalts", decimals: 1}
   long_growth: {title: "Wachstum je Einwohner seit 1871, Zehnjahresdurchschnitt", decimals: 1}
   long_inv: {title: "Investitionsquote seit 1871", decimals: 1}
   long_open: {title: "Exportquote und Leistungsbilanz seit 1871", decimals: 1}
@@ -2892,6 +2897,343 @@ series:
     start: "2005-01-01"
     chart: gov_debt
     label: "Schuldenstand"
+
+  # Staatsausgaben nach Aufgaben (COFOG), Gesamtstaat; Anteil an den Ausgaben und in % des BIP
+  - id: de_cofog_tot_gf10
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_TOT, na_item: TE, cofog99: GF10}
+    title: "Staatsausgaben für Soziale Sicherung"
+    unit: "% der Staatsausgaben"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share
+    label: "Soziale Sicherung"
+
+  - id: de_cofog_tot_gf07
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_TOT, na_item: TE, cofog99: GF07}
+    title: "Staatsausgaben für Gesundheit"
+    unit: "% der Staatsausgaben"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share
+    label: "Gesundheit"
+
+  - id: de_cofog_tot_gf01
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_TOT, na_item: TE, cofog99: GF01}
+    title: "Staatsausgaben für Verwaltung und Zinsen"
+    unit: "% der Staatsausgaben"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share
+    label: "Verwaltung und Zinsen"
+
+  - id: de_cofog_tot_gf04
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_TOT, na_item: TE, cofog99: GF04}
+    title: "Staatsausgaben für Wirtschaft und Verkehr"
+    unit: "% der Staatsausgaben"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share
+    label: "Wirtschaft und Verkehr"
+
+  - id: de_cofog_tot_gf09
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_TOT, na_item: TE, cofog99: GF09}
+    title: "Staatsausgaben für Bildung"
+    unit: "% der Staatsausgaben"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share
+    label: "Bildung"
+
+  - id: de_cofog_tot_gf03
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_TOT, na_item: TE, cofog99: GF03}
+    title: "Staatsausgaben für Öffentliche Sicherheit"
+    unit: "% der Staatsausgaben"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share
+    label: "Öffentliche Sicherheit"
+
+  - id: de_cofog_tot_gf02
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_TOT, na_item: TE, cofog99: GF02}
+    title: "Staatsausgaben für Verteidigung"
+    unit: "% der Staatsausgaben"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share
+    label: "Verteidigung"
+
+  - id: de_cofog_tot_gf08
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_TOT, na_item: TE, cofog99: GF08}
+    title: "Staatsausgaben für Kultur, Sport, Religion"
+    unit: "% der Staatsausgaben"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share
+    label: "Kultur, Sport, Religion"
+
+  - id: de_cofog_tot_gf06
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_TOT, na_item: TE, cofog99: GF06}
+    title: "Staatsausgaben für Wohnen, Kommunales"
+    unit: "% der Staatsausgaben"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share
+    label: "Wohnen, Kommunales"
+
+  - id: de_cofog_tot_gf05
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_TOT, na_item: TE, cofog99: GF05}
+    title: "Staatsausgaben für Umweltschutz"
+    unit: "% der Staatsausgaben"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share
+    label: "Umweltschutz"
+
+  - id: de_cofog_gdp_gf10
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: TE, cofog99: GF10}
+    title: "Staatsausgaben für Soziale Sicherung"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share_gdp
+    label: "Soziale Sicherung"
+
+  - id: de_cofog_gdp_gf07
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: TE, cofog99: GF07}
+    title: "Staatsausgaben für Gesundheit"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share_gdp
+    label: "Gesundheit"
+
+  - id: de_cofog_gdp_gf01
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: TE, cofog99: GF01}
+    title: "Staatsausgaben für Verwaltung und Zinsen"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share_gdp
+    label: "Verwaltung und Zinsen"
+
+  - id: de_cofog_gdp_gf04
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: TE, cofog99: GF04}
+    title: "Staatsausgaben für Wirtschaft und Verkehr"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share_gdp
+    label: "Wirtschaft und Verkehr"
+
+  - id: de_cofog_gdp_gf09
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: TE, cofog99: GF09}
+    title: "Staatsausgaben für Bildung"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share_gdp
+    label: "Bildung"
+
+  - id: de_cofog_gdp_gf03
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: TE, cofog99: GF03}
+    title: "Staatsausgaben für Öffentliche Sicherheit"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share_gdp
+    label: "Öffentliche Sicherheit"
+
+  - id: de_cofog_gdp_gf02
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: TE, cofog99: GF02}
+    title: "Staatsausgaben für Verteidigung"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share_gdp
+    label: "Verteidigung"
+
+  - id: de_cofog_gdp_gf08
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: TE, cofog99: GF08}
+    title: "Staatsausgaben für Kultur, Sport, Religion"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share_gdp
+    label: "Kultur, Sport, Religion"
+
+  - id: de_cofog_gdp_gf06
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: TE, cofog99: GF06}
+    title: "Staatsausgaben für Wohnen, Kommunales"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share_gdp
+    label: "Wohnen, Kommunales"
+
+  - id: de_cofog_gdp_gf05
+    block: staat
+    source: eurostat
+    key: gov_10a_exp
+    params: {geo: DE, sector: S13, unit: PC_GDP, na_item: TE, cofog99: GF05}
+    title: "Staatsausgaben für Umweltschutz"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_share_gdp
+    label: "Umweltschutz"
+
+  - id: de_gov_te_s1311
+    block: staat
+    source: eurostat
+    key: gov_10a_main
+    params: {geo: DE, sector: S1311, unit: PC_GDP, na_item: TE}
+    title: "Ausgaben, Bund (einschließlich Zahlungen an andere Ebenen)"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: stx_levels
+    label: "Bund"
+
+  - id: de_gov_te_s1312
+    block: staat
+    source: eurostat
+    key: gov_10a_main
+    params: {geo: DE, sector: S1312, unit: PC_GDP, na_item: TE}
+    title: "Ausgaben, Länder (einschließlich Zahlungen an andere Ebenen)"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: stx_levels
+    label: "Länder"
+
+  - id: de_gov_te_s1313
+    block: staat
+    source: eurostat
+    key: gov_10a_main
+    params: {geo: DE, sector: S1313, unit: PC_GDP, na_item: TE}
+    title: "Ausgaben, Gemeinden (einschließlich Zahlungen an andere Ebenen)"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: stx_levels
+    label: "Gemeinden"
+
+  - id: de_gov_te_s1314
+    block: staat
+    source: eurostat
+    key: gov_10a_main
+    params: {geo: DE, sector: S1314, unit: PC_GDP, na_item: TE}
+    title: "Ausgaben, Sozialversicherung (einschließlich Zahlungen an andere Ebenen)"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: stx_levels
+    label: "Sozialversicherung"
 
   - id: de_imm_de
     block: struktur
