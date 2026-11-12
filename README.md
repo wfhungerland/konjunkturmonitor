@@ -49,6 +49,8 @@ Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global
 - **Kommentar:** Der Knopf im Kopf zeigt einen regelbasierten Urteilssatz (`answers.fazit`) als eigenen Absatz mit Linie links und Marke „Kommentar“ über der Beschreibung, dazu die Urteile an den Kacheln; ohne ihn bleibt die Seite beschreibend. Die Wahl merkt sich der Browser.
 - **Beträge:** Währungszeichen vor der Zahl, britischer Stil: „€141,1 Mrd.“, „$107 je Barrel“, „£0,84“; Yuan und Franken ausgeschrieben.
 - **Abkürzungen:** In Sätzen ausgeschrieben (`monitor/ausschreiben.py`, nach der Satzprüfung); in Köpfen, Einheiten und Kacheln gepunktet unterstrichen mit Erklärung beim Darauftippen (`GLOSSAR`).
+- **Rundgang:** Beim ersten Besuch bietet die Seite unten einen kurzen Rundgang an (gemerkt in `km_tour`); sonst steht „Rundgang“ im Menü. Die Schritte stehen in `TOURTXT` der Vorlage; Schritte ohne sichtbares Ziel entfallen, etwa auf dem Handy.
+- **Rückmeldung:** Knopf unten links öffnet ein Fenster mit einem Textfeld; „Senden“ schickt über Formspree an den Autor. Die öffentliche Formular-Kennung steht in `monitor.yaml` unter `site.feedback`; leer heißt kein Knopf.
 - **Grafik | Tabelle:** Zeitreihen-Grafiken haben oben rechts einen Umschalter; die Tabelle zeigt die letzten zwölf Werte, jüngster zuerst.
 - **Vorschaubilder:** `node monitor/previews.js site` fotografiert nach dem Bau jede einfache Zeitreihen-Grafik (breit und Handy, WebP, zusammen rund 6 MB) und trägt die Liste in die Seite ein. Die Seite zeigt zuerst das Bild und lädt die lebendige Grafik beim Überfahren, Antippen oder Bedienen. Ohne diesen Lauf, bei Jahresflächen und auf Einbettseiten zeichnet sie sofort.
 

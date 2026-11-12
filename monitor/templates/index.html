@@ -245,6 +245,28 @@
   .notebox { width: fit-content; max-width: 62%; margin: 2px 0 4px auto; background: var(--box); border: 0; border-radius: var(--r); padding: 8px 12px; font: 13.5px/1.4 var(--ff); color: var(--text); }
   @media (max-width: 600px) { .notebox { max-width: none; margin: 4px 0; } }
   .totop { font: 13.5px var(--ff); font-weight: normal; margin-left: 8px; vertical-align: middle; }
+  /* Rundgang: Spotlight auf ein Element, darunter eine kleine Karte mit Text und Weiter */
+  .tourhl { position: absolute; z-index: 70; border-radius: 2px; box-shadow: 0 0 0 9999px rgba(20,20,20,.5); pointer-events: none; transition: all .25s ease; }
+  .tourcard { position: absolute; z-index: 71; width: min(340px, calc(100vw - 32px)); background: #fff; color: var(--text); font: 15px/1.45 var(--ff); padding: 14px 16px 12px; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
+  .tourcard .tn { font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin-bottom: 6px; }
+  .tourcard .tb { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; gap: 10px; }
+  .tourcard button { font: 14px var(--ff); background: none; border: 0; color: #8c8c8c; cursor: pointer; padding: 0; }
+  .tourcard button.tnext { font-weight: 600; background: var(--text); color: #fff; padding: 5px 14px; }
+  .tourask { position: fixed; left: 50%; transform: translateX(-50%); bottom: 16px; z-index: 65; background: #fff; border: 1px solid var(--grey); padding: 8px 14px; font: 14px var(--ff); box-shadow: 0 4px 16px rgba(0,0,0,.12); display: flex; gap: 14px; align-items: center; }
+  .tourask button { font: inherit; background: none; border: 0; cursor: pointer; padding: 0; color: #8c8c8c; } .tourask button.go { color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  /* Rückmeldung: ein Klick, ein Textfeld, kein Formular-Ballast */
+  .fbk { position: fixed; left: 14px; bottom: 14px; z-index: 6; background: #fff; color: var(--text); font: 13.5px var(--ff); padding: 5px 10px; border: 1px solid var(--grey); border-radius: 0; cursor: pointer; }
+  .fbk:hover { border-color: var(--text); } body.menuopen .fbk, body.embed .fbk { display: none; }
+  dialog.fbd { border: 1px solid var(--grey); border-radius: 0; padding: 18px 18px 14px; width: min(520px, calc(100vw - 32px)); font: 15px/1.45 var(--ff); color: var(--text); box-shadow: 0 8px 28px rgba(0,0,0,.18); }
+  dialog.fbd::backdrop { background: rgba(0,0,0,.25); } .fbd form { margin-top: 14px; }
+  .fbd textarea { width: 100%; box-sizing: border-box; min-height: 150px; font: 15px/1.45 var(--ff); border: 1px solid #cfcfcf; padding: 8px 10px; resize: vertical; }
+  .fbd textarea:focus, .fbd input:focus { outline: none; border-color: var(--text); }
+  .fbd input { width: 100%; box-sizing: border-box; font: 13.5px var(--ff); border: 0; border-bottom: 1px solid #cfcfcf; padding: 6px 0; margin-top: 8px; }
+  .fbd .fbrow { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; gap: 12px; }
+  .fbd .fbnote { font-size: 12px; color: #8c8c8c; } .fbd .fbnote a { color: inherit; }
+  .fbd button.fbsend { font: 600 14px var(--ff); background: var(--text); color: #fff; border: 0; padding: 6px 16px; cursor: pointer; }
+  .fbd button.fbx { position: absolute; right: 10px; top: 6px; border: 0; background: none; font-size: 20px; color: #8c8c8c; cursor: pointer; }
+  .fbd .fbok { font-size: 15px; margin: 6px 0 2px; }
   .fab { position: fixed; right: 14px; bottom: 14px; z-index: 6; background: #fff; color: var(--text); font: 13.5px var(--ff); padding: 5px 10px; border: 1px solid var(--grey); border-radius: 0; }
   .fab:hover { border-color: var(--dark); text-decoration: none; }
   .card .cap.notes { color: var(--muted); }
@@ -439,7 +461,7 @@
   <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
   <div id="starttable">/*__STATIC__*/</div>
-  <p class="tnote" id="legendhint">Die Schalter über jeder Grafik, etwa „Aktueller Rand“ oder „Rezessionen“, blenden jüngste Werte oder Rezessionen ein. <span class="tools"><button type="button" class="btn" id="ybtoggle" aria-pressed="false" title="Jedes zweite Kalenderjahr hell hinterlegen; das laufende Jahr bleibt frei">Jahresflächen</button></span></p>
+  <p class="tnote" id="legendhint">Die Schalter unter jeder Grafik, etwa „Aktueller Rand“ oder „Rezessionen“, blenden jüngste Werte oder Rezessionen ein. <span class="tools"><button type="button" class="btn" id="ybtoggle" aria-pressed="false" title="Jedes zweite Kalenderjahr hell hinterlegen; das laufende Jahr bleibt frei">Jahresflächen</button></span></p>
   <div id="topics"></div>
 </main>
 <section class="refs" id="quellen">
@@ -482,6 +504,18 @@ const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
 const FAZTXT = { btn: "Kommentar", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Kommentar bleibt die Seite beschreibend." };
 const ABTXT = { close: "schließen" };
+const TOURTXT = { name: "Rundgang", ask: "Neu hier? Ein kurzer Rundgang in einer Minute.", go: "Rundgang starten", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
+  steps: [
+    ["#nav", "„Inhalt“ öffnet alle Kapitel. Die Lupe daneben sucht jede Grafik; die Taste / springt direkt in die Suche."],
+    [".fazitbtn", "„Kommentar“ blendet eine Einordnung nach festen Regeln ein. Ohne den Knopf beschreibt die Seite nur, was die Zahlen zeigen."],
+    [".briefbtn", "Zuerst sehen Sie „Das Wichtigste“: acht Kapitel. Dieser Knopf zeigt alle Kapitel."],
+    ["#starttable", "Die Tabelle zeigt die Kernzahlen. ▲ heißt gestiegen, ▼ gesunken, ● unverändert; Rot markiert eine ungünstige Richtung. Ein Klick führt zum Kapitel."],
+    ["@card .htools", "Jede Grafik lässt sich als Tabelle der letzten zwölf Werte zeigen."],
+    ["@card .tools", "Unter der Grafik stehen Schalter: die ganze Reihe seit Beginn, Rezessionen und je nach Grafik weitere."],
+    ["@card .cside", "Rechts erklärt ein kurzer Text, was die Grafik zeigt. „Mehr zur Methode“ führt zu Quellen und Rechenschritten."],
+    ["@card .gut", "Links: „Daten“ zum Herunterladen (Excel, CSV, Stata, PowerPoint), „Link“ zum Teilen und der Stern für Ihre Lesezeichen."],
+    [".fbk", "Was fällt Ihnen auf? Hier geht Ihre Rückmeldung mit einem Klick direkt an den Autor."]] };
+const FBTXT = { btn: "Rückmeldung", ph: "Was fällt Ihnen auf? Was ist gut, was schlecht, was ließe sich besser machen?", mail: "E-Mail für eine Antwort (freiwillig)", send: "Senden", ok: "Danke, ist angekommen.", err: "Senden hat nicht geklappt. Bitte später noch einmal versuchen.", note: "Geht direkt an den Autor. <a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen im Download unter „Daten“." };
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (↗) und Schwellen
 const isBad = (c, sid) => c.up_bad === true || (Array.isArray(c.up_bad) && c.up_bad.includes(sid));
@@ -1805,6 +1839,54 @@ function build() {
   if (DATA.embed) { const c0 = DATA.topics[0].charts[0]; topics.insertAdjacentHTML("afterend", `<p class="embedsrc">${EMB.src} · <a href="${esc(DATA.site.url)}#${FA(c0.no)}" target="_blank" rel="noopener">${EMB.full}</a></p>`); }
 }
 build();
+
+
+// Rundgang: beim ersten Besuch angeboten, sonst über „Rundgang“ im Menü; Schritte ohne sichtbares Ziel entfallen
+const tour = (function () {
+  const KEY = "km_tour", vis = el => el && el.offsetParent !== null && el.getBoundingClientRect().width > 0;
+  const target = sel => { if (sel.startsWith("@card")) { const cd = [...document.querySelectorAll("section.topic .card")].find(x => vis(x) && x.querySelector(".tools .btn")); return cd && cd.querySelector(sel.slice(6)); } return document.querySelector(sel); };
+  let hl = null, card = null, steps = [], i = 0;
+  const end = () => { hl?.remove(); card?.remove(); hl = card = null; document.removeEventListener("keydown", key); try { localStorage.setItem(KEY, "1"); } catch (e) {} };
+  const key = e => { if (e.key === "Escape") end(); else if (e.key === "ArrowRight") go(i + 1); else if (e.key === "ArrowLeft") go(i - 1); };
+  const place = el => { const r = el.getBoundingClientRect(), p = 6, x = scrollX, y = scrollY;
+    Object.assign(hl.style, { left: r.left + x - p + "px", top: r.top + y - p + "px", width: r.width + 2 * p + "px", height: r.height + 2 * p + "px" });
+    const cw = card.offsetWidth, ch = card.offsetHeight, below = r.bottom + p + 12 + ch < innerHeight;
+    card.style.left = Math.max(16 + x, Math.min(x + innerWidth - cw - 16, r.left + x)) + "px";
+    card.style.top = (below ? r.bottom + y + p + 12 : Math.max(y + 8, r.top + y - p - 12 - ch)) + "px"; };
+  const go = k => { if (k < 0 || !steps.length) return; if (k >= steps.length) return end(); i = k;
+    const [el, txt] = steps[i]; el.scrollIntoView({ block: "center", behavior: "instant" });
+    card.innerHTML = `<div class="tn">${TOURTXT.name} ${i + 1}/${steps.length}</div><div>${txt}</div><div class="tb"><button type="button" class="tskip">${TOURTXT.skip}</button><span>${i ? `<button type="button" class="tprev">${TOURTXT.prev}</button> &nbsp; ` : ""}<button type="button" class="tnext">${i === steps.length - 1 ? TOURTXT.end : TOURTXT.next}</button></span></div>`;
+    card.querySelector(".tskip").onclick = end; card.querySelector(".tnext").onclick = () => go(i + 1); const pv = card.querySelector(".tprev"); if (pv) pv.onclick = () => go(i - 1);
+    requestAnimationFrame(() => { place(el); card.querySelector(".tnext").focus(); }); };
+  const start = () => { document.querySelector(".tourask")?.remove(); if (document.body.classList.contains("brief")) { /* Kurzfassung bleibt, die erste Grafik ist sichtbar */ }
+    steps = TOURTXT.steps.map(([s, t]) => [target(s), t]).filter(([el]) => vis(el)); if (!steps.length) return;
+    hl = document.createElement("div"); hl.className = "tourhl"; card = document.createElement("div"); card.className = "tourcard"; card.setAttribute("role", "dialog"); card.setAttribute("aria-label", TOURTXT.name);
+    document.body.append(hl, card); document.addEventListener("keydown", key); addEventListener("resize", () => steps[i] && place(steps[i][0])); go(0); };
+  if (!DATA.embed) { let seen = true; try { seen = localStorage.getItem(KEY) === "1"; } catch (e) {}
+    if (!seen && !location.hash && !/[?&]noprev=1/.test(location.search)) setTimeout(() => { const a = document.createElement("div"); a.className = "tourask"; a.innerHTML = `<span>${TOURTXT.ask}</span><button type="button" class="go">${TOURTXT.go}</button><button type="button" class="no">${TOURTXT.no}</button>`;
+      a.querySelector(".go").onclick = start; a.querySelector(".no").onclick = () => { a.remove(); try { localStorage.setItem(KEY, "1"); } catch (e) {} }; document.body.append(a); }, 1200); }
+  return start;
+})();
+document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = document.createElement("a"); a.href = "#top"; a.textContent = TOURTXT.name; a.onclick = e => { e.preventDefault(); scrollTo(0, 0); setTimeout(tour, 150); }; ft.prepend(a); });
+// Rückmeldung: Knopf unten links öffnet ein Fenster mit einem Textfeld; Versand über den Formulardienst (site.feedback)
+(function feedback() {
+  const id = (DATA.site || {}).feedback; if (!id || DATA.embed) return;
+  const b = document.createElement("button"); b.type = "button"; b.className = "fbk"; b.textContent = FBTXT.btn; document.body.append(b);
+  const d = document.createElement("dialog"); d.className = "fbd"; d.setAttribute("aria-label", FBTXT.btn);
+  d.innerHTML = `<form method="dialog"><button type="button" class="fbx" aria-label="${FBTXT.close}">×</button><textarea name="message" required placeholder="${FBTXT.ph}" aria-label="${FBTXT.btn}"></textarea><input type="email" name="email" placeholder="${FBTXT.mail}" autocomplete="email"><div class="fbrow"><span class="fbnote">${FBTXT.note}</span><button type="submit" class="fbsend">${FBTXT.send}</button></div></form>`;
+  document.body.append(d);
+  const f = d.querySelector("form"), ta = f.querySelector("textarea");
+  b.onclick = () => { d.showModal(); ta.focus(); };
+  d.querySelector(".fbx").onclick = () => d.close();
+  d.addEventListener("click", e => { if (e.target === d) d.close(); });  // Klick daneben schließt
+  f.addEventListener("submit", async e => { e.preventDefault(); const msg = ta.value.trim(); if (!msg) return;
+    const sb = f.querySelector(".fbsend"); sb.disabled = true;
+    const body = { message: msg, email: f.email.value.trim(), seite: location.href, kapitel: (document.querySelector("#nav .navcur")?.textContent || "").replace(/^\s*>\s*/, ""), sprache: DATA.lang || "de", _subject: "Konjunkturmonitor: Rückmeldung" };
+    try { const r = await fetch(`https://formspree.io/f/${encodeURIComponent(id)}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) });
+      if (!r.ok) throw new Error(r.status);
+      f.innerHTML = `<button type="button" class="fbx" aria-label="${FBTXT.close}">×</button><p class="fbok">${FBTXT.ok}</p>`; f.querySelector(".fbx").onclick = () => d.close();
+    } catch (x) { sb.disabled = false; f.querySelector(".fbnote").textContent = FBTXT.err; } });
+})();
 // Kurzformen in Köpfen, Einheiten und Kacheln: gepunktet unterstrichen, Erklärung beim Darauftippen oder Überfahren
 (function abbrify() {
   const G = DATA.glossar || {}, keys = Object.keys(G).sort((a, b) => b.length - a.length);
