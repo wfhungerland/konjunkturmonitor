@@ -127,6 +127,32 @@ charts:
     methode: "Exportähnlichkeitsindex nach Finger und Kreinin (1979): je Warengruppe zählt der kleinere der beiden Exportanteile; die Summe über alle Gruppen ergibt einen Wert zwischen 0 (keine Überschneidung) und 100 (identische Warenstruktur)."
     grenzen:
       - "Die Ähnlichkeit hängt von der Feinheit der Warengliederung ab."
+  hybrid:
+    methode: "Die Universität Leiden (Bart Schuurman) erfasst seit 2022 russische Operationen gegen Europa im physischen Raum: Sabotage, Brandstiftung, Vandalismus, Ausspähung, Mordanschläge, Terror, gesteuerte Migration und bestimmte Einflussoperationen. Aufgenommen wird ein Vorfall, wenn Behörden oder belastbare Berichte ihn Russland zuschreiben; strittige Fälle stehen in einem eigenen Blatt und zählen nicht. Der Monitor zählt die Vorfälle je Quartal nach dem Monat ihres Beginns. Betrifft ein Vorfall mehrere Länder und darunter Deutschland, zählt er für Deutschland. Die Datei übernimmt der Monitor von Hand, sobald eine neue Fassung auf Harvard Dataverse erscheint."
+    grenzen:
+      - "Die Zählung hängt an der Zuschreibung. Andere Datenbanken (CSIS, IISS, ICCT/GLOBSEC, Soufan Center) grenzen anders ab und kommen auf andere Zahlen; sie lassen sich nicht mischen."
+      - "Viele Fälle werden erst Monate später bekannt; die jüngsten Quartale fallen deshalb zu niedrig aus."
+      - "Die meisten Cyberangriffe und Spionagefälle fehlen. Ein Vorfall ohne bekannten Monat fehlt in der Quartalszählung."
+  gpr:
+    methode: "Index des geopolitischen Risikos nach Caldara und Iacoviello (2022): Anteil der Artikel in zehn großen englischsprachigen Zeitungen, die Begriffe zu Kriegsgefahr, Kriegen, Aufrüstung, nuklearer Bedrohung oder Terror enthalten. Der Länderindex zählt nur Artikel, die zugleich Deutschland oder eine große deutsche Stadt nennen. Der Monitor rechnet beide Reihen auf ein Mittel von 100 in den Jahren 1985 bis 2019 um und ruft sie werktäglich ab."
+    grenzen:
+      - "Misst Berichterstattung in amerikanischen und britischen Zeitungen, nicht das Risiko selbst."
+      - "Der Länderindex schwankt stark, weil er auf wenigen Artikeln beruht."
+  milex:
+    methode: "Militärausgaben in Prozent des BIP aus der Datenbank des Stockholmer Friedensforschungsinstituts SIPRI. SIPRI zählt Ausgaben für Streitkräfte, Verteidigungsministerien, paramilitärische Kräfte, militärische Forschung, Militärrenten und Militärhilfe. Das BIP stammt vom Internationalen Währungsfonds. Der Monitor übernimmt die Datei jedes Jahr im April von Hand."
+    grenzen:
+      - "Die NATO grenzt anders ab; ihre Quoten weichen ab, für Deutschland meist nach oben. Die NATO-Ziele beziehen sich auf die NATO-Abgrenzung."
+      - "Für Russland schätzt SIPRI wegen geheimer Haushaltsposten; die Werte sind unsicher."
+  cinc:
+    methode: "Composite Index of National Capability des Correlates-of-War-Projekts: Für jedes Land und Jahr wird der Anteil an der Weltsumme von sechs Größen bestimmt (Gesamtbevölkerung, Stadtbevölkerung, Eisen- und Stahlproduktion, Primärenergieverbrauch, Zahl der Soldaten, Militärausgaben). Der Index ist das Mittel dieser sechs Anteile. Für Deutschland addiert der Monitor 1955 bis 1989 die Werte von Bundesrepublik und DDR; 1946 bis 1954 fehlt ein Wert."
+    grenzen:
+      - "Der Index misst Masse und Rohstoffe, nicht Technik, Produktivität oder Bündnisse; China und Indien erscheinen dadurch sehr stark."
+      - "Version 7.0 reicht bis 2022; neue Ausgaben erscheinen in Abständen von mehreren Jahren."
+  ukraine_aid:
+    methode: "Kiel Ukraine Support Tracker: Das Kiel Institut erfasst jede staatliche Zusage an die Ukraine aus offiziellen Quellen. Zugeteilt ist Hilfe, die geliefert oder für die Lieferung festgelegt ist. Der Monitor nimmt die Zuteilungen Deutschlands je Monat aus der Tracker-Datei, summiert sie je Quartal und trennt Militärhilfe von finanzieller und humanitärer Hilfe. Nur vollständige Quartale erscheinen. Die Datei übernimmt der Monitor von Hand nach jeder neuen Ausgabe."
+    grenzen:
+      - "Ohne den deutschen Anteil an der Hilfe der EU und ohne Kosten für Geflüchtete in Deutschland; die Bundesregierung nennt deshalb höhere Summen."
+      - "Mehrjährige Pakete erscheinen im Monat der Festlegung; die Quartale schwanken deshalb stark."
   uncertainty:
     methode: "Index der wirtschaftspolitischen Unsicherheit nach Baker, Bloom und Davis: Anteil der Zeitungsartikel, die Begriffe zu Wirtschaft, Politik und Unsicherheit zugleich enthalten, normiert auf ein Mittel von 100 in den Jahren 1997 bis 2015."
     grenzen:

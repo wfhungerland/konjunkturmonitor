@@ -1565,8 +1565,9 @@ function build() {
   const NAV = [];  // Kapitel für das Menü: Teil, Gruppe, Nummer
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     analysen: { no: "Teil II", title: "Analysen", text: "Eigene Auswertungen: Rezessionsrisiko, Treffsicherheit von Prognosen und ersten Zahlen, Breite der Entwicklung und Wettbewerb. Dieser Teil wächst." },
-    struktur: { no: "Teil III", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
-    anhang: { no: "Teil IV", title: "Anhang", text: "Sonderfaktoren wie Wetter und Rheinpegel: zur Einordnung, nicht für die laufende Lage. Die Abbildungen sind eingeklappt." },
+    geopolitik: { no: "Teil III", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht und Hilfe für die Ukraine. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
+    struktur: { no: "Teil IV", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
+    anhang: { no: "Teil V", title: "Anhang", text: "Sonderfaktoren wie Wetter und Rheinpegel: zur Einordnung, nicht für die laufende Lage. Die Abbildungen sind eingeklappt." },
     service: { no: "", title: "Termine", text: "" } };
   const railObs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
     const sec = e.target.closest("section.topic"); if (!e.isIntersecting || !sec) return; const r = sec.querySelector(".rail");
@@ -1641,9 +1642,9 @@ function build() {
   // Menü: ein Knopf „Inhalt“ öffnet eine Tafel mit allen Abschnitten und ihrer Frage
   nav.innerHTML = `<button type="button" class="btn navbtn" aria-expanded="false" aria-controls="navpanel">${NAVTXT.contents}</button>`;
   const panel = document.createElement("div"); panel.className = "navpanel"; panel.id = "navpanel"; panel.hidden = true;
-  // Teile II bis IV ohne Untergruppen: je eine Spalte nebeneinander, der Teil steht über dem Balken
+  // Teile II bis V ohne Untergruppen: je eine Spalte nebeneinander, der Teil steht über dem Balken
   const navCol = k => { const xs = NAV.filter(x => x.part === k), P = PARTS[k] || {}; return xs.length ? `<div class="nvg"><p class="nvgh nvph">${P.no ? `<span>${esc(P.no)}</span> ` : ""}${esc(P.title || k)}</p>${xs.map(navA).join("")}</div>` : ""; };
-  panel.innerHTML = `<div class="nvin">${navPart("konjunktur")}<div class="nvpart"><div class="nvgroups">${navCol("analysen")}${navCol("struktur")}${navCol("anhang")}</div></div>${navFoot}</div>`;
+  panel.innerHTML = `<div class="nvin">${navPart("konjunktur")}<div class="nvpart"><div class="nvgroups">${navCol("analysen")}${navCol("geopolitik")}${navCol("struktur")}${navCol("anhang")}</div></div>${navFoot}</div>`;
   const header = document.querySelector("header"); header.appendChild(panel);
   const nb = nav.querySelector(".navbtn");
   const closeAll = () => { const was = !panel.hidden; panel.hidden = true; nb.setAttribute("aria-expanded", "false"); document.body.classList.remove("menuopen"); return was; };

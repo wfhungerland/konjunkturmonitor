@@ -57,6 +57,9 @@ topics:
   pruefung: {title: "Forecasts and revisions", code: "Forecasts", ask: "How reliable are the first figures and the projection?"}
   breite: {title: "Breadth and comparison", code: "Breadth", ask: "How broad is the development, and how unusual is it?"}
   wettbewerb: {title: "Competition", ask: "Who competes with Germany on world markets?"}
+  bedrohung: {title: "Threats", code: "Threats", ask: "How much is Germany being targeted?"}
+  ruestung: {title: "Defence", code: "Defence", ask: "How much does Germany spend on defence?"}
+  ukraine: {title: "Aid to Ukraine", code: "Ukraine-aid", ask: "How much does Germany help Ukraine?"}
   struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
   staat: {title: "Government", ask: "What state are the public finances in?"}
   sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What did the Council of Economic Experts forecast and recommend?"}
@@ -558,6 +561,27 @@ charts:
     caption: "Bars: real GDP growth the Council of Economic Experts expected for the following year. Colour: fiscal stance it recommended for that year in the same report; blue consolidation, grey cyclically neutral (let automatic stabilisers work), red stimulus, light grey no recommendation discernible. West Germany until 1991. Tap for the recommendation with paragraph and page."
     unit: "% on previous year"
 
+  hybrid:
+    title: "Russian sabotage and subversion in Europe"
+    ask: "How often does Russian sabotage hit targets in Europe?"
+    caption: "Incidents per quarter that authorities or reliable reports attribute to Russia: sabotage, arson, reconnaissance, assassinations and directed disruption in the physical domain, without most cyber attacks and espionage cases. Blue: incidents with a target in Germany. The count depends on attribution; other databases arrive at quite different figures with other definitions. Many cases only become known once investigations are closed, so the latest quarters are too low."
+  gpr:
+    title: "Geopolitical risk"
+    ask: "How much do newspapers report on geopolitical risks?"
+    caption: "Geopolitical Risk Index by Caldara and Iacoviello: share of articles in ten major English-language newspapers on war threats, wars, military build-ups and terrorism; the country index counts only articles that also mention Germany. 1985–2019 average = 100. In research, high values go along with lower investment and more caution among firms."
+  milex:
+    title: "Military expenditure"
+    ask: "How high is military spending by comparison?"
+    caption: "Military expenditure in % of GDP as defined by the Stockholm International Peace Research Institute (SIPRI), including military pensions and military aid. NATO uses a different definition; its ratios for Germany are usually somewhat higher. Grey dashed: the 2% target and the 3.5% target for core spending by 2035 agreed in The Hague in 2025. Highlighted: Germany."
+  cinc:
+    title: "Share of the world's material capabilities"
+    ask: "How much weight does Germany carry among the world's powers?"
+    caption: "Share in the Composite Index of National Capability of the Correlates of War project, in % of the world: average of world shares in population, urban population, steel production, energy consumption, military personnel and military expenditure. Germany 1955 to 1990 West and East Germany combined, Russia until 1991 the Soviet Union. The index measures mass, not technology or alliances."
+  ukraine_aid:
+    title: "German aid to Ukraine"
+    ask: "How much aid does Germany allocate to Ukraine?"
+    caption: "Bilateral aid from Germany that has been delivered or specified for delivery, in billion euros per quarter by month of allocation. Military aid includes funds for arms purchases. Excluding Germany's share of EU aid and spending on refugees in Germany. Large packages are often fixed for years and then appear bundled."
+
 series:
   wb_soybeans: {title: "World market price, Soybeans (World Bank: Soybeans)", label: "Soybeans", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
   wb_maize: {title: "World market price, Maize (World Bank: Maize)", label: "Maize", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
@@ -760,6 +784,14 @@ series:
   emp_sector_ru: {title: "Persons in employment: other services", label: "Other services", unit: "thousand people", adjustment: "seasonally and calendar adjusted"}
   de_migration: {title: "Net migration (including statistical adjustment)", label: "Net migration", unit: "people", adjustment: "annual data"}
   cit: {title: "Combined statutory tax rate on corporate profits, {cit_name}", label: "{cit_name}", unit: "%", note: "OECD Corporate Tax Statistics, combined statutory tax rate (CIT_C), standard rate (ST). Retrieved via the OECD SDMX interface on 3.11.2026.", adjustment: "standard rate, central and sub-central government"}
+  leiden_ops_de: {title: "Russian operations against Europe with a target in Germany", label: "Germany", unit: "incidents per quarter", note: "Incidents in the physical domain (sabotage, arson, reconnaissance, assassinations, certain influence operations) attributed to Russia by authorities or reliable reports; most cyber attacks and espionage cases are missing. Counted by the start of the incident; incidents affecting several countries including Germany count here. One incident without a known month is missing. Data as of 12.1.2026, doi:10.7910/DVN/TQ0FMQ.", adjustment: "not adjusted"}
+  leiden_ops_eu: {title: "Russian operations against Europe without a target in Germany", label: "rest of Europe", unit: "incidents per quarter", note: "As the series for Germany, incidents without reference to Germany.", adjustment: "not adjusted"}
+  gpr_de: {title: "Geopolitical risk relating to Germany", label: "Germany", unit: "Index, 1985–2019 average = 100", note: "Country index GPRC_DEU: share of articles in ten major English-language newspapers that mention geopolitical tensions, wars or terrorism together with Germany; rescaled by the monitor to an average of 100 in 1985 to 2019. Retrieved every working day from matteoiacoviello.com.", adjustment: "not adjusted"}
+  gpr_world: {title: "Geopolitical risk, world", label: "World", unit: "Index, 1985–2019 average = 100", note: "Overall GPR index, rescaled by the monitor to an average of 100 in 1985 to 2019.", adjustment: "not adjusted"}
+  milex: {title: "Military expenditure in % of GDP, {staat_name}", label: "{staat_name}", unit: "% of GDP", note: "Military expenditure as defined by SIPRI (including military pensions, paramilitary forces and military aid) in % of GDP. Germany until 1990 West Germany. April 2026 edition (file v1.2), taken over by hand.", adjustment: "annual, current prices"}
+  cinc: {title: "Share in the CINC capability index, {staat_name}", label: "{staat_name}", unit: "% of world", note: "Composite Index of National Capability: average of a state's world shares in population, urban population, steel production, energy consumption, military personnel and military expenditure. Germany 1955 to 1990 West and East Germany combined, no value 1946 to 1954; Russia until 1991 the Soviet Union. Version 7.0, data up to 2022.", adjustment: "annual"}
+  kiel_de_mil: {title: "German military aid to Ukraine, allocated", label: "Military aid", unit: "€ bn", note: "Allocations: aid delivered or specified for delivery, by month of allocation, including earmarked financial aid for military purposes; excluding aid via the EU and costs of refugees in Germany. Complete quarters only. 31st release (data up to 31.8.2026), taken over by hand.", adjustment: "current prices"}
+  kiel_de_other: {title: "German financial and humanitarian aid to Ukraine, allocated", label: "Financial and humanitarian aid", unit: "€ bn", note: "Total allocations minus military aid, otherwise as military aid.", adjustment: "current prices"}
   de_maut: {title: "Truck toll mileage index (motorways, vehicles with four or more axles)", label: "Truck toll mileage", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
   de_maut_d: {title: "Truck toll mileage index, daily (experimental)", label: "Truck toll mileage", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Bundesbank, experimental)"}
   de_ilo: {title: "Unemployment rate (ILO definition)", label: "Unemployment rate (ILO)", unit: "% of labour force", adjustment: "seasonally adjusted"}
@@ -912,6 +944,7 @@ strings:
   "Wöchentlich": "Weekly"
 
 names:
+  staat: {deu: "Germany", fra: "France", gbr: "United Kingdom", pol: "Poland", usa: "USA", rus: "Russia", chn: "China"}
   item:
     P31_S14_S15: "Household consumption"
     P3_S13: "Government consumption"
@@ -986,6 +1019,9 @@ names:
     "16": "Thuringia"
 # Feste Beschriftungen und Kalendertermine (deutsch: englisch), für Grafiken, Kalender und Gruppen
 labels:
+  "NATO-Ziel 2 %": "NATO target 2%"
+  "NATO-Ziel 3,5 % bis 2035": "NATO target 3.5% by 2035"
+  "Mittel 1985–2019 = 100": "1985–2019 average = 100"
   "BIP ggü. Vorquartal": "GDP on previous quarter"
   "BIP ggü. Vorjahresquartal": "GDP on same quarter a year earlier"
   "Temperatur, Abweichung vom Mittel": "Temperature, deviation from average"
