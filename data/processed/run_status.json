@@ -1,8 +1,8 @@
 {
- "started_at": "2026-11-12T11:47:56Z",
- "finished_at": "2026-11-12T11:52:12Z",
+ "started_at": "2026-11-12T13:02:36Z",
+ "finished_at": "2026-11-12T13:08:15Z",
  "counts": {
-  "ok": 470
+  "ok": 477
  },
  "outdated": [],
  "series": [
@@ -13,7 +13,7 @@
    "first": "2005-Q1",
    "last": "2026-Q3",
    "last_value": 0.2,
-   "retrieved_at": "2026-11-12T11:47:57Z",
+   "retrieved_at": "2026-11-12T13:02:37Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=B1GQ&unit=CLV_PCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -25,7 +25,7 @@
    "first": "2005-Q1",
    "last": "2026-Q3",
    "last_value": 1.3,
-   "retrieved_at": "2026-11-12T11:47:58Z",
+   "retrieved_at": "2026-11-12T13:02:37Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=B1GQ&unit=CLV_PCH_SM&s_adj=NSA",
    "message": "",
    "outdated": false
@@ -37,7 +37,7 @@
    "first": "2005-Q1",
    "last": "2026-Q3",
    "last_value": 106.694,
-   "retrieved_at": "2026-11-12T11:47:58Z",
+   "retrieved_at": "2026-11-12T13:02:37Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=B1GQ&unit=CLV_I20&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -49,7 +49,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 0.07,
-   "retrieved_at": "2026-11-12T11:47:58Z",
+   "retrieved_at": "2026-11-12T13:02:38Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=P31_S14_S15&unit=CON_PPCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -61,7 +61,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 0.03,
-   "retrieved_at": "2026-11-12T11:47:59Z",
+   "retrieved_at": "2026-11-12T13:02:38Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=P3_S13&unit=CON_PPCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -73,7 +73,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": -0.04,
-   "retrieved_at": "2026-11-12T11:47:59Z",
+   "retrieved_at": "2026-11-12T13:02:39Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=P51G&unit=CON_PPCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -85,7 +85,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 0.07,
-   "retrieved_at": "2026-11-12T11:48:00Z",
+   "retrieved_at": "2026-11-12T13:02:39Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=P52_P53&unit=CON_PPCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -97,7 +97,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 0.79,
-   "retrieved_at": "2026-11-12T11:48:00Z",
+   "retrieved_at": "2026-11-12T13:02:40Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=P6&unit=CON_PPCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -109,7 +109,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": -0.59,
-   "retrieved_at": "2026-11-12T11:48:01Z",
+   "retrieved_at": "2026-11-12T13:02:40Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=P7&unit=CON_PPCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -121,7 +121,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 2.8,
-   "retrieved_at": "2026-11-12T11:48:02Z",
+   "retrieved_at": "2026-11-12T13:02:41Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.VPI.C.A00000.VGJ.LV?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -133,7 +133,7 @@
    "first": "1995-01",
    "last": "2026-10",
    "last_value": 136.7,
-   "retrieved_at": "2026-11-12T11:48:02Z",
+   "retrieved_at": "2026-11-12T13:02:41Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.VPI.C.C2C011.I20.A?startPeriod=1991-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -145,7 +145,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 159.7,
-   "retrieved_at": "2026-11-12T11:48:03Z",
+   "retrieved_at": "2026-11-12T13:02:42Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.VPI.C.NRGY00.I20.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -157,7 +157,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 121.7,
-   "retrieved_at": "2026-11-12T11:48:03Z",
+   "retrieved_at": "2026-11-12T13:02:42Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.VPI.C.GOODS0MFXE.I20.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -169,7 +169,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 128.0,
-   "retrieved_at": "2026-11-12T11:48:03Z",
+   "retrieved_at": "2026-11-12T13:02:43Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.VPI.C.SVXR.I20.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -181,7 +181,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 112.8,
-   "retrieved_at": "2026-11-12T11:48:04Z",
+   "retrieved_at": "2026-11-12T13:02:43Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.VPI.C.C2C041.I20.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -193,7 +193,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 134.9,
-   "retrieved_at": "2026-11-12T11:48:04Z",
+   "retrieved_at": "2026-11-12T13:02:44Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inppd_m?format=JSON&lang=en&geo=DE&indic_bt=PRC_PRR_DOM&nace_r2=B-E36&s_adj=NSA&unit=I21",
    "message": "",
    "outdated": false
@@ -205,7 +205,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 122.5,
-   "retrieved_at": "2026-11-12T11:48:05Z",
+   "retrieved_at": "2026-11-12T13:02:44Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.Y.APE1.G.GP19SA000000.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -217,7 +217,7 @@
    "first": "1991-12",
    "last": "2026-10",
    "last_value": 6.4,
-   "retrieved_at": "2026-11-12T11:48:05Z",
+   "retrieved_at": "2026-11-12T13:02:45Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.Y.UNE.UBA000.A0000.A01.D00.0.R00.A?startPeriod=1991-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -229,7 +229,7 @@
    "first": "1991-12",
    "last": "2026-10",
    "last_value": 3016.0,
-   "retrieved_at": "2026-11-12T11:48:06Z",
+   "retrieved_at": "2026-11-12T13:02:45Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.Y.UNE.UBA000.A0000.A01.D00.0.ABA.A?startPeriod=1991-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -241,7 +241,7 @@
    "first": "2000-01",
    "last": "2026-10",
    "last_value": 645.0,
-   "retrieved_at": "2026-11-12T11:48:06Z",
+   "retrieved_at": "2026-11-12T13:02:45Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.Y.VAC.VBA000.A0000.A00.D00.0.ABA.A?startPeriod=1991-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -253,7 +253,7 @@
    "first": "2020-02-01",
    "last": "2026-10-30",
    "last_value": 105.11,
-   "retrieved_at": "2026-11-12T11:47:07Z",
+   "retrieved_at": "2026-11-12T13:02:18Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/indeed_de.csv",
    "message": "",
    "outdated": false
@@ -265,7 +265,7 @@
    "first": "1995-01",
    "last": "2026-08",
    "last_value": 136304.0,
-   "retrieved_at": "2026-11-12T11:48:06Z",
+   "retrieved_at": "2026-11-12T13:02:46Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.Y.LMP.LKA100.A0000.A02.D00.0.ABA.A?startPeriod=1991-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -277,7 +277,7 @@
    "first": "1991-01",
    "last": "2026-04",
    "last_value": 0.2959,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/ba_ka_fte_ratio.csv",
    "message": "",
    "outdated": false
@@ -289,7 +289,7 @@
    "first": "2005-Q1",
    "last": "2026-Q3",
    "last_value": 45639.0,
-   "retrieved_at": "2026-11-12T11:48:07Z",
+   "retrieved_at": "2026-11-12T13:02:46Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_pe?format=JSON&lang=en&geo=DE&na_item=EMP_DC&unit=THS_PER&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -301,7 +301,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 92.4,
-   "retrieved_at": "2026-11-12T11:48:07Z",
+   "retrieved_at": "2026-11-12T13:02:47Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.A2P300000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -313,7 +313,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 90.3,
-   "retrieved_at": "2026-11-12T11:48:08Z",
+   "retrieved_at": "2026-11-12T13:02:47Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.A2P300000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -325,7 +325,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 88.8,
-   "retrieved_at": "2026-11-12T11:48:08Z",
+   "retrieved_at": "2026-11-12T13:02:48Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEB1.A2P300000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -337,7 +337,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 91.3,
-   "retrieved_at": "2026-11-12T11:48:09Z",
+   "retrieved_at": "2026-11-12T13:02:48Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEB5.A2P300000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -349,7 +349,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 98.1,
-   "retrieved_at": "2026-11-12T11:48:09Z",
+   "retrieved_at": "2026-11-12T13:02:49Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.GUA1.N2G470000.A.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -361,7 +361,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": -14.5,
-   "retrieved_at": "2026-11-12T11:48:09Z",
+   "retrieved_at": "2026-11-12T13:02:49Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsco_m?format=JSON&lang=en&geo=DE&indic=BS-CSMCI&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -373,7 +373,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 141.12,
-   "retrieved_at": "2026-11-12T11:48:10Z",
+   "retrieved_at": "2026-11-12T13:02:49Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDA1/M.DE.Y.EX.S.A.W1.A.V.ABA.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -385,7 +385,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 125.55,
-   "retrieved_at": "2026-11-12T11:48:10Z",
+   "retrieved_at": "2026-11-12T13:02:50Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDA1/M.DE.Y.IM.S.A.W1.A.V.ABA.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -397,7 +397,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 80.83,
-   "retrieved_at": "2026-11-12T11:48:11Z",
+   "retrieved_at": "2026-11-12T13:02:50Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDA1/M.DE.Y.EX.S.A.B0.A.V.ABA.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -409,7 +409,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 13.41,
-   "retrieved_at": "2026-11-12T11:48:11Z",
+   "retrieved_at": "2026-11-12T13:02:51Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDA1/M.DE.Y.EX.S.A.US.A.V.ABA.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -421,7 +421,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 17.87,
-   "retrieved_at": "2026-11-12T11:48:12Z",
+   "retrieved_at": "2026-11-12T13:02:51Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDA1/M.DE.Y.EX.S.A.S1.A.V.ABA.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -433,7 +433,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 66.983,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/esi_chn.csv",
    "message": "",
    "outdated": false
@@ -445,7 +445,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 69.697,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/esi_usa.csv",
    "message": "",
    "outdated": false
@@ -457,7 +457,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 76.307,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/esi_jpn.csv",
    "message": "",
    "outdated": false
@@ -469,7 +469,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 63.478,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/esi_kor.csv",
    "message": "",
    "outdated": false
@@ -481,7 +481,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 75.629,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/esi_fra.csv",
    "message": "",
    "outdated": false
@@ -493,7 +493,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 76.363,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/esi_ita.csv",
    "message": "",
    "outdated": false
@@ -505,7 +505,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 94.1,
-   "retrieved_at": "2026-11-12T11:48:12Z",
+   "retrieved_at": "2026-11-12T13:02:52Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bssi_m_r2?format=JSON&lang=en&geo=DE&indic=BS-ESI-I&s_adj=SA",
    "message": "",
    "outdated": false
@@ -517,7 +517,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": -7.3,
-   "retrieved_at": "2026-11-12T11:48:12Z",
+   "retrieved_at": "2026-11-12T13:02:52Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsin_m_r2?format=JSON&lang=en&geo=DE&indic=BS-ICI&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -529,7 +529,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 3.7,
-   "retrieved_at": "2026-11-12T11:48:13Z",
+   "retrieved_at": "2026-11-12T13:02:53Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsse_m_r2?format=JSON&lang=en&geo=DE&indic=BS-SCI&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -541,7 +541,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": -24.9,
-   "retrieved_at": "2026-11-12T11:48:14Z",
+   "retrieved_at": "2026-11-12T13:02:53Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsrt_m_r2?format=JSON&lang=en&geo=DE&indic=BS-RCI&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -553,7 +553,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": -13.9,
-   "retrieved_at": "2026-11-12T11:48:14Z",
+   "retrieved_at": "2026-11-12T13:02:54Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsbu_m_r2?format=JSON&lang=en&geo=DE&indic=BS-CCI-BAL&s_adj=SA",
    "message": "",
    "outdated": false
@@ -565,7 +565,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": -19.7,
-   "retrieved_at": "2026-11-12T11:48:14Z",
+   "retrieved_at": "2026-11-12T13:02:54Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsin_m_r2?format=JSON&lang=en&geo=DE&indic=BS-IOB&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -577,7 +577,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 10.4,
-   "retrieved_at": "2026-11-12T11:48:15Z",
+   "retrieved_at": "2026-11-12T13:02:55Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsin_m_r2?format=JSON&lang=en&geo=DE&indic=BS-IPE&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -589,7 +589,7 @@
    "first": "2010-01",
    "last": "2026-07",
    "last_value": 2373.0,
-   "retrieved_at": "2026-11-12T11:48:22Z",
+   "retrieved_at": "2026-11-12T13:03:02Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0010&format=ffcsv",
    "message": "",
    "outdated": false
@@ -601,7 +601,7 @@
    "first": "2010-01",
    "last": "2026-07",
    "last_value": 11397.0,
-   "retrieved_at": "2026-11-12T11:48:22Z",
+   "retrieved_at": "2026-11-12T13:03:02Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0010&format=ffcsv",
    "message": "",
    "outdated": false
@@ -613,7 +613,7 @@
    "first": "2010-01",
    "last": "2026-07",
    "last_value": 3.389421,
-   "retrieved_at": "2026-11-12T11:48:22Z",
+   "retrieved_at": "2026-11-12T13:03:02Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0010&format=ffcsv",
    "message": "",
    "outdated": false
@@ -625,7 +625,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 99.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -637,7 +637,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 99.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -649,7 +649,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 203.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -661,7 +661,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 12.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -673,7 +673,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 594.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -685,7 +685,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 203.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -697,7 +697,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 103.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -709,7 +709,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 267.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -721,7 +721,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 343.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -733,7 +733,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 16.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -745,7 +745,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 179.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -757,7 +757,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 46.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -769,7 +769,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 30.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -781,7 +781,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 101.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -793,7 +793,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 51.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -805,7 +805,7 @@
    "first": "2015-01",
    "last": "2026-07",
    "last_value": 27.0,
-   "retrieved_at": "2026-11-12T11:48:35Z",
+   "retrieved_at": "2026-11-12T13:03:16Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52411-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -817,7 +817,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 240.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -829,7 +829,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 386.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -841,7 +841,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 696.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -853,7 +853,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 68.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -865,7 +865,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 1519.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -877,7 +877,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 753.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -889,7 +889,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 364.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -901,7 +901,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 963.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -913,7 +913,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 1335.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -925,7 +925,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 85.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -937,7 +937,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 703.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -949,7 +949,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 244.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -961,7 +961,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 94.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -973,7 +973,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 278.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -985,7 +985,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 122.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -997,7 +997,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 128.0,
-   "retrieved_at": "2026-11-12T11:48:40Z",
+   "retrieved_at": "2026-11-12T13:03:20Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0110&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1009,7 +1009,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 154.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1021,7 +1021,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 154.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1033,7 +1033,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 435.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1045,7 +1045,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 51.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1057,7 +1057,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 954.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1069,7 +1069,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 520.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1081,7 +1081,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 245.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1093,7 +1093,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 520.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1105,7 +1105,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 789.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1117,7 +1117,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 71.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1129,7 +1129,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 425.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1141,7 +1141,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 148.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1153,7 +1153,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 87.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1165,7 +1165,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 211.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1177,7 +1177,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 100.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1189,7 +1189,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 103.0,
-   "retrieved_at": "2026-11-12T11:48:46Z",
+   "retrieved_at": "2026-11-12T13:03:25Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=52311-0130&format=ffcsv",
    "message": "",
    "outdated": false
@@ -1201,7 +1201,7 @@
    "first": "1991-01",
    "last": "2026-10",
    "last_value": 126.4,
-   "retrieved_at": "2026-11-12T11:48:47Z",
+   "retrieved_at": "2026-11-12T13:03:26Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.VPI.C.A00000.I20.A?startPeriod=1991-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1213,7 +1213,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 121.8,
-   "retrieved_at": "2026-11-12T11:48:48Z",
+   "retrieved_at": "2026-11-12T13:03:27Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.Y.VPI.C.XE0110.I20.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1225,7 +1225,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 2.8,
-   "retrieved_at": "2026-11-12T11:48:02Z",
+   "retrieved_at": "2026-11-12T13:02:41Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.VPI.C.A00000.VGJ.LV?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1237,7 +1237,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 2.8,
-   "retrieved_at": "2026-11-12T11:48:48Z",
+   "retrieved_at": "2026-11-12T13:03:27Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.HVPI.C.A00000.VGJ.LV?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1249,7 +1249,7 @@
    "first": "2005-Q1",
    "last": "2026-Q3",
    "last_value": 3.3,
-   "retrieved_at": "2026-11-12T11:48:49Z",
+   "retrieved_at": "2026-11-12T13:03:28Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=B1GQ&unit=PD_PCH_SM_NAC&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -1261,7 +1261,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 2.7,
-   "retrieved_at": "2026-11-12T11:48:49Z",
+   "retrieved_at": "2026-11-12T13:03:28Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=P31_S14_S15&unit=PD_PCH_SM_NAC&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -1273,7 +1273,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 0.1,
-   "retrieved_at": "2026-11-12T11:48:49Z",
+   "retrieved_at": "2026-11-12T13:03:29Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=P31_S14_S15&unit=CLV_PCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -1285,7 +1285,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 0.1,
-   "retrieved_at": "2026-11-12T11:48:50Z",
+   "retrieved_at": "2026-11-12T13:03:29Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=P3_S13&unit=CLV_PCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -1297,7 +1297,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 2.0,
-   "retrieved_at": "2026-11-12T11:48:50Z",
+   "retrieved_at": "2026-11-12T13:03:29Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=P6&unit=CLV_PCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -1309,7 +1309,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 1.5,
-   "retrieved_at": "2026-11-12T11:48:51Z",
+   "retrieved_at": "2026-11-12T13:03:30Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=P7&unit=CLV_PCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -1321,7 +1321,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": -1.4,
-   "retrieved_at": "2026-11-12T11:48:51Z",
+   "retrieved_at": "2026-11-12T13:03:30Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_an6?format=JSON&lang=en&geo=DE&asset10=N11MG&unit=CLV_PCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -1333,7 +1333,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 0.1,
-   "retrieved_at": "2026-11-12T11:48:52Z",
+   "retrieved_at": "2026-11-12T13:03:31Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_an6?format=JSON&lang=en&geo=DE&asset10=N11KG&unit=CLV_PCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -1345,7 +1345,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 1.0,
-   "retrieved_at": "2026-11-12T11:48:52Z",
+   "retrieved_at": "2026-11-12T13:03:31Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_an6?format=JSON&lang=en&geo=DE&asset10=N117G&unit=CLV_PCH_PRE&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -1357,7 +1357,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 83.8,
-   "retrieved_at": "2026-11-12T11:48:52Z",
+   "retrieved_at": "2026-11-12T13:03:32Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.A2P310000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1369,7 +1369,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 100.1,
-   "retrieved_at": "2026-11-12T11:48:53Z",
+   "retrieved_at": "2026-11-12T13:03:32Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.A2P320000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1381,7 +1381,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 90.8,
-   "retrieved_at": "2026-11-12T11:48:53Z",
+   "retrieved_at": "2026-11-12T13:03:33Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.A2P350000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1393,7 +1393,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 99.2,
-   "retrieved_at": "2026-11-12T11:48:54Z",
+   "retrieved_at": "2026-11-12T13:03:33Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AED1.A2P300000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1405,7 +1405,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 86.5,
-   "retrieved_at": "2026-11-12T11:48:54Z",
+   "retrieved_at": "2026-11-12T13:03:34Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AED5.A2P300000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1417,7 +1417,7 @@
    "first": "2010-01",
    "last": "2026-09",
    "last_value": 89.9,
-   "retrieved_at": "2026-11-12T11:48:55Z",
+   "retrieved_at": "2026-11-12T13:03:34Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEM1.A2P300000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1429,7 +1429,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 114.8,
-   "retrieved_at": "2026-11-12T11:48:55Z",
+   "retrieved_at": "2026-11-12T13:03:34Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.GUA1.A2P300000.F.V.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1441,7 +1441,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 111.3,
-   "retrieved_at": "2026-11-12T11:48:55Z",
+   "retrieved_at": "2026-11-12T13:03:35Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.GUB1.A2P300000.F.V.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1453,7 +1453,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 118.2,
-   "retrieved_at": "2026-11-12T11:48:56Z",
+   "retrieved_at": "2026-11-12T13:03:35Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.GUB5.A2P300000.F.V.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1465,7 +1465,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 120.2,
-   "retrieved_at": "2026-11-12T11:48:56Z",
+   "retrieved_at": "2026-11-12T13:03:36Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.GUA1.A2P320000.F.V.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1477,7 +1477,7 @@
    "first": "2005-01",
    "last": "2026-08",
    "last_value": 111.1,
-   "retrieved_at": "2026-11-12T11:48:57Z",
+   "retrieved_at": "2026-11-12T13:03:36Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.P2XF00000.B2.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1489,7 +1489,7 @@
    "first": "2005-01",
    "last": "2026-08",
    "last_value": 84.0,
-   "retrieved_at": "2026-11-12T11:48:57Z",
+   "retrieved_at": "2026-11-12T13:03:37Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.P2XF22000.B2.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1501,7 +1501,7 @@
    "first": "2005-01",
    "last": "2026-08",
    "last_value": 81.3,
-   "retrieved_at": "2026-11-12T11:48:58Z",
+   "retrieved_at": "2026-11-12T13:03:37Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.P2XF20000.B2.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1513,7 +1513,7 @@
    "first": "2005-01",
    "last": "2026-08",
    "last_value": 146.7,
-   "retrieved_at": "2026-11-12T11:48:58Z",
+   "retrieved_at": "2026-11-12T13:03:38Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.P2XF04000.B2.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1525,7 +1525,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 89.9,
-   "retrieved_at": "2026-11-12T11:48:58Z",
+   "retrieved_at": "2026-11-12T13:03:38Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2F000000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1537,7 +1537,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 94.0,
-   "retrieved_at": "2026-11-12T11:48:59Z",
+   "retrieved_at": "2026-11-12T13:03:39Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.A2R410050.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1549,7 +1549,7 @@
    "first": "2010-01",
    "last": "2026-09",
    "last_value": 87.9,
-   "retrieved_at": "2026-11-12T11:48:59Z",
+   "retrieved_at": "2026-11-12T13:03:39Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2F430000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1561,7 +1561,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 93.3,
-   "retrieved_at": "2026-11-12T11:49:00Z",
+   "retrieved_at": "2026-11-12T13:03:39Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_trtu_m?format=JSON&lang=en&geo=DE&indic_bt=VOL_SLS&nace_r2=G47_FOOD&s_adj=SCA&unit=I21",
    "message": "",
    "outdated": false
@@ -1573,7 +1573,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 101.9,
-   "retrieved_at": "2026-11-12T11:49:00Z",
+   "retrieved_at": "2026-11-12T13:03:40Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_trtu_m?format=JSON&lang=en&geo=DE&indic_bt=VOL_SLS&nace_r2=G47_NFOOD_X_G473&s_adj=SCA&unit=I21",
    "message": "",
    "outdated": false
@@ -1585,7 +1585,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 114.7,
-   "retrieved_at": "2026-11-12T11:49:01Z",
+   "retrieved_at": "2026-11-12T13:03:40Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_trtu_m?format=JSON&lang=en&geo=DE&indic_bt=VOL_SLS&nace_r2=G4791&s_adj=SCA&unit=I21",
    "message": "",
    "outdated": false
@@ -1597,7 +1597,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 94.4,
-   "retrieved_at": "2026-11-12T11:49:01Z",
+   "retrieved_at": "2026-11-12T13:03:41Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2I000000.A.C.I15.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1609,7 +1609,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 108.998,
-   "retrieved_at": "2026-11-12T11:49:01Z",
+   "retrieved_at": "2026-11-12T13:03:41Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.KAA1.P2XC29050.KFZ.N.ABA.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1621,7 +1621,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 45632.0,
-   "retrieved_at": "2026-11-12T11:49:02Z",
+   "retrieved_at": "2026-11-12T13:03:42Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.Y.EMP.EAA000.A0000.A00.D10.0.ABA.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1633,7 +1633,7 @@
    "first": "2005-01",
    "last": "2026-08",
    "last_value": 34907.0,
-   "retrieved_at": "2026-11-12T11:49:02Z",
+   "retrieved_at": "2026-11-12T13:03:42Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.Y.EMP.EBA000.A0000.A00.D00.0.ABA.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1645,7 +1645,7 @@
    "first": "2005-01",
    "last": "2026-08",
    "last_value": 10320.0,
-   "retrieved_at": "2026-11-12T11:49:03Z",
+   "retrieved_at": "2026-11-12T13:03:43Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/bop_c6_m?format=JSON&lang=en&geo=DE&partner=WRL_REST&bop_item=CA&stk_flow=BAL&currency=MIO_EUR&sector10=S1&sectpart=S1",
    "message": "",
    "outdated": false
@@ -1657,7 +1657,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 121.3,
-   "retrieved_at": "2026-11-12T11:49:03Z",
+   "retrieved_at": "2026-11-12T13:03:43Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.APA1.G.GP19SA000000.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1669,7 +1669,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 97.9,
-   "retrieved_at": "2026-11-12T11:49:04Z",
+   "retrieved_at": "2026-11-12T13:03:44Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.Y.APT1.G.GP19SA000000.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1681,7 +1681,7 @@
    "first": "2005-Q1",
    "last": "2026-Q4",
    "last_value": 78.7,
-   "retrieved_at": "2026-11-12T11:49:04Z",
+   "retrieved_at": "2026-11-12T13:03:44Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsin_q_r2?format=JSON&lang=en&geo=DE&indic=BS-ICU-PC&s_adj=SA",
    "message": "",
    "outdated": false
@@ -1693,7 +1693,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": -4.1,
-   "retrieved_at": "2026-11-12T11:49:04Z",
+   "retrieved_at": "2026-11-12T13:03:44Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsse_m_r2?format=JSON&lang=en&geo=DE&indic=BS-SABC&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -1705,7 +1705,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": -17.0,
-   "retrieved_at": "2026-11-12T11:49:05Z",
+   "retrieved_at": "2026-11-12T13:03:45Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsrt_m_r2?format=JSON&lang=en&geo=DE&indic=BS-RPBS&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -1717,7 +1717,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": -10.9,
-   "retrieved_at": "2026-11-12T11:49:05Z",
+   "retrieved_at": "2026-11-12T13:03:45Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsbu_m_r2?format=JSON&lang=en&geo=DE&indic=BS-CTA-BAL&s_adj=SA",
    "message": "",
    "outdated": false
@@ -1729,7 +1729,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": -19.7,
-   "retrieved_at": "2026-11-12T11:48:14Z",
+   "retrieved_at": "2026-11-12T13:02:54Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsin_m_r2?format=JSON&lang=en&geo=DE&indic=BS-IOB&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -1741,7 +1741,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 10.3,
-   "retrieved_at": "2026-11-12T11:49:06Z",
+   "retrieved_at": "2026-11-12T13:03:46Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsse_m_r2?format=JSON&lang=en&geo=DE&indic=BS-SAEM&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -1753,7 +1753,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": -28.9,
-   "retrieved_at": "2026-11-12T11:49:06Z",
+   "retrieved_at": "2026-11-12T13:03:46Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsrt_m_r2?format=JSON&lang=en&geo=DE&indic=BS-REBS&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -1765,7 +1765,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": -2.9,
-   "retrieved_at": "2026-11-12T11:49:07Z",
+   "retrieved_at": "2026-11-12T13:03:47Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsbu_m_r2?format=JSON&lang=en&geo=DE&indic=BS-CEME-BAL&s_adj=SA",
    "message": "",
    "outdated": false
@@ -1777,7 +1777,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 10.4,
-   "retrieved_at": "2026-11-12T11:48:15Z",
+   "retrieved_at": "2026-11-12T13:02:55Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsin_m_r2?format=JSON&lang=en&geo=DE&indic=BS-IPE&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -1789,7 +1789,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 3.4,
-   "retrieved_at": "2026-11-12T11:49:07Z",
+   "retrieved_at": "2026-11-12T13:03:47Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBSIS/M.I.ZST.ZI.EUR.S1311.B.A604.R10XX.R.A.A._Z._Z.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1801,7 +1801,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 3.06,
-   "retrieved_at": "2026-11-12T11:49:07Z",
+   "retrieved_at": "2026-11-12T13:03:48Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBSIS/M.I.ZST.ZI.EUR.S1311.B.A604.R02XX.R.A.A._Z._Z.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1809,11 +1809,11 @@
   {
    "series_id": "de_bund10_d",
    "status": "ok",
-   "n_obs": 2000,
+   "n_obs": 2001,
    "first": "2019-01-02",
-   "last": "2026-11-11",
-   "last_value": 3.37,
-   "retrieved_at": "2026-11-12T11:49:08Z",
+   "last": "2026-11-12",
+   "last_value": 3.36,
+   "retrieved_at": "2026-11-12T13:03:48Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBSIS/D.I.ZST.ZI.EUR.S1311.B.A604.R10XX.R.A.A._Z._Z.A?startPeriod=2019-01-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1821,11 +1821,11 @@
   {
    "series_id": "de_bund2_d",
    "status": "ok",
-   "n_obs": 2000,
+   "n_obs": 2001,
    "first": "2019-01-02",
-   "last": "2026-11-11",
-   "last_value": 3.08,
-   "retrieved_at": "2026-11-12T11:49:09Z",
+   "last": "2026-11-12",
+   "last_value": 3.09,
+   "retrieved_at": "2026-11-12T13:03:49Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBSIS/D.I.ZST.ZI.EUR.S1311.B.A604.R02XX.R.A.A._Z._Z.A?startPeriod=2019-01-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1837,7 +1837,7 @@
    "first": "2019-10-01",
    "last": "2026-11-11",
    "last_value": 2.439,
-   "retrieved_at": "2026-11-12T11:49:12Z",
+   "retrieved_at": "2026-11-12T13:04:05Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/EST/B.EU000A2X2A25.WT?startPeriod=2019-10-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1849,7 +1849,7 @@
    "first": "2019-01-02",
    "last": "2026-11-11",
    "last_value": 1.1127,
-   "retrieved_at": "2026-11-12T11:49:16Z",
+   "retrieved_at": "2026-11-12T13:04:18Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.USD.EUR.SP00.A?startPeriod=2019-01-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1861,7 +1861,7 @@
    "first": "2019-01-02",
    "last": "2026-11-11",
    "last_value": 1.1127,
-   "retrieved_at": "2026-11-12T11:49:16Z",
+   "retrieved_at": "2026-11-12T13:04:18Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.USD.EUR.SP00.A?startPeriod=2019-01-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1873,7 +1873,7 @@
    "first": "2019-01-02",
    "last": "2026-11-11",
    "last_value": 7.4225,
-   "retrieved_at": "2026-11-12T11:49:18Z",
+   "retrieved_at": "2026-11-12T13:04:22Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.CNY.EUR.SP00.A?startPeriod=2019-01-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1885,7 +1885,7 @@
    "first": "2019-01-02",
    "last": "2026-11-11",
    "last_value": 0.83618,
-   "retrieved_at": "2026-11-12T11:49:23Z",
+   "retrieved_at": "2026-11-12T13:04:33Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.GBP.EUR.SP00.A?startPeriod=2019-01-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1897,7 +1897,7 @@
    "first": "2019-01-02",
    "last": "2026-11-11",
    "last_value": 0.9234,
-   "retrieved_at": "2026-11-12T11:49:26Z",
+   "retrieved_at": "2026-11-12T13:04:46Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.CHF.EUR.SP00.A?startPeriod=2019-01-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1909,7 +1909,7 @@
    "first": "2019-01-02",
    "last": "2026-11-11",
    "last_value": 126.5001,
-   "retrieved_at": "2026-11-12T11:49:30Z",
+   "retrieved_at": "2026-11-12T13:04:52Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.E03.EUR.EN00.A?startPeriod=2019-01-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1921,7 +1921,7 @@
    "first": "2019-01-02",
    "last": "2026-11-11",
    "last_value": 97.7135,
-   "retrieved_at": "2026-11-12T11:49:33Z",
+   "retrieved_at": "2026-11-12T13:04:58Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/EXR/D.E02.EUR.EN00.A?startPeriod=2019-01-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -1933,7 +1933,7 @@
    "first": "2010-01",
    "last": "2026-10",
    "last_value": 1.253,
-   "retrieved_at": "2026-11-12T11:46:37Z",
+   "retrieved_at": "2026-11-12T13:01:39Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/dwd_temp_anom.csv",
    "message": "",
    "outdated": false
@@ -1945,7 +1945,7 @@
    "first": "2010-01",
    "last": "2026-10",
    "last_value": 118.263,
-   "retrieved_at": "2026-11-12T11:46:44Z",
+   "retrieved_at": "2026-11-12T13:01:50Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/dwd_rain_pct.csv",
    "message": "",
    "outdated": false
@@ -1957,7 +1957,7 @@
    "first": "2010-01",
    "last": "2026-10",
    "last_value": 91.861,
-   "retrieved_at": "2026-11-12T11:46:47Z",
+   "retrieved_at": "2026-11-12T13:01:53Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/dwd_hdd_pct.csv",
    "message": "",
    "outdated": false
@@ -1969,7 +1969,7 @@
    "first": "2010-01",
    "last": "2026-10",
    "last_value": 282.347,
-   "retrieved_at": "2026-11-12T11:46:47Z",
+   "retrieved_at": "2026-11-12T13:01:53Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/dwd_hdd_raw.csv",
    "message": "",
    "outdated": false
@@ -1981,7 +1981,7 @@
    "first": "1969-11-01",
    "last": "2026-11-11",
    "last_value": 17.229,
-   "retrieved_at": "2026-11-12T11:46:48Z",
+   "retrieved_at": "2026-11-12T13:01:54Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/rhine_kaub.csv",
    "message": "",
    "outdated": false
@@ -1993,7 +1993,7 @@
    "first": "1970-01",
    "last": "2026-11",
    "last_value": 11.0,
-   "retrieved_at": "2026-11-12T11:46:48Z",
+   "retrieved_at": "2026-11-12T13:01:54Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/rhine_lowdays.csv",
    "message": "",
    "outdated": false
@@ -2005,7 +2005,7 @@
    "first": "2005-Q1",
    "last": "2026-Q3",
    "last_value": 0.23,
-   "retrieved_at": "2026-11-12T11:47:53Z",
+   "retrieved_at": "2026-11-12T13:02:32Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gdp_rt_first.csv",
    "message": "",
    "outdated": false
@@ -2017,7 +2017,7 @@
    "first": "2005-Q1",
    "last": "2026-Q3",
    "last_value": 0.23,
-   "retrieved_at": "2026-11-12T11:47:53Z",
+   "retrieved_at": "2026-11-12T13:02:32Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gdp_rt_latest.csv",
    "message": "",
    "outdated": false
@@ -2029,7 +2029,7 @@
    "first": "2005-Q1",
    "last": "2026-Q3",
    "last_value": 0.0,
-   "retrieved_at": "2026-11-12T11:47:53Z",
+   "retrieved_at": "2026-11-12T13:02:32Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gdp_rt_rev.csv",
    "message": "",
    "outdated": false
@@ -2041,7 +2041,7 @@
    "first": "1970",
    "last": "2026",
    "last_value": 122.0,
-   "retrieved_at": "2026-11-12T11:46:48Z",
+   "retrieved_at": "2026-11-12T13:01:54Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/rhine_lowdays_year.csv",
    "message": "",
    "outdated": false
@@ -2053,7 +2053,7 @@
    "first": "2015-01",
    "last": "2026-10",
    "last_value": 40.003,
-   "retrieved_at": "2026-11-12T11:46:56Z",
+   "retrieved_at": "2026-11-12T13:02:04Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/smard_load.csv",
    "message": "",
    "outdated": false
@@ -2065,7 +2065,7 @@
    "first": "2018-10",
    "last": "2026-10",
    "last_value": 169.27,
-   "retrieved_at": "2026-11-12T11:47:01Z",
+   "retrieved_at": "2026-11-12T13:02:10Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/smard_price.csv",
    "message": "",
    "outdated": false
@@ -2076,8 +2076,8 @@
    "n_obs": 1096,
    "first": "2023-11-12",
    "last": "2026-11-11",
-   "last_value": 1516.964,
-   "retrieved_at": "2026-11-12T11:47:03Z",
+   "last_value": 1517.249,
+   "retrieved_at": "2026-11-12T13:02:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/smard_load_d.csv",
    "message": "",
    "outdated": false
@@ -2085,11 +2085,11 @@
   {
    "series_id": "de_power_price_d",
    "status": "ok",
-   "n_obs": 1097,
+   "n_obs": 1098,
    "first": "2023-11-12",
-   "last": "2026-11-12",
-   "last_value": 199.04,
-   "retrieved_at": "2026-11-12T11:47:05Z",
+   "last": "2026-11-13",
+   "last_value": 161.73,
+   "retrieved_at": "2026-11-12T13:02:16Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/smard_price_d.csv",
    "message": "",
    "outdated": false
@@ -2101,7 +2101,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 20.642,
-   "retrieved_at": "2026-11-12T11:49:38Z",
+   "retrieved_at": "2026-11-12T13:05:04Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=31111-0020&format=ffcsv",
    "message": "",
    "outdated": false
@@ -2113,7 +2113,7 @@
    "first": "2010-Q1",
    "last": "2026-Q2",
    "last_value": 100.6,
-   "retrieved_at": "2026-11-12T11:49:40Z",
+   "retrieved_at": "2026-11-12T13:05:07Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=61262-0002&format=ffcsv",
    "message": "",
    "outdated": false
@@ -2125,7 +2125,7 @@
    "first": "2010-01",
    "last": "2026-09",
    "last_value": 4.05,
-   "retrieved_at": "2026-11-12T11:50:29Z",
+   "retrieved_at": "2026-11-12T13:05:51Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/MIR/M.DE.B.A2I.AM.R.A.2240.EUR.N?startPeriod=2010-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2137,7 +2137,7 @@
    "first": "2010-01",
    "last": "2026-09",
    "last_value": 4.09,
-   "retrieved_at": "2026-11-12T11:50:44Z",
+   "retrieved_at": "2026-11-12T13:06:05Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/MIR/M.DE.B.A2C.AM.R.A.2250.EUR.N?startPeriod=2010-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2149,7 +2149,7 @@
    "first": "2010-01",
    "last": "2026-09",
    "last_value": 2.2472600238603535,
-   "retrieved_at": "2026-11-12T11:50:47Z",
+   "retrieved_at": "2026-11-12T13:06:13Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/BSI/M.DE.N.A.A20.A.I.U2.2240.Z01.A?startPeriod=2010-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2161,7 +2161,7 @@
    "first": "2010-01",
    "last": "2026-09",
    "last_value": 2.450967512965363,
-   "retrieved_at": "2026-11-12T11:50:49Z",
+   "retrieved_at": "2026-11-12T13:06:31Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/BSI/M.DE.N.A.A22.A.I.U2.2250.Z01.A?startPeriod=2010-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2169,11 +2169,11 @@
   {
    "series_id": "de_gas_storage",
    "status": "ok",
-   "n_obs": 4032,
+   "n_obs": 4332,
    "first": "2015-01-01",
    "last": "2026-11-10",
    "last_value": 58.05,
-   "retrieved_at": "2026-11-12T11:47:51Z",
+   "retrieved_at": "2026-11-12T13:02:31Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gie_storage_de.csv",
    "message": "",
    "outdated": false
@@ -2185,7 +2185,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 123.93,
-   "retrieved_at": "2026-11-12T11:50:50Z",
+   "retrieved_at": "2026-11-12T13:06:31Z",
    "api_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=MCOILBRENTEU",
    "message": "",
    "outdated": false
@@ -2197,7 +2197,7 @@
    "first": "2019-01-02",
    "last": "2026-11-03",
    "last_value": 107.03,
-   "retrieved_at": "2026-11-12T11:50:50Z",
+   "retrieved_at": "2026-11-12T13:06:32Z",
    "api_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILBRENTEU",
    "message": "",
    "outdated": false
@@ -2209,7 +2209,7 @@
    "first": "2015-01-05",
    "last": "2026-11-09",
    "last_value": 2.067,
-   "retrieved_at": "2026-11-12T11:47:10Z",
+   "retrieved_at": "2026-11-12T13:02:19Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/wob_de_e95.csv",
    "message": "",
    "outdated": false
@@ -2221,7 +2221,7 @@
    "first": "2015-01-05",
    "last": "2026-11-09",
    "last_value": 2.253,
-   "retrieved_at": "2026-11-12T11:47:10Z",
+   "retrieved_at": "2026-11-12T13:02:19Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/wob_de_diesel.csv",
    "message": "",
    "outdated": false
@@ -2233,7 +2233,7 @@
    "first": "2015-01-05",
    "last": "2026-11-09",
    "last_value": 1.691,
-   "retrieved_at": "2026-11-12T11:47:10Z",
+   "retrieved_at": "2026-11-12T13:02:19Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/wob_de_heating.csv",
    "message": "",
    "outdated": false
@@ -2245,7 +2245,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 25.494,
-   "retrieved_at": "2026-11-12T11:50:51Z",
+   "retrieved_at": "2026-11-12T13:06:32Z",
    "api_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PNGASEUUSDM",
    "message": "",
    "outdated": false
@@ -2257,7 +2257,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 123.7,
-   "retrieved_at": "2026-11-12T11:50:51Z",
+   "retrieved_at": "2026-11-12T13:06:33Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.Y.EPG.G.GP19SA001500.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2269,7 +2269,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 118.6,
-   "retrieved_at": "2026-11-12T11:50:52Z",
+   "retrieved_at": "2026-11-12T13:06:34Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.Y.APE1.G.GP19SA002000.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2281,7 +2281,7 @@
    "first": "1975-01",
    "last": "2026-08",
    "last_value": 132.2,
-   "retrieved_at": "2026-11-12T11:50:52Z",
+   "retrieved_at": "2026-11-12T13:06:34Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.EPL.L.L1A00000000.I20.A?startPeriod=1975-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2293,7 +2293,7 @@
    "first": "1975-01",
    "last": "2025-03",
    "last_value": 127.7792,
-   "retrieved_at": "2026-11-12T11:50:53Z",
+   "retrieved_at": "2026-11-12T13:06:35Z",
    "api_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEUCPIALLMINMEI",
    "message": "",
    "outdated": false
@@ -2305,7 +2305,7 @@
    "first": "1975-01",
    "last": "2026-09",
    "last_value": 1.97,
-   "retrieved_at": "2026-11-12T11:46:48Z",
+   "retrieved_at": "2026-11-12T13:01:55Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/enso_roni.csv",
    "message": "",
    "outdated": false
@@ -2317,7 +2317,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 28.8,
-   "retrieved_at": "2026-11-12T11:50:53Z",
+   "retrieved_at": "2026-11-12T13:06:35Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsin_m_r2?format=JSON&lang=en&geo=DE&indic=BS-ISPE&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -2329,7 +2329,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 22.5,
-   "retrieved_at": "2026-11-12T11:50:54Z",
+   "retrieved_at": "2026-11-12T13:06:36Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsse_m_r2?format=JSON&lang=en&geo=DE&indic=BS-PE3M&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -2341,7 +2341,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 32.2,
-   "retrieved_at": "2026-11-12T11:50:54Z",
+   "retrieved_at": "2026-11-12T13:06:36Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsrt_m_r2?format=JSON&lang=en&geo=DE&indic=BS-RPE&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -2353,7 +2353,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 16.7,
-   "retrieved_at": "2026-11-12T11:50:55Z",
+   "retrieved_at": "2026-11-12T13:06:37Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsbu_m_r2?format=JSON&lang=en&geo=DE&indic=BS-CPE-BAL&s_adj=SA",
    "message": "",
    "outdated": false
@@ -2365,7 +2365,7 @@
    "first": "2005-01",
    "last": "2026-10",
    "last_value": 41.0,
-   "retrieved_at": "2026-11-12T11:50:55Z",
+   "retrieved_at": "2026-11-12T13:06:37Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bsco_m?format=JSON&lang=en&geo=DE&indic=BS-PT-NY&s_adj=SA&unit=BAL",
    "message": "",
    "outdated": false
@@ -2377,7 +2377,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 93.6,
-   "retrieved_at": "2026-11-12T11:50:56Z",
+   "retrieved_at": "2026-11-12T13:06:38Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C100000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2389,7 +2389,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 103.4,
-   "retrieved_at": "2026-11-12T11:50:56Z",
+   "retrieved_at": "2026-11-12T13:06:38Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C110000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2401,7 +2401,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 80.9,
-   "retrieved_at": "2026-11-12T11:50:56Z",
+   "retrieved_at": "2026-11-12T13:06:38Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C120000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2413,7 +2413,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 78.0,
-   "retrieved_at": "2026-11-12T11:50:57Z",
+   "retrieved_at": "2026-11-12T13:06:39Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C130000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2425,7 +2425,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 80.3,
-   "retrieved_at": "2026-11-12T11:50:57Z",
+   "retrieved_at": "2026-11-12T13:06:39Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C140000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2437,7 +2437,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 84.1,
-   "retrieved_at": "2026-11-12T11:50:58Z",
+   "retrieved_at": "2026-11-12T13:06:40Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C150000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2449,7 +2449,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 70.8,
-   "retrieved_at": "2026-11-12T11:50:58Z",
+   "retrieved_at": "2026-11-12T13:06:40Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C160000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2461,7 +2461,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 78.3,
-   "retrieved_at": "2026-11-12T11:50:58Z",
+   "retrieved_at": "2026-11-12T13:06:41Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C170000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2473,7 +2473,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 68.3,
-   "retrieved_at": "2026-11-12T11:50:59Z",
+   "retrieved_at": "2026-11-12T13:06:41Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C180000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2485,7 +2485,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 89.9,
-   "retrieved_at": "2026-11-12T11:50:59Z",
+   "retrieved_at": "2026-11-12T13:06:42Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C190000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2497,7 +2497,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 77.0,
-   "retrieved_at": "2026-11-12T11:51:00Z",
+   "retrieved_at": "2026-11-12T13:06:42Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C200000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2509,7 +2509,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 101.4,
-   "retrieved_at": "2026-11-12T11:51:00Z",
+   "retrieved_at": "2026-11-12T13:06:43Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C210000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2521,7 +2521,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 83.8,
-   "retrieved_at": "2026-11-12T11:51:01Z",
+   "retrieved_at": "2026-11-12T13:06:43Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C220000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2533,7 +2533,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 77.6,
-   "retrieved_at": "2026-11-12T11:51:01Z",
+   "retrieved_at": "2026-11-12T13:06:44Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C230000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2545,7 +2545,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 85.0,
-   "retrieved_at": "2026-11-12T11:51:01Z",
+   "retrieved_at": "2026-11-12T13:06:44Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C240000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2557,7 +2557,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 86.9,
-   "retrieved_at": "2026-11-12T11:51:02Z",
+   "retrieved_at": "2026-11-12T13:06:44Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C250000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2569,7 +2569,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 107.8,
-   "retrieved_at": "2026-11-12T11:51:02Z",
+   "retrieved_at": "2026-11-12T13:06:45Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C260000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2581,7 +2581,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 91.5,
-   "retrieved_at": "2026-11-12T11:51:03Z",
+   "retrieved_at": "2026-11-12T13:06:45Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C270000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2593,7 +2593,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 85.2,
-   "retrieved_at": "2026-11-12T11:51:03Z",
+   "retrieved_at": "2026-11-12T13:06:46Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C280000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2605,7 +2605,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 108.1,
-   "retrieved_at": "2026-11-12T11:51:04Z",
+   "retrieved_at": "2026-11-12T13:06:46Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C290000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2617,7 +2617,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 138.5,
-   "retrieved_at": "2026-11-12T11:51:04Z",
+   "retrieved_at": "2026-11-12T13:06:47Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C300000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2629,7 +2629,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 68.8,
-   "retrieved_at": "2026-11-12T11:51:05Z",
+   "retrieved_at": "2026-11-12T13:06:47Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C310000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2641,7 +2641,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 97.5,
-   "retrieved_at": "2026-11-12T11:51:05Z",
+   "retrieved_at": "2026-11-12T13:06:48Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C320000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2653,7 +2653,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 116.4,
-   "retrieved_at": "2026-11-12T11:51:05Z",
+   "retrieved_at": "2026-11-12T13:06:48Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2C330000.G.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2665,7 +2665,7 @@
    "first": "2019-01-07",
    "last": "2026-11-02",
    "last_value": 0.3764,
-   "retrieved_at": "2026-11-12T11:51:06Z",
+   "retrieved_at": "2026-11-12T13:06:48Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/W.DE.Y.WAI.A2N400000.A.N.R00.A?startPeriod=2019-01-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -2677,7 +2677,7 @@
    "first": "1996",
    "last": "2025",
    "last_value": 0.2,
-   "retrieved_at": "2026-11-12T11:51:06Z",
+   "retrieved_at": "2026-11-12T13:06:49Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nama_10_gdp?format=JSON&lang=en&geo=DE&na_item=B1GQ&unit=CLV_PCH_PRE",
    "message": "",
    "outdated": false
@@ -2689,7 +2689,7 @@
    "first": "1996",
    "last": "2027",
    "last_value": 0.421,
-   "retrieved_at": "2026-11-12T11:47:55Z",
+   "retrieved_at": "2026-11-12T13:02:34Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/ameco_potential_de.csv",
    "message": "",
    "outdated": false
@@ -2701,7 +2701,7 @@
    "first": "1996",
    "last": "2027",
    "last_value": 0.678,
-   "retrieved_at": "2026-11-12T11:47:53Z",
+   "retrieved_at": "2026-11-12T13:02:33Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/oecd_potential_de.csv",
    "message": "",
    "outdated": false
@@ -2713,7 +2713,7 @@
    "first": "1996",
    "last": "2031",
    "last_value": 0.73,
-   "retrieved_at": "2026-11-12T11:47:54Z",
+   "retrieved_at": "2026-11-12T13:02:34Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/imf_potential_de.csv",
    "message": "",
    "outdated": false
@@ -2725,7 +2725,7 @@
    "first": "2000-Q1",
    "last": "2026-Q2",
    "last_value": 102.63,
-   "retrieved_at": "2026-11-12T11:51:07Z",
+   "retrieved_at": "2026-11-12T13:06:49Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_lp_ulc?format=JSON&lang=en&geo=DE&na_item=RLPR_HW&unit=I20&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -2737,7 +2737,7 @@
    "first": "2000-Q1",
    "last": "2026-Q3",
    "last_value": 105.131,
-   "retrieved_at": "2026-11-12T11:51:07Z",
+   "retrieved_at": "2026-11-12T13:06:50Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_lp_ulc?format=JSON&lang=en&geo=DE&na_item=RLPR_PER&unit=I20&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -2749,7 +2749,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 20.2,
-   "retrieved_at": "2026-11-12T11:51:08Z",
+   "retrieved_at": "2026-11-12T13:06:50Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nama_10_gdp?format=JSON&lang=en&geo=DE&na_item=P51G&unit=PC_GDP",
    "message": "",
    "outdated": false
@@ -2761,7 +2761,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 21.5,
-   "retrieved_at": "2026-11-12T11:51:08Z",
+   "retrieved_at": "2026-11-12T13:06:51Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nama_10_gdp?format=JSON&lang=en&geo=EU27_2020&na_item=P51G&unit=PC_GDP",
    "message": "",
    "outdated": false
@@ -2773,7 +2773,7 @@
    "first": "2015-Q1",
    "last": "2026-Q2",
    "last_value": 546.0,
-   "retrieved_at": "2026-11-12T11:51:09Z",
+   "retrieved_at": "2026-11-12T13:06:51Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_a10_e?format=JSON&lang=en&geo=DE&na_item=EMP_DC&unit=THS_PER&s_adj=SCA&nace_r2=A",
    "message": "",
    "outdated": false
@@ -2785,7 +2785,7 @@
    "first": "2015-Q1",
    "last": "2026-Q2",
    "last_value": 7788.0,
-   "retrieved_at": "2026-11-12T11:51:09Z",
+   "retrieved_at": "2026-11-12T13:06:52Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_a10_e?format=JSON&lang=en&geo=DE&na_item=EMP_DC&unit=THS_PER&s_adj=SCA&nace_r2=B-E",
    "message": "",
    "outdated": false
@@ -2797,7 +2797,7 @@
    "first": "2015-Q1",
    "last": "2026-Q2",
    "last_value": 2564.0,
-   "retrieved_at": "2026-11-12T11:51:09Z",
+   "retrieved_at": "2026-11-12T13:06:52Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_a10_e?format=JSON&lang=en&geo=DE&na_item=EMP_DC&unit=THS_PER&s_adj=SCA&nace_r2=F",
    "message": "",
    "outdated": false
@@ -2809,7 +2809,7 @@
    "first": "2015-Q1",
    "last": "2026-Q2",
    "last_value": 9936.0,
-   "retrieved_at": "2026-11-12T11:51:10Z",
+   "retrieved_at": "2026-11-12T13:06:53Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_a10_e?format=JSON&lang=en&geo=DE&na_item=EMP_DC&unit=THS_PER&s_adj=SCA&nace_r2=G-I",
    "message": "",
    "outdated": false
@@ -2821,7 +2821,7 @@
    "first": "2015-Q1",
    "last": "2026-Q2",
    "last_value": 1544.0,
-   "retrieved_at": "2026-11-12T11:51:10Z",
+   "retrieved_at": "2026-11-12T13:06:53Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_a10_e?format=JSON&lang=en&geo=DE&na_item=EMP_DC&unit=THS_PER&s_adj=SCA&nace_r2=J",
    "message": "",
    "outdated": false
@@ -2833,7 +2833,7 @@
    "first": "2015-Q1",
    "last": "2026-Q2",
    "last_value": 1094.0,
-   "retrieved_at": "2026-11-12T11:51:11Z",
+   "retrieved_at": "2026-11-12T13:06:53Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_a10_e?format=JSON&lang=en&geo=DE&na_item=EMP_DC&unit=THS_PER&s_adj=SCA&nace_r2=K",
    "message": "",
    "outdated": false
@@ -2845,7 +2845,7 @@
    "first": "2015-Q1",
    "last": "2026-Q2",
    "last_value": 528.0,
-   "retrieved_at": "2026-11-12T11:51:11Z",
+   "retrieved_at": "2026-11-12T13:06:54Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_a10_e?format=JSON&lang=en&geo=DE&na_item=EMP_DC&unit=THS_PER&s_adj=SCA&nace_r2=L",
    "message": "",
    "outdated": false
@@ -2857,7 +2857,7 @@
    "first": "2015-Q1",
    "last": "2026-Q2",
    "last_value": 6154.0,
-   "retrieved_at": "2026-11-12T11:51:12Z",
+   "retrieved_at": "2026-11-12T13:06:54Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_a10_e?format=JSON&lang=en&geo=DE&na_item=EMP_DC&unit=THS_PER&s_adj=SCA&nace_r2=M_N",
    "message": "",
    "outdated": false
@@ -2869,7 +2869,7 @@
    "first": "2015-Q1",
    "last": "2026-Q2",
    "last_value": 12530.0,
-   "retrieved_at": "2026-11-12T11:51:12Z",
+   "retrieved_at": "2026-11-12T13:06:55Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_a10_e?format=JSON&lang=en&geo=DE&na_item=EMP_DC&unit=THS_PER&s_adj=SCA&nace_r2=O-Q",
    "message": "",
    "outdated": false
@@ -2881,7 +2881,7 @@
    "first": "2015-Q1",
    "last": "2026-Q2",
    "last_value": 3018.0,
-   "retrieved_at": "2026-11-12T11:51:12Z",
+   "retrieved_at": "2026-11-12T13:06:55Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_a10_e?format=JSON&lang=en&geo=DE&na_item=EMP_DC&unit=THS_PER&s_adj=SCA&nace_r2=R-U",
    "message": "",
    "outdated": false
@@ -2893,7 +2893,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 242324.0,
-   "retrieved_at": "2026-11-12T11:51:13Z",
+   "retrieved_at": "2026-11-12T13:06:56Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/demo_gind?format=JSON&lang=en&geo=DE&indic_de=CNMIGRAT",
    "message": "",
    "outdated": false
@@ -2905,7 +2905,7 @@
    "first": "2000",
    "last": "2026",
    "last_value": 30.133,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/oecd_cit_deu.csv",
    "message": "",
    "outdated": false
@@ -2917,7 +2917,7 @@
    "first": "2000",
    "last": "2026",
    "last_value": 36.13,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/oecd_cit_fra.csv",
    "message": "",
    "outdated": false
@@ -2929,7 +2929,7 @@
    "first": "2000",
    "last": "2026",
    "last_value": 27.81,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/oecd_cit_ita.csv",
    "message": "",
    "outdated": false
@@ -2941,7 +2941,7 @@
    "first": "2000",
    "last": "2026",
    "last_value": 25.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/oecd_cit_esp.csv",
    "message": "",
    "outdated": false
@@ -2953,7 +2953,7 @@
    "first": "2000",
    "last": "2026",
    "last_value": 25.8,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/oecd_cit_nld.csv",
    "message": "",
    "outdated": false
@@ -2965,7 +2965,7 @@
    "first": "2000",
    "last": "2026",
    "last_value": 19.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/oecd_cit_pol.csv",
    "message": "",
    "outdated": false
@@ -2977,7 +2977,7 @@
    "first": "2000",
    "last": "2026",
    "last_value": 23.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/oecd_cit_aut.csv",
    "message": "",
    "outdated": false
@@ -2989,7 +2989,7 @@
    "first": "2000",
    "last": "2026",
    "last_value": 25.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/oecd_cit_gbr.csv",
    "message": "",
    "outdated": false
@@ -3001,7 +3001,7 @@
    "first": "2000",
    "last": "2026",
    "last_value": 25.529,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/oecd_cit_usa.csv",
    "message": "",
    "outdated": false
@@ -3013,7 +3013,7 @@
    "first": "2000",
    "last": "2026",
    "last_value": 29.74,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/oecd_cit_jpn.csv",
    "message": "",
    "outdated": false
@@ -3025,7 +3025,7 @@
    "first": "2008-01",
    "last": "2026-10",
    "last_value": 95.2,
-   "retrieved_at": "2026-11-12T11:51:13Z",
+   "retrieved_at": "2026-11-12T13:06:56Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.UC01.P2XH49800.W.C.I21.A?startPeriod=2008-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3037,7 +3037,7 @@
    "first": "2019-01-01",
    "last": "2026-11-07",
    "last_value": 95.0,
-   "retrieved_at": "2026-11-12T11:47:07Z",
+   "retrieved_at": "2026-11-12T13:02:18Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/maut_daily.csv",
    "message": "",
    "outdated": false
@@ -3049,7 +3049,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 4.1,
-   "retrieved_at": "2026-11-12T11:51:14Z",
+   "retrieved_at": "2026-11-12T13:06:57Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_lmhr_m?format=JSON&lang=en&geo=DE&indic=LM-UN-T-TOT&s_adj=SA&unit=PC_ACT",
    "message": "",
    "outdated": false
@@ -3061,7 +3061,7 @@
    "first": "2010-01",
    "last": "2026-08",
    "last_value": 34872500.0,
-   "retrieved_at": "2026-11-12T11:51:14Z",
+   "retrieved_at": "2026-11-12T13:06:57Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.N.EMP.EBA000.A0000.A00.D00.0.ABA.A?startPeriod=2010-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3073,7 +3073,7 @@
    "first": "2010-01",
    "last": "2026-08",
    "last_value": 9051000.0,
-   "retrieved_at": "2026-11-12T11:51:15Z",
+   "retrieved_at": "2026-11-12T13:06:58Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.N.EMP.EBA000.A0000.A00.D00.0S1.ABA.A?startPeriod=2010-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3085,7 +3085,7 @@
    "first": "2010-01",
    "last": "2026-08",
    "last_value": 25030000.0,
-   "retrieved_at": "2026-11-12T11:51:15Z",
+   "retrieved_at": "2026-11-12T13:06:58Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.N.EMP.EBA000.A0000.A00.D00.0S3.ABA.A?startPeriod=2010-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3097,7 +3097,7 @@
    "first": "2010-01",
    "last": "2026-08",
    "last_value": 542500.0,
-   "retrieved_at": "2026-11-12T11:51:15Z",
+   "retrieved_at": "2026-11-12T13:06:58Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.N.EMP.EBA000.A0000.A00.D00.1N1.ABA.A?startPeriod=2010-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3109,7 +3109,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 74.5,
-   "retrieved_at": "2026-11-12T11:51:16Z",
+   "retrieved_at": "2026-11-12T13:06:59Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.N2C200000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3121,7 +3121,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 110.3,
-   "retrieved_at": "2026-11-12T11:51:16Z",
+   "retrieved_at": "2026-11-12T13:06:59Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.N2C210000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3133,7 +3133,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 81.8,
-   "retrieved_at": "2026-11-12T11:51:17Z",
+   "retrieved_at": "2026-11-12T13:07:00Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.N2C240000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3145,7 +3145,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 82.4,
-   "retrieved_at": "2026-11-12T11:51:17Z",
+   "retrieved_at": "2026-11-12T13:07:00Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.N2C250000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3157,7 +3157,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 111.6,
-   "retrieved_at": "2026-11-12T11:51:18Z",
+   "retrieved_at": "2026-11-12T13:07:01Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.N2C260000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3169,7 +3169,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 94.9,
-   "retrieved_at": "2026-11-12T11:51:18Z",
+   "retrieved_at": "2026-11-12T13:07:01Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.N2C270000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3181,7 +3181,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 87.1,
-   "retrieved_at": "2026-11-12T11:51:18Z",
+   "retrieved_at": "2026-11-12T13:07:02Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.N2C280000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3193,7 +3193,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 93.8,
-   "retrieved_at": "2026-11-12T11:51:19Z",
+   "retrieved_at": "2026-11-12T13:07:02Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.N2C290000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3205,7 +3205,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 114.7,
-   "retrieved_at": "2026-11-12T11:51:19Z",
+   "retrieved_at": "2026-11-12T13:07:02Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.AEA1.N2C300000.F.C.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3217,7 +3217,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 120.5,
-   "retrieved_at": "2026-11-12T11:51:20Z",
+   "retrieved_at": "2026-11-12T13:07:03Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.P2XHIJLMN.A.C.I15.A?startPeriod=2015-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3229,7 +3229,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 120.9,
-   "retrieved_at": "2026-11-12T11:51:20Z",
+   "retrieved_at": "2026-11-12T13:07:03Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2M000000.A.C.I15.A?startPeriod=2015-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3241,7 +3241,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": 115.6,
-   "retrieved_at": "2026-11-12T11:51:20Z",
+   "retrieved_at": "2026-11-12T13:07:04Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDE1/M.DE.Y.BAA1.N2N000000.A.C.I15.A?startPeriod=2015-01&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3253,7 +3253,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 119.32,
-   "retrieved_at": "2026-11-12T11:51:21Z",
+   "retrieved_at": "2026-11-12T13:07:04Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nasq_10_ki?format=JSON&lang=en&geo=DE&na_item=B6G_R_HAB_2010&sector=S14_S15&s_adj=SCA&unit=PC",
    "message": "",
    "outdated": false
@@ -3265,7 +3265,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 18.99,
-   "retrieved_at": "2026-11-12T11:51:21Z",
+   "retrieved_at": "2026-11-12T13:07:05Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nasq_10_ki?format=JSON&lang=en&geo=DE&na_item=SRG_S14_S15&sector=S14_S15&s_adj=SCA&unit=PC",
    "message": "",
    "outdated": false
@@ -3277,7 +3277,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 36.11,
-   "retrieved_at": "2026-11-12T11:51:22Z",
+   "retrieved_at": "2026-11-12T13:07:05Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nasq_10_ki?format=JSON&lang=en&geo=DE&na_item=B2G_B3G_RAT_S11&sector=S11&s_adj=SCA&unit=PC",
    "message": "",
    "outdated": false
@@ -3289,7 +3289,7 @@
    "first": "2010-Q1",
    "last": "2026-Q3",
    "last_value": 1.2,
-   "retrieved_at": "2026-11-12T11:51:22Z",
+   "retrieved_at": "2026-11-12T13:07:06Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=B1GQ&unit=CLV_PCH_SM&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -3301,7 +3301,7 @@
    "first": "2015-Q1",
    "last": "2026-Q3",
    "last_value": 1.2,
-   "retrieved_at": "2026-11-12T11:51:22Z",
+   "retrieved_at": "2026-11-12T13:07:06Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=DE&na_item=B1GQ&unit=CLV_PCH_SM&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -3313,7 +3313,7 @@
    "first": "2015-Q1",
    "last": "2026-Q3",
    "last_value": -0.1,
-   "retrieved_at": "2026-11-12T11:51:23Z",
+   "retrieved_at": "2026-11-12T13:07:06Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=FR&na_item=B1GQ&unit=CLV_PCH_SM&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -3325,7 +3325,7 @@
    "first": "2015-Q1",
    "last": "2026-Q3",
    "last_value": 0.8,
-   "retrieved_at": "2026-11-12T11:51:23Z",
+   "retrieved_at": "2026-11-12T13:07:06Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=IT&na_item=B1GQ&unit=CLV_PCH_SM&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -3337,7 +3337,7 @@
    "first": "2015-Q1",
    "last": "2026-Q3",
    "last_value": 2.7,
-   "retrieved_at": "2026-11-12T11:51:24Z",
+   "retrieved_at": "2026-11-12T13:07:07Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=ES&na_item=B1GQ&unit=CLV_PCH_SM&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -3349,7 +3349,7 @@
    "first": "2015-Q1",
    "last": "2026-Q3",
    "last_value": 1.3,
-   "retrieved_at": "2026-11-12T11:51:24Z",
+   "retrieved_at": "2026-11-12T13:07:07Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=EA21&na_item=B1GQ&unit=CLV_PCH_SM&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -3361,7 +3361,7 @@
    "first": "2015-01",
    "last": "2026-10",
    "last_value": 2.8,
-   "retrieved_at": "2026-11-12T11:51:25Z",
+   "retrieved_at": "2026-11-12T13:07:08Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?format=JSON&lang=en&geo=DE&unit=RCH_A&coicop18=TOTAL",
    "message": "",
    "outdated": false
@@ -3373,7 +3373,7 @@
    "first": "2015-01",
    "last": "2026-10",
    "last_value": 3.8,
-   "retrieved_at": "2026-11-12T11:51:25Z",
+   "retrieved_at": "2026-11-12T13:07:08Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?format=JSON&lang=en&geo=FR&unit=RCH_A&coicop18=TOTAL",
    "message": "",
    "outdated": false
@@ -3385,7 +3385,7 @@
    "first": "2015-01",
    "last": "2026-10",
    "last_value": 5.6,
-   "retrieved_at": "2026-11-12T11:51:25Z",
+   "retrieved_at": "2026-11-12T13:07:09Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?format=JSON&lang=en&geo=IT&unit=RCH_A&coicop18=TOTAL",
    "message": "",
    "outdated": false
@@ -3397,7 +3397,7 @@
    "first": "2015-01",
    "last": "2026-10",
    "last_value": 4.9,
-   "retrieved_at": "2026-11-12T11:51:26Z",
+   "retrieved_at": "2026-11-12T13:07:09Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?format=JSON&lang=en&geo=ES&unit=RCH_A&coicop18=TOTAL",
    "message": "",
    "outdated": false
@@ -3409,7 +3409,7 @@
    "first": "2015-01",
    "last": "2026-10",
    "last_value": 4.0,
-   "retrieved_at": "2026-11-12T11:51:26Z",
+   "retrieved_at": "2026-11-12T13:07:10Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?format=JSON&lang=en&geo=EA&unit=RCH_A&coicop18=TOTAL",
    "message": "",
    "outdated": false
@@ -3421,7 +3421,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 4.1,
-   "retrieved_at": "2026-11-12T11:51:27Z",
+   "retrieved_at": "2026-11-12T13:07:10Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/une_rt_m?format=JSON&lang=en&geo=DE&s_adj=SA&age=TOTAL&sex=T&unit=PC_ACT",
    "message": "",
    "outdated": false
@@ -3433,7 +3433,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 8.5,
-   "retrieved_at": "2026-11-12T11:51:27Z",
+   "retrieved_at": "2026-11-12T13:07:11Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/une_rt_m?format=JSON&lang=en&geo=FR&s_adj=SA&age=TOTAL&sex=T&unit=PC_ACT",
    "message": "",
    "outdated": false
@@ -3445,7 +3445,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 6.3,
-   "retrieved_at": "2026-11-12T11:51:28Z",
+   "retrieved_at": "2026-11-12T13:07:11Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/une_rt_m?format=JSON&lang=en&geo=IT&s_adj=SA&age=TOTAL&sex=T&unit=PC_ACT",
    "message": "",
    "outdated": false
@@ -3457,7 +3457,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 10.3,
-   "retrieved_at": "2026-11-12T11:51:28Z",
+   "retrieved_at": "2026-11-12T13:07:11Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/une_rt_m?format=JSON&lang=en&geo=ES&s_adj=SA&age=TOTAL&sex=T&unit=PC_ACT",
    "message": "",
    "outdated": false
@@ -3469,7 +3469,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 6.6,
-   "retrieved_at": "2026-11-12T11:51:31Z",
+   "retrieved_at": "2026-11-12T13:07:22Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/LFSI/M.I9.S.UNEHRT.TOTAL0.15_74.T?startPeriod=2015-01&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -3481,7 +3481,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 0.3,
-   "retrieved_at": "2026-11-12T11:51:31Z",
+   "retrieved_at": "2026-11-12T13:07:22Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&lang=en&geo=DE&nace_r2=C&unit=PCH_SM&s_adj=CA",
    "message": "",
    "outdated": false
@@ -3493,7 +3493,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": -0.6,
-   "retrieved_at": "2026-11-12T11:51:32Z",
+   "retrieved_at": "2026-11-12T13:07:23Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&lang=en&geo=FR&nace_r2=C&unit=PCH_SM&s_adj=CA",
    "message": "",
    "outdated": false
@@ -3505,7 +3505,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": -0.5,
-   "retrieved_at": "2026-11-12T11:51:32Z",
+   "retrieved_at": "2026-11-12T13:07:23Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&lang=en&geo=IT&nace_r2=C&unit=PCH_SM&s_adj=CA",
    "message": "",
    "outdated": false
@@ -3517,7 +3517,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 0.8,
-   "retrieved_at": "2026-11-12T11:51:33Z",
+   "retrieved_at": "2026-11-12T13:07:24Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&lang=en&geo=ES&nace_r2=C&unit=PCH_SM&s_adj=CA",
    "message": "",
    "outdated": false
@@ -3529,7 +3529,7 @@
    "first": "2015-01",
    "last": "2026-08",
    "last_value": -1.7,
-   "retrieved_at": "2026-11-12T11:51:33Z",
+   "retrieved_at": "2026-11-12T13:07:24Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&lang=en&geo=EA21&nace_r2=C&unit=PCH_SM&s_adj=CA",
    "message": "",
    "outdated": false
@@ -3541,7 +3541,7 @@
    "first": "2015-01",
    "last": "2026-10",
    "last_value": 94.1,
-   "retrieved_at": "2026-11-12T11:48:12Z",
+   "retrieved_at": "2026-11-12T13:02:52Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bssi_m_r2?format=JSON&lang=en&geo=DE&indic=BS-ESI-I&s_adj=SA",
    "message": "",
    "outdated": false
@@ -3553,7 +3553,7 @@
    "first": "2015-01",
    "last": "2026-10",
    "last_value": 96.1,
-   "retrieved_at": "2026-11-12T11:51:34Z",
+   "retrieved_at": "2026-11-12T13:07:24Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bssi_m_r2?format=JSON&lang=en&geo=FR&indic=BS-ESI-I&s_adj=SA",
    "message": "",
    "outdated": false
@@ -3565,7 +3565,7 @@
    "first": "2015-01",
    "last": "2026-10",
    "last_value": 100.2,
-   "retrieved_at": "2026-11-12T11:51:34Z",
+   "retrieved_at": "2026-11-12T13:07:25Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bssi_m_r2?format=JSON&lang=en&geo=IT&indic=BS-ESI-I&s_adj=SA",
    "message": "",
    "outdated": false
@@ -3577,7 +3577,7 @@
    "first": "2015-01",
    "last": "2026-10",
    "last_value": 105.1,
-   "retrieved_at": "2026-11-12T11:51:34Z",
+   "retrieved_at": "2026-11-12T13:07:25Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bssi_m_r2?format=JSON&lang=en&geo=ES&indic=BS-ESI-I&s_adj=SA",
    "message": "",
    "outdated": false
@@ -3589,7 +3589,7 @@
    "first": "2015-01",
    "last": "2026-10",
    "last_value": 96.9,
-   "retrieved_at": "2026-11-12T11:51:35Z",
+   "retrieved_at": "2026-11-12T13:07:26Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/ei_bssi_m_r2?format=JSON&lang=en&geo=EA21&indic=BS-ESI-I&s_adj=SA",
    "message": "",
    "outdated": false
@@ -3601,7 +3601,7 @@
    "first": "2010-Q1",
    "last": "2026-Q3",
    "last_value": 1.3,
-   "retrieved_at": "2026-11-12T11:51:24Z",
+   "retrieved_at": "2026-11-12T13:07:07Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?format=JSON&lang=en&geo=EA21&na_item=B1GQ&unit=CLV_PCH_SM&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -3613,7 +3613,7 @@
    "first": "2009-Q1",
    "last": "2026-Q3",
    "last_value": 24611.077,
-   "retrieved_at": "2026-11-12T11:51:35Z",
+   "retrieved_at": "2026-11-12T13:07:26Z",
    "api_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=GDPC1",
    "message": "",
    "outdated": false
@@ -3625,7 +3625,7 @@
    "first": "2010-01",
    "last": "2026-10",
    "last_value": 373.55226,
-   "retrieved_at": "2026-11-12T11:51:36Z",
+   "retrieved_at": "2026-11-12T13:07:27Z",
    "api_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=EUEPUINDXM",
    "message": "",
    "outdated": false
@@ -3637,7 +3637,7 @@
    "first": "2010-01",
    "last": "2026-07",
    "last_value": 241.69049100057472,
-   "retrieved_at": "2026-11-12T11:51:36Z",
+   "retrieved_at": "2026-11-12T13:07:27Z",
    "api_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=GEPUCURRENT",
    "message": "",
    "outdated": false
@@ -3649,7 +3649,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": -4.1,
-   "retrieved_at": "2026-11-12T11:51:37Z",
+   "retrieved_at": "2026-11-12T13:07:28Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10q_ggnfa?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&s_adj=SCA&na_item=B9",
    "message": "",
    "outdated": false
@@ -3661,7 +3661,7 @@
    "first": "2000",
    "last": "2025",
    "last_value": 1.1,
-   "retrieved_at": "2026-11-12T11:51:37Z",
+   "retrieved_at": "2026-11-12T13:07:28Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=D41PAY",
    "message": "",
    "outdated": false
@@ -3673,7 +3673,7 @@
    "first": "2000",
    "last": "2025",
    "last_value": 3.5,
-   "retrieved_at": "2026-11-12T11:51:37Z",
+   "retrieved_at": "2026-11-12T13:07:29Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=P51G",
    "message": "",
    "outdated": false
@@ -3685,7 +3685,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 63.4,
-   "retrieved_at": "2026-11-12T11:51:38Z",
+   "retrieved_at": "2026-11-12T13:07:29Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10q_ggdebt?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=GD",
    "message": "",
    "outdated": false
@@ -3697,7 +3697,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 41.3,
-   "retrieved_at": "2026-11-12T11:51:38Z",
+   "retrieved_at": "2026-11-12T13:07:30Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_TOT&na_item=TE&cofog99=GF10",
    "message": "",
    "outdated": false
@@ -3709,7 +3709,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 15.4,
-   "retrieved_at": "2026-11-12T11:51:39Z",
+   "retrieved_at": "2026-11-12T13:07:30Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_TOT&na_item=TE&cofog99=GF07",
    "message": "",
    "outdated": false
@@ -3721,7 +3721,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 13.0,
-   "retrieved_at": "2026-11-12T11:51:39Z",
+   "retrieved_at": "2026-11-12T13:07:31Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_TOT&na_item=TE&cofog99=GF01",
    "message": "",
    "outdated": false
@@ -3733,7 +3733,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 11.0,
-   "retrieved_at": "2026-11-12T11:51:40Z",
+   "retrieved_at": "2026-11-12T13:07:31Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_TOT&na_item=TE&cofog99=GF04",
    "message": "",
    "outdated": false
@@ -3745,7 +3745,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 9.1,
-   "retrieved_at": "2026-11-12T11:51:40Z",
+   "retrieved_at": "2026-11-12T13:07:32Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_TOT&na_item=TE&cofog99=GF09",
    "message": "",
    "outdated": false
@@ -3757,7 +3757,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 3.3,
-   "retrieved_at": "2026-11-12T11:51:40Z",
+   "retrieved_at": "2026-11-12T13:07:32Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_TOT&na_item=TE&cofog99=GF03",
    "message": "",
    "outdated": false
@@ -3769,7 +3769,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 2.7,
-   "retrieved_at": "2026-11-12T11:51:41Z",
+   "retrieved_at": "2026-11-12T13:07:32Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_TOT&na_item=TE&cofog99=GF02",
    "message": "",
    "outdated": false
@@ -3781,7 +3781,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 2.1,
-   "retrieved_at": "2026-11-12T11:51:41Z",
+   "retrieved_at": "2026-11-12T13:07:33Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_TOT&na_item=TE&cofog99=GF08",
    "message": "",
    "outdated": false
@@ -3793,7 +3793,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 1.0,
-   "retrieved_at": "2026-11-12T11:51:42Z",
+   "retrieved_at": "2026-11-12T13:07:33Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_TOT&na_item=TE&cofog99=GF06",
    "message": "",
    "outdated": false
@@ -3805,7 +3805,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 1.1,
-   "retrieved_at": "2026-11-12T11:51:42Z",
+   "retrieved_at": "2026-11-12T13:07:34Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_TOT&na_item=TE&cofog99=GF05",
    "message": "",
    "outdated": false
@@ -3817,7 +3817,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 20.4,
-   "retrieved_at": "2026-11-12T11:51:43Z",
+   "retrieved_at": "2026-11-12T13:07:34Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=TE&cofog99=GF10",
    "message": "",
    "outdated": false
@@ -3829,7 +3829,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 7.6,
-   "retrieved_at": "2026-11-12T11:51:43Z",
+   "retrieved_at": "2026-11-12T13:07:35Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=TE&cofog99=GF07",
    "message": "",
    "outdated": false
@@ -3841,7 +3841,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 6.4,
-   "retrieved_at": "2026-11-12T11:51:43Z",
+   "retrieved_at": "2026-11-12T13:07:35Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=TE&cofog99=GF01",
    "message": "",
    "outdated": false
@@ -3853,7 +3853,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 5.4,
-   "retrieved_at": "2026-11-12T11:51:44Z",
+   "retrieved_at": "2026-11-12T13:07:36Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=TE&cofog99=GF04",
    "message": "",
    "outdated": false
@@ -3865,7 +3865,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 4.5,
-   "retrieved_at": "2026-11-12T11:51:44Z",
+   "retrieved_at": "2026-11-12T13:07:36Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=TE&cofog99=GF09",
    "message": "",
    "outdated": false
@@ -3877,7 +3877,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 1.6,
-   "retrieved_at": "2026-11-12T11:51:45Z",
+   "retrieved_at": "2026-11-12T13:07:37Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=TE&cofog99=GF03",
    "message": "",
    "outdated": false
@@ -3889,7 +3889,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 1.4,
-   "retrieved_at": "2026-11-12T11:51:45Z",
+   "retrieved_at": "2026-11-12T13:07:37Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=TE&cofog99=GF02",
    "message": "",
    "outdated": false
@@ -3901,7 +3901,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 1.1,
-   "retrieved_at": "2026-11-12T11:51:46Z",
+   "retrieved_at": "2026-11-12T13:07:38Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=TE&cofog99=GF08",
    "message": "",
    "outdated": false
@@ -3913,7 +3913,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 0.5,
-   "retrieved_at": "2026-11-12T11:51:46Z",
+   "retrieved_at": "2026-11-12T13:07:38Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=TE&cofog99=GF06",
    "message": "",
    "outdated": false
@@ -3925,7 +3925,7 @@
    "first": "1995",
    "last": "2024",
    "last_value": 0.6,
-   "retrieved_at": "2026-11-12T11:51:46Z",
+   "retrieved_at": "2026-11-12T13:07:39Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp?format=JSON&lang=en&geo=DE&sector=S13&unit=PC_GDP&na_item=TE&cofog99=GF05",
    "message": "",
    "outdated": false
@@ -3937,7 +3937,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 15.0,
-   "retrieved_at": "2026-11-12T11:51:47Z",
+   "retrieved_at": "2026-11-12T13:07:39Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?format=JSON&lang=en&geo=DE&sector=S1311&unit=PC_GDP&na_item=TE",
    "message": "",
    "outdated": false
@@ -3949,7 +3949,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 14.2,
-   "retrieved_at": "2026-11-12T11:51:47Z",
+   "retrieved_at": "2026-11-12T13:07:40Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?format=JSON&lang=en&geo=DE&sector=S1312&unit=PC_GDP&na_item=TE",
    "message": "",
    "outdated": false
@@ -3961,7 +3961,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 9.5,
-   "retrieved_at": "2026-11-12T11:51:48Z",
+   "retrieved_at": "2026-11-12T13:07:40Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?format=JSON&lang=en&geo=DE&sector=S1313&unit=PC_GDP&na_item=TE",
    "message": "",
    "outdated": false
@@ -3973,7 +3973,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 20.7,
-   "retrieved_at": "2026-11-12T11:51:48Z",
+   "retrieved_at": "2026-11-12T13:07:40Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_main?format=JSON&lang=en&geo=DE&sector=S1314&unit=PC_GDP&na_item=TE",
    "message": "",
    "outdated": false
@@ -3985,7 +3985,7 @@
    "first": "2008",
    "last": "2024",
    "last_value": 71762.0,
-   "retrieved_at": "2026-11-12T11:51:49Z",
+   "retrieved_at": "2026-11-12T13:07:41Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm1ctz?format=JSON&lang=en&geo=DE&citizen=DE&age=TOTAL&agedef=COMPLET&sex=T&unit=NR",
    "message": "",
    "outdated": false
@@ -3997,7 +3997,7 @@
    "first": "2008",
    "last": "2024",
    "last_value": 151286.0,
-   "retrieved_at": "2026-11-12T11:51:49Z",
+   "retrieved_at": "2026-11-12T13:07:41Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi1ctz?format=JSON&lang=en&geo=DE&citizen=DE&age=TOTAL&agedef=COMPLET&sex=T&unit=NR",
    "message": "",
    "outdated": false
@@ -4009,7 +4009,7 @@
    "first": "2020",
    "last": "2024",
    "last_value": 237457.0,
-   "retrieved_at": "2026-11-12T11:51:49Z",
+   "retrieved_at": "2026-11-12T13:07:42Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm1ctz?format=JSON&lang=en&geo=DE&citizen=EU27_2020_FOR&age=TOTAL&agedef=COMPLET&sex=T&unit=NR",
    "message": "",
    "outdated": false
@@ -4021,7 +4021,7 @@
    "first": "2020",
    "last": "2024",
    "last_value": 224848.0,
-   "retrieved_at": "2026-11-12T11:51:50Z",
+   "retrieved_at": "2026-11-12T13:07:42Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi1ctz?format=JSON&lang=en&geo=DE&citizen=EU27_2020_FOR&age=TOTAL&agedef=COMPLET&sex=T&unit=NR",
    "message": "",
    "outdated": false
@@ -4033,7 +4033,7 @@
    "first": "2020",
    "last": "2024",
    "last_value": 763744.0,
-   "retrieved_at": "2026-11-12T11:51:50Z",
+   "retrieved_at": "2026-11-12T13:07:43Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_imm1ctz?format=JSON&lang=en&geo=DE&citizen=NEU27_2020_FOR&age=TOTAL&agedef=COMPLET&sex=T&unit=NR",
    "message": "",
    "outdated": false
@@ -4045,7 +4045,7 @@
    "first": "2020",
    "last": "2024",
    "last_value": 206461.0,
-   "retrieved_at": "2026-11-12T11:51:51Z",
+   "retrieved_at": "2026-11-12T13:07:43Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi1ctz?format=JSON&lang=en&geo=DE&citizen=NEU27_2020_FOR&age=TOTAL&agedef=COMPLET&sex=T&unit=NR",
    "message": "",
    "outdated": false
@@ -4057,7 +4057,7 @@
    "first": "2008-Q1",
    "last": "2026-Q2",
    "last_value": 1.5,
-   "retrieved_at": "2026-11-12T11:51:55Z",
+   "retrieved_at": "2026-11-12T13:07:47Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=62361-0010&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4069,7 +4069,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 5.9,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4081,7 +4081,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 8.3,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4093,7 +4093,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 6.1,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4105,7 +4105,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 11.5,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4117,7 +4117,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 7.8,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4129,7 +4129,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 5.8,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4141,7 +4141,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 5.5,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4153,7 +4153,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 4.6,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4165,7 +4165,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 4.0,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4177,7 +4177,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 7.4,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4189,7 +4189,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 10.3,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4201,7 +4201,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 6.4,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4213,7 +4213,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 8.0,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4225,7 +4225,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 6.9,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4237,7 +4237,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 8.0,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4249,7 +4249,7 @@
    "first": "2005",
    "last": "2025",
    "last_value": 6.4,
-   "retrieved_at": "2026-11-12T11:51:58Z",
+   "retrieved_at": "2026-11-12T13:07:52Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=13211-0007&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4261,7 +4261,7 @@
    "first": "2010-01",
    "last": "2026-10",
    "last_value": 111.7,
-   "retrieved_at": "2026-11-12T11:52:03Z",
+   "retrieved_at": "2026-11-12T13:07:57Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=62231-0001&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4273,7 +4273,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 2.7,
-   "retrieved_at": "2026-11-12T11:52:03Z",
+   "retrieved_at": "2026-11-12T13:07:57Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_lp_ulc?format=JSON&lang=en&geo=DE&na_item=NULC_PER&unit=PCH_SM&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -4285,7 +4285,7 @@
    "first": "2005-Q1",
    "last": "2026-Q2",
    "last_value": 2.6,
-   "retrieved_at": "2026-11-12T11:52:03Z",
+   "retrieved_at": "2026-11-12T13:07:58Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_lp_ulc?format=JSON&lang=en&geo=EA21&na_item=NULC_PER&unit=PCH_SM&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -4297,7 +4297,7 @@
    "first": "2001-Q1",
    "last": "2026-Q4",
    "last_value": 2.0190515007894736,
-   "retrieved_at": "2026-11-12T11:52:04Z",
+   "retrieved_at": "2026-11-12T13:08:09Z",
    "api_url": "https://data-api.ecb.europa.eu/service/data/SPF/Q.U2.HICP.POINT.LT.Q.AVG?startPeriod=2001-Q1&format=csvdata&detail=dataonly",
    "message": "",
    "outdated": false
@@ -4309,7 +4309,7 @@
    "first": "2008-Q1",
    "last": "2026-Q2",
    "last_value": 4.1,
-   "retrieved_at": "2026-11-12T11:51:55Z",
+   "retrieved_at": "2026-11-12T13:07:47Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=62361-0010&format=ffcsv",
    "message": "",
    "outdated": false
@@ -4321,7 +4321,7 @@
    "first": "1850",
    "last": "2024",
    "last_value": 3315802.0,
-   "retrieved_at": "2026-11-12T11:52:10Z",
+   "retrieved_at": "2026-11-12T13:08:14Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
    "outdated": false
@@ -4333,7 +4333,7 @@
    "first": "1887",
    "last": "2024",
    "last_value": 3.391666889190674,
-   "retrieved_at": "2026-11-12T11:52:10Z",
+   "retrieved_at": "2026-11-12T13:08:14Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
    "outdated": false
@@ -4345,7 +4345,7 @@
    "first": "1850",
    "last": "2024",
    "last_value": 2.49283766746521,
-   "retrieved_at": "2026-11-12T11:52:10Z",
+   "retrieved_at": "2026-11-12T13:08:14Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
    "outdated": false
@@ -4357,7 +4357,7 @@
    "first": "1850",
    "last": "2024",
    "last_value": 2.319999933242798,
-   "retrieved_at": "2026-11-12T11:52:10Z",
+   "retrieved_at": "2026-11-12T13:08:14Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
    "outdated": false
@@ -4369,7 +4369,7 @@
    "first": "1871",
    "last": "2024",
    "last_value": 62.227901458740234,
-   "retrieved_at": "2026-11-12T11:52:10Z",
+   "retrieved_at": "2026-11-12T13:08:14Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
    "outdated": false
@@ -4381,7 +4381,7 @@
    "first": "1850",
    "last": "2024",
    "last_value": 39702.35708505094,
-   "retrieved_at": "2026-11-12T11:52:10Z",
+   "retrieved_at": "2026-11-12T13:08:14Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
    "outdated": false
@@ -4393,7 +4393,7 @@
    "first": "1850",
    "last": "2024",
    "last_value": 21.516713114108793,
-   "retrieved_at": "2026-11-12T11:52:10Z",
+   "retrieved_at": "2026-11-12T13:08:14Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
    "outdated": false
@@ -4405,7 +4405,7 @@
    "first": "1871",
    "last": "2024",
    "last_value": 41.494600268410885,
-   "retrieved_at": "2026-11-12T11:52:10Z",
+   "retrieved_at": "2026-11-12T13:08:14Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
    "outdated": false
@@ -4417,7 +4417,7 @@
    "first": "1860",
    "last": "2024",
    "last_value": 5.859280586242676,
-   "retrieved_at": "2026-11-12T11:52:10Z",
+   "retrieved_at": "2026-11-12T13:08:14Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
    "outdated": false
@@ -4429,7 +4429,7 @@
    "first": "1870",
    "last": "2024",
    "last_value": 116.01539611816406,
-   "retrieved_at": "2026-11-12T11:52:10Z",
+   "retrieved_at": "2026-11-12T13:08:14Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
    "outdated": false
@@ -4441,7 +4441,7 @@
    "first": "1850",
    "last": "2024",
    "last_value": 0.0,
-   "retrieved_at": "2026-11-12T11:52:10Z",
+   "retrieved_at": "2026-11-12T13:08:14Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
    "outdated": false
@@ -4453,7 +4453,7 @@
    "first": "1970-01",
    "last": "2026-10",
    "last_value": 515.0,
-   "retrieved_at": "2026-11-12T11:47:55Z",
+   "retrieved_at": "2026-11-12T13:02:35Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/wb_soybeans.csv",
    "message": "",
    "outdated": false
@@ -4465,7 +4465,7 @@
    "first": "1970-01",
    "last": "2026-10",
    "last_value": 226.5,
-   "retrieved_at": "2026-11-12T11:47:55Z",
+   "retrieved_at": "2026-11-12T13:02:35Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/wb_maize.csv",
    "message": "",
    "outdated": false
@@ -4477,7 +4477,7 @@
    "first": "1970-01",
    "last": "2026-10",
    "last_value": 489.0,
-   "retrieved_at": "2026-11-12T11:47:55Z",
+   "retrieved_at": "2026-11-12T13:02:35Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/wb_rice.csv",
    "message": "",
    "outdated": false
@@ -4489,7 +4489,7 @@
    "first": "1970-01",
    "last": "2026-10",
    "last_value": 317.0,
-   "retrieved_at": "2026-11-12T11:47:55Z",
+   "retrieved_at": "2026-11-12T13:02:35Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/wb_wheat.csv",
    "message": "",
    "outdated": false
@@ -4501,7 +4501,7 @@
    "first": "1970-01",
    "last": "2026-10",
    "last_value": 5.75,
-   "retrieved_at": "2026-11-12T11:47:55Z",
+   "retrieved_at": "2026-11-12T13:02:35Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/wb_cocoa.csv",
    "message": "",
    "outdated": false
@@ -4513,7 +4513,7 @@
    "first": "1970-01",
    "last": "2026-10",
    "last_value": 3.63,
-   "retrieved_at": "2026-11-12T11:47:55Z",
+   "retrieved_at": "2026-11-12T13:02:35Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/wb_coffee.csv",
    "message": "",
    "outdated": false
@@ -4525,7 +4525,7 @@
    "first": "1970-01",
    "last": "2026-10",
    "last_value": 1120.0,
-   "retrieved_at": "2026-11-12T11:47:55Z",
+   "retrieved_at": "2026-11-12T13:02:35Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/wb_palmoil.csv",
    "message": "",
    "outdated": false
@@ -4537,7 +4537,7 @@
    "first": "1970-01",
    "last": "2026-10",
    "last_value": 0.43,
-   "retrieved_at": "2026-11-12T11:47:55Z",
+   "retrieved_at": "2026-11-12T13:02:35Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/wb_sugar.csv",
    "message": "",
    "outdated": false
@@ -4549,7 +4549,7 @@
    "first": "1966",
    "last": "2026",
    "last_value": 0.9,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_bip_prog.csv",
    "message": "",
    "outdated": false
@@ -4561,7 +4561,7 @@
    "first": "1965",
    "last": "2025",
    "last_value": 0.2,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_bip_ist.csv",
    "message": "",
    "outdated": false
@@ -4573,7 +4573,7 @@
    "first": "1966",
    "last": "2026",
    "last_value": 2.1,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_vpi_prog.csv",
    "message": "",
    "outdated": false
@@ -4585,7 +4585,7 @@
    "first": "1965",
    "last": "2025",
    "last_value": 2.17,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_vpi_ist.csv",
    "message": "",
    "outdated": false
@@ -4597,7 +4597,7 @@
    "first": "1976",
    "last": "2026",
    "last_value": 2888.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_alo_prog.csv",
    "message": "",
    "outdated": false
@@ -4609,7 +4609,7 @@
    "first": "1965",
    "last": "2025",
    "last_value": 2948.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_alo_ist.csv",
    "message": "",
    "outdated": false
@@ -4621,7 +4621,7 @@
    "first": "1966",
    "last": "2026",
    "last_value": -0.77,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_bip_band_lo.csv",
    "message": "",
    "outdated": false
@@ -4633,7 +4633,7 @@
    "first": "1966",
    "last": "2026",
    "last_value": 1.87,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_bip_band_hi.csv",
    "message": "",
    "outdated": false
@@ -4645,7 +4645,7 @@
    "first": "1964",
    "last": "2011",
    "last_value": -1.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_stance_l.csv",
    "message": "",
    "outdated": false
@@ -4657,7 +4657,7 @@
    "first": "1966",
    "last": "2022",
    "last_value": -1.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_stance_g.csv",
    "message": "",
    "outdated": false
@@ -4669,7 +4669,7 @@
    "first": "1964",
    "last": "2022",
    "last_value": 1.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_stance_f.csv",
    "message": "",
    "outdated": false
@@ -4681,7 +4681,7 @@
    "first": "1967",
    "last": "2025",
    "last_value": 1.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_stance_a.csv",
    "message": "",
    "outdated": false
@@ -4693,7 +4693,7 @@
    "first": "1964",
    "last": "2025",
    "last_value": 5.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/svr_voten.csv",
    "message": "",
    "outdated": false
@@ -4705,7 +4705,7 @@
    "first": "2022-Q1",
    "last": "2025-Q4",
    "last_value": 1.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/leiden_ops_de.csv",
    "message": "",
    "outdated": false
@@ -4717,7 +4717,7 @@
    "first": "2022-Q1",
    "last": "2025-Q4",
    "last_value": 11.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/leiden_ops_eu.csv",
    "message": "",
    "outdated": false
@@ -4729,7 +4729,7 @@
    "first": "1985-01",
    "last": "2026-10",
    "last_value": 159.3,
-   "retrieved_at": "2026-11-12T11:47:56Z",
+   "retrieved_at": "2026-11-12T13:02:35Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gpr_de.csv",
    "message": "",
    "outdated": false
@@ -4741,7 +4741,7 @@
    "first": "1985-01",
    "last": "2026-10",
    "last_value": 150.5,
-   "retrieved_at": "2026-11-12T11:47:56Z",
+   "retrieved_at": "2026-11-12T13:02:35Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gpr_world.csv",
    "message": "",
    "outdated": false
@@ -4753,7 +4753,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 2.269,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_deu.csv",
    "message": "",
    "outdated": false
@@ -4765,7 +4765,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 2.027,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_fra.csv",
    "message": "",
    "outdated": false
@@ -4777,7 +4777,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 2.353,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_gbr.csv",
    "message": "",
    "outdated": false
@@ -4789,7 +4789,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 4.497,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_pol.csv",
    "message": "",
    "outdated": false
@@ -4801,7 +4801,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 3.117,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_usa.csv",
    "message": "",
    "outdated": false
@@ -4813,7 +4813,7 @@
    "first": "1992",
    "last": "2025",
    "last_value": 7.501,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_rus.csv",
    "message": "",
    "outdated": false
@@ -4825,7 +4825,7 @@
    "first": "1816",
    "last": "2022",
    "last_value": 1.503,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/cow_cinc_deu.csv",
    "message": "",
    "outdated": false
@@ -4837,7 +4837,7 @@
    "first": "2022-Q1",
    "last": "2026-Q2",
    "last_value": 4.69,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/kiel_de_mil.csv",
    "message": "",
    "outdated": false
@@ -4849,7 +4849,7 @@
    "first": "2022-Q1",
    "last": "2026-Q2",
    "last_value": 0.233,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/kiel_de_other.csv",
    "message": "",
    "outdated": false
@@ -4861,7 +4861,7 @@
    "first": "2009",
    "last": "2025",
    "last_value": 148.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gta_de_chn.csv",
    "message": "",
    "outdated": false
@@ -4873,7 +4873,7 @@
    "first": "2009",
    "last": "2025",
    "last_value": 118.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gta_de_usa.csv",
    "message": "",
    "outdated": false
@@ -4885,7 +4885,7 @@
    "first": "2009",
    "last": "2025",
    "last_value": 874.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gta_de_other.csv",
    "message": "",
    "outdated": false
@@ -4897,7 +4897,7 @@
    "first": "1963",
    "last": "2026",
    "last_value": 1.3,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_bip_prog.csv",
    "message": "",
    "outdated": false
@@ -4909,7 +4909,7 @@
    "first": "1963",
    "last": "2025",
    "last_value": 0.2,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_bip_ist.csv",
    "message": "",
    "outdated": false
@@ -4921,7 +4921,7 @@
    "first": "1963",
    "last": "2025",
    "last_value": 0.2,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_bip_heute.csv",
    "message": "",
    "outdated": false
@@ -4933,7 +4933,7 @@
    "first": "1963",
    "last": "2026",
    "last_value": 2.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_vpi_prog.csv",
    "message": "",
    "outdated": false
@@ -4945,7 +4945,7 @@
    "first": "1963",
    "last": "2025",
    "last_value": 2.2,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_vpi_ist.csv",
    "message": "",
    "outdated": false
@@ -4957,7 +4957,7 @@
    "first": "1971",
    "last": "2025",
    "last_value": 2.2,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_vpi_heute.csv",
    "message": "",
    "outdated": false
@@ -4969,7 +4969,7 @@
    "first": "1981",
    "last": "2026",
    "last_value": 2854.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_alo_prog.csv",
    "message": "",
    "outdated": false
@@ -4981,7 +4981,7 @@
    "first": "1983",
    "last": "2025",
    "last_value": 2948.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_alo_ist.csv",
    "message": "",
    "outdated": false
@@ -4993,7 +4993,7 @@
    "first": "1981",
    "last": "2025",
    "last_value": 2948.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_alo_heute.csv",
    "message": "",
    "outdated": false
@@ -5005,7 +5005,7 @@
    "first": "1970",
    "last": "2026",
    "last_value": -3.1,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_saldo_prog.csv",
    "message": "",
    "outdated": false
@@ -5017,7 +5017,7 @@
    "first": "1970",
    "last": "2025",
    "last_value": -2.7,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_saldo_ist.csv",
    "message": "",
    "outdated": false
@@ -5029,7 +5029,7 @@
    "first": "1992",
    "last": "2025",
    "last_value": -2.9,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_saldo_heute.csv",
    "message": "",
    "outdated": false
@@ -5041,7 +5041,7 @@
    "first": "1963",
    "last": "2025",
    "last_value": 0.6,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_bip_fehler.csv",
    "message": "",
    "outdated": false
@@ -5053,7 +5053,7 @@
    "first": "2021-H2",
    "last": "2023-H2",
    "last_value": -0.6,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_ziel_2023.csv",
    "message": "",
    "outdated": false
@@ -5065,7 +5065,7 @@
    "first": "2024-H1",
    "last": "2024-H1",
    "last_value": -0.3,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_ziel_2023_ist.csv",
    "message": "",
    "outdated": false
@@ -5077,7 +5077,7 @@
    "first": "2022-H2",
    "last": "2024-H2",
    "last_value": -0.1,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_ziel_2024.csv",
    "message": "",
    "outdated": false
@@ -5089,7 +5089,7 @@
    "first": "2025-H1",
    "last": "2025-H1",
    "last_value": -0.2,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_ziel_2024_ist.csv",
    "message": "",
    "outdated": false
@@ -5101,7 +5101,7 @@
    "first": "2023-H2",
    "last": "2025-H2",
    "last_value": 0.2,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_ziel_2025.csv",
    "message": "",
    "outdated": false
@@ -5113,7 +5113,7 @@
    "first": "2026-H1",
    "last": "2026-H1",
    "last_value": 0.2,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_ziel_2025_ist.csv",
    "message": "",
    "outdated": false
@@ -5125,7 +5125,7 @@
    "first": "2024-H2",
    "last": "2026-H1",
    "last_value": 0.6,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_ziel_2026.csv",
    "message": "",
    "outdated": false
@@ -5137,7 +5137,7 @@
    "first": "1956",
    "last": "2008",
    "last_value": -1.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_stance_l.csv",
    "message": "",
    "outdated": false
@@ -5149,7 +5149,7 @@
    "first": "1950",
    "last": "2017",
    "last_value": -1.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_stance_g.csv",
    "message": "",
    "outdated": false
@@ -5161,7 +5161,7 @@
    "first": "1953",
    "last": "2025",
    "last_value": -1.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_stance_f.csv",
    "message": "",
    "outdated": false
@@ -5173,7 +5173,7 @@
    "first": "1981",
    "last": "2025",
    "last_value": 1.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_stance_a.csv",
    "message": "",
    "outdated": false
@@ -5185,7 +5185,7 @@
    "first": "1950",
    "last": "2026",
    "last_value": 0.0,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gd_voten_n.csv",
    "message": "",
    "outdated": false
@@ -5197,7 +5197,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 290.2,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&lang=en&geo=DE&nace_r2=C254&unit=I21&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -5209,7 +5209,7 @@
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 92.4,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&lang=en&geo=DE&nace_r2=C&unit=I21&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -5221,7 +5221,7 @@
    "first": "1991",
    "last": "2025",
    "last_value": 4.497,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_gov_deu.csv",
    "message": "",
    "outdated": false
@@ -5233,7 +5233,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 3.534,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_gov_fra.csv",
    "message": "",
    "outdated": false
@@ -5245,7 +5245,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 5.448,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_gov_gbr.csv",
    "message": "",
    "outdated": false
@@ -5257,7 +5257,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 9.018,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_gov_pol.csv",
    "message": "",
    "outdated": false
@@ -5269,7 +5269,7 @@
    "first": "2001",
    "last": "2025",
    "last_value": 8.25,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_gov_usa.csv",
    "message": "",
    "outdated": false
@@ -5281,7 +5281,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 546.804,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_usd_cwe.csv",
    "message": "",
    "outdated": false
@@ -5293,7 +5293,7 @@
    "first": "1992",
    "last": "2025",
    "last_value": 158.236,
-   "retrieved_at": "2026-11-12T11:46:08Z",
+   "retrieved_at": "2026-11-12T13:01:13Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_usd_rus.csv",
    "message": "",
    "outdated": false
@@ -5305,7 +5305,7 @@
    "first": "2019-01",
    "last": "2026-08",
    "last_value": 7.338,
-   "retrieved_at": "2026-11-12T11:47:56Z",
+   "retrieved_at": "2026-11-12T13:02:36Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/de_exp_rusblr.csv",
    "message": "",
    "outdated": false
@@ -5317,7 +5317,7 @@
    "first": "2019-01",
    "last": "2026-08",
    "last_value": 5.418,
-   "retrieved_at": "2026-11-12T11:47:56Z",
+   "retrieved_at": "2026-11-12T13:02:36Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/de_exp_cauca.csv",
    "message": "",
    "outdated": false
@@ -5329,7 +5329,7 @@
    "first": "1996-01",
    "last": "2026-10",
    "last_value": 0.4408523144746379,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_vpi_food",
    "outdated": false
@@ -5341,7 +5341,7 @@
    "first": "2006-01",
    "last": "2026-10",
    "last_value": 12.227687983134206,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_vpi_energy",
    "outdated": false
@@ -5353,7 +5353,7 @@
    "first": "2006-01",
    "last": "2026-10",
    "last_value": 1.416666666666666,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_vpi_goods",
    "outdated": false
@@ -5365,7 +5365,7 @@
    "first": "2006-01",
    "last": "2026-10",
    "last_value": 2.8112449799196693,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_vpi_serv",
    "outdated": false
@@ -5377,7 +5377,7 @@
    "first": "2006-01",
    "last": "2026-10",
    "last_value": 2.1739130434782483,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_vpi_rent",
    "outdated": false
@@ -5389,7 +5389,7 @@
    "first": "2006-01",
    "last": "2026-09",
    "last_value": 6.7246835443038,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_ppi",
    "outdated": false
@@ -5401,7 +5401,7 @@
    "first": "2006-01",
    "last": "2026-09",
    "last_value": 10.459873760144278,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_import_prices",
    "outdated": false
@@ -5413,7 +5413,7 @@
    "first": "2001-03",
    "last": "2026-10",
    "last_value": 0.002486667286621058,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_alq_sa",
    "outdated": false
@@ -5425,7 +5425,7 @@
    "first": "2006-01",
    "last": "2026-10",
    "last_value": 2.095557418273253,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_vpi_core",
    "outdated": false
@@ -5437,7 +5437,7 @@
    "first": "2005-01",
    "last": "2026-09",
    "last_value": 15.570000000000007,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_exports minus de_imports",
    "outdated": false
@@ -5449,7 +5449,7 @@
    "first": "2006-01",
    "last": "2026-09",
    "last_value": 5.295138888888884,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_export_prices",
    "outdated": false
@@ -5461,7 +5461,7 @@
    "first": "2006-01",
    "last": "2026-09",
    "last_value": -4.673807205452773,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_tot",
    "outdated": false
@@ -5473,7 +5473,7 @@
    "first": "2016-01",
    "last": "2026-10",
    "last_value": -1.1685937345587538,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_power_load",
    "outdated": false
@@ -5485,7 +5485,7 @@
    "first": "2011-Q1",
    "last": "2026-Q2",
    "last_value": 0.6000000000000005,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_hpi",
    "outdated": false
@@ -5497,7 +5497,7 @@
    "first": "2006-01",
    "last": "2026-09",
    "last_value": 3.341687552213868,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_ppi_xe",
    "outdated": false
@@ -5509,7 +5509,7 @@
    "first": "2006-01",
    "last": "2026-09",
    "last_value": 5.609973285841496,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_imp_xe",
    "outdated": false
@@ -5521,7 +5521,7 @@
    "first": "1976-01",
    "last": "2026-08",
    "last_value": -6.966924700914856,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_agri",
    "outdated": false
@@ -5533,7 +5533,7 @@
    "first": "2011-01",
    "last": "2026-08",
    "last_value": -0.12894099045914764,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_sv_tot",
    "outdated": false
@@ -5545,7 +5545,7 @@
    "first": "2011-01",
    "last": "2026-08",
    "last_value": -1.550896968026505,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_sv_ind",
    "outdated": false
@@ -5557,7 +5557,7 @@
    "first": "2011-01",
    "last": "2026-08",
    "last_value": 0.4589807479173036,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_sv_dl",
    "outdated": false
@@ -5569,7 +5569,7 @@
    "first": "2011-01",
    "last": "2026-08",
    "last_value": -2.1130941103659096,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_sv_aue",
    "outdated": false
@@ -5581,7 +5581,7 @@
    "first": "2010-Q1",
    "last": "2026-Q3",
    "last_value": 2.0657392375537764,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus us_gdp",
    "outdated": false
@@ -5593,7 +5593,7 @@
    "first": "2008",
    "last": "2024",
    "last_value": -79524.0,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_imm_de minus de_emi_de",
    "outdated": false
@@ -5605,7 +5605,7 @@
    "first": "2020",
    "last": "2024",
    "last_value": 12609.0,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_imm_eu minus de_emi_eu",
    "outdated": false
@@ -5617,7 +5617,7 @@
    "first": "2020",
    "last": "2024",
    "last_value": 557283.0,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_imm_neu minus de_emi_neu",
    "outdated": false
@@ -5629,7 +5629,7 @@
    "first": "2011-01",
    "last": "2026-10",
    "last_value": 2.477064220183478,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus de_tarif",
    "outdated": false
@@ -5641,9 +5641,93 @@
    "first": "1850",
    "last": "2024",
    "last_value": -0.1728377342224121,
-   "retrieved_at": "2026-11-12T11:52:11Z",
+   "retrieved_at": "2026-11-12T13:08:15Z",
    "api_url": "",
    "message": "berechnet aus hist_ltrate_deu minus hist_infl_deu",
+   "outdated": false
+  },
+  {
+   "series_id": "svr_err_bip",
+   "status": "ok",
+   "n_obs": 59,
+   "first": "1966",
+   "last": "2025",
+   "last_value": 0.2,
+   "retrieved_at": "2026-11-12T13:08:15Z",
+   "api_url": "",
+   "message": "berechnet aus svr_bip_prog minus svr_bip_ist",
+   "outdated": false
+  },
+  {
+   "series_id": "svr_err_vpi",
+   "status": "ok",
+   "n_obs": 59,
+   "first": "1966",
+   "last": "2025",
+   "last_value": -0.06999999999999984,
+   "retrieved_at": "2026-11-12T13:08:15Z",
+   "api_url": "",
+   "message": "berechnet aus svr_vpi_prog minus svr_vpi_ist",
+   "outdated": false
+  },
+  {
+   "series_id": "svr_err_alo",
+   "status": "ok",
+   "n_obs": 42,
+   "first": "1976",
+   "last": "2025",
+   "last_value": -79.0,
+   "retrieved_at": "2026-11-12T13:08:15Z",
+   "api_url": "",
+   "message": "berechnet aus svr_alo_prog minus svr_alo_ist",
+   "outdated": false
+  },
+  {
+   "series_id": "gd_err_bip",
+   "status": "ok",
+   "n_obs": 60,
+   "first": "1963",
+   "last": "2025",
+   "last_value": 0.6000000000000001,
+   "retrieved_at": "2026-11-12T13:08:15Z",
+   "api_url": "",
+   "message": "berechnet aus gd_bip_prog minus gd_bip_ist",
+   "outdated": false
+  },
+  {
+   "series_id": "gd_err_vpi",
+   "status": "ok",
+   "n_obs": 56,
+   "first": "1963",
+   "last": "2025",
+   "last_value": -0.20000000000000018,
+   "retrieved_at": "2026-11-12T13:08:15Z",
+   "api_url": "",
+   "message": "berechnet aus gd_vpi_prog minus gd_vpi_ist",
+   "outdated": false
+  },
+  {
+   "series_id": "gd_err_saldo",
+   "status": "ok",
+   "n_obs": 54,
+   "first": "1970",
+   "last": "2025",
+   "last_value": 0.8000000000000003,
+   "retrieved_at": "2026-11-12T13:08:15Z",
+   "api_url": "",
+   "message": "berechnet aus gd_saldo_prog minus gd_saldo_ist",
+   "outdated": false
+  },
+  {
+   "series_id": "gd_err_alo",
+   "status": "ok",
+   "n_obs": 43,
+   "first": "1983",
+   "last": "2025",
+   "last_value": -167.0,
+   "retrieved_at": "2026-11-12T13:08:15Z",
+   "api_url": "",
+   "message": "berechnet aus gd_alo_prog minus gd_alo_ist",
    "outdated": false
   }
  ]
