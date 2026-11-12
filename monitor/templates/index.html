@@ -122,6 +122,7 @@
   @media (min-width: 601px) { .card .src, .card .nxtline { text-align: right; padding-right: var(--pr, 0px); } }  /* bündig mit der rechten Kante der Zeichenfläche */
   .card .nxtline { font: 13px/1.4 var(--ff); color: var(--grey); margin-top: 6px; } .card .nxtline a { color: var(--grey); }
   .card .sub, .card .unit, .card .cap, .card .src { font: 13.5px/1.4 var(--ff); color: var(--muted); }
+  .card .src { font-size: 12px; color: #595959; }  /* Quellenzeile grau und kleiner als die Schrift in der Grafik (13 px) */
   .card .unit { text-align: left; margin-top: 2px; }
   .card .acts { font: 13.5px/1.4 var(--ff); color: var(--muted); margin-top: 6px; }
   .card .acts a, .card .acts button { color: var(--accent); text-decoration: none; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
@@ -1079,7 +1080,7 @@ function treemapChart(el, c) {
   let sc = 1;
   if (T.scale_area && !pre) { const mx = Math.max(...steps.map(s => Object.values(s.values).reduce((t, v) => t + Math.max(0, v), 0))); sc = Math.max(0.05, total / mx); }
   const BW = W * Math.sqrt(sc), BH = H * Math.sqrt(sc);
-  const lbl = (b, tot, big) => { const fs = big ? 13 : 11.5, lh = fs + 3, mc = Math.floor(b.w / (fs * 0.56)), t = b.label.length > mc ? b.label.slice(0, Math.max(1, mc - 1)) + "…" : b.label, col = dark(b.fill) ? "#fff" : "#000";
+  const lbl = (b, tot, big) => { const fs = big ? 13 : 12.5, lh = fs + 3, mc = Math.floor(b.w / (fs * 0.56)), t = b.label.length > mc ? b.label.slice(0, Math.max(1, mc - 1)) + "…" : b.label, col = dark(b.fill) ? "#fff" : "#000";
     if (b.w < 60 || b.h < (big ? 40 : 32)) return "";
     const pc = `${fmt(100 * b.v / tot, 1)} %`, am = `${fmt(b.v, b.v < 10 ? 1 : 0)} ${TM_TXT.bn}`, one = (pc + " · " + am).length * fs * 0.56 < b.w - 8;
     return `<text x="${b.x + 5}" y="${b.y + lh}" style="font-size:${fs}px;fill:${col}">${esc(t)}</text><text x="${b.x + 5}" y="${b.y + 2 * lh}" style="font-size:${fs}px;fill:${col}">${one ? pc + " · " + am : pc}</text>` + (!one && b.h > 3 * lh + 4 ? `<text x="${b.x + 5}" y="${b.y + 3 * lh}" style="font-size:${fs}px;fill:${col}">${am}</text>` : ""); };
@@ -1343,7 +1344,7 @@ async function pngDownload(el, ch, c, no, sub, unit) {
     if (src_el !== ch) { Plotly.purge(src_el); src_el.remove(); } img = new Image(); img.src = url; await img.decode(); }
   const cv = document.createElement("canvas"), x = cv.getContext("2d");
   const wrap = (txt, maxW, f) => { x.font = f; const out = []; let line = ""; (txt || "").split(" ").forEach(w => { const tst = line ? line + " " + w : w; if (x.measureText(tst).width > maxW && line) { out.push(line); line = w; } else line = tst; }); if (line) out.push(line); return out; };
-  const cap = wrap(c.caption, W - 2 * pad, `15px ${font}`), src = wrap(el.querySelector(".src").textContent, W - 2 * pad, `13px ${font}`);
+  const cap = wrap(c.caption, W - 2 * pad, `15px ${font}`), src = wrap(el.querySelector(".src").textContent, W - 2 * pad, `12px ${font}`);
   const H = 110 + plotH + 16 + cap.length * 20 + src.length * 18 + 24;
   cv.width = W * S; cv.height = H * S; x.scale(S, S); x.fillStyle = "#fff"; x.fillRect(0, 0, W, H); x.textBaseline = "top";
   x.fillStyle = "#000"; x.font = `bold 22px Georgia, serif`; x.fillText(`${FC(no)} ${c.title || ""}`, pad, 18);
@@ -1359,7 +1360,7 @@ async function pngDownload(el, ch, c, no, sub, unit) {
       x.font = `14px ${font}`; x.fillText(pct0(r.change), x0 + p[1] * (sz + gp) + sz / 2, 110 + p[0] * (sz + gp) + 38); x.textAlign = "left"; });
   }
   let y = 104 + plotH + 12; x.fillStyle = "#000"; x.font = `15px ${font}`; cap.forEach(l => { x.fillText(l, pad, y); y += 20; });
-  x.fillStyle = "#555"; x.font = `13px ${font}`; src.forEach(l => { x.fillText(l, pad, y); y += 18; });
+  x.fillStyle = "#595959"; x.font = `12px ${font}`; src.forEach(l => { x.fillText(l, pad, y); y += 17; });
   const a = document.createElement("a"); a.download = (c.files && c.files.png) || `Abb ${no}.png`; a.href = cv.toDataURL("image/png"); a.click();
 }
 
