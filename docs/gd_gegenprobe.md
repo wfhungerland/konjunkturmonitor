@@ -18,4 +18,4 @@ Alle Werte im Datensatz `data/static/gd_prognosen.csv` wurden maschinell gelesen
 
 - Spannen stehen im Datensatz als Mitte, Brüche wie 2½ als 2.5, Millionen bei Arbeitslosen in Tausend. Der gedruckte Wortlaut steht in `wert_text`.
 - Je Zeile etwa eine Minute.
-- Das Ergebnis kommt als Eintrag in `data/static/korrekturen.yaml` und in den Methodentext der Abbildungen 96-101.
+- Das Ergebnis kommt als Eintrag in `data/static/korrekturen.yaml` und in die Methodentexte der Abbildungen GD-1 bis GD-6.

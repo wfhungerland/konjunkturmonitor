@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from .answers import answer, num, overview
+from .answers import answer, fazit, num, overview
 
 ROOT = Path.cwd()
 
@@ -347,7 +347,7 @@ NORM = ("2015-01-01", "2020-01-01")  # Vergleichszeitraum 2015 bis 2019: die fü
 
 
 def _tendency(d: float | None, decimals: int) -> str | None:
-    """Richtung der jüngsten Veränderung: ▲ steigt, ▼ sinkt, ■ unverändert (in der angezeigten Genauigkeit)."""
+    """Richtung der jüngsten Veränderung: ↗ steigt, ↘ sinkt, → unverändert (in der angezeigten Genauigkeit)."""
     if d is None or pd.isna(d):
         return None
     if round(abs(d), decimals) == 0:
@@ -1369,12 +1369,20 @@ def build_payload(root: Path = ROOT) -> dict:
         a["spark_data"] = _xy(data[a["spark"]], 5)
         questions.append(dict(q, answer=a))
     topics = []
+    chart_freq = {}
+    for s in meta.values():
+        if getattr(s, "chart_id", None):
+            chart_freq.setdefault(s.chart_id, s.frequency)
     for t in cfg["topics"]:
         charts = []
         for c in t["charts"]:
             typ = c.get("type", "line")
+            fy = layout.get("freq_years") or {}  # feste Zeitfenster je Takt, ab Jahresanfang: gleiche Breite heißt gleiche Zeit
+            f0 = "D" if c.get("daily") else chart_freq.get(c.get("chart"))
+            if fy and f0 in fy and typ in ("line", "stacked") and c.get("years") and not c.get("keep_years") and not c.get("x_start"):
+                c = dict(c, years=int(fy[f0]), x_start="year")
             uy = layout.get("uniform_years")
-            if uy and c.get("years") and 3 <= c["years"] <= 8 and not c.get("keep_years"):
+            if uy and c.get("years") and 3 <= c["years"] <= 8 and not c.get("keep_years") and not c.get("x_start"):
                 c = dict(c, years=int(uy))
             ws = layout.get("window_start") or {}
             if ws and typ == "line" and c.get("years") and not c.get("keep_years") and not c.get("x_start"):
@@ -1520,7 +1528,7 @@ def build_payload(root: Path = ROOT) -> dict:
                 if any(x not in data for x in c.get("need") or []):  # Abbildung nur mit diesen Reihen zeigen (etwa Berlin ohne Berliner Werte)
                     continue
                 specs = [meta[x] for x in c["pick"] if x in meta] if c.get("pick") else [s for s in meta.values() if s.chart_id == c["chart"]]
-                series = []
+                series, full = [], {}
                 for s in specs:
                     if s.id not in data:
                         continue
@@ -1543,6 +1551,9 @@ def build_payload(root: Path = ROOT) -> dict:
                     for y0, y1 in c.get("blank_years") or []:  # Kriegs- und Inflationsjahre auslassen: Lücke statt Werte
                         ser = ser[(ser.index.year < int(y0)) | (ser.index.year > int(y1))]
                     xy = _xy(ser * float(c.get("scale", 1)), c.get("years"), c.get("x_start"))
+                    fx = _xy(ser * float(c.get("scale", 1)), None, None)  # ganze Reihe für den Schalter „Ganze Reihe“ (eigene Datei, lädt erst beim Klick)
+                    if len(fx["x"]) > len(xy["x"]) + 3:
+                        full[s.id] = fx
                     series.append(dict(id=s.id, label=(c.get("labels") or {}).get(s.id) or s.label or s.title, unit=c.get("unit", s.unit), freq="B" if c.get("daily") else s.frequency,
                                        style=(c.get("styles") or {}).get(s.id) or getattr(s, "style", None) or "line", **({"of": c["of"][s.id]} if s.id in (c.get("of") or {}) else {}), **xy))
                 if c.get("total") and c["total"] in data:
@@ -1551,6 +1562,8 @@ def build_payload(root: Path = ROOT) -> dict:
                                        **_xy(data[s.id], c.get("years"), c.get("x_start"))))
                 if not series:
                     continue
+                if full:
+                    entry["_full"] = full
                 if c.get("ref_mean"):  # Mittel eines Zeitraums als graue Referenzlinie
                     a0, a1 = c["ref_mean"]
                     s0 = data[series[0]["id"]].dropna()
@@ -1647,7 +1660,7 @@ def build_payload(root: Path = ROOT) -> dict:
                 c["recessions"], c["recessions_on"] = recs, False  # etwa Inflationsbeiträge, die einen eigenen Zweig haben
             if c.get("recessions") is False:
                 c.pop("recessions")
-            c["texts"] = [x.replace(" in Euroraum", " im Euroraum").replace(" in Europäische Union", " in der Europäischen Union") for x in chart_sentences(c)]
+            c["texts"] = [] if c.get("no_texts") else [x.replace(" in Euroraum", " im Euroraum").replace(" in Europäische Union", " in der Europäischen Union") for x in chart_sentences(c)]  # no_texts: etwa Tageswerte, deren Einzeltag nur Rauschen zeigt
             c["text"] = " ".join(c["texts"])
             c["last_x"] = _last_x(c)
             c["notes"] = notes.get(c["chart"], []) + _weather_notes(c, data)
@@ -1656,9 +1669,10 @@ def build_payload(root: Path = ROOT) -> dict:
     _merge_toggles(topics)  # zwei Abbildungen mit Umschalter in einer Karte
     no = 0
     for t in topics:
-        for c in t["charts"]:
+        lab = t.get("code") or t["title"].split()[0]  # festes Kurzzeichen je Abbildung: Kapitel und Platz im Kapitel, etwa „Preise-3“
+        for k, c in enumerate(t["charts"], 1):
             no += 1
-            c["no"] = no
+            c["no"], c["k"], c["code"], c["anchor"] = no, k, f"{lab}-{k}", f"{t['id']}-{k}"
     # Nächste voraussichtliche Aktualisierung je Abbildung und Verweise vom Kalender auf die Abbildungen
     numbers = {c["chart"]: c["no"] for t in topics for c in t["charts"]}
     cal = next((c["calendar"] for t in topics for c in t["charts"] if c.get("type") == "calendar"), None)
@@ -1711,11 +1725,24 @@ def build_payload(root: Path = ROOT) -> dict:
     text_issues = check_sentences(topics)  # durchgefallene Sätze entfallen, Funde gehen ins Ticket
     for line in text_issues:
         print("Satzprüfung:", line)
+    from .ausschreiben import spell, GLOSSAR
+    for q in questions:  # Abkürzungen in Sätzen ausschreiben, erst nach der Satzprüfung
+        a = q["answer"]
+        a["head"], a["more"], q["explain"] = spell(a["head"]), [spell(m) for m in a["more"]], spell(q.get("explain", ""))
+    for tp in topics:
+        for c in tp["charts"]:
+            c["texts"] = [spell(x) for x in c["texts"]]
+            c["text"] = " ".join(c["texts"])
+            if c.get("caption"):
+                c["caption"] = spell(c["caption"])
+            for n in c.get("notes", []):
+                n["text"] = spell(n["text"])
     health = _health(root, topics, meta)
     geo = _geo(root)
     return {"layout": layout, "health": health, "start": _start_rows(cfg, data, meta, {t["id"]: t["title"] for t in cfg["topics"]}), "geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
             "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "questions": questions, "topics": topics, "overview": tidy(overview({q["id"]: q["answer"] for q in questions})),
+            "questions": questions, "topics": topics, "overview": spell(tidy(overview({q["id"]: q["answer"] for q in questions}))),
+            "fazit": spell(tidy(fazit({q["id"]: q["answer"] for q in questions}))), "glossar": GLOSSAR,
             "content_license": cfg["site"].get("license", ""), "text_issues": text_issues}
 
 
@@ -1737,7 +1764,7 @@ def write_embeds(payload: dict, tpl: str, out: Path) -> int:
             p = dict(payload, topics=[dict(t, charts=[cc], question=None, ask=c.get("ask") or t.get("ask"))], start=[], questions=[], news=[], week=[], overview="", embed=True,
                      geo=payload.get("geo") if c.get("type") == "tiles" else None, all_series={}, deck=None)
             js = json.dumps(p, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
-            title = f"Abb. {c.get('no')} {c.get('title', '')} · Konjunkturmonitor"
+            title = f"{c.get('code') or 'Abb. ' + str(c.get('no'))} {c.get('title', '')} · Konjunkturmonitor"
             desc = (c.get("texts") or [""])[0] or c.get("caption", "")
             html = (base.replace("/*__DATA__*/null", js).replace("/*__STATIC__*/", "").replace("/*__OVERVIEW__*/", "")
                     .replace("/*__DESC__*/", escape(desc, quote=True)).replace("/*__URL__*/", escape(f"{url}abb/{c['chart']}.html", quote=True))
@@ -1799,6 +1826,14 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
         fh.write(arch_name[:-4] + "\n")
         arch.to_csv(fh, sep=";", decimal=",", index=False)
     payload["archive_file"] = "dl/" + arch_name
+    (out / "full").mkdir(exist_ok=True)  # ganze Reihen je Abbildung, für den Schalter „Ganze Reihe“
+    for t in payload["topics"]:
+        for c in t["charts"]:
+            for cc in (c, c.get("variant")):
+                if isinstance(cc, dict) and cc.get("_full"):
+                    name = f"{cc['chart']}.json"
+                    (out / "full" / name).write_text(json.dumps(cc.pop("_full"), separators=(",", ":")), encoding="utf-8")
+                    cc["full"] = "full/" + name
     tpl = resources.files("monitor").joinpath("templates/index.html").read_text(encoding="utf-8")
     payload["has_en"] = (root / "data" / "static" / "en.yaml").exists()
     js = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")

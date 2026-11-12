@@ -1,5 +1,5 @@
 // Seitentest: lädt die gebaute Seite im Browser, klappt alles aus, scrollt durch und bricht ab bei
-// JavaScript-Fehlern oder Abbildungen, die leer bleiben. Aufruf: node tests/smoke.js site/index.html
+// JavaScript-Fehlern oder Abbildungen, die leer bleiben (Modus „Alles“, ?alles=1). Aufruf: node tests/smoke.js site/index.html
 const { chromium } = require("playwright");
 const path = require("path");
 (async () => {
@@ -10,7 +10,7 @@ const path = require("path");
     const page = await browser.newPage({ viewport: { width, height: 900 } });
     page.on("pageerror", e => errors.push(`${name}: ${e.message}`));
     page.on("console", m => { if (m.type() === "error" && !/favicon|net::ERR/.test(m.text())) errors.push(`${name}: ${m.text()}`); });
-    await page.goto("file://" + file, { waitUntil: "load" });
+    await page.goto("file://" + file + "?alles=1", { waitUntil: "load" });  // alle Kapitel, nicht nur die Kurzfassung
     await page.waitForTimeout(1000);
     await page.evaluate(() => document.querySelectorAll("details").forEach(d => d.open = true));
     for (let y = 0; y < await page.evaluate(() => document.body.scrollHeight); y += 600) {

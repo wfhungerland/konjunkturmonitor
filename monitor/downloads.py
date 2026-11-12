@@ -188,7 +188,7 @@ def source_line(c: dict) -> str:
 # Excel
 # ---------------------------------------------------------------------------
 def write_xlsx(c: dict, df: pd.DataFrame, plan: dict, path: Path, stand: str, cite: str) -> None:
-    title = f"Abb. {c['no']} {c.get('title', '')}"
+    title = f"{c.get('code') or 'Abb. ' + str(c['no'])} {c.get('title', '')}"
     sub, unit = header_lines(c)
     with pd.ExcelWriter(path, engine="xlsxwriter", datetime_format="yyyy-mm-dd") as xw:
         wb = xw.book
@@ -477,7 +477,7 @@ def add_slide(prs, c: dict, df: pd.DataFrame, plan: dict, stand: str, number: in
     slide = prs.slides.add_slide(prs.slide_layouts[5])  # Standardmaster, Layout „Nur Titel“
     _frame(slide, stand, number, c.get("content_license") or "CC BY 4.0")
     sub, unit = header_lines(c)
-    _text(slide, OVERTITLE, f"Abb. {c['no']} · {c.get('topic_title', '')}", 12, MUTED)
+    _text(slide, OVERTITLE, f"{c.get('code') or 'Abb. ' + str(c['no'])} · {c.get('topic_title', '')}", 12, MUTED)
     title = slide.shapes.title
     title.text = c.get("title", "")
     for p in title.text_frame.paragraphs:  # Schrift aus dem Master, nur kleiner, damit lange Titel passen
@@ -737,7 +737,8 @@ def clean_title(title: str) -> str:
 def file_stem(c: dict, date: str, width: int, shorts: dict) -> str:
     kind = "Tab." if c.get("type") in ("heat", "calendar") else "Abb."
     title = clean_title(shorts.get(c["chart"]) or c.get("title", ""))
-    return f"Konjunkturmonitor ({date}, {kind} {c['no']:0{width}d}) {title}"[:79]
+    code = c.get("code") or f"{kind} {c['no']:0{width}d}"  # festes Kurzzeichen, etwa „Preise-3“
+    return f"Konjunkturmonitor ({date}, {code}) {title}"[:79]
 
 
 # ---------------------------------------------------------------------------
@@ -782,7 +783,7 @@ def write_all(payload: dict, out: Path, root: Path | None = None) -> None:
         for c in t["charts"]:
             flat.append((t, c, False))
             if isinstance(c.get("variant"), dict):  # zweite Ansicht einer Karte: eigene Dateien, gleiche Nummer
-                c["variant"]["no"] = c.get("no")
+                c["variant"]["no"], c["variant"]["code"] = c.get("no"), c.get("code")
                 flat.append((t, c["variant"], True))
     for t, c, is_variant in flat:
             number += 0 if is_variant else 1
@@ -790,7 +791,7 @@ def write_all(payload: dict, out: Path, root: Path | None = None) -> None:
             df, plan = chart_table(c)
             stem = file_stem(c, date, width, shorts)
             c["_stem"] = stem
-            c["_sheet"] = stem.split(", ", 1)[1].split(")")[0]  # etwa „Abb. 04“
+            c["_sheet"] = stem.split(", ", 1)[1].split(")")[0][:31]  # etwa „Preise-3“
             xs = [x for s in (c.get("series") or []) if isinstance(s, dict) for x in s.get("x", [])]
             c["datenstand"] = max(xs) if xs else ""
             files = {}

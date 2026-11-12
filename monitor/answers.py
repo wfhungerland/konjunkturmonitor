@@ -227,3 +227,28 @@ def answer(q: dict, data: dict) -> dict | None:
         return KINDS[q["kind"]](q, data)
     except (KeyError, IndexError):
         return None
+
+
+def fazit(answers: dict) -> str:
+    """Einordnung in einem Satz, aus den Urteilen zu Wachstum, Preisen, Arbeitsmarkt und Stimmung (Knopf „Fazit“)."""
+    g, i, a, s = (answers.get(k) for k in ("wachstum", "preise", "arbeit", "stimmung"))
+    parts = []
+    if g:
+        parts.append({"schrumpft": "Die Wirtschaft schrumpft", "stagniert": "Die Wirtschaft tritt auf der Stelle",
+                      "wächst leicht": "Die Wirtschaft wächst langsam", "wächst": "Die Wirtschaft wächst ordentlich",
+                      "wächst kräftig": "Die Wirtschaft wächst kräftig"}.get(g["verdict"], ""))
+    if i:
+        parts.append({"unter dem Ziel": "die Inflation liegt unter dem Zwei-Prozent-Ziel", "nahe am Ziel": "die Inflation liegt nahe am Zwei-Prozent-Ziel",
+                      "über dem Ziel": "die Inflation liegt über dem Zwei-Prozent-Ziel", "hoch": "die Inflation liegt deutlich über dem Zwei-Prozent-Ziel"}.get(i["verdict"], ""))
+    if a:
+        v = a["verdict"].replace("Arbeitslosigkeit ", "")
+        parts.append({"steigt": "die Arbeitslosigkeit steigt", "sinkt": "die Arbeitslosigkeit sinkt", "stabil": "der Arbeitsmarkt hält"}.get(v, ""))
+    parts = [p for p in parts if p]
+    if not parts:
+        return ""
+    if parts[0][0].islower():
+        parts[0] = parts[0][0].upper() + parts[0][1:]
+    out = (", ".join(parts[:-1]) + " und " + parts[-1] if len(parts) > 1 else parts[0]) + "."
+    if s:
+        out += f" Die Stimmung in der Wirtschaft ist {s['verdict'].replace('Klima ', '')}."
+    return out

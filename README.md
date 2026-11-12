@@ -10,7 +10,7 @@ Eine lange Seite, deutsch unter `/` und englisch unter `/en/` (Sprachschalter un
 
 - **Kopfzeile (fixiert):** Titel, Sprachschalter und Stand; alle Themen als Links; Suche mit Vorschlägen (Taste `/`); Knopf zum Aus- und Einklappen aller Abbildungen.
 - **Start:** zwei bis drei Sätze zur Gesamtlage, „Heute neu“, sechs Kennzahl-Kacheln mit Fünfjahresverlauf, alle Kennzahlen als Tabelle (aufklappbar).
-- **Teil I Konjunktur, Teil II Struktur, Termine:** je Abschnitt eine Frage als Überschrift, ein Antwortsatz aus den Daten mit Erläuterung, eine Leitabbildung und weitere Abbildungen zum Aufklappen. Ab 1240 px Breite läuft links die Liste der Abbildungen des Abschnitts mit.
+- **Teil I Konjunktur, Teil II Analysen, Teil III Struktur, Teil IV Anhang, Termine:** je Abschnitt eine Frage als Überschrift, ein Antwortsatz aus den Daten mit Erläuterung, eine Leitabbildung und weitere Abbildungen zum Aufklappen. Ab 1240 px Breite läuft links die Liste der Abbildungen des Abschnitts mit.
 - **Diese Woche neu:** Abbildungen mit neuen Daten in den letzten sieben Tagen.
 - **Quellen und Hinweise:** Methodik, Quellen und Lizenzen, fehlende Indikatoren, Gesamtdownloads, Abrufstatus, Zitiervorschlag.
 
@@ -42,9 +42,12 @@ Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global
 
 - **Schrift:** Source Sans 3 in vier Schnitten, mitgeliefert unter `monitor/static/fonts/` (SIL Open Font License); keine fremden Server.
 - **Größen:** 12, 13,5, 15, 17, 19 und 26 px, Kennzahlen 32 px.
-- **Farben:** Text außerhalb der Grafiken schwarz, Links ohne Unterstrich. Datenfarben nur in Grafiken, erste Reihe #002060. Rot (#C00000) nur für Warnsignale: ungünstige Anstiege und Schwellen.
-- **Grafiken (Plotly):** Werteachse rechts, runde Schritte, waagerechte Gitterlinien, Einheit über der obersten Zahl, helle Flächen für jedes zweite Kalenderjahr, keine Werkzeugleiste.
-- **Tendenz:** ▲ ▼ ■; in der Tabelle `kind: rate` als Differenz, `kind: level` prozentual; `up_bad: true` färbt einen Anstieg rot.
+- **Farben:** Text außerhalb der Grafiken schwarz, Links ohne Unterstrich. Datenfarben nur in Grafiken, erste Reihe #002060. Rot (#C00000) nur für Warnsignale: ungünstige Anstiege und Schwellen. Die Nulllinie ist schwarz.
+- **Grafiken (Plotly):** Werteachse rechts, runde Schritte, waagerechte Gitterlinien, Einheit über der obersten Zahl, keine Werkzeugleiste. Die hellen Flächen für jedes zweite Kalenderjahr sind standardmäßig aus, weil sie am rechten Rand wie eine Rezession wirkten. Der Schalter „Jahresflächen“ unter den Kennzahlen blendet sie ein (die Wahl merkt sich der Browser); das laufende Jahr bleibt dabei immer frei. `layout: year_bands: true` schaltet sie für alle ein.
+- **Tendenz:** ▲ ▼ ● (gestiegen, gesunken, unverändert), blau günstig, rot ungünstig; in der Tabelle `kind: rate` als Differenz, `kind: level` prozentual; `up_bad: true` färbt einen Anstieg rot.
+- **Kurzzeichen:** Jede Abbildung heißt nach Kapitel und Platz, etwa „Preise-3“ (Anker `#preise-3`, englisch „Prices-3“). Abweichende Kapitelkürzel stehen als `code:` am Kapitel in `monitor.yaml` und `data/static/en.yaml`. Alte Links `#abb-12` lenkt die Seite um.
+- **Fazit:** Der Knopf im Kopf zeigt einen regelbasierten Urteilssatz (`answers.fazit`) und die Urteile an den Kacheln; ohne ihn bleibt die Seite neutral. Die Wahl merkt sich der Browser.
+- **Abkürzungen:** In Sätzen ausgeschrieben (`monitor/ausschreiben.py`, nach der Satzprüfung); in Köpfen, Einheiten und Kacheln gepunktet unterstrichen mit Erklärung beim Darauftippen (`GLOSSAR`).
 
 Weitere Schalter stehen im Bereich `layout` von `monitor.yaml`; jeder lässt sich einzeln mit `false` zurücknehmen:
 - `start_table`: Kennzahlentabelle statt Fragekarten
@@ -58,7 +61,7 @@ Die Seite enthält die Kernzahlen auch als statisches HTML und ein Vorschaubild 
 
 Alle Reihen werden bei jedem Lauf direkt bei der Quelle abgerufen: Bundesbank (SDMX-REST), Eurostat (JSON-API), Destatis (GENESIS-Webservice, Zugang über Repository-Secrets), FRED (CSV). Statische Reihen in `data/static` (AMECO, OECD-Steuersätze, Kartengrenzen, Kalenderregeln, Hinweise auf Sondereffekte) werden von Hand aktualisiert; der Abrufstand steht jeweils im Katalog (`note`). Nicht aufgenommen sind Daten, deren Weiterverbreitung eine Lizenz erfordert (ifo, ZEW, S&P Global PMI, GfK/NIM, HDE, IAB-Barometer, IWH-Insolvenztrend, EEX-Terminpreise, RWI/ISL-Containerindex), und Größen ohne abrufbare Zeitreihe (Unterbeschäftigung der BA, Finanzlage der Sozialversicherung, Investitionshemmnisse, Zerlegung des Produktionspotenzials). Die Seite nennt diese Lücken im Abschnitt „Was fehlt und warum“.
 
-Die Zuordnung der Abschnitte zu Teil I, Teil II und Termine steht je Abschnitt in `monitor.yaml` (`part`). Texte für die englische Seite stehen in `data/static/en.yaml`, Satzvorlagen in `data/static/saetze.yaml`.
+Die Zuordnung der Abschnitte zu den Teilen steht je Abschnitt in `monitor.yaml` (`part`: konjunktur, analysen, struktur, anhang, service). Teil II Analysen sammelt eigene Auswertungen wie Rezessionssignal, Konjunkturuhr, Revisionsanzeiger und Exportähnlichkeit. Texte für die englische Seite stehen in `data/static/en.yaml`, Satzvorlagen in `data/static/saetze.yaml`.
 
 ## Downloads
 
