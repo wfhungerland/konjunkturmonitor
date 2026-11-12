@@ -48,8 +48,8 @@ def saetze(c: dict, lang: str = "de") -> list[str]:
                 s1 = f"{w[0].upper() + w[1:]} lagen die Schulden {lst[0]} des Bruttoinlandsprodukts, die {', die '.join(lst[1:-1])} und die {lst[-1]}."
                 s2 = f"Der Bund trägt damit rund {num(vals[0][0][1] / tot * 100, 0)} % der Schulden aller Ebenen."
             else:
-                lst = [f"{b} {pc(v[1])}" for v, _, b in vals]
-                s1 = f"{w[0].upper() + w[1:]}, the debt of {lst[0]} of GDP, {', '.join(lst[1:-1])} and {lst[-1]}."
+                lst = [f"that of {b} at {pc(v[1])}" for v, _, b in vals]
+                s1 = f"{w[0].upper() + w[1:]}, the debt of the federal government stood at {pc(vals[0][0][1])} of GDP, {', '.join(lst[1:-1])} and {lst[-1]}."
                 s2 = f"The federal government thus accounts for about {num(vals[0][0][1] / tot * 100, 0)}% of the debt of all levels."
             return [s1, s2]
         if ch == "gov_debt_instr":
