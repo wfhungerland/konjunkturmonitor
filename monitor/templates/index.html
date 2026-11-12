@@ -165,6 +165,7 @@
   .stable a { color: inherit; }
   .tnote { font: 13.5px/1.4 var(--ff); color: var(--muted); margin: 0 0 8px; max-width: 60em; }
   .up-bad { color: #C00000; } .up-ok, .down { color: #0070C0; } .flat { color: var(--grey); }
+  .up-bad, .up-ok, .down, .flat { font-size: 1.15em; line-height: 1; }  /* Schrägpfeile ↗ ↘ → etwas größer als der Text */
   @media (max-width: 760px) {
     .stable thead { display: none; }
     .stable, .stable tbody { display: block; }
@@ -421,7 +422,7 @@
   <details class="fold"><summary>Methodik, Vergleichszeitraum und Zeichen</summary>
   <p><b>Vergleichszeitraum.</b> Wo der Monitor ein „übliches“ Niveau angibt, ist es der Durchschnitt der Jahre 2015 bis 2019: die fünf letzten vollen Jahre vor der Pandemie, nach der Euro-Schuldenkrise und vor dem Energiepreisschock 2022. Ausnahme ist die Konjunkturuhr; sie misst den Abstand zum langjährigen Mittel 2005 bis 2019, weil die Phasen eines Konjunkturzyklus nur über mehrere Zyklen bestimmt werden können.</p>
   <p><b>Legenden.</b> Wo eine Abbildung mehrere Reihen zeigt, blendet ein Klick auf den Eintrag in der Legende die Reihe aus oder wieder ein; ein Doppelklick zeigt nur diese Reihe, ein weiterer alle.</p>
-  <p><b>Farben und Zeichen.</b> ▲ gestiegen, ▼ gesunken, ■ unverändert in der angezeigten Genauigkeit. Rot ist Warnsignalen vorbehalten: einem Anstieg, wo er ungünstig ist (Inflation, Arbeitslosigkeit, Insolvenzen), und Schwellenwerten. Blau, Violett und Grün unterscheiden nur Reihen und tragen keine Wertung. In Karten und Wärmetabellen steht Orange für eine Zunahme und Blau für eine Abnahme.</p>
+  <p><b>Farben und Zeichen.</b> ↗ gestiegen, ↘ gesunken, → unverändert in der angezeigten Genauigkeit. Rot ist Warnsignalen vorbehalten: einem Anstieg, wo er ungünstig ist (Inflation, Arbeitslosigkeit, Insolvenzen), und Schwellenwerten. Blau, Violett und Grün unterscheiden nur Reihen und tragen keine Wertung. In Karten und Wärmetabellen steht Orange für eine Zunahme und Blau für eine Abnahme.</p>
   </details>
   <details class="fold"><summary>Datenquellen und Lizenzen</summary>
   <p>Alle Zahlen stammen aus offenen, amtlichen Quellen: Deutsche Bundesbank (saisonbereinigte Reihen von Statistischem Bundesamt und Bundesagentur für Arbeit), Eurostat (Volkswirtschaftliche Gesamtrechnungen, Verbraucherpreise, EU-Unternehmens- und Verbraucherumfragen) und Statistik der Bundesagentur für Arbeit. Prognosen stammen aus den verlinkten Veröffentlichungen. Die Texte sind eigene Erläuterungen und keine amtliche Bewertung.</p>
@@ -448,14 +449,14 @@ const DATA = /*__DATA__*/null;
 const PAL = ["#002060", "#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#47D359"];
 let YEAR_BANDS = (DATA.layout || {}).year_bands === true;  // helle Flächen je zweites Kalenderjahr: Standard aus, weil sie am Rand wie eine Rezession wirkten; Schalter unter den Kennzahlen
 try { if (localStorage.getItem("km_yb") === "1") YEAR_BANDS = true; } catch (e) {}
-const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero: DATA.layout && DATA.layout.red_zero_line ? "#FF0000" : "#595959", font: '"Source Sans 3", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif' };
+const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero: DATA.layout && DATA.layout.red_zero_line ? "#FF0000" : "#000000",  /* Nulllinie schwarz: Bezug ohne Wertung; Rot bleibt Warnungen vorbehalten */ font: '"Source Sans 3", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif' };
 // Balken (etwa Wachstumsbeiträge): benachbarte Farben mit deutlichem Kontrast
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
-const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (▲) und Schwellen
+const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (↗) und Schwellen
 const isBad = (c, sid) => c.up_bad === true || (Array.isArray(c.up_bad) && c.up_bad.includes(sid));
 const tendOf = (y, d) => { const v = y.filter(q => q != null); if (v.length < 2) return null; const a = v[v.length - 1], b = v[v.length - 2]; return Math.round(Math.abs(a - b) * 10 ** d) === 0 ? "flat" : a > b ? "up" : "down"; };
 const tendColor = (t, bad) => t === "up" ? (bad ? "#C00000" : "#0070C0") : t === "down" ? "#0070C0" : "#7f7f7f";
-const tendHtml = (t, upBad) => !t ? "" : t === "flat" ? `<span class="flat" title="unverändert">■</span>` : t === "up" ? `<span class="${upBad ? "up-bad" : "up-ok"}" title="gestiegen">▲</span>` : `<span class="down" title="gesunken">▼</span>`;
+const tendHtml = (t, upBad) => !t ? "" : t === "flat" ? `<span class="flat" title="unverändert">→</span>` : t === "up" ? `<span class="${upBad ? "up-bad" : "up-ok"}" title="gestiegen">↗</span>` : `<span class="down" title="gesunken">↘</span>`;
 const MONTHS = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."];
 const TOUCH = matchMedia("(pointer: coarse)").matches;
 const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -497,7 +498,7 @@ const KERN = { more: "Weiterlesen" };
 const MATXT = "Mittel über {n} Tage";
 const ANH = { show: "Abbildungen anzeigen" };
 const LONGTXT = { crisis: "Bankenkrisen", rec: "Rezessionen", dec: "Mittel" };
-const VIEWTXT = { raw: "Monatswerte", rawt: "Dünne Linie mit den einzelnen Monatswerten zeigen", edge: "Aktueller Rand", edget: "Jüngste Werte an den Linienenden zeigen", rec: "Rezessionen", more: "Ansicht" };
+const VIEWTXT = { raw: "Monatswerte", rawt: "Dünne Linie mit den einzelnen Monatswerten zeigen", edge: "Aktueller Rand", edget: "Jüngste Werte an den Linienenden zeigen", rec: "Rezessionen", more: "Ansicht", all: "Ganze Reihe", allt: "Die Reihe ab ihrem Beginn zeigen" };
 const GUTTXT = { dl: "Daten", dlt: "XLSX, PPTX, PNG, CSV, Stata oder Code zum Einbetten", meth: "Methode", link: "Link" };
 const pressed = (b, on) => b.setAttribute("aria-pressed", String(!!on));
 const COLTXT = { pin: "Als Lesezeichen merken", pinned: "Lesezeichen entfernen", title: "Lesezeichen", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. Der Stern ☆ oben rechts an einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Lesezeichen übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
@@ -513,7 +514,7 @@ function yAxis(vals, unit, extra) {
   const tv = [], tt = [];
   const signed = (a < 0 && b > 0) || /gg\.|gegenüber|Veränderung|Beiträge|^Pp|^Saldo/.test(unit || "");  // Vorzeichen bei Veränderungen, Salden und Achsen über null
   for (let v = a; v <= b + st / 1000; v += st) { const r = +v.toFixed(d); tv.push(r); tt.push((signed && r > 0 ? "+" : "") + fmt(r === 0 ? 0 : r, d)); }
-  return { range: [a - st / 3, b + st / 3], tickvals: tv, ticktext: tt, zero: a <= 0 && b >= 0 };  // null liegt auf der Achse, auch am Rand: rote Nulllinie
+  return { range: [a - st / 3, b + st / 3], tickvals: tv, ticktext: tt, zero: a <= 0 && b >= 0 };  // null liegt auf der Achse, auch am Rand: Nulllinie
 }
 // Zeitachse: Jahreszahl mittig unter dem Jahr, Gitterlinie an der Jahresgrenze, Jahresbänder
 function xAxis(x0, x1, width) {
@@ -671,7 +672,7 @@ function timeChart(el, c) {
     const plotH = Math.max(140, (el.clientHeight || 300) - 34 - 24), pyOf = v => (1 - (v - ya.range[0]) / (ya.range[1] - ya.range[0])) * plotH, vOf = py => ya.range[0] + (1 - py / plotH) * (ya.range[1] - ya.range[0]);
     const wrap2 = t => { if (t.length <= 24) return [t]; const m = t.length / 2; let k = -1; for (let q = 0; q < t.length; q++) if (t[q] === " " && (k < 0 || Math.abs(q - m) < Math.abs(k - m))) k = q; return k < 0 ? [t] : [t.slice(0, k), t.slice(k + 1)]; };
     const ends = named.map(tr => { let i = tr.y.length - 1; while (i > 0 && tr.y[i] == null) i--; const v = tr.y[i]; if (v == null) return null;
-      const td = tendOf(tr.y, c.decimals ?? 1), arrow = td ? ` <span style="color:${tendColor(td, isBad(c, tr.meta))}">${{ up: "▲", down: "▼", flat: "■" }[td]}</span>` : "";
+      const td = tendOf(tr.y, c.decimals ?? 1), arrow = td ? ` <span style="color:${tendColor(td, isBad(c, tr.meta))}">${{ up: "↗", down: "↘", flat: "→" }[td]}</span>` : "";
       const f0 = fmtU(v, c.decimals ?? 1, c.unit), val = (sgn && +v.toFixed(c.decimals ?? 1) > 0 && !f0.startsWith("+") ? "+" : "") + f0;
       const lines = [...wrap2(tr.name)]; if (c._labels) lines.push(`${val} ${perIn(tr.x[i], c.freq)}`);
       const w = Math.max(...lines.map(l => l.length)) * 6.3 + 4;
@@ -1275,8 +1276,17 @@ function card(c, no) {
     [["_crisis", LONGTXT.crisis, c.crisis_years], ["_recy", LONGTXT.rec, c.recession_years]].forEach(([k, lab, ys]) => { if (!(ys || []).length) return;
       const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = lab; pressed(b, c[k]);
       b.onclick = () => { c[k] = !c[k]; pressed(b, c[k]); redraw(); }; htools.appendChild(b); }); }
+  if (c.full) { // „Ganze Reihe“: vollständige Reihen erst beim Klick laden, dann zwischen Standardfenster und Reihenbeginn wechseln
+    const fb = document.createElement("button"); fb.type = "button"; fb.className = "btn"; fb.textContent = VIEWTXT.all; fb.title = VIEWTXT.allt; pressed(fb, false);
+    fb.onclick = async () => { const on = !c._all;
+      if (on && !c._fulld) { try { c._fulld = await (await fetch(c.full)).json(); } catch (e) { return; } }
+      c._all = on; pressed(fb, on);
+      c.series.forEach(s => { s._short ??= { x: s.x, y: s.y }; const f = on && c._fulld[s.id]; s.x = f ? f.x : s._short.x; s.y = f ? f.y : s._short.y; });
+      if (on) { c._zoom0 = c._zoom; c._zoom = false; } else c._zoom = c._zoom0;
+      redraw(); };
+    htools.appendChild(fb); }
   // höchstens zwei Ein/Aus-Schalter sichtbar, die übrigen im Aufklapper „Ansicht“ (Reihenfolge nach Bedeutung)
-  { const prio = [SCALE_TXT.common, SCALE_TXT.zoom, VIEWTXT.rec, LONGTXT.dec, LONGTXT.crisis, LONGTXT.rec, VIEWTXT.edge, VIEWTXT.raw];
+  { const prio = [VIEWTXT.all, SCALE_TXT.common, SCALE_TXT.zoom, VIEWTXT.rec, LONGTXT.dec, LONGTXT.crisis, LONGTXT.rec, VIEWTXT.edge, VIEWTXT.raw];
     const bs = [...htools.querySelectorAll(":scope > .btn")].sort((a, b) => (prio.indexOf(a.textContent) + 99) % 99 - (prio.indexOf(b.textContent) + 99) % 99);
     if (bs.length > 2) { const d = document.createElement("details"); d.className = "ansicht"; d.innerHTML = `<summary>${VIEWTXT.more}</summary><div class="ansl"></div>`;
       bs.slice(0, 2).forEach(b => htools.appendChild(b)); bs.slice(2).forEach(b => d.querySelector(".ansl").appendChild(b)); htools.appendChild(d); } }
@@ -1440,7 +1450,7 @@ function startTable(box) {
   box.innerHTML = kpiTiles(rows, sp) + `<details class="alltable"><summary>Alle Kennzahlen (${rows.length})</summary>` + html
     + `<details class="fold"><summary>Lesehilfe zur Tabelle</summary><p class="tnote">Vorperiode und Dreimonatsvergleich saison- und kalenderbereinigt, soweit die Quelle bereinigte Werte bietet; Vorjahresvergleich aus saison- und kalenderbereinigten Werten; bei Preisen, Insolvenzen und beim BIP nach Ursprungswerten, wie in den Meldungen der Statistikämter. `
     + `Bei Raten und Salden ist die Veränderung eine Differenz in Prozentpunkten (Pp) oder Punkten (Pkt.), sonst eine Veränderung in Prozent. Dreimonatsvergleich: die letzten drei Monate gegenüber den drei Monaten davor. `
-    + `Tendenz zur Vorperiode: <span class="up-ok">▲</span> gestiegen, <span class="down">▼</span> gesunken, <span class="flat">■</span> unverändert; <span class="up-bad">▲</span> rot, wo ein Anstieg ungünstig ist (Preise, Arbeitslosigkeit, Insolvenzen).`
+    + `Tendenz zur Vorperiode: <span class="up-ok">↗</span> gestiegen, <span class="down">↘</span> gesunken, <span class="flat">→</span> unverändert; <span class="up-bad">↗</span> rot, wo ein Anstieg ungünstig ist (Preise, Arbeitslosigkeit, Insolvenzen).`
     + `${older ? " ¹ Älterer Stand: Die Quelle meldet diese Zahl später als die übrigen Monatswerte." : ""}`
     + `${rows.some(r => r.revised) ? " r Revidiert: Die Quelle hat den Wert für diesen Zeitraum seit der ersten Veröffentlichung geändert; der erste Wert steht im Tooltip und im Archiv." : ""}</p></details></details>`;
   box.querySelectorAll("tr.row").forEach(tr => tr.addEventListener("click", e => { if (e.target.closest("a")) return; location.hash = tr.dataset.href; }));

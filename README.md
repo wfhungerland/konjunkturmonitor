@@ -41,9 +41,9 @@ Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global
 
 - **Schrift:** Source Sans 3 in vier Schnitten, mitgeliefert unter `monitor/static/fonts/` (SIL Open Font License); keine fremden Server.
 - **Größen:** 12, 13,5, 15, 17, 19 und 26 px, Kennzahlen 32 px.
-- **Farben:** Text außerhalb der Grafiken schwarz, Links ohne Unterstrich. Datenfarben nur in Grafiken, erste Reihe #002060. Rot (#C00000) nur für Warnsignale: ungünstige Anstiege und Schwellen.
+- **Farben:** Text außerhalb der Grafiken schwarz, Links ohne Unterstrich. Datenfarben nur in Grafiken, erste Reihe #002060. Rot (#C00000) nur für Warnsignale: ungünstige Anstiege und Schwellen. Die Nulllinie ist schwarz.
 - **Grafiken (Plotly):** Werteachse rechts, runde Schritte, waagerechte Gitterlinien, Einheit über der obersten Zahl, keine Werkzeugleiste. Die hellen Flächen für jedes zweite Kalenderjahr sind standardmäßig aus, weil sie am rechten Rand wie eine Rezession wirkten. Der Schalter „Jahresflächen“ unter den Kennzahlen blendet sie ein (die Wahl merkt sich der Browser); das laufende Jahr bleibt dabei immer frei. `layout: year_bands: true` schaltet sie für alle ein.
-- **Tendenz:** ▲ ▼ ■; in der Tabelle `kind: rate` als Differenz, `kind: level` prozentual; `up_bad: true` färbt einen Anstieg rot.
+- **Tendenz:** ↗ ↘ → (gestiegen, gesunken, unverändert), blau günstig, rot ungünstig; in der Tabelle `kind: rate` als Differenz, `kind: level` prozentual; `up_bad: true` färbt einen Anstieg rot.
 
 Weitere Schalter stehen im Bereich `layout` von `monitor.yaml`; jeder lässt sich einzeln mit `false` zurücknehmen:
 - `start_table`: Kennzahlentabelle statt Fragekarten
