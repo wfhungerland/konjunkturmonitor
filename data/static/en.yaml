@@ -65,7 +65,7 @@ topics:
   staat: {title: "Government", ask: "What state are the public finances in?"}
   staatsausgaben: {title: "Government spending", code: "Spending", ask: "What does the government spend its money on?"}
   sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What did the Council of Economic Experts forecast and recommend?"}
-  gemeinschaftsdiagnose: {title: "Joint Economic Forecast (JEF)", code: "JEF", ask: "How well did the economic research institutes forecast?"}
+  gemeinschaftsdiagnose: {title: "Joint Economic Forecast", code: "Forecast", ask: "How well did the economic research institutes forecast?"}
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
 
 charts:
@@ -662,31 +662,31 @@ charts:
     caption: "German aid that has been delivered or firmly earmarked for delivery, in billion euros per quarter. Military aid includes money for arms purchases. Missing are Germany's share of aid from the European Union and the costs of refugees. Large packages are often fixed for several years at once."
   gd_rat:
     votes_label: "Dissenting votes of single institutes"
-    rail: "JEF recommendations"
+    rail: "Recommendations"
     title: "Recommendations of the Joint Economic Forecast on four standing questions"
     ask: "What did the institutes recommend on wages, money, public finances and the labour market?"
     caption: "Recommendation of the institutes in the autumn report for the following year, on a fixed scale per question, the same scale as for the Council of Economic Experts. Wages: blue restraint below the distributive margin (productivity plus price rise), grey within, red above. Monetary policy: blue tighter, grey unchanged, red looser. Fiscal policy: blue consolidation, grey cyclically neutral, red stimulus. Labour market and welfare: blue more protection or benefits, grey unchanged, red flexibility, benefit cuts or work incentives. White with a frame: no recommendation discernible, classification still open, or no report text; tapping shows which, otherwise the recommendation in one sentence with page. Bars below: dissenting votes of single institutes in both reports of the year, one per point. Two reviewers classified each recommendation independently; the classification is an interpretation. Sources for every entry in data/static/gd_positionen_dauerfragen.csv and gd_voten.csv."
     unit: "level -1, 0, +1"
   gd_vergleich:
-    rail: "JEF and Council"
+    rail: "Comparison with the Council"
     title: "Recommendations of the Joint Economic Forecast and the Council of Economic Experts compared"
     ask: "Did the institutes recommend the same as the Council of Economic Experts?"
     caption: "Two rows per question: the Joint Economic Forecast (autumn report) above, the Council of Economic Experts (annual report in November) below, each with its recommendation for the following year. Wages: blue restraint below the distributive margin (productivity plus price rise), grey within, red above. Monetary policy: blue tighter, grey unchanged, red looser. Fiscal policy: blue consolidation, grey cyclically neutral, red stimulus. Labour market and welfare: blue more protection or benefits, grey unchanged, red flexibility, benefit cuts or work incentives. Only years in which both were assigned a level are counted. Tapping shows the recommendation in one sentence with source."
     unit: "level -1, 0, +1"
   gd_themen:
-    rail: "JEF topics"
+    rail: "Topics"
     title: "Topics of the Joint Economic Forecast: share of pages"
     ask: "What did the institutes write about?"
     caption: "Share of pages per topic in all reports of a year, excluding the statistical appendix; the darker, the more space. Each section belongs to exactly one topic from a fixed catalogue. Until the 1990s the reports are less finely structured, so shares are only partly comparable. Tapping shows the share and sections. Two reviewers classified each section independently. Sources in data/static/gd_themen.csv."
     unit: "% of pages"
   gd_schwerpunkte:
-    rail: "JEF special topics"
+    rail: "Special topics"
     title: "Special topics of the Joint Economic Forecast"
     ask: "Which special topics did the institutes take up?"
     caption: "One dot per year and topic when a report has its own chapter or a section headed as focus, special topic or excursus; boxes do not count. Tapping shows title and pages. Sources in data/static/gd_schwerpunkte.csv."
     unit: ""
   gd_dissens:
-    rail: "JEF dissent"
+    rail: "Dissenting votes"
     title: "Dissenting votes of single institutes in the Joint Economic Forecast"
     ask: "How often did the institutes disagree?"
     caption: "Number of points at which single institutes departed from the joint position in the reports of a year, one per point, on the forecast and on policy. Ties, separate reports and abstentions are included. Tapping shows institutes and topic. Sources in data/static/gd_voten.csv."
