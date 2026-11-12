@@ -47,7 +47,9 @@
   .q .big { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
   .q .num { font: bold 32px/1 var(--ff); color: var(--dark); }
   .q .u { font: 15px var(--ff); color: var(--muted); }
-  .overview .fz { display: none; } body.fazit .overview .fz { display: inline; } .overview .fz b { font-weight: 600; }
+  /* Kommentar: eigener Absatz mit Linie links und kleiner Marke, klar getrennt von der Beschreibung darunter */
+  .overview .fz { display: none; } body.fazit .overview .fz { display: block; border-left: 2px solid var(--text); padding-left: 14px; margin: 0 0 12px; }
+  .overview .fz .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 3px 0 5px; }
   body:not(.fazit) .verdict { display: none !important; }
   .fazitbtn[aria-pressed="true"] { font-weight: 700; }
   abbr.ab { text-decoration: underline dotted #a6a6a6; text-underline-offset: 2px; cursor: help; }
@@ -111,10 +113,11 @@
   .htools { display: flex; flex-direction: column; align-items: stretch; gap: 6px; margin-left: auto; }
   /* Schalter: nur Text mit kleinem Quadrat davor, leer = aus, gefüllt = an */
   .htools { align-items: flex-start; gap: 3px; }
-  .htools .btn, .tools .btn { display: inline-flex; align-items: center; gap: 7px; border: 0; border-radius: 0; background: none; padding: 0; color: var(--grey); font: 13px/1.4 var(--ff); cursor: pointer; white-space: nowrap; }
-  .htools .btn::before, .tools .btn::before { content: ""; width: 8px; height: 8px; border: 1.5px solid currentColor; box-sizing: border-box; flex: none; }
+  .htools .btn, .tools .btn { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 0; background: none; padding: 0; color: #8c8c8c; font: 13px/1.4 var(--ff); cursor: pointer; white-space: nowrap; }
+  .htools .btn::before, .tools .btn::before { content: "○"; font-size: 10px; line-height: 1; flex: none; }
   .htools .btn:hover, .tools .btn:hover { color: var(--text); text-decoration: none; background: none; }
-  .htools .btn[aria-pressed="true"]::before, .tools .btn[aria-pressed="true"]::before { background: currentColor; }
+  .htools .btn[aria-pressed="true"], .tools .btn[aria-pressed="true"] { color: var(--text); }
+  .htools .btn[aria-pressed="true"]::before, .tools .btn[aria-pressed="true"]::before { content: "●"; }
   .card .src, .card .nxtline { text-align: left; }
   @media (min-width: 601px) { .card .src, .card .nxtline { text-align: right; padding-right: var(--pr, 0px); } }  /* bündig mit der rechten Kante der Zeichenfläche */
   .card .nxtline { font: 13px/1.4 var(--ff); color: var(--grey); margin-top: 6px; } .card .nxtline a { color: var(--grey); }
@@ -139,13 +142,14 @@
   .card .chart.multi { aspect-ratio: auto; min-height: 0; overflow: visible; }
   .charts.single .card .chart.multi, .card .chart.multi { aspect-ratio: auto; max-height: none; height: auto; }
   .card .chart.square { aspect-ratio: 1 / 1; max-height: 520px; }
-  .seg { display: flex; justify-content: center; gap: 0; margin: 8px 0 0; }
-  .seg button { font: inherit; font-size: 13.5px; padding: 3px 10px; border: 1px solid var(--accent); background: #fff; color: var(--accent); cursor: pointer; }
-  .seg button:first-child { border-radius: var(--r) 0 0 var(--r); } .seg button:last-child { border-radius: 0 var(--r) var(--r) 0; border-left: 0; }
-  .seg button[aria-pressed="true"] { background: var(--accent); color: #fff; }
-  .card details.ansicht summary { list-style: none; cursor: pointer; color: var(--grey); font: 13px/1.4 var(--ff); } .card details.ansicht summary::-webkit-details-marker { display: none; }
+  /* Knöpfe an den Grafiken: nur Text in einer grauen Schrift, Aktives dunkel; Wechsel unterstrichen, Ein/Aus mit ○ und ● */
+  .seg { display: flex; justify-content: center; gap: 12px; margin: 8px 0 0; }
+  .seg button { font: inherit; font-size: 13px; line-height: 1.4; padding: 0 0 1px; border: 0; border-bottom: 1.5px solid transparent; border-radius: 0; background: none; color: #8c8c8c; cursor: pointer; }
+  .seg button:hover { color: var(--text); }
+  .seg button[aria-pressed="true"] { color: var(--text); border-bottom-color: var(--text); }
+  .card details.ansicht summary { list-style: none; cursor: pointer; color: #8c8c8c; font: 13px/1.4 var(--ff); } .card details.ansicht summary:hover, .card details.ansicht[open] summary { color: var(--text); } .card details.ansicht summary::-webkit-details-marker { display: none; }
   .card details.ansicht summary::after { content: " ▾"; } .card details.ansicht[open] summary::after { content: " ▴"; } .card details.ansicht .ansl { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; margin-top: 3px; }
-  .htools .seg { justify-content: flex-start; margin: 0 0 6px; } .htools .seg button { font-size: 12.5px; padding: 1px 8px; }  /* entweder/oder: Segment, ein/aus: Quadrat, beide oben rechts */
+  .htools .seg { justify-content: flex-start; margin: 0 0 4px; }  /* entweder/oder: unterstrichen, ein/aus: ○ ●, beide oben rechts */
   .tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; max-width: 330px; margin: 10px auto 4px; }
   .tile { aspect-ratio: 1 / 1; border-radius: var(--r); display: flex; flex-direction: column; align-items: center; justify-content: center;
           font: 13.5px/1.15 var(--ff); border: 1px solid var(--line); }
@@ -210,7 +214,7 @@
   details.morecharts[open] > summary .list { display: none; }
   @media (min-width: 1240px) { details.morecharts > summary .list { display: none; } }  /* steht dann links */
   @media (max-width: 700px) { .card .chart { aspect-ratio: auto; height: 225px; min-height: 0; } .charts.single .card .chart { aspect-ratio: auto; height: 225px; } .card .chart.square { height: auto; aspect-ratio: 4 / 3; } .card .chart.multi { height: auto; } section.topic .secmain > h2 { font-size: 22px; } }
-  .multiples { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 10px 16px; }
+  .multiples { display: grid; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); gap: 10px 16px; }
   .multiples { gap: 14px 22px; }
   .evlegend { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0 0 10px; font-size: 13.5px; }
   .evlegend i { display: inline-block; width: 22px; vertical-align: middle; margin-right: 6px; }
@@ -241,6 +245,28 @@
   .notebox { width: fit-content; max-width: 62%; margin: 2px 0 4px auto; background: var(--box); border: 0; border-radius: var(--r); padding: 8px 12px; font: 13.5px/1.4 var(--ff); color: var(--text); }
   @media (max-width: 600px) { .notebox { max-width: none; margin: 4px 0; } }
   .totop { font: 13.5px var(--ff); font-weight: normal; margin-left: 8px; vertical-align: middle; }
+  /* Rundgang: Spotlight auf ein Element, darunter eine kleine Karte mit Text und Weiter */
+  .tourhl { position: absolute; z-index: 70; border-radius: 2px; box-shadow: 0 0 0 9999px rgba(20,20,20,.5); pointer-events: none; transition: all .25s ease; }
+  .tourcard { position: absolute; z-index: 71; width: min(340px, calc(100vw - 32px)); background: #fff; color: var(--text); font: 15px/1.45 var(--ff); padding: 14px 16px 12px; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
+  .tourcard .tn { font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin-bottom: 6px; }
+  .tourcard .tb { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; gap: 10px; }
+  .tourcard button { font: 14px var(--ff); background: none; border: 0; color: #8c8c8c; cursor: pointer; padding: 0; }
+  .tourcard button.tnext { font-weight: 600; background: var(--text); color: #fff; padding: 5px 14px; }
+  .tourask { position: fixed; left: 50%; transform: translateX(-50%); bottom: 16px; z-index: 65; background: #fff; border: 1px solid var(--grey); padding: 8px 14px; font: 14px var(--ff); box-shadow: 0 4px 16px rgba(0,0,0,.12); display: flex; gap: 14px; align-items: center; }
+  .tourask button { font: inherit; background: none; border: 0; cursor: pointer; padding: 0; color: #8c8c8c; } .tourask button.go { color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  /* Rückmeldung: ein Klick, ein Textfeld, kein Formular-Ballast */
+  .fbk { position: fixed; left: 14px; bottom: 14px; z-index: 6; background: #fff; color: var(--text); font: 13.5px var(--ff); padding: 5px 10px; border: 1px solid var(--grey); border-radius: 0; cursor: pointer; }
+  .fbk:hover { border-color: var(--text); } body.menuopen .fbk, body.embed .fbk { display: none; }
+  dialog.fbd { border: 1px solid var(--grey); border-radius: 0; padding: 18px 18px 14px; width: min(520px, calc(100vw - 32px)); font: 15px/1.45 var(--ff); color: var(--text); box-shadow: 0 8px 28px rgba(0,0,0,.18); }
+  dialog.fbd::backdrop { background: rgba(0,0,0,.25); } .fbd form { margin-top: 14px; }
+  .fbd textarea { width: 100%; box-sizing: border-box; min-height: 150px; font: 15px/1.45 var(--ff); border: 1px solid #cfcfcf; padding: 8px 10px; resize: vertical; }
+  .fbd textarea:focus, .fbd input:focus { outline: none; border-color: var(--text); }
+  .fbd input { width: 100%; box-sizing: border-box; font: 13.5px var(--ff); border: 0; border-bottom: 1px solid #cfcfcf; padding: 6px 0; margin-top: 8px; }
+  .fbd .fbrow { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; gap: 12px; }
+  .fbd .fbnote { font-size: 12px; color: #8c8c8c; } .fbd .fbnote a { color: inherit; }
+  .fbd button.fbsend { font: 600 14px var(--ff); background: var(--text); color: #fff; border: 0; padding: 6px 16px; cursor: pointer; }
+  .fbd button.fbx { position: absolute; right: 10px; top: 6px; border: 0; background: none; font-size: 20px; color: #8c8c8c; cursor: pointer; }
+  .fbd .fbok { font-size: 15px; margin: 6px 0 2px; }
   .fab { position: fixed; right: 14px; bottom: 14px; z-index: 6; background: #fff; color: var(--text); font: 13.5px var(--ff); padding: 5px 10px; border: 1px solid var(--grey); border-radius: 0; }
   .fab:hover { border-color: var(--dark); text-decoration: none; }
   .card .cap.notes { color: var(--muted); }
@@ -359,7 +385,7 @@
   .stable small.cu { font-size: 12px; color: var(--grey); }
   details.fold { margin: 6px 0; } details.fold > summary { cursor: pointer; color: var(--accent); font: 15px var(--ff); }
   details.fold[open] > summary { margin-bottom: 4px; }
-  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 10px 0 18px; }
+  .kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 10px 0 18px; }
   @media (max-width: 760px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .kpi { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r); color: inherit; background: #fff; }
   .kpi:hover { border-color: var(--accent); text-decoration: none; }
@@ -435,7 +461,7 @@
   <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
   <div id="starttable">/*__STATIC__*/</div>
-  <p class="tnote" id="legendhint">Die Schalter über jeder Grafik, etwa „Aktueller Rand“ oder „Rezessionen“, blenden jüngste Werte oder Rezessionen ein. <span class="tools"><button type="button" class="btn" id="ybtoggle" aria-pressed="false" title="Jedes zweite Kalenderjahr hell hinterlegen; das laufende Jahr bleibt frei">Jahresflächen</button></span></p>
+  <p class="tnote" id="legendhint">Die Schalter unter jeder Grafik, etwa „Aktueller Rand“ oder „Rezessionen“, blenden jüngste Werte oder Rezessionen ein. <span class="tools"><button type="button" class="btn" id="ybtoggle" aria-pressed="false" title="Jedes zweite Kalenderjahr hell hinterlegen; das laufende Jahr bleibt frei">Jahresflächen</button></span></p>
   <div id="topics"></div>
 </main>
 <section class="refs" id="quellen">
@@ -476,8 +502,20 @@ try { if (localStorage.getItem("km_yb") === "1") YEAR_BANDS = true; } catch (e) 
 const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero: DATA.layout && DATA.layout.red_zero_line ? "#FF0000" : "#000000",  /* Nulllinie schwarz: Bezug ohne Wertung; Rot bleibt Warnungen vorbehalten */ font: '"Source Sans 3", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif' };
 // Balken (etwa Wachstumsbeiträge): benachbarte Farben mit deutlichem Kontrast
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
-const FAZTXT = { btn: "Fazit", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Fazit bleibt die Seite neutral." };
+const FAZTXT = { btn: "Kommentar", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Kommentar bleibt die Seite beschreibend." };
 const ABTXT = { close: "schließen" };
+const TOURTXT = { name: "Rundgang", ask: "Neu hier? Ein kurzer Rundgang in einer Minute.", go: "Rundgang starten", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
+  steps: [
+    ["#nav", "„Inhalt“ öffnet alle Kapitel. Die Lupe daneben sucht jede Grafik; die Taste / springt direkt in die Suche."],
+    [".fazitbtn", "„Kommentar“ blendet eine Einordnung nach festen Regeln ein. Ohne den Knopf beschreibt die Seite nur, was die Zahlen zeigen."],
+    [".briefbtn", "Zuerst sehen Sie „Das Wichtigste“: acht Kapitel. Dieser Knopf zeigt alle Kapitel."],
+    ["#starttable", "Die Tabelle zeigt die Kernzahlen. ▲ heißt gestiegen, ▼ gesunken, ● unverändert; Rot markiert eine ungünstige Richtung. Ein Klick führt zum Kapitel."],
+    ["@card .htools", "Jede Grafik lässt sich als Tabelle der letzten zwölf Werte zeigen."],
+    ["@card .tools", "Unter der Grafik stehen Schalter: die ganze Reihe seit Beginn, Rezessionen und je nach Grafik weitere."],
+    ["@card .cside", "Rechts erklärt ein kurzer Text, was die Grafik zeigt. „Mehr zur Methode“ führt zu Quellen und Rechenschritten."],
+    ["@card .gut", "Links: „Daten“ zum Herunterladen (Excel, CSV, Stata, PowerPoint), „Link“ zum Teilen und der Stern für Ihre Lesezeichen."],
+    [".fbk", "Was fällt Ihnen auf? Hier geht Ihre Rückmeldung mit einem Klick direkt an den Autor."]] };
+const FBTXT = { btn: "Rückmeldung", ph: "Was fällt Ihnen auf? Was ist gut, was schlecht, was ließe sich besser machen?", mail: "E-Mail für eine Antwort (freiwillig)", send: "Senden", ok: "Danke, ist angekommen.", err: "Senden hat nicht geklappt. Bitte später noch einmal versuchen.", note: "Geht direkt an den Autor. <a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen im Download unter „Daten“." };
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (↗) und Schwellen
 const isBad = (c, sid) => c.up_bad === true || (Array.isArray(c.up_bad) && c.up_bad.includes(sid));
@@ -761,7 +799,7 @@ function multiplesChart(el, c) {
   const ya0 = yAxis(all, c.unit, []);
   const xs = c.series.flatMap(s => s.x).sort(), r = pad(xs[0], xs[xs.length - 1], c.freq);
   const nM = k => c.freq === "B" ? Math.round(k * 21) : k;  // Arbeitstage je Monat
-  const cols = Math.min(c.series.length, (el.clientWidth || 600) < 560 ? 2 : 3);  // Handy zwei, Desktop drei Felder je Zeile; alle gleich breit
+  const cols = Math.min(c.series.length, 2);  // höchstens zwei Grafiken nebeneinander, auch am Desktop
   const grid = document.createElement("div"); grid.className = "multiples"; grid.style.setProperty("--cols", cols); el.appendChild(grid);
   const avg = a => a.reduce((p, v) => p + v, 0) / a.length;
   c.series.forEach((s, k) => {
@@ -1091,7 +1129,7 @@ const ENSO_TXT = { nino: "nach El-Niño-Monaten", neutral: "nach neutralen Monat
 // Ereignisstudie: je Feld eine Größe, Monat 0 = 100, graue Fläche = Spanne früherer Ereignisse, dick = laufendes Ereignis
 function eventChart(el, c) {
   el.classList.add("multi");
-  const E = c.event, w0 = el.clientWidth || 600, cols = w0 < 560 ? 1 : E.panels.length === 3 && w0 >= 680 ? 3 : 2;
+  const E = c.event, w0 = el.clientWidth || 600, cols = w0 < 560 ? 1 : 2;  // höchstens zwei nebeneinander
   const LC = ["#0070C0", "#D86DCD", "#47D359", "#7030A0", "#00B0F0"];
   const sig = p => p.lines.map(l => l.label).join("|"), shared = E.panels.every(p => sig(p) === sig(E.panels[0]));  // gleiche Episoden: eine Legende für alle Felder
   if (shared) { const lg = document.createElement("p"); lg.className = "evlegend";
@@ -1400,11 +1438,9 @@ function card(c, no) {
       if (on) { c._zoom0 = c._zoom; c._zoom = false; } else c._zoom = c._zoom0;
       redraw(); };
     htools.appendChild(fb); }
-  // höchstens zwei Ein/Aus-Schalter sichtbar, die übrigen im Aufklapper „Ansicht“ (Reihenfolge nach Bedeutung)
+  // Ein/Aus-Schalter als eine Textzeile direkt unter der Grafik, nach Bedeutung geordnet; oben bleibt nur der Wechsel wie „Grafik | Tabelle“
   { const prio = [VIEWTXT.all, SCALE_TXT.common, SCALE_TXT.zoom, VIEWTXT.rec, LONGTXT.dec, LONGTXT.crisis, LONGTXT.rec, VIEWTXT.edge, VIEWTXT.raw];
-    const bs = [...htools.querySelectorAll(":scope > .btn")].sort((a, b) => (prio.indexOf(a.textContent) + 99) % 99 - (prio.indexOf(b.textContent) + 99) % 99);
-    if (bs.length > 2) { const d = document.createElement("details"); d.className = "ansicht"; d.innerHTML = `<summary>${VIEWTXT.more}</summary><div class="ansl"></div>`;
-      bs.slice(0, 2).forEach(b => htools.appendChild(b)); bs.slice(2).forEach(b => d.querySelector(".ansl").appendChild(b)); htools.appendChild(d); } }
+    [...htools.querySelectorAll(":scope > .btn")].sort((a, b) => (prio.indexOf(a.textContent) + 99) % 99 - (prio.indexOf(b.textContent) + 99) % 99).forEach(b => tools.appendChild(b)); }
   const f = c.files || {}, acts = [], u = x => encodeURI(x);
   if (f.xlsx) acts.push(`<a href="${u(f.xlsx)}" download>XLSX</a>`);
   if (f.pptx) acts.push(`<a href="${u(f.pptx)}" download>PPTX</a>`);
@@ -1418,7 +1454,7 @@ function card(c, no) {
   // Linke Spalte: Download (Dateien und Einbettcode), Methodenblatt, Link
   // alle Optionen offen untereinander, beginnend auf Höhe der Zeichenfläche (siehe alignGut)
   gut.insertAdjacentHTML("beforeend", `<div class="gopts"><button type="button" class="dl" aria-expanded="false" title="${GUTTXT.dlt}">${GUTTXT.dl}</button><div class="dlist" hidden>${acts.join("")}</div>`
-    + (c.chart ? `<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${GUTTXT.meth}</a>` : "")
+    + (c.chart && !capx ? `<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${GUTTXT.meth}</a>` : "")  // mit Erläuterung steht „Mehr zur Methode“ schon rechts
     + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button></div>`);
   // Direkter Link auf diese Abbildung zum Teilen
   const lk = gut.querySelector("button.lnk");
@@ -1448,9 +1484,7 @@ function card(c, no) {
 const PHONE = matchMedia("(max-width: 600px)");
 function placeTools(el) {
   const top = el.querySelector(".htools"), bottom = el.querySelector(".tools"); if (!top || !bottom) return;
-  const sel = ":scope > .btn, :scope > details.ansicht";  // Ein/Aus-Schalter samt „Ansicht“; der Ansichtswechsel bleibt oben
-  if (PHONE.matches) top.querySelectorAll(sel).forEach(b => bottom.appendChild(b));
-  else bottom.querySelectorAll(sel).forEach(b => top.appendChild(b));
+  top.querySelectorAll(":scope > .btn").forEach(b => bottom.appendChild(b));  // Ein/Aus-Schalter stehen immer unter der Grafik; der Ansichtswechsel bleibt oben
 }
 PHONE.addEventListener("change", () => document.querySelectorAll(".card").forEach(placeTools));
 
@@ -1671,7 +1705,7 @@ function build() {
   const S = DATA.site;
   const nw = document.getElementById("news");
   if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
-  const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = (DATA.fazit ? `<span class="fz" title="${esc(FAZTXT.title)}"><b>${FAZTXT.btn}:</b> ${esc(DATA.fazit)}</span> ` : "") + sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
+  const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = (DATA.fazit ? `<span class="fz" title="${esc(FAZTXT.title)}"><span class="fzl">${FAZTXT.btn}</span>${esc(DATA.fazit)}</span>` : "") + sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
   if (DATA.has_en || DATA.lang === "en") document.getElementById("lang").innerHTML = DATA.lang === "en" ? `<a href="../" hreflang="de" lang="de" title="Deutsch">DE</a> <b>EN</b>` : `<b>DE</b> <a href="en/" hreflang="en" lang="en" title="English">EN</a>`;
   const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `Stand ${d.toLocaleDateString("de-DE")}`;
   const AS = DATA.all_series || {};
@@ -1892,6 +1926,54 @@ function build() {
   if (DATA.embed) { const c0 = DATA.topics[0].charts[0]; topics.insertAdjacentHTML("afterend", `<p class="embedsrc">${EMB.src} · <a href="${esc(DATA.site.url)}#${FA(c0.no)}" target="_blank" rel="noopener">${EMB.full}</a></p>`); }
 }
 build();
+
+
+// Rundgang: beim ersten Besuch angeboten, sonst über „Rundgang“ im Menü; Schritte ohne sichtbares Ziel entfallen
+const tour = (function () {
+  const KEY = "km_tour", vis = el => el && el.offsetParent !== null && el.getBoundingClientRect().width > 0;
+  const target = sel => { if (sel.startsWith("@card")) { const cd = [...document.querySelectorAll("section.topic .card")].find(x => vis(x) && x.querySelector(".tools .btn")); return cd && cd.querySelector(sel.slice(6)); } return document.querySelector(sel); };
+  let hl = null, card = null, steps = [], i = 0;
+  const end = () => { hl?.remove(); card?.remove(); hl = card = null; document.removeEventListener("keydown", key); try { localStorage.setItem(KEY, "1"); } catch (e) {} };
+  const key = e => { if (e.key === "Escape") end(); else if (e.key === "ArrowRight") go(i + 1); else if (e.key === "ArrowLeft") go(i - 1); };
+  const place = el => { const r = el.getBoundingClientRect(), p = 6, x = scrollX, y = scrollY;
+    Object.assign(hl.style, { left: r.left + x - p + "px", top: r.top + y - p + "px", width: r.width + 2 * p + "px", height: r.height + 2 * p + "px" });
+    const cw = card.offsetWidth, ch = card.offsetHeight, below = r.bottom + p + 12 + ch < innerHeight;
+    card.style.left = Math.max(16 + x, Math.min(x + innerWidth - cw - 16, r.left + x)) + "px";
+    card.style.top = (below ? r.bottom + y + p + 12 : Math.max(y + 8, r.top + y - p - 12 - ch)) + "px"; };
+  const go = k => { if (k < 0 || !steps.length) return; if (k >= steps.length) return end(); i = k;
+    const [el, txt] = steps[i]; el.scrollIntoView({ block: "center", behavior: "instant" });
+    card.innerHTML = `<div class="tn">${TOURTXT.name} ${i + 1}/${steps.length}</div><div>${txt}</div><div class="tb"><button type="button" class="tskip">${TOURTXT.skip}</button><span>${i ? `<button type="button" class="tprev">${TOURTXT.prev}</button> &nbsp; ` : ""}<button type="button" class="tnext">${i === steps.length - 1 ? TOURTXT.end : TOURTXT.next}</button></span></div>`;
+    card.querySelector(".tskip").onclick = end; card.querySelector(".tnext").onclick = () => go(i + 1); const pv = card.querySelector(".tprev"); if (pv) pv.onclick = () => go(i - 1);
+    requestAnimationFrame(() => { place(el); card.querySelector(".tnext").focus(); }); };
+  const start = () => { document.querySelector(".tourask")?.remove(); if (document.body.classList.contains("brief")) { /* Kurzfassung bleibt, die erste Grafik ist sichtbar */ }
+    steps = TOURTXT.steps.map(([s, t]) => [target(s), t]).filter(([el]) => vis(el)); if (!steps.length) return;
+    hl = document.createElement("div"); hl.className = "tourhl"; card = document.createElement("div"); card.className = "tourcard"; card.setAttribute("role", "dialog"); card.setAttribute("aria-label", TOURTXT.name);
+    document.body.append(hl, card); document.addEventListener("keydown", key); addEventListener("resize", () => steps[i] && place(steps[i][0])); go(0); };
+  if (!DATA.embed) { let seen = true; try { seen = localStorage.getItem(KEY) === "1"; } catch (e) {}
+    if (!seen && !location.hash && !/[?&]noprev=1/.test(location.search)) setTimeout(() => { const a = document.createElement("div"); a.className = "tourask"; a.innerHTML = `<span>${TOURTXT.ask}</span><button type="button" class="go">${TOURTXT.go}</button><button type="button" class="no">${TOURTXT.no}</button>`;
+      a.querySelector(".go").onclick = start; a.querySelector(".no").onclick = () => { a.remove(); try { localStorage.setItem(KEY, "1"); } catch (e) {} }; document.body.append(a); }, 1200); }
+  return start;
+})();
+document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = document.createElement("a"); a.href = "#top"; a.textContent = TOURTXT.name; a.onclick = e => { e.preventDefault(); scrollTo(0, 0); setTimeout(tour, 150); }; ft.prepend(a); });
+// Rückmeldung: Knopf unten links öffnet ein Fenster mit einem Textfeld; Versand über den Formulardienst (site.feedback)
+(function feedback() {
+  const id = (DATA.site || {}).feedback; if (!id || DATA.embed) return;
+  const b = document.createElement("button"); b.type = "button"; b.className = "fbk"; b.textContent = FBTXT.btn; document.body.append(b);
+  const d = document.createElement("dialog"); d.className = "fbd"; d.setAttribute("aria-label", FBTXT.btn);
+  d.innerHTML = `<form method="dialog"><button type="button" class="fbx" aria-label="${FBTXT.close}">×</button><textarea name="message" required placeholder="${FBTXT.ph}" aria-label="${FBTXT.btn}"></textarea><input type="email" name="email" placeholder="${FBTXT.mail}" autocomplete="email"><div class="fbrow"><span class="fbnote">${FBTXT.note}</span><button type="submit" class="fbsend">${FBTXT.send}</button></div></form>`;
+  document.body.append(d);
+  const f = d.querySelector("form"), ta = f.querySelector("textarea");
+  b.onclick = () => { d.showModal(); ta.focus(); };
+  d.querySelector(".fbx").onclick = () => d.close();
+  d.addEventListener("click", e => { if (e.target === d) d.close(); });  // Klick daneben schließt
+  f.addEventListener("submit", async e => { e.preventDefault(); const msg = ta.value.trim(); if (!msg) return;
+    const sb = f.querySelector(".fbsend"); sb.disabled = true;
+    const body = { message: msg, email: f.email.value.trim(), seite: location.href, kapitel: (document.querySelector("#nav .navcur")?.textContent || "").replace(/^\s*>\s*/, ""), sprache: DATA.lang || "de", _subject: "Konjunkturmonitor: Rückmeldung" };
+    try { const r = await fetch(`https://formspree.io/f/${encodeURIComponent(id)}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) });
+      if (!r.ok) throw new Error(r.status);
+      f.innerHTML = `<button type="button" class="fbx" aria-label="${FBTXT.close}">×</button><p class="fbok">${FBTXT.ok}</p>`; f.querySelector(".fbx").onclick = () => d.close();
+    } catch (x) { sb.disabled = false; f.querySelector(".fbnote").textContent = FBTXT.err; } });
+})();
 // Kurzformen in Köpfen, Einheiten und Kacheln: gepunktet unterstrichen, Erklärung beim Darauftippen oder Überfahren
 (function abbrify() {
   const G = DATA.glossar || {}, keys = Object.keys(G).sort((a, b) => b.length - a.length);

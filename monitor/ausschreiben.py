@@ -45,7 +45,16 @@ GLOSSARY_EN = {
     "IMF": "International Monetary Fund",
 }
 
+# Beträge im britischen Stil: Währungszeichen vor der Zahl, „€141,1 Mrd.“; geschütztes Leerzeichen vor „Mrd.“,
+# damit nichts umbricht. US-Dollar als $, Pfund als £; Yuan und Franken bleiben ausgeschrieben.
+_NBSP = "\u00a0"
 _RULES = [
+    (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mrd."),
+    (r"([+-]?)(\d[\d.,]*) (?:Millionen|Mio\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mio."),
+    (r"([+-]?)(\d[\d.,]*) €", r"\1€\2"),
+    (r"(Mrd|Mio)\.\.", r"\1."),  # Satzende: kein doppelter Punkt
+    (r"([+-]?)(\d[\d.,]*) US-Dollar\b", r"\1$\2"),
+    (r"([+-]?)(\d[\d.,]*) Pfund\b", r"\1£\2"),
     (r"\b([Gg])gü\.\s(?=(?:Vor\w*|Durchschnitt|Mittel)\b)", r"\1egenüber dem "),
     (r"\b([Gg])gü\.\s", r"\1egenüber "),
     (r"\bPreisindex des BIP \(BIP-Deflator\)", "Preisindex des Bruttoinlandsprodukts (Deflator)"),
@@ -62,8 +71,8 @@ _RULES = [
     (r"\b(bei|von|mit|in) ((?:[+-]?[\d.,]+ )?)Pp\b", r"\1 \2Prozentpunkten"),
     (r"(?<![\d,])1 Pp\b", "1 Prozentpunkt"),
     (r"\bPp\b", "Prozentpunkte"),
-    (r"\bMrd\.(?=\s)", "Milliarden"),
-    (r"\bMio\.(?=\s)", "Millionen"),
+    (r"(?<= )Mrd\.(?=\s)", "Milliarden"),
+    (r"(?<= )Mio\.(?=\s)", "Millionen"),
     (r"(\d{1,3}(?:\.\d{3})+) Tsd\.", lambda m: f"{int(m.group(1).replace('.', '')) / 1000:.2f}".replace(".", ",") + " Millionen"),
     (r"\bTsd\.", "Tausend"),
 ]
