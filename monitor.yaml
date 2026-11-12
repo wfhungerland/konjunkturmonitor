@@ -114,6 +114,7 @@ questions:
     topic: insolvenzen
 
   - id: zinsen
+    code: Zinsen
     ask: "Wie entwickeln sich die Zinsen?"
     kind: level
     series: de_bund10
@@ -288,6 +289,7 @@ topics:
       - {chart: forecast_infl, ask: "Was erwarten die Prognosen für die Inflation?", type: forecast, measure: inflation, title: "Prognosen für die Inflationsrate", caption: "Prognosen für die Inflationsrate ggü. Vorjahr, je Zieljahr; in der Regel gemessen am Verbraucherpreisindex (VPI). Die Bundesbank prognostiziert den europäischen HVPI, der meist nahe am VPI liegt. Je Zieljahr ein Punkt je Herausgeber, jeweils die jüngste Prognose. Dunkelblau mit Zahl: Bundesregierung; grau: weitere Herausgeber, hellgrau, wenn älter als vier Monate. Graues Feld: Spanne aller jüngsten Prognosen. Herausgeber und Datum im Tooltip. Einzelne Werte stammen aus Presseberichten und sind im Tooltip gekennzeichnet."}
       - {chart: forecast_core, ask: "Was erwarten die Prognosen für die Kerninflation?", type: forecast, measure: core, title: "Prognosen für die Kerninflation", caption: "Prognosen für die Inflationsrate ohne Energie und Nahrungsmittel. Erscheint, sobald mindestens zwei Herausgeber einen Wert veröffentlicht haben."}
   - id: rezession
+    code: Rezession
     title: Rezessionsrisiko
     part: analysen
     ask: "Droht eine Rezession?"
@@ -297,6 +299,7 @@ topics:
       - {chart: downturns, toggle: {chart: downturns_hist, base: "seit 2008, Monate", label: "seit 1879, Jahre", base_en: "since 2008, months", label_en: "since 1879, years"}, ask: "Wie tief ist der aktuelle Abschwung im Vergleich zu früheren Krisen?", type: event, kind: downturn, months: 36, episodes: [{label: "Finanzkrise 2008", start: "2008-01-01"}, {label: "Corona 2020", start: "2020-02-01"}], caption: "Verlauf ab dem Hoch der Industrieproduktion vor früheren Krisen und im aktuellen Abschwung (dunkelblau, dick). Produktion und BIP als Index mit dem Hoch = 100, Arbeitslosenquote als Veränderung in Prozentpunkten seit diesem Hoch. Das aktuelle Hoch ist der höchste Stand der Produktion in den letzten fünf Jahren. Die Zeitpunkte der Hochs sind gesetzt, keine amtliche Datierung. Die Energiekrise ab Ende 2021 ist nicht eigens gezeigt, weil sie in den laufenden Abschwung übergeht."}
       - {chart: downturns_hist, ask: "Wie tief waren die Abschwünge seit dem 19. Jahrhundert?", type: event, kind: history, title: "Abschwünge seit 1879 im Vergleich, Jahreswerte", years: 8, stop_before: [1914, 1939], band_label: "Spanne der übrigen Abschwünge", episodes: [{peak: 1879}, {peak: 1898}, {peak: 1928, label: "Weltwirtschaftskrise 1929", highlight: true}, {peak: 1966}, {peak: 1974}, {peak: 1981}, {peak: 1992}, {peak: 2001}, {peak: 2008, label: "Finanzkrise 2009", highlight: true}, {peak: 2019, label: "Corona 2020", highlight: true}], caption: "Jahreswerte ab dem letzten Jahr vor einem Rückgang des realen BIP (Jahr des Hochs). Links: reales BIP, Jahr des Hochs = 100. Rechts: Veränderung der Arbeitslosenquote in Prozentpunkten seit diesem Jahr. Hervorgehoben: Weltwirtschaftskrise, Finanzkrise, Corona und der laufende Abschwung (dick); grau: Spanne der übrigen Abschwünge mit Hochs 1879, 1898, 1966, 1974, 1981, 1992 und 2001. Kriegsjahre sind ausgelassen, Verläufe enden vor 1914 und 1939. Historische Werte aus der Global Macro Database (Müller, Xu, Lehbib und Chen 2025), Deutschland in den jeweiligen Grenzen; die Arbeitslosenquote wechselt über die Zeit Quelle und Abgrenzung. Der laufende Abschwung beruht auf amtlichen Jahreswerten (BIP des Statistischen Bundesamts, Erwerbslosenquote nach ILO als Jahresmittel) und ist deshalb nicht vollständig vergleichbar. Diese Abbildung und ihr Download stehen unter CC BY-NC-SA 4.0, weil die Global Macro Database diese Lizenz verlangt."}
   - id: pruefung
+    code: Prognosen
     title: Prognosen und Revisionen
     part: analysen
     ask: "Wie verlässlich sind die ersten Zahlen und die Projektion?"
@@ -304,6 +307,7 @@ topics:
       - {chart: proj_gap, type: projection, title: "BIP und Projektion der Bundesregierung", ask: "Erreicht das Wachstum die Projektion der Bundesregierung?", caption: "Balken: reales BIP ggü. dem Vorjahresquartal in %, unbereinigt wie die Jahresrate der Projektion. Hell: Rate, die das BIP in den noch fehlenden Quartalen des Jahres je erreichen müsste, damit das Jahr die jüngste Projektion der Bundesregierung trifft (gestrichelte Linie). Die Jahresrate ist näherungsweise das Mittel der vier Quartalsraten, gewichtet mit dem Anteil jedes Quartals am Vorjahr. Revisionen früherer Quartale ändern die nötige Rate. Liegen alle vier Quartale vor, zeigt die Abbildung bis zum ersten Quartal des Folgejahres das Ergebnis des abgelaufenen Jahres. Umschaltbar auf die saison- und kalenderbereinigte Rate ggü. dem Vorquartal: Dann zeigen die hellen Balken, um wie viel das bereinigte BIP in jedem fehlenden Quartal wachsen müsste, damit es die nötige Rate ggü. dem Vorjahresquartal erreicht; ein Kalendereffekt ist dabei nicht berücksichtigt."}
       - {chart: gdp_rev, unit: "Pp", styles: {gdp_rt_first: hover, gdp_rt_latest: hover}, mad_band: true, title: "Korrektur des BIP-Wachstums seit der ersten Meldung", ask: "Wie stark wird das BIP-Wachstum nachträglich korrigiert?", years: 8, keep_years: true, ref: 0, recessions: false, caption: "Balken: Korrektur des Wachstums des realen BIP ggü. dem Vorquartal zwischen der ersten Meldung des Statistischen Bundesamts und dem jüngsten Datenstand, in Prozentpunkten (positiv: nach oben korrigiert). Graues Band: mittlere Korrektur ohne Vorzeichen über den gezeigten Zeitraum. Erste Meldung und heutigen Stand zeigt der Tooltip; beide stehen auch im Download. Grundlage sind die gespeicherten Datenstände der Echtzeitdatenbank der Bundesbank seit 2005. Die erste Meldung eines Quartals beruht auf unvollständigen Angaben; spätere Rechenstände und große Revisionen ändern sie oft um mehrere Zehntel."}
   - id: breite
+    code: Breite
     title: Breite und Vergleich
     part: analysen
     ask: "Wie breit ist die Entwicklung, und wie ungewöhnlich ist sie?"
