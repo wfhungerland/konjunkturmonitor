@@ -47,7 +47,9 @@
   .q .big { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
   .q .num { font: bold 32px/1 var(--ff); color: var(--dark); }
   .q .u { font: 15px var(--ff); color: var(--muted); }
-  .overview .fz { display: none; } body.fazit .overview .fz { display: inline; } .overview .fz b { font-weight: 600; }
+  /* Kommentar: eigener Absatz mit Linie links und kleiner Marke, klar getrennt von der Beschreibung darunter */
+  .overview .fz { display: none; } body.fazit .overview .fz { display: block; border-left: 2px solid var(--text); padding-left: 14px; margin: 0 0 12px; }
+  .overview .fz .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 3px 0 5px; }
   body:not(.fazit) .verdict { display: none !important; }
   .fazitbtn[aria-pressed="true"] { font-weight: 700; }
   abbr.ab { text-decoration: underline dotted #a6a6a6; text-underline-offset: 2px; cursor: help; }
@@ -478,7 +480,7 @@ try { if (localStorage.getItem("km_yb") === "1") YEAR_BANDS = true; } catch (e) 
 const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero: DATA.layout && DATA.layout.red_zero_line ? "#FF0000" : "#000000",  /* Nulllinie schwarz: Bezug ohne Wertung; Rot bleibt Warnungen vorbehalten */ font: '"Source Sans 3", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif' };
 // Balken (etwa Wachstumsbeiträge): benachbarte Farben mit deutlichem Kontrast
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
-const FAZTXT = { btn: "Fazit", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Fazit bleibt die Seite neutral." };
+const FAZTXT = { btn: "Kommentar", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Kommentar bleibt die Seite beschreibend." };
 const ABTXT = { close: "schließen" };
 const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen im Download unter „Daten“." };
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (↗) und Schwellen
@@ -1317,11 +1319,9 @@ function card(c, no) {
       if (on) { c._zoom0 = c._zoom; c._zoom = false; } else c._zoom = c._zoom0;
       redraw(); };
     htools.appendChild(fb); }
-  // höchstens zwei Ein/Aus-Schalter sichtbar, die übrigen im Aufklapper „Ansicht“ (Reihenfolge nach Bedeutung)
+  // Ein/Aus-Schalter als eine Textzeile direkt unter der Grafik, nach Bedeutung geordnet; oben bleibt nur der Wechsel wie „Grafik | Tabelle“
   { const prio = [VIEWTXT.all, SCALE_TXT.common, SCALE_TXT.zoom, VIEWTXT.rec, LONGTXT.dec, LONGTXT.crisis, LONGTXT.rec, VIEWTXT.edge, VIEWTXT.raw];
-    const bs = [...htools.querySelectorAll(":scope > .btn")].sort((a, b) => (prio.indexOf(a.textContent) + 99) % 99 - (prio.indexOf(b.textContent) + 99) % 99);
-    if (bs.length > 2) { const d = document.createElement("details"); d.className = "ansicht"; d.innerHTML = `<summary>${VIEWTXT.more}</summary><div class="ansl"></div>`;
-      bs.slice(0, 2).forEach(b => htools.appendChild(b)); bs.slice(2).forEach(b => d.querySelector(".ansl").appendChild(b)); htools.appendChild(d); } }
+    [...htools.querySelectorAll(":scope > .btn")].sort((a, b) => (prio.indexOf(a.textContent) + 99) % 99 - (prio.indexOf(b.textContent) + 99) % 99).forEach(b => tools.appendChild(b)); }
   const f = c.files || {}, acts = [], u = x => encodeURI(x);
   if (f.xlsx) acts.push(`<a href="${u(f.xlsx)}" download>XLSX</a>`);
   if (f.pptx) acts.push(`<a href="${u(f.pptx)}" download>PPTX</a>`);
@@ -1365,9 +1365,7 @@ function card(c, no) {
 const PHONE = matchMedia("(max-width: 600px)");
 function placeTools(el) {
   const top = el.querySelector(".htools"), bottom = el.querySelector(".tools"); if (!top || !bottom) return;
-  const sel = ":scope > .btn, :scope > details.ansicht";  // Ein/Aus-Schalter samt „Ansicht“; der Ansichtswechsel bleibt oben
-  if (PHONE.matches) top.querySelectorAll(sel).forEach(b => bottom.appendChild(b));
-  else bottom.querySelectorAll(sel).forEach(b => top.appendChild(b));
+  top.querySelectorAll(":scope > .btn").forEach(b => bottom.appendChild(b));  // Ein/Aus-Schalter stehen immer unter der Grafik; der Ansichtswechsel bleibt oben
 }
 PHONE.addEventListener("change", () => document.querySelectorAll(".card").forEach(placeTools));
 
@@ -1587,7 +1585,7 @@ function build() {
   const S = DATA.site;
   const nw = document.getElementById("news");
   if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
-  const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = (DATA.fazit ? `<span class="fz" title="${esc(FAZTXT.title)}"><b>${FAZTXT.btn}:</b> ${esc(DATA.fazit)}</span> ` : "") + sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
+  const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = (DATA.fazit ? `<span class="fz" title="${esc(FAZTXT.title)}"><span class="fzl">${FAZTXT.btn}</span>${esc(DATA.fazit)}</span>` : "") + sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
   if (DATA.has_en || DATA.lang === "en") document.getElementById("lang").innerHTML = DATA.lang === "en" ? `<a href="../" hreflang="de" lang="de" title="Deutsch">DE</a> <b>EN</b>` : `<b>DE</b> <a href="en/" hreflang="en" lang="en" title="English">EN</a>`;
   const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `Stand ${d.toLocaleDateString("de-DE")}`;
   const AS = DATA.all_series || {};
