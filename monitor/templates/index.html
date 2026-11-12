@@ -623,7 +623,7 @@ function timeChart(el, c) {
   c = plotC(c);
   const traces = [], all = [], annotations0 = [];
   const lines = c.series.filter(s => s.style !== "bar"), bars = c.series.filter(s => s.style === "bar");
-  bars.forEach((s, i) => { traces.push({ type: "bar", x: s.x, y: s.y, name: s.label, marker: { color: BAR_PAL[i % BAR_PAL.length], line: { width: 0 }, opacity: c.partial_last ? s.x.map((_, j) => j === s.x.length - 1 ? 0.4 : 1) : s.req ? s.x.map((_, j) => j >= s.x.length - s.req ? 0.35 : 1) : 1 },
+  bars.forEach((s, i) => { traces.push({ type: "bar", x: s.x, y: s.y, name: s.label, marker: { color: (c.bar_colors || BAR_PAL)[i % (c.bar_colors || BAR_PAL).length], line: { width: 0 }, opacity: c.partial_last ? s.x.map((_, j) => j === s.x.length - 1 ? 0.4 : 1) : s.req ? s.x.map((_, j) => j >= s.x.length - s.req ? 0.35 : 1) : 1 },
     customdata: s.x.map((_, j) => s.req && j >= s.x.length - s.req ? SCALE_TXT.need : ""),
     hovertemplate: `%{y:,.${c.decimals}f}%{customdata}<extra>${esc(s.label)}</extra>` }); all.push(...s.y);
     if (s.req) s.x.slice(-s.req).forEach((x, k) => annotations0.push({ xref: "x", yref: "y", x, y: s.y[s.y.length - s.req + k], text: SCALE_TXT.needlab, showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" } })); });
