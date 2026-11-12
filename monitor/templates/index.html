@@ -394,7 +394,7 @@
   .cside { font: 13.5px/1.45 var(--ff); display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
   @media (min-width: 980px) { .cside { margin-top: 0; } .card.full .cside { margin-top: 10px; } }  /* beginnt auf Höhe des Titels */
   .cside .capnote { font-style: normal; color: #404040; margin: 0; }  /* Erläuterung aufrecht, dunkelgrau */
-  .cside .capnote .capm { color: var(--grey); white-space: nowrap; } .cside .capnote .capm:hover { color: var(--text); }
+  .cside .capnote a.capm { color: #8c8c8c; white-space: nowrap; text-decoration: underline dotted; text-underline-offset: 2px; } .cside .capnote a.capm:hover { color: var(--text); }
   .cside .notebox { background: var(--box); border-radius: var(--r); padding: 9px 12px; margin: 0; max-width: none; width: auto; }
   .cside .capbox b, .cside .notebox b { display: block; margin-bottom: 2px; }
   .cside .notebox[hidden] { display: none; }
