@@ -393,7 +393,8 @@
   .cbody { margin-top: 4px; }
   .cside { font: 13.5px/1.45 var(--ff); display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
   @media (min-width: 980px) { .cside { margin-top: 0; } .card.full .cside { margin-top: 10px; } }  /* beginnt auf Höhe des Titels */
-  .cside .capnote { font-style: italic; margin: 0; }
+  .cside .capnote { font-style: normal; color: #404040; margin: 0; }  /* Erläuterung aufrecht, dunkelgrau */
+  .cside .capnote a.capm { color: #8c8c8c; white-space: nowrap; text-decoration: underline dotted; text-underline-offset: 2px; } .cside .capnote a.capm:hover { color: var(--text); }
   .cside .notebox { background: var(--box); border-radius: var(--r); padding: 9px 12px; margin: 0; max-width: none; width: auto; }
   .cside .capbox b, .cside .notebox b { display: block; margin-bottom: 2px; }
   .cside .notebox[hidden] { display: none; }
@@ -516,6 +517,7 @@ function withGaps(s, f) {
 const plotC = c => Object.assign({}, c, { series: c.series.map(s => { const f = s.freq || c.freq, g = withGaps(s, f); return Object.assign({}, g, { x: g.x.map(x => midP(x, f)) }); }) });
 const MTXT = { m: ["Mittel der letzten 3 Monate", "der letzten 12 Monate"], q: "Mittel der letzten 4 Quartale", w: ["Mittel der letzten 4 Wochen", "der letzten 52 Wochen"] };
 const SCALE_TXT = { own: "Eigene Skala je Feld", common: "Gemeinsame Skala", zoom: "Jüngste Jahre", full: "Skala über den ganzen Zeitraum", note: "Skala nach den letzten {n} Jahren; ältere Werte teils abgeschnitten", partial: "laufendes Jahr", mad: "mittlere Korrektur ±{m} Pp", need: " (nötig für die Projektion)", needlab: "nötig", band: "Potenzialwachstum: Spanne der Schätzungen", fc: " (Prognose)" };
+const CAPM = "Mehr zur Methode";
 const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten, Quellen, Rechenschritte und Methode dieser Abbildung auf einer Seite";
 const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
 const LIC_ALSO = "gilt auch für diese Abbildung und ihren Download";
@@ -1255,7 +1257,7 @@ function card(c, no) {
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
   const side = document.createElement("aside"); side.className = "cside"; el.querySelector(".cgrid").appendChild(side);
   const capx = (c.caption || "") + ((c.notes || []).length ? " Über „Ausschläge und Sondereffekte“ erscheinen nummerierte, gepunktete Linien an den betroffenen Monaten." : "");
-  if (capx) side.insertAdjacentHTML("beforeend", `<div class="capnote cap">${esc(capx.trim())}</div>`);
+  if (capx) side.insertAdjacentHTML("beforeend", `<div class="capnote cap">${esc(capx.trim())}${c.chart ? ` <a class="capm" href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${CAPM}</a>` : ""}</div>`);
   const nts = (c.notes || []).map((n, k) => `${k + 1} ${n.text}`).concat((c.outliers || []).map(o => `${o.label} im ${MONTHS_L[+o.date.slice(5, 7) - 1]} ${o.date.slice(0, 4)}: ${(o.change > 0 ? "+" : "") + fmt(o.change, 1)} % ggü. Vormonat${(c.notes || []).length ? "" : " (automatisch markiert)"}`));
   if (nts.length) {
     const nb = document.createElement("button"); nb.type = "button"; nb.className = "btn"; nb.textContent = "Ausschläge und Sondereffekte"; nb.setAttribute("aria-pressed", "false");
