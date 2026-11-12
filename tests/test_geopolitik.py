@@ -47,3 +47,14 @@ def test_annual_count_sentence():
     c = {"freq": "Q", "series": [{"id": "a", "x": x, "y": [1, 2, 3, 4, 1, 1, 1, 1]}, {"id": "b", "x": x, "y": [5] * 8}],
          "annual_count": {"verb": "zählt die Datenbank", "series": {"a": "Vorfälle in Deutschland", "b": "im übrigen Europa"}}}
     assert chart_sentences(c) == ["Im Jahr 2025 zählt die Datenbank 4 Vorfälle in Deutschland und 20 im übrigen Europa, nach 10 und 20 im Jahr 2024."]
+
+
+def test_gta_counts_harmful_affecting_germany(tmp_path):
+    rows = [("Red", "China", "Germany, France", "2020-03-01"), ("Amber", "United States of America", "Germany", "2020-05-01"),
+            ("Green", "China", "Germany", "2020-06-01"), ("Red", "India", "France", "2020-07-01"),
+            ("Red", "Brazil", "Germany", "2021-01-01"), ("Red", "China", "East Germany", "2021-02-01")]
+    path = tmp_path / "gta.csv"
+    pd.DataFrame(rows, columns=["GTA Evaluation", "Implementing Jurisdictions", "Affected Jurisdictions", "Date Implemented"]).to_csv(path, index=False)
+    out = {k: v.set_axis(v.index.year) for k, v in geopolitik.gta(path).items()}
+    assert out["gta_de_chn"][2020] == 1 and out["gta_de_chn"][2021] == 0  # grün und Namensähnlichkeit zählen nicht
+    assert out["gta_de_usa"][2020] == 1 and out["gta_de_other"][2021] == 1 and out["gta_de_other"][2020] == 0

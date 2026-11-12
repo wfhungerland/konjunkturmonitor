@@ -1,8 +1,8 @@
 {
- "started_at": "2026-11-12T07:17:20Z",
- "finished_at": "2026-11-12T07:17:20Z",
+ "started_at": "2026-11-12T07:44:26Z",
+ "finished_at": "2026-11-12T07:44:27Z",
  "counts": {
-  "ok": 412
+  "ok": 415
  },
  "outdated": [],
  "series": [
@@ -4861,7 +4861,7 @@
    "first": "1816",
    "last": "2022",
    "last_value": 1.503,
-   "retrieved_at": "2026-11-12T07:12:51Z",
+   "retrieved_at": "2026-11-12T07:22:08Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/cow_cinc_deu.csv",
    "message": "",
    "outdated": false
@@ -4873,7 +4873,7 @@
    "first": "1816",
    "last": "2022",
    "last_value": 12.357,
-   "retrieved_at": "2026-11-12T07:12:51Z",
+   "retrieved_at": "2026-11-12T07:22:08Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/cow_cinc_usa.csv",
    "message": "",
    "outdated": false
@@ -4885,7 +4885,7 @@
    "first": "1860",
    "last": "2022",
    "last_value": 23.41,
-   "retrieved_at": "2026-11-12T07:12:51Z",
+   "retrieved_at": "2026-11-12T07:22:08Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/cow_cinc_chn.csv",
    "message": "",
    "outdated": false
@@ -4897,7 +4897,7 @@
    "first": "1816",
    "last": "2022",
    "last_value": 3.82,
-   "retrieved_at": "2026-11-12T07:12:51Z",
+   "retrieved_at": "2026-11-12T07:22:08Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/cow_cinc_rus.csv",
    "message": "",
    "outdated": false
@@ -4909,7 +4909,7 @@
    "first": "1816",
    "last": "2022",
    "last_value": 1.247,
-   "retrieved_at": "2026-11-12T07:12:51Z",
+   "retrieved_at": "2026-11-12T07:22:08Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/cow_cinc_gbr.csv",
    "message": "",
    "outdated": false
@@ -4921,7 +4921,7 @@
    "first": "1816",
    "last": "2022",
    "last_value": 1.094,
-   "retrieved_at": "2026-11-12T07:12:51Z",
+   "retrieved_at": "2026-11-12T07:22:08Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/cow_cinc_fra.csv",
    "message": "",
    "outdated": false
@@ -4947,6 +4947,42 @@
    "last_value": 0.233,
    "retrieved_at": "2026-11-12T07:12:34Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/kiel_de_other.csv",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "gta_de_chn",
+   "status": "ok",
+   "n_obs": 17,
+   "first": "2009",
+   "last": "2025",
+   "last_value": 148.0,
+   "retrieved_at": "2026-11-12T07:43:52Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gta_de_chn.csv",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "gta_de_usa",
+   "status": "ok",
+   "n_obs": 17,
+   "first": "2009",
+   "last": "2025",
+   "last_value": 118.0,
+   "retrieved_at": "2026-11-12T07:43:52Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gta_de_usa.csv",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "gta_de_other",
+   "status": "ok",
+   "n_obs": 17,
+   "first": "2009",
+   "last": "2025",
+   "last_value": 874.0,
+   "retrieved_at": "2026-11-12T07:43:52Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gta_de_other.csv",
    "message": "",
    "outdated": false
   }

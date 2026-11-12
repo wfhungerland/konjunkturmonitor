@@ -153,6 +153,12 @@ charts:
     grenzen:
       - "Ohne den deutschen Anteil an der Hilfe der EU und ohne Kosten für Geflüchtete in Deutschland; die Bundesregierung nennt deshalb höhere Summen."
       - "Mehrjährige Pakete erscheinen im Monat der Festlegung; die Quartale schwanken deshalb stark."
+  trade_harm:
+    methode: "Global Trade Alert (St. Gallen Endowment) erfasst seit November 2008 staatliche Eingriffe in Handel und Investitionen und stuft jeden als schädlich (rot), wahrscheinlich schädlich (gelb) oder liberalisierend (grün) ein. Zu jedem Eingriff nennt Global Trade Alert die betroffenen Länder, meist aus den Handelsströmen der betroffenen Waren abgeleitet. Der Monitor zählt rote und gelbe Eingriffe mit Deutschland unter den betroffenen Ländern je Jahr des Inkrafttretens und trennt China, die USA und alle übrigen Staaten. Grundlage ist ein vollständiger Export der Datenbank, den der Monitor von Hand übernimmt."
+    grenzen:
+      - "Gezählt werden Eingriffe, nicht betroffene Handelswerte; ein Zoll auf Stahl zählt so viel wie eine Subvention für ein einzelnes Werk."
+      - "Global Trade Alert meldet neue Fälle oft mit Verzögerung und ergänzt ältere Jahre; die Zahlen ändern sich rückwirkend."
+      - "Maßnahmen der EU treffen Deutschland als Mitglied nicht; sie fehlen deshalb."
   uncertainty:
     methode: "Index der wirtschaftspolitischen Unsicherheit nach Baker, Bloom und Davis: Anteil der Zeitungsartikel, die Begriffe zu Wirtschaft, Politik und Unsicherheit zugleich enthalten, normiert auf ein Mittel von 100 in den Jahren 1997 bis 2015."
     grenzen:

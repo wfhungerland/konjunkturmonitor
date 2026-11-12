@@ -666,6 +666,10 @@ def _enso_comm(c: dict, data: dict) -> dict | None:
     return {"rows": rows, "lag": lag, "from": first.strftime("%Y-%m"), "to": last.strftime("%Y-%m")}
 
 
+def _und(xs: list[str]) -> str:
+    return ", ".join(xs[:-1]) + " und " + xs[-1] if len(xs) > 1 else xs[0]
+
+
 def chart_sentences(c: dict) -> list[str]:
     """Kopierfertige Sätze zum jüngsten Stand einer Abbildung. Jeder Satz steht für sich: Zeitraum, Größe, Wert, Vergleich."""
     from .answers import MONTHS
@@ -724,10 +728,10 @@ def chart_sentences(c: dict) -> list[str]:
             if not full:
                 return []
             y = max(full)
-            now = " und ".join(f"{num(sum(by.get(y, [0])), 0)} {ph}" for ph, by in sums)
+            now = _und([f"{num(sum(by.get(y, [0])), 0)} {ph}" for ph, by in sums])
             out = f"Im Jahr {y} {ac['verb']} {now}"
             if y - 1 in sums[0][1]:
-                out += ", nach " + " und ".join(num(sum(by.get(y - 1, [0])), 0) for _, by in sums) + f" im Jahr {y - 1}"
+                out += ", nach " + _und([num(sum(by.get(y - 1, [0])), 0) for _, by in sums]) + f" im Jahr {y - 1}"
             return [out + "."]
         if c.get("diff"):  # Breite: Zahl der Branchen mit Zuwachs
             parts = []

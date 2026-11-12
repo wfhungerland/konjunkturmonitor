@@ -340,6 +340,12 @@ topics:
     ask: "Wie viel hilft Deutschland der Ukraine?"
     charts:
       - {chart: ukraine_aid, tpl_en: {kiel_de_mil: "{when}, Germany allocated military aid worth €{v} bn to Ukraine.", kiel_de_other: "{when}, financial and humanitarian aid worth €{v} bn was added."}, ask: "Wie viel Hilfe teilt Deutschland der Ukraine zu?", x_start: "2022-01-01", keep_years: true, years: 5, recessions: false, no_yoy: true, caption: "Bilaterale Hilfe Deutschlands, die geliefert oder für die Lieferung festgelegt ist, in Milliarden Euro je Quartal nach dem Monat der Zuteilung. Militärhilfe einschließlich Geldern für Waffenkäufe. Ohne den deutschen Anteil an der Hilfe der EU und ohne Ausgaben für Geflüchtete in Deutschland. Große Pakete werden oft auf Jahre festgelegt und erscheinen dann gebündelt."}
+  - id: handel
+    title: Handelskonflikte
+    part: geopolitik
+    ask: "Wie oft treffen Handelshemmnisse deutsche Exporte?"
+    charts:
+      - {chart: trade_harm, annual_count: {verb: "zählt Global Trade Alert", per_year: 1, series: {gta_de_chn: "schädliche Eingriffe Chinas mit Wirkung auf Deutschland", gta_de_usa: "der USA", gta_de_other: "anderer Staaten"}}, annual_count_en: {verb: "Global Trade Alert counts", per_year: 1, series: {gta_de_chn: "harmful interventions by China affecting Germany", gta_de_usa: "by the USA", gta_de_other: "by other states"}}, ask: "Wie viele schädliche Handelseingriffe treffen Deutschland?", x_start: "2009-01-01", keep_years: true, years: 17, recessions: false, no_yoy: true, caption: "Zahl der Eingriffe je Jahr, die Global Trade Alert als schädlich oder wahrscheinlich schädlich für den Handel einstuft und bei denen Deutschland unter den betroffenen Ländern steht: Zölle, Subventionen, Vorgaben für öffentliche Aufträge, Exportbeschränkungen und Auflagen für Investitionen. Gezählt nach Jahr des Inkrafttretens, nur abgeschlossene Jahre. Jeder Eingriff zählt einmal, gleich wie viel Handel er betrifft. Global Trade Alert erfasst neue Fälle oft mit Verzögerung; das jüngste Jahr fällt deshalb eher zu niedrig aus."}
   - id: struktur
     title: Struktur
     part: struktur

@@ -12,7 +12,7 @@ Wie läuft die deutsche Wirtschaft gerade? Der Konjunkturmonitor beantwortet die
 
 Die Daten kommen ausschließlich aus offenen Quellen: Statistisches Bundesamt, Bundesbank, Eurostat, EZB, Bundesagentur für Arbeit, Deutscher Wetterdienst, OECD, IWF, Weltbank und weitere. Werktags läuft der Monitor zweimal automatisch, holt neue Werte, rechnet und veröffentlicht die Seite neu. Jede Woche wird ein Datenstand archiviert, damit sich frühere Aussagen nachprüfen lassen.
 
-Die Seite gliedert sich in fünf Teile: Teil I Konjunktur (Monats- und Quartalszahlen), Teil II Analysen (eigene Auswertungen wie Rezessionssignal, Konjunkturuhr und Treffsicherheit von Prognosen), Teil III Geopolitik (Sabotage, geopolitisches Risiko, Militärausgaben, Ukraine-Hilfe), Teil IV Struktur (Jahreszahlen zu den Grundlagen des Wachstums), Teil V Anhang (Sonderfaktoren). Dazu kommen ein Kalender der nächsten Veröffentlichungen und eine englische Fassung.
+Die Seite gliedert sich in fünf Teile: Teil I Konjunktur (Monats- und Quartalszahlen), Teil II Analysen (eigene Auswertungen wie Rezessionssignal, Konjunkturuhr und Treffsicherheit von Prognosen), Teil III Geopolitik (Sabotage, geopolitisches Risiko, Militärausgaben, Ukraine-Hilfe, Handelskonflikte), Teil IV Struktur (Jahreszahlen zu den Grundlagen des Wachstums), Teil V Anhang (Sonderfaktoren). Dazu kommen ein Kalender der nächsten Veröffentlichungen und eine englische Fassung.
 
 ---
 

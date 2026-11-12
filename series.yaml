@@ -165,6 +165,7 @@ charts:
   milex: {title: "Militärausgaben", decimals: 1}
   cinc: {title: "Anteil an den materiellen Machtmitteln der Welt", decimals: 1}
   ukraine_aid: {title: "Hilfe Deutschlands für die Ukraine", decimals: 1}
+  trade_harm: {title: "Schädliche Handelseingriffe gegen deutsche Interessen", decimals: 0}
   pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}
   price_exp: {title: "Preiserwartungen von Unternehmen und Verbrauchern", decimals: 0}
   gdp_use: {title: "Verwendung der Wirtschaftsleistung im letzten Quartal", decimals: 1}
@@ -3718,3 +3719,54 @@ series:
     style: bar
     license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe"
     note: "Zuteilungen insgesamt abzüglich Militärhilfe, sonst wie die Militärhilfe."
+
+  - id: gta_de_chn
+    block: geopolitik
+    source: static
+    key: gta_de_chn
+    params: {source_name: "Global Trade Alert"}
+    title: "Schädliche Handelseingriffe mit Wirkung auf Deutschland, durch China"
+    unit: "Eingriffe je Jahr"
+    frequency: A
+    adjustment: "nach Jahr des Inkrafttretens"
+    start: "2009-01-01"
+    stale_after_months: 30
+    chart: trade_harm
+    label: "China"
+    style: bar
+    license: "Global Trade Alert (St. Gallen Endowment), Nutzung nach den Bedingungen von Global Trade Alert mit Quellenangabe"
+    note: "Eingriffe, die Global Trade Alert als schädlich (rot) oder wahrscheinlich schädlich (gelb) einstuft und bei denen Deutschland unter den betroffenen Ländern steht; gezählt nach dem Jahr des Inkrafttretens, nur abgeschlossene Jahre. Übrige Staaten einschließlich gemeinsamer Maßnahmen mehrerer Staaten. Export aller Eingriffe vom 10.11.2026, von Hand übernommen."
+
+  - id: gta_de_usa
+    block: geopolitik
+    source: static
+    key: gta_de_usa
+    params: {source_name: "Global Trade Alert"}
+    title: "Schädliche Handelseingriffe mit Wirkung auf Deutschland, durch die USA"
+    unit: "Eingriffe je Jahr"
+    frequency: A
+    adjustment: "nach Jahr des Inkrafttretens"
+    start: "2009-01-01"
+    stale_after_months: 30
+    chart: trade_harm
+    label: "USA"
+    style: bar
+    license: "Global Trade Alert (St. Gallen Endowment), Nutzung nach den Bedingungen von Global Trade Alert mit Quellenangabe"
+    note: "Eingriffe, die Global Trade Alert als schädlich (rot) oder wahrscheinlich schädlich (gelb) einstuft und bei denen Deutschland unter den betroffenen Ländern steht; gezählt nach dem Jahr des Inkrafttretens, nur abgeschlossene Jahre. Übrige Staaten einschließlich gemeinsamer Maßnahmen mehrerer Staaten. Export aller Eingriffe vom 10.11.2026, von Hand übernommen."
+
+  - id: gta_de_other
+    block: geopolitik
+    source: static
+    key: gta_de_other
+    params: {source_name: "Global Trade Alert"}
+    title: "Schädliche Handelseingriffe mit Wirkung auf Deutschland, durch übrige Staaten"
+    unit: "Eingriffe je Jahr"
+    frequency: A
+    adjustment: "nach Jahr des Inkrafttretens"
+    start: "2009-01-01"
+    stale_after_months: 30
+    chart: trade_harm
+    label: "übrige Staaten"
+    style: bar
+    license: "Global Trade Alert (St. Gallen Endowment), Nutzung nach den Bedingungen von Global Trade Alert mit Quellenangabe"
+    note: "Eingriffe, die Global Trade Alert als schädlich (rot) oder wahrscheinlich schädlich (gelb) einstuft und bei denen Deutschland unter den betroffenen Ländern steht; gezählt nach dem Jahr des Inkrafttretens, nur abgeschlossene Jahre. Übrige Staaten einschließlich gemeinsamer Maßnahmen mehrerer Staaten. Export aller Eingriffe vom 10.11.2026, von Hand übernommen."

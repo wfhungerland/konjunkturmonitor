@@ -385,9 +385,10 @@ def _special_en(c: dict) -> list[str] | None:
         if not full:
             return []
         y = max(full)
-        out = f"In {y}, {ac['verb']} " + " and ".join(f"{num(sum(by.get(y, [0])), 0)} {ph}" for ph, by in sums)
+        _and = lambda xs: ", ".join(xs[:-1]) + " and " + xs[-1] if len(xs) > 1 else xs[0]
+        out = f"In {y}, {ac['verb']} " + _and([f"{num(sum(by.get(y, [0])), 0)} {ph}" for ph, by in sums])
         if y - 1 in sums[0][1]:
-            out += ", after " + " and ".join(num(sum(by.get(y - 1, [0])), 0) for _, by in sums) + f" in {y - 1}"
+            out += ", after " + _and([num(sum(by.get(y - 1, [0])), 0) for _, by in sums]) + f" in {y - 1}"
         return [out + "."]
     if c.get("pot_names"):  # momentum: GDP growth against the range of potential growth estimates
         bar = next(x for x in c["series"] if x.get("style") == "bar")

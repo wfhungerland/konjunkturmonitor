@@ -11,6 +11,8 @@ Von Hand nach einer neuen Ausgabe der Quelle (python -m monitor.geopolitik <quel
 - sipri: SIPRI Military Expenditure Database, Militärausgaben in % des BIP.
 - cow: Correlates of War, National Material Capabilities, Anteil am Machtindex CINC in %.
 - kiel: Kiel Ukraine Support Tracker, Zuteilungen Deutschlands je Quartal in Mrd. €.
+- gta: Global Trade Alert, Export aller Eingriffe (interventions.csv): schädliche Eingriffe (rot und gelb)
+  mit Deutschland unter den betroffenen Ländern je Jahr des Inkrafttretens, nach China, USA und übrigen Staaten.
 """
 from __future__ import annotations
 
@@ -115,13 +117,28 @@ def kiel(path: Path) -> dict[str, pd.Series]:
     return out
 
 
+def gta(path: Path) -> dict[str, pd.Series]:
+    d = pd.read_csv(path, low_memory=False, usecols=["GTA Evaluation", "Implementing Jurisdictions", "Affected Jurisdictions", "Date Implemented"])
+    d = d[d["GTA Evaluation"].isin(["Red", "Amber"]) & d["Affected Jurisdictions"].fillna("").str.split(", ").apply(lambda l: "Germany" in l)]
+    year = pd.to_datetime(d["Date Implemented"], errors="coerce").dt.year
+    last = pd.Timestamp.today().year - 1  # nur abgeschlossene Jahre
+    d = d.assign(year=year)[(year >= 2009) & (year <= last)]
+    who = d["Implementing Jurisdictions"].fillna("")
+    out = {}
+    for key, mask in (("gta_de_chn", who == "China"), ("gta_de_usa", who == "United States of America"),
+                      ("gta_de_other", ~who.isin(["China", "United States of America"]))):
+        s = d[mask].groupby("year").size().reindex(range(2009, last + 1), fill_value=0).astype(float)
+        out[key] = _years(s)
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     argv = sys.argv[1:] if argv is None else argv
-    if len(argv) != 2 or argv[0] not in ("leiden", "sipri", "cow", "kiel"):
-        print("Aufruf: python -m monitor.geopolitik leiden|sipri|cow|kiel <datei>")
+    if len(argv) != 2 or argv[0] not in ("leiden", "sipri", "cow", "kiel", "gta"):
+        print("Aufruf: python -m monitor.geopolitik leiden|sipri|cow|kiel|gta <datei>")
         return 2
     static = Path("data/static")
-    digits = {"leiden": 0, "sipri": 3, "cow": 3, "kiel": 3}[argv[0]]
+    digits = {"leiden": 0, "sipri": 3, "cow": 3, "kiel": 3, "gta": 0}[argv[0]]
     for key, s in globals()[argv[0]](Path(argv[1])).items():
         _write(static / f"{key}.csv", s, digits)
         print(f"{key}: {len(s)} Werte bis {s.index.max():%Y-%m}")

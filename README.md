@@ -31,7 +31,7 @@ Jede Abbildung hat Nummer, Unterfrage, Sätze zum jüngsten Stand, Titel, Erläu
 | Zinsen und Energie | Bundesbank `BBSIS` (Zinsstruktur), FRED (`MCOILBRENTEU` der U.S. EIA, `PNGASEUUSDM` des IWF) |
 | Aktivitätsindex | Bundesbank `BBDE1` (Wochenreihe WAI) |
 | Struktur | Eurostat (`nama_10_gdp`, `namq_10_lp_ulc`, `namq_10_a10_e`, `demo_gind`); AMECO-Produktionspotenzial (über DBnomics) und OECD-Körperschaftsteuersätze als statische Dateien, von Hand zu aktualisieren |
-| Geopolitik | Geopolitical Risk Index (Caldara und Iacoviello), werktäglich; von Hand nach neuen Ausgaben (`python -m monitor.geopolitik <quelle> <datei>`, Quelle leiden, sipri, cow oder kiel): Universität Leiden, Russian Operations Against Europe Dataset (CC BY 4.0), SIPRI Military Expenditure Database, Correlates of War National Material Capabilities v7.0, Kiel Ukraine Support Tracker |
+| Geopolitik | Geopolitical Risk Index (Caldara und Iacoviello), werktäglich; von Hand nach neuen Ausgaben (`python -m monitor.geopolitik <quelle> <datei>`, Quelle leiden, sipri, cow, kiel oder gta): Universität Leiden, Russian Operations Against Europe Dataset (CC BY 4.0), SIPRI Military Expenditure Database, Correlates of War National Material Capabilities v7.0, Kiel Ukraine Support Tracker, Global Trade Alert (Export aller Eingriffe) |
 | Kalender | `data/static/kalender.yaml`: Termine nach dem üblichen Rhythmus der Quellen, geschätzt |
 | Prognosen | `data/static/prognosen.yaml`, nur veröffentlichte Werte mit Link |
 | Karten | Ländergrenzen © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung 2.0, vereinfacht (`data/static/vg2500_laender.json`) |

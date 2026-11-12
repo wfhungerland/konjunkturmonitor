@@ -639,7 +639,7 @@ function timeChart(el, c) {
     }
     all.push(...s.y.filter(v => v != null));
   });
-  if (c.type === "stacked") { // Summe positiver und negativer Beiträge je Periode für die Achse
+  if (c.type === "stacked" || bars.length > 1) { // Summe positiver und negativer Beiträge je Periode für die Achse (Plotly stapelt Balken immer)
     const xs = [...new Set(bars.flatMap(s => s.x))];
     xs.forEach(x => { let p = 0, n = 0; bars.forEach(s => { const i = s.x.indexOf(x); if (i >= 0) { const v = s.y[i]; if (v > 0) p += v; else n += v; } }); all.push(p, n); });
   }
@@ -1565,7 +1565,7 @@ function build() {
   const NAV = [];  // Kapitel für das Menü: Teil, Gruppe, Nummer
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     analysen: { no: "Teil II", title: "Analysen", text: "Eigene Auswertungen: Rezessionsrisiko, Treffsicherheit von Prognosen und ersten Zahlen, Breite der Entwicklung und Wettbewerb. Dieser Teil wächst." },
-    geopolitik: { no: "Teil III", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht und Hilfe für die Ukraine. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
+    geopolitik: { no: "Teil III", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht, Hilfe für die Ukraine und Handelskonflikte. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
     struktur: { no: "Teil IV", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
     anhang: { no: "Teil V", title: "Anhang", text: "Sonderfaktoren wie Wetter und Rheinpegel: zur Einordnung, nicht für die laufende Lage. Die Abbildungen sind eingeklappt." },
     service: { no: "", title: "Termine", text: "" } };

@@ -60,6 +60,7 @@ topics:
   bedrohung: {title: "Threats", code: "Threats", ask: "How much is Germany being targeted?"}
   ruestung: {title: "Defence", code: "Defence", ask: "How much does Germany spend on defence?"}
   ukraine: {title: "Aid to Ukraine", code: "Ukraine-aid", ask: "How much does Germany help Ukraine?"}
+  handel: {title: "Trade conflicts", code: "Trade-conflicts", ask: "How often do trade barriers hit German exports?"}
   struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
   staat: {title: "Government", ask: "What state are the public finances in?"}
   sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What did the Council of Economic Experts forecast and recommend?"}
@@ -577,6 +578,10 @@ charts:
     title: "Share of the world's material capabilities"
     ask: "How much weight does Germany carry among the world's powers?"
     caption: "Share in the Composite Index of National Capability of the Correlates of War project, in % of the world: average of world shares in population, urban population, steel production, energy consumption, military personnel and military expenditure. Germany 1955 to 1990 West and East Germany combined, Russia until 1991 the Soviet Union. The index measures mass, not technology or alliances."
+  trade_harm:
+    title: "Harmful trade interventions affecting German interests"
+    ask: "How many harmful trade interventions affect Germany?"
+    caption: "Number of interventions per year that Global Trade Alert rates as harmful or likely harmful to trade and that list Germany among the affected countries: tariffs, subsidies, public procurement rules, export restrictions and investment conditions. Counted by year of entry into force, complete years only. Each intervention counts once, regardless of how much trade it affects. Global Trade Alert often records new cases with a delay, so the latest year tends to be too low."
   ukraine_aid:
     title: "German aid to Ukraine"
     ask: "How much aid does Germany allocate to Ukraine?"
@@ -791,6 +796,9 @@ series:
   milex: {title: "Military expenditure in % of GDP, {staat_name}", label: "{staat_name}", unit: "% of GDP", note: "Military expenditure as defined by SIPRI (including military pensions, paramilitary forces and military aid) in % of GDP. Germany until 1990 West Germany. April 2026 edition (file v1.2), taken over by hand.", adjustment: "annual, current prices"}
   cinc: {title: "Share in the CINC capability index, {staat_name}", label: "{staat_name}", unit: "% of world", note: "Composite Index of National Capability: average of a state's world shares in population, urban population, steel production, energy consumption, military personnel and military expenditure. Germany 1955 to 1990 West and East Germany combined, no value 1946 to 1954; Russia until 1991 the Soviet Union. Version 7.0, data up to 2022.", adjustment: "annual"}
   kiel_de_mil: {title: "German military aid to Ukraine, allocated", label: "Military aid", unit: "€ bn", note: "Allocations: aid delivered or specified for delivery, by month of allocation, including earmarked financial aid for military purposes; excluding aid via the EU and costs of refugees in Germany. Complete quarters only. 31st release (data up to 31.8.2026), taken over by hand.", adjustment: "current prices"}
+  gta_de_chn: {title: "Harmful trade interventions affecting Germany, by China", label: "China", unit: "interventions per year", note: "Interventions rated harmful (red) or likely harmful (amber) by Global Trade Alert that list Germany among affected countries; by year of entry into force, complete years only. Export of all interventions of 10.11.2026, taken over by hand.", adjustment: "by year of entry into force"}
+  gta_de_usa: {title: "Harmful trade interventions affecting Germany, by the USA", label: "USA", unit: "interventions per year", note: "As for China.", adjustment: "by year of entry into force"}
+  gta_de_other: {title: "Harmful trade interventions affecting Germany, by other states", label: "other states", unit: "interventions per year", note: "As for China; including joint measures of several states.", adjustment: "by year of entry into force"}
   kiel_de_other: {title: "German financial and humanitarian aid to Ukraine, allocated", label: "Financial and humanitarian aid", unit: "€ bn", note: "Total allocations minus military aid, otherwise as military aid.", adjustment: "current prices"}
   de_maut: {title: "Truck toll mileage index (motorways, vehicles with four or more axles)", label: "Truck toll mileage", unit: "Index 2021=100", adjustment: "seasonally and calendar adjusted (Bundesbank)"}
   de_maut_d: {title: "Truck toll mileage index, daily (experimental)", label: "Truck toll mileage", unit: "Index 2021=100", adjustment: "calendar and seasonally adjusted (Bundesbank, experimental)"}
