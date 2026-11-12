@@ -217,6 +217,11 @@ charts:
   gd_saldo: {title: "Prognosen der Gemeinschaftsdiagnose zum Finanzierungssaldo des Staates", decimals: 1}
   gd_fehler: {title: "Fehler der Wachstumsprognosen der Gemeinschaftsdiagnose", decimals: 1}
   gd_ziel: {title: "Wachstumsprognosen der Gemeinschaftsdiagnose für ein Zieljahr", decimals: 1}
+  gd_rat: {title: "Empfehlungen der Gemeinschaftsdiagnose zu vier Dauerfragen", decimals: 0}
+  gd_vergleich: {title: "Empfehlungen von Gemeinschaftsdiagnose und Sachverständigenrat im Vergleich", decimals: 0}
+  gd_themen: {title: "Themen der Gemeinschaftsdiagnose: Anteil der Seiten", decimals: 1}
+  gd_schwerpunkte: {title: "Schwerpunktthemen der Gemeinschaftsdiagnose", decimals: 0}
+  gd_dissens: {title: "Abweichende Voten einzelner Institute in der Gemeinschaftsdiagnose", decimals: 0}
   alq_land: {title: "Arbeitslosenquote nach Ländern", decimals: 1}
   tarif: {title: "Tarifverdienste und Verbraucherpreise", decimals: 1}
   spf: {title: "Langfristige Inflationserwartung der Fachleute", decimals: 2}
@@ -4438,3 +4443,83 @@ series:
     chart: gd_ziel
     label: "Prognosen für 2026"
     note: "Datum = Abschluss des Gutachtens; Fundstelle je Wert in data/static/gd_prognosen.csv."
+
+  - id: gd_stance_l
+    block: wachstum
+    source: static
+    key: gd_stance_l
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026; eigene Auswertung mit Fundstellen"}
+    license: "Eigene Auswertung der Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Empfehlung der Gemeinschaftsdiagnose: Lohnpolitik"
+    unit: "Stufe -1, 0, +1"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1950-01-01"
+    stale_after_months: 1200
+    chart: gd_rat
+    label: "Lohnpolitik"
+    note: "Empfehlung der Institute im Herbstgutachten für das Folgejahr; Satz und Fundstelle je Jahr in data/static/gd_positionen_dauerfragen.csv."
+
+  - id: gd_stance_g
+    block: wachstum
+    source: static
+    key: gd_stance_g
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026; eigene Auswertung mit Fundstellen"}
+    license: "Eigene Auswertung der Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Empfehlung der Gemeinschaftsdiagnose: Geldpolitik"
+    unit: "Stufe -1, 0, +1"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1950-01-01"
+    stale_after_months: 1200
+    chart: gd_rat
+    label: "Geldpolitik"
+    note: "Empfehlung der Institute im Herbstgutachten für das Folgejahr; Satz und Fundstelle je Jahr in data/static/gd_positionen_dauerfragen.csv."
+
+  - id: gd_stance_f
+    block: wachstum
+    source: static
+    key: gd_stance_f
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026; eigene Auswertung mit Fundstellen"}
+    license: "Eigene Auswertung der Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Empfehlung der Gemeinschaftsdiagnose: Finanzpolitik"
+    unit: "Stufe -1, 0, +1"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1950-01-01"
+    stale_after_months: 1200
+    chart: gd_rat
+    label: "Finanzpolitik"
+    note: "Empfehlung der Institute im Herbstgutachten für das Folgejahr; Satz und Fundstelle je Jahr in data/static/gd_positionen_dauerfragen.csv."
+
+  - id: gd_stance_a
+    block: wachstum
+    source: static
+    key: gd_stance_a
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026; eigene Auswertung mit Fundstellen"}
+    license: "Eigene Auswertung der Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Empfehlung der Gemeinschaftsdiagnose: Arbeitsmarkt und Sozialstaat"
+    unit: "Stufe -1, 0, +1"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1950-01-01"
+    stale_after_months: 1200
+    chart: gd_rat
+    label: "Arbeitsmarkt und Sozialstaat"
+    note: "Empfehlung der Institute im Herbstgutachten für das Folgejahr; Satz und Fundstelle je Jahr in data/static/gd_positionen_dauerfragen.csv."
+
+  - id: gd_voten_n
+    block: wachstum
+    source: static
+    key: gd_voten_n
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026; eigene Auswertung mit Fundstellen"}
+    license: "Eigene Auswertung der Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
+    title: "Abweichende Voten einzelner Institute in den Gutachten eines Jahres"
+    unit: "Anzahl"
+    frequency: A
+    adjustment: nicht bereinigt
+    start: "1950-01-01"
+    stale_after_months: 1200
+    chart: gd_rat
+    label: "Abweichende Voten"
+    note: "Je Sachpunkt eine Stelle, beide Gutachten des Jahres; Einzelnachweis in data/static/gd_voten.csv."

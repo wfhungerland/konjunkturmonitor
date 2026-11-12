@@ -644,6 +644,37 @@ charts:
     title: "German aid to Ukraine"
     ask: "How much aid does Germany allocate to Ukraine?"
     caption: "Bilateral aid from Germany that has been delivered or specified for delivery, in billion euros per quarter by month of allocation. Military aid includes funds for arms purchases. Excluding Germany's share of EU aid and spending on refugees in Germany. Large packages are often fixed for years and then appear bundled."
+  gd_rat:
+    votes_label: "Dissenting votes of single institutes"
+    rail: "JEF recommendations"
+    title: "Recommendations of the Joint Economic Forecast on four standing questions"
+    ask: "What did the institutes recommend on wages, money, public finances and the labour market?"
+    caption: "Recommendation of the institutes in the autumn report for the following year, on a fixed scale per question, the same scale as for the Council of Economic Experts. Wages: blue restraint below the distributive margin (productivity plus price rise), grey within, red above. Monetary policy: blue tighter, grey unchanged, red looser. Fiscal policy: blue consolidation, grey cyclically neutral, red stimulus. Labour market and welfare: blue more protection or benefits, grey unchanged, red flexibility, benefit cuts or work incentives. White with a frame: no recommendation discernible, classification still open, or no report text; tapping shows which, otherwise the recommendation in one sentence with page. Bars below: dissenting votes of single institutes in both reports of the year, one per point. Two reviewers classified each recommendation independently; the classification is an interpretation. Sources for every entry in data/static/gd_positionen_dauerfragen.csv and gd_voten.csv."
+    unit: "level -1, 0, +1"
+  gd_vergleich:
+    rail: "JEF and Council"
+    title: "Recommendations of the Joint Economic Forecast and the Council of Economic Experts compared"
+    ask: "Did the institutes recommend the same as the Council of Economic Experts?"
+    caption: "Two rows per question: the Joint Economic Forecast (autumn report) above, the Council of Economic Experts (annual report in November) below, each with its recommendation for the following year. Wages: blue restraint below the distributive margin (productivity plus price rise), grey within, red above. Monetary policy: blue tighter, grey unchanged, red looser. Fiscal policy: blue consolidation, grey cyclically neutral, red stimulus. Labour market and welfare: blue more protection or benefits, grey unchanged, red flexibility, benefit cuts or work incentives. Only years in which both were assigned a level are counted. Tapping shows the recommendation in one sentence with source."
+    unit: "level -1, 0, +1"
+  gd_themen:
+    rail: "JEF topics"
+    title: "Topics of the Joint Economic Forecast: share of pages"
+    ask: "What did the institutes write about?"
+    caption: "Share of pages per topic in all reports of a year, excluding the statistical appendix; the darker, the more space. Each section belongs to exactly one topic from a fixed catalogue. Until the 1990s the reports are less finely structured, so shares are only partly comparable. Tapping shows the share and sections. Two reviewers classified each section independently. Sources in data/static/gd_themen.csv."
+    unit: "% of pages"
+  gd_schwerpunkte:
+    rail: "JEF special topics"
+    title: "Special topics of the Joint Economic Forecast"
+    ask: "Which special topics did the institutes take up?"
+    caption: "One dot per year and topic when a report has its own chapter or a section headed as focus, special topic or excursus; boxes do not count. Tapping shows title and pages. Sources in data/static/gd_schwerpunkte.csv."
+    unit: ""
+  gd_dissens:
+    rail: "JEF dissent"
+    title: "Dissenting votes of single institutes in the Joint Economic Forecast"
+    ask: "How often did the institutes disagree?"
+    caption: "Number of points at which single institutes departed from the joint position in the reports of a year, one per point, on the forecast and on policy. Ties, separate reports and abstentions are included. Tapping shows institutes and topic. Sources in data/static/gd_voten.csv."
+    unit: "count"
 
 series:
   wb_soybeans: {title: "World market price, Soybeans (World Bank: Soybeans)", label: "Soybeans", unit: "US dollars ($/mt)", adjustment: "not adjusted"}
@@ -952,6 +983,11 @@ series:
   gd_saldo_prog: {title: "General government balance: Joint Economic Forecast for the following year", label: "institutes' forecast", unit: "% of GDP", adjustment: "not adjusted"}
   gd_saldo_ist: {title: "General government balance: first release, printed in the following spring report", label: "first release", unit: "% of GDP", adjustment: "not adjusted"}
   gd_saldo_heute: {title: "General government balance: today's data vintage", label: "today's vintage", unit: "% of GDP", adjustment: "not adjusted"}
+  gd_stance_l: {title: "Joint Economic Forecast recommendation: Wage policy", label: "Wage policy", unit: "level -1, 0, +1", adjustment: "not adjusted"}
+  gd_stance_g: {title: "Joint Economic Forecast recommendation: Monetary policy", label: "Monetary policy", unit: "level -1, 0, +1", adjustment: "not adjusted"}
+  gd_stance_f: {title: "Joint Economic Forecast recommendation: Fiscal policy", label: "Fiscal policy", unit: "level -1, 0, +1", adjustment: "not adjusted"}
+  gd_stance_a: {title: "Joint Economic Forecast recommendation: Labour market and welfare", label: "Labour market and welfare", unit: "level -1, 0, +1", adjustment: "not adjusted"}
+  gd_voten_n: {title: "Dissenting votes of single institutes in the reports of a year", label: "Dissenting votes", unit: "count", adjustment: "not adjusted"}
   gd_bip_fehler: {title: "Real GDP growth: distance of the Joint Economic Forecast autumn forecast from the first release", label: "forecast minus first release, absolute", unit: "percentage points", adjustment: "not adjusted"}
   gd_ziel_2023: {title: "Real GDP growth 2023: forecasts of the Joint Economic Forecast", label: "Forecasts for 2023", unit: "% on previous year", adjustment: "not adjusted"}
   gd_ziel_2023_ist: {title: "Real GDP growth 2023: first release", label: "first release 2023", unit: "% on previous year", adjustment: "not adjusted"}

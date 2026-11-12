@@ -127,3 +127,8 @@ stx_share_gdp;Staatsausgaben Aufgaben BIP;2026-11-12;
 stx_tree;Grundriss Staatsausgaben;2026-11-12;
 stx_levels;Ausgaben Staatsebenen;2026-11-12;
 bund_tree;Grundriss Bundeshaushalt;2026-11-12;
+gd_rat;Empfehlungen Dauerfragen;2026-11-12;
+gd_vergleich;Empfehlungen GD SVR;2026-11-12;
+gd_themen;Themen Seitenanteile;2026-11-12;
+gd_schwerpunkte;Schwerpunktthemen;2026-11-12;
+gd_dissens;Abweichende Voten;2026-11-12;
