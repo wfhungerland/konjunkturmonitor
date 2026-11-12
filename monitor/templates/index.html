@@ -1031,7 +1031,7 @@ function stanceExtras(el, A, qs) {
   const word = (k, v) => (STANCEW[k] || {})[v] || "";
   let h = "";
   qs.forEach(([k, lab]) => { const r = (A[k] || {})[Y1]; let sub = "", main;
-    if (ok(r)) { main = `<b style="color:${col(k, sv(r))}">${esc(word(k, sv(r)))}</b>`; sub = esc(Object.entries(STANCEV.labs).reduce((t, [a, b]) => t.replace(a, b), r.lab || String(Y1))); }
+    if (ok(r)) { main = `<b style="color:${col(k, sv(r))}">${esc(word(k, sv(r)))}</b>`; sub = esc(Object.entries(STANCEV.labs).reduce((t, [a, b]) => t.replace(a, b), r.lab || `${STANCE_TXT.jg} ${Y1}`)); }
     else { main = `<b style="color:#8c8c8c">${STANCEV.none}</b>`; const ys = Object.keys(A[k] || {}).map(Number).filter(y => ok(A[k][y])).sort((a, b) => b - a);
       if (ys.length) sub = `${STANCEV.last} ${ys[0]}: ${esc(word(k, sv(A[k][ys[0]])))}`; }
     h += `<div><span class="sq">${esc(lab)}</span>${main}<span class="ss">${sub}</span></div>`; });

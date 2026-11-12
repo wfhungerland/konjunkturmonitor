@@ -581,7 +581,7 @@ charts:
   svr_rat:
     title: "Recommendations of the Council of Economic Experts on four standing questions"
     ask: "What did the Council of Economic Experts recommend on wages, money, public finances and the labour market?"
-    caption: "Each row shows what the Council of Economic Experts recommended for the following year in its annual report. Red stands for socially progressive recommendations: stronger wages, looser monetary policy, fiscal stimulus, more protection in the labour market. Blue stands for conservative-liberal ones: wage restraint, tighter monetary policy, saving, more flexibility. Grey means unchanged. The political reading is our own. White means: no recommendation. The bars below count the passages with a minority vote. Tapping shows the recommendation with its source; the classification is our own analysis."
+    caption: "The top line gives the Council of Economic Experts' latest recommendation in words. Below, each row shows what it recommended for the following year in its annual report. Red stands for socially progressive recommendations: stronger wages, looser monetary policy, fiscal stimulus, more protection in the labour market. Blue stands for conservative-liberal ones: wage restraint, tighter monetary policy, saving, more flexibility. Grey means unchanged. The political reading is our own. Wide bands are phases of three years or more, thin strokes single years, gaps years without a recommendation. The bars below count the passages with a minority vote. At the bottom are the latest turning points with references. Tapping shows the recommendation with its source; the classification is our own analysis."
     unit: "level -1, 0, +1"
   svr_fiskal:
     title: "Recommended fiscal stance and expected growth"
