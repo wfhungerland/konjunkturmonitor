@@ -9,6 +9,7 @@ site:
   license: "Texte und eigene Abbildungen: CC BY 4.0 (Namensnennung: Wolf-Fabian Hungerland, Konjunkturmonitor). Die Daten unterliegen den Lizenzen der jeweiligen Quellen."
   url: "https://wfhungerland.github.io/konjunkturmonitor/"
   repo: "https://github.com/wfhungerland/konjunkturmonitor"
+  kommentar: false        # Knopf „Kommentar“ und Kommentarsatz; vorläufig offline
   feedback: "mqpqkgqp"     # Formspree-Kennung (öffentlich) für den Knopf „Rückmeldung“; leer: kein Knopf
 
 # Darstellung nach Tufte. Jeder Schalter lässt sich einzeln mit false zurücknehmen.

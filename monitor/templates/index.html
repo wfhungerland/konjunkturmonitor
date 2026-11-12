@@ -1978,7 +1978,7 @@ function build() {
   const fb = document.createElement("button"); fb.type = "button"; fb.className = "btn fazitbtn"; fb.textContent = FAZTXT.btn; fb.title = FAZTXT.title;
   const setFazit = on => { document.body.classList.toggle("fazit", on); fb.setAttribute("aria-pressed", String(on)); try { localStorage.setItem("km_fazit", on ? "1" : "0"); } catch (e) {} };
   let fz0 = false; try { fz0 = localStorage.getItem("km_fazit") === "1"; } catch (e) {}
-  setFazit(fz0 && !DATA.embed); fb.onclick = () => setFazit(!document.body.classList.contains("fazit"));
+  setFazit(fz0 && !DATA.embed && !!DATA.fazit); fb.onclick = () => setFazit(!document.body.classList.contains("fazit"));
   if (!DATA.fazit) fb.hidden = true;
   const cl = document.createElement("a"); cl.className = "btn colllink"; cl.href = "#sammlung";
   document.querySelector("header .bar").append(searchBox(), fb, bb, cl);
