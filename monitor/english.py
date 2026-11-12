@@ -564,6 +564,9 @@ def _special_en(c: dict) -> list[str] | None:
 
 def chart_sentences_en(c: dict) -> list[str]:
     """Englische Fassung der automatischen Sätze: Sonderabbildungen eigens, Linien und Balken nach der Einheit."""
+    if c.get("heute"):  # Gremien: zuerst die jüngste Empfehlung
+        from .gremien import heute
+        return [x for x in [heute(c["heute"]["attach"], c["heute"]["who"], "en")] + list(c.get("say_en") or []) if x]
     if c.get("say_en"):  # fester Satz aus monitor.yaml statt des automatischen
         return list(c["say_en"])
     typ, d = c.get("type"), int(c.get("decimals", 1))

@@ -674,6 +674,9 @@ def chart_sentences(c: dict) -> list[str]:
     """Kopierfertige Sätze zum jüngsten Stand einer Abbildung. Jeder Satz steht für sich: Zeitraum, Größe, Wert, Vergleich."""
     from .answers import MONTHS
     from .answers import num as _num
+    if c.get("heute"):  # Gremien: zuerst die jüngste Empfehlung, dann der feste Satz
+        from .gremien import heute
+        return [x for x in [heute(c["heute"]["attach"], c["heute"]["who"])] + list(c.get("say") or []) if x]
     if c.get("say"):  # fester Satz aus monitor.yaml statt des automatischen
         return list(c["say"])
     typ, d = c.get("type"), int(c.get("decimals", 1))

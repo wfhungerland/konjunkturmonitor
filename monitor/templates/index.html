@@ -515,6 +515,8 @@ const TOURTXT = { name: "Rundgang", ask: "Neu hier? Eine Minute Rundgang zeigt, 
     ["@card .cside", "Hier steht in wenigen Sätzen, was die Grafik zeigt. Wer es genau wissen will, klickt auf „Mehr zur Methode“."],
     ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik. Und über „Feedback“ erreicht Ihre Meinung zu einer Grafik direkt den Autor."]] };
 const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
+const PHASETXT = { to: "–", L: { "-1": "Lohnzurückhaltung", "0": "Löhne im Spielraum", "1": "kräftigere Löhne" }, G: { "-1": "straffer", "0": "beibehalten", "1": "lockerer" },
+  F: { "-1": "Konsolidierung", "0": "neutral", "1": "Impulse" }, A: { "-1": "mehr Schutz", "0": "beibehalten", "1": "Flexibilisierung" } };
 const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen unter „Downloads“." };
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (↗) und Schwellen
 const isBad = (c, sid) => c.up_bad === true || (Array.isArray(c.up_bad) && c.up_bad.includes(sid));
@@ -977,6 +979,15 @@ function stanceChart(el, c) {
     const na = years.filter(y => m[y] == null);
     if (na.length) traces.push({ type: "bar", x: na, y: na.map(() => bh), base: na.map(() => i + b0), width: 0.92, yaxis: "y", marker: { color: "rgba(0,0,0,0)", line: { color: "#D9D9D9", width: 0.5 } }, showlegend: false,
       hovertext: na.map(y => stanceHover(A, k, y)), hoverinfo: "text", hoverlabel: { align: "left", bgcolor: "#fff", bordercolor: "#7f7f7f", font: { color: "#000" } } }); });
+  // Lange Phasen gleicher Empfehlung direkt im Streifen benennen (Tufte: Beschriftung am Datum statt Legende)
+  const phaseAnn = [];
+  if (c.phases) rows.forEach((s, i) => { const k = keyOf(s), m = Object.fromEntries(s.x.map((x, j) => [+x.slice(0, 4), s.y[j]])), minLen = narrow ? 14 : 8;
+    let y = y0; while (y <= y1) { const v = m[y]; let e = y; while (e + 1 <= y1 && m[e + 1] === v) e++;
+      const lab = v != null && (PHASETXT[k] || {})[String(v)], txt = lab ? `${lab} ${y}${PHASETXT.to}${String(e).slice(-2)}` : "";
+      const pxPerYear = Math.max(1, (el.clientWidth || 700) - (narrow ? 20 : 190)) / Math.max(1, y1 - y0 + 1), fits = txt.length * (narrow ? 5.6 : 6.3) + 8 <= (e - y + 1) * pxPerYear;
+      if (lab && e - y + 1 >= minLen && fits) phaseAnn.push({ x: (y + e) / 2, y: i + b0 + bh / 2, xref: "x", yref: "y", showarrow: false, xanchor: "center", yanchor: "middle",
+        text: esc(txt), font: { family: HS.font, size: narrow ? 10 : 11.5, color: v === 0 ? "#262626" : "#fff" } });
+      y = e + 1; } });
   if (vt) traces.push({ type: "bar", x: vt.x.map(x => +x.slice(0, 4)), y: vt.y, yaxis: "y2", marker: { color: "#595959", line: { width: 0 } }, width: 0.7, showlegend: false, hovertemplate: `%{x}: %{y} ${STANCE_TXT.votes}<extra></extra>` });
   const L = baseLayout(el);
   const top = vt ? 0.4 : 0, h0 = Math.max(narrow ? 400 : 340, Math.round(rows.length * (narrow ? 44 : 40) / (1 - top) + 40));
@@ -985,6 +996,7 @@ function stanceChart(el, c) {
     yaxis: { domain: [top, 1], range: [-0.55, rows.length - 0.45], tickmode: "array", tickvals: rows.map((_, i) => i), ticktext: rows.map(s => narrow ? "" : esc(s.label)), automargin: true, fixedrange: true, showgrid: false, zeroline: false, ticks: "" },
     yaxis2: { domain: [0, 0.22], fixedrange: true, showgrid: true, gridcolor: HS.gridH, zeroline: false, rangemode: "tozero", nticks: 3, automargin: true },
     annotations: vt ? [{ xref: "paper", yref: "paper", x: 0, y: 0.24, xanchor: "left", yanchor: "bottom", showarrow: false, text: esc(c.votes_label || STANCE_TXT.votes), font: { family: HS.font, size: 12, color: "#595959" } }] : [] });
+  L.annotations = (L.annotations || []).concat(phaseAnn);
   if (!vt) delete L.yaxis2;
   if (narrow) rows.forEach((r, i) => L.annotations.push({ xref: "paper", yref: "y", x: 0, y: i + 0.07, xanchor: "left", yanchor: "bottom", showarrow: false, text: esc(r.label), font: { family: HS.font, size: 12 } }));
   if (narrow) L.yaxis.range = [-0.55, rows.length - 0.35];
