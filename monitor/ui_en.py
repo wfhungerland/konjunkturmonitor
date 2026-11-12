@@ -126,6 +126,8 @@ PAIRS: list[tuple[str, str]] = [
     ('title="unverändert">${TRI.flat}', 'title="unchanged">${TRI.flat}'),
     ('title="gestiegen">${TRI.up}', 'title="up">${TRI.up}'),
     ('title="gesunken">${TRI.down}', 'title="down">${TRI.down}'),
+    ('const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen im Download unter „Daten“." };',
+     'const TABTXT = { chart: "Chart", table: "Table", period: "Period", more: "The table shows the first {k} of {n} series; all values are in the download under “Data”." };'),
     ('const FAZTXT = { btn: "Fazit", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Fazit bleibt die Seite neutral." };',
      'const FAZTXT = { btn: "Verdict", title: "Assessment by fixed rules, generated automatically: growth, inflation against the 2% target, labour market and sentiment. Without it the page stays neutral." };'),
     ('"ggü. Vorquartal, real"', '"on previous quarter, real"'),

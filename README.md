@@ -47,6 +47,8 @@ Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global
 - **Kurzzeichen:** Jede Abbildung heißt nach Kapitel und Platz, etwa „Preise-3“ (Anker `#preise-3`, englisch „Prices-3“). Abweichende Kapitelkürzel stehen als `code:` am Kapitel in `monitor.yaml` und `data/static/en.yaml`. Alte Links `#abb-12` lenkt die Seite um.
 - **Fazit:** Der Knopf im Kopf zeigt einen regelbasierten Urteilssatz (`answers.fazit`) und die Urteile an den Kacheln; ohne ihn bleibt die Seite neutral. Die Wahl merkt sich der Browser.
 - **Abkürzungen:** In Sätzen ausgeschrieben (`monitor/ausschreiben.py`, nach der Satzprüfung); in Köpfen, Einheiten und Kacheln gepunktet unterstrichen mit Erklärung beim Darauftippen (`GLOSSAR`).
+- **Grafik | Tabelle:** Zeitreihen-Grafiken haben oben rechts einen Umschalter; die Tabelle zeigt die letzten zwölf Werte, jüngster zuerst.
+- **Vorschaubilder:** `node monitor/previews.js site` fotografiert nach dem Bau jede einfache Zeitreihen-Grafik (breit und Handy, WebP, zusammen rund 6 MB) und trägt die Liste in die Seite ein. Die Seite zeigt zuerst das Bild und lädt die lebendige Grafik beim Überfahren, Antippen oder Bedienen. Ohne diesen Lauf, bei Jahresflächen und auf Einbettseiten zeichnet sie sofort.
 
 Weitere Schalter stehen im Bereich `layout` von `monitor.yaml`; jeder lässt sich einzeln mit `false` zurücknehmen:
 - `start_table`: Kennzahlentabelle statt Fragekarten
