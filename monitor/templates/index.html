@@ -685,7 +685,7 @@ function timeChart(el, c) {
     }
     all.push(...s.y.filter(v => v != null));
   });
-  if (c.type === "stacked") { // Summe positiver und negativer Beiträge je Periode für die Achse
+  if (c.type === "stacked" || bars.length > 1) { // Summe positiver und negativer Beiträge je Periode für die Achse (Plotly stapelt Balken immer)
     const xs = [...new Set(bars.flatMap(s => s.x))];
     xs.forEach(x => { let p = 0, n = 0; bars.forEach(s => { const i = s.x.indexOf(x); if (i >= 0) { const v = s.y[i]; if (v > 0) p += v; else n += v; } }); all.push(p, n); });
   }
@@ -1021,6 +1021,91 @@ function dumbbellChart(el, c) {
   el.style.aspectRatio = "auto"; el.style.height = L.height + "px";
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";  // Einheit steht an der Achse
   Plotly.newPlot(el, traces, L, CFG);
+}
+
+// Baumkarte (Grundriss): Fläche = Ausgaben, eine Farbe je oberster Gruppe, hellere Töne für Untergruppen.
+// Daten aus data/static (attach): steps je Jahr mit values je Blatt, parent (Code -> übergeordneter Code), labels, hue.
+// Antippen vergrößert eine Gruppe; Schieberegler oder Knöpfe wählen das Jahr; alt = zweite Abgrenzung (etwa mit Sondervermögen).
+const TM_TXT = { all: "Alle", hint: "Antippen vergrößert, Pfad oben führt zurück.", ist: "Ergebnis (Ist):", soll: "Plan (Soll):", of: "davon", bn: "Mrd.", peak: "gestrichelt: höchster Stand", lang: "de" };
+function tmSquarify(items, rect) {
+  const total = items.reduce((t, d) => t + d.v, 0), out = [];
+  let r = { ...rect }, rest = items.map(d => ({ ...d, a: (d.v / total) * rect.w * rect.h }));
+  const worst = (row, side) => { const s = row.reduce((t, d) => t + d.a, 0), mx = Math.max(...row.map(d => d.a)), mn = Math.min(...row.map(d => d.a)); return Math.max((side * side * mx) / (s * s), (s * s) / (side * side * mn)); };
+  while (rest.length) {
+    const side = Math.min(r.w, r.h); let row = [rest[0]], i = 1;
+    while (i < rest.length && worst([...row, rest[i]], side) <= worst(row, side)) { row.push(rest[i]); i++; }
+    const s = row.reduce((t, d) => t + d.a, 0);
+    if (r.w >= r.h) { const w = s / r.h; let yy = r.y; row.forEach(d => { const h = d.a / w; out.push({ ...d, x: r.x, y: yy, w, h }); yy += h; }); r = { x: r.x + w, y: r.y, w: r.w - w, h: r.h }; }
+    else { const h = s / r.w; let xx = r.x; row.forEach(d => { const w = d.a / h; out.push({ ...d, x: xx, y: r.y, w, h }); xx += w; }); r = { x: r.x, y: r.y + h, w: r.w, h: r.h - h }; }
+    rest = rest.slice(i);
+  }
+  return out;
+}
+function treemapChart(el, c) {
+  const T = c.attach || {}, en = TM_TXT.lang === "en", lab = k => (en ? (T.labels_en || {})[k] : null) || (T.labels || {})[k] || k;
+  const P = T.parent || {}, steps = T.steps || [], st = el._tm || (el._tm = { si: steps.length - 1, path: [], alt: false });
+  if (!steps.length) return;
+  const tint = (hex, t) => "#" + [1, 3, 5].map(o => Math.round(parseInt(hex.slice(o, o + 2), 16) + t * (255 - parseInt(hex.slice(o, o + 2), 16))).toString(16).padStart(2, "0")).join("");
+  const dark = hex => { const v = [1, 3, 5].map(o => parseInt(hex.slice(o, o + 2), 16)); return 0.299 * v[0] + 0.587 * v[1] + 0.114 * v[2] < 140; };
+  const chain = k => { const a = [k]; while (P[a[0]]) a.unshift(P[a[0]]); return a; };  // vom obersten Code bis zum Blatt
+  const top = k => chain(k)[0], kidsOf = p => Object.keys(P).filter(k => P[k] === p).sort();
+  const S = steps[st.si], useAlt = st.alt && S.alt, V = useAlt ? S.alt.values : S.values, part = useAlt ? S.alt.part || {} : {};
+  const leaves = Object.entries(V).filter(([, v]) => v > 0);
+  const under = (k, p) => !p || chain(k).includes(p);
+  const sumOf = p => leaves.filter(([k]) => under(k, p)).reduce((t, [, v]) => t + v, 0);
+  const partOf = p => leaves.filter(([k]) => under(k, p)).reduce((t, [k, v]) => t + Math.min(part[k] || 0, v), 0);
+  const childAt = (k, p) => { const ch = chain(k), i = p ? ch.indexOf(p) : -1; return ch[i + 1]; };
+  const kids = p => { const set = new Set(leaves.filter(([k]) => under(k, p)).map(([k]) => childAt(k, p)).filter(Boolean)); return [...set].map(k => ({ code: k, label: lab(k), v: sumOf(k) })).filter(d => d.v > 0); };
+  // feste Reihenfolge nach dem jüngsten Jahr, damit Kacheln beim Blättern ihren Platz behalten
+  const last = steps[steps.length - 1].values, rank = k => -Object.entries(last).filter(([l]) => chain(l).includes(k)).reduce((t, [, v]) => t + v, 0);
+  const ord = a => a.sort((p, q) => rank(p.code) - rank(q.code));
+  const fill = k => { const ch = chain(k), h = (T.hue || {})[ch[0]] || "#595959"; let t = 0;
+    for (let d = 1; d < ch.length; d++) { const sib = kidsOf(ch[d - 1]); t += (d === 1 ? 0.5 : 0.3) * (sib.length > 1 ? sib.indexOf(ch[d]) / (sib.length - 1) : 0); }
+    return tint(h, Math.min(0.85, t)); };
+  el.style.width = "100%"; el.style.marginLeft = "0";  // Baumkarte nutzt auch auf dem Handy die volle Breite
+  const narrow = (el.parentElement || el).clientWidth < 600;
+  const pre = st.path[st.path.length - 1] || "", total = sumOf(pre), W = narrow ? 400 : 860, H = narrow ? 560 : 520, unit = en ? T.unit_en || T.unit : T.unit;
+  // Fläche wächst mit dem Gesamtwert (Grundriss der Staatsausgaben): Rahmen = höchster Stand
+  let sc = 1;
+  if (T.scale_area && !pre) { const mx = Math.max(...steps.map(s => Object.values(s.values).reduce((t, v) => t + Math.max(0, v), 0))); sc = Math.max(0.05, total / mx); }
+  const BW = W * Math.sqrt(sc), BH = H * Math.sqrt(sc);
+  const lbl = (b, tot, big) => { const fs = big ? 13 : 11.5, lh = fs + 3, mc = Math.floor(b.w / (fs * 0.56)), t = b.label.length > mc ? b.label.slice(0, Math.max(1, mc - 1)) + "…" : b.label, col = dark(b.fill) ? "#fff" : "#000";
+    if (b.w < 60 || b.h < (big ? 40 : 32)) return "";
+    const pc = `${fmt(100 * b.v / tot, 1)} %`, am = `${fmt(b.v, b.v < 10 ? 1 : 0)} ${TM_TXT.bn}`, one = (pc + " · " + am).length * fs * 0.56 < b.w - 8;
+    return `<text x="${b.x + 5}" y="${b.y + lh}" style="font-size:${fs}px;fill:${col}">${esc(t)}</text><text x="${b.x + 5}" y="${b.y + 2 * lh}" style="font-size:${fs}px;fill:${col}">${one ? pc + " · " + am : pc}</text>` + (!one && b.h > 3 * lh + 4 ? `<text x="${b.x + 5}" y="${b.y + 3 * lh}" style="font-size:${fs}px;fill:${col}">${am}</text>` : ""); };
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(c.title || "")}" style="width:100%;height:auto;display:block;font-family:var(--ff)"><defs><pattern id="tmh_${c.chart}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#fff" stroke-width="2.2" opacity=".75"/></pattern></defs>`;
+  if (sc < 0.999) s += `<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" fill="none" stroke="#8c8c8c" stroke-dasharray="3,3"/><text x="${W - 6}" y="${H - 8}" text-anchor="end" style="font-size:12px;fill:#595959">${TM_TXT.peak}</text>`;
+  ord(kids(pre)).length && tmSquarify(ord(kids(pre)), { x: 0, y: 0, w: BW, h: BH }).forEach(b => {
+    const sub = ord(kids(b.code)), head = sub.length && b.h > 40 && b.w > 60 ? 20 : 0;
+    s += `<g class="tmblk" data-code="${b.code}" style="cursor:${sub.length ? "zoom-in" : "default"}"><rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="#fff"/>`;
+    if (head) { const pc = ` ${fmt(100 * b.v / total, 0)} %`, am = ` · ${fmt(b.v, b.v < 10 ? 1 : 0)} ${TM_TXT.bn}`, mc = Math.floor(b.w / 7.2); let t = b.label, ex = "";
+      if (t.length + pc.length + am.length <= mc) ex = pc + am; else if (t.length + pc.length <= mc) ex = pc; else if (t.length > mc) t = t.slice(0, Math.max(1, mc - 1)) + "…";
+      s += `<text x="${b.x + 4}" y="${b.y + 14}" style="font-weight:600;font-size:12.5px">${esc(t)}${ex}</text>`; }
+    const cells = sub.length ? tmSquarify(sub, { x: b.x + 1, y: b.y + head + 1, w: Math.max(1, b.w - 2), h: Math.max(1, b.h - head - 2) }) : [{ ...b, x: b.x + 1, y: b.y + 1, w: b.w - 2, h: b.h - 2 }];
+    cells.forEach(q => { q.fill = fill(q.code); const f = useAlt ? partOf(q.code) : 0, fh = f > 0 ? Math.min(q.h, q.h * f / q.v) : 0;
+      const tip = `${q.label}: ${fmt(q.v, 2)} ${unit} (${fmt(100 * q.v / total, 1)} %)` + (f > 0 ? `; ${TM_TXT.of} ${en ? T.part_label_en || "" : T.part_label || ""} ${fmt(f, 2)}` : "");
+      s += `<rect x="${q.x}" y="${q.y}" width="${q.w}" height="${q.h}" fill="${q.fill}" stroke="#fff" stroke-width="1"><title>${esc(tip)}</title></rect>`;
+      if (fh > 0.5) s += `<rect x="${q.x}" y="${q.y + q.h - fh}" width="${q.w}" height="${fh}" fill="url(#tmh_${c.chart})" pointer-events="none"/>`;
+      s += lbl(q, total, !sub.length); });
+    s += `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="none" stroke="#fff" stroke-width="3"/></g>`;
+  });
+  s += "</svg>";
+  // Bedienung: Jahr (Schieberegler oder Knöpfe nach Ist und Plan), zweite Abgrenzung, Pfad
+  const redraw = () => treemapChart(el, c);
+  let ctl = `<div class="tmctl" style="display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin:0 0 6px;font-size:13.5px">`;
+  if (T.slider) ctl += `<label style="display:flex;align-items:center;gap:8px"><input type="range" min="0" max="${steps.length - 1}" value="${st.si}" class="tmyr" style="width:220px" aria-label="Jahr"><b>${esc(S.label)}</b></label>`;
+  else { const grp = (g, t) => { const ix = steps.map((x, i) => [x, i]).filter(([x]) => x.group === g); return ix.length ? `<span style="display:flex;align-items:center;gap:6px">${t}<span class="seg" style="margin:0">${ix.map(([x, i]) => `<button type="button" data-i="${i}" aria-pressed="${i === st.si}">${esc(en ? x.label_en || x.label : x.label)}</button>`).join("")}</span></span>` : ""; };
+    ctl += grp("Ist", TM_TXT.ist) + grp("Soll", TM_TXT.soll); }
+  if (steps.some(x => x.alt)) ctl += `<label style="white-space:nowrap${S.alt ? "" : ";color:#999"}"><input type="checkbox" class="tmalt"${useAlt ? " checked" : ""}${S.alt ? "" : " disabled"}> ${esc(en ? T.alt_label_en || "" : T.alt_label || "")}</label>`;
+  ctl += `</div><div class="tmpath" style="font-size:13.5px;margin:0 0 6px"><b>${esc(en ? S.label_en || S.label : S.label)}${useAlt ? ", " + esc(en ? T.alt_label_en || "" : T.alt_label || "") : ""}: ${fmt(total, 1)} ${unit}</b> · ${st.path.length ? [`<a href="javascript:void 0" data-p="">${TM_TXT.all}</a>`, ...st.path.map((k, i) => i === st.path.length - 1 ? esc(lab(k)) : `<a href="javascript:void 0" data-p="${st.path.slice(0, i + 1).join(",")}">${esc(lab(k))}</a>`)].join(" › ") : TM_TXT.hint}</div>`;
+  el.style.aspectRatio = "auto"; el.style.height = "auto";
+  el.innerHTML = ctl + s;
+  const yr = el.querySelector(".tmyr"); if (yr) yr.addEventListener("input", e => { st.si = +e.target.value; redraw(); });
+  el.querySelectorAll(".tmctl button").forEach(b => b.addEventListener("click", () => { st.si = +b.dataset.i; redraw(); }));
+  const ab = el.querySelector(".tmalt"); if (ab) ab.addEventListener("change", e => { st.alt = e.target.checked; redraw(); });
+  el.querySelectorAll(".tmpath a").forEach(a => a.addEventListener("click", () => { st.path = a.dataset.p ? a.dataset.p.split(",") : []; redraw(); }));
+  el.querySelectorAll(".tmblk").forEach(g => { const k = g.dataset.code; if (kids(k).length) g.addEventListener("click", () => { st.path = [...st.path, k]; redraw(); }); });
+  const card = el.closest(".card"), uEl = card && card.querySelector(".unit"); if (uEl) uEl.style.display = "none";  // Summe steht über der Karte
 }
 
 // Rohstoffpreise nach El Niño: je Rohstoff zwei Balken, El Niño (dunkel) und neutral (grau); Stern = deutlicher Unterschied
@@ -1461,6 +1546,7 @@ function render(ch) {
   else if (c.type === "event") eventChart(ch, c);
   else if (c.type === "enso_comm") ensoCommChart(ch, c);
   else if (c.type === "calendar") calendarChart(ch, c);
+  else if (c.type === "treemap") treemapChart(ch, c);
   else if (c.type === "seasonal") seasonalChart(ch, c); else if (c.type === "tiles") tilesChart(ch, c);
   else if (c.multiples && (DATA.layout || {}).small_multiples && c.series && (c.series.length > 2 || c.own_scale)) multiplesChart(ch, c);
   else timeChart(ch, c);
@@ -1645,8 +1731,9 @@ function build() {
   const NAV = [];  // Kapitel für das Menü: Teil, Gruppe, Nummer
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
     analysen: { no: "Teil II", title: "Analysen", text: "Eigene Auswertungen: Rezessionsrisiko, Treffsicherheit von Prognosen und ersten Zahlen, Breite der Entwicklung und Wettbewerb. Dieser Teil wächst." },
-    struktur: { no: "Teil III", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
-    anhang: { no: "Teil IV", title: "Anhang", text: "Sonderfaktoren wie Wetter und Rheinpegel: zur Einordnung, nicht für die laufende Lage. Die Abbildungen sind eingeklappt." },
+    geopolitik: { no: "Teil III", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht, Hilfe für die Ukraine und Handelskonflikte. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
+    struktur: { no: "Teil IV", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
+    anhang: { no: "Teil V", title: "Anhang", text: "Sonderfaktoren wie Wetter und Rheinpegel: zur Einordnung, nicht für die laufende Lage. Die Abbildungen sind eingeklappt." },
     service: { no: "", title: "Termine", text: "" } };
   const railObs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
     const sec = e.target.closest("section.topic"); if (!e.isIntersecting || !sec) return; const r = sec.querySelector(".rail");
@@ -1693,7 +1780,7 @@ function build() {
     while (sec.firstChild) secMain.appendChild(sec.firstChild);
     if (h2) sec.appendChild(h2); if (sq) sec.appendChild(sq);
     const rail = document.createElement("nav"); rail.className = "rail"; rail.setAttribute("aria-label", "Abbildungen dieses Abschnitts");
-    rail.innerHTML = t.charts.map(x => `<a href="#${FA(x.no)}"><b>${x.k ?? x.no}</b><span>${esc(x.title || "")}</span></a>`).join("");
+    rail.innerHTML = t.charts.map(x => `<a href="#${FA(x.no)}"><b>${x.k ?? x.no}</b><span>${esc(x.rail || x.title || "")}</span></a>`).join("");  // rail: kürzerer Eintrag für die mitlaufende Liste, etwa mit Kürzel
     sec.append(rail, secMain);  // Frage über beide Spalten, darunter Übersicht und Inhalt
     if (railObs) secMain.querySelectorAll(".card").forEach(cd => railObs.observe(cd));
     const part = t.part || "konjunktur";
@@ -1721,9 +1808,9 @@ function build() {
   // Menü: ein Knopf „Inhalt“ öffnet eine Tafel mit allen Abschnitten und ihrer Frage
   nav.innerHTML = `<button type="button" class="btn navbtn" aria-expanded="false" aria-controls="navpanel">${NAVTXT.contents}</button>`;
   const panel = document.createElement("div"); panel.className = "navpanel"; panel.id = "navpanel"; panel.hidden = true;
-  // Teile II bis IV ohne Untergruppen: je eine Spalte nebeneinander, der Teil steht über dem Balken
+  // Teile II bis V ohne Untergruppen: je eine Spalte nebeneinander, der Teil steht über dem Balken
   const navCol = k => { const xs = NAV.filter(x => x.part === k), P = PARTS[k] || {}; return xs.length ? `<div class="nvg"><p class="nvgh nvph">${P.no ? `<span>${esc(P.no)}</span> ` : ""}${esc(P.title || k)}</p>${xs.map(navA).join("")}</div>` : ""; };
-  panel.innerHTML = `<div class="nvin">${navPart("konjunktur")}<div class="nvpart"><div class="nvgroups">${navCol("analysen")}${navCol("struktur")}${navCol("anhang")}</div></div>${navFoot}</div>`;
+  panel.innerHTML = `<div class="nvin">${navPart("konjunktur")}<div class="nvpart"><div class="nvgroups">${navCol("analysen")}${navCol("geopolitik")}${navCol("struktur")}${navCol("anhang")}</div></div>${navFoot}</div>`;
   const header = document.querySelector("header"); header.appendChild(panel);
   const nb = nav.querySelector(".navbtn");
   const closeAll = () => { const was = !panel.hidden; panel.hidden = true; nb.setAttribute("aria-expanded", "false"); document.body.classList.remove("menuopen"); return was; };

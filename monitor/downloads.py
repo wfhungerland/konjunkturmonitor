@@ -47,6 +47,14 @@ def _ma3(y: list) -> list:
     return s.rolling(3).mean().round(4).tolist()
 
 
+def _tm_chain(k: str, parent: dict) -> list:
+    """Codes vom obersten bis zum Blatt (Baumkarte)."""
+    out = [k]
+    while parent.get(out[0]):
+        out.insert(0, parent[out[0]])
+    return out
+
+
 def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
     """Breite Tabelle und Beschreibung, wie die Abbildung zu zeichnen ist.
 
@@ -141,6 +149,25 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
                            "Dreimonatsvergleich, %": [r["m3"] for r in h["rows"]],
                            "Niveau gegenüber 2019, %": [r["level"] for r in h["rows"]]})
         return df.iloc[::-1].reset_index(drop=True), {"kind": "table"}
+    if typ == "treemap" and c.get("attach"):  # Grundriss: je Blatt eine Zeile mit allen Ebenen, je Jahr eine Spalte
+        T = c["attach"]
+        P = T.get("parent") or {}
+        leaves = sorted({k for st in T["steps"] for k in list(st["values"]) + list((st.get("alt") or {}).get("values", {}))})
+        depth = max(len(_tm_chain(k, P)) for k in leaves)
+        rows = []
+        for k in leaves:
+            ch = _tm_chain(k, P)
+            r = {"Code": k}
+            for d in range(depth - 1):
+                r[f"Ebene {d + 1}"] = (T.get("labels") or {}).get(ch[d], ch[d]) if d < len(ch) - 1 else ""
+            r["Bezeichnung"] = (T.get("labels") or {}).get(k, k)
+            for st in T["steps"]:
+                r[f"{st['label']}, {T.get('unit', '')}"] = st["values"].get(k)
+            for st in T["steps"]:
+                if st.get("alt"):
+                    r[f"{st['label']} {T.get('alt_label', '')}, {T.get('unit', '')}"] = st["alt"]["values"].get(k)
+            rows.append(r)
+        return pd.DataFrame(rows), {"kind": "list"}
     if typ == "tiles" and c.get("tiles") and c["tiles"].get("measure") == "diff":
         rows = c["tiles"]["rows"]
         df = pd.DataFrame({"Land": [r["name"] for r in rows], "Kürzel": [r["abbr"] for r in rows],
