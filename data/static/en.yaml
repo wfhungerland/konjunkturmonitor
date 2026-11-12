@@ -533,6 +533,26 @@ charts:
     title: "Government debt"
     ask: "How high is government debt?"
     caption: "The chart shows general government gross debt as a percentage of economic output, as defined in the Maastricht Treaty. Dashed grey is the treaty's reference value of 60%."
+  gov_debt_level:
+    title: "Debt by level of government"
+    ask: "Who in government holds the debt?"
+    caption: "The lines show the gross debt of the federal government, the Länder, municipalities and social security as a percentage of economic output, as defined in the Maastricht Treaty. The federal government includes its special funds and extra-budgetary entities. Each level is counted on its own, so loans between levels appear twice and the sum is slightly above total government debt."
+  gov_debt_instr:
+    title: "Debt by instrument"
+    ask: "In what form does the government borrow?"
+    caption: "The bars split general government gross debt at year-end into securities (bonds, notes and bills), loans (mainly bank loans to Länder and municipalities) and currency and deposits (mainly coins), each as a percentage of economic output."
+  gov_debt_holder:
+    title: "Debt by creditor"
+    ask: "Who does the government owe?"
+    caption: "The bars split general government gross debt at year-end by who holds the bonds and loans, as a percentage of economic output. The Bundesbank holds government bonds mainly from the Eurosystem's purchase programmes since 2015. Rest of the world covers all creditors outside Germany, including foreign central banks and funds."
+  gov_debt_mat:
+    title: "Maturity of government debt"
+    ask: "How long does government debt run?"
+    caption: "The lines show how many years government debt at year-end still has to run on average, weighted by amount. The longer, the more slowly higher interest rates feed through to the budget. Eurostat reports values for France, Italy and Spain only from 2020."
+  gov_debt_cost:
+    title: "Interest on government debt"
+    ask: "How expensive is government debt?"
+    caption: "The thick line shows the average interest rate on all government debt: interest spending in a year as a percentage of the previous year's debt. The thin line shows the monthly yield on ten-year Bunds, roughly the rate on new debt. When the yield is above the average rate, interest spending rises as old bonds mature and are refinanced."
   stx_share:
     title: "Government spending by function, share of spending"
     ask: "What does the government spend its money on?"
@@ -956,6 +976,23 @@ series:
   de_gov_interest: {title: "Government interest expenditure", label: "Interest expenditure", unit: "% of GDP", adjustment: "annual data"}
   de_gov_inv: {title: "Government gross fixed capital formation", label: "Investment", unit: "% of GDP", adjustment: "annual data"}
   de_gov_debt: {title: "General government gross debt (Maastricht definition)", label: "Debt", unit: "% of GDP", adjustment: "not adjusted"}
+  de_debt_s1311: {title: "Gross debt, federal government (Maastricht definition)", label: "Federal government", unit: "% of GDP", adjustment: "not adjusted"}
+  de_debt_s1312: {title: "Gross debt, Länder (Maastricht definition)", label: "Länder", unit: "% of GDP", adjustment: "not adjusted"}
+  de_debt_s1313: {title: "Gross debt, municipalities (Maastricht definition)", label: "Municipalities", unit: "% of GDP", adjustment: "not adjusted"}
+  de_debt_s1314: {title: "Gross debt, social security (Maastricht definition)", label: "Social security", unit: "% of GDP", adjustment: "not adjusted"}
+  de_debt_gd_f3: {title: "General government gross debt by instrument: securities", label: "Securities", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_gd_f4: {title: "General government gross debt by instrument: loans", label: "Loans", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_gd_f2: {title: "General government gross debt by instrument: currency and deposits", label: "Currency and deposits", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_h_s121: {title: "General government gross debt by creditor: Bundesbank", label: "Bundesbank", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_h_s122_s123: {title: "General government gross debt by creditor: Banks", label: "Banks", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_h_s124_s129: {title: "General government gross debt by creditor: Insurers, funds and others", label: "Insurers, funds and others", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_h_s11_s14_s15: {title: "General government gross debt by creditor: Firms and households", label: "Firms and households", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_h_s2: {title: "General government gross debt by creditor: Rest of the world", label: "Rest of the world", unit: "% of GDP", adjustment: "year-end"}
+  rmd_de: {title: "Average remaining maturity of government debt, Germany", label: "Germany", unit: "years", adjustment: "year-end"}
+  rmd_fr: {title: "Average remaining maturity of government debt, France", label: "France", unit: "years", adjustment: "year-end"}
+  rmd_it: {title: "Average remaining maturity of government debt, Italy", label: "Italy", unit: "years", adjustment: "year-end"}
+  rmd_es: {title: "Average remaining maturity of government debt, Spain", label: "Spain", unit: "years", adjustment: "year-end"}
+  de_gov_implicit: {title: "Average interest rate on government debt (interest as % of previous year's debt)", label: "Average rate on debt", unit: "% p. a.", adjustment: "annual"}
   de_cofog_tot_gf10: {title: "Government expenditure on social protection", label: "Social protection", unit: "% of government expenditure", adjustment: "annual data"}
   de_cofog_tot_gf07: {title: "Government expenditure on health", label: "Health", unit: "% of government expenditure", adjustment: "annual data"}
   de_cofog_tot_gf01: {title: "Government expenditure on administration and interest", label: "Administration and interest", unit: "% of government expenditure", adjustment: "annual data"}
