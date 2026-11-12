@@ -59,10 +59,11 @@ jobs:
           mkdir -p archiv && gzip -c data/processed/observations.csv > archiv/observations.csv.gz
           cp data/processed/run_status.json series.yaml monitor.yaml archiv/
           gh release create "$tag" archiv/* --title "Datenstand $(date -u +%d.%m.%Y) (KW $(date -u +%V))" --notes "Vollständiger Datenstand des Konjunkturmonitors, Code-Stand ${GITHUB_SHA}. Nachrechnen: Repository auf diesen Commit setzen, observations.csv.gz nach data/processed/observations.csv entpacken, python -m monitor build."
-      - name: Seitentest im Browser
+      - name: Vorschaubilder und Seitentest im Browser
         run: |
           npm install --no-save --silent playwright@1.63.0
           npx playwright install --with-deps chromium > /dev/null
+          node monitor/previews.js site  # Vorschaubilder je Grafik; die Seite lädt die lebendige Grafik erst beim Überfahren oder Antippen
           node tests/smoke.js site/index.html
           if [ -f site/en/index.html ]; then node tests/smoke.js site/en/index.html; fi
       - name: Ticket bei Ausfällen

@@ -127,6 +127,11 @@
   .card .cap.notes { color: var(--muted); }
   .card .nextup { font: 13.5px/1.4 var(--ff); color: var(--muted); margin-top: 4px; }
   .card .chart { width: 100%; aspect-ratio: 5 / 3; min-height: 260px; overflow: hidden; }
+  .card .chart > img.prev { display: block; width: 100%; height: 100%; object-fit: contain; object-position: left top; }  /* Vorschaubild, bis die Grafik beim Überfahren oder Antippen lebendig wird */
+  .dtab { border-collapse: collapse; font: 13.5px/1.45 var(--ff); font-variant-numeric: tabular-nums; margin: 4px 0 8px; }
+  .dtab th, .dtab td { padding: 2px 10px 2px 0; text-align: right; border-bottom: 1px solid #ececec; vertical-align: bottom; }
+  .dtab th:first-child, .dtab td:first-child { text-align: left; } .dtab th { font-weight: 600; border-bottom-color: #999; }
+  .tabwrap { overflow-x: auto; }
   .charts.single { grid-template-columns: minmax(0, 1fr); }
   .charts.single .card .chart { aspect-ratio: 5 / 2; max-height: 440px; }
   .charts.single .card .chart.square { aspect-ratio: 1 / 1; max-height: 520px; }
@@ -472,6 +477,7 @@ const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
 const FAZTXT = { btn: "Fazit", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Fazit bleibt die Seite neutral." };
 const ABTXT = { close: "schließen" };
+const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen im Download unter „Daten“." };
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (↗) und Schwellen
 const isBad = (c, sid) => c.up_bad === true || (Array.isArray(c.up_bad) && c.up_bad.includes(sid));
 const tendOf = (y, d) => { const v = y.filter(q => q != null); if (v.length < 2) return null; const a = v[v.length - 1], b = v[v.length - 2]; return Math.round(Math.abs(a - b) * 10 ** d) === 0 ? "flat" : a > b ? "up" : "down"; };
@@ -1340,7 +1346,15 @@ function card(c, no) {
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => prompt("Link kopieren:", url)); else prompt("Link kopieren:", url); };
   ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `${FC(no)} ${c.title || ""}. ${c.text || ""}`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
-  ch._c = c; placeTools(el);
+  ch._c = c;
+  if (tabOk(c)) { const seg = document.createElement("div"); seg.className = "seg tabseg"; seg.setAttribute("role", "group");
+    const tb = document.createElement("div"); tb.className = "tabbox"; tb.hidden = true; box.after(tb);
+    [TABTXT.chart, TABTXT.table].forEach((lab, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = lab; b.setAttribute("aria-pressed", String(i === 0));
+      b.onclick = e => { e.stopPropagation(); seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        if (i) tb.innerHTML = dataTable(ch._c || c); tb.hidden = !i; box.hidden = !!i; };
+      seg.appendChild(b); });
+    htools.prepend(seg); }
+  placeTools(el);
   return el;
 }
 // Handy: Ansichtsknöpfe unter die Grafik
@@ -1368,6 +1382,7 @@ function render(ch) {
   if (ch.dataset.done) return;
   if (!window.Plotly) { ch.dataset.done = "wait"; plotlyReady().then(() => { delete ch.dataset.done; render(ch); }); return; }
   ch.dataset.done = 1;
+  if (ch.querySelector(":scope > img.prev")) { ch.querySelector(":scope > img.prev").remove(); if (ch._prevU) ch._prevU.style.display = ""; }
   if (!render.loc) { render.loc = 1;
     // Quelle und Lizenz enden an der rechten Kante der Zeichenfläche: rechten Rand der Grafik an die Karte geben
     const np = Plotly.newPlot; Plotly.newPlot = (gd, ...a) => np(gd, ...a).then(g => { const z = gd._fullLayout && gd._fullLayout._size, cd = gd.closest && gd.closest(".card");
@@ -1413,6 +1428,35 @@ function render(ch) {
   else if (c.type === "seasonal") seasonalChart(ch, c); else if (c.type === "tiles") tilesChart(ch, c);
   else if (c.multiples && (DATA.layout || {}).small_multiples && c.series && (c.series.length > 2 || c.own_scale)) multiplesChart(ch, c);
   else timeChart(ch, c);
+}
+
+// Tabelle statt Grafik: die letzten zwölf Werte, jüngster zuerst
+const tabOk = c => (!c.type || ["line", "stacked", "threshold"].includes(c.type)) && (c.series || []).some(sr => Array.isArray(sr.x) && sr.x.length && /^\d{4}-\d{2}/.test(sr.x[0]));
+function dataTable(c) {
+  const ser = (c.series || []).filter(sr => Array.isArray(sr.x) && Array.isArray(sr.y) && sr.x.length && !sr.hidden), cols = ser.slice(0, 6), d = c.decimals ?? 1;
+  const xs = [...new Set(cols.flatMap(sr => sr.x))].sort().slice(-12).reverse();
+  const cell = (sr, x) => { const i = sr.x.lastIndexOf(x), v = i < 0 ? null : sr.y[i]; return v == null || Number.isNaN(v) ? "" : fmt(v, d); };
+  return `<div class="tabwrap"><table class="dtab"><thead><tr><th>${TABTXT.period}</th>${cols.map(sr => `<th>${esc(sr.label || "")}</th>`).join("")}</tr></thead><tbody>`
+    + xs.map(x => `<tr><td>${esc(perLong(x, c.freq))}</td>${cols.map(sr => `<td>${cell(sr, x)}</td>`).join("")}</tr>`).join("") + `</tbody></table></div>`
+    + (ser.length > cols.length ? `<p class="tnote">${TABTXT.more.replace("{k}", cols.length).replace("{n}", ser.length)}</p>` : "");
+}
+// Vorschaubilder: beim Bau gezeichnet (prev/<anker>-d.webp breit, -m.webp Handy); lebendig beim Überfahren, Antippen oder Bedienen
+const PREVS = /*__PREV__*/null;  // vom Vorschaulauf eingesetzt: je Anker, ob es Bilder gibt und ob die Einheit in der Grafik steht
+const PREV = !!PREVS && !/[?&]noprev=1/.test(location.search) && !DATA.embed;
+const prevKind = c => !!c.anchor && (!c.type || ["line", "stacked", "threshold"].includes(c.type)) && !c.variant && !c.alt
+  && !(c.multiples && (DATA.layout || {}).small_multiples && c.series && (c.series.length > 2 || c.own_scale));
+const prevOk = c => PREV && !YEAR_BANDS && prevKind(c) && !!PREVS[c.anchor];
+function show(ch) {
+  const c = ch._c; if (ch.dataset.done || !c || !prevOk(c)) { render(ch); return; }
+  const pv = PREVS[c.anchor][PHONE.matches ? "m" : "d"]; if (!pv) { render(ch); return; }
+  const ue = ch.closest(".card")?.querySelector(".unit"); if (pv.u && ue) { ue.style.display = "none"; ch._prevU = ue; }  // Einheit steht im Bild
+  const img = new Image(); img.className = "prev"; img.alt = ""; img.decoding = "async";
+  img.onerror = () => { img.remove(); render(ch); };
+  img.src = `prev/${c.anchor}-${PHONE.matches ? "m" : "d"}.webp?v=${encodeURIComponent(DATA.generated_at || "")}`;
+  ch.appendChild(img);
+  const cd = ch.closest(".card") || ch, wake = () => { if (!ch.dataset.done) render(ch); };
+  cd.addEventListener("pointerenter", wake, { once: true }); cd.addEventListener("focusin", wake, { once: true });
+  cd.addEventListener("click", wake, { once: true, capture: true });  // Antippen oder ein Schalter: erst die lebendige Grafik
 }
 
 // Kennzahl-Kacheln: sechs Kernzahlen groß, mit Tendenz, Stand und Verlauf über fünf Jahre
@@ -1572,7 +1616,7 @@ function build() {
     const sec = e.target.closest("section.topic"); if (!e.isIntersecting || !sec) return; const r = sec.querySelector(".rail");
     r.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id));
   }), { rootMargin: "-35% 0px -60% 0px" }) : null;
-  const obs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { obs.unobserve(e.target); render(e.target); } }), { rootMargin: "300px" }) : null;
+  const obs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { obs.unobserve(e.target); show(e.target); } }), { rootMargin: "300px" }) : null;
   DATA.topics.forEach(t => {
     const sec = document.createElement("section"); sec.className = "topic"; sec.id = t.id;
     const q = t.question;
@@ -1604,7 +1648,7 @@ function build() {
         det.innerHTML = `<summary>${MORETXT.replace("{t}", esc(t.title || "")).replace("{n}", t.charts.length)}<span class="list">${t.charts.slice(1).map(x => `${esc(FC(x.no))} ${esc(x.title || "")}`).join("<br>")}</span></summary>`;
         target = document.createElement("div"); target.className = "charts"; det.appendChild(target); sec.appendChild(det);
       }
-      no += 1; const el = card(c, c.no ?? no); target.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : render(ch);
+      no += 1; const el = card(c, c.no ?? no); target.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : show(ch);
     });
     if (LY.lead_chart_only && wrap.children.length === 1) wrap.classList.add("single");
     // Linke Spalte: alle Abbildungen des Abschnitts, die gerade sichtbare hervorgehoben
