@@ -213,6 +213,7 @@ charts:
   svr_bip: {title: "Wachstumsprognosen des Sachverständigenrats und erste Meldung", decimals: 1}
   svr_vpi: {title: "Inflationsprognosen des Sachverständigenrats und erste Meldung", decimals: 1}
   svr_alo: {title: "Arbeitslosenprognosen des Sachverständigenrats und erste Meldung", decimals: 0}
+  svr_treff: {title: "Treffsicherheit der Prognosen des Sachverständigenrats", decimals: 1}
   svr_rat: {title: "Empfehlungen des Sachverständigenrats zu vier Dauerfragen", decimals: 0}
   svr_fiskal: {title: "Empfohlener Kurs der Finanzpolitik und erwartetes Wachstum", decimals: 1}
   gd_bip: {title: "Wachstumsprognosen der Gemeinschaftsdiagnose und erste Meldung", decimals: 1}
@@ -221,6 +222,7 @@ charts:
   gd_saldo: {title: "Prognosen der Gemeinschaftsdiagnose zum Finanzierungssaldo des Staates", decimals: 1}
   gd_fehler: {title: "Fehler der Wachstumsprognosen der Gemeinschaftsdiagnose", decimals: 1}
   gd_ziel: {title: "Wachstumsprognosen der Gemeinschaftsdiagnose für ein Zieljahr", decimals: 1}
+  gd_treff: {title: "Treffsicherheit der Prognosen der Gemeinschaftsdiagnose", decimals: 1}
   gd_rat: {title: "Empfehlungen der Gemeinschaftsdiagnose zu vier Dauerfragen", decimals: 0}
   gd_vergleich: {title: "Empfehlungen von Gemeinschaftsdiagnose und Sachverständigenrat im Vergleich", decimals: 0}
   gd_themen: {title: "Themen der Gemeinschaftsdiagnose: Anteil der Seiten", decimals: 1}
@@ -4631,3 +4633,74 @@ series:
     label: "Kaukasus und Zentralasien"
     license: "Eurostat: Wiederverwendung mit Quellenangabe"
     note: "Sechs Länder, über die nach Studien der Osteuropabank (EBRD) Waren nach Russland umgeleitet werden; Summe der jeweils letzten zwölf Monate; werktäglich abgerufen."
+
+  - id: svr_err_bip
+    block: wachstum
+    source: derived
+    derive: {from: svr_bip_prog, minus: svr_bip_ist, op: diff}
+    title: "Wachstum: Prognose des Sachverständigenrats minus erste Meldung"
+    unit: "Prozentpunkte"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: svr_treff
+    label: "Wachstum"
+  - id: svr_err_vpi
+    block: wachstum
+    source: derived
+    derive: {from: svr_vpi_prog, minus: svr_vpi_ist, op: diff}
+    title: "Inflation: Prognose des Sachverständigenrats minus erste Meldung"
+    unit: "Prozentpunkte"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: svr_treff
+    label: "Inflation"
+  - id: svr_err_alo
+    block: wachstum
+    source: derived
+    derive: {from: svr_alo_prog, minus: svr_alo_ist, op: diff}
+    title: "Arbeitslose: Prognose des Sachverständigenrats minus erste Meldung"
+    unit: "Tsd. Personen"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: svr_treff
+    label: "Arbeitslose (Tsd.)"
+  - id: gd_err_bip
+    block: wachstum
+    source: derived
+    derive: {from: gd_bip_prog, minus: gd_bip_ist, op: diff}
+    title: "Wachstum: Prognose der Gemeinschaftsdiagnose minus erste Meldung"
+    unit: "Prozentpunkte"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: gd_treff
+    label: "Wachstum"
+  - id: gd_err_vpi
+    block: wachstum
+    source: derived
+    derive: {from: gd_vpi_prog, minus: gd_vpi_ist, op: diff}
+    title: "Inflation: Prognose der Gemeinschaftsdiagnose minus erste Meldung"
+    unit: "Prozentpunkte"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: gd_treff
+    label: "Inflation"
+  - id: gd_err_saldo
+    block: wachstum
+    source: derived
+    derive: {from: gd_saldo_prog, minus: gd_saldo_ist, op: diff}
+    title: "Staatssaldo: Prognose der Gemeinschaftsdiagnose minus erste Meldung"
+    unit: "Prozentpunkte"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: gd_treff
+    label: "Staatssaldo"
+  - id: gd_err_alo
+    block: wachstum
+    source: derived
+    derive: {from: gd_alo_prog, minus: gd_alo_ist, op: diff}
+    title: "Arbeitslose: Prognose der Gemeinschaftsdiagnose minus erste Meldung"
+    unit: "Tsd. Personen"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: gd_treff
+    label: "Arbeitslose (Tsd.)"

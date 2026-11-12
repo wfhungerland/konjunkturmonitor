@@ -64,8 +64,8 @@ topics:
   struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
   staat: {title: "Government", ask: "What state are the public finances in?"}
   staatsausgaben: {title: "Government spending", code: "Spending", ask: "What does the government spend its money on?"}
-  sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What did the Council of Economic Experts forecast and recommend?"}
-  gemeinschaftsdiagnose: {title: "Joint Economic Forecast", code: "Forecast", ask: "How well did the economic research institutes forecast?"}
+  sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What does the Council of Economic Experts advise, and how accurate was it?"}
+  gemeinschaftsdiagnose: {title: "Joint Economic Forecast", code: "Forecast", ask: "What do the economic research institutes advise, and how accurate were they?"}
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
 
 charts:
@@ -573,6 +573,11 @@ charts:
     ask: "How well did the Council of Economic Experts forecast unemployment?"
     caption: "The chart compares the forecast of the Council of Economic Experts for registered unemployment (annual average) in the following year with the first release from the annual report a year later. West Germany until 1991, Germany afterwards; the jump in 1991/92 comes from the change of territory. From 2005 recipients of unemployment benefit II are included, which raises the count. The forecast line shows only years for which the Council printed a figure; years with only a change or a vague threshold are missing there."
     unit: "thousand people"
+  svr_treff:
+    title: "Accuracy of the Council of Economic Experts' forecasts"
+    ask: "How accurate were the Council's forecasts?"
+    caption: "Each panel shows how far the Council's forecast for the following year, from its annual report, deviated from the first release: above zero too high, below zero too low. Growth and inflation in percentage points, unemployment in thousand people. The individual forecasts and releases are under \"Downloads\"."
+    unit: "deviation"
   svr_rat:
     title: "Recommendations of the Council of Economic Experts on four standing questions"
     ask: "What did the Council of Economic Experts recommend on wages, money, public finances and the labour market?"
@@ -660,6 +665,11 @@ charts:
     title: "German aid to Ukraine"
     ask: "How much aid does Germany allocate to Ukraine?"
     caption: "German aid that has been delivered or firmly earmarked for delivery, in billion euros per quarter. Military aid includes money for arms purchases. Missing are Germany's share of aid from the European Union and the costs of refugees. Large packages are often fixed for several years at once."
+  gd_treff:
+    title: "Accuracy of the Joint Economic Forecast"
+    ask: "How accurate were the institutes' forecasts?"
+    caption: "Each panel shows how far the institutes' autumn forecast for the following year deviated from the first release: above zero too high, below zero too low. Growth, inflation and the government balance in percentage points, unemployment in thousand people. The individual forecasts and releases are under \"Downloads\"."
+    unit: "deviation"
   gd_rat:
     votes_label: "Dissenting votes of single institutes"
     rail: "Recommendations"
