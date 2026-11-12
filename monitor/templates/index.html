@@ -109,7 +109,7 @@
     .cside { grid-column: 2; }
   }
   @media (min-width: 980px) { .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr) 290px; } .cside { grid-column: 3; grid-row: 1; } .card.full .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr); } .card.full .cside { grid-column: 2; grid-row: auto; max-width: 52em; } }
-  :root { --gutw: 88px; }  /* Platz für „Verbesserungs-/vorschlag?“ in zwei Zeilen */
+  :root { --gutw: 64px; }
   .chead { display: flex; justify-content: space-between; align-items: flex-start; gap: 4px 16px; } .ctitle { min-width: 0; }
   .htools { display: flex; flex-direction: column; align-items: stretch; gap: 6px; margin-left: auto; }
   /* Schalter: nur Text mit kleinem Quadrat davor, leer = aus, gefüllt = an */
@@ -257,7 +257,7 @@
   .tourask button { font: inherit; background: none; border: 0; cursor: pointer; padding: 0; color: #8c8c8c; } .tourask button.go { color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
   /* Rückmeldung: ein Klick, ein Textfeld, kein Formular-Ballast */
   @media (max-width: 600px) { .chead { flex-wrap: wrap; } .chead .htools { margin-left: 0; width: 100%; order: 2; } .chead .ctitle { width: 100%; } }  /* Handy: Knöpfe unter den Titel, der Titel behält die volle Breite */
-  .gut .gopts button.fbc, .fbc { color: #0070C0; font-style: italic; hyphens: manual; line-height: 1.3; margin-top: 6px; } .gut .gopts button.fbc:hover { color: #0070C0; text-decoration: underline; text-underline-offset: 3px; } body.embed .fbc { display: none; }
+   body.embed .fbc { display: none; }
   .fbd .fbto { font: 12px var(--ff); color: #bdbdbd; margin: 0 0 14px; letter-spacing: .02em; }
   dialog.fbd { border: 0; padding: 28px 32px 22px; width: min(440px, calc(100vw - 32px)); font: 16px/1.5 var(--ff); color: var(--text); box-shadow: 0 12px 48px rgba(0,0,0,.14); }
   dialog.fbd::backdrop { background: rgba(255,255,255,.6); } .fbd form { margin: 0; }
@@ -513,9 +513,8 @@ const TOURTXT = { name: "Rundgang", ask: "Neu hier? Eine Minute Rundgang zeigt, 
     ["@card .htools", "Lieber Zahlen statt Linien? Mit „Tabelle“ sehen Sie die letzten zwölf Werte."],
     ["@card .tools", "Mit diesen Schaltern sehen Sie mehr, etwa die ganze Geschichte einer Zahl oder frühere Krisen."],
     ["@card .cside", "Hier steht in wenigen Sätzen, was die Grafik zeigt. Wer es genau wissen will, klickt auf „Mehr zur Methode“."],
-    ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik."],
-    ["@card .fbc", "Fällt Ihnen an einer Grafik etwas auf, gut oder schlecht? Klicken Sie auf „Verbesserungsvorschlag?“. Es kommt direkt beim Autor an."]] };
-const FBTXT = { btn: "Verbesserungsvorschlag?", ph: "Ihr Vorschlag", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
+    ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik. Und über „Feedback“ erreicht Ihre Meinung zu einer Grafik direkt den Autor."]] };
+const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen unter „Downloads“." };
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (↗) und Schwellen
 const isBad = (c, sid) => c.up_bad === true || (Array.isArray(c.up_bad) && c.up_bad.includes(sid));
@@ -2027,7 +2026,7 @@ document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = documen
     f.querySelector(".fbto").textContent = c.code;
     f.addEventListener("submit", async e => { e.preventDefault(); const msg = ta.value.trim(); if (!msg) return;
       const sb = f.querySelector(".fbsend"); sb.disabled = true;
-      const body = { message: msg, grafik: `${c.code} ${c.title}`, link: location.href.split("#")[0] + "#" + c.anchor, sprache: DATA.lang || "de", _subject: `Konjunkturmonitor: Vorschlag zu ${c.code}` };
+      const body = { message: msg, grafik: `${c.code} ${c.title}`, link: location.href.split("#")[0] + "#" + c.anchor, sprache: DATA.lang || "de", _subject: `Konjunkturmonitor: Feedback zu ${c.code}` };
       try { const r = await fetch(`https://formspree.io/f/${encodeURIComponent(id)}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) });
         if (!r.ok) throw new Error(r.status);
         f.innerHTML = `<p class="fbok">${FBTXT.ok}</p>`; setTimeout(() => d.close(), 1400);
@@ -2036,7 +2035,7 @@ document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = documen
   d.addEventListener("click", e => { if (e.target === d) d.close(); });  // Klick daneben schließt
   // je Grafik oben rechts neben „Grafik | Tabelle“; die Nachricht nennt die Grafik
   document.querySelectorAll(".card[data-chart]").forEach(cd => { const ht = cd.querySelector(".htools");
-    const b = document.createElement("button"); b.type = "button"; b.className = "fbc"; b.textContent = FBTXT.btn.replace("Verbesserungsvorschlag", "Verbesserungs\u00advorschlag");
+    const b = document.createElement("button"); b.type = "button"; b.className = "fbc"; b.textContent = FBTXT.btn;
     b.onclick = e => { e.stopPropagation(); const ab = cd.querySelector("h3 .abbno"); const t = cd.querySelector("h3"); open({ code: (ab?.textContent || "").trim(), title: (t?.textContent || "").replace(ab?.textContent || "", "").trim(), anchor: cd.id }); };
     (cd.querySelector(".gut .gopts") || ht).append(b); });  // links unter Stern, Downloads und Link
 })();
