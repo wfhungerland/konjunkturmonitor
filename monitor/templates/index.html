@@ -212,7 +212,7 @@
   details.morecharts[open] > summary .list { display: none; }
   @media (min-width: 1240px) { details.morecharts > summary .list { display: none; } }  /* steht dann links */
   @media (max-width: 700px) { .card .chart { aspect-ratio: auto; height: 225px; min-height: 0; } .charts.single .card .chart { aspect-ratio: auto; height: 225px; } .card .chart.square { height: auto; aspect-ratio: 4 / 3; } .card .chart.multi { height: auto; } section.topic .secmain > h2 { font-size: 22px; } }
-  .multiples { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 10px 16px; }
+  .multiples { display: grid; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); gap: 10px 16px; }
   .multiples { gap: 14px 22px; }
   .evlegend { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0 0 10px; font-size: 13.5px; }
   .evlegend i { display: inline-block; width: 22px; vertical-align: middle; margin-right: 6px; }
@@ -361,7 +361,7 @@
   .stable small.cu { font-size: 12px; color: var(--grey); }
   details.fold { margin: 6px 0; } details.fold > summary { cursor: pointer; color: var(--accent); font: 15px var(--ff); }
   details.fold[open] > summary { margin-bottom: 4px; }
-  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 10px 0 18px; }
+  .kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 10px 0 18px; }
   @media (max-width: 760px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .kpi { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r); color: inherit; background: #fff; }
   .kpi:hover { border-color: var(--accent); text-decoration: none; }
@@ -763,7 +763,7 @@ function multiplesChart(el, c) {
   const ya0 = yAxis(all, c.unit, []);
   const xs = c.series.flatMap(s => s.x).sort(), r = pad(xs[0], xs[xs.length - 1], c.freq);
   const nM = k => c.freq === "B" ? Math.round(k * 21) : k;  // Arbeitstage je Monat
-  const cols = Math.min(c.series.length, (el.clientWidth || 600) < 560 ? 2 : 3);  // Handy zwei, Desktop drei Felder je Zeile; alle gleich breit
+  const cols = Math.min(c.series.length, 2);  // höchstens zwei Grafiken nebeneinander, auch am Desktop
   const grid = document.createElement("div"); grid.className = "multiples"; grid.style.setProperty("--cols", cols); el.appendChild(grid);
   const avg = a => a.reduce((p, v) => p + v, 0) / a.length;
   c.series.forEach((s, k) => {
@@ -1008,7 +1008,7 @@ const ENSO_TXT = { nino: "nach El-Niño-Monaten", neutral: "nach neutralen Monat
 // Ereignisstudie: je Feld eine Größe, Monat 0 = 100, graue Fläche = Spanne früherer Ereignisse, dick = laufendes Ereignis
 function eventChart(el, c) {
   el.classList.add("multi");
-  const E = c.event, w0 = el.clientWidth || 600, cols = w0 < 560 ? 1 : E.panels.length === 3 && w0 >= 680 ? 3 : 2;
+  const E = c.event, w0 = el.clientWidth || 600, cols = w0 < 560 ? 1 : 2;  // höchstens zwei nebeneinander
   const LC = ["#0070C0", "#D86DCD", "#47D359", "#7030A0", "#00B0F0"];
   const sig = p => p.lines.map(l => l.label).join("|"), shared = E.panels.every(p => sig(p) === sig(E.panels[0]));  // gleiche Episoden: eine Legende für alle Felder
   if (shared) { const lg = document.createElement("p"); lg.className = "evlegend";
