@@ -48,7 +48,7 @@
   .q .num { font: bold 32px/1 var(--ff); color: var(--dark); }
   .q .u { font: 15px var(--ff); color: var(--muted); }
   /* Kommentar: eigener Absatz mit Linie links und kleiner Marke, klar getrennt von der Beschreibung darunter */
-  .overview .fz { display: none; } body.fazit .overview .fz { display: block; border-left: 2px solid var(--text); padding-left: 14px; margin: 0 0 12px; }
+  .overview .fz { display: none; } body.fazit .overview .fz { display: block; border-left: 2px solid var(--text); padding-left: 14px; margin: 14px 0 4px; }
   .overview .fz .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 3px 0 5px; }
   body:not(.fazit) .verdict { display: none !important; }
   .fazitbtn[aria-pressed="true"] { font-weight: 700; }
@@ -533,7 +533,9 @@ const fmtU = (v, d, unit, bare) => { v = +v.toFixed(d); if (v === 0) v = 0; cons
 // Text für Plotly-Beschriftungen nach verfügbarer Breite (px) umbrechen
 const wrapPx = (t, px, cw = 6.6) => { const n = Math.max(12, Math.floor(px / cw)); if (t.length <= n) return t; const out = []; let line = "";
   t.split(" ").forEach(w => { if (line && (line + " " + w).length > n) { out.push(line); line = w; } else line = line ? line + " " + w : w; }); if (line) out.push(line); return out.join("<br>"); };
-const unitLabel = u => (u || "").startsWith("Saldo") ? "Saldo in Pp (Anteil positiver minus Anteil negativer Antworten)" + u.slice(5).replace(/^ in Pp/, "") : (u || "");
+// Währung vor die Größe, britischer Stil: „€ Mrd.“, „$ je Barrel“
+const curU = u => (u || "").replace(/^Mrd\. €/, "€ Mrd.").replace(/^Mio\. €/, "€ Mio.").replace(/^Mrd\. US-Dollar/, "$ Mrd.").replace(/^Mrd\. US-\$/, "$ Mrd.").replace(/^US-Dollar je/, "$ je").replace(/^€ je MWh/, "€ je MWh");
+const unitLabel = u => (u || "").startsWith("Saldo") ? "Saldo in Pp (Anteil positiver minus Anteil negativer Antworten)" + u.slice(5).replace(/^ in Pp/, "") : curU(u);
 const MONTHS_L = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 // Zeitraum ausgeschrieben: „Oktober 2026“, „3. Quartal 2026“, „2025“, „Woche bis 4. November 2026“; perIn mit Präposition
 const perLong = (x, f) => f === "B" ? `${+x.slice(8, 10)}. ${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : f === "A" ? x.slice(0, 4) : f === "Q" ? `${Math.floor((+x.slice(5, 7) - 1) / 3) + 1}. Quartal ${x.slice(0, 4)}` : f === "D" ? `Woche bis ${+x.slice(8, 10)}. ${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : `${MONTHS_L[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`;
@@ -1169,7 +1171,7 @@ function eventChart(el, c) {
 function seasonalChart(el, c) {
   const vals = c.y.concat(c.norm).filter(v => v != null);
   const xs = c.x, r = pad(xs[0], xs[xs.length - 1], "M");
-  const ya = yAxis(vals.concat([0]), c.unit === "Mrd. €" ? "Mrd. €" : c.unit === "Anzahl" ? "" : c.unit);
+  const ya = yAxis(vals.concat([0]), c.unit === "Mrd. €" ? curU("Mrd. €") : c.unit === "Anzahl" ? "" : curU(c.unit));
   const xa = xAxis(r[0], r[1], el.clientWidth || 500);
   const d = c.decimals;
   const traces = [
@@ -1632,7 +1634,7 @@ function startTable(box) {
     if (r.group !== grp) { grp = r.group; html += `<tr class="grp"><td colspan="8"><a href="#${r.topic}">${esc(grp)}</a></td></tr>`; }
     const d = r.decimals ?? 1; older = older || r.older;
     const cmp = `<span>${pshort(r)}${r.older ? "¹" : ""}</span>` + [[r.prev_label, r.prev], ["Vorjahr", r.yoy], ["3 Monate", r.m3]].filter(x => x[1] != null).map(x => `<span>${x[0]} ${ch(x[1], r)}</span>`).join("");
-    html += `<tr class="row" data-href="#${r.topic}"><td class="k"><a href="#${r.topic}">${esc(r.label)}</a><span class="ku">${esc(r.unit)}</span></td><td class="p${r.older ? " old" : ""}" title="${esc(r.period)}">${pshort(r)}${r.older ? "¹" : ""}</td><td class="t">${tendHtml(r.tendency, r.up_bad)}</td><td class="v">${fmt(r.value, d)}${r.revised ? `<sup class="rev" title="revidiert; zuerst veröffentlicht: ${fmt(r.revised.from, d)} (Stand ${r.revised.stand})">r</sup>` : ""}</td>`
+    html += `<tr class="row" data-href="#${r.topic}"><td class="k"><a href="#${r.topic}">${esc(r.label)}</a><span class="ku">${esc(curU(r.unit))}</span></td><td class="p${r.older ? " old" : ""}" title="${esc(r.period)}">${pshort(r)}${r.older ? "¹" : ""}</td><td class="t">${tendHtml(r.tendency, r.up_bad)}</td><td class="v">${fmt(r.value, d)}${r.revised ? `<sup class="rev" title="revidiert; zuerst veröffentlicht: ${fmt(r.revised.from, d)} (Stand ${r.revised.stand})">r</sup>` : ""}</td>`
       + `<td class="d">${ch(r.prev, r)}</td><td class="d">${ch(r.yoy, r)}</td><td class="d">${ch(r.m3, r)}</td>`
       + `<td class="s">${sp(r)}</td><td class="cmp">${cmp}${r.older ? "<span>älterer Stand</span>" : ""}</td></tr>`;
   };
@@ -1710,7 +1712,7 @@ function build() {
   const S = DATA.site;
   const nw = document.getElementById("news");
   if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
-  const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = (DATA.fazit ? `<span class="fz" title="${esc(FAZTXT.title)}"><span class="fzl">${FAZTXT.btn}</span>${esc(DATA.fazit)}</span>` : "") + sentHtml(os.map(s => s.trim())); bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
+  const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = sentHtml(os.map(s => s.trim())) + (DATA.fazit ? `<span class="fz" title="${esc(FAZTXT.title)}"><span class="fzl">${FAZTXT.btn}</span>${esc(DATA.fazit)}</span>` : "");  /* Kommentar unter der Beschreibung */ bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
   if (DATA.has_en || DATA.lang === "en") document.getElementById("lang").innerHTML = DATA.lang === "en" ? `<a href="../" hreflang="de" lang="de" title="Deutsch">DE</a> <b>EN</b>` : `<b>DE</b> <a href="en/" hreflang="en" lang="en" title="English">EN</a>`;
   const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `Stand ${d.toLocaleDateString("de-DE")}`;
   const AS = DATA.all_series || {};
@@ -1729,16 +1731,17 @@ function build() {
   else DATA.questions.forEach(q => {
     const a = q.answer, val = (a.signed && a.value > 0 ? "+" : "") + fmt(a.value, a.decimals ?? 1);
     grid.insertAdjacentHTML("beforeend", `<a class="q" href="#${q.topic}"><span class="ask">${esc(q.ask)}</span>
-      <span class="big"><span class="num">${val}</span><span class="u">${esc(a.unit)}${a.label && a.unit !== "Mrd. €" ? " " + esc(a.label) : ""}</span><span class="verdict">${esc(a.verdict)}</span></span>
+      <span class="big"><span class="num">${val}</span><span class="u">${esc(curU(a.unit))}${a.label && a.unit !== "Mrd. €" ? " " + esc(a.label) : ""}</span><span class="verdict">${esc(a.verdict)}</span></span>
       <span class="head">${esc(a.head)}</span>${spark(a.spark_data, a.ref)}<span class="per">${esc(a.period)}</span></a>`);
   });
   let no = 0, curPart = null;
   const NAV = [];  // Kapitel für das Menü: Teil, Gruppe, Nummer
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
-    analysen: { no: "Teil II", title: "Analysen", text: "Eigene Auswertungen: Rezessionsrisiko, Treffsicherheit von Prognosen und ersten Zahlen, Breite der Entwicklung und Wettbewerb. Dieser Teil wächst." },
-    geopolitik: { no: "Teil III", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht, Hilfe für die Ukraine und Handelskonflikte. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
-    struktur: { no: "Teil IV", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung, Steuern und Staatsfinanzen." },
-    anhang: { no: "Teil V", title: "Anhang", text: "Sonderfaktoren wie Wetter und Rheinpegel: zur Einordnung, nicht für die laufende Lage. Die Abbildungen sind eingeklappt." },
+    analysen: { no: "Teil III", title: "Analysen", text: "Eigene Auswertungen: Rezessionsrisiko, Treffsicherheit von Prognosen und ersten Zahlen, Breite der Entwicklung und Wettbewerb. Dieser Teil wächst." },
+    geopolitik: { no: "Teil V", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht, Hilfe für die Ukraine und Handelskonflikte. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
+    struktur: { no: "Teil VI", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen und Zuwanderung." },
+    staat: { no: "Teil II", title: "Staat", text: "Zinsen, Kredite und Staatsfinanzen: was Geld kostet, wie viel der Staat ausgibt und wie hoch er verschuldet ist." },
+    prognosen: { no: "Teil IV", title: "Prognosen und Gutachten", text: "Was Fachgremien vorhersagen und empfehlen, und wie gut sie lagen: Sachverständigenrat und Gemeinschaftsdiagnose, später auch IWF, EU-Kommission und OECD." },
     service: { no: "", title: "Termine", text: "" } };
   const railObs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
     const sec = e.target.closest("section.topic"); if (!e.isIntersecting || !sec) return; const r = sec.querySelector(".rail");
@@ -1815,7 +1818,7 @@ function build() {
   const panel = document.createElement("div"); panel.className = "navpanel"; panel.id = "navpanel"; panel.hidden = true;
   // Teile II bis V ohne Untergruppen: je eine Spalte nebeneinander, der Teil steht über dem Balken
   const navCol = k => { const xs = NAV.filter(x => x.part === k), P = PARTS[k] || {}; return xs.length ? `<div class="nvg"><p class="nvgh nvph">${P.no ? `<span>${esc(P.no)}</span> ` : ""}${esc(P.title || k)}</p>${xs.map(navA).join("")}</div>` : ""; };
-  panel.innerHTML = `<div class="nvin">${navPart("konjunktur")}<div class="nvpart"><div class="nvgroups">${navCol("analysen")}${navCol("geopolitik")}${navCol("struktur")}${navCol("anhang")}</div></div>${navFoot}</div>`;
+  panel.innerHTML = `<div class="nvin">${navPart("konjunktur")}<div class="nvpart"><div class="nvgroups">${navCol("staat")}${navCol("analysen")}${navCol("prognosen")}${navCol("geopolitik")}${navCol("struktur")}</div></div>${navFoot}</div>`;
   const header = document.querySelector("header"); header.appendChild(panel);
   const nb = nav.querySelector(".navbtn");
   const closeAll = () => { const was = !panel.hidden; panel.hidden = true; nb.setAttribute("aria-expanded", "false"); document.body.classList.remove("menuopen"); return was; };

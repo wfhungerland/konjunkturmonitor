@@ -51,6 +51,12 @@ _NBSP = "\u00a0"
 _RULES = [
     (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mrd."),
     (r"([+-]?)(\d[\d.,]*) (?:Millionen|Mio\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mio."),
+    (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) EUR\b", r"\1€\2" + _NBSP + "Mrd."),
+    (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) US-Dollar\b", r"\1$\2" + _NBSP + "Mrd."),
+    (r"([+-]?)(\d[\d.,]*) (?:Millionen|Mio\.) US-Dollar\b", r"\1$\2" + _NBSP + "Mio."),
+    (r"\bin (?:Milliarden|Mrd\.) (?:Euro|€|EUR)\b", "in €" + _NBSP + "Mrd."),
+    (r"\bin (?:Millionen|Mio\.) (?:Euro|€|EUR)\b", "in €" + _NBSP + "Mio."),
+    (r"\bin (?:Milliarden|Mrd\.) US-Dollar\b", "in $" + _NBSP + "Mrd."),
     (r"([+-]?)(\d[\d.,]*) €", r"\1€\2"),
     (r"(Mrd|Mio)\.\.", r"\1."),  # Satzende: kein doppelter Punkt
     (r"([+-]?)(\d[\d.,]*) US-Dollar\b", r"\1$\2"),

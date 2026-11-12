@@ -891,4 +891,41 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
         p[k] = _rel(p.get(k))
     if isinstance(p.get("all_series"), dict):
         p["all_series"] = {k: _rel(v) for k, v in p["all_series"].items()}
+    for t in p["topics"]:  # Beträge im britischen Stil: €141bn, $107 per barrel, £0.84
+        for c in t["charts"]:
+            c["texts"] = [money_en(x) for x in c.get("texts") or []]
+            c["text"] = " ".join(c["texts"])
+            for k in ("caption", "unit"):
+                if isinstance(c.get(k), str):
+                    c[k] = money_en(c[k])
+    for q in p.get("questions") or []:
+        a = q.get("answer") or {}
+        if a.get("head"):
+            a["head"], a["more"] = money_en(a["head"]), [money_en(m) for m in a.get("more") or []]
+        if isinstance(a.get("unit"), str):
+            a["unit"] = money_en(a["unit"])
+    for r in p.get("start") or []:
+        if isinstance(r.get("unit"), str):
+            r["unit"] = money_en(r["unit"])
+    p["overview"] = money_en(p.get("overview", ""))
     return p
+
+
+_MONEY_EN = [
+    (r"Mrd\. US-\$, Preise (\d{4})", r"$bn, \1 prices"), (r"\bEUR bn\b", "€bn"),
+    (r"\bEUR ([\d.,]+) billion\b", r"€\1bn"), (r"\bEUR ([\d.,]+) million\b", r"€\1m"),
+    (r"([+-]?)(\d[\d.,]*) ?€bn\b", r"\1€\2bn"), (r"€(\d[\d.,]*) bn\b", r"€\1bn"), (r"US\$(\d[\d.,]*) ?bn\b", r"$\1bn"),
+    (r"([+-]?)(\d[\d.,]*) US\$", r"\1$\2"), (r"([+-]?)(\d[\d.,]*) € ", r"\1€\2 "), (r"([+-]?)(\d[\d.,]*) €([,.;)]|$)", r"\1€\2\3"),
+    (r"([+-]?)(\d[\d.,]*) £", r"\1£\2"), (r"\bUS\$ per\b", "$ per"),
+    (r"\bin billions of euros\b", "in €bn"), (r"\bin billion euros\b", "in €bn"), (r"\bin billion US dollars\b", "in $bn"), (r"\bin millions of euros\b", "in €m"),
+]
+
+
+def money_en(s: str) -> str:
+    """Englische Beträge mit Zeichen vor der Zahl, ohne Leerzeichen vor bn."""
+    import re
+    if not s:
+        return s
+    for a, b in _MONEY_EN:
+        s = re.sub(a, b, s)
+    return s
