@@ -109,7 +109,7 @@
     .cside { grid-column: 2; }
   }
   @media (min-width: 980px) { .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr) 290px; } .cside { grid-column: 3; grid-row: 1; } .card.full .cgrid { grid-template-columns: var(--gutw) minmax(0, 1fr); } .card.full .cside { grid-column: 2; grid-row: auto; max-width: 52em; } }
-  :root { --gutw: 64px; }
+  :root { --gutw: 88px; }  /* Platz für „Verbesserungs-/vorschlag?“ in zwei Zeilen */
   .chead { display: flex; justify-content: space-between; align-items: flex-start; gap: 4px 16px; } .ctitle { min-width: 0; }
   .htools { display: flex; flex-direction: column; align-items: stretch; gap: 6px; margin-left: auto; }
   /* Schalter: nur Text mit kleinem Quadrat davor, leer = aus, gefüllt = an */
@@ -256,20 +256,18 @@
   .tourask { position: fixed; left: 50%; transform: translateX(-50%); bottom: 16px; z-index: 65; background: #fff; border: 1px solid var(--grey); padding: 8px 14px; font: 14px var(--ff); box-shadow: 0 4px 16px rgba(0,0,0,.12); display: flex; gap: 14px; align-items: center; }
   .tourask button { font: inherit; background: none; border: 0; cursor: pointer; padding: 0; color: #8c8c8c; } .tourask button.go { color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
   /* Rückmeldung: ein Klick, ein Textfeld, kein Formular-Ballast */
-  .htools .fbc { font: 13px/1.4 var(--ff); color: #0070C0; background: none; border: 0; padding: 0; cursor: pointer; text-align: left; white-space: nowrap; margin-top: 2px; }
   @media (max-width: 600px) { .chead { flex-wrap: wrap; } .chead .htools { margin-left: 0; width: 100%; order: 2; } .chead .ctitle { width: 100%; } }  /* Handy: Knöpfe unter den Titel, der Titel behält die volle Breite */
-  .seg button.fbc, .seg button.fbc[aria-pressed] { color: #0070C0; font-weight: 400; margin-left: 10px; border: 0; }
-  .htools .fbc:hover { text-decoration: underline; text-underline-offset: 3px; } body.embed .fbc { display: none; }
-  .fbd .fbto { font: 600 13px var(--ff); color: #0070C0; margin: 0 24px 8px 0; }
-  dialog.fbd { border: 1px solid var(--grey); border-radius: 0; padding: 18px 18px 14px; width: min(520px, calc(100vw - 32px)); font: 15px/1.45 var(--ff); color: var(--text); box-shadow: 0 8px 28px rgba(0,0,0,.18); }
-  dialog.fbd::backdrop { background: rgba(0,0,0,.25); } .fbd form { margin-top: 14px; }
-  .fbd textarea { width: 100%; box-sizing: border-box; min-height: 150px; font: 15px/1.45 var(--ff); border: 1px solid #cfcfcf; padding: 8px 10px; resize: vertical; }
-  .fbd textarea:focus, .fbd input:focus { outline: none; border-color: var(--text); }
-  .fbd input { width: 100%; box-sizing: border-box; font: 13.5px var(--ff); border: 0; border-bottom: 1px solid #cfcfcf; padding: 6px 0; margin-top: 8px; }
-  .fbd .fbrow { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; gap: 12px; }
+  .gut .gopts button.fbc, .fbc { color: #0070C0; font-style: italic; hyphens: manual; line-height: 1.3; margin-top: 6px; } .gut .gopts button.fbc:hover { color: #0070C0; text-decoration: underline; text-underline-offset: 3px; } body.embed .fbc { display: none; }
+  .fbd .fbto { font: italic 13px var(--ff); color: #8c8c8c; margin: 0 24px 10px 0; }
+  dialog.fbd { border: 0; padding: 20px 22px 16px; width: min(460px, calc(100vw - 32px)); font: 15px/1.45 var(--ff); color: var(--text); box-shadow: 0 10px 40px rgba(0,0,0,.18); }
+  dialog.fbd::backdrop { background: rgba(0,0,0,.2); } .fbd form { margin: 0; }
+  .fbd textarea { width: 100%; box-sizing: border-box; min-height: 120px; font: 15px/1.45 var(--ff); border: 0; border-bottom: 1px solid #d0d0d0; padding: 4px 0; resize: none; background: none; }
+  .fbd input { width: 100%; box-sizing: border-box; font: 13.5px var(--ff); border: 0; border-bottom: 1px solid #e3e3e3; padding: 6px 0; margin-top: 10px; background: none; }
+  .fbd textarea:focus, .fbd input:focus { outline: none; border-bottom-color: #0070C0; }
+  .fbd .fbrow { display: flex; justify-content: space-between; align-items: baseline; margin-top: 14px; gap: 12px; }
   .fbd .fbnote { font-size: 12px; color: #8c8c8c; } .fbd .fbnote a { color: inherit; }
-  .fbd button.fbsend { font: 600 14px var(--ff); background: var(--text); color: #fff; border: 0; padding: 6px 16px; cursor: pointer; }
-  .fbd button.fbx { position: absolute; right: 10px; top: 6px; border: 0; background: none; font-size: 20px; color: #8c8c8c; cursor: pointer; }
+  .fbd button.fbsend { font: 600 15px var(--ff); background: none; color: #0070C0; border: 0; padding: 0; cursor: pointer; } .fbd button.fbsend:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .fbd button.fbx { position: absolute; right: 12px; top: 8px; border: 0; background: none; font-size: 18px; color: #b0b0b0; cursor: pointer; }
   .fbd .fbok { font-size: 15px; margin: 6px 0 2px; }
   .fab { position: fixed; right: 14px; bottom: 14px; z-index: 6; background: #fff; color: var(--text); font: 13.5px var(--ff); padding: 5px 10px; border: 1px solid var(--grey); border-radius: 0; }
   .fab:hover { border-color: var(--dark); text-decoration: none; }
@@ -519,7 +517,7 @@ const TOURTXT = { name: "Rundgang", ask: "Neu hier? Eine Minute Rundgang zeigt, 
     ["@card .cside", "Hier steht in wenigen Sätzen, was die Grafik zeigt. Wer es genau wissen will, klickt auf „Mehr zur Methode“."],
     ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik."],
     ["@card .fbc", "Fällt Ihnen an einer Grafik etwas auf, gut oder schlecht? Klicken Sie auf „Verbesserungsvorschlag?“. Es kommt direkt beim Autor an."]] };
-const FBTXT = { btn: "Verbesserungsvorschlag?", to: "Zu", ph: "Was fällt Ihnen an dieser Grafik auf? Was ist gut, was schlecht, was ließe sich besser machen?", mail: "E-Mail für eine Antwort (freiwillig)", send: "Senden", ok: "Danke, ist angekommen.", err: "Senden hat nicht geklappt. Bitte später noch einmal versuchen.", note: "Geht direkt an den Autor. <a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
+const FBTXT = { btn: "Verbesserungsvorschlag?", to: "Zu", ph: "Was fällt Ihnen an dieser Grafik auf? Was ist gut, was schlecht, was ließe sich besser machen?", mail: "E-Mail für eine Antwort (freiwillig)", send: "Senden →", ok: "Danke, ist angekommen.", err: "Senden hat nicht geklappt. Bitte später noch einmal versuchen.", note: "Geht direkt an den Autor. <a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen unter „Downloads“." };
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (↗) und Schwellen
 const isBad = (c, sid) => c.up_bad === true || (Array.isArray(c.up_bad) && c.up_bad.includes(sid));
@@ -2040,10 +2038,10 @@ document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = documen
     d.showModal(); ta.focus(); };
   d.addEventListener("click", e => { if (e.target === d) d.close(); });  // Klick daneben schließt
   // je Grafik oben rechts neben „Grafik | Tabelle“; die Nachricht nennt die Grafik
-  document.querySelectorAll(".card[data-chart]").forEach(cd => { const ht = cd.querySelector(".htools"); if (!ht) return;
-    const b = document.createElement("button"); b.type = "button"; b.className = "fbc"; b.textContent = FBTXT.btn;
+  document.querySelectorAll(".card[data-chart]").forEach(cd => { const ht = cd.querySelector(".htools");
+    const b = document.createElement("button"); b.type = "button"; b.className = "fbc"; b.textContent = FBTXT.btn.replace("Verbesserungsvorschlag", "Verbesserungs\u00advorschlag");
     b.onclick = e => { e.stopPropagation(); const ab = cd.querySelector("h3 .abbno"); const t = cd.querySelector("h3"); open({ code: (ab?.textContent || "").trim(), title: (t?.textContent || "").replace(ab?.textContent || "", "").trim(), anchor: cd.id }); };
-    const sg = ht.querySelector(".tabseg") || ht.querySelector(".seg"); (sg || ht).append(b); });  // in derselben Zeile wie „Grafik | Tabelle“
+    (cd.querySelector(".gut .gopts") || ht).append(b); });  // links unter Stern, Downloads und Link
 })();
 // Kurzformen in Köpfen, Einheiten und Kacheln: gepunktet unterstrichen, Erklärung beim Darauftippen oder Überfahren
 (function abbrify() {
