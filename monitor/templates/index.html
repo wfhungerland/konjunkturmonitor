@@ -111,10 +111,11 @@
   .htools { display: flex; flex-direction: column; align-items: stretch; gap: 6px; margin-left: auto; }
   /* Schalter: nur Text mit kleinem Quadrat davor, leer = aus, gefüllt = an */
   .htools { align-items: flex-start; gap: 3px; }
-  .htools .btn, .tools .btn { display: inline-flex; align-items: center; gap: 7px; border: 0; border-radius: 0; background: none; padding: 0; color: var(--grey); font: 13px/1.4 var(--ff); cursor: pointer; white-space: nowrap; }
-  .htools .btn::before, .tools .btn::before { content: ""; width: 8px; height: 8px; border: 1.5px solid currentColor; box-sizing: border-box; flex: none; }
+  .htools .btn, .tools .btn { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 0; background: none; padding: 0; color: #8c8c8c; font: 13px/1.4 var(--ff); cursor: pointer; white-space: nowrap; }
+  .htools .btn::before, .tools .btn::before { content: "○"; font-size: 10px; line-height: 1; flex: none; }
   .htools .btn:hover, .tools .btn:hover { color: var(--text); text-decoration: none; background: none; }
-  .htools .btn[aria-pressed="true"]::before, .tools .btn[aria-pressed="true"]::before { background: currentColor; }
+  .htools .btn[aria-pressed="true"], .tools .btn[aria-pressed="true"] { color: var(--text); }
+  .htools .btn[aria-pressed="true"]::before, .tools .btn[aria-pressed="true"]::before { content: "●"; }
   .card .src, .card .nxtline { text-align: left; }
   @media (min-width: 601px) { .card .src, .card .nxtline { text-align: right; padding-right: var(--pr, 0px); } }  /* bündig mit der rechten Kante der Zeichenfläche */
   .card .nxtline { font: 13px/1.4 var(--ff); color: var(--grey); margin-top: 6px; } .card .nxtline a { color: var(--grey); }
@@ -139,13 +140,14 @@
   .card .chart.multi { aspect-ratio: auto; min-height: 0; overflow: visible; }
   .charts.single .card .chart.multi, .card .chart.multi { aspect-ratio: auto; max-height: none; height: auto; }
   .card .chart.square { aspect-ratio: 1 / 1; max-height: 520px; }
-  .seg { display: flex; justify-content: center; gap: 0; margin: 8px 0 0; }
-  .seg button { font: inherit; font-size: 13.5px; padding: 3px 10px; border: 1px solid var(--accent); background: #fff; color: var(--accent); cursor: pointer; }
-  .seg button:first-child { border-radius: var(--r) 0 0 var(--r); } .seg button:last-child { border-radius: 0 var(--r) var(--r) 0; border-left: 0; }
-  .seg button[aria-pressed="true"] { background: var(--accent); color: #fff; }
-  .card details.ansicht summary { list-style: none; cursor: pointer; color: var(--grey); font: 13px/1.4 var(--ff); } .card details.ansicht summary::-webkit-details-marker { display: none; }
+  /* Knöpfe an den Grafiken: nur Text in einer grauen Schrift, Aktives dunkel; Wechsel unterstrichen, Ein/Aus mit ○ und ● */
+  .seg { display: flex; justify-content: center; gap: 12px; margin: 8px 0 0; }
+  .seg button { font: inherit; font-size: 13px; line-height: 1.4; padding: 0 0 1px; border: 0; border-bottom: 1.5px solid transparent; border-radius: 0; background: none; color: #8c8c8c; cursor: pointer; }
+  .seg button:hover { color: var(--text); }
+  .seg button[aria-pressed="true"] { color: var(--text); border-bottom-color: var(--text); }
+  .card details.ansicht summary { list-style: none; cursor: pointer; color: #8c8c8c; font: 13px/1.4 var(--ff); } .card details.ansicht summary:hover, .card details.ansicht[open] summary { color: var(--text); } .card details.ansicht summary::-webkit-details-marker { display: none; }
   .card details.ansicht summary::after { content: " ▾"; } .card details.ansicht[open] summary::after { content: " ▴"; } .card details.ansicht .ansl { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; margin-top: 3px; }
-  .htools .seg { justify-content: flex-start; margin: 0 0 6px; } .htools .seg button { font-size: 12.5px; padding: 1px 8px; }  /* entweder/oder: Segment, ein/aus: Quadrat, beide oben rechts */
+  .htools .seg { justify-content: flex-start; margin: 0 0 4px; }  /* entweder/oder: unterstrichen, ein/aus: ○ ●, beide oben rechts */
   .tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; max-width: 330px; margin: 10px auto 4px; }
   .tile { aspect-ratio: 1 / 1; border-radius: var(--r); display: flex; flex-direction: column; align-items: center; justify-content: center;
           font: 13.5px/1.15 var(--ff); border: 1px solid var(--line); }
