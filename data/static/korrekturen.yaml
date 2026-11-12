@@ -5,6 +5,10 @@
 # Reine Gestaltung ohne Folgen für Zahlen oder Aussagen gehört nicht hierher.
 
 - date: 2026-11-12
+  art: Methode
+  charts: [bund_tree]
+  text: "Der Grundriss des Bundeshaushalts zeigt wahlweise drei Gliederungen: Funktion, Ausgabenart (Gruppierungsplan) und Ressort (Einzelpläne und Kapitel). Die Ausgaben ohne Funktion im Ist 2025 (0,14 Mrd. EUR) stehen nun als „ohne Zuordnung“ in der Karte."
+- date: 2026-11-12
   art: Quelle
   charts: [gd_rat, gd_vergleich, gd_themen, gd_schwerpunkte, gd_dissens]
   text: "Neue Abbildungen zur Gemeinschaftsdiagnose: Empfehlungen zu vier Dauerfragen, Vergleich mit dem Sachverständigenrat, Themen, Schwerpunkte und abweichende Voten, aus allen Gutachten mit Text 1950 bis Frühjahr 2026, je Eintrag mit Fundstelle."

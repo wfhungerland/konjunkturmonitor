@@ -544,7 +544,7 @@ charts:
   stx_tree:
     title: "Floor plan of government spending"
     ask: "How is government spending divided up in detail?"
-    caption: "The treemap shows government spending by ten functions and 69 groups; area equals spending. Each function has one colour, its groups lighter shades. Tap a function to zoom in; the slider picks the year. Values are converted to 2024 prices with the price index of government consumption; the area grows with real spending, the dashed frame marks the highest level. Eurostat publishes the groups from 2000. Group names in English, from Eurostat."
+    caption: "The treemap shows government spending by ten functions and 69 groups; area equals spending. Each function has one colour, its groups lighter shades. Tap a function to zoom in; the slider picks the year, ‘Play’ shows 2000 to 2024 as a film. Values are converted to 2024 prices with the price index of government consumption; the area grows with real spending, the dashed frame marks the highest level. Eurostat publishes the groups from 2000. Group names in English, from Eurostat."
   stx_levels:
     title: "Spending of federal government, Länder, municipalities and social security"
     ask: "How much do federal government, Länder, municipalities and social security spend?"
@@ -552,7 +552,7 @@ charts:
   bund_tree:
     title: "Floor plan of the federal budget"
     ask: "What does the federal government spend on in detail?"
-    caption: "The treemap shows federal spending by the function plan of the budget, in three levels: main function, upper function, function; area equals spending. Tap a function to zoom in. Outturn is the result of the budget accounts, plan the adopted budget, draft the government draft. Outturn and plan are only partly comparable: the plan is a ceiling and contains global items that are spread over functions only in the outturn; negative items such as global spending cuts are missing from the map. Shown is the core budget. The switch ‘with special funds’ adds the spending of the special funds, mainly the Bundeswehr fund, the climate and transformation fund and the infrastructure and climate neutrality fund (hatched); payments from the core budget to special funds and between them are netted out. EU own resources, EU pass-through funds and the pension reserves for civil servants stay out. For 2024 the budget accounts file contains no special funds. Function names below the top level are in German, as published."
+    caption: "The treemap shows federal spending; area equals spending, tap a block to zoom in. The switch ‘Breakdown’ changes between three views: function by the function plan (in three levels), economic type by the group plan (personnel, material spending, grants, investment, in three levels) and ministry by budget sections and chapters; sections 60 (general financial administration) and 32 (federal debt) belong to no ministry. The sum can differ slightly between views because negative items are netted within a block. Outturn is the result of the budget accounts, plan the adopted budget, draft the government draft. Outturn and plan are only partly comparable: the plan is a ceiling and contains global items that are spread over functions only in the outturn; negative items such as global spending cuts are missing from the map. Shown is the core budget. The switch ‘with special funds’ adds the spending of the special funds, mainly the Bundeswehr fund, the climate and transformation fund and the infrastructure and climate neutrality fund (hatched); payments from the core budget to special funds and between them are netted out. EU own resources, EU pass-through funds and the pension reserves for civil servants stay out. For 2024 the budget accounts file contains no special funds. Function names below the top level are in German, as published."
   calendar:
     title: "Release calendar: the next twelve weeks"
     ask: "When are which figures released?"
@@ -584,37 +584,37 @@ charts:
     caption: "The bars show the real gross domestic product growth the Council of Economic Experts expected in its annual report for the following year. The colour shows the fiscal stance it recommended for that year in the same report: blue consolidation (cutting the deficit), grey cyclically neutral (let automatic stabilisers work), red stimulus, light grey no recommendation discernible. West Germany until 1991. Tap for the recommendation with paragraph and page."
     unit: "% on previous year"
   gd_bip:
-    rail: "JEF growth forecasts"
+    rail: "Growth forecasts"
     title: "Growth forecasts of the Joint Economic Forecast and first release"
     ask: "How well did the institutes forecast growth?"
     caption: "The chart compares the forecast of the Joint Economic Forecast (Gemeinschaftsdiagnose), the shared forecast of the economic research institutes, for real gross domestic product growth in the following year from the autumn report with the first release for the same year as printed in the spring report half a year later. West Germany until 1991, Germany from 1992; until about 1991 it is mostly real gross national product. No autumn forecast with an annual figure exists for 1960 to 1962, 1964, 1965 and 1968; where a report is missing (1970 to 1974 and single rounds), values come from the archive of appendix tables. Tapping also shows today's data vintage. Every value is documented with file, page and table; all references are in the repository under data/static/gd_prognosen.csv."
     unit: "% on previous year"
   gd_vpi:
-    rail: "JEF inflation forecasts"
+    rail: "Inflation forecasts"
     title: "Inflation forecasts of the Joint Economic Forecast and first release"
     ask: "How well did the institutes forecast inflation?"
     caption: "The chart compares the forecast of the Joint Economic Forecast for the annual average rise in consumer prices in the following year from the autumn report with the first release from the next spring report. Where a report gives no consumer price index (1960s, mostly autumn 1986 to spring 1996, all values from the appendix tables), the private consumption deflator, a price measure for private consumption, is shown, with the same measure as first release. Where the measure changes between forecast and release, the first release is missing (1976, 1978, 1979 and 1986). For 2022 the first release follows the old weighting scheme, that is the old weights in the basket of goods (7.9%), because the forecasts were based on it; the new scheme gives 6.9%. West Germany until 1991; every value is documented with file, page and table, and all references are in the repository under data/static/gd_prognosen.csv."
     unit: "% on previous year"
   gd_alo:
-    rail: "JEF unemployment forecasts"
+    rail: "Unemployment forecasts"
     title: "Unemployment forecasts of the Joint Economic Forecast and first release"
     ask: "How well did the institutes forecast unemployment?"
     caption: "The chart compares the forecast of the Joint Economic Forecast for registered unemployment (annual average) in the following year from the autumn report with the first release from the next spring report. West Germany until 1991, Germany afterwards; the jump from 1991 to 1992 comes from the change of territory. From 2005 recipients of unemployment benefit II are included. There is no forecast with a firm figure for 1982, and no first release for 1981. Every value is documented with file, page and table; all references are in the repository under data/static/gd_prognosen.csv."
     unit: "thousand people"
   gd_saldo:
-    rail: "JEF government balance forecasts"
+    rail: "Government balance forecasts"
     title: "Joint Economic Forecast: forecasts of the government balance"
     ask: "How well did the institutes forecast the government balance?"
     caption: "The chart compares the forecast of the Joint Economic Forecast for the general government balance in the following year from the autumn report with the first release from the next spring report. The balance is revenue minus expenditure of federal, state and local government and social security as a percentage of economic output; negative values are deficits. Until 1993 the reports print the balance only in billion D-Mark; the ratio is calculated there with the nominal gross national product in the same report, for 1994 and 1995 with nominal gross domestic product, with forecast and first release always calculated the same way. Figures for 1974 and 1975 are missing, West Germany until 1991, and for 2000 forecast and first release exclude the proceeds from the mobile phone (UMTS) licences. Every value is documented with file, page and table; all references are in the repository under data/static/gd_prognosen.csv."
     unit: "% of GDP, until 1993 of GNP"
   gd_fehler:
-    rail: "JEF forecast errors by decade"
+    rail: "Forecast errors by decade"
     title: "Errors of the Joint Economic Forecast growth forecasts"
     ask: "Have growth forecasts become more accurate over the decades?"
     caption: "The chart shows how far the autumn forecast of the Joint Economic Forecast for real gross domestic product growth in the following year lay from the first release, in percentage points and without direction, that is whether too high or too low. The grey steps show the average per decade where at least five years are available, the current decade dotted; the 1960s have only four values and no step. West Germany until 1991. Every value is documented with file, page and table; all references are in the repository under data/static/gd_prognosen.csv."
     unit: "percentage points"
   gd_ziel:
-    rail: "JEF forecasts for a target year"
+    rail: "Forecasts for a target year"
     title: "Joint Economic Forecast growth forecasts for a target year"
     ask: "How did the institutes change their forecast for a given year?"
     caption: "Each line shows the real gross domestic product growth the Joint Economic Forecast expected for a given year, from the first forecast to the autumn of that year. Each point is one report, placed at its closing date; the open circle is the first release in the spring report of the following year. The four most recent target years are shown, and the first release for 2026 is still pending; all target years since 1950 are in the dataset. Every value is documented with file, page and table; all references are in the repository under data/static/gd_prognosen.csv."
@@ -623,27 +623,43 @@ charts:
   hybrid:
     title: "Russian sabotage and subversion in Europe"
     ask: "How often does Russian sabotage hit targets in Europe?"
-    caption: "Incidents per quarter that authorities or reliable reports attribute to Russia: sabotage, arson, reconnaissance, assassinations and directed disruption in the physical domain, without most cyber attacks and espionage cases. Blue: incidents with a target in Germany. The count depends on attribution; other databases arrive at quite different figures with other definitions. Many cases only become known once investigations are closed, so the latest quarters are too low."
+    caption: "Counted are sabotage, arson, reconnaissance and attack plots that authorities or reliable reports attribute to Russia. Cyber attacks and espionage are mostly missing. Dark blue marks cases with a target in Germany. Other databases use other definitions and arrive at other figures. Many cases only become known later, so the latest quarters are too low."
   gpr:
     title: "Geopolitical risk"
-    ask: "How much do newspapers report on geopolitical risks?"
-    caption: "Geopolitical Risk Index by Caldara and Iacoviello: share of articles in ten major English-language newspapers on war threats, wars, military build-ups and terrorism; the country index counts only articles that also mention Germany. 1985–2019 average = 100. In research, high values go along with lower investment and more caution among firms."
+    ask: "How much do newspapers report on the threat of war?"
+    caption: "The index measures how often major English-language newspapers report on the threat of war, war and terrorism. The value for Germany counts only articles that also mention Germany. 100 is the average of 1985 to 2019. Thick: three-month average, thin: monthly values. In studies, high values go along with lower investment."
   milex:
     title: "Military expenditure"
     ask: "How high is military spending by comparison?"
-    caption: "Military expenditure in % of GDP as defined by the Stockholm International Peace Research Institute (SIPRI), including military pensions and military aid. NATO uses a different definition; its ratios for Germany are usually somewhat higher. Grey dashed: the 2% target and the 3.5% target for core spending by 2035 agreed in The Hague in 2025. Highlighted: Germany."
+    caption: "Military expenditure in percent of economic output, as defined by the Stockholm International Peace Research Institute (SIPRI). It includes military pensions and military aid. NATO's targets of 2 percent and 3.5 percent by 2035 rest on a different definition. By NATO's count, Germany is usually somewhat higher. Germany is highlighted."
+  arms_prod:
+    title: "Production of weapons and ammunition"
+    ask: "How fast is the production of weapons and ammunition growing?"
+    caption: "Production of weapons and ammunition compared with industry as a whole, 2021 = 100, seasonally and calendar adjusted. Tanks, aircraft and ships belong to other industries and are missing here. Thick: three-month average, thin: monthly values."
+  milex_gov:
+    title: "Military spending in the government budget"
+    ask: "What priority does defence have in the budget?"
+    caption: "Share of military expenditure in all government spending, that is federal, state and local government and social security. Definition of the peace research institute SIPRI, government spending according to the International Monetary Fund. Germany is highlighted."
+  milex_eu_ru:
+    title: "Military spending of Europe and Russia"
+    ask: "Does Europe spend more on defence than Russia?"
+    caption: "Military expenditure in billion US dollars at 2024 prices and exchange rates. Central and Western Europe is Europe without Russia, Belarus, Ukraine and Moldova. Since 2023 SIPRI estimates Russian spending because parts of the budget are secret. In dollars, Russia's budget looks smaller than its purchasing power at home."
   cinc:
-    title: "Share of the world's material capabilities"
+    title: "Germany's share of the world's material capabilities"
     ask: "How much weight does Germany carry among the world's powers?"
-    caption: "Share in the Composite Index of National Capability of the Correlates of War project, in % of the world: average of world shares in population, urban population, steel production, energy consumption, military personnel and military expenditure. Germany 1955 to 1990 West and East Germany combined, Russia until 1991 the Soviet Union. The index measures mass, not technology or alliances."
+    caption: "The index of the Correlates of War research project (CINC) measures a state's material weight. It averages world shares in population, urban population, steel, energy use, soldiers and military expenditure. Germany, Prussia until 1870, reached 14 percent in 1913 and 20 percent in 1941; in 2022 it was 1.5 percent. From 1955 to 1989 West and East Germany are combined. The index measures mass, not technology or alliances."
   trade_harm:
-    title: "Harmful trade interventions affecting German interests"
+    title: "Harmful trade interventions against German interests"
     ask: "How many harmful trade interventions affect Germany?"
-    caption: "Number of interventions per year that Global Trade Alert rates as harmful or likely harmful to trade and that list Germany among the affected countries: tariffs, subsidies, public procurement rules, export restrictions and investment conditions. Counted by year of entry into force, complete years only. Each intervention counts once, regardless of how much trade it affects. Global Trade Alert often records new cases with a delay, so the latest year tends to be too low."
+    caption: "Counted are interventions that Global Trade Alert rates as harmful to trade and that hit German exports: tariffs, subsidies, public procurement rules and export bans. Each intervention counts once, regardless of how much trade it affects. Measures of the European Union are missing because Germany is a member. New cases are often recorded late, so the latest year tends to be too low."
+  trade_ru:
+    title: "Exports to Russia and neighbouring countries"
+    ask: "Do exports reach Russia via neighbouring countries?"
+    caption: "German goods exports, summed over the previous twelve months, in billion euros. Exports to Russia and Belarus collapsed after the war began in 2022. Exports to Armenia, Georgia, Kazakhstan, Kyrgyzstan, Tajikistan and Uzbekistan rose strongly at the same time. Studies by the European Bank for Reconstruction and Development (EBRD) see this partly as goods diverted to Russia."
   ukraine_aid:
     title: "German aid to Ukraine"
     ask: "How much aid does Germany allocate to Ukraine?"
-    caption: "Bilateral aid from Germany that has been delivered or specified for delivery, in billion euros per quarter by month of allocation. Military aid includes funds for arms purchases. Excluding Germany's share of EU aid and spending on refugees in Germany. Large packages are often fixed for years and then appear bundled."
+    caption: "German aid that has been delivered or firmly earmarked for delivery, in billion euros per quarter. Military aid includes money for arms purchases. Missing are Germany's share of aid from the European Union and the costs of refugees. Large packages are often fixed for several years at once."
   gd_rat:
     votes_label: "Dissenting votes of single institutes"
     rail: "JEF recommendations"
@@ -883,6 +899,13 @@ series:
   gpr_de: {title: "Geopolitical risk relating to Germany", label: "Germany", unit: "Index, 1985–2019 average = 100", note: "Country index GPRC_DEU: share of articles in ten major English-language newspapers that mention geopolitical tensions, wars or terrorism together with Germany; rescaled by the monitor to an average of 100 in 1985 to 2019. Retrieved every working day from matteoiacoviello.com.", adjustment: "not adjusted"}
   gpr_world: {title: "Geopolitical risk, world", label: "World", unit: "Index, 1985–2019 average = 100", note: "Overall GPR index, rescaled by the monitor to an average of 100 in 1985 to 2019.", adjustment: "not adjusted"}
   milex: {title: "Military expenditure in % of GDP, {staat_name}", label: "{staat_name}", unit: "% of GDP", note: "Military expenditure as defined by SIPRI (including military pensions, paramilitary forces and military aid) in % of GDP. Germany until 1990 West Germany. April 2026 edition (file v1.2), taken over by hand.", adjustment: "annual, current prices"}
+  de_arms_prod: {title: "Production of weapons and ammunition, index 2021 = 100", label: "Weapons and ammunition", unit: "Index 2021 = 100", note: "Industry 25.4 of NACE Rev. 2 (manufacture of weapons and ammunition); tanks, aircraft and ships belong to other industries.", adjustment: "seasonally and calendar adjusted"}
+  de_manuf_prod: {title: "Production in manufacturing, index 2021 = 100", label: "Industry as a whole", unit: "Index 2021 = 100", adjustment: "seasonally and calendar adjusted"}
+  milex_gov: {title: "Military expenditure in % of government spending, {staat_name}", label: "{staat_name}", unit: "% of government spending", note: "Military expenditure as defined by SIPRI in % of spending of all levels of government (IMF). April 2026 edition, taken over by hand.", adjustment: "annual, current prices"}
+  sipri_usd_cwe: {title: "Military expenditure of Central and Western Europe, US$ bn at 2024 prices", label: "Central and Western Europe", unit: "US$ bn, 2024 prices", note: "SIPRI region Central and Western Europe: Europe without Russia, Belarus, Ukraine and Moldova. April 2026 edition, taken over by hand.", adjustment: "constant 2024 prices and exchange rates"}
+  sipri_usd_rus: {title: "Military expenditure of Russia, US$ bn at 2024 prices", label: "Russia", unit: "US$ bn, 2024 prices", note: "From 2023 SIPRI estimates because of secret budget items. April 2026 edition, taken over by hand.", adjustment: "constant 2024 prices and exchange rates"}
+  de_exp_rusblr: {title: "German goods exports to Russia and Belarus, sum over twelve months", label: "Russia and Belarus", unit: "€ bn", note: "Exports by partner country, sum of the previous twelve months; retrieved every working day.", adjustment: "not adjusted"}
+  de_exp_cauca: {title: "German goods exports to Armenia, Georgia, Kazakhstan, Kyrgyzstan, Tajikistan and Uzbekistan, sum over twelve months", label: "Caucasus and Central Asia", unit: "€ bn", note: "Six countries through which, according to EBRD studies, goods are diverted to Russia; sum of the previous twelve months; retrieved every working day.", adjustment: "not adjusted"}
   cinc: {title: "Share in the CINC capability index, {staat_name}", label: "{staat_name}", unit: "% of world", note: "Composite Index of National Capability: average of a state's world shares in population, urban population, steel production, energy consumption, military personnel and military expenditure. Germany 1955 to 1990 West and East Germany combined, no value 1946 to 1954; Russia until 1991 the Soviet Union. Version 7.0, data up to 2022.", adjustment: "annual"}
   kiel_de_mil: {title: "German military aid to Ukraine, allocated", label: "Military aid", unit: "€ bn", note: "Allocations: aid delivered or specified for delivery, by month of allocation, including earmarked financial aid for military purposes; excluding aid via the EU and costs of refugees in Germany. Complete quarters only. 31st release (data up to 31.8.2026), taken over by hand.", adjustment: "current prices"}
   gta_de_chn: {title: "Harmful trade interventions affecting Germany, by China", label: "China", unit: "interventions per year", note: "Interventions rated harmful (red) or likely harmful (amber) by Global Trade Alert that list Germany among affected countries; by year of entry into force, complete years only. Export of all interventions of 10.11.2026, taken over by hand.", adjustment: "by year of entry into force"}

@@ -58,3 +58,20 @@ def test_gta_counts_harmful_affecting_germany(tmp_path):
     out = {k: v.set_axis(v.index.year) for k, v in geopolitik.gta(path).items()}
     assert out["gta_de_chn"][2020] == 1 and out["gta_de_chn"][2021] == 0  # grün und Namensähnlichkeit zählen nicht
     assert out["gta_de_usa"][2020] == 1 and out["gta_de_other"][2021] == 1 and out["gta_de_other"][2020] == 0
+
+
+def test_trade_sums_partners_over_twelve_months(monkeypatch):
+    import json
+    monkeypatch.setattr(geopolitik, "TRADE", {"a": ["RU", "BY"], "b": ["KG"]})
+    times = [f"2020-{m:02d}" for m in range(1, 13)] + ["2021-01", "2021-02"]
+    partners = ["BY", "KG", "RU"]
+    value = {}
+    for p, part in enumerate(partners):
+        for t, _ in enumerate(times[:-1]):  # letzter Monat fehlt noch
+            value[str(p * len(times) + t)] = {"RU": 2e9, "BY": 1e9, "KG": 0.5e9}[part]
+    raw = json.dumps({"id": ["partner", "time"], "size": [3, len(times)], "value": value,
+                      "dimension": {"partner": {"category": {"index": {p: i for i, p in enumerate(partners)}}},
+                                    "time": {"category": {"index": {t: i for i, t in enumerate(times)}}}}})
+    out = geopolitik.trade(raw)
+    assert list(out["a"].index.strftime("%Y-%m")) == ["2020-12", "2021-01"]  # erst ab zwölf Monaten, ohne fehlenden Monat
+    assert out["a"].iloc[-1] == 36 and out["b"].iloc[-1] == 6

@@ -11,6 +11,8 @@ Von Hand nach einer neuen Ausgabe der Quelle (python -m monitor.geopolitik <quel
 - sipri: SIPRI Military Expenditure Database, Militärausgaben in % des BIP.
 - cow: Correlates of War, National Material Capabilities, Anteil am Machtindex CINC in %.
 - kiel: Kiel Ukraine Support Tracker, Zuteilungen Deutschlands je Quartal in Mrd. €.
+- de_exp_rusblr, de_exp_cauca (täglich): Exporte nach Russland und Belarus sowie in sechs Länder in Kaukasus und
+  Zentralasien (Comext), Summe der letzten zwölf Monate in Mrd. €.
 - gta: Global Trade Alert, Export aller Eingriffe (interventions.csv): schädliche Eingriffe (rot und gelb)
   mit Deutschland unter den betroffenen Ländern je Jahr des Inkrafttretens, nach China, USA und übrigen Staaten.
 """
@@ -27,7 +29,10 @@ import pandas as pd
 log = logging.getLogger(__name__)
 GPR = "https://www.matteoiacoviello.com/gpr_files/data_gpr_export.dta"
 SIPRI = {"deu": "Germany", "fra": "France", "gbr": "United Kingdom", "pol": "Poland", "usa": "United States of America", "rus": "Russia"}
-COW = {"deu": (255, 260, 265), "usa": (2,), "chn": (710,), "rus": (365,), "gbr": (200,), "fra": (220,)}  # Deutschland 1955–1990: BRD und DDR
+COW = {"deu": (255, 260, 265)}  # Deutschland 1955–1989: BRD und DDR
+COMEXT = ("https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409"
+          "?reporter=DE&{partners}&product=TOTAL&flow=2&indicators=VALUE_IN_EUROS&freq=M&sinceTimePeriod=2018-01")
+TRADE = {"de_exp_rusblr": ["RU", "BY"], "de_exp_cauca": ["AM", "GE", "KZ", "KG", "TJ", "UZ"]}  # Russland und Belarus; Kaukasus und Zentralasien
 
 
 def _write(path: Path, s: pd.Series, digits: int = 3) -> None:
@@ -76,13 +81,55 @@ def leiden(path: Path) -> dict[str, pd.Series]:
     return out
 
 
+def _sipri_row(x: pd.DataFrame, name: str, factor: float) -> pd.Series:
+    r = pd.to_numeric(x.loc[name], errors="coerce").dropna() * factor
+    return _years(r[[str(c).isdigit() and len(str(c)) == 4 for c in r.index]])
+
+
 def sipri(path: Path) -> dict[str, pd.Series]:
-    x = pd.read_excel(path, sheet_name="Share of GDP", header=5).set_index("Country")
+    gdp = pd.read_excel(path, sheet_name="Share of GDP", header=5).set_index("Country")
+    gov = pd.read_excel(path, sheet_name="Share of Govt. spending", header=7).set_index("Country")
+    usd = pd.read_excel(path, sheet_name="Constant (2024) US$", header=5).set_index("Country")
+    reg = pd.read_excel(path, sheet_name="Regional totals", header=13).set_index("Region")
     out = {}
     for key, name in SIPRI.items():
-        r = pd.to_numeric(x.loc[name].drop("Notes", errors="ignore"), errors="coerce").dropna() * 100
-        out[f"sipri_milex_{key}"] = _years(r[[str(c).isdigit() for c in r.index]])
+        out[f"sipri_milex_{key}"] = _sipri_row(gdp, name, 100)
+        out[f"sipri_gov_{key}"] = _sipri_row(gov, name, 100)
+    out["sipri_usd_rus"] = _sipri_row(usd, "Russia", 0.001)  # Mio. US-$ in Mrd.
+    out["sipri_usd_cwe"] = _sipri_row(reg, "Central and Western Europe", 1)
     return out
+
+
+def trade(raw: str) -> dict[str, pd.Series]:
+    """Comext (JSON-stat): Exporte Deutschlands je Partner und Monat; Summe je Gruppe über zwölf Monate in Mrd. €."""
+    import json
+    d = json.loads(raw)
+    dims, size = d["id"], d["size"]
+    idx = {k: {v: i for v, i in d["dimension"][k]["category"]["index"].items()} for k in dims}
+    times = sorted(idx["time"], key=idx["time"].get)
+    stride = {k: int(pd.Series(size[dims.index(k) + 1:]).prod()) if dims.index(k) + 1 < len(dims) else 1 for k in dims}
+    val = {int(k): v for k, v in d["value"].items()}
+    get = lambda p, t: val.get(idx["partner"][p] * stride["partner"] + idx["time"][t] * stride["time"])
+    everyone = [p for ps in TRADE.values() for p in ps]
+    times = times[:max(i for i, t in enumerate(times) if all(get(p, t) is not None for p in everyone)) + 1]  # bis zum jüngsten vollständigen Monat
+    out = {}
+    for key, partners in TRADE.items():
+        vals = [[get(p, t) for t in times] for p in partners]
+        if any(v is None for vs in vals for v in vs):
+            raise ValueError(f"{key}: Monate fehlen")
+        m = pd.Series([sum(vs) for vs in zip(*vals)], index=pd.to_datetime(times))
+        out[key] = (m.rolling(12).sum() / 1e9).dropna()
+    return out
+
+
+def update_trade(static: Path) -> None:
+    partners = "&".join(f"partner={p}" for ps in TRADE.values() for p in ps)
+    req = urllib.request.Request(COMEXT.format(partners=partners), headers={"User-Agent": "konjunkturmonitor"})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        raw = r.read().decode("utf-8")
+    for key, s in trade(raw).items():
+        _write(static / f"{key}.csv", s, 3)
+        log.info("Handel %s: bis %s", key, s.index.max().strftime("%Y-%m"))
 
 
 def cow(path: Path) -> dict[str, pd.Series]:

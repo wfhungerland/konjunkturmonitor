@@ -184,6 +184,14 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
             tab[A["rows"][q["r"]]][q["y"]] = q["v"] if A.get("mode") == "share" else _plain(q["t"])
         df = pd.DataFrame([{"Zeile": r, **{str(y): tab[r].get(y) for y in A["years"]}} for r in A["rows"]])
         return df.iloc[::-1].reset_index(drop=True), {"kind": "list"}
+    if typ == "treemap" and c.get("attach") and c["attach"].get("views"):  # mehrere Gliederungen untereinander
+        T0 = c["attach"]
+        parts = []
+        for v in T0["views"]:
+            df, _ = chart_table(dict(c, attach={**{k: x for k, x in T0.items() if k != "views"}, **v}))
+            df.insert(0, "Gliederung", v.get("label", v.get("key", "")))
+            parts.append(df)
+        return pd.concat(parts, ignore_index=True), {"kind": "list"}
     if typ == "treemap" and c.get("attach"):  # Grundriss: je Blatt eine Zeile mit allen Ebenen, je Jahr eine Spalte
         T = c["attach"]
         P = T.get("parent") or {}

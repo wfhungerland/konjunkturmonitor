@@ -45,7 +45,22 @@ GLOSSARY_EN = {
     "IMF": "International Monetary Fund",
 }
 
+# Beträge im britischen Stil: Währungszeichen vor der Zahl, „€141,1 Mrd.“; geschütztes Leerzeichen vor „Mrd.“,
+# damit nichts umbricht. US-Dollar als $, Pfund als £; Yuan und Franken bleiben ausgeschrieben.
+_NBSP = "\u00a0"
 _RULES = [
+    (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mrd."),
+    (r"([+-]?)(\d[\d.,]*) (?:Millionen|Mio\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mio."),
+    (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) EUR\b", r"\1€\2" + _NBSP + "Mrd."),
+    (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) US-Dollar\b", r"\1$\2" + _NBSP + "Mrd."),
+    (r"([+-]?)(\d[\d.,]*) (?:Millionen|Mio\.) US-Dollar\b", r"\1$\2" + _NBSP + "Mio."),
+    (r"\bin (?:Milliarden|Mrd\.) (?:Euro|€|EUR)\b", "in €" + _NBSP + "Mrd."),
+    (r"\bin (?:Millionen|Mio\.) (?:Euro|€|EUR)\b", "in €" + _NBSP + "Mio."),
+    (r"\bin (?:Milliarden|Mrd\.) US-Dollar\b", "in $" + _NBSP + "Mrd."),
+    (r"([+-]?)(\d[\d.,]*) €", r"\1€\2"),
+    (r"(Mrd|Mio)\.\.", r"\1."),  # Satzende: kein doppelter Punkt
+    (r"([+-]?)(\d[\d.,]*) US-Dollar\b", r"\1$\2"),
+    (r"([+-]?)(\d[\d.,]*) Pfund\b", r"\1£\2"),
     (r"\b([Gg])gü\.\s(?=(?:Vor\w*|Durchschnitt|Mittel)\b)", r"\1egenüber dem "),
     (r"\b([Gg])gü\.\s", r"\1egenüber "),
     (r"\bPreisindex des BIP \(BIP-Deflator\)", "Preisindex des Bruttoinlandsprodukts (Deflator)"),
@@ -53,6 +68,7 @@ _RULES = [
     (r"\bBIP-Wachstum", "Wirtschaftswachstum"),
     (r"\bdes (realen |nominalen )?BIP\b(?!-)", r"des \1Bruttoinlandsprodukts"),
     (r"(?<![\w-])BIP\b(?!-)", "Bruttoinlandsprodukt"),
+    (r"\bder GD\b", "der Gemeinschaftsdiagnose"), (r"\bdie GD\b", "die Gemeinschaftsdiagnose"),
     (r"\(HVPI\)", "(EU-weit harmonisiert gemessen)"),
     (r"\(ESI; ", "(Indikator der EU-Kommission; "),
     (r"\(TTF\)", "(Handelspunkt TTF)"),
@@ -62,10 +78,11 @@ _RULES = [
     (r"\b(bei|von|mit|in) ((?:[+-]?[\d.,]+ )?)Pp\b", r"\1 \2Prozentpunkten"),
     (r"(?<![\d,])1 Pp\b", "1 Prozentpunkt"),
     (r"\bPp\b", "Prozentpunkte"),
-    (r"\bMrd\.(?=\s)", "Milliarden"),
-    (r"\bMio\.(?=\s)", "Millionen"),
+    (r"(?<= )Mrd\.(?=\s)", "Milliarden"),
+    (r"(?<= )Mio\.(?=\s)", "Millionen"),
     (r"(\d{1,3}(?:\.\d{3})+) Tsd\.", lambda m: f"{int(m.group(1).replace('.', '')) / 1000:.2f}".replace(".", ",") + " Millionen"),
     (r"\bTsd\.", "Tausend"),
+    (r"(\d) (cm|mm|°C|Tage|Tagen|Punkte|Prozentpunkten?|Prozentpunkt)\b", r"\1" + _NBSP + r"\2"),  # Zahl und Einheit bleiben in einer Zeile
 ]
 _COMPILED = [(re.compile(a), b) for a, b in _RULES]
 
