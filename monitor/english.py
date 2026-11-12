@@ -791,6 +791,10 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
             c["texts"], c["text"] = texts, " ".join(texts)
             if isinstance(c.get("files"), dict):
                 c["files"] = {k: _rel(v) for k, v in c["files"].items()}
+            if c.get("full"):
+                c["full"] = _rel(c["full"])
+            if isinstance(c.get("variant"), dict) and c["variant"].get("full"):
+                c["variant"]["full"] = _rel(c["variant"]["full"])
             nu = c.get("next_update")
             if isinstance(nu, dict) and nu.get("period"):
                 nu["period"] = de_period_to_en(nu["period"])

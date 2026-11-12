@@ -347,7 +347,7 @@ NORM = ("2015-01-01", "2020-01-01")  # Vergleichszeitraum 2015 bis 2019: die fü
 
 
 def _tendency(d: float | None, decimals: int) -> str | None:
-    """Richtung der jüngsten Veränderung: ▲ steigt, ▼ sinkt, ■ unverändert (in der angezeigten Genauigkeit)."""
+    """Richtung der jüngsten Veränderung: ↗ steigt, ↘ sinkt, → unverändert (in der angezeigten Genauigkeit)."""
     if d is None or pd.isna(d):
         return None
     if round(abs(d), decimals) == 0:
@@ -1369,12 +1369,20 @@ def build_payload(root: Path = ROOT) -> dict:
         a["spark_data"] = _xy(data[a["spark"]], 5)
         questions.append(dict(q, answer=a))
     topics = []
+    chart_freq = {}
+    for s in meta.values():
+        if getattr(s, "chart_id", None):
+            chart_freq.setdefault(s.chart_id, s.frequency)
     for t in cfg["topics"]:
         charts = []
         for c in t["charts"]:
             typ = c.get("type", "line")
+            fy = layout.get("freq_years") or {}  # feste Zeitfenster je Takt, ab Jahresanfang: gleiche Breite heißt gleiche Zeit
+            f0 = "D" if c.get("daily") else chart_freq.get(c.get("chart"))
+            if fy and f0 in fy and typ in ("line", "stacked") and c.get("years") and not c.get("keep_years") and not c.get("x_start"):
+                c = dict(c, years=int(fy[f0]), x_start="year")
             uy = layout.get("uniform_years")
-            if uy and c.get("years") and 3 <= c["years"] <= 8 and not c.get("keep_years"):
+            if uy and c.get("years") and 3 <= c["years"] <= 8 and not c.get("keep_years") and not c.get("x_start"):
                 c = dict(c, years=int(uy))
             ws = layout.get("window_start") or {}
             if ws and typ == "line" and c.get("years") and not c.get("keep_years") and not c.get("x_start"):
@@ -1520,7 +1528,7 @@ def build_payload(root: Path = ROOT) -> dict:
                 if any(x not in data for x in c.get("need") or []):  # Abbildung nur mit diesen Reihen zeigen (etwa Berlin ohne Berliner Werte)
                     continue
                 specs = [meta[x] for x in c["pick"] if x in meta] if c.get("pick") else [s for s in meta.values() if s.chart_id == c["chart"]]
-                series = []
+                series, full = [], {}
                 for s in specs:
                     if s.id not in data:
                         continue
@@ -1543,6 +1551,9 @@ def build_payload(root: Path = ROOT) -> dict:
                     for y0, y1 in c.get("blank_years") or []:  # Kriegs- und Inflationsjahre auslassen: Lücke statt Werte
                         ser = ser[(ser.index.year < int(y0)) | (ser.index.year > int(y1))]
                     xy = _xy(ser * float(c.get("scale", 1)), c.get("years"), c.get("x_start"))
+                    fx = _xy(ser * float(c.get("scale", 1)), None, None)  # ganze Reihe für den Schalter „Ganze Reihe“ (eigene Datei, lädt erst beim Klick)
+                    if len(fx["x"]) > len(xy["x"]) + 3:
+                        full[s.id] = fx
                     series.append(dict(id=s.id, label=(c.get("labels") or {}).get(s.id) or s.label or s.title, unit=c.get("unit", s.unit), freq="B" if c.get("daily") else s.frequency,
                                        style=(c.get("styles") or {}).get(s.id) or getattr(s, "style", None) or "line", **({"of": c["of"][s.id]} if s.id in (c.get("of") or {}) else {}), **xy))
                 if c.get("total") and c["total"] in data:
@@ -1551,6 +1562,8 @@ def build_payload(root: Path = ROOT) -> dict:
                                        **_xy(data[s.id], c.get("years"), c.get("x_start"))))
                 if not series:
                     continue
+                if full:
+                    entry["_full"] = full
                 if c.get("ref_mean"):  # Mittel eines Zeitraums als graue Referenzlinie
                     a0, a1 = c["ref_mean"]
                     s0 = data[series[0]["id"]].dropna()
@@ -1799,6 +1812,14 @@ def build_site(root: Path = ROOT, out: Path | None = None) -> Path:
         fh.write(arch_name[:-4] + "\n")
         arch.to_csv(fh, sep=";", decimal=",", index=False)
     payload["archive_file"] = "dl/" + arch_name
+    (out / "full").mkdir(exist_ok=True)  # ganze Reihen je Abbildung, für den Schalter „Ganze Reihe“
+    for t in payload["topics"]:
+        for c in t["charts"]:
+            for cc in (c, c.get("variant")):
+                if isinstance(cc, dict) and cc.get("_full"):
+                    name = f"{cc['chart']}.json"
+                    (out / "full" / name).write_text(json.dumps(cc.pop("_full"), separators=(",", ":")), encoding="utf-8")
+                    cc["full"] = "full/" + name
     tpl = resources.files("monitor").joinpath("templates/index.html").read_text(encoding="utf-8")
     payload["has_en"] = (root / "data" / "static" / "en.yaml").exists()
     js = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
