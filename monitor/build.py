@@ -1536,6 +1536,11 @@ def build_payload(root: Path = ROOT) -> dict:
                              refs=[{"y": pj["target"], "x0": f"{pj['year']}-01-01", "label": f"{pj['round']}: {str(round(pj['target'], 1)).replace('.', ',')} %"}],
                              sources=["Eurostat (BIP des Statistischen Bundesamts)", f"Bundesregierung ({pj['round']})", "eigene Berechnung"],
                              licenses=[SOURCE_LICENSES["eurostat"]])
+            elif typ == "cellgrid":  # Raster je Zeile und Jahr, Daten ganz aus data/static (attach), etwa Themen der Gemeinschaftsdiagnose
+                if not entry.get("attach"):
+                    continue
+                entry.update(sources=list(c.get("sources") or []), licenses=list(c.get("licenses") or []), freq="A",
+                             unit=c.get("unit", entry["attach"].get("unit", "")))
             elif typ == "treemap":  # Grundriss: Daten ganz aus data/static (attach), von Hand aktualisiert
                 if not entry.get("attach"):
                     continue

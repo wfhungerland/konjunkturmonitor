@@ -42,6 +42,12 @@ NUMBER = (10600000, 6356350, 982400, 365125)
 # ---------------------------------------------------------------------------
 # Tabelle je Abbildung
 # ---------------------------------------------------------------------------
+def _plain(t: str) -> str:
+    """Tooltip ohne HTML für Tabellen."""
+    import re as _re
+    return _re.sub(r"<[^>]+>", " ", str(t or "").replace("<br>", "; ")).replace("  ", " ").strip()
+
+
 def _ma3(y: list) -> list:
     s = pd.Series(y, dtype=float)
     return s.rolling(3).mean().round(4).tolist()
@@ -149,6 +155,35 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
                            "Dreimonatsvergleich, %": [r["m3"] for r in h["rows"]],
                            "Niveau gegenüber 2019, %": [r["level"] for r in h["rows"]]})
         return df.iloc[::-1].reset_index(drop=True), {"kind": "table"}
+    if typ == "stance" and c.get("series"):  # Empfehlungen: je Jahr eine Zeile, je Frage Stufe und Satz aus attach
+        A, keys = c.get("attach") or {}, c.get("stance_keys") or {}
+        ids = c.get("stance_rows") or [f"svr_stance_{k}" for k in "afgl"]
+        rows = [s for i in ids for s in c["series"] if s["id"] == i][::-1]
+        years = sorted({int(x[:4]) for s in c["series"] for x in s["x"]})
+        recs = []
+        for y in range(years[0], years[-1] + 1):
+            r = {"Jahr": y}
+            for s in rows:
+                v = dict(zip((int(x[:4]) for x in s["x"]), s["y"])).get(y)
+                e = (A.get(keys.get(s["id"], s["id"][-1].upper())) or {}).get(str(y)) or {}
+                r[f'{s["label"]}, Stufe'] = v
+                r[f'{s["label"]}, Empfehlung'] = "noch offen" if e.get("o") else "kein Text" if e.get("x") else (e.get("p") or "")
+            vt = next((s for s in c["series"] if s["id"] == (c.get("votes_id") or "svr_voten")), None)
+            if vt:
+                r[vt["label"]] = dict(zip((int(x[:4]) for x in vt["x"]), vt["y"])).get(y)
+            recs.append(r)
+        return pd.DataFrame(recs), {"kind": "list"}
+    if typ == "cellgrid" and c.get("attach"):  # Raster: je Zeile eine Zeile, je Jahr eine Spalte; bei Balken je Jahr eine Zeile
+        A = c["attach"]
+        if A.get("mode") == "bar":
+            col = A.get("unit", "Anzahl")
+            df = pd.DataFrame({"Datum": pd.to_datetime([f"{y}-01-01" for y in A["years"]]), col: A["values"], "Erläuterung": [_plain(t) for t in A["text"]]})
+            return df, {"kind": "columns", "bars": [col], "lines": [], "thin": [], "emphasis": None, "dashed": []}
+        tab = {r: {} for r in A["rows"]}
+        for q in A["cells"]:
+            tab[A["rows"][q["r"]]][q["y"]] = q["v"] if A.get("mode") == "share" else _plain(q["t"])
+        df = pd.DataFrame([{"Zeile": r, **{str(y): tab[r].get(y) for y in A["years"]}} for r in A["rows"]])
+        return df.iloc[::-1].reset_index(drop=True), {"kind": "list"}
     if typ == "treemap" and c.get("attach") and c["attach"].get("views"):  # mehrere Gliederungen untereinander
         T0 = c["attach"]
         parts = []
