@@ -8,6 +8,10 @@
 # Quoten und Salden „lag bei …, … Pp höher als ein Jahr zuvor“, Mengen „lag bei …, … mehr als ein Jahr zuvor“.
 
 series:
+  gpr_de: {tpl: "{when} lag der Index des geopolitischen Risikos für Deutschland bei {v} Punkten; im Mittel der Jahre 1985 bis 2019 waren es 100."}
+  gpr_world: {tpl: "{when} lag der weltweite Index des geopolitischen Risikos bei {v} Punkten."}
+  kiel_de_mil: {tpl: "{when} teilte Deutschland der Ukraine Militärhilfe im Wert von {v} zu."}
+  kiel_de_other: {tpl: "{when} kamen finanzielle und humanitäre Hilfe im Wert von {v} hinzu."}
   gdp_rt_first: {tpl: "{when} lag das zuerst gemeldete BIP-Wachstum bei {v} ggü. dem Vorquartal."}
   gdp_rt_latest: {tpl: "{when} liegt das BIP-Wachstum im heutigen Datenstand bei {v} ggü. dem Vorquartal."}
   gdp_rt_rev: {tpl: "{when} wurde das BIP-Wachstum seit der ersten Meldung um {abs} Pp nach {oben_unten} korrigiert.", tpl0: "{when} ist das BIP-Wachstum seit der ersten Meldung unverändert."}
@@ -186,6 +190,8 @@ charts:
   ez_esi: ["die Wirtschaftliche Einschätzung in {label}", s]
   esi: ["die Exportähnlichkeit von {label} mit Deutschland", s]
   inv_ratio: ["die Investitionsquote in {label}", s]
+  milex: ["die Militärausgaben in {label}", p]
+  cinc: ["der Anteil von {label} am Machtindex CINC", s]
   cit: ["die tarifliche Steuerbelastung von Unternehmensgewinnen in {label}", s]
   emp_sector: ["die Zahl der Erwerbstätigen im Bereich „{label}“", s]
 

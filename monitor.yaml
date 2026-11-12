@@ -320,6 +320,32 @@ topics:
     ask: "Wer konkurriert mit Deutschland auf den Weltmärkten?"
     charts:
       - {chart: esi, context_grey: true, recessions: false, ask: "Wer konkurriert mit ähnlichen Waren wie Deutschland?", emphasis: esi_chn, caption: "Der Wert misst, wie ähnlich die Exporte eines Landes nach Warenarten denen Deutschlands sind: 0 heißt keine Überschneidung, 100 eine gleiche Zusammensetzung. Berechnet wird er nach Finger und Kreinin (1979): Für jede Warengruppe zählt der kleinere der beiden Anteile. Hohe Werte bedeuten, dass beide Länder auf den Weltmärkten mit ähnlichen Waren konkurrieren. Hervorgehoben ist China."}
+  - id: bedrohung
+    title: Bedrohung
+    part: geopolitik
+    ask: "Wie stark gerät Deutschland ins Visier?"
+    charts:
+      - {chart: hybrid, annual_count: {verb: "zählt die Datenbank der Universität Leiden", series: {leiden_ops_de: "Vorfälle mit Ziel in Deutschland", leiden_ops_eu: "im übrigen Europa"}}, annual_count_en: {verb: "the Leiden University database counts", series: {leiden_ops_de: "incidents with a target in Germany", leiden_ops_eu: "in the rest of Europe"}}, ask: "Wie oft trifft russische Sabotage Ziele in Europa?", x_start: "2022-01-01", keep_years: true, years: 4, recessions: false, no_yoy: true, caption: "Vorfälle je Quartal, die Behörden oder belastbare Berichte Russland zuschreiben: Sabotage, Brandstiftung, Ausspähung, Mordanschläge und gesteuerte Störaktionen im physischen Raum, ohne die meisten Cyberangriffe und Spionagefälle. Blau: Vorfälle mit Ziel in Deutschland. Die Zählung hängt an der Zuschreibung; andere Datenbanken kommen mit anderen Abgrenzungen auf deutlich andere Zahlen. Viele Fälle werden erst nach Abschluss der Ermittlungen bekannt; jüngste Quartale fallen deshalb zu niedrig aus."}
+      - {chart: gpr, tpl_en: {gpr_de: "{when}, the geopolitical risk index for Germany stood at {v} points; the 1985–2019 average is 100.", gpr_world: "{when}, the global geopolitical risk index stood at {v} points."}, ask: "Wie viel berichten Zeitungen über geopolitische Risiken?", up_bad: true, years: 8, refs: [{y: 100, label: "Mittel 1985–2019 = 100"}], caption: "Geopolitical Risk Index nach Caldara und Iacoviello: Anteil der Artikel in zehn großen englischsprachigen Zeitungen über Kriegsgefahr, Kriege, Aufrüstung und Terror; Länderindex nur Artikel, die auch Deutschland nennen. Mittel 1985 bis 2019 = 100. Hohe Werte gehen in der Forschung mit geringeren Investitionen und mehr Zurückhaltung von Unternehmen einher."}
+  - id: ruestung
+    title: Rüstung
+    part: geopolitik
+    ask: "Wie viel gibt Deutschland für Verteidigung aus?"
+    charts:
+      - {chart: milex, tpl_en: {milex_deu: "{when}, Germany's military expenditure amounted to {v}% of GDP, {chg} pp {more} than a year earlier."}, ask: "Wie hoch sind die Militärausgaben im Vergleich?", x_start: "1990-01-01", keep_years: true, years: 36, recessions: false, emphasis: milex_deu, context_grey: true, name_labels: true, refs: [{y: 2, label: "NATO-Ziel 2 %"}, {y: 3.5, label: "NATO-Ziel 3,5 % bis 2035"}], caption: "Militärausgaben in % des BIP nach der Abgrenzung des Stockholmer Friedensforschungsinstituts SIPRI, einschließlich Militärrenten und Militärhilfe. Die NATO rechnet anders; ihre Quoten für Deutschland liegen meist etwas höher. Grau gestrichelt: das Ziel von 2 % und das 2025 in Den Haag vereinbarte Ziel von 3,5 % für die Kernausgaben bis 2035. Hervorgehoben: Deutschland."}
+      - {chart: cinc, tpl_en: {cinc_deu: "{when}, Germany's share in the CINC capability index was {v}% of the world, {chg} pp {more} than a year earlier."}, ask: "Wie viel Gewicht hat Deutschland unter den Mächten der Welt?", x_start: "1816-01-01", keep_years: true, years: 207, recessions: false, emphasis: cinc_deu, context_grey: true, name_labels: true, caption: "Anteil am Composite Index of National Capability des Correlates-of-War-Projekts in Prozent der Welt: Mittel der Weltanteile an Bevölkerung, Stadtbevölkerung, Stahlproduktion, Energieverbrauch, Soldaten und Militärausgaben. Deutschland 1955 bis 1990 Bundesrepublik und DDR zusammen, Russland bis 1991 Sowjetunion. Der Index misst Masse, keine Technik und keine Bündnisse."}
+  - id: ukraine
+    title: Ukraine-Hilfe
+    part: geopolitik
+    ask: "Wie viel hilft Deutschland der Ukraine?"
+    charts:
+      - {chart: ukraine_aid, tpl_en: {kiel_de_mil: "{when}, Germany allocated military aid worth €{v} bn to Ukraine.", kiel_de_other: "{when}, financial and humanitarian aid worth €{v} bn was added."}, ask: "Wie viel Hilfe teilt Deutschland der Ukraine zu?", x_start: "2022-01-01", keep_years: true, years: 5, recessions: false, no_yoy: true, caption: "Bilaterale Hilfe Deutschlands, die geliefert oder für die Lieferung festgelegt ist, in Milliarden Euro je Quartal nach dem Monat der Zuteilung. Militärhilfe einschließlich Geldern für Waffenkäufe. Ohne den deutschen Anteil an der Hilfe der EU und ohne Ausgaben für Geflüchtete in Deutschland. Große Pakete werden oft auf Jahre festgelegt und erscheinen dann gebündelt."}
+  - id: handel
+    title: Handelskonflikte
+    part: geopolitik
+    ask: "Wie oft treffen Handelshemmnisse deutsche Exporte?"
+    charts:
+      - {chart: trade_harm, annual_count: {verb: "zählt Global Trade Alert", per_year: 1, series: {gta_de_chn: "schädliche Eingriffe Chinas mit Wirkung auf Deutschland", gta_de_usa: "der USA", gta_de_other: "anderer Staaten"}}, annual_count_en: {verb: "Global Trade Alert counts", per_year: 1, series: {gta_de_chn: "harmful interventions by China affecting Germany", gta_de_usa: "by the USA", gta_de_other: "by other states"}}, ask: "Wie viele schädliche Handelseingriffe treffen Deutschland?", x_start: "2009-01-01", keep_years: true, years: 17, recessions: false, no_yoy: true, caption: "Zahl der Eingriffe je Jahr, die Global Trade Alert als schädlich oder wahrscheinlich schädlich für den Handel einstuft und bei denen Deutschland unter den betroffenen Ländern steht: Zölle, Subventionen, Vorgaben für öffentliche Aufträge, Exportbeschränkungen und Auflagen für Investitionen. Gezählt nach Jahr des Inkrafttretens, nur abgeschlossene Jahre. Jeder Eingriff zählt einmal, gleich wie viel Handel er betrifft. Global Trade Alert erfasst neue Fälle oft mit Verzögerung; das jüngste Jahr fällt deshalb eher zu niedrig aus."}
   - id: struktur
     title: Struktur
     part: struktur

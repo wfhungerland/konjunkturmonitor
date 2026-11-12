@@ -10,7 +10,7 @@ Eine lange Seite, deutsch unter `/` und englisch unter `/en/` (Sprachschalter un
 
 - **Kopfzeile (fixiert):** Titel, Sprachschalter und Stand; alle Themen als Links; Suche mit Vorschlägen (Taste `/`); Knopf zum Aus- und Einklappen aller Abbildungen.
 - **Start:** zwei bis drei Sätze zur Gesamtlage, „Heute neu“, sechs Kennzahl-Kacheln mit Fünfjahresverlauf, alle Kennzahlen als Tabelle (aufklappbar).
-- **Teil I Konjunktur, Teil II Analysen, Teil III Struktur, Teil IV Anhang, Termine:** je Abschnitt eine Frage als Überschrift, ein Antwortsatz aus den Daten mit Erläuterung, eine Leitabbildung und weitere Abbildungen zum Aufklappen. Ab 1240 px Breite läuft links die Liste der Abbildungen des Abschnitts mit.
+- **Teil I Konjunktur, Teil II Analysen, Teil III Geopolitik, Teil IV Struktur, Teil V Anhang, Termine:** je Abschnitt eine Frage als Überschrift, ein Antwortsatz aus den Daten mit Erläuterung, eine Leitabbildung und weitere Abbildungen zum Aufklappen. Ab 1240 px Breite läuft links die Liste der Abbildungen des Abschnitts mit.
 - **Diese Woche neu:** Abbildungen mit neuen Daten in den letzten sieben Tagen.
 - **Quellen und Hinweise:** Methodik, Quellen und Lizenzen, fehlende Indikatoren, Gesamtdownloads, Abrufstatus, Zitiervorschlag.
 
@@ -31,6 +31,7 @@ Jede Abbildung hat Nummer, Unterfrage, Sätze zum jüngsten Stand, Titel, Erläu
 | Zinsen und Energie | Bundesbank `BBSIS` (Zinsstruktur), FRED (`MCOILBRENTEU` der U.S. EIA, `PNGASEUUSDM` des IWF) |
 | Aktivitätsindex | Bundesbank `BBDE1` (Wochenreihe WAI) |
 | Struktur | Eurostat (`nama_10_gdp`, `namq_10_lp_ulc`, `namq_10_a10_e`, `demo_gind`); AMECO-Produktionspotenzial (über DBnomics) und OECD-Körperschaftsteuersätze als statische Dateien, von Hand zu aktualisieren |
+| Geopolitik | Geopolitical Risk Index (Caldara und Iacoviello), werktäglich; von Hand nach neuen Ausgaben (`python -m monitor.geopolitik <quelle> <datei>`, Quelle leiden, sipri, cow, kiel oder gta): Universität Leiden, Russian Operations Against Europe Dataset (CC BY 4.0), SIPRI Military Expenditure Database, Correlates of War National Material Capabilities v7.0, Kiel Ukraine Support Tracker, Global Trade Alert (Export aller Eingriffe) |
 | Kalender | `data/static/kalender.yaml`: Termine nach dem üblichen Rhythmus der Quellen, geschätzt |
 | Prognosen | `data/static/prognosen.yaml`, nur veröffentlichte Werte mit Link |
 | Gemeinschaftsdiagnose | `data/static/gd_prognosen.csv`: Prognosen der Wirtschaftsforschungsinstitute 1950 bis Frühjahr 2026 mit Fundstelle je Wert, abgeleitet aus den Gutachten; die Reihen der Abbildungen erzeugt `python -m monitor.gd` |
