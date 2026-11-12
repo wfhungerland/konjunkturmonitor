@@ -525,7 +525,7 @@ const GUTTXT = { dl: "Daten", dlt: "XLSX, PPTX, PNG, CSV, Stata oder Code zum Ei
 const pressed = (b, on) => b.setAttribute("aria-pressed", String(!!on));
 const COLTXT = { pin: "Als Lesezeichen merken", pinned: "Lesezeichen entfernen", title: "Lesezeichen", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. Der Stern ☆ oben rechts an einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Lesezeichen übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
 const EMB = { label: "Einbetten", title: "HTML-Code kopieren, um diese Abbildung auf einer eigenen Seite einzubetten", done: "Code kopiert", src: "Konjunkturmonitor", full: "ganze Seite" };
-const HFMT = { A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
+const HFMT = { S: "%-d. %B %Y", A: "%Y", Q: "%q. Quartal %Y", M: "%B %Y", B: "%-d. %B %Y", D: "Woche bis %-d. %B %Y" };
 function niceStep(span, n) { const raw = span / n, p = Math.pow(10, Math.floor(Math.log10(raw))); return [1, 2, 5, 10].map(m => m * p).find(s => s >= raw); }
 function decs(step) { return step >= 1 ? 0 : step >= 0.1 ? 1 : 2; }
 // Werteachse rechts: runde Stufen, je eine Drittel Stufe Luft, Einheit an der obersten Zahl
@@ -1221,13 +1221,13 @@ const sentHtml = (arr, sep = " ", btn = true) => arr.map(esc).join(sep) + (btn ?
 function bindCopies(root, arr, what) { root.querySelectorAll("button.copy1").forEach(b => b.onclick = () => copyText(arr.join(" "), b, what)); }
 
 // Untertitel einer Abbildung: Frequenz und Bereinigung
-function subOf(c) { return [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? (c.all_days ? "Täglich" : "Täglich (Arbeitstage)") : "Monatlich", c.adjustment].filter(Boolean).join(" · "); }
+function subOf(c) { return [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? (c.all_days ? "Täglich" : "Täglich (Arbeitstage)") : c.freq === "S" ? "Halbjährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · "); }
 function card(c, no) {
   const ownCfg = c.own_scale;  // so in monitor.yaml gesetzt (dann fehlt die gemeinsame Einheit über der Grafik)
   if (c.multiples && (DATA.layout || {}).small_multiples && (c.series || []).length > 2) { if (c.own_scale == null) c.own_scale = true; c.scale_toggle = true; }  // Standard: eigene Skala je Feld, gemeinsam per Schalter
   const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = FA(no); if (c.chart) el.dataset.chart = c.chart;
   const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
-    : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? (c.all_days ? "Täglich" : "Täglich (Arbeitstage)") : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
+    : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? (c.all_days ? "Täglich" : "Täglich (Arbeitstage)") : c.freq === "S" ? "Halbjährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Pp, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% ggü. Vorjahr"
     : c.type === "tiles" ? "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
   const lead = c._lead;  // Leitgrafik: Frage und Satz stehen schon in der Antwort des Abschnitts
