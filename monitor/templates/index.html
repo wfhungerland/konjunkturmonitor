@@ -1028,7 +1028,7 @@ function dumbbellChart(el, c) {
 // Baumkarte (Grundriss): Fläche = Ausgaben, eine Farbe je oberster Gruppe, hellere Töne für Untergruppen.
 // Daten aus data/static (attach): steps je Jahr mit values je Blatt, parent (Code -> übergeordneter Code), labels, hue.
 // Antippen vergrößert eine Gruppe; Schieberegler oder Knöpfe wählen das Jahr; alt = zweite Abgrenzung (etwa mit Sondervermögen).
-const TM_TXT = { view: "Gliederung:", all: "Alle", hint: "Antippen vergrößert, Pfad oben führt zurück.", ist: "Ergebnis (Ist):", soll: "Plan (Soll):", of: "davon", bn: "Mrd.", peak: "gestrichelt: höchster Stand", lang: "de" };
+const TM_TXT = { all: "Alle", ist: "Ist", soll: "Plan", without: "ohne", by: "nach", prices: "in Preisen von", play: "Abspielen", pause: "Anhalten", year: "Jahr", of: "davon", bn: "Mrd.", peak: "gestrichelt: höchster Stand", lang: "de" };
 function tmSquarify(items, rect) {
   const total = items.reduce((t, d) => t + d.v, 0), out = [];
   let r = { ...rect }, rest = items.map(d => ({ ...d, a: (d.v / total) * rect.w * rect.h }));
@@ -1053,7 +1053,12 @@ function treemapChart(el, c) {
   const dark = hex => { const v = [1, 3, 5].map(o => parseInt(hex.slice(o, o + 2), 16)); return 0.299 * v[0] + 0.587 * v[1] + 0.114 * v[2] < 140; };
   const chain = k => { const a = [k]; while (P[a[0]]) a.unshift(P[a[0]]); return a; };  // vom obersten Code bis zum Blatt
   const top = k => chain(k)[0], kidsOf = p => Object.keys(P).filter(k => P[k] === p).sort();
-  const S = steps[st.si], useAlt = st.alt && S.alt, V = useAlt ? S.alt.values : S.values, part = useAlt ? S.alt.part || {} : {};
+  const S = steps[st.si], useAlt = st.alt && S.alt, part = useAlt ? S.alt.part || {} : {};
+  let V = useAlt ? S.alt.values : S.values;
+  if (st.t != null && !useAlt) {  // Film: Werte zwischen zwei Jahren weich überblenden
+    const i0 = Math.floor(st.t), i1 = Math.min(steps.length - 1, i0 + 1), f = st.t - i0, A = steps[i0].values, Z = steps[i1].values; V = {};
+    new Set([...Object.keys(A), ...Object.keys(Z)]).forEach(k => { V[k] = (A[k] || 0) * (1 - f) + (Z[k] || 0) * f; });
+  }
   const leaves = Object.entries(V).filter(([, v]) => v > 0);
   const under = (k, p) => !p || chain(k).includes(p);
   const sumOf = p => leaves.filter(([k]) => under(k, p)).reduce((t, [, v]) => t + v, 0);
@@ -1097,22 +1102,34 @@ function treemapChart(el, c) {
   s += "</svg>";
   // Bedienung: Jahr (Schieberegler oder Knöpfe nach Ist und Plan), zweite Abgrenzung, Pfad
   const redraw = () => treemapChart(el, c);
-  let ctl = `<div class="tmctl" style="display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin:0 0 6px;font-size:13.5px">`;
-  if (T0.views) ctl += `<span style="display:flex;align-items:center;gap:6px">${TM_TXT.view}<span class="seg" style="margin:0">${T0.views.map((v, i) => `<button type="button" data-v="${i}" aria-pressed="${i === st.vi}">${esc(en ? v.label_en || v.label : v.label)}</button>`).join("")}</span></span>`;
-  if (T.slider) ctl += `<label style="display:flex;align-items:center;gap:8px"><input type="range" min="0" max="${steps.length - 1}" value="${st.si}" class="tmyr" style="width:220px" aria-label="Jahr"><b>${esc(S.label)}</b></label>`;
-  else { const grp = (g, t) => { const ix = steps.map((x, i) => [x, i]).filter(([x]) => x.group === g); return ix.length ? `<span style="display:flex;align-items:center;gap:6px">${t}<span class="seg" style="margin:0">${ix.map(([x, i]) => `<button type="button" data-i="${i}" aria-pressed="${i === st.si}">${esc(en ? x.label_en || x.label : x.label)}</button>`).join("")}</span></span>` : ""; };
-    ctl += grp("Ist", TM_TXT.ist) + grp("Soll", TM_TXT.soll); }
-  if (steps.some(x => x.alt)) ctl += `<label style="white-space:nowrap${S.alt ? "" : ";color:#999"}"><input type="checkbox" class="tmalt"${useAlt ? " checked" : ""}${S.alt ? "" : " disabled"}> ${esc(en ? T.alt_label_en || "" : T.alt_label || "")}</label>`;
-  ctl += `</div><div class="tmpath" style="font-size:13.5px;margin:0 0 6px"><b>${esc(en ? S.label_en || S.label : S.label)}${useAlt ? ", " + esc(en ? T.alt_label_en || "" : T.alt_label || "") : ""}: ${fmt(total, 1)} ${unit}</b> · ${st.path.length ? [`<a href="javascript:void 0" data-p="">${TM_TXT.all}</a>`, ...st.path.map((k, i) => i === st.path.length - 1 ? esc(lab(k)) : `<a href="javascript:void 0" data-p="${st.path.slice(0, i + 1).join(",")}">${esc(lab(k))}</a>`)].join(" › ") : TM_TXT.hint}</div>`;
+  // Bedienung als eine Textzeile (Tufte): gewählte Option schwarz unterstrichen, übrige grau, keine Rahmen und Beschriftungen
+  const opt = (attr, i, on, t) => `<button type="button" ${attr}="${i}" aria-pressed="${on}">${esc(t)}</button>`;
+  const dot = `<span style="color:#bfbfbf;margin:0 6px">·</span>`, gap = `<span style="display:inline-block;width:22px"></span>`, small = t => `<span style="color:#8c8c8c;font-size:12px;margin-left:5px">${t}</span>`;
+  let ctl = `<div class="tmctl seg" style="display:flex;flex-wrap:wrap;align-items:baseline;row-gap:4px;justify-content:flex-start;margin:0 0 8px">`;
+  if (T0.views) ctl += `<span>${T0.views.map((v, i) => opt("data-v", i, i === st.vi, en ? v.label_en || v.label : v.label)).join(dot)}</span>` + gap;
+  if (T.slider) ctl += `<span style="display:flex;align-items:center;gap:8px">${opt("data-play", 1, false, st.playing ? "❚❚ " + TM_TXT.pause : "▶ " + TM_TXT.play)}<input type="range" min="0" max="${steps.length - 1}" value="${st.si}" class="tmyr" style="width:200px" aria-label="${TM_TXT.year}">${small(esc(steps[0].label) + "–" + esc(steps[steps.length - 1].label))}</span>`;
+  else { const grp = (g, t) => { const ix = steps.map((x, i) => [x, i]).filter(([x]) => x.group === g); return ix.length ? `<span>${ix.map(([x, i]) => opt("data-i", i, i === st.si, en ? x.label_en || x.label : x.label)).join(`<span style="margin:0 4px"></span>`)}${small(t)}</span>` : ""; };
+    ctl += [grp("Ist", TM_TXT.ist), grp("Soll", TM_TXT.soll)].filter(Boolean).join(gap); }
+  if (steps.some(x => x.alt)) ctl += gap + `<span${S.alt ? "" : ' style="opacity:.45"'}>${opt("data-alt", 0, !useAlt, TM_TXT.without)}${dot}${opt("data-alt", 1, !!useAlt, en ? T.alt_label_en || "" : T.alt_label || "")}</span>`;
+  ctl += `</div>`;
+  if (st.path.length) ctl += `<div class="tmpath" style="font-size:13px;margin:0 0 6px">${[`<a href="javascript:void 0" data-p="">${TM_TXT.all}</a>`, ...st.path.map((k, i) => i === st.path.length - 1 ? esc(lab(k)) : `<a href="javascript:void 0" data-p="${st.path.slice(0, i + 1).join(",")}">${esc(lab(k))}</a>`)].join(" › ")}</div>`;
   el.style.aspectRatio = "auto"; el.style.height = "auto";
   el.innerHTML = ctl + s;
-  const yr = el.querySelector(".tmyr"); if (yr) yr.addEventListener("input", e => { st.si = +e.target.value; redraw(); });
+  const yr = el.querySelector(".tmyr"); if (yr) yr.addEventListener("input", e => { clearInterval(el._tmTimer); st.playing = false; st.t = null; st.si = +e.target.value; redraw(); });
   el.querySelectorAll(".tmctl button[data-i]").forEach(b => b.addEventListener("click", () => { st.si = +b.dataset.i; redraw(); }));
+  el.querySelectorAll(".tmctl button[data-alt]").forEach(b => b.addEventListener("click", () => { if (!S.alt) return; st.alt = b.dataset.alt === "1"; redraw(); }));
+  const pb = el.querySelector(".tmctl button[data-play]");
+  if (pb) pb.addEventListener("click", () => {
+    if (st.playing) { clearInterval(el._tmTimer); st.playing = false; st.t = null; redraw(); return; }
+    st.playing = true; st.path = []; st.t = st.si >= steps.length - 1 ? 0 : st.si;
+    el._tmTimer = setInterval(() => { st.t += 0.04; if (st.t >= steps.length - 1) { clearInterval(el._tmTimer); st.playing = false; st.t = null; st.si = steps.length - 1; } else st.si = Math.round(st.t); redraw(); }, 40);
+  });
   el.querySelectorAll(".tmctl button[data-v]").forEach(b => b.addEventListener("click", () => { st.vi = +b.dataset.v; st.path = []; redraw(); }));
-  const ab = el.querySelector(".tmalt"); if (ab) ab.addEventListener("change", e => { st.alt = e.target.checked; redraw(); });
   el.querySelectorAll(".tmpath a").forEach(a => a.addEventListener("click", () => { st.path = a.dataset.p ? a.dataset.p.split(",") : []; redraw(); }));
   el.querySelectorAll(".tmblk").forEach(g => { const k = g.dataset.code; if (kids(k).length) g.addEventListener("click", () => { st.path = [...st.path, k]; redraw(); }); });
-  const card = el.closest(".card"), uEl = card && card.querySelector(".unit"); if (uEl) uEl.style.display = "none";  // Summe steht über der Karte
+  // Summe und Auswahl in der Unterzeile unter dem Titel; die Einheit steht dort
+  const card = el.closest(".card"), uEl = card && card.querySelector(".unit"), sub = card && card.querySelector(".sub"); if (uEl) uEl.style.display = "none";
+  if (sub) sub.innerHTML = `<b style="color:var(--text)">${esc(en ? S.label_en || S.label : S.label)}${useAlt ? ", " + esc(en ? T.alt_label_en || "" : T.alt_label || "") : ""}: ${fmt(total, 1)} ${esc(unit)}</b>${T0.views ? ` ${TM_TXT.by} ${esc(en ? T.label_en || T.label : T.label)}` : ""}${pre ? `, ${esc(lab(pre))}` : ""}${T.price_base ? ` ${TM_TXT.prices} ${T.price_base}` : ""}`;
 }
 
 // Rohstoffpreise nach El Niño: je Rohstoff zwei Balken, El Niño (dunkel) und neutral (grau); Stern = deutlicher Unterschied

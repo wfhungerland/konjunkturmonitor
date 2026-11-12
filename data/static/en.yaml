@@ -544,7 +544,7 @@ charts:
   stx_tree:
     title: "Floor plan of government spending"
     ask: "How is government spending divided up in detail?"
-    caption: "The treemap shows government spending by ten functions and 69 groups; area equals spending. Each function has one colour, its groups lighter shades. Tap a function to zoom in; the slider picks the year. Values are converted to 2024 prices with the price index of government consumption; the area grows with real spending, the dashed frame marks the highest level. Eurostat publishes the groups from 2000. Group names in English, from Eurostat."
+    caption: "The treemap shows government spending by ten functions and 69 groups; area equals spending. Each function has one colour, its groups lighter shades. Tap a function to zoom in; the slider picks the year, ‘Play’ shows 2000 to 2024 as a film. Values are converted to 2024 prices with the price index of government consumption; the area grows with real spending, the dashed frame marks the highest level. Eurostat publishes the groups from 2000. Group names in English, from Eurostat."
   stx_levels:
     title: "Spending of federal government, Länder, municipalities and social security"
     ask: "How much do federal government, Länder, municipalities and social security spend?"
