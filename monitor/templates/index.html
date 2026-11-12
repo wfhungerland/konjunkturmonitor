@@ -961,8 +961,8 @@ function forecastChart(el, c) {
 // Hantelgrafik: je Land der Wert im ersten (hohl) und im jüngsten Jahr (voll), nach dem jüngsten Wert geordnet
 // Empfehlungen des Sachverständigenrats: je Frage ein Farbstreifen über die Jahre, Antippen zeigt Satz und Fundstelle; darunter Minderheitsvoten
 // Politisch gelesen: Rot sozial-progressiv (kräftigere Löhne, lockere Geldpolitik, Impulse, mehr Schutz), Dunkelblau konservativ-liberal
-// (Lohnzurückhaltung, straffere Geldpolitik, sparen, Flexibilisierung), Grau beibehalten. Beim Arbeitsmarkt läuft die Stufe umgekehrt.
-const STANCE_COL = { "-1": "#002060", "0": "#BFBFBF", "1": "#D64541" }, STANCE_FLIP = { A: 1, GA: 1 };
+// (Lohnzurückhaltung, straffere Geldpolitik, sparen, Flexibilisierung; Mittelblau, damit die Flächen nicht zu dunkel werden), Grau beibehalten. Beim Arbeitsmarkt läuft die Stufe umgekehrt.
+const STANCE_COL = { "-1": "#0070C0", "0": "#BFBFBF", "1": "#D64541" }, STANCE_FLIP = { A: 1, GA: 1 };
 const stanceCol = (k, v) => STANCE_COL[String(STANCE_FLIP[k] ? -(+v) || 0 : +v)];
 // Kurzwörter je Frage und Richtung für „Heute“ und die Wendepunkte
 const STANCEW = { L: { "-1": "zurückhaltend", "0": "im Rahmen", "1": "kräftiger" }, G: { "-1": "straffer", "0": "gleich", "1": "lockerer" },
