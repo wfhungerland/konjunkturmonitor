@@ -212,6 +212,13 @@ charts:
     grenzen:
       - "Ohne den deutschen Anteil an der Hilfe der EU und ohne Kosten für Geflüchtete in Deutschland; die Bundesregierung nennt deshalb höhere Summen."
       - "Mehrjährige Pakete erscheinen im Monat der Festlegung; die Quartale schwanken deshalb stark."
+  def_use:
+    methode: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) aus der Statistik der Staatsausgaben nach Aufgaben von Eurostat, aufgeteilt nach Ausgabeart der Volkswirtschaftlichen Gesamtrechnungen: Arbeitnehmerentgelt (D1), Vorleistungen (P2), Bruttoanlageinvestitionen (P51G) sowie Vermögens- und laufende Transfers (D9, D7). Die vier Teile ergeben die Gesamtausgaben; der Monitor prüft das bei jedem Abruf."
+    grenzen:
+      - "Waffensysteme zählen als Investition erst bei Lieferung; Anzahlungen erscheinen dort nicht."
+      - "Die Statistik trennt nicht nach in- und ausländischen Lieferanten. Destatis hält Angaben zu Waffensystemen geheim, und große Käufe von Staat zu Staat fehlen in der Außenhandelsstatistik."
+      - "Dass der Sprung bei den Transfers die Militärhilfe für die Ukraine abbildet, ist eine Deutung aus dem zeitlichen Zusammenfall."
+      - "Daten bis 2024; Eurostat veröffentlicht das Folgejahr meist im Frühjahr."
   arms_prod:
     methode: "Produktionsindex des Wirtschaftszweigs 25.4 (Herstellung von Waffen und Munition) und des Verarbeitenden Gewerbes insgesamt aus der Konjunkturstatistik von Eurostat, Index 2021 = 100, saison- und kalenderbereinigt. Der Monitor ruft beide Reihen werktäglich ab und zeigt dazu den gleitenden Durchschnitt über drei Monate."
     grenzen:

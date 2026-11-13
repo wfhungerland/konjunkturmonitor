@@ -13,6 +13,8 @@ Von Hand nach einer neuen Ausgabe der Quelle (python -m monitor.geopolitik <quel
 - kiel: Kiel Ukraine Support Tracker, Zuteilungen Deutschlands je Quartal in Mrd. €.
 - de_exp_rusblr, de_exp_cauca (täglich): Exporte nach Russland und Belarus sowie in sechs Länder in Kaukasus und
   Zentralasien (Comext), Summe der letzten zwölf Monate in Mrd. €.
+- def_staff, def_material, def_invest, def_transfer (täglich): Staatsausgaben für Verteidigung nach Art (Eurostat,
+  COFOG GF02) in Mrd. €.
 - gta: Global Trade Alert, Export aller Eingriffe (interventions.csv): schädliche Eingriffe (rot und gelb)
   mit Deutschland unter den betroffenen Ländern je Jahr des Inkrafttretens, nach China, USA und übrigen Staaten.
 """
@@ -120,6 +122,39 @@ def trade(raw: str) -> dict[str, pd.Series]:
         m = pd.Series([sum(vs) for vs in zip(*vals)], index=pd.to_datetime(times))
         out[key] = (m.rolling(12).sum() / 1e9).dropna()
     return out
+
+
+DEFENCE = ("https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp"
+           "?geo=DE&cofog99=GF02&sector=S13&unit=MIO_EUR&sinceTimePeriod=2010")
+DEF_PARTS = {"def_staff": ["D1"], "def_material": ["P2"], "def_invest": ["P51G"], "def_transfer": ["D7", "D9"]}
+
+
+def defence(raw: str) -> dict[str, pd.Series]:
+    """Staatsausgaben für Verteidigung (COFOG GF02) nach Art, Mrd. €: Personal, Vorleistungen, Investitionen, Transfers."""
+    import json
+    d = json.loads(raw)
+    dims, size = d["id"], d["size"]
+    idx = {k: d["dimension"][k]["category"]["index"] for k in dims}
+    stride = {k: int(pd.Series(size[i + 1:]).prod()) if i + 1 < len(dims) else 1 for i, k in enumerate(dims)}
+    val = {int(k): v for k, v in d["value"].items()}
+    times = sorted(idx["time"], key=idx["time"].get)
+    get = lambda item, t: val.get(idx["na_item"][item] * stride["na_item"] + idx["time"][t] * stride["time"])
+    times = [t for t in times if get("TE", t) is not None]
+    out = {key: _years(pd.Series({int(t): sum(get(i, t) or 0.0 for i in items) / 1000 for t in times})) for key, items in DEF_PARTS.items()}
+    total = pd.Series({int(t): get("TE", t) / 1000 for t in times})
+    gap = (total.values - sum(s.values for s in out.values())).__abs__().max()
+    if gap > 0.5:  # die vier Teile müssen die Summe ergeben
+        raise ValueError(f"Teile weichen um {gap:.1f} Mrd. € von der Summe ab")
+    return out
+
+
+def update_defence(static: Path) -> None:
+    req = urllib.request.Request(DEFENCE, headers={"User-Agent": "konjunkturmonitor"})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        raw = r.read().decode("utf-8")
+    for key, s in defence(raw).items():
+        _write(static / f"{key}.csv", s, 3)
+    log.info("Verteidigungsausgaben nach Art: bis %d", s.index.max().year)
 
 
 def update_trade(static: Path) -> None:

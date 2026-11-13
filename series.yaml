@@ -168,6 +168,7 @@ charts:
   trade_harm: {title: "Schädliche Handelseingriffe gegen deutsche Interessen", decimals: 0}
   arms_prod: {title: "Produktion von Waffen und Munition", decimals: 0}
   milex_gov: {title: "Militärausgaben im Staatshaushalt", decimals: 1}
+  def_use: {title: "Wofür der Staat Verteidigungsgeld ausgibt", decimals: 1}
   milex_eu_ru: {title: "Militärausgaben Europas und Russlands", decimals: 0}
   trade_ru: {title: "Exporte nach Russland und in Nachbarländer", decimals: 1}
   pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}
@@ -4958,3 +4959,71 @@ series:
     adjustment: nicht bereinigt
     chart: gd_treff
     label: "Arbeitslose (Tsd.)"
+
+  - id: def_staff
+    block: geopolitik
+    source: static
+    key: def_staff
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Personal (Arbeitnehmerentgelt)"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Personal"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."
+
+  - id: def_material
+    block: geopolitik
+    source: static
+    key: def_material
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Material, Wartung und Betrieb (Vorleistungen)"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Material und Betrieb"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."
+
+  - id: def_invest
+    block: geopolitik
+    source: static
+    key: def_invest
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Waffensysteme und Bauten (Bruttoanlageinvestitionen)"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Waffensysteme und Bauten"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."
+
+  - id: def_transfer
+    block: geopolitik
+    source: static
+    key: def_transfer
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Investitionszuschüsse und laufende Transfers an andere"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Transfers an andere"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."

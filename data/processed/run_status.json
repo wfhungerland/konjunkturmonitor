@@ -1,9 +1,10 @@
 {
- "started_at": "2026-11-12T21:50:53Z",
- "finished_at": "2026-11-12T21:54:26Z",
+ "started_at": "2026-11-13T05:17:37Z",
+ "finished_at": "2026-11-13T05:17:37Z",
  "counts": {
-  "ok": 426,
-  "stale": 51
+  "ok": 428,
+  "stale": 51,
+  "cache": 2
  },
  "outdated": [],
  "series": [
@@ -140,6 +141,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_vpi_food_yoy",
+   "status": "ok",
+   "n_obs": 370,
+   "first": "1996-01",
+   "last": "2026-10",
+   "last_value": 0.4408523144746379,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_vpi_food",
+   "outdated": false
+  },
+  {
    "series_id": "de_vpi_energy",
    "status": "ok",
    "n_obs": 262,
@@ -149,6 +162,18 @@
    "retrieved_at": "2026-11-12T21:50:58Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.VPI.C.NRGY00.I20.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_vpi_energy_yoy",
+   "status": "ok",
+   "n_obs": 250,
+   "first": "2006-01",
+   "last": "2026-10",
+   "last_value": 12.227687983134206,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_vpi_energy",
    "outdated": false
   },
   {
@@ -164,6 +189,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_vpi_goods_yoy",
+   "status": "ok",
+   "n_obs": 250,
+   "first": "2006-01",
+   "last": "2026-10",
+   "last_value": 1.416666666666666,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_vpi_goods",
+   "outdated": false
+  },
+  {
    "series_id": "de_vpi_serv",
    "status": "ok",
    "n_obs": 262,
@@ -173,6 +210,18 @@
    "retrieved_at": "2026-11-12T21:50:59Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.N.VPI.C.SVXR.I20.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_vpi_serv_yoy",
+   "status": "ok",
+   "n_obs": 250,
+   "first": "2006-01",
+   "last": "2026-10",
+   "last_value": 2.8112449799196693,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_vpi_serv",
    "outdated": false
   },
   {
@@ -188,6 +237,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_vpi_rent_yoy",
+   "status": "ok",
+   "n_obs": 250,
+   "first": "2006-01",
+   "last": "2026-10",
+   "last_value": 2.1739130434782483,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_vpi_rent",
+   "outdated": false
+  },
+  {
    "series_id": "de_ppi",
    "status": "ok",
    "n_obs": 261,
@@ -200,6 +261,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_ppi_yoy",
+   "status": "ok",
+   "n_obs": 249,
+   "first": "2006-01",
+   "last": "2026-09",
+   "last_value": 6.7246835443038,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_ppi",
+   "outdated": false
+  },
+  {
    "series_id": "de_import_prices",
    "status": "ok",
    "n_obs": 261,
@@ -209,6 +282,18 @@
    "retrieved_at": "2026-11-12T21:51:01Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.Y.APE1.G.GP19SA000000.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_import_prices_yoy",
+   "status": "ok",
+   "n_obs": 249,
+   "first": "2006-01",
+   "last": "2026-09",
+   "last_value": 10.459873760144278,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_import_prices",
    "outdated": false
   },
   {
@@ -281,6 +366,18 @@
    "retrieved_at": "2026-11-12T21:48:53Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/ba_ka_fte_ratio.csv",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_sahm",
+   "status": "ok",
+   "n_obs": 308,
+   "first": "2001-03",
+   "last": "2026-10",
+   "last_value": 0.002486667286621058,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_alq_sa",
    "outdated": false
   },
   {
@@ -1220,6 +1317,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_vpi_core_yoy",
+   "status": "ok",
+   "n_obs": 250,
+   "first": "2006-01",
+   "last": "2026-10",
+   "last_value": 2.095557418273253,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_vpi_core",
+   "outdated": false
+  },
+  {
    "series_id": "de_vpi_yoy_cmp",
    "status": "ok",
    "n_obs": 262,
@@ -1652,6 +1761,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_trade_bal",
+   "status": "ok",
+   "n_obs": 261,
+   "first": "2005-01",
+   "last": "2026-09",
+   "last_value": 15.570000000000007,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_exports minus de_imports",
+   "outdated": false
+  },
+  {
    "series_id": "de_export_prices",
    "status": "ok",
    "n_obs": 261,
@@ -1664,6 +1785,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_export_prices_yoy",
+   "status": "ok",
+   "n_obs": 249,
+   "first": "2006-01",
+   "last": "2026-09",
+   "last_value": 5.295138888888884,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_export_prices",
+   "outdated": false
+  },
+  {
    "series_id": "de_tot",
    "status": "ok",
    "n_obs": 261,
@@ -1673,6 +1806,18 @@
    "retrieved_at": "2026-11-12T21:51:35Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.Y.APT1.G.GP19SA000000.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_tot_yoy",
+   "status": "ok",
+   "n_obs": 249,
+   "first": "2006-01",
+   "last": "2026-09",
+   "last_value": -4.673807205452773,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_tot",
    "outdated": false
   },
   {
@@ -2060,6 +2205,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_power_load_yoy",
+   "status": "ok",
+   "n_obs": 130,
+   "first": "2016-01",
+   "last": "2026-10",
+   "last_value": -1.1685937345587538,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_power_load",
+   "outdated": false
+  },
+  {
    "series_id": "de_power_price",
    "status": "ok",
    "n_obs": 97,
@@ -2117,6 +2274,18 @@
    "retrieved_at": "2026-11-12T21:52:08Z",
    "api_url": "https://genesis.destatis.de/genesisWS/rest/2020/data/tablefile?name=61262-0002&format=ffcsv",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_hpi_yoy",
+   "status": "ok",
+   "n_obs": 62,
+   "first": "2011-Q1",
+   "last": "2026-Q2",
+   "last_value": 0.6000000000000005,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_hpi",
    "outdated": false
   },
   {
@@ -2264,6 +2433,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_ppi_xe_yoy",
+   "status": "ok",
+   "n_obs": 249,
+   "first": "2006-01",
+   "last": "2026-09",
+   "last_value": 3.341687552213868,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_ppi_xe",
+   "outdated": false
+  },
+  {
    "series_id": "de_imp_xe",
    "status": "ok",
    "n_obs": 261,
@@ -2273,6 +2454,18 @@
    "retrieved_at": "2026-11-12T21:52:59Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDP1/M.DE.Y.APE1.G.GP19SA002000.I21.A?startPeriod=2005-01&detail=dataonly",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_imp_xe_yoy",
+   "status": "ok",
+   "n_obs": 249,
+   "first": "2006-01",
+   "last": "2026-09",
+   "last_value": 5.609973285841496,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_imp_xe",
    "outdated": false
   },
   {
@@ -2309,6 +2502,18 @@
    "retrieved_at": "2026-11-12T21:49:42Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/enso_roni.csv",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_agri_yoy",
+   "status": "ok",
+   "n_obs": 608,
+   "first": "1976-01",
+   "last": "2026-08",
+   "last_value": -6.966924700914856,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_agri",
    "outdated": false
   },
   {
@@ -3068,6 +3273,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_sv_tot_yoy",
+   "status": "ok",
+   "n_obs": 188,
+   "first": "2011-01",
+   "last": "2026-08",
+   "last_value": -0.12894099045914764,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_sv_tot",
+   "outdated": false
+  },
+  {
    "series_id": "de_sv_ind",
    "status": "ok",
    "n_obs": 200,
@@ -3077,6 +3294,18 @@
    "retrieved_at": "2026-11-12T21:53:26Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.N.EMP.EBA000.A0000.A00.D00.0S1.ABA.A?startPeriod=2010-01&detail=dataonly",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_sv_ind_yoy",
+   "status": "ok",
+   "n_obs": 188,
+   "first": "2011-01",
+   "last": "2026-08",
+   "last_value": -1.550896968026505,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_sv_ind",
    "outdated": false
   },
   {
@@ -3092,6 +3321,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_sv_dl_yoy",
+   "status": "ok",
+   "n_obs": 188,
+   "first": "2011-01",
+   "last": "2026-08",
+   "last_value": 0.4589807479173036,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_sv_dl",
+   "outdated": false
+  },
+  {
    "series_id": "de_sv_aue",
    "status": "ok",
    "n_obs": 200,
@@ -3101,6 +3342,18 @@
    "retrieved_at": "2026-11-12T21:53:27Z",
    "api_url": "https://api.statistiken.bundesbank.de/rest/data/BBDL1/M.DE.N.EMP.EBA000.A0000.A00.D00.1N1.ABA.A?startPeriod=2010-01&detail=dataonly",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_sv_aue_yoy",
+   "status": "ok",
+   "n_obs": 188,
+   "first": "2011-01",
+   "last": "2026-08",
+   "last_value": -2.1130941103659096,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_sv_aue",
    "outdated": false
   },
   {
@@ -3620,6 +3873,18 @@
    "outdated": false
   },
   {
+   "series_id": "us_gdp_yoy",
+   "status": "ok",
+   "n_obs": 67,
+   "first": "2010-Q1",
+   "last": "2026-Q3",
+   "last_value": 2.0657392375537764,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus us_gdp",
+   "outdated": false
+  },
+  {
    "series_id": "epu_europe",
    "status": "ok",
    "n_obs": 202,
@@ -4004,6 +4269,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_netmig_de",
+   "status": "ok",
+   "n_obs": 12,
+   "first": "2008",
+   "last": "2024",
+   "last_value": -79524.0,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_imm_de minus de_emi_de",
+   "outdated": false
+  },
+  {
    "series_id": "de_imm_eu",
    "status": "ok",
    "n_obs": 5,
@@ -4028,6 +4305,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_netmig_eu",
+   "status": "ok",
+   "n_obs": 5,
+   "first": "2020",
+   "last": "2024",
+   "last_value": 12609.0,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_imm_eu minus de_emi_eu",
+   "outdated": false
+  },
+  {
    "series_id": "de_imm_neu",
    "status": "ok",
    "n_obs": 5,
@@ -4049,6 +4338,18 @@
    "retrieved_at": "2026-11-12T21:54:05Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/migr_emi1ctz?format=JSON&lang=en&geo=DE&citizen=NEU27_2020_FOR&age=TOTAL&agedef=COMPLET&sex=T&unit=NR",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_netmig_neu",
+   "status": "ok",
+   "n_obs": 5,
+   "first": "2020",
+   "last": "2024",
+   "last_value": 557283.0,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_imm_neu minus de_emi_neu",
    "outdated": false
   },
   {
@@ -4268,6 +4569,18 @@
    "outdated": false
   },
   {
+   "series_id": "de_tarif_yoy",
+   "status": "ok",
+   "n_obs": 190,
+   "first": "2011-01",
+   "last": "2026-10",
+   "last_value": 2.477064220183478,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus de_tarif",
+   "outdated": false
+  },
+  {
    "series_id": "de_ulc_yoy",
    "status": "ok",
    "n_obs": 86,
@@ -4445,6 +4758,18 @@
    "retrieved_at": "2026-11-12T21:54:25Z",
    "api_url": "https://www.globalmacrodata.com",
    "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "hist_rr_deu",
+   "status": "ok",
+   "n_obs": 168,
+   "first": "1850",
+   "last": "2024",
+   "last_value": -0.1728377342224121,
+   "retrieved_at": "2026-11-12T21:54:26Z",
+   "api_url": "",
+   "message": "berechnet aus hist_ltrate_deu minus hist_infl_deu",
    "outdated": false
   },
   {
@@ -4706,7 +5031,7 @@
    "first": "2022-Q1",
    "last": "2025-Q4",
    "last_value": 1.0,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:33:12Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/leiden_ops_de.csv",
    "message": "",
    "outdated": false
@@ -4718,7 +5043,7 @@
    "first": "2022-Q1",
    "last": "2025-Q4",
    "last_value": 11.0,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:33:12Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/leiden_ops_eu.csv",
    "message": "",
    "outdated": false
@@ -4730,7 +5055,7 @@
    "first": "1985-01",
    "last": "2026-10",
    "last_value": 159.3,
-   "retrieved_at": "2026-11-12T21:50:52Z",
+   "retrieved_at": "2026-11-12T08:33:12Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gpr_de.csv",
    "message": "",
    "outdated": false
@@ -4742,7 +5067,7 @@
    "first": "1985-01",
    "last": "2026-10",
    "last_value": 150.5,
-   "retrieved_at": "2026-11-12T21:50:52Z",
+   "retrieved_at": "2026-11-12T08:33:12Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gpr_world.csv",
    "message": "",
    "outdated": false
@@ -4754,7 +5079,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 2.269,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_deu.csv",
    "message": "",
    "outdated": false
@@ -4766,7 +5091,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 2.027,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_fra.csv",
    "message": "",
    "outdated": false
@@ -4778,7 +5103,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 2.353,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_gbr.csv",
    "message": "",
    "outdated": false
@@ -4790,7 +5115,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 4.497,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_pol.csv",
    "message": "",
    "outdated": false
@@ -4802,7 +5127,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 3.117,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_usa.csv",
    "message": "",
    "outdated": false
@@ -4814,7 +5139,7 @@
    "first": "1992",
    "last": "2025",
    "last_value": 7.501,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_milex_rus.csv",
    "message": "",
    "outdated": false
@@ -4826,7 +5151,7 @@
    "first": "1816",
    "last": "2022",
    "last_value": 1.503,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:08Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/cow_cinc_deu.csv",
    "message": "",
    "outdated": false
@@ -4838,7 +5163,7 @@
    "first": "2022-Q1",
    "last": "2026-Q2",
    "last_value": 4.69,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:33:12Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/kiel_de_mil.csv",
    "message": "",
    "outdated": false
@@ -4850,7 +5175,7 @@
    "first": "2022-Q1",
    "last": "2026-Q2",
    "last_value": 0.233,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:33:12Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/kiel_de_other.csv",
    "message": "",
    "outdated": false
@@ -4862,7 +5187,7 @@
    "first": "2009",
    "last": "2025",
    "last_value": 148.0,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:33:12Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gta_de_chn.csv",
    "message": "",
    "outdated": false
@@ -4874,7 +5199,7 @@
    "first": "2009",
    "last": "2025",
    "last_value": 118.0,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:33:12Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gta_de_usa.csv",
    "message": "",
    "outdated": false
@@ -4886,7 +5211,7 @@
    "first": "2009",
    "last": "2025",
    "last_value": 874.0,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:33:12Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/gta_de_other.csv",
    "message": "",
    "outdated": false
@@ -5193,24 +5518,24 @@
   },
   {
    "series_id": "de_arms_prod",
-   "status": "ok",
+   "status": "cache",
    "n_obs": 141,
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 290.2,
-   "retrieved_at": "2026-11-12T21:54:25Z",
+   "retrieved_at": "2026-11-13T05:16:48Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&lang=en&geo=DE&nace_r2=C254&unit=I21&s_adj=SCA",
    "message": "",
    "outdated": false
   },
   {
    "series_id": "de_manuf_prod",
-   "status": "ok",
+   "status": "cache",
    "n_obs": 141,
    "first": "2015-01",
    "last": "2026-09",
    "last_value": 92.4,
-   "retrieved_at": "2026-11-12T21:54:26Z",
+   "retrieved_at": "2026-11-13T05:16:49Z",
    "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?format=JSON&lang=en&geo=DE&nace_r2=C&unit=I21&s_adj=SCA",
    "message": "",
    "outdated": false
@@ -5222,7 +5547,7 @@
    "first": "1991",
    "last": "2025",
    "last_value": 4.497,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_gov_deu.csv",
    "message": "",
    "outdated": false
@@ -5234,7 +5559,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 3.534,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_gov_fra.csv",
    "message": "",
    "outdated": false
@@ -5246,7 +5571,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 5.448,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_gov_gbr.csv",
    "message": "",
    "outdated": false
@@ -5258,7 +5583,7 @@
    "first": "1995",
    "last": "2025",
    "last_value": 9.018,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_gov_pol.csv",
    "message": "",
    "outdated": false
@@ -5270,7 +5595,7 @@
    "first": "2001",
    "last": "2025",
    "last_value": 8.25,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_gov_usa.csv",
    "message": "",
    "outdated": false
@@ -5282,7 +5607,7 @@
    "first": "1990",
    "last": "2025",
    "last_value": 546.804,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_usd_cwe.csv",
    "message": "",
    "outdated": false
@@ -5294,7 +5619,7 @@
    "first": "1992",
    "last": "2025",
    "last_value": 158.236,
-   "retrieved_at": "2026-11-12T21:48:53Z",
+   "retrieved_at": "2026-11-12T08:34:07Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/sipri_usd_rus.csv",
    "message": "",
    "outdated": false
@@ -5306,7 +5631,7 @@
    "first": "2019-01",
    "last": "2026-08",
    "last_value": 7.338,
-   "retrieved_at": "2026-11-12T21:50:52Z",
+   "retrieved_at": "2026-11-12T08:34:34Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/de_exp_rusblr.csv",
    "message": "",
    "outdated": false
@@ -5318,333 +5643,9 @@
    "first": "2019-01",
    "last": "2026-08",
    "last_value": 5.418,
-   "retrieved_at": "2026-11-12T21:50:52Z",
+   "retrieved_at": "2026-11-12T08:34:34Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/de_exp_cauca.csv",
    "message": "",
-   "outdated": false
-  },
-  {
-   "series_id": "de_vpi_food_yoy",
-   "status": "ok",
-   "n_obs": 370,
-   "first": "1996-01",
-   "last": "2026-10",
-   "last_value": 0.4408523144746379,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_vpi_food",
-   "outdated": false
-  },
-  {
-   "series_id": "de_vpi_energy_yoy",
-   "status": "ok",
-   "n_obs": 250,
-   "first": "2006-01",
-   "last": "2026-10",
-   "last_value": 12.227687983134206,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_vpi_energy",
-   "outdated": false
-  },
-  {
-   "series_id": "de_vpi_goods_yoy",
-   "status": "ok",
-   "n_obs": 250,
-   "first": "2006-01",
-   "last": "2026-10",
-   "last_value": 1.416666666666666,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_vpi_goods",
-   "outdated": false
-  },
-  {
-   "series_id": "de_vpi_serv_yoy",
-   "status": "ok",
-   "n_obs": 250,
-   "first": "2006-01",
-   "last": "2026-10",
-   "last_value": 2.8112449799196693,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_vpi_serv",
-   "outdated": false
-  },
-  {
-   "series_id": "de_vpi_rent_yoy",
-   "status": "ok",
-   "n_obs": 250,
-   "first": "2006-01",
-   "last": "2026-10",
-   "last_value": 2.1739130434782483,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_vpi_rent",
-   "outdated": false
-  },
-  {
-   "series_id": "de_ppi_yoy",
-   "status": "ok",
-   "n_obs": 249,
-   "first": "2006-01",
-   "last": "2026-09",
-   "last_value": 6.7246835443038,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_ppi",
-   "outdated": false
-  },
-  {
-   "series_id": "de_import_prices_yoy",
-   "status": "ok",
-   "n_obs": 249,
-   "first": "2006-01",
-   "last": "2026-09",
-   "last_value": 10.459873760144278,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_import_prices",
-   "outdated": false
-  },
-  {
-   "series_id": "de_sahm",
-   "status": "ok",
-   "n_obs": 308,
-   "first": "2001-03",
-   "last": "2026-10",
-   "last_value": 0.002486667286621058,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_alq_sa",
-   "outdated": false
-  },
-  {
-   "series_id": "de_vpi_core_yoy",
-   "status": "ok",
-   "n_obs": 250,
-   "first": "2006-01",
-   "last": "2026-10",
-   "last_value": 2.095557418273253,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_vpi_core",
-   "outdated": false
-  },
-  {
-   "series_id": "de_trade_bal",
-   "status": "ok",
-   "n_obs": 261,
-   "first": "2005-01",
-   "last": "2026-09",
-   "last_value": 15.570000000000007,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_exports minus de_imports",
-   "outdated": false
-  },
-  {
-   "series_id": "de_export_prices_yoy",
-   "status": "ok",
-   "n_obs": 249,
-   "first": "2006-01",
-   "last": "2026-09",
-   "last_value": 5.295138888888884,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_export_prices",
-   "outdated": false
-  },
-  {
-   "series_id": "de_tot_yoy",
-   "status": "ok",
-   "n_obs": 249,
-   "first": "2006-01",
-   "last": "2026-09",
-   "last_value": -4.673807205452773,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_tot",
-   "outdated": false
-  },
-  {
-   "series_id": "de_power_load_yoy",
-   "status": "ok",
-   "n_obs": 130,
-   "first": "2016-01",
-   "last": "2026-10",
-   "last_value": -1.1685937345587538,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_power_load",
-   "outdated": false
-  },
-  {
-   "series_id": "de_hpi_yoy",
-   "status": "ok",
-   "n_obs": 62,
-   "first": "2011-Q1",
-   "last": "2026-Q2",
-   "last_value": 0.6000000000000005,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_hpi",
-   "outdated": false
-  },
-  {
-   "series_id": "de_ppi_xe_yoy",
-   "status": "ok",
-   "n_obs": 249,
-   "first": "2006-01",
-   "last": "2026-09",
-   "last_value": 3.341687552213868,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_ppi_xe",
-   "outdated": false
-  },
-  {
-   "series_id": "de_imp_xe_yoy",
-   "status": "ok",
-   "n_obs": 249,
-   "first": "2006-01",
-   "last": "2026-09",
-   "last_value": 5.609973285841496,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_imp_xe",
-   "outdated": false
-  },
-  {
-   "series_id": "de_agri_yoy",
-   "status": "ok",
-   "n_obs": 608,
-   "first": "1976-01",
-   "last": "2026-08",
-   "last_value": -6.966924700914856,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_agri",
-   "outdated": false
-  },
-  {
-   "series_id": "de_sv_tot_yoy",
-   "status": "ok",
-   "n_obs": 188,
-   "first": "2011-01",
-   "last": "2026-08",
-   "last_value": -0.12894099045914764,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_sv_tot",
-   "outdated": false
-  },
-  {
-   "series_id": "de_sv_ind_yoy",
-   "status": "ok",
-   "n_obs": 188,
-   "first": "2011-01",
-   "last": "2026-08",
-   "last_value": -1.550896968026505,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_sv_ind",
-   "outdated": false
-  },
-  {
-   "series_id": "de_sv_dl_yoy",
-   "status": "ok",
-   "n_obs": 188,
-   "first": "2011-01",
-   "last": "2026-08",
-   "last_value": 0.4589807479173036,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_sv_dl",
-   "outdated": false
-  },
-  {
-   "series_id": "de_sv_aue_yoy",
-   "status": "ok",
-   "n_obs": 188,
-   "first": "2011-01",
-   "last": "2026-08",
-   "last_value": -2.1130941103659096,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_sv_aue",
-   "outdated": false
-  },
-  {
-   "series_id": "us_gdp_yoy",
-   "status": "ok",
-   "n_obs": 67,
-   "first": "2010-Q1",
-   "last": "2026-Q3",
-   "last_value": 2.0657392375537764,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus us_gdp",
-   "outdated": false
-  },
-  {
-   "series_id": "de_netmig_de",
-   "status": "ok",
-   "n_obs": 12,
-   "first": "2008",
-   "last": "2024",
-   "last_value": -79524.0,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_imm_de minus de_emi_de",
-   "outdated": false
-  },
-  {
-   "series_id": "de_netmig_eu",
-   "status": "ok",
-   "n_obs": 5,
-   "first": "2020",
-   "last": "2024",
-   "last_value": 12609.0,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_imm_eu minus de_emi_eu",
-   "outdated": false
-  },
-  {
-   "series_id": "de_netmig_neu",
-   "status": "ok",
-   "n_obs": 5,
-   "first": "2020",
-   "last": "2024",
-   "last_value": 557283.0,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_imm_neu minus de_emi_neu",
-   "outdated": false
-  },
-  {
-   "series_id": "de_tarif_yoy",
-   "status": "ok",
-   "n_obs": 190,
-   "first": "2011-01",
-   "last": "2026-10",
-   "last_value": 2.477064220183478,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus de_tarif",
-   "outdated": false
-  },
-  {
-   "series_id": "hist_rr_deu",
-   "status": "ok",
-   "n_obs": 168,
-   "first": "1850",
-   "last": "2024",
-   "last_value": -0.1728377342224121,
-   "retrieved_at": "2026-11-12T21:54:26Z",
-   "api_url": "",
-   "message": "berechnet aus hist_ltrate_deu minus hist_infl_deu",
    "outdated": false
   },
   {
@@ -5729,6 +5730,54 @@
    "retrieved_at": "2026-11-12T21:54:26Z",
    "api_url": "",
    "message": "berechnet aus gd_alo_prog minus gd_alo_ist",
+   "outdated": false
+  },
+  {
+   "series_id": "def_staff",
+   "status": "ok",
+   "n_obs": 15,
+   "first": "2010",
+   "last": "2024",
+   "last_value": 17.725,
+   "retrieved_at": "2026-11-13T05:16:01Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/def_staff.csv",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "def_material",
+   "status": "ok",
+   "n_obs": 15,
+   "first": "2010",
+   "last": "2024",
+   "last_value": 23.506,
+   "retrieved_at": "2026-11-13T05:16:01Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/def_material.csv",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "def_invest",
+   "status": "ok",
+   "n_obs": 15,
+   "first": "2010",
+   "last": "2024",
+   "last_value": 8.386,
+   "retrieved_at": "2026-11-13T05:16:01Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/def_invest.csv",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "def_transfer",
+   "status": "ok",
+   "n_obs": 15,
+   "first": "2010",
+   "last": "2024",
+   "last_value": 8.976,
+   "retrieved_at": "2026-11-13T05:16:01Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/def_transfer.csv",
+   "message": "",
    "outdated": false
   }
  ]

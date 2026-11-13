@@ -657,6 +657,10 @@ charts:
     title: "Military expenditure"
     ask: "How high is military spending by comparison?"
     caption: "Military expenditure in percent of economic output, as defined by the Stockholm International Peace Research Institute (SIPRI). It includes military pensions and military aid. NATO's targets of 2 percent and 3.5 percent by 2035 rest on a different definition. By NATO's count, Germany is usually somewhat higher. Germany is highlighted."
+  def_use:
+    title: "What the state spends defence money on"
+    ask: "What does the state spend defence money on?"
+    caption: "Spending of federal, state and local government on defence by type, in billion euros. Since 2021, material, maintenance and operations grew most, that is spare parts, ammunition and services. Investment in new weapon systems stayed flat because it only counts on delivery. The jump in transfers to others coincides with military aid to Ukraine. The data do not show how much of it stays in Germany."
   arms_prod:
     title: "Production of weapons and ammunition"
     ask: "How fast is the production of weapons and ammunition growing?"
@@ -929,6 +933,10 @@ series:
   gpr_de: {title: "Geopolitical risk relating to Germany", label: "Germany", unit: "Index, 1985–2019 average = 100", note: "Country index GPRC_DEU: share of articles in ten major English-language newspapers that mention geopolitical tensions, wars or terrorism together with Germany; rescaled by the monitor to an average of 100 in 1985 to 2019. Retrieved every working day from matteoiacoviello.com.", adjustment: "not adjusted"}
   gpr_world: {title: "Geopolitical risk, world", label: "World", unit: "Index, 1985–2019 average = 100", note: "Overall GPR index, rescaled by the monitor to an average of 100 in 1985 to 2019.", adjustment: "not adjusted"}
   milex: {title: "Military expenditure in % of GDP, {staat_name}", label: "{staat_name}", unit: "% of GDP", note: "Military expenditure as defined by SIPRI (including military pensions, paramilitary forces and military aid) in % of GDP. Germany until 1990 West Germany. April 2026 edition (file v1.2), taken over by hand.", adjustment: "annual, current prices"}
+  def_staff: {title: "Government defence spending: personnel (compensation of employees)", label: "Personnel", unit: "€ bn", adjustment: "annual, current prices"}
+  def_material: {title: "Government defence spending: material, maintenance and operations (intermediate consumption)", label: "Material and operations", unit: "€ bn", adjustment: "annual, current prices"}
+  def_invest: {title: "Government defence spending: weapon systems and buildings (gross fixed capital formation)", label: "Weapon systems and buildings", unit: "€ bn", adjustment: "annual, current prices"}
+  def_transfer: {title: "Government defence spending: investment grants and current transfers to others", label: "Transfers to others", unit: "€ bn", adjustment: "annual, current prices"}
   de_arms_prod: {title: "Production of weapons and ammunition, index 2021 = 100", label: "Weapons and ammunition", unit: "Index 2021 = 100", note: "Industry 25.4 of NACE Rev. 2 (manufacture of weapons and ammunition); tanks, aircraft and ships belong to other industries.", adjustment: "seasonally and calendar adjusted"}
   de_manuf_prod: {title: "Production in manufacturing, index 2021 = 100", label: "Industry as a whole", unit: "Index 2021 = 100", adjustment: "seasonally and calendar adjusted"}
   milex_gov: {title: "Military expenditure in % of government spending, {staat_name}", label: "{staat_name}", unit: "% of government spending", note: "Military expenditure as defined by SIPRI in % of spending of all levels of government (IMF). April 2026 edition, taken over by hand.", adjustment: "annual, current prices"}
