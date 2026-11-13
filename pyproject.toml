@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
   # Datenabruf, Katalog und Pipeline teilt der Monitor mit konjunkturwolf
-  "konjunkturwolf @ git+https://github.com/wfhungerland/konjunkturwolf@4210a3a709c7bcd8c98baf91372b99b912916a54",  # fester Stand; Aktualisierung über .github/workflows/pipeline-stand.yml
+  "konjunkturwolf @ git+https://github.com/wfhungerland/konjunkturwolf@28c293191f133912e5b32b4f796cdc5d938775cb",  # fester Stand; Aktualisierung über .github/workflows/pipeline-stand.yml
   "pandas>=2.0",
   "PyYAML>=6.0",
   "python-pptx>=1.0",
