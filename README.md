@@ -35,7 +35,7 @@ Jede Abbildung hat Nummer, Unterfrage, Sätze zum jüngsten Stand, Titel, Erläu
 | Geopolitik | Geopolitical Risk Index (Caldara und Iacoviello), werktäglich; von Hand nach neuen Ausgaben (`python -m monitor.geopolitik <quelle> <datei>`, Quelle leiden, sipri, cow, kiel, gta oder kmpt); werktäglich: Exporte nach Russland und Nachbarländern (Eurostat Comext), Produktion von Waffen und Munition (Eurostat `sts_inpr_m`, C254): Universität Leiden, Russian Operations Against Europe Dataset (CC BY 4.0), SIPRI Military Expenditure Database, Correlates of War National Material Capabilities v7.0, Kiel Ukraine Support Tracker, Global Trade Alert (Export aller Eingriffe), Kiel Military Procurement Tracker |
 | Kalender | `data/static/kalender.yaml`: Termine nach dem üblichen Rhythmus der Quellen, geschätzt |
 | Prognosen | `data/static/prognosen.yaml`, nur veröffentlichte Werte mit Link |
-| Gemeinschaftsdiagnose | `data/static/gd_prognosen.csv`: Prognosen der Wirtschaftsforschungsinstitute 1950 bis Frühjahr 2026 mit Fundstelle je Wert, abgeleitet aus den Gutachten; die Reihen der Abbildungen erzeugt `python -m monitor.gd` |
+| Gemeinschaftsdiagnose | `data/static/gd_prognosen.csv`: Prognosen der Wirtschaftsforschungsinstitute 1950 bis Herbst 2026 mit Fundstelle je Wert, abgeleitet aus den Gutachten; die Reihen der Abbildungen erzeugt `python -m monitor.gd` |
 | Karten | Ländergrenzen © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung 2.0, vereinfacht (`data/static/vg2500_laender.json`) |
 
 Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global, GfK-Detailreihen und Terminpreise. Die ifo-Zeitreihen setzen eine Anmeldung voraus. Die Stimmung kommt deshalb aus den offenen EU-Umfragen.
