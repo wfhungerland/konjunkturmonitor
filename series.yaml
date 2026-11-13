@@ -194,8 +194,10 @@ charts:
   ecb_rates: {title: "Leitzinsen der EZB", decimals: 2}
   ecb_bs: {title: "Bilanz des Eurosystems", decimals: 2}
   spreads: {title: "Renditeabstand zu Bundesanleihen", decimals: 2}
-  yc_curve: {title: "Zinsstruktur im Euroraum", decimals: 2}
-  yc_slope: {title: "Steigung der Zinsstruktur", decimals: 2}
+  qe_prog: {title: "Anleihebestände der EZB nach Programm", decimals: 0}
+  qe_land: {title: "Käufe von Staatsanleihen nach Land", decimals: 0}
+  zinskurven: {title: "Zinskurven von Staatsanleihen", decimals: 2}
+  curve_slope: {title: "Abstand langer zu kurzer Zinsen", decimals: 2}
   corp_yields: {title: "Renditen von Unternehmensanleihen", decimals: 2}
   corp_spread: {title: "Renditeabstand der Unternehmensanleihen", decimals: 2}
   bls_std: {title: "Kreditstandards der Banken", decimals: 0}
@@ -1633,8 +1635,6 @@ series:
     frequency: M
     adjustment: nicht bereinigt
     start: "2007-01-01"
-    chart: ecb_bs
-    label: "Bilanzsumme"
 
   - id: ecb_bs_sec
     block: finanzen
@@ -1646,8 +1646,6 @@ series:
     frequency: M
     adjustment: nicht bereinigt
     start: "2007-01-01"
-    chart: ecb_bs
-    label: "Anleihekäufe"
 
   - id: ecb_bs_loans
     block: finanzen
@@ -1659,8 +1657,6 @@ series:
     frequency: M
     adjustment: nicht bereinigt
     start: "2007-01-01"
-    chart: ecb_bs
-    label: "Kredite an Banken"
 
   - id: ecb_bs_df
     block: finanzen
@@ -1672,8 +1668,263 @@ series:
     frequency: M
     adjustment: nicht bereinigt
     start: "2007-01-01"
-    chart: ecb_bs
-    label: "Einlagen der Banken"
+
+  - id: ecb_bs_gold
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A010000.Z5.Z0Z
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Gold und Goldforderungen, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_fx1
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A020000.U4.Z06
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Fremdwährungsforderungen an Ansässige außerhalb des Euroraums, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_fx2
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A030000.U2.Z06
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Fremdwährungsforderungen an Ansässige im Euroraum, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_fx3
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A040000.U4.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Euro-Forderungen an Ansässige außerhalb des Euroraums, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_oth_ci
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A060000.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Sonstige Forderungen an Kreditinstitute im Euroraum, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_secall
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A070000.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Wertpapiere von Ansässigen im Euroraum, insgesamt, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_gov
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A080000.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Forderungen an öffentliche Haushalte, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_other
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A110000.Z5.Z01
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Sonstige Aktiva, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: qe_pspp
+    block: finanzen
+    source: static
+    key: qe_pspp
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: Staatsanleihen (PSPP), Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Staatsanleihen (PSPP)"
+
+  - id: qe_pepp_pub
+    block: finanzen
+    source: static
+    key: qe_pepp_pub
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: Pandemieprogramm PEPP, öffentliche Anleihen, Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Pandemieprogramm (PEPP), Staat"
+
+  - id: qe_cspp
+    block: finanzen
+    source: static
+    key: qe_cspp
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: Unternehmensanleihen (CSPP), Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Unternehmensanleihen (CSPP)"
+
+  - id: qe_cbpp3
+    block: finanzen
+    source: static
+    key: qe_cbpp3
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: gedeckte Bankanleihen (CBPP3), Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Gedeckte Bankanleihen (CBPP3)"
+
+  - id: qe_pepp_priv
+    block: finanzen
+    source: static
+    key: qe_pepp_priv
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: Pandemieprogramm PEPP, private Anleihen, Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Pandemieprogramm (PEPP), privat"
+
+  - id: qe_abspp
+    block: finanzen
+    source: static
+    key: qe_abspp
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: Kreditverbriefungen (ABSPP), Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Kreditverbriefungen (ABSPP)"
+
+  - id: qe_net_de
+    block: finanzen
+    source: static
+    key: qe_net_de
+    params: {source_name: "EZB, Anleihekäufe (PSPP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Kumulierte Nettokäufe von Staatsanleihen durch das Eurosystem (PSPP und PEPP), Deutschland"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_land
+    label: "Deutschland"
+
+  - id: qe_net_fr
+    block: finanzen
+    source: static
+    key: qe_net_fr
+    params: {source_name: "EZB, Anleihekäufe (PSPP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Kumulierte Nettokäufe von Staatsanleihen durch das Eurosystem (PSPP und PEPP), Frankreich"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_land
+    label: "Frankreich"
+
+  - id: qe_net_it
+    block: finanzen
+    source: static
+    key: qe_net_it
+    params: {source_name: "EZB, Anleihekäufe (PSPP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Kumulierte Nettokäufe von Staatsanleihen durch das Eurosystem (PSPP und PEPP), Italien"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_land
+    label: "Italien"
+
+  - id: qe_net_es
+    block: finanzen
+    source: static
+    key: qe_net_es
+    params: {source_name: "EZB, Anleihekäufe (PSPP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Kumulierte Nettokäufe von Staatsanleihen durch das Eurosystem (PSPP und PEPP), Spanien"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_land
+    label: "Spanien"
+
+  - id: curve_slope_de
+    block: finanzen
+    source: static
+    key: curve_slope_de
+    params: {source_name: "Deutsche Bundesbank, Zinsstruktur"}
+    license: "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)"
+    title: "Rendite zehnjähriger minus dreijähriger Staatsanleihen, Deutschland, Monatswerte"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: curve_slope
+    label: "Deutschland"
+
+  - id: curve_slope_it
+    block: finanzen
+    source: static
+    key: curve_slope_it
+    params: {source_name: "Banca d'Italia (BMK0100)"}
+    license: "Wiederverwendung mit Quellenangabe (Fonte: Banca d'Italia)"
+    title: "Rendite zehnjähriger minus dreijähriger Staatsanleihen, Italien, Monatswerte"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: curve_slope
+    label: "Italien"
+
+  - id: curve_slope_es
+    block: finanzen
+    source: static
+    key: curve_slope_es
+    params: {source_name: "Banco de España (Tabelle 1.3)"}
+    license: "Wiederverwendung mit Quellenangabe (Banco de España)"
+    title: "Rendite zehnjähriger minus dreijähriger Staatsanleihen, Spanien, Monatswerte"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: curve_slope
+    label: "Spanien"
 
   - id: lt_de
     block: finanzen
@@ -1747,119 +1998,6 @@ series:
     adjustment: nicht bereinigt
     chart: spreads
     label: "Spanien"
-
-  - id: yc_3m
-    block: finanzen
-    source: ecb
-    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_3M
-    params: {aggregate: monthly_mean}
-    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 3 Monate, Monatsmittel"
-    unit: "% p. a."
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2004-09-01"
-    chart: yc_curve
-    label: "3 Monate"
-
-  - id: yc_1y
-    block: finanzen
-    source: ecb
-    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_1Y
-    params: {aggregate: monthly_mean}
-    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 1 Jahr, Monatsmittel"
-    unit: "% p. a."
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2004-09-01"
-    chart: yc_curve
-    label: "1 Jahr"
-
-  - id: yc_2y
-    block: finanzen
-    source: ecb
-    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_2Y
-    params: {aggregate: monthly_mean}
-    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 2 Jahre, Monatsmittel"
-    unit: "% p. a."
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2004-09-01"
-    chart: yc_curve
-    label: "2 Jahre"
-
-  - id: yc_5y
-    block: finanzen
-    source: ecb
-    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_5Y
-    params: {aggregate: monthly_mean}
-    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 5 Jahre, Monatsmittel"
-    unit: "% p. a."
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2004-09-01"
-    chart: yc_curve
-    label: "5 Jahre"
-
-  - id: yc_10y
-    block: finanzen
-    source: ecb
-    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_10Y
-    params: {aggregate: monthly_mean}
-    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 10 Jahre, Monatsmittel"
-    unit: "% p. a."
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2004-09-01"
-    chart: yc_curve
-    label: "10 Jahre"
-
-  - id: yc_20y
-    block: finanzen
-    source: ecb
-    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_20Y
-    params: {aggregate: monthly_mean}
-    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 20 Jahre, Monatsmittel"
-    unit: "% p. a."
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2004-09-01"
-    chart: yc_curve
-    label: "20 Jahre"
-
-  - id: yc_30y
-    block: finanzen
-    source: ecb
-    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_30Y
-    params: {aggregate: monthly_mean}
-    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 30 Jahre, Monatsmittel"
-    unit: "% p. a."
-    frequency: M
-    adjustment: nicht bereinigt
-    start: "2004-09-01"
-    chart: yc_curve
-    label: "30 Jahre"
-
-  - id: yc_slope
-    block: finanzen
-    source: derived
-    derive: {from: yc_10y, op: diff, minus: yc_2y}
-    title: "Steigung der Zinsstruktur im Euroraum (AAA): 10 Jahre minus 2 Jahre"
-    unit: "Prozentpunkte"
-    frequency: M
-    adjustment: nicht bereinigt
-    chart: yc_slope
-    label: "10 minus 2 Jahre"
-
-  - id: yc_slope3m
-    block: finanzen
-    source: derived
-    derive: {from: yc_10y, op: diff, minus: yc_3m}
-    title: "Steigung der Zinsstruktur im Euroraum (AAA): 10 Jahre minus 3 Monate"
-    unit: "Prozentpunkte"
-    frequency: M
-    adjustment: nicht bereinigt
-    chart: yc_slope
-    label: "10 Jahre minus 3 Monate"
 
   - id: de_corp_yield
     block: finanzen

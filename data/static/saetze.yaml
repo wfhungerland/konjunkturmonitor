@@ -44,8 +44,6 @@ series:
   spread_it: [der Renditeabstand zehnjähriger italienischer Staatsanleihen zu Bundesanleihen, s]
   spread_fr: [der Renditeabstand zehnjähriger französischer Staatsanleihen zu Bundesanleihen, s]
   spread_es: [der Renditeabstand zehnjähriger spanischer Staatsanleihen zu Bundesanleihen, s]
-  yc_slope: [der Abstand zwischen zehn- und zweijährigen Zinsen, s]
-  yc_slope3m: [der Abstand zwischen zehnjährigen und dreimonatigen Zinsen, s]
   de_corp_yield: [die Umlaufsrendite der Unternehmensanleihen, s]
   de_pub_yield: [die Umlaufsrendite der Anleihen der öffentlichen Hand, s]
   de_corp_spread: [der Renditeabstand der Unternehmensanleihen zu Anleihen der öffentlichen Hand, s]

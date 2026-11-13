@@ -603,6 +603,19 @@ def chart_sentences_en(c: dict) -> list[str]:
         return out
     if typ not in ("line", "dumbbell", None) or not isinstance(c.get("series"), list):
         return []
+    if c.get("area") and c.get("series"):  # gestapelte Flächen: Summe und größte Teile
+        ser = [s for s in c["series"] if s.get("y")]
+        last = max(s["x"][-1] for s in ser)
+        parts = [(s["label"], s["y"][s["x"].index(last)]) for s in ser if last in s["x"]]
+        tot = sum(v for _, v in parts)
+        ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
+        tot0 = sum(s["y"][s["x"].index(ago)] for s in ser if ago in s["x"])
+        u = (c.get("unit") or "").split(",")[0]
+        big = sorted(parts, key=lambda p: -p[1])[:2]
+        out = [f"{when(last, c.get('freq', 'M'))}, {c.get('whole_en', 'the total')} stood at {num(tot, d)} {u}" + (f", {num(abs(tot / tot0 - 1) * 100, 1)}% {'more' if tot > tot0 else 'less'} than a year earlier." if tot0 else ".")]
+        low = lambda t: t if t[:2].isupper() else t[:1].lower() + t[1:]
+        out.append("Of this, " + " and ".join(f"{num(v, d)} {u} ({num(v / tot * 100, 0)}%) was {low(lab)}" for lab, v in big) + ".")
+        return out
     try:
         series = [s for s in c["series"] if s.get("y")]
         norm = next((s for s in series if s.get("style") == "norm"), None)
@@ -875,6 +888,8 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
         for c in t["charts"]:
             if c.get("ref_labels_en"):
                 c["ref_labels"] = c["ref_labels_en"]
+            for e in c.get("events") or []:  # geldpolitische Ereignisse englisch
+                e["label"], e["text"] = e.get("label_en", e["label"]), e.get("text_en", e.get("text", ""))
     for q in p.get("questions") or []:
         q["ask"] = tr.get("questions", q["id"], "ask", q["ask"])
         if q["id"] in ans:
