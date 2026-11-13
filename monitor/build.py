@@ -1020,7 +1020,8 @@ def chart_sentences(c: dict) -> list[str]:
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         if c.get("tpl"):  # ganze Sätze aus monitor.yaml mit Werten mehrerer Reihen, etwa {v[id]}; Stichtag ist der jüngste Zeitpunkt, den alle Reihen haben
             last = min(s["x"][-1] for s in series)
-            F = {k: {} for k in ("v", "n", "full", "chg", "pabs", "mehr", "ueber", "abs100", "ueber100")}
+            F = {k: {} for k in ("v", "n", "full", "chg", "pabs", "mehr", "ueber", "abs100", "ueber100", "abs", "sg", "up_pl", "trend_pl", "streak")}
+            noun = {"Q": ("Quartal", "Quartalen"), "M": ("Monat", "Monaten")}.get(freq, ("Jahr", "Jahren"))
             vals, vals0 = {}, {}
             for s in series:
                 if last not in s["x"] or s["y"][s["x"].index(last)] is None:
@@ -1034,11 +1035,18 @@ def chart_sentences(c: dict) -> list[str]:
                 F["v"][sid], F["n"][sid] = val(v), num(v, d)
                 F["full"][sid] = f"{int(round(v)) * 1000:,}".replace(",", ".")
                 F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
+                F["abs"][sid], F["sg"][sid] = num(abs(v), d), num(v, d, True)
+                F["up_pl"][sid], F["trend_pl"][sid] = ("stiegen", "steigen") if v > 0 else ("sanken", "sinken")
+                ys = [y for y in s["y"][:i + 1] if y is not None]
+                k = next((j for j, y in enumerate(reversed(ys)) if (y > 0) != (v > 0)), len(ys))  # Perioden in Folge mit gleichem Vorzeichen
+                F["streak"][sid] = f"einem {noun[0]}" if k == 1 else f"{ZAHLWORT.get(k, k)} {noun[1]}"
                 if y0:
                     pc = (v / y0 - 1) * 100
                     F["chg"][sid], F["pabs"][sid] = num(pc, 1, True) + " %", num(abs(pc), 1)
                     F["mehr"][sid], F["ueber"][sid] = ("mehr" if pc > 0 else "weniger"), ("über" if pc > 0 else "unter")
             F["q"] = {f"{a}/{b}": num(vals[a] / vals[b], 1) for a in vals for b in vals if a != b and vals[b]}
+            F["cmp"] = {f"{a}-{b}": "so schnell wie" if round(vals[a] - vals[b], d) == 0 else f"{num(abs(vals[a] - vals[b]), d)} Pp {'schneller' if vals[a] > vals[b] else 'langsamer'} als"
+                        for a in vals for b in vals if a != b}
             F["q0"] = {f"{a}/{b}": num(vals0[a] / vals0[b], 1) for a in vals0 for b in vals0 if a != b and vals0[a] is not None and vals0[b]}
             try:
                 return [t.format(when=_when(last, freq), **F) for t in c["tpl"]]
@@ -1062,8 +1070,8 @@ def chart_sentences(c: dict) -> list[str]:
             at = lambda s: s["y"][s["x"].index(last)] if last in s["x"] else None
             if cb.get("where") and series and at(series[0]) is not None and unit.startswith("%"):  # Verb vorn: Gesamtgröße, dann Bereiche mit gleicher und mit anderer Richtung
                 sg = lambda v: (round(v, d) > 0) - (round(v, d) < 0)
-                verb = {1: "stieg", -1: "sank", 0: "veränderte sich kaum"}
-                verb_sie = {1: "stieg sie", -1: "sank sie", 0: "veränderte sie sich kaum"}
+                verb = {1: "stiegen", -1: "sanken", 0: "veränderten sich kaum"} if cb.get("pl") else {1: "stieg", -1: "sank", 0: "veränderte sich kaum"}
+                verb_sie = {1: "stiegen sie", -1: "sanken sie", 0: "veränderten sie sich kaum"} if cb.get("pl") else {1: "stieg sie", -1: "sank sie", 0: "veränderte sie sich kaum"}
                 tot, rest = series[0], [s for s in series[1:] if at(s) is not None]
                 amt = lambda v: f" um {num(abs(v), d)} {sym}" if sg(v) else ""
                 g0 = sg(at(tot))
@@ -1184,6 +1192,16 @@ def chart_sentences(c: dict) -> list[str]:
         if typ == "threshold" and c.get("threshold") is not None and out and series and series[0]["y"][-1] is not None:
             th = float(c["threshold"])
             out.append("Ein Rezessionssignal liegt damit vor." if series[0]["y"][-1] >= th else "Ein Rezessionssignal liegt damit nicht vor.")
+        if c.get("ref_year") and out and series and series[0]["y"][-1] is not None:  # Bezug zum Mittel eines Jahres, etwa 2019 vor der Pandemie
+            ry = str(c["ref_year"])
+            r = [y for x, y in zip(series[0]["x"], series[0]["y"]) if x[:4] == ry and y is not None]
+            if r:
+                m, v = sum(r) / len(r), series[0]["y"][-1]
+                if unit.startswith("Index"):
+                    pc = (v / m - 1) * 100
+                    out.append(f"Das sind {num(abs(pc), 1)} % {'mehr' if pc > 0 else 'weniger'} als im Mittel des Jahres {ry}." if round(pc, 1) else f"Das ist so viel wie im Mittel des Jahres {ry}.")
+                else:
+                    out.append(f"Im Mittel des Jahres {ry} waren es {num(m, d)} {'%' if unit.startswith('%') else u}.".replace(" .", "."))
         if norm and out and norm["x"][-1] == last and series and series[0]["y"][-1] is not None and norm["y"][-1]:
             v, m = series[0]["y"][-1], norm["y"][-1]
             a0, a1 = c.get("norm") or ("", "")
