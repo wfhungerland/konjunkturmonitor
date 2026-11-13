@@ -10,7 +10,7 @@ Eine lange Seite, deutsch unter `/` und englisch unter `/en/` (Sprachschalter un
 
 - **Kopfzeile (fixiert):** Titel, Sprachschalter und Stand; alle Themen als Links; Suche mit Vorschlägen (Taste `/`); Knopf zum Aus- und Einklappen aller Abbildungen.
 - **Start:** zwei bis drei Sätze zur Gesamtlage, „Heute neu“, sechs Kennzahl-Kacheln mit Fünfjahresverlauf, alle Kennzahlen als Tabelle (aufklappbar).
-- **Teil I Konjunktur, Teil II Staat, Teil III Analysen, Teil IV Expertisen, Teil V Geopolitik, Teil VI Struktur, Termine:** je Abschnitt eine Frage als Überschrift, ein Antwortsatz aus den Daten mit Erläuterung, eine Leitabbildung und weitere Abbildungen zum Aufklappen. Ab 1240 px Breite läuft links die Liste der Abbildungen des Abschnitts mit.
+- **Teil I Konjunktur, Teil II Geld und Staat, Teil III Struktur, Teil IV Geopolitik, Teil V Analysen, Teil VI Expertisen, Termine:** je Abschnitt eine Frage als Überschrift, ein Antwortsatz aus den Daten mit Erläuterung, eine Leitabbildung und weitere Abbildungen zum Aufklappen. Ab 1240 px Breite läuft links die Liste der Abbildungen des Abschnitts mit.
 - **Diese Woche neu:** Abbildungen mit neuen Daten in den letzten sieben Tagen.
 - **Quellen und Hinweise:** Methodik, Quellen und Lizenzen, fehlende Indikatoren, Gesamtdownloads, Abrufstatus, Zitiervorschlag.
 
