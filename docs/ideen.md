@@ -34,6 +34,7 @@ Gesammelte Notizen für später, grob geordnet. Stand: 13.11.2026.
 - Aufnahmefähigkeit der Landkreise für Infrastrukturinvestitionen (Bau, Ausbau, Handwerk, Bahnbedarf): Index aus Kapazität (Beschäftigte nach WZ 41–43 und KldB 32/33, Betriebe Bauhauptgewerbe), Engpass (Arbeitslose je offene Stelle, Vakanzzeit, Altersstruktur) und Auslastung (Baugenehmigungen, laufende Projekte). Prüfen an Vergabedaten (Angebote je Ausschreibung, Zuschlag gegen Schätzung, TED/NUTS-3) und an Schocks wie Ahrtal-Wiederaufbau oder Generalsanierungen der Bahn.
   - Migration: ausländische Beschäftigte in Bauberufen nach Staatsangehörigkeit je Kreis (BA), Entsendungen in den Bau (SOKA-BAU, A1-Bescheinigungen), Zuzüge. Zeigt, wie stark ein Kreis Engpässe über Zuwanderung schließt.
   - Reichweite der Firmen: Kapazität nicht je Kreis zählen, sondern als Einzugsgebiet. Distanzabfall empirisch schätzen aus TED-Zuschlägen (Sitz des Auftragnehmers gegen Ort der Leistung), getrennt nach Gewerk und Auftragsgröße. Kapazität der Nachbarkreise dann mit diesem Abfall nach Fahrzeit gewichten; Pendlerverflechtungen der BA als Gegenprobe.
+  - TED geprüft 13.11.2026: Such-API (api.ted.europa.eu/v3) liefert Postleitzahl und NUTS-3 des Auftragnehmers sowie NUTS-3 des Leistungsorts (DB InfraGO auf Verfahrensebene). Füllung bei deutschen Bauzuschlägen ab 2025 rund 55–60 %; nur Aufträge über EU-Schwelle, Sitz kann der eingetragene Sitz statt der ausführenden Niederlassung sein.
 
 ## Faustregeln (back of the envelope)
 - Taylor-Regel, Calvo-Parameter, Okun
