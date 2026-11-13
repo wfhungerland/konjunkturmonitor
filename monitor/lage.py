@@ -60,42 +60,45 @@ def build(data: dict, forecasts: list[dict], lang: str = "de") -> dict:
     pc = lambda v, d=1, sign=False: f"{n(v, d, sign)}{NB}%" if de else f"{n(v, d, sign)}%"
     kp, facts = [], {}
 
-    def tile(key, label, value, unit, tri, bad, lines, per, topic):
-        kp.append({"key": key, "label": label, "value": value, "unit": unit, "tri": tri, "bad": bool(bad and tri == "up"), "lines": lines, "per": per, "topic": topic})
+    def spark(ser: pd.Series | None) -> dict | None:
+        """Verlauf der letzten fünf Jahre für die Wortgrafik (Sparkline)."""
+        if ser is None or not len(ser):
+            return None
+        t = ser[ser.index > ser.index[-1] - pd.DateOffset(years=5)]
+        return {"y": [round(float(v), 3) for v in t.values]}
+
+    def row(key, label, value, cmp, topic, ser, ref=None):
+        kp.append({"key": key, "label": label, "value": value, "cmp": cmp, "topic": topic, "spark": spark(ser), "ref": ref})
 
     q = _s(data, "de_gdp_qoq")
     if q is not None and len(q) > 1:
-        v, p = float(q.iloc[-1]), float(q.iloc[-2])
+        v = float(q.iloc[-1])
         norm = float(q[(q.index.year >= 2015) & (q.index.year <= 2019)].mean())
         facts["gdp"] = (v, norm, q.index[-1])
-        tile("wachstum", "Wachstum" if de else "Growth", n(v, 1, True), "%", _tri(v, p), False,
-             [(f"Vorquartal {pc(p, 1, True)}" if de else f"previous quarter {pc(p, 1, True)}"), (f"normal: {pc(norm, 1, True)}" if de else f"normal: {pc(norm, 1, True)}")],
-             (_per(q.index[-1], "Q", lang) + (", ggü. Vorquartal" if de else ", on previous quarter")), "wachstum")
+        row("wachstum", "Wachstum" if de else "Growth", pc(v, 1, True),
+            (f"im {_per(q.index[-1], 'Q', lang)}; normal {pc(norm, 1, True)}" if de else f"in {_per(q.index[-1], 'Q', lang)}; normal {pc(norm, 1, True)}"),
+            "wachstum", _s(data, "de_gdp_index"))
     c = _s(data, "de_cpi_yoy")
     if c is not None and len(c) > 1:
         v, p = float(c.iloc[-1]), float(c.iloc[-2])
         facts["cpi"] = (v, p)
-        tile("preise", "Inflation", n(v), "%", _tri(v, p), True,
-             [(f"Vormonat {pc(p)}" if de else f"previous month {pc(p)}"), (f"Ziel: {pc(2.0)}" if de else f"target: {pc(2.0)}")], _per(c.index[-1], "M", lang), "preise")
+        row("preise", "Inflation", pc(v), (f"{_per(c.index[-1], 'M', lang)}; Ziel {pc(2, 0)}" if de else f"{_per(c.index[-1], 'M', lang)}; target {pc(2, 0)}"), "preise", c, 2.0)
     a = _s(data, "de_alq_sa")
     if a is not None and len(a) > 12:
         v, y = float(a.iloc[-1]), float(a.iloc[-13])
-        tile("arbeit", "Arbeitslosigkeit" if de else "Unemployment", n(v), "%", _tri(v, y), True,
-             [(f"vor einem Jahr {pc(y)}" if de else f"a year ago {pc(y)}"), ("gemeldete Arbeitslose" if de else "registered unemployed")], _per(a.index[-1], "M", lang), "arbeit")
+        row("arbeit", "Arbeitslosigkeit" if de else "Unemployment", pc(v),
+            (f"{_per(a.index[-1], 'M', lang)}; vor einem Jahr {pc(y)}" if de else f"{_per(a.index[-1], 'M', lang)}; a year ago {pc(y)}"), "arbeit", a)
     e = _s(data, "de_esi")
     if e is not None and len(e) > 1:
-        v, p = float(e.iloc[-1]), float(e.iloc[-2])
-        tile("stimmung", "Stimmung" if de else "Sentiment", n(v), "", _tri(v, p), False,
-             [(f"Vormonat {n(p)}" if de else f"previous month {n(p)}"), ("normal: 100")], _per(e.index[-1], "M", lang) + (", EU-Kommission" if de else ", European Commission"), "stimmung")
+        v = float(e.iloc[-1])
+        row("stimmung", "Stimmung" if de else "Sentiment", n(v), (f"{_per(e.index[-1], 'M', lang)}; normal 100" if de else f"{_per(e.index[-1], 'M', lang)}; normal 100"), "stimmung", e, 100.0)
     ip, od = _s(data, "de_ip"), _s(data, "de_orders")
     if ip is not None:
         v = _three(ip)
-        o = _three(od) if od is not None else None
         if v is not None:
             facts["ip3"] = v
-            tile("industrie", "Industrie" if de else "Industry", n(v, 1, True), "%", "flat" if round(v, 1) == 0 else ("up" if v > 0 else "down"), False,
-                 [("Produktion, drei Monate" if de else "output, three months"), ((f"Aufträge {pc(o, 1, True)}" if de else f"orders {pc(o, 1, True)}") if o is not None else "")],
-                 (f"bis {_per(ip.index[-1], 'M', lang)}" if de else f"to {_per(ip.index[-1], 'M', lang)}"), "industrie")
+            row("industrie", "Industrie" if de else "Industry", pc(v, 1, True),
+                (f"Produktion, drei Monate bis {_per(ip.index[-1], 'M', lang)}" if de else f"output, three months to {_per(ip.index[-1], 'M', lang)}"), "industrie", ip)
     ins = _s(data, "de_insolv")
     if ins is not None and len(ins) > 12:
         t = ins.index[-1]
@@ -105,25 +108,25 @@ def build(data: dict, forecasts: list[dict], lang: str = "de") -> dict:
         yoy = (v / float(ago) - 1) * 100 if ago else None
         vs = (v / float(pre.mean()) - 1) * 100 if len(pre) else None
         facts["ins"] = (yoy, vs)
-        tile("insolvenzen", "Insolvenzen" if de else "Insolvencies", n(v, 0), "", "flat" if yoy is None or round(yoy, 1) == 0 else ("up" if yoy > 0 else "down"), True,
-             [x for x in [(f"{pc(yoy, 1, True)} zum Vorjahr" if de else f"{pc(yoy, 1, True)} on a year ago") if yoy is not None else "",
-                          (f"{pc(vs, 0, True)} ggü. 2015–19" if de else f"{pc(vs, 0, True)} vs 2015–19") if vs is not None else ""] if x],
-             _per(t, "M", lang), "insolvenzen")
+        cmp = _per(t, "M", lang) + ((f"; {pc(vs, 0, True)} ggü. 2015–19" if de else f"; {pc(vs, 0, True)} vs 2015–19") if vs is not None else "")
+        row("insolvenzen", "Insolvenzen" if de else "Insolvencies", n(v, 0), cmp, "insolvenzen", ins)
     gas, br = _gas_eur(data), _s(data, "w_brent")
+    gyoy = byoy = None
     if gas is not None and len(gas) > 12:
         t = gas.index[-1]
         v, ago = float(gas.iloc[-1]), gas.get(t - pd.DateOffset(years=1))
         dif = v - float(ago) if ago is not None else None
-        byoy = None
-        if br is not None and len(br) > 12:
-            b0, b1 = br.get(br.index[-1] - pd.DateOffset(years=1)), float(br.iloc[-1])
-            byoy = (b1 / float(b0) - 1) * 100 if b0 else None
-        facts["energy"] = (dif / float(ago) * 100 if ago else None, byoy)
-        lines = [(f"Gas, {'+' if dif >= 0 else '−'}€{n(abs(dif), 0)} zum Vorjahr" if de else f"gas, {'+' if dif >= 0 else '−'}€{n(abs(dif), 0)} on a year ago") if dif is not None else ""]
-        if br is not None:
-            lines.append((f"Öl ${n(float(br.iloc[-1]), 0)}" + (f", {pc(byoy, 0, True)}" if byoy is not None else "")) if de else (f"oil ${n(float(br.iloc[-1]), 0)}" + (f", {pc(byoy, 0, True)}" if byoy is not None else "")))
-        tile("energie", "Energie" if de else "Energy", f"€{n(v, 0)}", "/MWh", "flat" if dif is None or round(dif) == 0 else ("up" if dif > 0 else "down"), True,
-             [x for x in lines if x], (f"Gas {_per(t, 'M', lang)}" if de else f"gas {_per(t, 'M', lang)}"), "energie")
+        gyoy = dif / float(ago) * 100 if ago else None
+        row("gas", "Gaspreis" if de else "Gas price", f"€{n(v, 0)}",
+            _per(t, "M", lang) + ((f"; je MWh, {'+' if dif >= 0 else '−'}€{n(abs(dif), 0)} zum Vorjahr" if de else f"; per MWh, {'+' if dif >= 0 else '−'}€{n(abs(dif), 0)} on a year ago") if dif is not None else ""),
+            "energie", gas)
+    if br is not None and len(br) > 12:
+        b0, b1 = br.get(br.index[-1] - pd.DateOffset(years=1)), float(br.iloc[-1])
+        byoy = (b1 / float(b0) - 1) * 100 if b0 else None
+        row("oel", "Ölpreis" if de else "Oil price", f"${n(b1, 0)}",
+            _per(br.index[-1], "M", lang) + ((f"; je Barrel, {pc(byoy, 0, True)} zum Vorjahr" if de else f"; per barrel, {pc(byoy, 0, True)} on a year ago") if byoy is not None else ""),
+            "energie", br)
+    facts["energy"] = (gyoy, byoy)
 
     # Lage-Satz (Wertung nach festen Regeln)
     say, say2 = [], []

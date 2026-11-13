@@ -63,21 +63,19 @@
   .lage .lh h2 { font: 700 15px var(--ff); letter-spacing: .06em; text-transform: uppercase; margin: 0; } .lage .lh span { font: 13.5px var(--ff); color: #595959; }
   .lage .lk { font: 13.5px var(--ff); background: none; border: 0; padding: 0; cursor: pointer; color: #595959; } .lage .lk[aria-pressed="true"] { color: #000; font-weight: 700; }
   .lage .kom { display: none; } body.lagek .lage .kom { display: block; }
-  .lage .say { font: 600 24px/1.3 var(--ff); margin: 18px 0 4px; max-width: 900px; } .lage .say2 { color: #595959; margin: 0 0 4px; max-width: 900px; }
-  .lage .kp { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-bottom: 1px solid var(--line); margin-top: 16px; }
-  .lage .kp a { display: block; color: #000; text-decoration: none; padding: 12px 12px 14px; border-left: 1px solid var(--line); }
-  .lage .kp a:first-child { border-left: 0; padding-left: 0; } .lage .kp a:hover .kv { color: #0070C0; }
-  .lage .kl { font: 13px var(--ff); color: #595959; text-transform: uppercase; letter-spacing: .05em; }
-  .lage .kv { font: 700 30px/1.15 var(--ff); margin: 4px 0 2px; white-space: nowrap; } .lage .kv small { font-size: 15px; font-weight: 600; margin-left: 3px; }
-  .lage .kc { font: 14px/1.35 var(--ff); } .lage .kc .t { margin-right: 4px; } .lage .kpp { font: 12.5px/1.3 var(--ff); color: #595959; margin-top: 4px; }
-  .lage .cols { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 28px; margin-top: 20px; }
+  .lage .say { font: 600 25px/1.3 var(--ff); margin: 16px 0 18px; max-width: 900px; } body.lagek .lage .nokom { display: none; }
+  .lage .kp { border-collapse: collapse; width: 100%; max-width: 900px; } .lage .kp tr { cursor: pointer; } .lage .kp tr:hover .v { color: #0070C0; }
+  .lage .kp th { text-align: left; font: 400 16px var(--ff); padding: 7px 14px 7px 0; white-space: nowrap; } .lage .kp th a { color: #000; }
+  .lage .kp td { padding: 7px 0; } .lage .kp .sp { padding-right: 16px; width: 190px; } .lage .kp .sp svg { display: block; }
+  .lage .kp .v { font: 700 19px var(--ff); text-align: right; padding-right: 16px; white-space: nowrap; } .lage .kp .c { font: 14.5px/1.35 var(--ff); color: #595959; } .lage .kp .cm { display: none; }
+  .lage .lo { margin: 18px 0 0; font: 15.5px/1.4 var(--ff); max-width: 900px; }
+  .lage .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; margin-top: 26px; max-width: 1100px; }
   .lage h3 { font: 600 12.5px var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 0 0 8px; }
   .lage ul { list-style: none; margin: 0 0 14px; padding: 0; } .lage li { margin: 0 0 8px; font: 15px/1.4 var(--ff); } .lage li a { color: #000; }
   .lage .amp { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 7px; } .lage .amp.r { background: #C00000; } .lage .amp.y { background: #E0A800; } .lage .amp.g { background: #47D359; }
   .lage .fc b { font-size: 20px; } .lage .mine { margin-top: 6px; border-top: 1px solid var(--line); padding-top: 12px; display: flex; gap: 22px; flex-wrap: wrap; font: 600 15px var(--ff); }
   .lage .mine a { color: #000; } .lage .mine a.s { color: #0070C0; }
-  @media (max-width: 700px) { .lage .say { font-size: 20px; } .lage .kp { grid-template-columns: 1fr 1fr; } .lage .kp a, .lage .kp a:first-child { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
-    .lage .kp a:nth-child(even) { padding-left: 12px; border-left: 1px solid var(--line); } .lage .kp a:nth-child(-n+2) { border-top: 0; } .lage .kv { font-size: 26px; } .lage .cols { grid-template-columns: 1fr; gap: 6px; } }
+  @media (max-width: 700px) { .lage .say { font-size: 20px; } .lage .kp .sp { width: 96px; padding-right: 10px; } .lage .kp .sp svg { width: 96px; } .lage .kp .c { display: none; } .lage .kp .cm { display: block; font: 13px/1.3 var(--ff); color: #595959; white-space: normal; } .lage .kp th { white-space: normal; } .lage .kp .v { font-size: 17px; padding-right: 0; } .lage .cols { grid-template-columns: 1fr; gap: 6px; } }
   body.lagek #lage + .overview, body #lage:not([hidden]) + .overview { display: none; }
   .overview .fz { display: none; } body.fazit .overview .fz { display: block; border-left: 2px solid var(--text); padding-left: 14px; margin: 14px 0 4px; }
   .overview .fz .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 3px 0 5px; }
@@ -550,7 +548,7 @@ const TOURTXT = { name: "Anleitung", ask: "Neu hier? Die Anleitung zeigt in eine
 const KMTXT = { btn: "Kommentar", title: "Eigene Einschätzung zu dieser Grafik" };
 const LAGETXT = { title: "Lage auf einen Blick", stand: "Stand", komm: "Kommentar", kommt: "Lage-Satz und Warnlampen: Einschätzung nach festen Regeln, automatisch erzeugt",
   warn: "Warnlampen", out: "Ausblick", grem: "Was die Gremien raten", neu: "Neu in den letzten sieben Tagen", term: "Nächste Termine (geschätzt)",
-  mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", wd: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"] };
+  mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", am: "Lage am", fuer: "für", wd: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"] };
 const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const PHASETXT = { to: "–", L: { "-1": "Lohnzurückhaltung", "0": "Löhne im Spielraum", "1": "kräftigere Löhne" }, G: { "-1": "straffer", "0": "beibehalten", "1": "lockerer" },
   F: { "-1": "Konsolidierung", "0": "neutral", "1": "Impulse" }, A: { "-1": "mehr Schutz", "0": "beibehalten", "1": "Flexibilisierung" } };
@@ -2118,11 +2116,17 @@ document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = documen
 function lageView() {
   const box = document.getElementById("lage"), L = (DATA.lage || {})[DATA.lang === "en" ? "en" : "de"];
   if (!box || !L || !(L.kpis || []).length || DATA.embed) return;
-  const tri = k => `<span class="t ${k.tri === "flat" ? "flat" : k.tri === "up" ? (k.bad ? "up-bad" : "up-ok") : "down"}">${TRI[k.tri]}</span>`;
-  const kp = L.kpis.map(k => `<a href="#${esc(k.topic)}"><div class="kl">${esc(k.label)}</div><div class="kv">${esc(k.value)}${k.unit ? `<small>${esc(k.unit)}</small>` : ""}</div>`
-    + `<div class="kc">${k.lines.filter(Boolean).map((l, i) => (i ? "" : tri(k)) + esc(l)).join("<br>")}</div><div class="kpp">${esc(k.per)}</div></a>`).join("");
+  // Wortgrafik je Zeile (Tufte): Verlauf der letzten fünf Jahre, Punkt am jüngsten Wert, graue Linie für Ziel oder Normalmaß
+  const spark = (sp, ref) => { if (!sp || !(sp.y || []).length) return ""; const ys = sp.y, w = 180, h = 30, all = ref != null ? ys.concat([ref]) : ys;
+    let lo = Math.min(...all), hi = Math.max(...all); const pd = (hi - lo) * 0.1 || 1; lo -= pd; hi += pd;
+    const X = i => 2 + i * (w - 6) / Math.max(1, ys.length - 1), Y = v => h - 2 - (v - lo) / (hi - lo) * (h - 4);
+    return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true">${ref != null ? `<line x1="0" x2="${w}" y1="${Y(ref).toFixed(1)}" y2="${Y(ref).toFixed(1)}" stroke="#BFBFBF"/>` : ""}`
+      + `<polyline fill="none" stroke="#002060" stroke-width="1.4" points="${ys.map((v, i) => X(i).toFixed(1) + "," + Y(v).toFixed(1)).join(" ")}"/>`
+      + `<circle cx="${X(ys.length - 1).toFixed(1)}" cy="${Y(ys[ys.length - 1]).toFixed(1)}" r="2.6" fill="#0070C0"/></svg>`; };
+  const kp = L.kpis.map(k => `<tr onclick="location.hash='${esc(k.topic)}'"><th><a href="#${esc(k.topic)}">${esc(k.label)}</a><span class="cm">${esc(k.cmp)}</span></th><td class="sp">${spark(k.spark, k.ref)}</td>`
+    + `<td class="v">${esc(k.value)}</td><td class="c">${esc(k.cmp)}</td></tr>`).join("");
   const warn = (L.warn || []).map(w => `<li><span class="amp ${w.lvl}"></span><a href="#${esc(w.topic)}"><b>${esc(w.label)}:</b></a> ${esc(w.text)}</li>`).join("");
-  const out = L.outlook ? `<div class="fc">${esc(L.outlook.who)}:<br>${L.outlook.vals.map(v => `<b>${esc(v.v)}${DATA.lang === "en" ? "%" : "\u00a0%"}</b> ${v.year}`).join(" · ")}</div>` : "";
+  const out = L.outlook ? esc(L.outlook.who) + ": " + L.outlook.vals.map(v => `${esc(v.v)}${DATA.lang === "en" ? "%" : "\u00a0%"} ${LAGETXT.fuer} ${v.year}`).join(", ") + "." : "";
   const grem = (L.gremien || []).map(g => `<li>${esc(g.split(/(?<=\.)\s/)[0])}</li>`).join("");
   const neu = (DATA.week || []).slice(0, 4).map(w => `<li><a href="#${FA(w.no)}">${esc(w.title)}</a></li>`).join("");
   const cal = (DATA.topics || []).flatMap(t => t.charts || []).find(c => c.type === "calendar"), today = new Date().toISOString().slice(0, 10);
@@ -2130,11 +2134,12 @@ function lageView() {
     .map(e => { const d = new Date(e.date + "T12:00:00"); return `<li>${LAGETXT.wd[d.getDay()]} ${d.getDate()}.${d.getMonth() + 1}. <a href="#${esc(e.topic)}">${esc(e.name)}</a></li>`; }).join("");
   let n = 0; try { n = JSON.parse(localStorage.getItem("km.sammlung") || "[]").length; } catch (e) {}
   const st = new Date(DATA.generated_at);
-  box.innerHTML = `<div class="lh"><h2>${LAGETXT.title}</h2><span>${LAGETXT.stand} ${st.toLocaleDateString(DATA.lang === "en" ? "en-GB" : "de-DE", { day: "numeric", month: "long", year: "numeric" })}</span>`
+  const sd = st.toLocaleDateString(DATA.lang === "en" ? "en-GB" : "de-DE", { day: "numeric", month: "long", year: "numeric" });
+  box.innerHTML = `<div class="lh"><span>${LAGETXT.title} · ${LAGETXT.stand} ${sd}</span>`
     + `<button type="button" class="lk" aria-pressed="false" title="${LAGETXT.kommt}">${LAGETXT.komm}</button></div>`
-    + (L.say ? `<div class="kom"><p class="say">${esc(L.say)}</p><p class="say2">${esc(L.say2 || "")}</p></div>` : "")
-    + `<div class="kp">${kp}</div><div class="cols">`
-    + `<div>${warn ? `<div class="kom"><h3>${LAGETXT.warn}</h3><ul>${warn}</ul></div>` : ""}${out ? `<h3>${LAGETXT.out}</h3>${out}` : ""}</div>`
+    + (L.say ? `<p class="say kom">${esc(L.say)}</p>` : "") + `<p class="say nokom">${LAGETXT.am} ${sd}</p>`
+    + `<table class="kp">${kp}</table>` + (out ? `<p class="lo"><b>${LAGETXT.out}:</b> ${out}</p>` : "") + `<div class="cols">`
+    + (warn ? `<div class="kom"><h3>${LAGETXT.warn}</h3><ul>${warn}</ul></div>` : "")
     + `<div>${grem ? `<h3>${LAGETXT.grem}</h3><ul>${grem}</ul>` : ""}</div>`
     + `<div>${neu ? `<h3>${LAGETXT.neu}</h3><ul>${neu}</ul>` : ""}${term ? `<h3>${LAGETXT.term}</h3><ul>${term}</ul>` : ""}</div></div>`
     + `<div class="mine"><a class="s" href="#sammlung">★ ${LAGETXT.mine}${n ? ` (${n})` : ""}</a><a href="#top" class="lall">${LAGETXT.all}</a></div>`;
