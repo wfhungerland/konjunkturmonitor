@@ -1,0 +1,8 @@
+{
+  "name": "konjunkturmonitor-seitentest",
+  "private": true,
+  "description": "Browser für Vorschaubilder und Seitentest (monitor/previews.js, tests/smoke.js); Versionen stehen mit Prüfsummen in package-lock.json",
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

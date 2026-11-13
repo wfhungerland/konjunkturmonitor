@@ -52,7 +52,7 @@ Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global
 - **Beträge:** Währungszeichen vor der Zahl, britischer Stil: „€141,1 Mrd.“, „$107 je Barrel“, „£0,84“; Yuan und Franken ausgeschrieben.
 - **Abkürzungen:** In Sätzen ausgeschrieben (`monitor/ausschreiben.py`, nach der Satzprüfung); in Köpfen, Einheiten und Kacheln gepunktet unterstrichen mit Erklärung beim Darauftippen (`GLOSSAR`).
 - **Rundgang:** Beim ersten Besuch bietet die Seite unten einen kurzen Rundgang an (gemerkt in `km_tour`); sonst steht „Rundgang“ im Menü. Die Schritte stehen in `TOURTXT` der Vorlage; Schritte ohne sichtbares Ziel entfallen, etwa auf dem Handy.
-- **Feedback:** Knopf „Feedback“ in der linken Spalte jeder Grafik (unter Downloads und Link) öffnet ein Fenster mit einem Textfeld; „Senden“ schickt über Formspree an den Autor, mit Kurzzeichen, Titel und Link der Grafik. Die öffentliche Formular-Kennung steht in `monitor.yaml` unter `site.feedback`; leer heißt kein Knopf.
+- **Feedback:** Knopf „Feedback“ in der linken Spalte jeder Grafik (unter Downloads und Link) öffnet ein Fenster mit einem Textfeld (höchstens 2000 Zeichen); „Senden“ schickt über Formspree an den Autor, mit Kurzzeichen, Titel und Link der Grafik. Die öffentliche Formular-Kennung steht in `monitor.yaml` unter `site.feedback`; leer heißt kein Knopf.
 - **Grafik | Tabelle:** Zeitreihen-Grafiken haben oben rechts einen Umschalter; die Tabelle zeigt die letzten zwölf Werte, jüngster zuerst.
 - **Vorschaubilder:** `node monitor/previews.js site` fotografiert nach dem Bau jede einfache Zeitreihen-Grafik (breit und Handy, WebP, zusammen rund 6 MB) und trägt die Liste in die Seite ein. Die Seite zeigt zuerst das Bild und lädt die lebendige Grafik beim Überfahren, Antippen oder Bedienen. Ohne diesen Lauf, bei Jahresflächen und auf Einbettseiten zeichnet sie sofort.
 
@@ -85,7 +85,7 @@ Zu jeder Abbildung erzeugt der Lauf Excel (Daten, Diagramm, Info), eine PowerPoi
 Datenabruf, Katalogformat und Pipeline kommen aus [konjunkturwolf](https://github.com/wfhungerland/konjunkturwolf) (Paketabhängigkeit). Dieses Repo enthält nur Katalog (`series.yaml`), Inhalte (`monitor.yaml`), statische Daten und die Seite (`monitor/`).
 
 ```bash
-pip install -e ".[dev]"
+./tools/install.sh
 ```
 
 ```bash
@@ -98,7 +98,7 @@ python -m monitor build
 
 `run` holt die Daten und baut die Seite. `build` baut nur die Seite aus `data/processed`.
 
-Der Workflow `update.yml` läuft werktags zweimal (7:23 und 12:23 UTC), bei Änderungen auf `main`, in Pull Requests und von Hand. Er committet die Daten, prüft die fertige Seite im Browser (`tests/smoke.js`, deutsch und englisch) und veröffentlicht `site/` auf GitHub Pages; unter Settings, Pages muss als Quelle „GitHub Actions“ gewählt sein. Fallen Reihen aus, legt er ein Issue „Datenabruf: Ausfälle“ an.
+Der Workflow `update.yml` läuft werktags zweimal (7:23 und 12:23 UTC), bei Änderungen auf `main` und von Hand. Pull Requests prüft `pruefung.yml` mit denselben Schritten, aber nur mit Leserecht. Er committet die Daten, prüft die fertige Seite im Browser (`tests/smoke.js`, deutsch und englisch) und veröffentlicht `site/` auf GitHub Pages; unter Settings, Pages muss als Quelle „GitHub Actions“ gewählt sein. Fallen Reihen aus, legt er ein Issue „Datenabruf: Ausfälle“ an.
 
 ## Betrieb
 
@@ -106,16 +106,36 @@ Der Workflow `update.yml` läuft werktags zweimal (7:23 und 12:23 UTC), bei Änd
 - **Datenlauf** (`.github/workflows/update.yml`): werktags 7:23 und 12:23 UTC Daten holen, Seite bauen, testen, veröffentlichen.
 - **Datenarchiv:** der erste geplante Lauf jeder Woche legt den vollständigen Datenstand (`observations.csv.gz`, `run_status.json`, Katalog, Seitenaufbau) als Release `daten-JJJJ-KWnn` ab, mit dem Code-Stand in der Beschreibung.
 - **Tickets:** `monitor/alert.py` pflegt drei Issues: „Datenabruf: Ausfälle“ (fehlgeschlagene oder veraltete Reihen) , „Datenabruf: auffällige Werte“ (jüngste Veränderung weit außerhalb des Bisherigen) und „Automatische Sätze: Auffälligkeiten“ (Sätze, die die Satzprüfung in `monitor/satzpruefung.py` nicht bestehen und deshalb entfallen). Alle schließen sich selbst, sobald alles wieder stimmt.
-- **Wächter** (`.github/workflows/waechter.yml`, täglich): prüft, ob die veröffentlichte Seite erreichbar ist und ihr Stand höchstens drei Werktage alt ist; sonst Issue „Wächter: Seite veraltet oder nicht erreichbar“.
+- **Wächter** (`.github/workflows/waechter.yml`, täglich): prüft, ob die veröffentlichte Seite erreichbar ist, ihr Stand höchstens drei Werktage alt ist und ihre Dateien zum Manifest passen; sonst Issue „Wächter: Seite veraltet oder nicht erreichbar“ oder „Wächter: Seite weicht vom Manifest ab“.
 - **Pipeline-Stand** (`.github/workflows/pipeline-stand.yml`, montags): konjunkturwolf ist in `pyproject.toml` auf einen Commit festgelegt. Gibt es einen neueren Stand, testet der Lauf ihn und öffnet einen Pull Request. Dafür einmalig unter Settings › Actions › General „Allow GitHub Actions to create and approve pull requests“ aktivieren.
 
 Damit Tickets ankommen: Repository auf „Watch“ stellen (mindestens „Issues“) und Benachrichtigungen per E-Mail einschalten.
+
+### Lieferkette und Rechte
+- **Python-Pakete:** `requirements.txt` legt jede Version mit Prüfsumme fest; `tools/install.sh` installiert nur, was dazu passt. Neues Paket: in `pyproject.toml` und `requirements.in` eintragen, dann `uv pip compile requirements.in --generate-hashes --python-version 3.12 --universal -o requirements.txt`.
+- **Browsertest:** Playwright steht mit Prüfsumme in `package-lock.json` (`npm ci`).
+- **Actions:** in den Workflows auf Commit-SHA festgelegt, die Version steht als Kommentar dahinter.
+- **Aktualisierungen:** Dependabot (`.github/dependabot.yml`) schlägt montags neue Versionen als Pull Request vor.
+- **Rechte:** Jeder Job nennt seine Rechte selbst. Das Token des Laufs bekommen nur die Schritte, die committen, ein Archiv anlegen oder Tickets pflegen; Tests, Datenabruf und Seitenbau laufen ohne.
+
+### Sperre vor der Veröffentlichung
+Nach jedem Abruf vergleicht `monitor/sperre.py` jede Reihe mit dem zuletzt gespeicherten Stand. Eine Reihe wird angehalten, wenn sie mehr als ein Fünftel ihrer Werte verliert, wenn mehr als ein Viertel ihrer bisherigen Werte stark abweicht (neue Basis, andere Einheit, Abruffehler, veränderte Quelle) oder wenn ihr jüngster Wert dreimal so stark springt wie je zuvor. Angehaltene Reihen und die aus ihnen berechneten zeigen den alten Stand mit Hinweis an der Abbildung; alle anderen erscheinen wie gewohnt. Die Liste steht in `data/processed/sperre.json` und im Ticket „Datenabruf: angehaltene Reihen“.
+
+Sind die neuen Werte echt, gibt ein Eintrag in `data/static/freigaben.yaml` sie frei (Reihe oder `"*"` für alle, Datum `bis`, Grund). Sind sie falsch, die Reihe in `series.yaml` anpassen. In der Rückrechnung ab 2015 hätte die Sprungregel außerhalb von 2020 siebenmal angeschlagen, 2020 bei 23 Reihen; für solche Schocks ist die Freigabe `"*"` gedacht.
+
+### Manifest
+Jeder Lauf schreibt `manifest.json` auf die Seite (SHA-256 jeder Datei, Zeitpunkt, Code-Stand) und die Prüfsumme des Manifests nach `data/archive/manifest.sha256`. Der Wächter vergleicht täglich die Seite im Netz damit: Manifest gegen Repository, Kernseiten und eine Stichprobe von 60 Dateien gegen das Manifest. Bei Abweichung öffnet er das Ticket „Wächter: Seite weicht vom Manifest ab“.
+
+### Schutz im Browser und im Formular
+- **Content-Security-Policy:** `python -m monitor.csp site` trägt im Workflow in jede Seite ein, was der Browser laden darf: Dateien vom eigenen Server und genau die Skripte, die beim Bau in der Seite stehen (per SHA-256). Daten können nur an den eigenen Server und an Formspree gehen. Der Seitentest lädt die Seite über einen lokalen Webserver und scheitert bei einem Verstoß. Lokal gebaute Seiten bleiben ohne diese Regel, damit sie sich als Datei öffnen lassen.
+- **Feedback:** Das Formular hat ein Köderfeld für Roboter, höchstens 2000 Zeichen, sendet frühestens drei Sekunden nach dem Öffnen und höchstens fünfmal je Seitenaufruf mit 30 Sekunden Abstand. Es speichert dafür nichts im Browser. Wer die Formular-Adresse direkt anschreibt, umgeht das; dagegen helfen nur Spamfilter und Captcha im Formspree-Konto.
 
 ### Korrekturen dokumentieren
 Jede Änderung, die Zahlen oder Aussagen berührt (behobener Fehler, neue Quelle, geänderte Rechnung), bekommt einen Eintrag in `data/static/korrekturen.yaml`: Datum, Art, betroffene Abbildungen, ein bis zwei Sätze und die Nummer des Pull Requests. Daraus entstehen die Seite `korrekturen.html` und der Abschnitt „Änderungen“ im Methodenblatt der Abbildung.
 
 ### Was zu tun ist, wenn …
 - **eine Quelle ausfällt** (Ticket „Ausfälle“): Meldung im Ticket lesen. Bei Zeitüberschreitung oder Serverfehler reicht meist Abwarten; die Seite zeigt solange den letzten Stand mit Hinweis. Bei geänderter Tabelle oder Kennung die Reihe in `series.yaml` anpassen (Schlüssel, `params`, bei GENESIS `query`), lokal mit `python -m monitor run` prüfen, Pull Request.
+- **eine Reihe angehalten ist** (Ticket „angehaltene Reihen“): bei der Quelle prüfen. Echte Werte in `data/static/freigaben.yaml` freigeben, falsche durch Anpassen der Reihe in `series.yaml` beheben.
 - **Werte auffällig springen** (Ticket „auffällige Werte“): bei der Quelle nachsehen, ob sich Einheit, Basisjahr oder Abgrenzung geändert haben. Echte Ausschläge brauchen nichts; das Ticket schließt sich, sobald der Sprung nicht mehr der jüngste Wert ist.
 - **die Seite veraltet ist** (Ticket „Wächter“): unter Actions den letzten Lauf von „Daten holen und Seite veröffentlichen“ öffnen; meist bricht ein Schritt ab (Test, Seitentest, Veröffentlichung). Nach der Korrektur den Lauf über „Run workflow“ neu starten.
 - **Zugangsdaten ablaufen** (GENESIS, GIE): unter Settings › Secrets and variables › Actions `GENESIS_USER`, `GENESIS_PASSWORD` oder `GIE_API_KEY` neu setzen. Die Werte nie in Dateien oder Tickets schreiben.
@@ -124,7 +144,7 @@ Jede Änderung, die Zahlen oder Aussagen berührt (behobener Fehler, neue Quelle
 
 ### Lokal bauen
 ```
-pip install -e ".[dev]"
+./tools/install.sh           # feste Paketversionen mit Prüfsummen
 python -m monitor build      # Seite aus vorhandenen Daten
 python -m monitor run        # Daten holen (GENESIS nur mit GENESIS_USER/GENESIS_PASSWORD) und bauen
 pytest -q && node tests/smoke.js site/index.html

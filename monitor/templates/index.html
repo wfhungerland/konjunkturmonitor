@@ -268,6 +268,7 @@
   dialog.fbd { border: 0; padding: 28px 32px 22px; width: min(440px, calc(100vw - 32px)); font: 16px/1.5 var(--ff); color: var(--text); box-shadow: 0 12px 48px rgba(0,0,0,.14); }
   dialog.fbd::backdrop { background: rgba(255,255,255,.6); } .fbd form { margin: 0; }
   .fbd textarea { width: 100%; box-sizing: border-box; min-height: 130px; font: 16px/1.5 var(--ff); border: 0; padding: 0; resize: none; background: none; }
+  .fbd .fbhp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }  /* Köderfeld für Formular-Roboter, für Menschen unsichtbar */
   .fbd textarea:focus { outline: none; } .fbd textarea::placeholder { color: #bdbdbd; }
   .fbd .fbrow { display: flex; justify-content: space-between; align-items: baseline; margin-top: 18px; padding-top: 12px; border-top: 1px solid #ececec; }
   .fbd .fbnote { font-size: 12px; } .fbd .fbnote a { color: #bdbdbd; }
@@ -520,7 +521,7 @@ const TOURTXT = { name: "Rundgang", ask: "Neu hier? Eine Minute Rundgang zeigt, 
     ["@card .tools", "Mit diesen Schaltern sehen Sie mehr, etwa die ganze Geschichte einer Zahl oder frühere Krisen."],
     ["@card .cside", "Hier steht in wenigen Sätzen, was die Grafik zeigt. Wer es genau wissen will, klickt auf „Mehr zur Methode“."],
     ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik. Und über „Feedback“ erreicht Ihre Meinung zu einer Grafik direkt den Autor."]] };
-const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
+const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", wait: "Bitte einen Moment warten.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const PHASETXT = { to: "–", L: { "-1": "Lohnzurückhaltung", "0": "Löhne im Spielraum", "1": "kräftigere Löhne" }, G: { "-1": "straffer", "0": "beibehalten", "1": "lockerer" },
   F: { "-1": "Konsolidierung", "0": "neutral", "1": "Impulse" }, A: { "-1": "mehr Schutz", "0": "beibehalten", "1": "Flexibilisierung" } };
 const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen unter „Downloads“." };
@@ -1886,7 +1887,7 @@ function build() {
     `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
   document.getElementById("deck").innerHTML = [DATA.deck ? `<a href="${encodeURI(DATA.deck)}" download>Alle Abbildungen als PowerPoint</a>` : ""].filter(Boolean).join(" · ");
   const HL = DATA.health || {};
-  if (HL.n) document.getElementById("reuse").insertAdjacentHTML("afterend", `<p class="tnote">Letzter Datenabruf: ${new Date(HL.finished_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })} Uhr; ${HL.ok} von ${HL.n} Reihen erfolgreich${HL.failed.length ? `, fehlgeschlagen: ${HL.failed.length}` : ""}${HL.outdated.length ? `, länger ohne neue Werte: ${HL.outdated.length}` : ""}. Betroffene Abbildungen tragen einen Hinweis.</p>`);
+  if (HL.n) document.getElementById("reuse").insertAdjacentHTML("afterend", `<p class="tnote">Letzter Datenabruf: ${new Date(HL.finished_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })} Uhr; ${HL.ok} von ${HL.n} Reihen erfolgreich${HL.failed.length ? `, fehlgeschlagen: ${HL.failed.length}` : ""}${HL.outdated.length ? `, länger ohne neue Werte: ${HL.outdated.length}` : ""}${(HL.frozen || []).length ? `, zur Prüfung angehalten: ${HL.frozen.length}` : ""}. Betroffene Abbildungen tragen einen Hinweis.</p>`);
   if (S.repo) document.getElementById("releases").href = S.repo + "/releases";
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const LY = DATA.layout || {};
@@ -2133,16 +2134,19 @@ document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = documen
 (function feedback() {
   const id = (DATA.site || {}).feedback; if (!id || DATA.embed) return;
   const d = document.createElement("dialog"); d.className = "fbd"; d.setAttribute("aria-label", FBTXT.btn);
-  const form = () => `<form method="dialog"><p class="fbto"></p><textarea name="message" required placeholder="${FBTXT.ph}" aria-label="${FBTXT.btn}"></textarea><div class="fbrow"><span class="fbnote">${FBTXT.note}</span><button type="submit" class="fbsend">${FBTXT.send}</button></div></form>`;
-  document.body.append(d); let ctx = null;
-  const open = c => { ctx = c; d.innerHTML = form(); const f = d.querySelector("form"), ta = f.querySelector("textarea");
+  const form = () => `<form method="dialog"><p class="fbto"></p><textarea name="message" required maxlength="2000" placeholder="${FBTXT.ph}" aria-label="${FBTXT.btn}"></textarea><input type="text" name="_gotcha" class="fbhp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="fbrow"><span class="fbnote">${FBTXT.note}</span><button type="submit" class="fbsend">${FBTXT.send}</button></div></form>`;
+  document.body.append(d); let ctx = null, opened = 0, lastSent = 0, sent = 0;  // Bremse gegen Spam: gilt je Seitenaufruf, speichert nichts
+  const open = c => { ctx = c; opened = Date.now(); d.innerHTML = form(); const f = d.querySelector("form"), ta = f.querySelector("textarea");
     f.querySelector(".fbto").textContent = c.title || c.code;
     f.addEventListener("submit", async e => { e.preventDefault(); const msg = ta.value.trim(); if (!msg) return;
-      const sb = f.querySelector(".fbsend"); sb.disabled = true;
-      const body = { message: msg, grafik: `${c.code} ${c.title}`, link: location.href.split("#")[0] + "#" + c.anchor, sprache: DATA.lang || "de", _subject: `Konjunkturmonitor: Feedback zu ${c.code}` };
+      const sb = f.querySelector(".fbsend"), done = () => { f.innerHTML = `<p class="fbok">${FBTXT.ok}</p>`; setTimeout(() => d.close(), 1400); };
+      if (f.querySelector(".fbhp").value || Date.now() - opened < 3000) return done();  // Köderfeld gefüllt oder schneller als ein Mensch: nicht senden
+      if (Date.now() - lastSent < 30000 || sent >= 5) { f.querySelector(".fbnote").textContent = FBTXT.wait; return; }
+      sb.disabled = true;
+      const body = { message: msg.slice(0, 2000), grafik: `${c.code} ${c.title}`, link: location.href.split("#")[0] + "#" + c.anchor, sprache: DATA.lang || "de", _subject: `Konjunkturmonitor: Feedback zu ${c.code}` };
       try { const r = await fetch(`https://formspree.io/f/${encodeURIComponent(id)}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) });
         if (!r.ok) throw new Error(r.status);
-        f.innerHTML = `<p class="fbok">${FBTXT.ok}</p>`; setTimeout(() => d.close(), 1400);
+        lastSent = Date.now(); sent++; done();
       } catch (x) { sb.disabled = false; f.querySelector(".fbnote").textContent = FBTXT.err; } });
     d.showModal(); ta.focus(); };
   d.addEventListener("click", e => { if (e.target === d) d.close(); });  // Klick daneben schließt
