@@ -2,7 +2,8 @@
  "started_at": "2026-11-13T22:59:35Z",
  "finished_at": "2026-11-13T23:05:13Z",
  "counts": {
-  "ok": 570
+  "ok": 573,
+  "cache": 4
  },
  "outdated": [],
  "series": [
@@ -6844,6 +6845,90 @@
    "retrieved_at": "2026-11-13T23:05:13Z",
    "api_url": "",
    "message": "berechnet aus gd_alo_prog minus gd_alo_ist",
+   "outdated": false
+  },
+  {
+   "series_id": "ciss_fr",
+   "status": "cache",
+   "n_obs": 263,
+   "first": "2005-01",
+   "last": "2026-11",
+   "last_value": 0.09781823854319041,
+   "retrieved_at": "2026-11-13T18:20:09Z",
+   "api_url": "https://data-api.ecb.europa.eu/service/data/CISS/D.FR.Z0Z.4F.EC.SS_CIN.IDX?startPeriod=2005-01-01&format=csvdata&detail=dataonly",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "ciss_de",
+   "status": "cache",
+   "n_obs": 263,
+   "first": "2005-01",
+   "last": "2026-11",
+   "last_value": 0.020196625455773793,
+   "retrieved_at": "2026-11-13T18:20:14Z",
+   "api_url": "https://data-api.ecb.europa.eu/service/data/CISS/D.DE.Z0Z.4F.EC.SS_CIN.IDX?startPeriod=2005-01-01&format=csvdata&detail=dataonly",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "ciss_it",
+   "status": "cache",
+   "n_obs": 263,
+   "first": "2005-01",
+   "last": "2026-11",
+   "last_value": 0.008825940923176673,
+   "retrieved_at": "2026-11-13T18:20:21Z",
+   "api_url": "https://data-api.ecb.europa.eu/service/data/CISS/D.IT.Z0Z.4F.EC.SS_CIN.IDX?startPeriod=2005-01-01&format=csvdata&detail=dataonly",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "ciss_es",
+   "status": "cache",
+   "n_obs": 263,
+   "first": "2005-01",
+   "last": "2026-11",
+   "last_value": 0.00864821519059398,
+   "retrieved_at": "2026-11-13T18:20:28Z",
+   "api_url": "https://data-api.ecb.europa.eu/service/data/CISS/D.ES.Z0Z.4F.EC.SS_CIN.IDX?startPeriod=2005-01-01&format=csvdata&detail=dataonly",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "fr_deficit",
+   "status": "ok",
+   "n_obs": 26,
+   "first": "2000",
+   "last": "2025",
+   "last_value": -5.1,
+   "retrieved_at": "2026-11-13T18:20:29Z",
+   "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?format=JSON&lang=en&geo=FR&sector=S13&unit=PC_GDP&na_item=B9",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "fr_debt",
+   "status": "ok",
+   "n_obs": 26,
+   "first": "2000",
+   "last": "2025",
+   "last_value": 115.7,
+   "retrieved_at": "2026-11-13T18:20:29Z",
+   "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10dd_edpt1?format=JSON&lang=en&geo=FR&sector=S13&unit=PC_GDP&na_item=GD",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_exp_share_fr",
+   "status": "ok",
+   "n_obs": 261,
+   "first": "2005-01",
+   "last": "2026-09",
+   "last_value": 7.6365,
+   "retrieved_at": "2026-11-13T18:20:01Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/de_exp_share_fr.csv",
+   "message": "",
    "outdated": false
   }
  ]

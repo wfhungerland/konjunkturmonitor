@@ -922,6 +922,43 @@ function heatChart(el, c) {
   el.innerHTML = `<div class="heat">${html}</tbody></table></div>`;
 }
 
+// Krisenthermometer: je Zeile ein Indikator auf gemeinsamer Skala, 0 % = Normalniveau (Mittel der Basisjahre), 100 % = Krisenhoch;
+// voller Punkt heute, hohler Punkt vor einem Jahr; jenseits von 100 % rot hinterlegt. Gruppen als fette Zwischenzeilen.
+const GAUGE_TXT = { normal: "normal", crisis: "Eurokrise", now: "jüngster Wert", ago: "vor einem Jahr", lang: "de" };
+function gaugeChart(el, c) {
+  const G = c.gauge || {}, en = GAUGE_TXT.lang === "en", R = G.rows || [], lines = [];
+  let g0 = null; R.forEach(r => { const g = en ? r.group_en : r.group; if (g && g !== g0) { lines.push({ head: g }); g0 = g; } lines.push(r); });
+  const n = lines.length, yv = i => n - 1 - i, lab = r => en ? r.label_en : r.label, un = r => en ? r.unit_en : r.unit;
+  const pts = R.flatMap(r => [r.now_pct, r.ago_pct]).filter(v => v != null), lo = Math.min(-25, ...pts) - 8, hi = Math.max(125, ...pts) + 28;
+  const red = "#C00000", per = r => perLong(r.now_date, r.freq), perA = r => r.ago_date ? perLong(r.ago_date, r.freq) : "";
+  const traces = [], shapes = [
+    { type: "rect", xref: "x", yref: "paper", x0: 100, x1: hi, y0: 0, y1: 1, fillcolor: "rgba(192,0,0,0.07)", line: { width: 0 }, layer: "below" },
+    { type: "line", xref: "x", yref: "paper", x0: 0, x1: 0, y0: 0, y1: 1, line: { color: "#7f7f7f", width: 1 } },
+    { type: "line", xref: "x", yref: "paper", x0: 100, x1: 100, y0: 0, y1: 1, line: { color: red, width: 1.5, dash: "dash" } }];
+  const ann = [{ xref: "x", yref: "paper", x: 0, y: 1, yanchor: "bottom", showarrow: false, text: `${GAUGE_TXT.normal} ${G.base[0]}–${G.base[1]}`, font: { family: HS.font, size: 12, color: "#595959" } },
+    { xref: "x", yref: "paper", x: 100, y: 1, yanchor: "bottom", showarrow: false, text: `${GAUGE_TXT.crisis} ${G.peak[0].slice(0, 4)}/${G.peak[1].slice(2, 4)}`, font: { family: HS.font, size: 12, color: red } }];
+  lines.forEach((r, i) => { if (r.head) return;
+    const hot = r.now_pct >= 100, col = hot ? red : r.now_pct >= 50 ? "#C55A11" : PAL[0];
+    if (r.ago_pct != null) shapes.push({ type: "line", xref: "x", yref: "y", x0: r.ago_pct, x1: r.now_pct, y0: yv(i), y1: yv(i), line: { color: "#bfbfbf", width: 2 }, layer: "below" });
+    traces.push({ type: "scatter", mode: "markers", x: [r.ago_pct], y: [yv(i)], showlegend: false, marker: { symbol: "circle-open", size: 11, color: "#7f7f7f", line: { width: 2 } },
+      hovertemplate: `${esc(lab(r))}, ${esc(perA(r))}: ${fmt(r.ago, r.decimals)} ${esc(un(r))} (%{x:.0f} %)<extra></extra>` });
+    traces.push({ type: "scatter", mode: "markers+text", x: [r.now_pct], y: [yv(i)], showlegend: false, marker: { size: 13, color: col },
+      text: [`${fmt(Math.round(r.now_pct), 0).replace("-", "−")} %`], textposition: "middle right", textfont: { family: HS.font, size: 12, color: col },
+      hovertemplate: `${esc(lab(r))}, ${esc(per(r))}: ${fmt(r.now, r.decimals)} ${esc(un(r))}<br>${GAUGE_TXT.normal}: ${fmt(r.base, r.decimals)}, ${GAUGE_TXT.crisis}: ${fmt(r.peak, r.decimals)} (${esc(perLong(r.peak_date, r.freq))})<extra></extra>` }); });
+  traces.push({ type: "scatter", mode: "markers", x: [null], y: [null], name: GAUGE_TXT.now, marker: { size: 12, color: PAL[0] } },
+              { type: "scatter", mode: "markers", x: [null], y: [null], name: GAUGE_TXT.ago, marker: { symbol: "circle-open", size: 11, color: "#7f7f7f", line: { width: 2 } } });
+  const L = baseLayout(el), narrow = (el.clientWidth || 600) < 560;
+  Object.assign(L, { height: 50 * n + 150, hovermode: "closest", showlegend: true, shapes, annotations: ann, margin: { l: 8, r: 16, t: 44, b: 80 },
+    legend: { orientation: "h", x: 0, y: -0.03, yanchor: "top", font: { size: 12 }, itemclick: false, itemdoubleclick: false },
+    xaxis: { range: [lo, hi], tickvals: [0, 25, 50, 75, 100], ticktext: ["0 %", "25 %", "50 %", "75 %", "100 %"], showgrid: true, gridcolor: HS.gridH, zeroline: false, fixedrange: true },
+    yaxis: { range: [-0.7, n - 0.3], tickmode: "array", tickvals: lines.map((r, i) => yv(i)),
+      ticktext: lines.map(r => r.head ? `<b>${esc(r.head)}</b>` : esc(lab(r)) + (narrow ? "" : `<br><span style="font-size:11px;color:#595959">${fmt(r.now, r.decimals)} ${esc(un(r))}, ${esc(per(r))}</span>`)),
+      automargin: true, fixedrange: true, ticks: "", showgrid: false, zeroline: false } });
+  el.style.aspectRatio = "auto"; el.style.height = L.height + "px"; el.style.maxHeight = "none";  // höher als die übliche Grenze von 440 px
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+  Plotly.newPlot(el, traces, L, CFG);
+}
+
 // Zinskurven je Land: Rendite über der Restlaufzeit, jüngster Monat durchgezogen, ein Jahr zuvor gepunktet, eine Farbe je Land
 const CURVE_TXT = { x: "Restlaufzeit in Jahren", lang: "de" };
 function curveChart(el, c) {
@@ -1788,6 +1825,7 @@ function render(ch) {
   else if (c.type === "heat") heatChart(ch, c);
   else if (c.type === "tpi") tpiChart(ch, c);
   else if (c.type === "curve") curveChart(ch, c);
+  else if (c.type === "gauge") gaugeChart(ch, c);
   else if (c.type === "heatbars") heatbarsChart(ch, c);
   else if (c.type === "event") eventChart(ch, c);
   else if (c.type === "enso_comm") ensoCommChart(ch, c);

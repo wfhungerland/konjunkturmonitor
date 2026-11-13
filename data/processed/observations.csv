@@ -138873,3 +138873,1368 @@ arms_prod_12m,2026-06-01,208.9,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T2
 arms_prod_12m,2026-07-01,214,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T22:59:20Z
 arms_prod_12m,2026-08-01,221.6,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T22:59:20Z
 arms_prod_12m,2026-09-01,229.8,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T22:59:20Z
+ciss_fr,2005-01-01,0.0136552,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2005-02-01,0.0241752,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2005-03-01,0.0362639,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2005-04-01,0.0387983,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2005-05-01,0.0350078,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2005-06-01,0.0366508,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2005-07-01,0.0184717,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2005-08-01,0.0174008,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2005-09-01,0.021262,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2005-10-01,0.0340884,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2005-11-01,0.0364939,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2005-12-01,0.0221715,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-01-01,0.0306964,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-02-01,0.0184829,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-03-01,0.0286151,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-04-01,0.0266099,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-05-01,0.0325544,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-06-01,0.023823,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-07-01,0.0154618,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-08-01,0.00742396,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-09-01,0.0119533,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-10-01,0.00659274,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-11-01,0.00604244,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2006-12-01,0.00761661,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-01-01,0.0180736,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-02-01,0.0230015,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-03-01,0.027815,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-04-01,0.00893014,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-05-01,0.0068952,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-06-01,0.0111182,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-07-01,0.0196947,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-08-01,0.0741626,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-09-01,0.0571018,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-10-01,0.0231888,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-11-01,0.0791209,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2007-12-01,0.103675,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-01-01,0.144234,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-02-01,0.227142,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-03-01,0.311084,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-04-01,0.256399,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-05-01,0.135459,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-06-01,0.204015,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-07-01,0.32349,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-08-01,0.375458,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-09-01,0.509343,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-10-01,0.681274,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-11-01,0.661141,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2008-12-01,0.71238,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-01-01,0.652273,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-02-01,0.62618,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-03-01,0.677288,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-04-01,0.575319,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-05-01,0.570954,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-06-01,0.533495,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-07-01,0.395842,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-08-01,0.372638,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-09-01,0.249474,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-10-01,0.267902,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-11-01,0.266058,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2009-12-01,0.238392,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-01-01,0.176997,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-02-01,0.26399,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-03-01,0.203917,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-04-01,0.151525,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-05-01,0.397107,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-06-01,0.376582,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-07-01,0.318149,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-08-01,0.255344,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-09-01,0.189591,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-10-01,0.109116,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-11-01,0.128706,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2010-12-01,0.212518,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-01-01,0.130062,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-02-01,0.0608104,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-03-01,0.0740759,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-04-01,0.0758194,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-05-01,0.0790539,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-06-01,0.0888186,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-07-01,0.155499,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-08-01,0.377243,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-09-01,0.401538,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-10-01,0.469606,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-11-01,0.565103,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2011-12-01,0.400675,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-01-01,0.276454,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-02-01,0.220924,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-03-01,0.19458,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-04-01,0.251126,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-05-01,0.260408,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-06-01,0.345896,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-07-01,0.304964,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-08-01,0.17886,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-09-01,0.108207,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-10-01,0.122404,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-11-01,0.114245,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2012-12-01,0.0785962,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-01-01,0.059538,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-02-01,0.12894,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-03-01,0.175829,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-04-01,0.0935119,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-05-01,0.0601691,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-06-01,0.09086,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-07-01,0.102183,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-08-01,0.0283251,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-09-01,0.0228088,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-10-01,0.0136759,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-11-01,0.0109235,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2013-12-01,0.00745949,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-01-01,0.0143579,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-02-01,0.0226995,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-03-01,0.0106472,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-04-01,0.00384118,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-05-01,0.00351696,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-06-01,0.00170565,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-07-01,0.00814061,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-08-01,0.0116929,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-09-01,0.00861361,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-10-01,0.0325645,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-11-01,0.0176458,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2014-12-01,0.0234304,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-01-01,0.0369496,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-02-01,0.0247002,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-03-01,0.0351048,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-04-01,0.0166353,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-05-01,0.0438987,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-06-01,0.0326709,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-07-01,0.0542128,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-08-01,0.0575162,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-09-01,0.129389,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-10-01,0.0881817,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-11-01,0.0175328,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2015-12-01,0.0883846,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-01-01,0.139603,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-02-01,0.260093,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-03-01,0.21832,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-04-01,0.14485,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-05-01,0.100051,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-06-01,0.150098,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-07-01,0.221061,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-08-01,0.0510449,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-09-01,0.0114426,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-10-01,0.00954958,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-11-01,0.0475997,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2016-12-01,0.0289147,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-01-01,0.00778163,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-02-01,0.0250055,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-03-01,0.00962005,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-04-01,0.0121743,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-05-01,0.0116027,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-06-01,0.00700235,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-07-01,0.0183184,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-08-01,0.0256008,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-09-01,0.0175953,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-10-01,0.00702772,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-11-01,0.00770856,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2017-12-01,0.010931,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-01-01,0.0176632,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-02-01,0.0380136,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-03-01,0.0248126,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-04-01,0.00454467,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-05-01,0.0101555,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-06-01,0.0137721,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-07-01,0.00169265,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-08-01,0.0034824,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-09-01,0.00379521,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-10-01,0.0187989,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-11-01,0.0201045,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2018-12-01,0.051519,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-01-01,0.069187,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-02-01,0.0214489,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-03-01,0.00609524,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-04-01,0.00418682,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-05-01,0.00912302,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-06-01,0.00533217,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-07-01,0.00149901,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-08-01,0.0199675,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-09-01,0.00685564,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-10-01,0.009656,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-11-01,0.00387565,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2019-12-01,0.00470019,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-01-01,0.00434587,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-02-01,0.0217505,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-03-01,0.316069,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-04-01,0.346593,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-05-01,0.222279,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-06-01,0.0932239,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-07-01,0.0608461,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-08-01,0.0458442,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-09-01,0.0332642,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-10-01,0.0507593,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-11-01,0.0256122,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2020-12-01,0.0101448,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-01-01,0.00610965,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-02-01,0.00342385,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-03-01,0.0136705,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-04-01,0.0195498,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-05-01,0.0205003,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-06-01,0.0217927,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-07-01,0.0188309,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-08-01,0.0142655,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-09-01,0.0256607,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-10-01,0.0110736,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-11-01,0.0169708,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2021-12-01,0.0197469,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-01-01,0.0251613,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-02-01,0.0507155,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-03-01,0.210548,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-04-01,0.141017,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-05-01,0.191714,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-06-01,0.256686,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-07-01,0.405944,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-08-01,0.265661,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-09-01,0.33972,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-10-01,0.51694,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-11-01,0.319166,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2022-12-01,0.231771,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-01-01,0.115039,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-02-01,0.0255396,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-03-01,0.154425,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-04-01,0.135619,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-05-01,0.0821838,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-06-01,0.0692638,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-07-01,0.0637295,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-08-01,0.0341332,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-09-01,0.0228895,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-10-01,0.0856204,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-11-01,0.0529206,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2023-12-01,0.0155137,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-01-01,0.00493513,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-02-01,0.00971863,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-03-01,0.00534292,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-04-01,0.00906067,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-05-01,0.0121219,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-06-01,0.0564445,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-07-01,0.0721452,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-08-01,0.144415,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-09-01,0.065287,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-10-01,0.119478,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-11-01,0.0773942,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2024-12-01,0.0841559,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-01-01,0.0751007,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-02-01,0.0378362,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-03-01,0.0463366,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-04-01,0.182137,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-05-01,0.04025,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-06-01,0.00890911,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-07-01,0.0119528,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-08-01,0.0182708,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-09-01,0.00883698,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-10-01,0.0051401,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-11-01,0.0042054,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2025-12-01,0.00271395,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2026-01-01,0.00283176,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2026-02-01,0.00741179,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2026-03-01,0.0727329,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2026-04-01,0.0835785,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2026-05-01,0.0630133,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2026-06-01,0.0203751,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2026-07-01,0.00976782,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2026-08-01,0.00394391,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2026-09-01,0.0245548,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2026-10-01,0.0523178,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_fr,2026-11-01,0.0978182,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:09Z
+ciss_de,2005-01-01,0.0102926,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2005-02-01,0.00218334,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2005-03-01,0.0016724,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2005-04-01,0.00444249,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2005-05-01,0.00238956,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2005-06-01,0.00475587,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2005-07-01,0.00876491,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2005-08-01,0.00467876,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2005-09-01,0.00931488,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2005-10-01,0.013882,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2005-11-01,0.0113287,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2005-12-01,0.00469918,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-01-01,0.00706432,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-02-01,0.00338151,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-03-01,0.00544232,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-04-01,0.00399004,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-05-01,0.0203626,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-06-01,0.0324252,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-07-01,0.0139002,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-08-01,0.00716154,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-09-01,0.00246624,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-10-01,0.00208917,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-11-01,0.00174694,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2006-12-01,0.00139471,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-01-01,0.00210293,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-02-01,0.00456456,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-03-01,0.020145,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-04-01,0.00318389,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-05-01,0.00242937,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-06-01,0.0133159,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-07-01,0.0301297,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-08-01,0.0948875,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-09-01,0.0750451,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-10-01,0.0201776,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-11-01,0.0708821,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2007-12-01,0.134454,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-01-01,0.199931,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-02-01,0.285375,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-03-01,0.40411,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-04-01,0.370125,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-05-01,0.223454,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-06-01,0.260824,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-07-01,0.316386,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-08-01,0.368873,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-09-01,0.477078,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-10-01,0.752225,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-11-01,0.814288,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2008-12-01,0.853717,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-01-01,0.833435,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-02-01,0.7896,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-03-01,0.722257,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-04-01,0.680309,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-05-01,0.571719,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-06-01,0.535668,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-07-01,0.468949,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-08-01,0.415579,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-09-01,0.318343,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-10-01,0.344714,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-11-01,0.402308,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2009-12-01,0.355077,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-01-01,0.220973,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-02-01,0.321731,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-03-01,0.238847,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-04-01,0.19099,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-05-01,0.516794,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-06-01,0.5317,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-07-01,0.37508,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-08-01,0.354924,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-09-01,0.275849,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-10-01,0.179307,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-11-01,0.152655,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2010-12-01,0.211518,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-01-01,0.14525,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-02-01,0.0923298,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-03-01,0.136173,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-04-01,0.150725,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-05-01,0.158404,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-06-01,0.221239,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-07-01,0.325932,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-08-01,0.572826,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-09-01,0.628092,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-10-01,0.648056,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-11-01,0.670312,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2011-12-01,0.492996,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-01-01,0.334009,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-02-01,0.367806,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-03-01,0.310442,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-04-01,0.315164,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-05-01,0.312374,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-06-01,0.406164,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-07-01,0.388417,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-08-01,0.302006,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-09-01,0.148867,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-10-01,0.0780046,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-11-01,0.0902376,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2012-12-01,0.0546692,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-01-01,0.0364522,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-02-01,0.0652734,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-03-01,0.113038,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-04-01,0.0681958,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-05-01,0.0434872,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-06-01,0.0331033,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-07-01,0.0695944,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-08-01,0.0247458,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-09-01,0.0334622,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-10-01,0.0154057,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-11-01,0.0140695,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2013-12-01,0.00537843,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-01-01,0.00990204,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-02-01,0.0202629,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-03-01,0.0227212,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-04-01,0.00911692,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-05-01,0.00309021,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-06-01,0.00176673,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-07-01,0.00263911,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-08-01,0.011187,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-09-01,0.0075266,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-10-01,0.0255449,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-11-01,0.00767085,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2014-12-01,0.0150489,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-01-01,0.0395393,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-02-01,0.0668995,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-03-01,0.0555777,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-04-01,0.0496326,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-05-01,0.113162,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-06-01,0.140725,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-07-01,0.163679,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-08-01,0.110444,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-09-01,0.203984,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-10-01,0.17075,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-11-01,0.0833719,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2015-12-01,0.103073,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-01-01,0.130754,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-02-01,0.293728,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-03-01,0.269754,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-04-01,0.204542,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-05-01,0.154399,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-06-01,0.231622,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-07-01,0.327865,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-08-01,0.118799,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-09-01,0.0873951,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-10-01,0.137749,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-11-01,0.133651,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2016-12-01,0.165366,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-01-01,0.104664,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-02-01,0.0561755,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-03-01,0.0191011,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-04-01,0.0157933,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-05-01,0.022946,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-06-01,0.0155555,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-07-01,0.0112832,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-08-01,0.00357485,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-09-01,0.00972388,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-10-01,0.0161557,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-11-01,0.0138461,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2017-12-01,0.0103597,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-01-01,0.00277705,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-02-01,0.0329878,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-03-01,0.0333605,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-04-01,0.0125652,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-05-01,0.00845739,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-06-01,0.025207,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-07-01,0.0159803,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-08-01,0.0160432,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-09-01,0.00468112,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-10-01,0.0246378,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-11-01,0.043935,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2018-12-01,0.148676,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-01-01,0.130181,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-02-01,0.0479137,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-03-01,0.0312763,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-04-01,0.0178448,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-05-01,0.0253791,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-06-01,0.0259816,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-07-01,0.00662821,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-08-01,0.0448972,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-09-01,0.0191989,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-10-01,0.0102819,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-11-01,0.00401971,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2019-12-01,0.00664248,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-01-01,0.00368992,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-02-01,0.0146246,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-03-01,0.445549,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-04-01,0.540737,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-05-01,0.359496,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-06-01,0.180816,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-07-01,0.0757769,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-08-01,0.0326787,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-09-01,0.0232531,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-10-01,0.0388095,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-11-01,0.0325044,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2020-12-01,0.014915,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-01-01,0.0126478,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-02-01,0.00878644,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-03-01,0.00351066,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-04-01,0.00178431,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-05-01,0.00550098,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-06-01,0.00389254,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-07-01,0.016079,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-08-01,0.00652707,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-09-01,0.0109521,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-10-01,0.00730772,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-11-01,0.00836223,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2021-12-01,0.0174625,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-01-01,0.00881238,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-02-01,0.0438301,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-03-01,0.213342,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-04-01,0.112501,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-05-01,0.25411,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-06-01,0.34726,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-07-01,0.499137,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-08-01,0.390277,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-09-01,0.520639,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-10-01,0.671435,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-11-01,0.475714,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2022-12-01,0.340275,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-01-01,0.268814,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-02-01,0.186113,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-03-01,0.303205,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-04-01,0.263832,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-05-01,0.179845,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-06-01,0.135101,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-07-01,0.12843,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-08-01,0.132949,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-09-01,0.12214,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-10-01,0.147137,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-11-01,0.120247,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2023-12-01,0.13843,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-01-01,0.116762,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-02-01,0.0596304,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-03-01,0.0142534,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-04-01,0.014596,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-05-01,0.0159088,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-06-01,0.0184881,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-07-01,0.0172561,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-08-01,0.0911421,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-09-01,0.0215385,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-10-01,0.00845631,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-11-01,0.0102153,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2024-12-01,0.00643977,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-01-01,0.00663525,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-02-01,0.00716759,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-03-01,0.0460681,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-04-01,0.132396,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-05-01,0.0305989,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-06-01,0.0410278,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-07-01,0.00917093,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-08-01,0.0116405,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-09-01,0.0183069,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-10-01,0.0129389,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-11-01,0.012732,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2025-12-01,0.00542009,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2026-01-01,0.0225277,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2026-02-01,0.0277718,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2026-03-01,0.0514025,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2026-04-01,0.0207712,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2026-05-01,0.00636671,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2026-06-01,0.00508386,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2026-07-01,0.008609,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2026-08-01,0.0118916,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2026-09-01,0.0209675,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2026-10-01,0.0210456,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_de,2026-11-01,0.0201966,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:14Z
+ciss_it,2005-01-01,0.0048351,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2005-02-01,0.00936904,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2005-03-01,0.00867864,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2005-04-01,0.0229906,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2005-05-01,0.0121236,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2005-06-01,0.00730378,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2005-07-01,0.00766224,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2005-08-01,0.00470543,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2005-09-01,0.00895471,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2005-10-01,0.0325351,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2005-11-01,0.0192834,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2005-12-01,0.0157692,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-01-01,0.00899226,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-02-01,0.0195213,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-03-01,0.0310145,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-04-01,0.0305395,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-05-01,0.0240656,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-06-01,0.00923788,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-07-01,0.00840266,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-08-01,0.0046773,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-09-01,0.00743704,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-10-01,0.0157951,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-11-01,0.0237207,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2006-12-01,0.0289608,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-01-01,0.0163658,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-02-01,0.012531,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-03-01,0.0154501,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-04-01,0.00653471,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-05-01,0.00669714,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-06-01,0.0133436,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-07-01,0.0221166,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-08-01,0.0383141,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-09-01,0.0274941,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-10-01,0.0114103,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-11-01,0.0588831,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2007-12-01,0.0611777,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-01-01,0.126291,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-02-01,0.183625,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-03-01,0.269872,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-04-01,0.2444,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-05-01,0.137097,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-06-01,0.182004,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-07-01,0.261835,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-08-01,0.264405,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-09-01,0.396191,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-10-01,0.646504,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-11-01,0.715769,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2008-12-01,0.71969,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-01-01,0.690642,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-02-01,0.709527,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-03-01,0.709957,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-04-01,0.6407,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-05-01,0.537728,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-06-01,0.569146,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-07-01,0.495609,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-08-01,0.390102,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-09-01,0.272655,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-10-01,0.251719,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-11-01,0.268755,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2009-12-01,0.198066,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-01-01,0.118331,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-02-01,0.166641,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-03-01,0.152591,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-04-01,0.130812,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-05-01,0.36504,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-06-01,0.393895,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-07-01,0.256371,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-08-01,0.203828,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-09-01,0.163229,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-10-01,0.131083,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-11-01,0.192097,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2010-12-01,0.286273,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-01-01,0.237724,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-02-01,0.15432,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-03-01,0.116249,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-04-01,0.131895,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-05-01,0.149383,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-06-01,0.142084,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-07-01,0.267146,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-08-01,0.435499,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-09-01,0.437417,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-10-01,0.441775,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-11-01,0.55944,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2011-12-01,0.402941,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-01-01,0.282816,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-02-01,0.262376,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-03-01,0.218259,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-04-01,0.293976,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-05-01,0.328415,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-06-01,0.419843,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-07-01,0.426275,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-08-01,0.330397,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-09-01,0.213988,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-10-01,0.228129,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-11-01,0.227607,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2012-12-01,0.206876,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-01-01,0.130671,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-02-01,0.234637,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-03-01,0.361738,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-04-01,0.18586,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-05-01,0.121906,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-06-01,0.177423,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-07-01,0.187759,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-08-01,0.0785501,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-09-01,0.0872717,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-10-01,0.0656305,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-11-01,0.034106,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2013-12-01,0.0225387,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-01-01,0.00851201,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-02-01,0.0155618,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-03-01,0.0268113,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-04-01,0.0178168,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-05-01,0.0288761,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-06-01,0.0299381,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-07-01,0.0237354,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-08-01,0.0260924,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-09-01,0.017615,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-10-01,0.0447072,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-11-01,0.0580509,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2014-12-01,0.0343038,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-01-01,0.0836112,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-02-01,0.0690536,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-03-01,0.0422036,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-04-01,0.0408025,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-05-01,0.125599,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-06-01,0.107611,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-07-01,0.121236,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-08-01,0.0747548,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-09-01,0.0752606,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-10-01,0.0405473,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-11-01,0.0211174,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2015-12-01,0.0471126,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-01-01,0.0896511,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-02-01,0.225991,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-03-01,0.147295,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-04-01,0.104499,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-05-01,0.0567605,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-06-01,0.145464,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-07-01,0.231853,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-08-01,0.0734415,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-09-01,0.0636567,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-10-01,0.091338,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-11-01,0.142753,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2016-12-01,0.112592,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-01-01,0.0884861,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-02-01,0.0864788,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-03-01,0.0526856,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-04-01,0.0319655,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-05-01,0.038528,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-06-01,0.0188902,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-07-01,0.0300987,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-08-01,0.0110219,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-09-01,0.00702411,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-10-01,0.00513904,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-11-01,0.0123584,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2017-12-01,0.00645516,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-01-01,0.00350508,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-02-01,0.0232508,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-03-01,0.0117036,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-04-01,0.00446366,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-05-01,0.0216823,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-06-01,0.0437312,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-07-01,0.0081305,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-08-01,0.0232579,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-09-01,0.0502415,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-10-01,0.101368,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-11-01,0.157924,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2018-12-01,0.227588,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-01-01,0.165055,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-02-01,0.114454,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-03-01,0.0539421,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-04-01,0.0146389,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-05-01,0.0274176,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-06-01,0.0509476,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-07-01,0.0235643,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-08-01,0.0924096,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-09-01,0.039593,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-10-01,0.0150907,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-11-01,0.00987572,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2019-12-01,0.0095676,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-01-01,0.00522307,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-02-01,0.0182063,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-03-01,0.458153,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-04-01,0.492436,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-05-01,0.311335,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-06-01,0.230199,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-07-01,0.149057,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-08-01,0.0777621,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-09-01,0.0574913,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-10-01,0.0706865,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-11-01,0.0431106,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2020-12-01,0.00680072,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-01-01,0.00540807,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-02-01,0.0135628,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-03-01,0.0172644,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-04-01,0.0120818,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-05-01,0.0120626,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-06-01,0.00933098,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-07-01,0.0143986,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-08-01,0.0062511,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-09-01,0.0130228,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-10-01,0.0108622,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-11-01,0.0145303,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2021-12-01,0.0189254,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-01-01,0.0155468,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-02-01,0.0500775,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-03-01,0.144672,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-04-01,0.0602617,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-05-01,0.175302,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-06-01,0.254862,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-07-01,0.500276,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-08-01,0.33278,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-09-01,0.4756,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-10-01,0.588934,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-11-01,0.336058,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2022-12-01,0.236049,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-01-01,0.182434,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-02-01,0.0754892,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-03-01,0.185093,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-04-01,0.136405,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-05-01,0.084008,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-06-01,0.0490556,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-07-01,0.0353638,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-08-01,0.0486852,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-09-01,0.0217652,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-10-01,0.0356203,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-11-01,0.0225202,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2023-12-01,0.0500418,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-01-01,0.0439958,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-02-01,0.0381156,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-03-01,0.035321,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-04-01,0.0291857,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-05-01,0.0236907,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-06-01,0.0272761,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-07-01,0.0255986,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-08-01,0.0442116,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-09-01,0.0128356,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-10-01,0.0117932,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-11-01,0.00973327,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2024-12-01,0.0116498,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-01-01,0.00783491,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-02-01,0.00526687,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-03-01,0.0245015,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-04-01,0.104682,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-05-01,0.0307777,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-06-01,0.0417306,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-07-01,0.0169559,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-08-01,0.0153463,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-09-01,0.0235249,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-10-01,0.0335179,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-11-01,0.0376421,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2025-12-01,0.0370894,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2026-01-01,0.0371236,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2026-02-01,0.0341299,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2026-03-01,0.0411057,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2026-04-01,0.00568218,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2026-05-01,0.00400187,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2026-06-01,0.00935428,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2026-07-01,0.0164993,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2026-08-01,0.0102078,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2026-09-01,0.0193233,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2026-10-01,0.0134776,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_it,2026-11-01,0.00882594,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:21Z
+ciss_es,2005-01-01,0.0210932,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2005-02-01,0.0214924,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2005-03-01,0.0266183,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2005-04-01,0.0312012,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2005-05-01,0.0198275,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2005-06-01,0.0128183,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2005-07-01,0.017285,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2005-08-01,0.0229331,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2005-09-01,0.0220222,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2005-10-01,0.0371633,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2005-11-01,0.0421712,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2005-12-01,0.0445808,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-01-01,0.0291937,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-02-01,0.0197713,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-03-01,0.0247326,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-04-01,0.0206499,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-05-01,0.0231558,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-06-01,0.0135807,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-07-01,0.0185719,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-08-01,0.012535,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-09-01,0.018984,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-10-01,0.011579,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-11-01,0.00352016,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2006-12-01,0.00843674,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-01-01,0.00971382,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-02-01,0.0196088,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-03-01,0.0287922,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-04-01,0.0170834,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-05-01,0.0110077,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-06-01,0.0195978,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-07-01,0.0202919,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-08-01,0.0888964,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-09-01,0.105752,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-10-01,0.0389386,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-11-01,0.0474291,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2007-12-01,0.0604468,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-01-01,0.192861,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-02-01,0.265735,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-03-01,0.289587,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-04-01,0.279497,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-05-01,0.145143,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-06-01,0.191465,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-07-01,0.247268,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-08-01,0.288629,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-09-01,0.364173,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-10-01,0.590855,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-11-01,0.701368,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2008-12-01,0.693053,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-01-01,0.728437,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-02-01,0.75539,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-03-01,0.672109,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-04-01,0.561971,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-05-01,0.554913,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-06-01,0.473243,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-07-01,0.382638,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-08-01,0.327856,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-09-01,0.248413,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-10-01,0.249504,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-11-01,0.239168,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2009-12-01,0.201647,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-01-01,0.17041,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-02-01,0.309375,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-03-01,0.216843,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-04-01,0.191101,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-05-01,0.417395,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-06-01,0.445679,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-07-01,0.393947,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-08-01,0.359325,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-09-01,0.237595,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-10-01,0.155993,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-11-01,0.246446,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2010-12-01,0.357798,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-01-01,0.304949,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-02-01,0.163866,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-03-01,0.116085,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-04-01,0.13744,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-05-01,0.173864,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-06-01,0.197405,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-07-01,0.287872,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-08-01,0.44721,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-09-01,0.419281,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-10-01,0.374892,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-11-01,0.499188,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2011-12-01,0.332326,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-01-01,0.202202,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-02-01,0.218792,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-03-01,0.278711,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-04-01,0.303609,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-05-01,0.336562,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-06-01,0.409265,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-07-01,0.460146,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-08-01,0.386474,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-09-01,0.347164,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-10-01,0.326845,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-11-01,0.266818,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2012-12-01,0.223296,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-01-01,0.163108,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-02-01,0.289645,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-03-01,0.307051,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-04-01,0.220102,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-05-01,0.109182,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-06-01,0.150324,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-07-01,0.188755,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-08-01,0.0642183,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-09-01,0.048266,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-10-01,0.0226172,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-11-01,0.00355137,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2013-12-01,0.0119254,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-01-01,0.0108374,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-02-01,0.0158343,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-03-01,0.0121032,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-04-01,0.00309649,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-05-01,0.00747397,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-06-01,0.00312159,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-07-01,0.00513214,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-08-01,0.0087338,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-09-01,0.00570617,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-10-01,0.0173158,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-11-01,0.0102582,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2014-12-01,0.00984338,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-01-01,0.0359526,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-02-01,0.0389226,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-03-01,0.017261,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-04-01,0.012108,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-05-01,0.0383566,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-06-01,0.0283745,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-07-01,0.0511303,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-08-01,0.0406781,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-09-01,0.102597,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-10-01,0.0799928,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-11-01,0.0272328,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2015-12-01,0.0545757,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-01-01,0.0966085,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-02-01,0.273532,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-03-01,0.146682,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-04-01,0.0662323,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-05-01,0.0324394,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-06-01,0.1109,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-07-01,0.214042,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-08-01,0.0406976,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-09-01,0.00832417,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-10-01,0.00778196,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-11-01,0.0297349,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2016-12-01,0.0201229,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-01-01,0.00888921,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-02-01,0.00999842,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-03-01,0.00649484,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-04-01,0.00682137,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-05-01,0.00885533,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-06-01,0.00762671,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-07-01,0.00742037,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-08-01,0.00928128,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-09-01,0.00981455,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-10-01,0.00591511,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-11-01,0.00348777,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2017-12-01,0.00284439,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-01-01,0.00350935,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-02-01,0.0218319,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-03-01,0.00498491,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-04-01,0.00372403,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-05-01,0.0108146,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-06-01,0.020899,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-07-01,0.00291966,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-08-01,0.00925453,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-09-01,0.00534807,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-10-01,0.0111621,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-11-01,0.0264565,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2018-12-01,0.0662993,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-01-01,0.0420796,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-02-01,0.0272217,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-03-01,0.0174197,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-04-01,0.011847,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-05-01,0.00349597,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-06-01,0.00409082,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-07-01,0.00315084,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-08-01,0.0153102,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-09-01,0.0115618,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-10-01,0.0100828,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-11-01,0.0042496,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2019-12-01,0.00332274,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-01-01,0.00219911,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-02-01,0.00794131,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-03-01,0.353305,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-04-01,0.435816,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-05-01,0.284626,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-06-01,0.166545,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-07-01,0.118951,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-08-01,0.0827704,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-09-01,0.0820618,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-10-01,0.0777245,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-11-01,0.0603426,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2020-12-01,0.039655,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-01-01,0.0232064,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-02-01,0.0110731,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-03-01,0.00527883,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-04-01,0.00324725,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-05-01,0.00210707,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-06-01,0.00773475,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-07-01,0.00912567,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-08-01,0.00290879,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-09-01,0.00575166,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-10-01,0.00283797,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-11-01,0.0154851,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2021-12-01,0.0174701,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-01-01,0.0115912,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-02-01,0.0459854,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-03-01,0.113681,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-04-01,0.0345687,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-05-01,0.0894548,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-06-01,0.148117,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-07-01,0.252882,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-08-01,0.139476,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-09-01,0.226106,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-10-01,0.355142,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-11-01,0.157525,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2022-12-01,0.162609,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-01-01,0.134741,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-02-01,0.0894916,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-03-01,0.138384,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-04-01,0.104078,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-05-01,0.080205,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-06-01,0.0464664,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-07-01,0.0398216,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-08-01,0.0342178,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-09-01,0.0319006,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-10-01,0.0358677,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-11-01,0.0341224,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2023-12-01,0.0521236,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-01-01,0.03774,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-02-01,0.0396955,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-03-01,0.0282966,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-04-01,0.0302486,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-05-01,0.0349596,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-06-01,0.028954,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-07-01,0.0285951,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-08-01,0.05589,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-09-01,0.0432624,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-10-01,0.021007,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-11-01,0.010709,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2024-12-01,0.00651713,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-01-01,0.00651995,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-02-01,0.010601,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-03-01,0.027352,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-04-01,0.0498231,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-05-01,0.0102017,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-06-01,0.0200405,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-07-01,0.00284923,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-08-01,0.00604806,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-09-01,0.0098408,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-10-01,0.00538373,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-11-01,0.00409937,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2025-12-01,0.00228772,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2026-01-01,0.011518,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2026-02-01,0.00812436,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2026-03-01,0.0165757,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2026-04-01,0.0108983,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2026-05-01,0.00507783,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2026-06-01,0.00201048,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2026-07-01,0.00365041,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2026-08-01,0.0036456,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2026-09-01,0.00950235,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2026-10-01,0.00522351,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+ciss_es,2026-11-01,0.00864822,"Punkte, Skala 0 bis 1",EZB Data Portal,2026-11-13T18:20:28Z
+fr_deficit,2000-01-01,-1.3,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2001-01-01,-1.4,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2002-01-01,-3.2,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2003-01-01,-4.1,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2004-01-01,-3.6,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2005-01-01,-3.5,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2006-01-01,-2.7,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2007-01-01,-3,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2008-01-01,-3.5,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2009-01-01,-7.4,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2010-01-01,-7.2,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2011-01-01,-5.3,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2012-01-01,-5.2,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2013-01-01,-4.9,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2014-01-01,-4.6,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2015-01-01,-3.9,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2016-01-01,-3.8,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2017-01-01,-3.4,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2018-01-01,-2.3,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2019-01-01,-2.4,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2020-01-01,-8.9,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2021-01-01,-6.6,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2022-01-01,-4.7,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2023-01-01,-5.4,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2024-01-01,-5.8,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_deficit,2025-01-01,-5.1,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2000-01-01,59.7,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2001-01-01,59.3,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2002-01-01,61.3,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2003-01-01,65.4,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2004-01-01,66.9,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2005-01-01,68.2,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2006-01-01,65.4,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2007-01-01,65.5,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2008-01-01,69.8,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2009-01-01,84.1,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2010-01-01,86.3,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2011-01-01,88.7,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2012-01-01,91.7,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2013-01-01,94.6,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2014-01-01,96.2,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2015-01-01,97,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2016-01-01,98.1,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2017-01-01,98.8,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2018-01-01,98.5,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2019-01-01,98.2,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2020-01-01,114.9,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2021-01-01,112.8,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2022-01-01,111.4,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2023-01-01,109.5,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2024-01-01,112.6,% des BIP,Eurostat,2026-11-13T18:20:29Z
+fr_debt,2025-01-01,115.7,% des BIP,Eurostat,2026-11-13T18:20:29Z
+de_exp_share_fr,2005-01-01,10.1908,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2005-02-01,10.1939,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2005-03-01,10.2294,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2005-04-01,10.2631,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2005-05-01,10.2928,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2005-06-01,10.2834,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2005-07-01,10.2473,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2005-08-01,10.1766,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2005-09-01,10.1417,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2005-10-01,10.1188,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2005-11-01,10.0885,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2005-12-01,10.0524,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-01-01,10.0421,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-02-01,9.999,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-03-01,9.9396,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-04-01,9.8756,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-05-01,9.8272,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-06-01,9.8088,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-07-01,9.7832,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-08-01,9.7484,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-09-01,9.6739,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-10-01,9.5997,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-11-01,9.5333,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2006-12-01,9.5187,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-01-01,9.4842,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-02-01,9.494,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-03-01,9.482,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-04-01,9.4631,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-05-01,9.4558,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-06-01,9.4221,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-07-01,9.4435,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-08-01,9.4005,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-09-01,9.4362,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-10-01,9.4616,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-11-01,9.4772,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2007-12-01,9.4966,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-01-01,9.4828,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-02-01,9.492,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-03-01,9.4684,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-04-01,9.4911,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-05-01,9.4584,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-06-01,9.4681,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-07-01,9.4306,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-08-01,9.4598,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-09-01,9.4625,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-10-01,9.4773,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-11-01,9.4854,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2008-12-01,9.5228,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-01-01,9.5937,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-02-01,9.6199,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-03-01,9.6617,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-04-01,9.6979,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-05-01,9.8044,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-06-01,9.8814,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-07-01,9.8972,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-08-01,9.9993,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-09-01,10.0412,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-10-01,10.1242,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-11-01,10.14,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2009-12-01,10.1211,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-01-01,10.109,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-02-01,10.0869,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-03-01,10.0089,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-04-01,9.9554,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-05-01,9.8612,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-06-01,9.802,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-07-01,9.8071,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-08-01,9.6856,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-09-01,9.5967,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-10-01,9.5075,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-11-01,9.4658,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2010-12-01,9.4103,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-01-01,9.4119,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-02-01,9.3773,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-03-01,9.3978,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-04-01,9.3907,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-05-01,9.4004,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-06-01,9.4195,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-07-01,9.389,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-08-01,9.4043,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-09-01,9.498,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-10-01,9.4726,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-11-01,9.5479,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2011-12-01,9.5592,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-01-01,9.5401,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-02-01,9.5642,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-03-01,9.5625,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-04-01,9.5028,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-05-01,9.5055,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-06-01,9.4797,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-07-01,9.5385,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-08-01,9.4794,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-09-01,9.4413,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-10-01,9.4799,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-11-01,9.4131,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2012-12-01,9.3755,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-01-01,9.336,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-02-01,9.3272,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-03-01,9.2886,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-04-01,9.2836,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-05-01,9.1886,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-06-01,9.1841,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-07-01,9.1334,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-08-01,9.148,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-09-01,9.1437,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-10-01,9.1328,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-11-01,9.1089,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2013-12-01,9.1221,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-01-01,9.1224,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-02-01,9.1084,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-03-01,9.0811,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-04-01,9.1113,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-05-01,9.1443,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-06-01,9.1191,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-07-01,9.1171,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-08-01,9.1067,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-09-01,9.0342,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-10-01,8.9775,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-11-01,8.9672,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2014-12-01,8.9504,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-01-01,8.9464,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-02-01,8.9493,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-03-01,8.9023,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-04-01,8.8808,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-05-01,8.8834,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-06-01,8.8203,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-07-01,8.7274,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-08-01,8.6755,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-09-01,8.6752,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-10-01,8.6816,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-11-01,8.6514,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2015-12-01,8.6098,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-01-01,8.6107,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-02-01,8.5385,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-03-01,8.5478,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-04-01,8.5148,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-05-01,8.4699,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-06-01,8.446,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-07-01,8.4742,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-08-01,8.4835,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-09-01,8.4693,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-10-01,8.4216,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-11-01,8.4184,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2016-12-01,8.3987,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-01-01,8.3425,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-02-01,8.3219,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-03-01,8.2669,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-04-01,8.2705,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-05-01,8.2891,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-06-01,8.2967,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-07-01,8.2893,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-08-01,8.3059,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-09-01,8.2863,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-10-01,8.2846,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-11-01,8.2697,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2017-12-01,8.262,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-01-01,8.2607,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-02-01,8.2284,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-03-01,8.2701,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-04-01,8.2503,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-05-01,8.1773,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-06-01,8.1583,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-07-01,8.1503,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-08-01,8.0846,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-09-01,8.0755,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-10-01,8.0188,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-11-01,7.974,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2018-12-01,7.9972,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-01-01,7.9696,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-02-01,8.0049,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-03-01,7.9907,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-04-01,7.9987,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-05-01,8.0108,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-06-01,8.0095,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-07-01,7.9886,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-08-01,8.0232,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-09-01,8.0222,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-10-01,8.0516,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-11-01,8.0865,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2019-12-01,8.0234,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-01-01,8.015,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-02-01,7.9993,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-03-01,7.9192,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-04-01,7.7817,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-05-01,7.7679,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-06-01,7.7563,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-07-01,7.7268,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-08-01,7.7202,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-09-01,7.67,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-10-01,7.6225,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-11-01,7.549,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2020-12-01,7.5323,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-01-01,7.5134,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-02-01,7.4503,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-03-01,7.4884,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-04-01,7.5714,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-05-01,7.5806,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-06-01,7.5609,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-07-01,7.55,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-08-01,7.527,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-09-01,7.5047,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-10-01,7.4832,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-11-01,7.4874,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2021-12-01,7.4917,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-01-01,7.4773,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-02-01,7.4726,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-03-01,7.4706,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-04-01,7.4496,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-05-01,7.4156,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-06-01,7.4071,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-07-01,7.409,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-08-01,7.4002,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-09-01,7.4166,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-10-01,7.4181,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-11-01,7.3967,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2022-12-01,7.4153,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-01-01,7.4428,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-02-01,7.4617,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-03-01,7.4571,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-04-01,7.4926,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-05-01,7.5161,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-06-01,7.525,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-07-01,7.535,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-08-01,7.539,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-09-01,7.5606,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-10-01,7.5989,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-11-01,7.6345,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2023-12-01,7.6569,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-01-01,7.6575,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-02-01,7.669,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-03-01,7.6709,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-04-01,7.6833,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-05-01,7.655,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-06-01,7.6311,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-07-01,7.618,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-08-01,7.5962,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-09-01,7.5695,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-10-01,7.5455,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-11-01,7.5075,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2024-12-01,7.4628,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-01-01,7.4124,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-02-01,7.3775,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-03-01,7.3574,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-04-01,7.3272,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-05-01,7.3347,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-06-01,7.388,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-07-01,7.4171,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-08-01,7.4267,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-09-01,7.4571,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-10-01,7.4906,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-11-01,7.5088,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2025-12-01,7.5564,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2026-01-01,7.5894,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2026-02-01,7.6035,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2026-03-01,7.6568,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2026-04-01,7.6741,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2026-05-01,7.6862,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2026-06-01,7.6704,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2026-07-01,7.6365,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2026-08-01,7.6402,%,Eigene Aufbereitung,2026-11-13T18:20:01Z
+de_exp_share_fr,2026-09-01,7.6365,%,Eigene Aufbereitung,2026-11-13T18:20:01Z

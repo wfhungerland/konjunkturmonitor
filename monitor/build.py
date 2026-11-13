@@ -572,6 +572,8 @@ def _last_x(c: dict) -> str | None:
         return max((x for x, y in zip(c["x"], c["y"]) if y is not None), default=None)
     if c.get("type") in ("heat", "heatbars"):
         return c["heat"]["cols"][-1]
+    if c.get("type") == "gauge" and (c.get("gauge") or {}).get("rows"):
+        return max(r["now_date"] for r in c["gauge"]["rows"])
     if c.get("type") == "curve" and (c.get("attach") or {}).get("countries"):
         return max(k["now"]["date"] for k in c["attach"]["countries"])
     if c.get("type") == "tpi" and (c.get("attach") or {}).get("month"):
@@ -1691,6 +1693,54 @@ def build_payload(root: Path = ROOT) -> dict:
                     continue
                 entry.update(sources=list(c.get("sources") or []), licenses=list(c.get("licenses") or []), freq="A",
                              unit=c.get("unit", entry["attach"].get("unit", "")))
+            elif typ == "gauge":  # Krisenthermometer: je Reihe der Weg vom Normalniveau (Mittel der Basisjahre = 0 %) zum Krisenhoch (= 100 %)
+                from .answers import MONTHS as MONTHS_DE
+                b0, b1 = c.get("base", [2015, 2019])
+                p0, p1 = c.get("peak", ["2011-07-01", "2012-12-31"])
+                rows = []
+                for r in c["rows"]:
+                    if r["id"] not in data:
+                        continue
+                    sr = data[r["id"]].dropna().sort_index()
+                    base = float(sr[(sr.index.year >= b0) & (sr.index.year <= b1)].mean())
+                    win = sr[(sr.index >= p0) & (sr.index <= p1)]
+                    pk_at = win.idxmin() if r.get("invert") else win.idxmax()
+                    pk = float(win[pk_at])
+                    if abs(pk - base) < 1e-9:
+                        continue
+                    now_at = sr.index[-1]
+                    prev = sr[sr.index <= now_at - pd.DateOffset(years=1)]
+                    pct = lambda v: round((v - base) / (pk - base) * 100, 1)
+                    m = meta[r["id"]]
+                    rows.append(dict(id=r["id"], label=r["label"], label_en=r.get("label_en", r["label"]), group=r.get("group", ""), group_en=r.get("group_en", r.get("group", "")),
+                                     phrase=r.get("phrase", r["label"]), phrase_en=r.get("phrase_en", r.get("label_en", r["label"])), unit=r.get("unit", m.unit), unit_en=r.get("unit_en", r.get("unit", m.unit)),
+                                     freq=m.frequency, now=round(float(sr.iloc[-1]), 3), now_date=now_at.strftime("%Y-%m-%d"), now_pct=pct(float(sr.iloc[-1])),
+                                     ago=round(float(prev.iloc[-1]), 3) if len(prev) else None, ago_date=prev.index[-1].strftime("%Y-%m-%d") if len(prev) else None,
+                                     ago_pct=pct(float(prev.iloc[-1])) if len(prev) else None, base=round(base, 3), peak=round(pk, 3), peak_date=pk_at.strftime("%Y-%m-%d"), decimals=r.get("decimals", 2)))
+                if not rows:
+                    continue
+                specs_g = [meta[r["id"]] for r in rows]
+                entry.update(gauge={"rows": rows, "base": [b0, b1], "peak": [p0, p1]}, freq="M", unit="",
+                             sources=sorted({_source_name(x) for x in specs_g}), licenses=sorted({lic for x in specs_g if (lic := _license(x))}))
+                und = lambda xs: ", ".join(xs[:-1]) + " und " + xs[-1] if len(xs) > 1 else (xs[0] if xs else "")
+                and_ = lambda xs: ", ".join(xs[:-1]) + " and " + xs[-1] if len(xs) > 1 else (xs[0] if xs else "")
+                groups = list(dict.fromkeys(r["group"] for r in rows))
+                g1 = [r for r in rows if r["group"] == groups[0]]
+                pc = lambda v: f"{v:.0f}".replace("-", "−")
+                entry["say"] = [f"Vom Normalniveau 2015 bis 2019 zum Höchststand der Eurokrise 2011/12 hat {c.get('who', 'das Land')} zuletzt "
+                                + und([f"{r['phrase']} {pc(r['now_pct'])} %" for r in g1]) + " des Wegs zurückgelegt."]
+                entry["say_en"] = [f"Measured from the 2015–2019 normal level to the 2011/12 euro-crisis peak, {c.get('who_en', 'the country')} has recently moved "
+                                   + and_([f"{pc(r['now_pct'])}% of the way {r['phrase_en']}" for r in g1]) + "."]
+                for g in groups[1:]:
+                    gr = [r for r in rows if r["group"] == g]
+                    if all(r["now_pct"] <= 10 for r in gr):
+                        entry["say"].append(f"{c.get('calm', 'Ein Übergreifen ist bisher nicht zu sehen')}: " + _cap(und([r["phrase"] for r in gr])) + " liegen auf oder unter dem Normalniveau.")
+                        entry["say_en"].append(f"{c.get('calm_en', 'There is no sign of contagion so far')}: " + and_([r["phrase_en"] for r in gr]) + " are at or below normal levels.")
+                    else:
+                        entry["say"].append(f"{g}: " + und([f"{r['label']} {pc(r['now_pct'])} %" for r in gr]) + " des Wegs.")
+                        entry["say_en"].append(f"{gr[0]['group_en']}: " + and_([f"{r['label_en']} {pc(r['now_pct'])}%" for r in gr]) + " of the way.")
+                if c.get("note"):
+                    entry["say"].append(c["note"]); entry["say_en"].append(c.get("note_en", c["note"]))
             elif typ == "curve":  # Zinskurven je Land, Daten aus data/static/zinskurven.json (werktäglich, monitor/geldpolitik.py)
                 from .answers import MONTHS as MONTHS_DE
                 K = (entry.get("attach") or {}).get("countries") or []
