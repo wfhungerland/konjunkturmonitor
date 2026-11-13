@@ -97,7 +97,7 @@
   /* Abbildungskarte: links Nummer, Stern, Download, Methode, Link; Mitte Titel und Grafik; rechts Erläuterung */
   .cgrid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: baseline; column-gap: 22px; }
   .gut { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; font: 13.5px/1.6 var(--ff); order: 2; margin-top: 6px; }
-  .gut .cno { display: none; }
+  .gut .cno { display: none; } .cin .abbno { display: none; }  /* Kürzel wie „Haushalte-2“ nur intern, nie sichtbar */
   .gut .gopts { display: flex; flex-wrap: wrap; gap: 2px 14px; }
   .gut .gopts a, .gut .gopts button { color: #a6a6a6; background: none; border: 0; padding: 0; font: 12.5px/1.6 var(--ff); cursor: pointer; border-radius: 0; text-align: inherit; }
   .gut .gopts a:hover, .gut .gopts button:hover { color: var(--text); text-decoration: none; }
@@ -796,6 +796,8 @@ function timeChart(el, c) {
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa2.tickvals, ticktext: xa2.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true, hoverformat: HFMT[c.freq] || "" },
     yaxis: { side: axLeft ? "left" : "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
+  { const nLeg = traces.filter(t => t.showlegend !== false && t.name).length, w = el.clientWidth || 600;  // Handy: lange Legende bekommt eigene Höhe statt Scrollkasten
+    if (L.showlegend && nLeg > 4 && w < 560) { const h = Math.round(w * 0.8) + nLeg * 26; el.style.aspectRatio = "auto"; el.style.height = h + "px"; L.height = h; } }
   Plotly.newPlot(el, traces, L, CFG);
 }
 
@@ -1438,7 +1440,7 @@ async function pngDownload(el, ch, c, no, sub, unit) {
   const cap = wrap(c.caption, W - 2 * pad, `15px ${font}`), src = wrap(el.querySelector(".src").textContent, W - 2 * pad, `12px ${font}`);
   const H = 110 + plotH + 16 + cap.length * 20 + src.length * 18 + 24;
   cv.width = W * S; cv.height = H * S; x.scale(S, S); x.fillStyle = "#fff"; x.fillRect(0, 0, W, H); x.textBaseline = "top";
-  x.fillStyle = "#000"; x.font = `bold 22px Georgia, serif`; x.fillText(`${FC(no)} ${c.title || ""}`, pad, 18);
+  x.fillStyle = "#000"; x.font = `bold 22px Georgia, serif`; x.fillText(`${c.title || ""}`, pad, 18);
   x.fillStyle = "#555"; x.font = `15px ${font}`; if (sub) x.fillText(sub, pad, 52);
   x.textAlign = "right"; x.fillText(unit, W - pad, 80); x.textAlign = "left";
   if (img && c.type === "tiles") x.drawImage(img, (W - 520) / 2, 104, 520, plotH);
@@ -1484,8 +1486,8 @@ function card(c, no) {
   const meta = sub ? esc(sub) : "";  // Hinweis auf neue Daten steht unter der Grafik
   const texts = c.texts || [];
   el.innerHTML = `${!lead && c.ask ? `<h4 class="cask">${esc(c.ask)}</h4>` : ""}${!lead && texts.length ? `<p class="ctext">${sentHtml(texts)}</p>` : ""}`
-    + `<div class="cgrid"><div class="gut"><b class="cno" title="${esc(FC(no))}">${c.k ?? no}</b></div><div class="cin"><div class="chead"><div class="ctitle"><h3><span class="abbno">${esc(FC(no))} </span>${esc(c.title || "")}</h3>${meta ? `<div class="sub">${meta}</div>` : ""}</div><div class="htools"></div></div></div></div>`;
-  if (!lead) bindCopies(el, texts, FC(no));
+    + `<div class="cgrid"><div class="gut"><b class="cno">${c.k ?? no}</b></div><div class="cin"><div class="chead"><div class="ctitle"><h3><span class="abbno">${esc(FC(no))} </span>${esc(c.title || "")}</h3>${meta ? `<div class="sub">${meta}</div>` : ""}</div><div class="htools"></div></div></div></div>`;
+  if (!lead) bindCopies(el, texts, c.title || FC(no));
   const cin = el.querySelector(".cin"), gut = el.querySelector(".gut");
   if (c.warn) cin.insertAdjacentHTML("beforeend", `<div class="warn">⚠ ${esc(c.warn)}</div>`);
   const body = document.createElement("div"); body.className = "cbody"; cin.appendChild(body);
@@ -1502,7 +1504,7 @@ function card(c, no) {
     const nb = document.createElement("button"); nb.type = "button"; nb.className = "btn"; nb.textContent = "Ausschläge und Sondereffekte"; nb.setAttribute("aria-pressed", "false");
     const nbox = document.createElement("div"); nbox.className = "notebox"; nbox.hidden = true;
     nbox.innerHTML = `<b>Ausschläge und Sondereffekte</b>${sentHtml(nts, "<br>")}<p class="tnote" style="margin:4px 0 0">Automatisch markiert: Veränderung zum Vormonat mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019. Die Ursache nennt die Quelle.</p>`;
-    bindCopies(nbox, nts, FC(no));
+    bindCopies(nbox, nts, c.title || FC(no));
     nb.onclick = () => { nbox.hidden = !nbox.hidden; nb.setAttribute("aria-pressed", String(!nbox.hidden)); c._shownotes = !nbox.hidden; if ((c.notes || []).length && ch.dataset.done) redraw(); };
     side.appendChild(nb); side.appendChild(nbox);
   }
@@ -1577,13 +1579,13 @@ function card(c, no) {
   const dlb = gut.querySelector("button.dl"); dlb.onclick = () => { const l = dlb.nextElementSibling, open = l.hidden; l.hidden = !open; dlb.setAttribute("aria-expanded", String(open)); };  // Formate auf- und zuklappen
   const eb = gut.querySelector("button.emb");
   if (eb) eb.onclick = () => { const src = (DATA.site.url || "").replace(/en\/$/, "") + "abb/" + encodeURIComponent(c.chart) + ".html";
-    const code = `<iframe src="${src}" title="${esc(`${FC(no)} ${c.title || ""} (Konjunkturmonitor)`)}" width="100%" height="620" style="border:0" loading="lazy"></iframe>`;
+    const code = `<iframe src="${src}" title="${esc(`${c.title || ""} (Konjunkturmonitor)`)}" width="100%" height="620" style="border:0" loading="lazy"></iframe>`;
     const done = () => { const o = eb.textContent; eb.textContent = EMB.done; setTimeout(() => eb.textContent = o, 1500); };
     if (navigator.clipboard) navigator.clipboard.writeText(code).then(done, () => prompt(EMB.label, code)); else prompt(EMB.label, code); };
   lk.onclick = () => { const url = (DATA.site.url || location.href.split("#")[0]).replace(/#.*$/, "") + "#" + FA(no);
     const done = () => { lk.textContent = "Link kopiert"; setTimeout(() => lk.textContent = GUTTXT.link, 1500); };
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => prompt("Link kopieren:", url)); else prompt("Link kopieren:", url); };
-  ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `${FC(no)} ${c.title || ""}. ${c.text || ""}`);
+  ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `${c.title || ""}. ${c.text || ""}`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
   ch._c = c;
   if (tabOk(c)) { const seg = document.createElement("div"); seg.className = "seg tabseg"; seg.setAttribute("role", "group");
@@ -1779,7 +1781,7 @@ function searchBox() {
     items.push({ href: "#" + t.id, label: t.title, sub: head !== t.title ? head : "Abschnitt", key: norm([t.title, head].join(" ")), w: 3 });
     t.charts.forEach(c => { if (c.no == null) return;
       const ser = Array.isArray(c.series) ? c.series.map(s => s.label) : [];
-      items.push({ href: "#" + FA(c.no), label: `${FC(c.no)} ${c.title || ""}`, sub: t.title + (c.ask ? " · " + c.ask : ""),
+      items.push({ href: "#" + FA(c.no), label: `${c.title || ""}`, sub: t.title + (c.ask ? " · " + c.ask : ""),
         key: norm([c.title, c.ask, t.title, ...ser].join(" ")), w: 2 }); });
   });
   const box = document.createElement("div"); box.className = "search"; box.setAttribute("role", "search");
@@ -1872,7 +1874,7 @@ function build() {
         + (q ? `<div class="explain">${esc(q.explain)}</div>` : "") + `</div>` : "");
     if (t.charts[0]) t.charts[0]._lead = true;
     // Textbaustein: Antwort und die Sätze aller Abbildungen des Abschnitts als ein zusammenhängender Text
-    const allText = () => [ans.join(" "), ...t.charts.slice(1).map(x => (x.texts || []).length ? `${x.texts.join(" ")} (${FC(x.no)})` : "")].filter(Boolean).join(" ");
+    const allText = () => [ans.join(" "), ...t.charts.slice(1).map(x => (x.texts || []).length ? x.texts.join(" ") : "")].filter(Boolean).join(" ");
     const cpb = sec.querySelector(".answer button.copy");
     if (cpb) cpb.onclick = () => copyText(allText(), cpb, t.title);
     else if (t.charts.some(x => (x.texts || []).length)) { sec.insertAdjacentHTML("beforeend", `<p class="answer"><button type="button" class="copy" title="Textbaustein kopieren" aria-label="Textbaustein kopieren">⧉</button></p>`); const b2 = sec.querySelector(".answer button.copy"); b2.onclick = () => copyText(allText(), b2, t.title); }
@@ -1881,12 +1883,12 @@ function build() {
     t.charts.forEach((c, i) => {
       if (i === 0 && t.part === "anhang") { // Anhang: alle Abbildungen eingeklappt
         const det = document.createElement("details"); det.className = "morecharts";
-        det.innerHTML = `<summary>${ANH.show} (${t.charts.length})<span class="list">${t.charts.map(x => `${esc(FC(x.no))} ${esc(x.title || "")}`).join("<br>")}</span></summary>`;
+        det.innerHTML = `<summary>${ANH.show} (${t.charts.length})<span class="list">${t.charts.map(x => esc(x.title || "")).join("<br>")}</span></summary>`;
         target = document.createElement("div"); target.className = "charts"; det.appendChild(target); sec.appendChild(det);
       }
       if (i === 1 && LY.lead_chart_only && t.charts.length > 1 && t.part !== "anhang") {
         const det = document.createElement("details"); det.className = "morecharts";
-        det.innerHTML = `<summary>${MORETXT.replace("{t}", esc(t.title || "")).replace("{n}", t.charts.length)}<span class="list">${t.charts.slice(1).map(x => `${esc(FC(x.no))} ${esc(x.title || "")}`).join("<br>")}</span></summary>`;
+        det.innerHTML = `<summary>${MORETXT.replace("{t}", esc(t.title || "")).replace("{n}", t.charts.length)}<span class="list">${t.charts.slice(1).map(x => `${esc(x.title || "")}`).join("<br>")}</span></summary>`;
         target = document.createElement("div"); target.className = "charts"; det.appendChild(target); sec.appendChild(det);
       }
       no += 1; const el = card(c, c.no ?? no); target.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : show(ch);
@@ -1914,7 +1916,7 @@ function build() {
   if (W.length) {
     const dd = s => `${+s.slice(8, 10)}.${+s.slice(5, 7)}.`;
     topics.insertAdjacentHTML("afterend", `<section class="weekrev" id="woche"><h2>Diese Woche neu</h2><p class="tnote">Abbildungen, die in den letzten sieben Tagen neue Daten erhalten haben, jüngste zuerst.</p><ol>`
-      + W.map(w => `<li><a href="#${FA(w.no)}">${esc(FC(w.no))} ${esc(w.title)}</a><span>neue Daten am ${dd(w.date)}</span></li>`).join("") + `</ol></section>`);
+      + W.map(w => `<li><a href="#${FA(w.no)}">${esc(w.title)}</a><span>neue Daten am ${dd(w.date)}</span></li>`).join("") + `</ol></section>`);
   }
   // Menütafel: drei Teile wie auf der Seite; Konjunktur in Gruppen; Service als Fußzeile. Die Frage steht im Tooltip.
   const navA = x => `<a href="#${x.id}" data-t="${x.id}"${x.ask ? ` title="${esc(x.ask)}"` : ""}><b>${x.n}</b><span>${esc(x.title)}</span></a>`;
@@ -2080,7 +2082,7 @@ document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = documen
   const form = () => `<form method="dialog"><p class="fbto"></p><textarea name="message" required placeholder="${FBTXT.ph}" aria-label="${FBTXT.btn}"></textarea><div class="fbrow"><span class="fbnote">${FBTXT.note}</span><button type="submit" class="fbsend">${FBTXT.send}</button></div></form>`;
   document.body.append(d); let ctx = null;
   const open = c => { ctx = c; d.innerHTML = form(); const f = d.querySelector("form"), ta = f.querySelector("textarea");
-    f.querySelector(".fbto").textContent = c.code;
+    f.querySelector(".fbto").textContent = c.title || c.code;
     f.addEventListener("submit", async e => { e.preventDefault(); const msg = ta.value.trim(); if (!msg) return;
       const sb = f.querySelector(".fbsend"); sb.disabled = true;
       const body = { message: msg, grafik: `${c.code} ${c.title}`, link: location.href.split("#")[0] + "#" + c.anchor, sprache: DATA.lang || "de", _subject: `Konjunkturmonitor: Feedback zu ${c.code}` };

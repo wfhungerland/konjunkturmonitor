@@ -3811,7 +3811,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 30
+    stale_after_months: 36
     chart: stx_pk
     label: "Soziale Sicherung"
     style: bar
@@ -3828,7 +3828,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 30
+    stale_after_months: 36
     chart: stx_pk
     label: "Gesundheit"
     style: bar
@@ -3845,7 +3845,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 30
+    stale_after_months: 36
     chart: stx_pk
     label: "Bildung"
     style: bar
@@ -3862,7 +3862,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 30
+    stale_after_months: 36
     chart: stx_pk
     label: "Verwaltung und Zinsen"
     style: bar
@@ -3879,7 +3879,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 30
+    stale_after_months: 36
     chart: stx_pk
     label: "Übrige Aufgaben"
     style: bar
