@@ -15,10 +15,11 @@ const http = require("http"), fs = require("fs"), path = require("path");
   const browser = await chromium.launch(), page = await browser.newPage({ viewport: { width: 1440, height: 900 }, acceptDownloads: true }), errors = [];
   page.on("pageerror", e => errors.push(e.message));
   await page.goto(url + "?alles=1", { waitUntil: "load" }); await page.waitForTimeout(800);
-  // ohne Vorgabe: je eine einfache Liniengrafik, eine mit Vorschaubild und eine ohne beides, dazu drei weitere
+  // ohne Vorgabe: zwei Liniengrafiken, gestapelte Balken, eine Länderkarte, eine Abbildung mit Vorschaubild und eine ohne
   const ids = process.argv[4] ? process.argv[4].split(",") : await page.evaluate(() => { const all = DATA.topics.flatMap(t => t.charts).filter(c => c.chart);
-    const a = all.filter(kmSimple), b = all.filter(c => !kmSimple(c) && PREVS && PREVS[c.anchor]), d = all.filter(c => !kmSimple(c) && !(PREVS && PREVS[c.anchor]));
-    return [...a.slice(0, 3), ...b.slice(0, 2), ...d.slice(0, 1)].map(c => c.chart); });
+    const kind = k => all.filter(c => kmKind(c) === k), rest = all.filter(c => !kmKind(c));
+    const b = rest.filter(c => PREVS && PREVS[c.anchor]), d = rest.filter(c => !(PREVS && PREVS[c.anchor]));
+    return [...kind("line").slice(0, 2), ...kind("stacked").slice(0, 1), ...kind("map").slice(0, 1), ...b.slice(0, 1), ...d.slice(0, 1)].map(c => c.chart); });
   await page.evaluate(ids => localStorage.setItem("km.sammlung", JSON.stringify(ids)), ids);
   await page.goto(url + "?alles=1#sammlung"); await page.reload({ waitUntil: "load" }); await page.waitForTimeout(1500);  // neu laden: die Seite liest die Lesezeichen beim Start
   const btn = page.locator("#sammlung .colbar button", { hasText: /Onepager|one-pager/ });
