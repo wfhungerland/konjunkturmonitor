@@ -19,6 +19,7 @@ import csv
 import datetime as dt
 import json
 import math
+import re
 import statistics
 import sys
 import time
@@ -205,6 +206,38 @@ def _km(a: tuple, b: tuple) -> float:
     return 2 * 6371 * math.asin(math.sqrt(h))
 
 
+def _firma(name: str) -> str:
+    """Schlüssel für denselben Auftragnehmer trotz Schreibvarianten („STRABAG AG“, „Strabag AG“)."""
+    f = name.lower().replace("&", " und ").replace("+", " und ")
+    f = re.sub(r"\b(gmbh|ag|se|kg|co|mbh|ohg|ug|haftungsbeschränkt|zweigniederlassung.*|niederlassung.*)\b", " ", f)
+    return re.sub(r"[^a-z0-9äöüß]", "", f)
+
+
+UEBERREGIONAL = 4  # Firmen mit Zuschlägen in mindestens so vielen Ländern gelten als überregional
+
+
+def firmentypen(zeilen: list[dict]) -> dict[str, str]:
+    """Ordnet jeder Firma einen Typ zu: regional, überregional mit gemeldeter Niederlassung oder Zentrale.
+
+    Überregional: Zuschläge in mindestens vier Ländern (Leistungsort). Gemeldete Niederlassung: mindestens drei
+    verschiedene Postleitzahlen und keine davon in der Hälfte der Meldungen oder mehr.
+    """
+    laender, plz = defaultdict(set), defaultdict(Counter)
+    for z in zeilen:
+        if z["firma"]:
+            laender[z["firma"]].update(o[:3] for o in z["ort"])
+            plz[z["firma"]].update(z["plz"])
+    typ = {}
+    for f in laender:
+        if len(laender[f]) < UEBERREGIONAL:
+            typ[f] = "regional"
+        else:
+            p = plz[f]
+            verteilt = len(p) >= 3 and p.most_common(1)[0][1] < 0.5 * sum(p.values())
+            typ[f] = "überregional, meldet Niederlassung" if verteilt else "überregional, meldet Zentrale"
+    return typ
+
+
 def lies(ordner: Path):
     gesehen = set()
     for datei in sorted(ordner.glob("ted_bau_*.jsonl")):
@@ -236,6 +269,7 @@ def datensatz(ordner: Path) -> list[dict]:
             "gewerk": _gewerk(_liste(n.get("classification-cpv"))),
             "groesse": _groesse(_betrag(n.get("tender-value"))),
             "namen": namen, "plz": sorted(set(_liste(n.get("winner-post-code")))),
+            "firma": _firma(namen[0]) if len(namen) == 1 else None,
             "ausland": bool(laender - {"DEU"}) if laender else False,
             "sitz": sitz, "ort": ort, "angebote": len(angebote) > 0,
         })
@@ -288,19 +322,32 @@ def auswertung(ordner: Path, ziel: Path) -> None:
             "halbwert": f"{statistics.mean(aussen) * math.log(2):.0f}" if len(aussen) >= 20 else "-",
         }
 
+    typ = firmentypen(zeilen)
+    for p in paare:
+        p["typ"] = typ.get(p["firma"], "mehrere oder keine Auftragnehmer")
+    typen = ("regional", "überregional, meldet Niederlassung", "überregional, meldet Zentrale")
+    tab_typ = {"alle": abfall(paare), **{t: abfall([p for p in paare if p["typ"] == t]) for t in typen}}
     tab_gewerk = {g: abfall([p for p in paare if p["gewerk"] == g]) for g in sorted({p["gewerk"] for p in paare})}
+    tab_gewerk_reg = {g: abfall([p for p in paare if p["gewerk"] == g and p["typ"] == "regional"])
+                      for g in sorted({p["gewerk"] for p in paare})}
     tab_groesse = {g: abfall([p for p in paare if p["groesse"] == g])
                    for g in [n for *_, n in GROESSEN] + ["ohne Wert"]}
     tab_kaeufer = {g: abfall([p for p in paare if p["auftraggeber"] == g])
                    for g in ("DB InfraGO", "andere DB", "übrige")}
 
     # Sitz oder Niederlassung: wie viele verschiedene Postleitzahlen meldet derselbe Auftragnehmer?
-    plz_je = defaultdict(set)
+    plz_je, name_je, land_je = defaultdict(Counter), defaultdict(Counter), defaultdict(set)
+    km_je = defaultdict(list)
     zahl_je = Counter()
     for z in zeilen:
-        if len(z["namen"]) == 1:
-            plz_je[z["namen"][0]].update(z["plz"])
-            zahl_je[z["namen"][0]] += 1
+        if z["firma"]:
+            plz_je[z["firma"]].update(z["plz"])
+            name_je[z["firma"]][z["namen"][0]] += 1
+            land_je[z["firma"]].update(o[:3] for o in z["ort"])
+            zahl_je[z["firma"]] += 1
+    for p in paare:
+        if p["firma"]:
+            km_je[p["firma"]].append(p["km"])
     top = zahl_je.most_common(30)
 
     # Kantenliste für spätere Schätzungen (Schwerkraftmodell), aggregiert, ohne Firmennamen
@@ -333,11 +380,23 @@ def auswertung(ordner: Path, ziel: Path) -> None:
     text += ["", "### Distanzabfall nach Gewerk", "", *tabelle("Gewerk", tab_gewerk),
              "", "### Distanzabfall nach Auftragsgröße", "", *tabelle("Auftragswert", tab_groesse),
              "", "### Distanzabfall nach Auftraggeber", "", *tabelle("Auftraggeber", tab_kaeufer),
+             "", "### Distanzabfall mit und ohne überregionale Firmen", "",
+             f"Überregional: Zuschläge in mindestens {UEBERREGIONAL} Ländern ({sum(1 for t in typ.values() if t != 'regional')} "
+             "Firmen). „Meldet Niederlassung“: mindestens drei verschiedene Postleitzahlen, keine in der Hälfte der "
+             "Meldungen oder mehr; sonst „meldet Zentrale“. Firmennamen nach Schreibvarianten zusammengeführt.", "",
+             *tabelle("Firmentyp", tab_typ),
+             "", "### Distanzabfall nach Gewerk, nur regionale Firmen", "", *tabelle("Gewerk", tab_gewerk_reg),
              "", "### Sitz oder Niederlassung: die 30 häufigsten Auftragnehmer", "",
              "Meldet ein Auftragnehmer viele verschiedene Postleitzahlen, gibt er offenbar die ausführende "
              "Niederlassung an; eine einzige Postleitzahl spricht für den eingetragenen Sitz.", "",
-             "| Auftragnehmer | Zuschläge | verschiedene Postleitzahlen |", "|---|---:|---:|"]
-    text += [f"| {name} | {k} | {len(plz_je[name])} |" for name, k in top]
+             "| Auftragnehmer | Zuschläge | verschiedene Postleitzahlen | Anteil häufigste Postleitzahl | "
+             "Länder | Median km | Typ |", "|---|---:|---:|---:|---:|---:|---|"]
+    for f, k in top:
+        p = plz_je[f]
+        haeufig = _anteil(p.most_common(1)[0][1], sum(p.values())) if p else "-"
+        med = f"{statistics.median(km_je[f]):.0f}" if km_je[f] else "-"
+        text.append(f"| {name_je[f].most_common(1)[0][0]} | {k} | {len(p)} | {haeufig} | {len(land_je[f])} | "
+                    f"{med} | {typ.get(f, '-')} |")
     text += ["", "Distanz: Luftlinie zwischen den Mittelpunkten der Kreise (GISCO, NUTS 2024). Halbwertsdistanz: "
              "Entfernung, bis zu der die Hälfte der Aufträge außerhalb des eigenen Kreises vergeben wird, unter der "
              "Annahme eines exponentiellen Abfalls. Kantenliste je Kreispaar und Gewerk: "

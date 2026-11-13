@@ -14,7 +14,16 @@ Die Rohdaten bleiben unter `C:\Daten\TED`; ins Repo kommen nur die beiden Auswer
 
 Methode, erste Stufe: Ausgewertet werden Bekanntmachungen mit genau einem Sitz-Kreis und einem Leistungskreis. Distanz ist die Luftlinie zwischen den Kreismittelpunkten. Jenseits des eigenen Kreises wird ein exponentieller Abfall angenommen; die Halbwertsdistanz ist dann der Mittelwert der Distanzen mal ln 2. Fahrzeiten und ein Schwerkraftmodell auf Basis der Kantenliste folgen.
 
-Sitz oder Niederlassung: Für die 30 häufigsten Auftragnehmer zählt die Auswertung die verschiedenen gemeldeten Postleitzahlen. Viele Postleitzahlen je Firma sprechen für gemeldete Niederlassungen, eine einzige für den eingetragenen Sitz. Den Befund danach für einzelne Konzerne gegen deren Niederlassungslisten prüfen.
+Sitz oder Niederlassung (geprüft 13.11.2026): Die Auswertung führt Schreibvarianten derselben Firma zusammen und teilt die Firmen ein. Regional sind Firmen mit Zuschlägen in weniger als vier Ländern. Überregionale Firmen „melden die Niederlassung“, wenn sie mindestens drei Postleitzahlen angeben und keine davon die Hälfte der Meldungen erreicht, sonst „melden sie die Zentrale“.
+
+| Firmentyp | Zuschläge | Median km | Halbwertsdistanz km |
+|---|---:|---:|---:|
+| alle | 38.052 | 52 | 86 |
+| regional | 28.935 | 41 | 65 |
+| überregional, meldet Niederlassung | 1.361 | 45 | 81 |
+| überregional, meldet Zentrale | 7.571 | 175 | 151 |
+
+Abgleich mit Standortangaben der Firmen: STRABAG AG meldet 47 Postleitzahlen bei rund 50 deutschen Standorten (älteres Firmenprofil), also die Niederlassungen. KONE (80 % Hannover, Länderzentrale; mehr als 50 Standorte in DACH), Lindner SE (98 % Arnstorf; weitere Standorte unter anderem Berlin, Hamburg, Hannover, Nürnberg) und LEONHARD WEISS (59 % Göppingen; Hauptsitz Satteldorf, zahlreiche weitere Standorte) melden dagegen ihre Zentrale. Fliesen Röhlich (97 % Wendelstein) hat nach den gefundenen Angaben nur diesen einen Standort und reist tatsächlich weit. Die Gruppe „meldet Zentrale“ mischt also verzerrte Meldungen von Konzernen mit echten Wanderbetrieben. Der Distanzabfall der regionalen Firmen (Halbwertsdistanz 65 km) ist darum die Untergrenze, der Wert für alle (86 km) die Obergrenze. Für die Gewichtung der Nachbarkreise taugt die Untergrenze je Gewerk (Tabelle „nur regionale Firmen“ in `docs/aufnahme_ted.md`).
 
 Erster Lauf 13.11.2026 (Cloud): 56.734 Bauzuschläge seit Januar 2025, je Monat vollständig gegen die Trefferzahl von TED. Ergebnis: `docs/aufnahme_ted.md`, Kantenliste `data/static/aufnahme_kanten.csv`. Die Antwortfelder kommen als Listen oder Sprach-Wörterbücher; `tender-value` ist eine Liste von Texten, fehlende Werte stehen als -1. TED meldet Thüringer Kreise teils mit NUTS-2021-Codes; das Skript schlüsselt sie auf NUTS 2024 um. Für die Rohdaten unter `C:\Daten\TED` den Abzug dort wiederholen (`TED abrufen.bat`).
 

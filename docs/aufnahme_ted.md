@@ -64,41 +64,71 @@ Bekanntmachungen: 56734; davon mit genau einem Sitz- und einem Leistungskreis: 3
 | andere DB | 138 | 12 % | 25 % | 35 % | 57 % | 171 | 168 |
 | übrige | 37021 | 21 % | 50 % | 70 % | 85 % | 50 | 84 |
 
+### Distanzabfall mit und ohne überregionale Firmen
+
+Überregional: Zuschläge in mindestens 4 Ländern (593 Firmen). „Meldet Niederlassung“: mindestens drei verschiedene Postleitzahlen, keine in der Hälfte der Meldungen oder mehr; sonst „meldet Zentrale“. Firmennamen nach Schreibvarianten zusammengeführt.
+
+| Firmentyp | Zuschläge | gleicher Kreis | bis 50 km | bis 100 km | bis 200 km | Median km | Halbwertsdistanz km |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| alle | 38052 | 20 % | 49 % | 69 % | 84 % | 52 | 86 |
+| regional | 28935 | 24 % | 58 % | 79 % | 91 % | 41 | 65 |
+| überregional, meldet Niederlassung | 1361 | 25 % | 54 % | 74 % | 88 % | 45 | 81 |
+| überregional, meldet Zentrale | 7571 | 5 % | 15 % | 29 % | 56 % | 175 | 151 |
+
+### Distanzabfall nach Gewerk, nur regionale Firmen
+
+| Gewerk | Zuschläge | gleicher Kreis | bis 50 km | bis 100 km | bis 200 km | Median km | Halbwertsdistanz km |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Abbruch, Erdarbeiten | 2228 | 28 % | 66 % | 85 % | 94 % | 32 | 54 |
+| Anlagenbau | 296 | 15 % | 36 % | 55 % | 76 % | 86 | 110 |
+| Ausbau | 5225 | 19 % | 49 % | 75 % | 91 % | 51 | 68 |
+| Dach, Spezialbau | 3352 | 21 % | 53 % | 77 % | 91 % | 47 | 66 |
+| Dämmung | 994 | 20 % | 60 % | 83 % | 94 % | 38 | 53 |
+| Elektro | 3003 | 28 % | 63 % | 82 % | 93 % | 34 | 62 |
+| Gebäudetechnik | 91 | 9 % | 24 % | 41 % | 64 % | 132 | 138 |
+| Hochbau | 3384 | 22 % | 53 % | 73 % | 88 % | 47 | 75 |
+| Ingenieurbau | 1471 | 24 % | 60 % | 81 % | 92 % | 40 | 63 |
+| Sanitär, Heizung | 2737 | 30 % | 71 % | 90 % | 96 % | 31 | 47 |
+| Straßen, Schiene, Leitungen | 1760 | 29 % | 62 % | 78 % | 90 % | 35 | 69 |
+| Wasserbau | 182 | 25 % | 58 % | 81 % | 89 % | 42 | 72 |
+| Zäune, Sonstige Installation | 131 | 11 % | 30 % | 56 % | 81 % | 81 | 96 |
+| sonstiges | 4081 | 24 % | 58 % | 78 % | 91 % | 41 | 67 |
+
 ### Sitz oder Niederlassung: die 30 häufigsten Auftragnehmer
 
 Meldet ein Auftragnehmer viele verschiedene Postleitzahlen, gibt er offenbar die ausführende Niederlassung an; eine einzige Postleitzahl spricht für den eingetragenen Sitz.
 
-| Auftragnehmer | Zuschläge | verschiedene Postleitzahlen |
-|---|---:|---:|
-| Fliesen Röhlich GmbH | 133 | 3 |
-| Lindner SE | 119 | 3 |
-| LEONHARD WEISS GmbH & Co. KG | 104 | 6 |
-| Heinrich Schmid GmbH & Co. KG | 101 | 32 |
-| STRABAG AG | 86 | 40 |
-| KONE GmbH | 86 | 7 |
-| Dieter Holschbach GmbH | 81 | 2 |
-| Ed. Züblin AG | 80 | 20 |
-| Hirsch GmbH | 76 | 3 |
-| BplusL Infra Log GmbH | 60 | 3 |
-| DB Bahnbau Gruppe GmbH | 57 | 3 |
-| Siemens AG | 54 | 23 |
-| KNS GmbH | 50 | 2 |
-| FBS GmbH | 47 | 2 |
-| Linkamp GmbH | 47 | 1 |
-| SPL Powerlines Germany GmbH | 45 | 3 |
-| Caverion Deutschland GmbH | 44 | 9 |
-| SANA Trennwandbau GmbH | 44 | 1 |
-| S+T Fassaden GmbH | 44 | 4 |
-| Gebrüder Peters Gebäudetechnik SE | 44 | 2 |
-| Ullrich & Schön GmbH | 44 | 2 |
-| Sauter-Cumulus GmbH | 44 | 15 |
-| Andic GmbH | 44 | 2 |
-| Niebuhr Stahlglastechnik GmbH | 43 | 1 |
-| Schmitt + Sohn Aufzüge GmbH & Co. KG | 42 | 10 |
-| Metall & Stahlbau Schmickler GmbH | 42 | 1 |
-| Rail Power Systems GmbH | 41 | 2 |
-| Dräger Medical ANSY GmbH | 40 | 5 |
-| Kieback&Peter GmbH & Co. KG | 39 | 12 |
-| REFA Dachbau GmbH | 39 | 2 |
+| Auftragnehmer | Zuschläge | verschiedene Postleitzahlen | Anteil häufigste Postleitzahl | Länder | Median km | Typ |
+|---|---:|---:|---:|---:|---:|---|
+| Fliesen Röhlich GmbH | 137 | 4 | 97 % | 12 | 170 | überregional, meldet Zentrale |
+| STRABAG AG | 122 | 47 | 11 % | 14 | 30 | überregional, meldet Niederlassung |
+| Lindner SE | 120 | 3 | 98 % | 15 | 342 | überregional, meldet Zentrale |
+| LEONHARD WEISS GmbH & Co. KG | 117 | 9 | 59 % | 11 | 141 | überregional, meldet Zentrale |
+| Heinrich Schmid GmbH & Co. KG | 115 | 38 | 27 % | 14 | 32 | überregional, meldet Niederlassung |
+| KONE GmbH | 104 | 8 | 80 % | 13 | 268 | überregional, meldet Zentrale |
+| Ed. Züblin AG | 84 | 21 | 40 % | 12 | 51 | überregional, meldet Niederlassung |
+| Kieback&Peter GmbH & Co. KG | 81 | 23 | 15 % | 13 | 27 | überregional, meldet Niederlassung |
+| Dieter Holschbach GmbH | 81 | 2 | 99 % | 14 | 248 | überregional, meldet Zentrale |
+| Hirsch GmbH | 77 | 3 | 94 % | 8 | 164 | überregional, meldet Zentrale |
+| BplusL Infra Log GmbH | 76 | 3 | 96 % | 13 | 293 | überregional, meldet Zentrale |
+| Andic GmbH | 68 | 2 | 74 % | 12 | 229 | überregional, meldet Zentrale |
+| Schmitt + Sohn Aufzüge GmbH & Co. KG | 60 | 11 | 22 % | 8 | 36 | überregional, meldet Niederlassung |
+| Sauter-Cumulus GmbH | 58 | 16 | 19 % | 10 | 35 | überregional, meldet Niederlassung |
+| DB Bahnbau Gruppe GmbH | 57 | 3 | 96 % | 12 | 364 | überregional, meldet Zentrale |
+| Siemens AG | 55 | 23 | 13 % | 12 | 18 | überregional, meldet Niederlassung |
+| H. O. Schlüter GmbH | 50 | 2 | 52 % | 9 | 108 | überregional, meldet Zentrale |
+| KNS GmbH | 50 | 2 | 98 % | 6 | 130 | überregional, meldet Zentrale |
+| ISO-Basaran GmbH | 49 | 4 | 92 % | 10 | 200 | überregional, meldet Zentrale |
+| SANA Trennwandbau GmbH | 48 | 1 | 100 % | 11 | 241 | überregional, meldet Zentrale |
+| S+T Fassaden GmbH | 47 | 4 | 36 % | 12 | 138 | überregional, meldet Niederlassung |
+| FBS GmbH | 47 | 2 | 98 % | 8 | 261 | überregional, meldet Zentrale |
+| Gebrüder Peters Gebäudetechnik SE | 47 | 2 | 98 % | 3 | 79 | regional |
+| Ullrich & Schön GmbH | 47 | 2 | 96 % | 1 | 43 | regional |
+| Linkamp GmbH | 47 | 1 | 100 % | 5 | 118 | überregional, meldet Zentrale |
+| SPL Powerlines Germany GmbH | 46 | 3 | 54 % | 10 | 232 | überregional, meldet Zentrale |
+| Metall & Stahlbau Schmickler GmbH | 46 | 1 | 100 % | 8 | 137 | überregional, meldet Zentrale |
+| Caverion Deutschland GmbH | 44 | 9 | 25 % | 11 | 89 | überregional, meldet Niederlassung |
+| REFA Dachbau GmbH | 44 | 2 | 93 % | 4 | 133 | überregional, meldet Zentrale |
+| H. Hüther GmbH | 44 | 1 | 100 % | 12 | 247 | überregional, meldet Zentrale |
 
 Distanz: Luftlinie zwischen den Mittelpunkten der Kreise (GISCO, NUTS 2024). Halbwertsdistanz: Entfernung, bis zu der die Hälfte der Aufträge außerhalb des eigenen Kreises vergeben wird, unter der Annahme eines exponentiellen Abfalls. Kantenliste je Kreispaar und Gewerk: data/static/aufnahme_kanten.csv.
