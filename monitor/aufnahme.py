@@ -163,8 +163,13 @@ def _liste(wert) -> list:
     return [str(wert)]
 
 
+# TED meldet teils noch NUTS 2021; in Thüringen wurden die Codes 2024 neu vergeben (Eisenach im Wartburgkreis)
+NUTS21_24 = {"DEG04": "DEG0S", "DEG0B": "DEG0Q", "DEG0F": "DEG0T", "DEG0H": "DEG0V", "DEG0I": "DEG0U",
+             "DEG0N": "DEG0R", "DEG0P": "DEG0R"}
+
+
 def _de3(codes: list) -> list[str]:
-    return sorted({c for c in codes if isinstance(c, str) and c.startswith("DE") and len(c) == 5})
+    return sorted({NUTS21_24.get(c, c) for c in codes if isinstance(c, str) and c.startswith("DE") and len(c) == 5})
 
 
 def _betrag(wert) -> float | None:

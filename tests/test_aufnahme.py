@@ -8,7 +8,7 @@ def _notiz(nr, sitz, ort, cpv="45234000", wert=2e6, name="Bau GmbH", plz="10115"
             "buyer-name": {"deu": [kaeufer]}, "classification-cpv": [cpv], "winner-name": {"deu": [name]},
             "winner-post-code": [plz], "winner-country": ["DEU"], "winner-country-sub": [sitz],
             "place-of-performance-subdiv-proc": [ort], "received-submissions-type-val": ["3"],
-            "tender-value": {"amount": wert, "currency": "EUR"}}
+            "tender-value": [str(wert)]}  # so liefert TED den Wert (geprüft 13.11.2026)
 
 
 def test_auswertung(tmp_path):
@@ -33,3 +33,7 @@ def test_monate():
     import datetime as dt
     m = list(aufnahme._monate("20251101", dt.date(2026, 1, 15)))
     assert [a.month for a, _ in m] == [11, 12, 1] and m[-1][1] == dt.date(2026, 1, 15)
+
+
+def test_nuts2021_auf_2024():
+    assert aufnahme._de3(["DEG0N", "DEG0P", "DE300", "DEG", "AT130"]) == ["DE300", "DEG0R"]
