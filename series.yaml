@@ -4129,7 +4129,7 @@ series:
     block: wachstum
     source: static
     key: gd_bip_prog
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Wachstum des realen BIP: Prognose der Gemeinschaftsdiagnose für das Folgejahr"
     unit: "% ggü. Vorjahr"
@@ -4145,7 +4145,7 @@ series:
     block: wachstum
     source: static
     key: gd_bip_ist
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Wachstum des realen BIP: erste Meldung, gedruckt im Frühjahrsgutachten des Folgejahres"
     unit: "% ggü. Vorjahr"
@@ -4177,7 +4177,7 @@ series:
     block: preise
     source: static
     key: gd_vpi_prog
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Verbraucherpreise: Prognose der Gemeinschaftsdiagnose für das Folgejahr"
     unit: "% ggü. Vorjahr"
@@ -4193,7 +4193,7 @@ series:
     block: preise
     source: static
     key: gd_vpi_ist
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Verbraucherpreise: erste Meldung, gedruckt im Frühjahrsgutachten des Folgejahres"
     unit: "% ggü. Vorjahr"
@@ -4225,7 +4225,7 @@ series:
     block: arbeit
     source: static
     key: gd_alo_prog
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Registrierte Arbeitslose: Prognose der Gemeinschaftsdiagnose für das Folgejahr"
     unit: "Tsd. Personen"
@@ -4241,7 +4241,7 @@ series:
     block: arbeit
     source: static
     key: gd_alo_ist
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Registrierte Arbeitslose: erste Meldung, gedruckt im Frühjahrsgutachten des Folgejahres"
     unit: "Tsd. Personen"
@@ -4273,7 +4273,7 @@ series:
     block: staat
     source: static
     key: gd_saldo_prog
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Finanzierungssaldo des Staates: Prognose der Gemeinschaftsdiagnose für das Folgejahr"
     unit: "% des BIP"
@@ -4289,7 +4289,7 @@ series:
     block: staat
     source: static
     key: gd_saldo_ist
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Finanzierungssaldo des Staates: erste Meldung, gedruckt im Frühjahrsgutachten des Folgejahres"
     unit: "% des BIP"
@@ -4321,7 +4321,7 @@ series:
     block: wachstum
     source: static
     key: gd_bip_fehler
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Wachstum des realen BIP: Abstand der Herbstprognose der Gemeinschaftsdiagnose von der ersten Meldung"
     unit: "Prozentpunkte"
@@ -4337,7 +4337,7 @@ series:
     block: wachstum
     source: static
     key: gd_ziel_2023
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Wachstum des realen BIP 2023: Prognosen der Gemeinschaftsdiagnose"
     unit: "% ggü. Vorjahr"
@@ -4353,7 +4353,7 @@ series:
     block: wachstum
     source: static
     key: gd_ziel_2023_ist
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Wachstum des realen BIP 2023: erste Meldung"
     unit: "% ggü. Vorjahr"
@@ -4369,7 +4369,7 @@ series:
     block: wachstum
     source: static
     key: gd_ziel_2024
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Wachstum des realen BIP 2024: Prognosen der Gemeinschaftsdiagnose"
     unit: "% ggü. Vorjahr"
@@ -4385,7 +4385,7 @@ series:
     block: wachstum
     source: static
     key: gd_ziel_2024_ist
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Wachstum des realen BIP 2024: erste Meldung"
     unit: "% ggü. Vorjahr"
@@ -4401,7 +4401,7 @@ series:
     block: wachstum
     source: static
     key: gd_ziel_2025
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Wachstum des realen BIP 2025: Prognosen der Gemeinschaftsdiagnose"
     unit: "% ggü. Vorjahr"
@@ -4417,7 +4417,7 @@ series:
     block: wachstum
     source: static
     key: gd_ziel_2025_ist
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Wachstum des realen BIP 2025: erste Meldung"
     unit: "% ggü. Vorjahr"
@@ -4433,7 +4433,7 @@ series:
     block: wachstum
     source: static
     key: gd_ziel_2026
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026 und Archiv der Anhangstabellen 1965-2017; eigene Erfassung mit Fundstellen"}
     license: "Eigene Erfassung aus den Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Wachstum des realen BIP 2026: Prognosen der Gemeinschaftsdiagnose"
     unit: "% ggü. Vorjahr"
@@ -4449,7 +4449,7 @@ series:
     block: wachstum
     source: static
     key: gd_stance_l
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026; eigene Auswertung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026; eigene Auswertung mit Fundstellen"}
     license: "Eigene Auswertung der Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Empfehlung der Gemeinschaftsdiagnose: Lohnpolitik"
     unit: "Stufe -1, 0, +1"
@@ -4465,7 +4465,7 @@ series:
     block: wachstum
     source: static
     key: gd_stance_g
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026; eigene Auswertung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026; eigene Auswertung mit Fundstellen"}
     license: "Eigene Auswertung der Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Empfehlung der Gemeinschaftsdiagnose: Geldpolitik"
     unit: "Stufe -1, 0, +1"
@@ -4481,7 +4481,7 @@ series:
     block: wachstum
     source: static
     key: gd_stance_f
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026; eigene Auswertung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026; eigene Auswertung mit Fundstellen"}
     license: "Eigene Auswertung der Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Empfehlung der Gemeinschaftsdiagnose: Finanzpolitik"
     unit: "Stufe -1, 0, +1"
@@ -4497,7 +4497,7 @@ series:
     block: wachstum
     source: static
     key: gd_stance_a
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026; eigene Auswertung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026; eigene Auswertung mit Fundstellen"}
     license: "Eigene Auswertung der Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Empfehlung der Gemeinschaftsdiagnose: Arbeitsmarkt und Sozialstaat"
     unit: "Stufe -1, 0, +1"
@@ -4513,7 +4513,7 @@ series:
     block: wachstum
     source: static
     key: gd_voten_n
-    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Frühjahr 2026; eigene Auswertung mit Fundstellen"}
+    params: {source_name: "Gemeinschaftsdiagnose der Wirtschaftsforschungsinstitute, Gutachten 1950 bis Herbst 2026; eigene Auswertung mit Fundstellen"}
     license: "Eigene Auswertung der Gutachten der Gemeinschaftsdiagnose; CC BY 4.0"
     title: "Abweichende Voten einzelner Institute in den Gutachten eines Jahres"
     unit: "Anzahl"
