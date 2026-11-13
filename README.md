@@ -84,7 +84,7 @@ Zu jeder Abbildung erzeugt der Lauf Excel (Daten, Diagramm, Info), eine PowerPoi
 Datenabruf, Katalogformat und Pipeline kommen aus [konjunkturwolf](https://github.com/wfhungerland/konjunkturwolf) (Paketabhängigkeit). Dieses Repo enthält nur Katalog (`series.yaml`), Inhalte (`monitor.yaml`), statische Daten und die Seite (`monitor/`).
 
 ```bash
-pip install -e ".[dev]"
+./tools/install.sh
 ```
 
 ```bash
@@ -97,7 +97,7 @@ python -m monitor build
 
 `run` holt die Daten und baut die Seite. `build` baut nur die Seite aus `data/processed`.
 
-Der Workflow `update.yml` läuft werktags zweimal (7:23 und 12:23 UTC), bei Änderungen auf `main`, in Pull Requests und von Hand. Er committet die Daten, prüft die fertige Seite im Browser (`tests/smoke.js`, deutsch und englisch) und veröffentlicht `site/` auf GitHub Pages; unter Settings, Pages muss als Quelle „GitHub Actions“ gewählt sein. Fallen Reihen aus, legt er ein Issue „Datenabruf: Ausfälle“ an.
+Der Workflow `update.yml` läuft werktags zweimal (7:23 und 12:23 UTC), bei Änderungen auf `main` und von Hand. Pull Requests prüft `pruefung.yml` mit denselben Schritten, aber nur mit Leserecht. Er committet die Daten, prüft die fertige Seite im Browser (`tests/smoke.js`, deutsch und englisch) und veröffentlicht `site/` auf GitHub Pages; unter Settings, Pages muss als Quelle „GitHub Actions“ gewählt sein. Fallen Reihen aus, legt er ein Issue „Datenabruf: Ausfälle“ an.
 
 ## Betrieb
 
@@ -109,6 +109,13 @@ Der Workflow `update.yml` läuft werktags zweimal (7:23 und 12:23 UTC), bei Änd
 - **Pipeline-Stand** (`.github/workflows/pipeline-stand.yml`, montags): konjunkturwolf ist in `pyproject.toml` auf einen Commit festgelegt. Gibt es einen neueren Stand, testet der Lauf ihn und öffnet einen Pull Request. Dafür einmalig unter Settings › Actions › General „Allow GitHub Actions to create and approve pull requests“ aktivieren.
 
 Damit Tickets ankommen: Repository auf „Watch“ stellen (mindestens „Issues“) und Benachrichtigungen per E-Mail einschalten.
+
+### Lieferkette und Rechte
+- **Python-Pakete:** `requirements.txt` legt jede Version mit Prüfsumme fest; `tools/install.sh` installiert nur, was dazu passt. Neues Paket: in `pyproject.toml` und `requirements.in` eintragen, dann `uv pip compile requirements.in --generate-hashes --python-version 3.12 --universal -o requirements.txt`.
+- **Browsertest:** Playwright steht mit Prüfsumme in `package-lock.json` (`npm ci`).
+- **Actions:** in den Workflows auf Commit-SHA festgelegt, die Version steht als Kommentar dahinter.
+- **Aktualisierungen:** Dependabot (`.github/dependabot.yml`) schlägt montags neue Versionen als Pull Request vor.
+- **Rechte:** Jeder Job nennt seine Rechte selbst. Das Token des Laufs bekommen nur die Schritte, die committen, ein Archiv anlegen oder Tickets pflegen; Tests, Datenabruf und Seitenbau laufen ohne.
 
 ### Korrekturen dokumentieren
 Jede Änderung, die Zahlen oder Aussagen berührt (behobener Fehler, neue Quelle, geänderte Rechnung), bekommt einen Eintrag in `data/static/korrekturen.yaml`: Datum, Art, betroffene Abbildungen, ein bis zwei Sätze und die Nummer des Pull Requests. Daraus entstehen die Seite `korrekturen.html` und der Abschnitt „Änderungen“ im Methodenblatt der Abbildung.
@@ -123,7 +130,7 @@ Jede Änderung, die Zahlen oder Aussagen berührt (behobener Fehler, neue Quelle
 
 ### Lokal bauen
 ```
-pip install -e ".[dev]"
+./tools/install.sh           # feste Paketversionen mit Prüfsummen
 python -m monitor build      # Seite aus vorhandenen Daten
 python -m monitor run        # Daten holen (GENESIS nur mit GENESIS_USER/GENESIS_PASSWORD) und bauen
 pytest -q && node tests/smoke.js site/index.html
