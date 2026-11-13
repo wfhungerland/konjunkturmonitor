@@ -32,6 +32,8 @@ Gesammelte Notizen für später, grob geordnet. Stand: 13.11.2026.
 - Liquidität: Deutschland, Euroraum, global
 - Anleihemärkte, Bundeshaushalt(e)
 - Aufnahmefähigkeit der Landkreise für Infrastrukturinvestitionen (Bau, Ausbau, Handwerk, Bahnbedarf): Index aus Kapazität (Beschäftigte nach WZ 41–43 und KldB 32/33, Betriebe Bauhauptgewerbe), Engpass (Arbeitslose je offene Stelle, Vakanzzeit, Altersstruktur) und Auslastung (Baugenehmigungen, laufende Projekte). Prüfen an Vergabedaten (Angebote je Ausschreibung, Zuschlag gegen Schätzung, TED/NUTS-3) und an Schocks wie Ahrtal-Wiederaufbau oder Generalsanierungen der Bahn.
+  - Migration: ausländische Beschäftigte in Bauberufen nach Staatsangehörigkeit je Kreis (BA), Entsendungen in den Bau (SOKA-BAU, A1-Bescheinigungen), Zuzüge. Zeigt, wie stark ein Kreis Engpässe über Zuwanderung schließt.
+  - Reichweite der Firmen: Kapazität nicht je Kreis zählen, sondern als Einzugsgebiet. Distanzabfall empirisch schätzen aus TED-Zuschlägen (Sitz des Auftragnehmers gegen Ort der Leistung), getrennt nach Gewerk und Auftragsgröße. Kapazität der Nachbarkreise dann mit diesem Abfall nach Fahrzeit gewichten; Pendlerverflechtungen der BA als Gegenprobe.
 
 ## Faustregeln (back of the envelope)
 - Taylor-Regel, Calvo-Parameter, Okun
