@@ -212,11 +212,16 @@ def _smard(filt: int, region: str, res: str = "month", since: pd.Timestamp | Non
 
 
 def update_smard(static: Path) -> None:
-    """Stromverbrauch (Netzlast) und Großhandelspreis Day-Ahead DE/LU, Lizenz CC BY 4.0.
+    """Stromverbrauch (Netzlast) und Großhandelspreis Day-Ahead DE/LU (bis September 2018 DE/AT/LU), Lizenz CC BY 4.0.
     Monatswerte (TWh, €/MWh) seit 2015 und Tageswerte (GWh, €/MWh) der letzten drei Jahre."""
     load = _smard(410, "DE") / 1e6
     _write(static / "smard_load.csv", load)
     price = _smard(4169, "DE-LU")
+    try:  # bis September 2018 gemeinsame Preiszone Deutschland/Österreich/Luxemburg
+        old = _smard(4996, "DE")
+        price = pd.concat([old[old.index < price.index[0]], price])
+    except Exception as e:
+        log.warning("SMARD Preiszone DE/AT/LU nicht geladen: %s", e)
     _write(static / "smard_price.csv", price)
     since = pd.Timestamp.now().normalize() - pd.DateOffset(years=3)
     load_d = _smard(410, "DE", "day", since) / 1e3

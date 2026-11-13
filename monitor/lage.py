@@ -1,4 +1,5 @@
-"""Erster Bildschirm „Lage auf einen Blick“: sieben Kernzahlen, Lage-Satz, Warnlampen und Ausblick.
+"""Erster Bildschirm „Lage auf einen Blick“: links Raten im Steigungsbild (2019, vor einem Jahr, heute), rechts
+Verläufe seit 2019 mit dem Durchschnitt 2015–19; dazu Lage-Satz, Warnlampen und Ausblick.
 
 Leser sind Ministerin, Kanzler, Konzernlenker: Wo steht die Wirtschaft, wohin läuft sie, wo liegt das Risiko.
 Alle Werte kommen aus den Reihen des Monitors. Lage-Satz und Warnlampen sind Wertung nach festen Regeln; die Seite
@@ -54,78 +55,106 @@ def _three(s: pd.Series) -> float | None:
     return (s.iloc[-3:].mean() / s.iloc[-6:-3].mean() - 1) * 100
 
 
+def _yoy(s: pd.Series | None, lag: int = 12) -> pd.Series | None:
+    return None if s is None else ((s / s.shift(lag) - 1) * 100).dropna()
+
+
+def _oil_eur(data: dict) -> pd.Series | None:
+    """Rohöl Brent in Euro je Barrel: US-Dollar je Barrel durch US-Dollar je Euro (Monatsmittel)."""
+    b, fx = _s(data, "w_brent"), _s(data, "fx_usd")
+    if b is None or fx is None:
+        return None
+    fx = fx.groupby(fx.index.to_period("M")).mean()
+    fx.index = fx.index.to_timestamp()
+    return (b / fx.reindex(b.index)).dropna()
+
+
+# Raten links (Steigungsbild): Schlüssel, Name deutsch, Name englisch, Reihe, Veränderungsrate?, Kapitel
+def _rates(data: dict) -> list:
+    od = _s(data, "de_orders")
+    return [
+        ("alq", "Arbeitslosenquote", "Unemployment rate", _s(data, "de_alq_sa"), False, "arbeit"),
+        ("bund", "Rendite 10-jähriger Bundesanleihen", "10-year Bund yield", _s(data, "de_bund10"), False, "zinsen"),
+        ("cpi", "Inflation", "Inflation", _s(data, "de_cpi_yoy"), False, "preise"),
+        ("dfr", "Einlagesatz der EZB", "ECB deposit rate", _s(data, "ecb_dfr"), False, "geldpolitik"),
+        ("tarif", "Tariflöhne, ggü. Vorjahr", "Negotiated wages, year on year", _s(data, "de_tarif_yoy"), True, "einkommen"),
+        ("gdp", "Wirtschaftsleistung, ggü. Vorjahr", "GDP, year on year", _s(data, "de_gdp_yoy"), True, "wachstum"),
+        ("ret", "Einzelhandel real, ggü. Vorjahr", "Retail sales, real, year on year", _yoy(_s(data, "de_retail")), True, "konsum"),
+        ("exp", "Exporte, ggü. Vorjahr", "Exports, year on year", _yoy(_s(data, "de_exports")), True, "export"),
+        ("ip", "Industrieproduktion, ggü. Vorjahr", "Industrial production, year on year", _yoy(_s(data, "de_ip")), True, "industrie"),
+        ("ord", "Auftragseingang Industrie, ggü. Vorjahr", "Industrial orders, year on year", _yoy(od.rolling(3).mean().dropna() if od is not None else None), True, "industrie"),
+    ]
+
+
+def _line(s: pd.Series, name: str = "", col: int = 0) -> dict:
+    """Monatswerte seit 2019 und Durchschnitt 2015–19 für ein Feld rechts."""
+    t = s[s.index >= "2019-01-01"]
+    m = s[(s.index.year >= 2015) & (s.index.year <= 2019)]
+    return {"name": name, "col": col, "x": [d.strftime("%Y-%m") for d in t.index], "y": [round(float(v), 3) for v in t.values],
+            "mean": round(float(m.mean()), 3) if len(m) else None}
+
+
+def _panels(data: dict, de: bool) -> list:
+    out = []
+    def add(title, unit, topic, lines, d=0, cur=""):
+        lines = [l for l in lines if l[0] is not None and len(l[0])]
+        if lines:
+            out.append({"title": title, "unit": unit, "topic": topic, "d": d, "cur": cur, "lines": [_line(*l) for l in lines]})
+    em = _s(data, "de_emp_m")
+    add("Erwerbstätige" if de else "People in work", "Millionen Personen" if de else "million people", "arbeit", [(em / 1000 if em is not None else None,)], 1)
+    add("Arbeitslose, offene Stellen" if de else "Unemployed, vacancies", "Tausend" if de else "thousands", "arbeit",
+        [(_s(data, "de_alo_sa"), "Arbeitslose" if de else "unemployed", 0), (_s(data, "de_vac_sa"), "offene Stellen" if de else "vacancies", 1)])
+    ins = _s(data, "de_insolv")
+    add("Insolvenzen" if de else "Insolvencies", "Anträge je Monat, Mittel 12 Monate" if de else "filings a month, 12-month average", "insolvenzen",
+        [(ins.rolling(12).mean().dropna() if ins is not None else None,)])
+    add("Strom" if de else "Electricity", "€ je Megawattstunde, Großhandel" if de else "€ per megawatt hour, wholesale", "energie", [(_s(data, "de_power_price"),)], 0, "€")
+    add("Erdgas" if de else "Natural gas", "€ je Megawattstunde" if de else "€ per megawatt hour", "energie", [(_gas_eur(data),)], 0, "€")
+    add("Rohöl" if de else "Crude oil", "€ je Barrel" if de else "€ per barrel", "energie", [(_oil_eur(data),)], 0, "€")
+    return out
+
+
 def build(data: dict, forecasts: list[dict], lang: str = "de") -> dict:
     de = lang == "de"
     n = lambda v, d=1, sign=False: _num(v, d, lang, sign)
     pc = lambda v, d=1, sign=False: f"{n(v, d, sign)}{NB}%" if de else f"{n(v, d, sign)}%"
-    kp, facts = [], {}
-
-    def spark(ser: pd.Series | None) -> dict | None:
-        """Verlauf der letzten fünf Jahre für die Wortgrafik (Sparkline)."""
-        if ser is None or not len(ser):
-            return None
-        t = ser[ser.index > ser.index[-1] - pd.DateOffset(years=5)]
-        return {"y": [round(float(v), 3) for v in t.values]}
-
-    def row(key, label, value, cmp, topic, ser, ref=None):
-        kp.append({"key": key, "label": label, "value": value, "cmp": cmp, "topic": topic, "spark": spark(ser), "ref": ref})
+    facts = {}
+    slope = []
+    for key, lde, len_, ser, chg, topic in _rates(data):
+        if ser is None or len(ser) < 13:
+            continue
+        t = ser.index[-1]
+        y19 = ser[ser.index.year == 2019]
+        ago = ser[ser.index <= t - pd.DateOffset(years=1)]
+        if not len(y19) or not len(ago):
+            continue
+        a, b, c = float(y19.mean()), float(ago.iloc[-1]), float(ser.iloc[-1])
+        slope.append({"key": key, "label": lde if de else len_, "topic": topic, "v": [round(a, 3), round(b, 3), round(c, 3)], "txt": n(c, 1, chg)})
 
     q = _s(data, "de_gdp_qoq")
     if q is not None and len(q) > 1:
         v = float(q.iloc[-1])
-        norm = float(q[(q.index.year >= 2015) & (q.index.year <= 2019)].mean())
-        facts["gdp"] = (v, norm, q.index[-1])
-        row("wachstum", "Wachstum" if de else "Growth", pc(v, 1, True),
-            (f"im {_per(q.index[-1], 'Q', lang)}; normal {pc(norm, 1, True)}" if de else f"in {_per(q.index[-1], 'Q', lang)}; normal {pc(norm, 1, True)}"),
-            "wachstum", _s(data, "de_gdp_index"))
+        facts["gdp"] = (v, float(q[(q.index.year >= 2015) & (q.index.year <= 2019)].mean()), q.index[-1])
     c = _s(data, "de_cpi_yoy")
     if c is not None and len(c) > 1:
-        v, p = float(c.iloc[-1]), float(c.iloc[-2])
-        facts["cpi"] = (v, p)
-        row("preise", "Inflation", pc(v), (f"{_per(c.index[-1], 'M', lang)}; Ziel {pc(2, 0)}" if de else f"{_per(c.index[-1], 'M', lang)}; target {pc(2, 0)}"), "preise", c, 2.0)
-    a = _s(data, "de_alq_sa")
-    if a is not None and len(a) > 12:
-        v, y = float(a.iloc[-1]), float(a.iloc[-13])
-        row("arbeit", "Arbeitslosigkeit" if de else "Unemployment", pc(v),
-            (f"{_per(a.index[-1], 'M', lang)}; vor einem Jahr {pc(y)}" if de else f"{_per(a.index[-1], 'M', lang)}; a year ago {pc(y)}"), "arbeit", a)
-    e = _s(data, "de_esi")
-    if e is not None and len(e) > 1:
-        v = float(e.iloc[-1])
-        row("stimmung", "Stimmung" if de else "Sentiment", n(v), (f"{_per(e.index[-1], 'M', lang)}; normal 100" if de else f"{_per(e.index[-1], 'M', lang)}; normal 100"), "stimmung", e, 100.0)
-    ip, od = _s(data, "de_ip"), _s(data, "de_orders")
-    if ip is not None:
-        v = _three(ip)
-        if v is not None:
-            facts["ip3"] = v
-            row("industrie", "Industrie" if de else "Industry", pc(v, 1, True),
-                (f"Produktion, drei Monate bis {_per(ip.index[-1], 'M', lang)}" if de else f"output, three months to {_per(ip.index[-1], 'M', lang)}"), "industrie", ip)
+        facts["cpi"] = (float(c.iloc[-1]), float(c.iloc[-2]))
+    ip = _s(data, "de_ip")
+    if ip is not None and _three(ip) is not None:
+        facts["ip3"] = _three(ip)
     ins = _s(data, "de_insolv")
     if ins is not None and len(ins) > 12:
         t = ins.index[-1]
         v = float(ins.iloc[-1])
         ago = ins.get(t - pd.DateOffset(years=1))
         pre = ins[(ins.index.month == t.month) & (ins.index.year >= 2015) & (ins.index.year <= 2019)]
-        yoy = (v / float(ago) - 1) * 100 if ago else None
-        vs = (v / float(pre.mean()) - 1) * 100 if len(pre) else None
-        facts["ins"] = (yoy, vs)
-        cmp = _per(t, "M", lang) + ((f"; {pc(vs, 0, True)} ggü. 2015–19" if de else f"; {pc(vs, 0, True)} vs 2015–19") if vs is not None else "")
-        row("insolvenzen", "Insolvenzen" if de else "Insolvencies", n(v, 0), cmp, "insolvenzen", ins)
+        facts["ins"] = ((v / float(ago) - 1) * 100 if ago else None, (v / float(pre.mean()) - 1) * 100 if len(pre) else None)
     gas, br = _gas_eur(data), _s(data, "w_brent")
     gyoy = byoy = None
     if gas is not None and len(gas) > 12:
-        t = gas.index[-1]
-        v, ago = float(gas.iloc[-1]), gas.get(t - pd.DateOffset(years=1))
-        dif = v - float(ago) if ago is not None else None
-        gyoy = dif / float(ago) * 100 if ago else None
-        row("gas", "Gaspreis" if de else "Gas price", f"€{n(v, 0)}",
-            _per(t, "M", lang) + ((f"; je MWh, {'+' if dif >= 0 else '−'}€{n(abs(dif), 0)} zum Vorjahr" if de else f"; per MWh, {'+' if dif >= 0 else '−'}€{n(abs(dif), 0)} on a year ago") if dif is not None else ""),
-            "energie", gas)
+        ago = gas.get(gas.index[-1] - pd.DateOffset(years=1))
+        gyoy = (float(gas.iloc[-1]) / float(ago) - 1) * 100 if ago else None
     if br is not None and len(br) > 12:
-        b0, b1 = br.get(br.index[-1] - pd.DateOffset(years=1)), float(br.iloc[-1])
-        byoy = (b1 / float(b0) - 1) * 100 if b0 else None
-        row("oel", "Ölpreis" if de else "Oil price", f"${n(b1, 0)}",
-            _per(br.index[-1], "M", lang) + ((f"; je Barrel, {pc(byoy, 0, True)} zum Vorjahr" if de else f"; per barrel, {pc(byoy, 0, True)} on a year ago") if byoy is not None else ""),
-            "energie", br)
+        b0 = br.get(br.index[-1] - pd.DateOffset(years=1))
+        byoy = (float(br.iloc[-1]) / float(b0) - 1) * 100 if b0 else None
     facts["energy"] = (gyoy, byoy)
 
     # Lage-Satz (Wertung nach festen Regeln)
@@ -193,4 +222,4 @@ def build(data: dict, forecasts: list[dict], lang: str = "de") -> dict:
         if vals:
             rnd = g.get("round", "")
             out = {"who": (f"Bundesregierung, {rnd}" if de else f"Federal government, {rnd}"), "vals": [{"year": yy, "v": n(vv)} for yy, vv in vals]}
-    return {"kpis": kp, "say": " ".join(say), "say2": " ".join(say2), "warn": warn, "outlook": out}
+    return {"slope": slope, "panels": _panels(data, de), "say": " ".join(say), "say2": " ".join(say2), "warn": warn, "outlook": out}

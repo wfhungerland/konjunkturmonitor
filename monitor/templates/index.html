@@ -64,10 +64,11 @@
   .lage .lk { font: 13.5px var(--ff); background: none; border: 0; padding: 0; cursor: pointer; color: #595959; } .lage .lk[aria-pressed="true"] { color: #000; font-weight: 700; }
   .lage .kom { display: none; } body.lagek .lage .kom { display: block; }
   .lage .say { font: 600 25px/1.3 var(--ff); margin: 16px 0 18px; max-width: 900px; } body.lagek .lage .nokom { display: none; }
-  .lage .kp { border-collapse: collapse; width: 100%; max-width: 900px; } .lage .kp tr { cursor: pointer; } .lage .kp tr:hover .v { color: #0070C0; }
-  .lage .kp th { text-align: left; font: 400 16px var(--ff); padding: 7px 14px 7px 0; white-space: nowrap; } .lage .kp th a { color: #000; }
-  .lage .kp td { padding: 7px 0; } .lage .kp .sp { padding-right: 16px; width: 190px; } .lage .kp .sp svg { display: block; }
-  .lage .kp .v { font: 700 19px var(--ff); text-align: right; padding-right: 16px; white-space: nowrap; } .lage .kp .c { font: 14.5px/1.35 var(--ff); color: #595959; } .lage .kp .cm { display: none; }
+  .lage .lg2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 28px; margin: 6px 0 10px; } .lage .lg2 h3 { font: 400 16px var(--ff); margin: 0 0 4px; text-transform: none; letter-spacing: 0; color: #000; }
+  .lage .lsl svg { width: 100%; height: auto; display: block; } .lage svg text { font-family: var(--ff); } .lage .sh { font-size: 12px; fill: #595959; } .lage .sv { font-size: 14.5px; font-weight: 700; fill: #000; } .lage .sn { font-size: 13px; } .lage .lsl a:hover tspan { text-decoration: underline; }
+  .lage .lkey { display: flex; flex-wrap: wrap; gap: 2px 16px; font: 13px var(--ff); color: #404040; margin: 0 0 10px; } .lage .lkey span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .lage .lpg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 18px; } .lage .lp { display: block; color: #000; text-decoration: none; } .lage .lp b { display: block; font: 400 15px/1.25 var(--ff); } .lage .lp span { display: block; font: 12px/1.3 var(--ff); color: #7f7f7f; min-height: 2.6em; } .lage .lp:hover b { color: #0070C0; }
+  .lage .lp svg { width: 100%; height: auto; display: block; overflow: visible; } .lage .sx { font-size: 10px; fill: #595959; } .lage .sp { font-size: 10px; } .lage .se { font-size: 12px; font-weight: 700; } .lage .sm { font-size: 10px; } .lage .sl { font-size: 10.5px; }
   .lage .lo { margin: 18px 0 0; font: 15.5px/1.4 var(--ff); max-width: 900px; }
   .lage .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; margin-top: 26px; max-width: 1100px; }
   .lage h3 { font: 600 12.5px var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 0 0 8px; }
@@ -75,7 +76,7 @@
   .lage .amp { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 7px; } .lage .amp.r { background: #C00000; } .lage .amp.y { background: #E0A800; } .lage .amp.g { background: #47D359; }
   .lage .fc b { font-size: 20px; } .lage .mine { margin-top: 6px; border-top: 1px solid var(--line); padding-top: 12px; display: flex; gap: 22px; flex-wrap: wrap; font: 600 15px var(--ff); }
   .lage .mine a { color: #000; } .lage .mine a.s { color: #0070C0; }
-  @media (max-width: 700px) { .lage .say { font-size: 20px; } .lage .kp .sp { width: 96px; padding-right: 10px; } .lage .kp .sp svg { width: 96px; } .lage .kp .c { display: none; } .lage .kp .cm { display: block; font: 13px/1.3 var(--ff); color: #595959; white-space: normal; } .lage .kp th { white-space: normal; } .lage .kp .v { font-size: 17px; padding-right: 0; } .lage .cols { grid-template-columns: 1fr; gap: 6px; } }
+  @media (max-width: 700px) { .lage .say { font-size: 20px; } .lage .lg2 { grid-template-columns: 1fr; gap: 18px; } .lage .lpg { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; } .lage .sx, .lage .sp, .lage .sm, .lage .sl { font-size: 13px; } .lage .se { font-size: 15px; } .lage .sn { font-size: 12.5px; } .lage .sv { font-size: 14px; } .lage .cols { grid-template-columns: 1fr; gap: 6px; } }
   body.lagek #lage + .overview, body #lage:not([hidden]) + .overview { display: none; }
   .overview .fz { display: none; } body.fazit .overview .fz { display: block; border-left: 2px solid var(--text); padding-left: 14px; margin: 14px 0 4px; }
   .overview .fz .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 3px 0 5px; }
@@ -539,7 +540,7 @@ const TOURTXT = { name: "Anleitung", ask: "Neu hier? Die Anleitung zeigt in eine
     ["#nav", "Hier ist das Inhaltsverzeichnis. Ein Klick zeigt alle Kapitel. Die Lupe daneben findet jede Grafik."],
     [".fazitbtn", "Die Seite beschreibt nur, was die Zahlen zeigen. Wer eine Einschätzung lesen will, schaltet hier den Kommentar ein."],
     [".briefbtn", "Am Anfang sehen Sie nur das Wichtigste. Hier klappen Sie alle Kapitel auf."],
-    ["#lage", "Die Lage auf einen Blick: sieben Kernzahlen mit Richtung, Ausblick und was die Gremien raten. „Kommentar“ blendet eine Einschätzung mit Warnlampen ein."],
+    ["#lage", "Die Lage auf einen Blick: links Raten heute, vor einem Jahr und 2019, rechts Verläufe seit 2019 gegen den Durchschnitt 2015–19. „Kommentar“ blendet eine Einschätzung mit Warnlampen ein."],
     ["#starttable", "Die wichtigsten Zahlen auf einen Blick. ▲ heißt gestiegen, ▼ gesunken, ● gleich geblieben. Rot heißt: eher ungünstig. Ein Klick führt zum Kapitel."],
     ["@card .htools", "Lieber Zahlen statt Linien? Mit „Tabelle“ sehen Sie die letzten zwölf Werte."],
     ["@card .tools", "Mit diesen Schaltern sehen Sie mehr, etwa die ganze Geschichte einer Zahl oder frühere Krisen."],
@@ -548,7 +549,8 @@ const TOURTXT = { name: "Anleitung", ask: "Neu hier? Die Anleitung zeigt in eine
 const KMTXT = { btn: "Kommentar", title: "Eigene Einschätzung zu dieser Grafik" };
 const LAGETXT = { title: "Lage auf einen Blick", stand: "Stand", komm: "Kommentar", kommt: "Lage-Satz und Warnlampen: Einschätzung nach festen Regeln, automatisch erzeugt",
   warn: "Warnlampen", out: "Ausblick", grem: "Was die Gremien raten", neu: "Neu in den letzten sieben Tagen", term: "Nächste Termine (geschätzt)",
-  mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", am: "Lage am", fuer: "für", wd: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"] };
+  mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", am: "Lage am", rates: "Raten, in %", since: "Verläufe seit 2019",
+  when: [["2019", "Jahresmittel,", "vor Corona"], ["vor einem", "Jahr"], ["heute"]], k: ["Hoch seit 2019", "Tief seit 2019", "letzter Wert", "Durchschnitt 2015–19", "Abstand dazu"], fuer: "für", wd: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"] };
 const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const PHASETXT = { to: "–", L: { "-1": "Lohnzurückhaltung", "0": "Löhne im Spielraum", "1": "kräftigere Löhne" }, G: { "-1": "straffer", "0": "beibehalten", "1": "lockerer" },
   F: { "-1": "Konsolidierung", "0": "neutral", "1": "Impulse" }, A: { "-1": "mehr Schutz", "0": "beibehalten", "1": "Flexibilisierung" } };
@@ -2112,19 +2114,62 @@ const tour = (function () {
   return start;
 })();
 document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = document.createElement("a"); a.href = "#top"; a.textContent = TOURTXT.name; a.onclick = e => { e.preventDefault(); scrollTo(0, 0); setTimeout(tour, 150); }; ft.prepend(a); });
-// Lage auf einen Blick: Kernzahlen mit Richtung, Lage-Satz und Warnlampen (nur mit Kommentar), Ausblick, Gremien, Neues, Termine
+// Lage auf einen Blick: Raten im Steigungsbild, Verläufe seit 2019, Lage-Satz und Warnlampen (nur mit Kommentar), Ausblick, Gremien, Neues, Termine
 function lageView() {
   const box = document.getElementById("lage"), L = (DATA.lage || {})[DATA.lang === "en" ? "en" : "de"];
-  if (!box || !L || !(L.kpis || []).length || DATA.embed) return;
-  // Wortgrafik je Zeile (Tufte): Verlauf der letzten fünf Jahre, Punkt am jüngsten Wert, graue Linie für Ziel oder Normalmaß
-  const spark = (sp, ref) => { if (!sp || !(sp.y || []).length) return ""; const ys = sp.y, w = 180, h = 30, all = ref != null ? ys.concat([ref]) : ys;
-    let lo = Math.min(...all), hi = Math.max(...all); const pd = (hi - lo) * 0.1 || 1; lo -= pd; hi += pd;
-    const X = i => 2 + i * (w - 6) / Math.max(1, ys.length - 1), Y = v => h - 2 - (v - lo) / (hi - lo) * (h - 4);
-    return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true">${ref != null ? `<line x1="0" x2="${w}" y1="${Y(ref).toFixed(1)}" y2="${Y(ref).toFixed(1)}" stroke="#BFBFBF"/>` : ""}`
-      + `<polyline fill="none" stroke="#002060" stroke-width="1.4" points="${ys.map((v, i) => X(i).toFixed(1) + "," + Y(v).toFixed(1)).join(" ")}"/>`
-      + `<circle cx="${X(ys.length - 1).toFixed(1)}" cy="${Y(ys[ys.length - 1]).toFixed(1)}" r="2.6" fill="#0070C0"/></svg>`; };
-  const kp = L.kpis.map(k => `<tr onclick="location.hash='${esc(k.topic)}'"><th><a href="#${esc(k.topic)}">${esc(k.label)}</a><span class="cm">${esc(k.cmp)}</span></th><td class="sp">${spark(k.spark, k.ref)}</td>`
-    + `<td class="v">${esc(k.value)}</td><td class="c">${esc(k.cmp)}</td></tr>`).join("");
+  if (!box || !L || !(L.slope || []).length || DATA.embed) return;
+  const SV = "http://www.w3.org/2000/svg", NS = DATA.lang === "en" ? "en-GB" : "de-DE";
+  const fmt = (v, d, cur) => (v < 0 ? "−" : "") + (cur || "") + Math.abs(v).toLocaleString(NS, { minimumFractionDigits: d, maximumFractionDigits: d });
+  const spread = (ys, gap) => { const o = ys.map((y, i) => i).sort((i, j) => ys[i] - ys[j]), q = ys.slice();
+    for (let k = 1; k < o.length; k++) if (q[o[k]] - q[o[k - 1]] < gap) q[o[k]] = q[o[k - 1]] + gap; return q; };
+  // Links: Raten im Steigungsbild, drei Zeitpunkte; Wachstum dunkelblau, übrige in Hausfarben nach heutigem Wert
+  const slopeSVG = items => { if (!items.length) return "";
+    const nar = innerWidth < 700, W = nar ? 455 : 560, top = 58, H = nar ? 440 : 470, x = nar ? [38, 104, 158] : [40, 150, 260], xn = nar ? 200 : 318, xl = xn + 7;
+    const all = items.flatMap(i => i.v); let lo = Math.min(...all, 0), hi = Math.max(...all); const pd = (hi - lo) * 0.04; lo -= pd; hi += pd;
+    const Y = v => top + (hi - v) / (hi - lo) * (H - top - 10);
+    const PAL = ["#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#47D359", "#404040", "#7F7F7F", "#A6A6A6"], col = {};
+    let k = 0; items.slice().sort((a, b) => b.v[2] - a.v[2]).forEach(i => { col[i.key] = i.key === "gdp" ? "#002060" : PAL[k++ % PAL.length]; });
+    let g = `<line x1="${x[0] - 12}" x2="${x[2] + 12}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="#E3E3E3"/>`;
+    LAGETXT.when.forEach((t, j) => { g += `<text x="${x[j]}" y="${top - 16}" text-anchor="middle" class="sh">${t.map((l, m) => `<tspan x="${x[j]}" dy="${m ? 13 : -13 * (t.length - 1)}">${esc(l)}</tspan>`).join("")}</text>`; });
+    items.forEach(i => { const c = col[i.key], [a, b, d] = i.v.map(Y);
+      g += `<a href="#${esc(i.topic)}"><line x1="${x[0]}" y1="${a.toFixed(1)}" x2="${x[1]}" y2="${b.toFixed(1)}" stroke="${c}" stroke-width="1.2" opacity=".45"/>`
+        + `<line x1="${x[1]}" y1="${b.toFixed(1)}" x2="${x[2]}" y2="${d.toFixed(1)}" stroke="${c}" stroke-width="2.4"/>`
+        + `<circle cx="${x[0]}" cy="${a.toFixed(1)}" r="2.4" fill="${c}" opacity=".45"/><circle cx="${x[1]}" cy="${b.toFixed(1)}" r="3" fill="${c}"/><circle cx="${x[2]}" cy="${d.toFixed(1)}" r="3" fill="${c}"/></a>`; });
+    const grp = []; items.forEach(i => { const f = grp.find(q => q.txt === i.txt); f ? f.items.push(i) : grp.push({ txt: i.txt, y: i.v[2], items: [i] }); });
+    spread(grp.map(q => Y(q.y)), 19).forEach((y, j) => { const q = grp[j];
+      g += `<text x="${xn}" y="${(y + 5).toFixed(1)}" text-anchor="end" class="sv">${esc(q.txt)}</text><text x="${xl}" y="${(y + 5).toFixed(1)}" class="sn">`
+        + q.items.map((i, m) => `<a href="#${esc(i.topic)}"><tspan fill="${col[i.key]}">${esc(i.label)}${m < q.items.length - 1 ? " · " : ""}</tspan></a>`).join("") + `</text>`; });
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(LAGETXT.rates)}">${g}</svg>`; };
+  // Rechts: Verläufe seit 2019; Hoch rot, Tief blau, letzter Wert in Linienfarbe; Durchschnitt 2015–19 gestrichelt, Abstand dazu hellblau
+  const LC = ["#002060", "#0070C0"], RED = "#D64541", TB = "#0070C0", MC = "#5B8DB8", SH = "#DCEEF8";
+  const t0 = Date.UTC(2019, 0, 1), t1 = Date.UTC(2026, 11, 31), ms = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, 15);
+  const panelSVG = p => { const W = 220, H = 150, x0 = 4, x1 = 150, y0 = 18, y1 = H - 22;
+    const vals = p.lines.flatMap(l => l.y.concat(l.mean != null ? [l.mean] : [])); let lo = Math.min(...vals), hi = Math.max(...vals); const pd = (hi - lo) * 0.02 || 1; lo -= pd; hi += pd;
+    const now = Date.UTC(new Date(DATA.generated_at).getUTCFullYear(), 11, 31), tE = Math.max(t1, now);
+    const X = t => x0 + (t - t0) / (tE - t0) * (x1 - x0), Y = v => y1 - (v - lo) / (hi - lo) * (y1 - y0), f = v => fmt(v, p.d, p.cur);
+    let g = "", lab = [];
+    [2019, 2022, 2025].forEach(yr => { g += `<text x="${X(Date.UTC(yr, 6, 1)).toFixed(1)}" y="${H - 4}" text-anchor="middle" class="sx">${yr}</text>`; });
+    p.lines.forEach(l => { const c = LC[l.col || 0], pts = l.x.map((d, i) => [X(ms(d)), Y(l.y[i])]), P = pts.map(q => q[0].toFixed(1) + "," + q[1].toFixed(1)).join(" ");
+      if (l.mean != null) { const m = Y(l.mean).toFixed(1);
+        g += `<polygon points="${P} ${pts[pts.length - 1][0].toFixed(1)},${m} ${pts[0][0].toFixed(1)},${m}" fill="${SH}"/>`
+          + `<line x1="${x0}" x2="${x1}" y1="${m}" y2="${m}" stroke="${MC}" stroke-width=".9" stroke-dasharray="3 2"/>`;
+        lab.push({ y: Y(l.mean), t: "Ø " + f(l.mean), c: MC, b: 0 }); }
+      g += `<polyline points="${P}" fill="none" stroke="${c}" stroke-width="1.4" stroke-linejoin="round"/>`;
+      const n = l.y.length, iMax = l.y.indexOf(Math.max(...l.y)), iMin = l.y.indexOf(Math.min(...l.y));
+      [[iMax, RED, -5], [iMin, TB, 12]].forEach(([i, cc, dy]) => { if (i >= n - 3) return; const [px, py] = pts[i];
+        g += `<line x1="${(px - 6).toFixed(1)}" x2="${(px + 6).toFixed(1)}" y1="${py.toFixed(1)}" y2="${py.toFixed(1)}" stroke="${cc}" stroke-width="1.1"/>`
+          + `<text x="${px.toFixed(1)}" y="${(py + dy).toFixed(1)}" text-anchor="middle" class="sp" fill="${cc}">${f(l.y[i])}</text>`; });
+      const [ex, ey] = pts[n - 1];
+      g += `<line x1="${(ex - 6).toFixed(1)}" x2="${(ex + 6).toFixed(1)}" y1="${ey.toFixed(1)}" y2="${ey.toFixed(1)}" stroke="${c}" stroke-width="1.8"/>`;
+      lab.push({ y: ey, t: f(l.y[n - 1]), c, b: 1 }); });
+    spread(lab.map(q => q.y), 12).forEach((y, j) => { const q = lab[j]; g += `<text x="${x1 + 9}" y="${(y + 4).toFixed(1)}" class="${q.b ? "se" : "sm"}" fill="${q.c}">${esc(q.t)}</text>`; });
+    if (p.lines.length > 1) p.lines.forEach((l, j) => { const c = LC[l.col || 0], yy = Math.min(...l.y.map(Y)) - (j === 0 ? 6 : 14);
+      g += `<text x="${x0 + 2}" y="${Math.max(10, Math.min(H - 24, yy)).toFixed(1)}" class="sl" fill="${c}">${esc(l.name)}</text>`; });
+    return `<a class="lp" href="#${esc(p.topic)}"><b>${esc(p.title)}</b><span>${esc(p.unit)}</span><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(p.title)}">${g}</svg></a>`; };
+  const key = `<div class="lkey">` + [["p", LAGETXT.k[0]], ["t", LAGETXT.k[1]], ["c", LAGETXT.k[2]], ["m", LAGETXT.k[3]], ["f", LAGETXT.k[4]]].map(([t, l]) =>
+    `<span><svg viewBox="0 0 18 10" width="18" height="10" aria-hidden="true">${t === "f" ? `<rect x="2" y="1" width="14" height="8" fill="${SH}"/>` : `<line x1="1" x2="17" y1="5" y2="5" stroke="${{ p: RED, t: TB, c: "#002060", m: MC }[t]}" stroke-width="${t === "c" ? 1.8 : 1.1}"${t === "m" ? ' stroke-dasharray="3 2"' : ""}/>`}</svg>${esc(l)}</span>`).join("") + `</div>`;
+  const kp = `<div class="lg2"><div class="lsl"><h3>${LAGETXT.rates}</h3>${slopeSVG(L.slope || [])}</div>`
+    + `<div class="lsm"><h3>${LAGETXT.since}</h3>${key}<div class="lpg">${(L.panels || []).map(panelSVG).join("")}</div></div></div>`;
   const warn = (L.warn || []).map(w => `<li><span class="amp ${w.lvl}"></span><a href="#${esc(w.topic)}"><b>${esc(w.label)}:</b></a> ${esc(w.text)}</li>`).join("");
   const out = L.outlook ? esc(L.outlook.who) + ": " + L.outlook.vals.map(v => `${esc(v.v)}${DATA.lang === "en" ? "%" : "\u00a0%"} ${LAGETXT.fuer} ${v.year}`).join(", ") + "." : "";
   const grem = (L.gremien || []).map(g => `<li>${esc(g.split(/(?<=\.)\s/)[0])}</li>`).join("");
@@ -2138,7 +2183,7 @@ function lageView() {
   box.innerHTML = `<div class="lh"><span>${LAGETXT.title} · ${LAGETXT.stand} ${sd}</span>`
     + `<button type="button" class="lk" aria-pressed="false" title="${LAGETXT.kommt}">${LAGETXT.komm}</button></div>`
     + (L.say ? `<p class="say kom">${esc(L.say)}</p>` : "") + `<p class="say nokom">${LAGETXT.am} ${sd}</p>`
-    + `<table class="kp">${kp}</table>` + (out ? `<p class="lo"><b>${LAGETXT.out}:</b> ${out}</p>` : "") + `<div class="cols">`
+    + kp + (out ? `<p class="lo"><b>${LAGETXT.out}:</b> ${out}</p>` : "") + `<div class="cols">`
     + (warn ? `<div class="kom"><h3>${LAGETXT.warn}</h3><ul>${warn}</ul></div>` : "")
     + `<div>${grem ? `<h3>${LAGETXT.grem}</h3><ul>${grem}</ul>` : ""}</div>`
     + `<div>${neu ? `<h3>${LAGETXT.neu}</h3><ul>${neu}</ul>` : ""}${term ? `<h3>${LAGETXT.term}</h3><ul>${term}</ul>` : ""}</div></div>`

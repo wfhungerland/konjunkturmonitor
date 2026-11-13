@@ -2221,7 +2221,7 @@ series:
     key: smard_price
     params: {source_name: "Bundesnetzagentur | SMARD.de"}
     license: "CC BY 4.0 (Bundesnetzagentur | SMARD.de)"
-    title: "Großhandelspreis Strom (Day-Ahead, DE/LU), Monatsmittel"
+    title: "Großhandelspreis Strom (Day-Ahead, DE/LU, bis September 2018 DE/AT/LU), Monatsmittel"
     unit: "€ je MWh"
     frequency: M
     adjustment: nicht bereinigt
