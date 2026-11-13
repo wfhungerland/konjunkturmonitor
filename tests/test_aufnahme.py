@@ -75,3 +75,16 @@ def test_regionalreport(tmp_path):
     assert ("2026-03", "svb_wz_f_baugewerbe", 5004.0) in werte
     assert ("2025-12", "svb_bauberufe", None) in werte
     assert ("2025-12", "svb_kldb32_hoch_tiefbau", 1311.0) in werte
+
+
+def test_schwerkraft_simulation():
+    import numpy as np
+    from monitor.aufnahme_schwerkraft import schaetzen
+    rng = np.random.default_rng(1)
+    n = 40
+    xy = rng.uniform(0, 300, (n, 2))
+    T = np.sqrt(((xy[:, None] - xy[None]) ** 2).sum(-1))
+    mu = np.exp(rng.normal(0, 1, n)[:, None] + rng.normal(0, 1, n)[None] - 0.02 * T) * np.where(np.eye(n, dtype=bool), 3, 1)
+    F = rng.poisson(mu * 20000 / mu.sum()).astype(float)
+    e = schaetzen(F, T)
+    assert abs(e["beta"] - 0.02) < 0.002 and abs(e["diagonal"] - 3) < 0.5

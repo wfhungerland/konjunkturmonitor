@@ -12,7 +12,7 @@ Abruf und Auswertung: `python -m monitor.aufnahme`, nur Standardbibliothek.
 
 Die Rohdaten bleiben unter `C:\Daten\TED`; ins Repo kommen nur die beiden Auswertungsdateien.
 
-Methode, erste Stufe: Ausgewertet werden Bekanntmachungen mit genau einem Sitz-Kreis und einem Leistungskreis. Distanz ist die Luftlinie zwischen den Kreismittelpunkten. Jenseits des eigenen Kreises wird ein exponentieller Abfall angenommen; die Halbwertsdistanz ist dann der Mittelwert der Distanzen mal ln 2. Ein Schwerkraftmodell auf Basis der Kantenliste folgt.
+Methode, erste Stufe: Ausgewertet werden Bekanntmachungen mit genau einem Sitz-Kreis und einem Leistungskreis. Distanz ist die Luftlinie zwischen den Kreismittelpunkten. Jenseits des eigenen Kreises wird ein exponentieller Abfall angenommen; die Halbwertsdistanz ist dann der Mittelwert der Distanzen mal ln 2. Schwerkraftmodell siehe unten.
 
 Sitz oder Niederlassung (geprüft 13.11.2026): Die Auswertung führt Schreibvarianten derselben Firma zusammen und teilt die Firmen ein. Regional sind Firmen mit Zuschlägen in weniger als vier Ländern. Überregionale Firmen „melden die Niederlassung“, wenn sie mindestens drei Postleitzahlen angeben und keine davon die Hälfte der Meldungen erreicht, sonst „melden sie die Zentrale“.
 
@@ -35,6 +35,18 @@ Fahrzeit (13.11.2026): `python -m monitor.aufnahme fahrzeiten <ordner>` fragt di
 | überregional, meldet Zentrale | 160 | 129 | 15 % |
 
 Bei den regionalen Firmen reicht die Halbwertszeit von 50 Minuten (Sanitär, Heizung) bis 72 Minuten (Hochbau); Anlagenbau und Gebäudetechnik liegen bei 99 und 122 Minuten.
+
+Schwerkraftmodell (13.11.2026): `python -m monitor.aufnahme_schwerkraft <ordner> --ziel docs` (braucht numpy). Poisson-Schätzung der Zuschläge je Kreispaar mit festen Effekten für Sitz- und Leistungskreis und einem Aufschlag für den eigenen Kreis; ergänzt die Rohverteilung oben um die Bereinigung nach Lage von Angebot und Nachfrage. Ergebnis: `docs/aufnahme_schwerkraft.md`, Parameter `data/static/aufnahme_schwerkraft.csv`.
+
+| Gruppe | Halbwertszeit min | Faktor eigener Kreis |
+|---|---:|---:|
+| alle | 38 | 3,0 |
+| regional | 28 | 1,9 |
+| überregional, meldet Zentrale | 101 | 2,5 |
+| regional, Sanitär, Heizung | 17 | 1,1 |
+| regional, Hochbau | 33 | 2,2 |
+
+Die bereinigte Halbwertszeit ist kürzer als die rohe (65 Minuten bei regionalen Firmen), weil mit der Entfernung die Zahl der erreichbaren Kreise wächst: Die Rohverteilung mischt den Abfall je Kreispaar mit der Fläche im jeweiligen Abstand. Für die Gewichtung der Nachbarkreise gilt der bereinigte Wert: Gewicht exp(−β·t), β je Gewerk aus der Parameterdatei. Standardfehler fehlen noch.
 
 Erster Lauf 13.11.2026 (Cloud): 56.734 Bauzuschläge seit Januar 2025, je Monat vollständig gegen die Trefferzahl von TED. Ergebnis: `docs/aufnahme_ted.md`, Kantenliste `data/static/aufnahme_kanten.csv`. Die Antwortfelder kommen als Listen oder Sprach-Wörterbücher; `tender-value` ist eine Liste von Texten, fehlende Werte stehen als -1. TED meldet Thüringer Kreise teils mit NUTS-2021-Codes; das Skript schlüsselt sie auf NUTS 2024 um. Für die Rohdaten unter `C:\Daten\TED` den Abzug dort wiederholen (`TED abrufen.bat`).
 

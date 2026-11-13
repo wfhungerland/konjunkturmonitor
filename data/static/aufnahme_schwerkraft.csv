@@ -1,0 +1,15 @@
+gruppe,zuschlaege,beta_je_minute,halbwertszeit_min,faktor_eigener_kreis,devianz_erklaert,beta_je_km,halbwertsdistanz_km
+alle,38052,0.01805,38.4,2.97,0.476,0.01323,52.4
+regional,28935,0.02511,27.6,1.88,0.576,0.01902,36.5
+"überregional, meldet Niederlassung",1361,0.01891,36.7,2.65,0.333,0.01382,50.1
+"überregional, meldet Zentrale",7571,0.00687,100.8,2.48,0.097,0.00496,139.8
+"regional: Abbruch, Erdarbeiten",2228,0.02957,23.4,1.94,0.441,0.02293,30.2
+regional: Ausbau,5225,0.02410,28.8,1.51,0.438,0.01840,37.7
+"regional: Dach, Spezialbau",3352,0.02606,26.6,1.68,0.431,0.01973,35.1
+regional: Dämmung,994,0.03234,21.4,0.94,0.438,0.02518,27.5
+regional: Elektro,3003,0.02653,26.1,2.22,0.417,0.02005,34.6
+regional: Hochbau,3384,0.02109,32.9,2.18,0.372,0.01555,44.6
+regional: Ingenieurbau,1471,0.02676,25.9,1.85,0.379,0.02006,34.6
+"regional: Sanitär, Heizung",2737,0.04025,17.2,1.14,0.546,0.03143,22.1
+"regional: Straßen, Schiene, Leitungen",1760,0.02403,28.8,2.88,0.339,0.01802,38.5
+regional: sonstiges,4081,0.02413,28.7,2.28,0.421,0.01799,38.5
