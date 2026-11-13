@@ -212,6 +212,11 @@ charts:
     grenzen:
       - "Ohne den deutschen Anteil an der Hilfe der EU und ohne Kosten für Geflüchtete in Deutschland; die Bundesregierung nennt deshalb höhere Summen."
       - "Mehrjährige Pakete erscheinen im Monat der Festlegung; die Quartale schwanken deshalb stark."
+  arms_overview:
+    methode: "Die Tabelle verdichtet die Abbildungen des Abschnitts nach dem Vorbild der Wortgrafiken von Edward Tufte. Je Zeile: Verlauf seit 2015 als kleine Linie auf gemeinsamer Zeitachse, Stand 2021, jüngster Stand und Faktor jüngster Stand geteilt durch 2021. Ausgaben: Staatsausgaben für Verteidigung nach Eurostat (COFOG 02), Summe und Posten Vorleistungen. Aufträge: Kiel Military Procurement Tracker, Summe über zwölf Monate (2021 = 100) und Jahressumme der Aufträge an Firmen mit Sitz in Deutschland, allein oder mit ausländischem Partner. Produktion: Produktionsindex von Eurostat für Waffen und Munition (Zweig 25.4) und für das Verarbeitende Gewerbe, jeweils gemittelt über zwölf Monate und auf das Jahresmittel 2021 bezogen."
+    grenzen:
+      - "Die Zeilen haben verschiedene jüngste Zeitpunkte; der Faktor vergleicht deshalb nicht genau dieselben Zeiträume."
+      - "Euro-Werte in jeweiligen Preisen, Produktion als Menge; Preissteigerungen heben die Faktoren der Ausgaben und Aufträge."
   arms_cycle:
     methode: "Aufträge: monatliche Rüstungsbestellungen Deutschlands aus dem Kiel Military Procurement Tracker, summiert über die jeweils letzten zwölf Monate und geteilt durch die Summe des Jahres 2021 (22,3 Mrd. €). Produktion: Produktionsindex für den Wirtschaftszweig 25.4 (Waffen und Munition) von Eurostat, gemittelt über die letzten zwölf Monate und auf das Jahresmittel 2021 bezogen. Beide Reihen stehen so auf derselben Skala; ihr Abstand zeigt, ob Bestellungen schneller wachsen als die Fertigung."
     grenzen:

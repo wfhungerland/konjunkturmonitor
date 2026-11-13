@@ -727,6 +727,10 @@ charts:
     title: "Military expenditure"
     ask: "How high is military spending by comparison?"
     caption: "Military expenditure in percent of economic output, as defined by the Stockholm International Peace Research Institute (SIPRI). It includes military pensions and military aid. NATO's targets of 2 percent and 3.5 percent by 2035 rest on a different definition. By NATO's count, Germany is usually somewhat higher. Germany is highlighted."
+  arms_overview:
+    title: "Defence in Germany since 2021: from budget to factory"
+    ask: "How does defence money reach the factory?"
+    caption: "Each row compares the latest level with 2021. The small lines show the course since 2015 on the same time axis; the dot marks the latest value. Spending and orders in euros, production as volume. Orders also include tanks, aircraft and ships, production only weapons and ammunition. The dates differ because the sources report at different speeds."
   arms_cycle:
     title: "Defence: orders and production"
     ask: "Is production keeping up with defence orders?"

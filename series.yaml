@@ -172,6 +172,7 @@ charts:
   def_use: {title: "Wofür der Staat Verteidigungsgeld ausgibt", decimals: 1}
   orders_origin: {title: "Rüstungsaufträge nach Sitz des Auftragnehmers", decimals: 1}
   arms_cycle: {title: "Rüstung: Aufträge und Produktion", decimals: 0}
+  arms_overview: {title: "Rüstung in Deutschland seit 2021: vom Haushalt in die Fabrik", decimals: 1}
   milex_eu_ru: {title: "Militärausgaben Europas und Russlands", decimals: 0}
   trade_ru: {title: "Exporte nach Russland und in Nachbarländer", decimals: 1}
   pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}

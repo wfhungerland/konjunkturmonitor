@@ -459,6 +459,22 @@
   @media (min-width: 1240px) { .refs { max-width: 1320px; } }
   footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
+  .spktab { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .spktab th { font-weight: 400; font-size: 13px; color: #595959; text-align: left; padding: 0 8px 6px 0; }
+  .spktab th.n, .spktab td.n { text-align: right; white-space: nowrap; }
+  .spktab td { padding: 8px 8px 8px 0; border-top: 1px solid #e6e6e6; vertical-align: middle; font-size: 15px; }
+  .spktab tr.spk-sub td:first-child { padding-left: 14px; }
+  .spktab tr.spk-sub .lab { font-weight: 400; }
+  .spktab .lab { display: block; font-weight: 600; font-size: 15px; }
+  .spktab .u { display: block; font-size: 12px; color: #595959; }
+  .spktab td.g { width: 38%; min-width: 120px; }
+  .spktab td.f { font-weight: 700; color: #002060; font-size: 17px; }
+  .spk { width: 100%; height: 30px; display: block; }
+  .spk-line { fill: none; stroke: #002060; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .spk-dot { stroke: #002060; stroke-width: 6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .spk-war { stroke: #C00000; stroke-width: 1; stroke-dasharray: 2 2; vector-effect: non-scaling-stroke; }
+  .spknote { font-size: 12px; color: #595959; margin: 6px 0 0; }
+  @media (max-width: 560px) { .spktab td.g { min-width: 80px; width: 30%; } .spktab td.f { font-size: 15px; } }
 </style>
 </head>
 <body>
@@ -1131,6 +1147,23 @@ function cellChart(el, c) {
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl && A.mode !== "bar") uEl.style.display = "none";
   Plotly.react(el, traces, L, CFG);
 }
+// Tabelle mit Wortgrafiken nach Tufte: je Zeile Verlauf auf gemeinsamer Zeitachse, Stand 2021, jüngster Stand, Faktor
+function sparkChart(el, c) {
+  const R = c.sparktable || [], en = DATA.lang === "en", t0 = Math.min(...R.map(r => Date.parse(r.x[0]))), t1 = Math.max(...R.map(r => Date.parse(r.x[r.x.length - 1])));
+  const W = 220, H = 30, fx = (v, d) => en ? v.toLocaleString("en-GB", { minimumFractionDigits: d, maximumFractionDigits: d }) : fmt(v, d);
+  const war = Date.parse("2022-02-24"), px = t => 2 + (t - t0) / (t1 - t0) * (W - 6);
+  const spark = r => { const ys = r.y, lo = Math.min(...ys), hi = Math.max(...ys), py = v => H - 3 - (v - lo) / ((hi - lo) || 1) * (H - 6);
+    const pts = r.x.map((x, i) => `${px(Date.parse(x)).toFixed(1)},${py(ys[i]).toFixed(1)}`).join(" "), n = r.x.length - 1;
+    return `<svg class="spk" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><line x1="${px(war)}" x2="${px(war)}" y1="0" y2="${H}" class="spk-war"/>`
+      + `<polyline points="${pts}" class="spk-line"/><line x1="${px(Date.parse(r.x[n])).toFixed(1)}" x2="${px(Date.parse(r.x[n])).toFixed(1)}" y1="${py(ys[n]).toFixed(1)}" y2="${py(ys[n]).toFixed(1)}" class="spk-dot"/></svg>`; };
+  const T = en ? { since: "Since " + new Date(t0).getFullYear(), y21: "2021", last: "Latest", f: "Factor", war: "Dotted: Russia's attack on Ukraine, 24 Feb 2022." }
+               : { since: "Verlauf seit " + new Date(t0).getFullYear(), y21: "2021", last: "zuletzt", f: "Faktor", war: "Gepunktet: russischer Angriff auf die Ukraine, 24.2.2022." };
+  el.innerHTML = `<table class="spktab"><thead><tr><th></th><th>${T.since}</th><th class="n">${T.y21}</th><th class="n">${T.last}</th><th class="n">${T.f}</th></tr></thead><tbody>`
+    + R.map(r => `<tr class="${r.sub ? "spk-sub" : "spk-main"}"><td><span class="lab">${esc(en ? r.label_en : r.label)}</span><span class="u">${esc(en ? r.unit_en : r.unit)}</span></td>`
+      + `<td class="g">${spark(r)}</td><td class="n">${fx(r.base, r.d)}</td><td class="n"><b>${fx(r.last, r.d)}</b><span class="u">${esc(en ? r.when_en : r.when)}</span></td>`
+      + `<td class="n f">×${fx(r.factor, 1)}</td></tr>`).join("") + `</tbody></table><p class="spknote">${T.war}</p>`;
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+}
 // Kurs der Finanzpolitik gegen erwartetes Wachstum: Balken je Zieljahr, Farbe nach der Empfehlung im Gutachten des Vorjahres
 function stanceBarsChart(el, c) {
   const A = c.attach || {}, g = c.series.find(s => s.id === "svr_bip_prog"), f = c.series.find(s => s.id === "svr_stance_f"); if (!g) return;
@@ -1525,7 +1558,7 @@ function card(c, no) {
   const ownCfg = c.own_scale;  // so in monitor.yaml gesetzt (dann fehlt die gemeinsame Einheit über der Grafik)
   if (c.multiples && (DATA.layout || {}).small_multiples && (c.series || []).length > 2) { if (c.own_scale == null) c.own_scale = true; c.scale_toggle = true; }  // Standard: eigene Skala je Feld, gemeinsam per Schalter
   const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = FA(no); if (c.chart) el.dataset.chart = c.chart;
-  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
+  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" || c.type === "sparktable" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? (c.all_days ? "Täglich" : "Täglich (Arbeitstage)") : c.freq === "S" ? "Halbjährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Pp, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% ggü. Vorjahr"
     : c.type === "tiles" ? "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
@@ -1544,7 +1577,7 @@ function card(c, no) {
   const main = document.createElement("div"); main.className = "cmain"; body.appendChild(main);
   main.insertAdjacentHTML("beforeend", `<div class="unit">${ownCfg ? "" : esc(unit)}</div>`);
   const box = document.createElement("div"); box.className = "chartbox"; main.appendChild(box);
-  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar", "tpi"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
+  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar", "tpi", "sparktable"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
   const side = document.createElement("aside"); side.className = "cside"; el.querySelector(".cgrid").appendChild(side);
   const capx = (c.caption || "") + ((c.notes || []).length ? " Über „Ausschläge und Sondereffekte“ erscheinen nummerierte, gepunktete Linien an den betroffenen Monaten." : "");
@@ -1712,6 +1745,7 @@ function render(ch) {
   else if (c.type === "dumbbell") dumbbellChart(ch, c);
   else if (c.type === "stance") stanceChart(ch, c);
   else if (c.type === "cellgrid") cellChart(ch, c);
+  else if (c.type === "sparktable") sparkChart(ch, c);
   else if (c.type === "stance_bars") stanceBarsChart(ch, c);
   else if (c.type === "heat") heatChart(ch, c);
   else if (c.type === "tpi") tpiChart(ch, c);
