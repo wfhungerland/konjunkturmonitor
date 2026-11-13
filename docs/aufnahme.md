@@ -16,7 +16,7 @@ Methode, erste Stufe: Ausgewertet werden Bekanntmachungen mit genau einem Sitz-K
 
 Sitz oder Niederlassung: Für die 30 häufigsten Auftragnehmer zählt die Auswertung die verschiedenen gemeldeten Postleitzahlen. Viele Postleitzahlen je Firma sprechen für gemeldete Niederlassungen, eine einzige für den eingetragenen Sitz. Den Befund danach für einzelne Konzerne gegen deren Niederlassungslisten prüfen.
 
-Netz: Die Cloud-Umgebung und die Shell auf dem Rechner erreichen `api.ted.europa.eu` derzeit nicht (Freigabeliste). Möglich ist der Lauf mit dem Windows-Python des Rechners oder nach Freigabe der Domains.
+Erster Lauf 13.11.2026 (Cloud): 56.734 Bauzuschläge seit Januar 2025, je Monat vollständig gegen die Trefferzahl von TED. Ergebnis: `docs/aufnahme_ted.md`, Kantenliste `data/static/aufnahme_kanten.csv`. Die Antwortfelder kommen als Listen oder Sprach-Wörterbücher; `tender-value` ist eine Liste von Texten, fehlende Werte stehen als -1. TED meldet Thüringer Kreise teils mit NUTS-2021-Codes; das Skript schlüsselt sie auf NUTS 2024 um. Für die Rohdaten unter `C:\Daten\TED` den Abzug dort wiederholen (`TED abrufen.bat`).
 
 ## Kreisreihen von BA und Regionalstatistik (Schreibtischprüfung 14.11.2026)
 

@@ -37,3 +37,8 @@ def test_monate():
 
 def test_nuts2021_auf_2024():
     assert aufnahme._de3(["DEG0N", "DEG0P", "DE300", "DEG", "AT130"]) == ["DE300", "DEG0R"]
+
+
+def test_betrag_ohne_platzhalter():
+    assert aufnahme._betrag(["-1"]) is None
+    assert aufnahme._betrag(["100.5", "-1", "200"]) == 300.5

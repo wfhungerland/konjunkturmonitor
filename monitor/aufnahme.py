@@ -176,9 +176,11 @@ def _betrag(wert) -> float | None:
     summe = 0.0
     for v in _liste(wert):
         try:
-            summe += float(v["amount"] if isinstance(v, dict) else v)
+            x = float(v["amount"] if isinstance(v, dict) else v)
         except (TypeError, ValueError, KeyError):
             continue
+        if x > 0:  # TED meldet fehlende Werte als -1
+            summe += x
     return summe or None
 
 
