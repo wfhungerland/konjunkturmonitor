@@ -64,6 +64,7 @@ topics:
   struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
   staat: {title: "Government", ask: "What state are the public finances in?"}
   staatsausgaben: {title: "Government spending", code: "Spending", ask: "What does the government spend its money on?"}
+  haushalte: {title: "Households", code: "Households", ask: "How is a typical household doing?"}
   sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What does the Council of Economic Experts advise, and how accurate was it?"}
   gemeinschaftsdiagnose: {title: "Joint Economic Forecast", code: "Forecast", ask: "What do the economic research institutes advise, and how accurate were they?"}
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
@@ -549,6 +550,26 @@ charts:
     title: "Maturity of government debt"
     ask: "How long does government debt run?"
     caption: "The lines show how many years government debt at year-end still has to run on average, weighted by amount. The longer, the more slowly higher interest rates feed through to the budget. Eurostat reports values for France, Italy and Spain only from 2020."
+  stx_pk:
+    title: "Government spending per inhabitant"
+    ask: "How much does the government spend per inhabitant, and on what?"
+    caption: "The bars show spending by the federal government, Länder, municipalities and social security per inhabitant and year, in euros at current prices, by function. Social protection covers pensions, family benefits and unemployment benefit; administration includes interest on government debt; other functions are defence, public order, economic affairs and transport, environment, housing and culture. Prices have risen by about two thirds since 1995, so part of the increase is inflation."
+  hh_wealth:
+    title: "Net wealth per household"
+    ask: "How much does a typical household own?"
+    caption: "The lines show net wealth per household, that is property, savings and securities minus debt, in thousand euros at current prices. The median is the wealth of the household in the middle: half of households own more, half less. The mean is far higher because a few very wealthy households pull it up. The ECB estimates the figures by aligning the Bundesbank's household survey with the national wealth accounts."
+  hh_balance:
+    title: "Assets and debt of the middle household"
+    ask: "What does the wealth of a middle household consist of?"
+    caption: "The bars show the assets and debt of a household in the middle fifth of the wealth distribution, in thousand euros per household: above zero what it owns, below zero what it owes. The line is net wealth. The middle fifth are the households between the richest 40% and the poorest 40%."
+  hh_share:
+    title: "Distribution of wealth"
+    ask: "How unequally is wealth distributed?"
+    caption: "The lines show the share of total household net wealth held by the richest 10% and by the poorer half of households. The ECB additionally estimates the top of the distribution from rich lists, because very wealthy people rarely appear in surveys."
+  hh_spend:
+    title: "Consumption by purpose"
+    ask: "What do households spend their money on?"
+    caption: "The lines show the six largest spending categories of private households as a percentage of their total consumption, according to the national accounts. Housing and energy includes the rental value of owner-occupied homes. These are averages across all households; individual households differ widely by income and housing."
   gov_debt_cost:
     title: "Interest on government debt"
     ask: "How expensive is government debt?"
@@ -976,6 +997,30 @@ series:
   de_gov_interest: {title: "Government interest expenditure", label: "Interest expenditure", unit: "% of GDP", adjustment: "annual data"}
   de_gov_inv: {title: "Government gross fixed capital formation", label: "Investment", unit: "% of GDP", adjustment: "annual data"}
   de_gov_debt: {title: "General government gross debt (Maastricht definition)", label: "Debt", unit: "% of GDP", adjustment: "not adjusted"}
+  hh_nw_median: {title: "Household net wealth, median", label: "Median", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_nw_mean: {title: "Household net wealth, mean", label: "Mean", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_nun: {title: "Balance sheet of the middle fifth: property, per household", label: "Property", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f2m: {title: "Balance sheet of the middle fifth: cash and deposits, per household", label: "Cash and deposits", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f62: {title: "Balance sheet of the middle fifth: life insurance and pensions, per household", label: "Life insurance and pensions", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f52: {title: "Balance sheet of the middle fifth: investment funds, per household", label: "Investment funds", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f51: {title: "Balance sheet of the middle fifth: shares and equity, per household", label: "Shares and equity", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_nub: {title: "Balance sheet of the middle fifth: business assets, per household", label: "Business assets", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f4b: {title: "Balance sheet of the middle fifth: housing loans, per household", label: "Housing loans", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f4x: {title: "Balance sheet of the middle fifth: other loans, per household", label: "Other loans", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_nwa: {title: "Net wealth of the middle fifth, per household", label: "Net wealth", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_share_t10: {title: "Share of the richest 10% in net wealth", label: "Richest 10%", unit: "% of net wealth", adjustment: "not adjusted"}
+  hh_share_b50: {title: "Share of the poorer half in net wealth", label: "Poorer half", unit: "% of net wealth", adjustment: "not adjusted"}
+  hh_cons_cp04: {title: "Household consumption on housing and energy", label: "Housing and energy", unit: "% of consumption", adjustment: "annual, current prices"}
+  hh_cons_cp07: {title: "Household consumption on transport", label: "Transport", unit: "% of consumption", adjustment: "annual, current prices"}
+  hh_cons_cp01: {title: "Household consumption on food", label: "Food", unit: "% of consumption", adjustment: "annual, current prices"}
+  hh_cons_cp09: {title: "Household consumption on recreation and culture", label: "Recreation and culture", unit: "% of consumption", adjustment: "annual, current prices"}
+  hh_cons_cp11: {title: "Household consumption on restaurants and hotels", label: "Restaurants and hotels", unit: "% of consumption", adjustment: "annual, current prices"}
+  hh_cons_cp06: {title: "Household consumption on health", label: "Health", unit: "% of consumption", adjustment: "annual, current prices"}
+  stx_pk_sozial: {title: "Government spending per inhabitant: social protection", label: "Social protection", unit: "€", adjustment: "annual, current prices"}
+  stx_pk_gesundheit: {title: "Government spending per inhabitant: health", label: "Health", unit: "€", adjustment: "annual, current prices"}
+  stx_pk_bildung: {title: "Government spending per inhabitant: education", label: "Education", unit: "€", adjustment: "annual, current prices"}
+  stx_pk_verwaltung: {title: "Government spending per inhabitant: administration and interest", label: "Administration and interest", unit: "€", adjustment: "annual, current prices"}
+  stx_pk_uebrige: {title: "Government spending per inhabitant: other functions", label: "Other functions", unit: "€", adjustment: "annual, current prices"}
   de_debt_s1311: {title: "Gross debt, federal government (Maastricht definition)", label: "Federal government", unit: "% of GDP", adjustment: "not adjusted"}
   de_debt_s1312: {title: "Gross debt, Länder (Maastricht definition)", label: "Länder", unit: "% of GDP", adjustment: "not adjusted"}
   de_debt_s1313: {title: "Gross debt, municipalities (Maastricht definition)", label: "Municipalities", unit: "% of GDP", adjustment: "not adjusted"}
