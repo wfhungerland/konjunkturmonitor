@@ -49,6 +49,7 @@ topics:
   stimmung: {title: "Sentiment"}
   sonderfaktoren: {title: "Special factors", code: "Special", ask: "Which special factors affect the economy?"}
   insolvenzen: {title: "Insolvencies"}
+  geldpolitik: {title: "Monetary policy", code: "Monetary", ask: "How tight is monetary policy?"}
   zinsen: {title: "Interest rates and credit", code: "Rates"}
   wechselkurse: {title: "Exchange rates", code: "FX", ask: "How is the euro doing?"}
   energie: {title: "Energy"}
@@ -427,6 +428,42 @@ charts:
     title: "Federal bond yields and overnight rate, daily"
     ask: "How have interest rates moved in recent weeks?"
     caption: "The chart shows daily values for the yield on federal bonds with 10 or 2 years left until repayment (Bundesbank term structure). It also shows the euro short-term rate €STR: the rate at which banks lend to each other overnight. The €STR closely follows the European Central Bank's deposit rate, the rate banks receive on money held at the central bank."
+  ecb_rates:
+    title: "ECB policy rates"
+    ask: "Where are the ECB's policy rates?"
+    caption: "The chart shows the European Central Bank's three policy rates as monthly averages. Banks receive the deposit facility rate on money they leave at the central bank overnight. At the main refinancing rate they borrow for one week, at the marginal lending rate overnight. Since banks have held very large amounts of money at the central bank, the deposit rate has mainly steered money-market rates. The chart also shows the euro short-term rate €STR, at which banks lend to each other overnight."
+  ecb_bs:
+    title: "Eurosystem balance sheet"
+    ask: "How large is the central banks' balance sheet?"
+    caption: "The chart shows the total assets of the Eurosystem, i.e. the European Central Bank and the national central banks of the euro area, in trillions of euros. On the asset side are the bonds bought under the purchase programmes (APP and PEPP) and loans to banks from monetary policy operations, such as the targeted longer-term operations (TLTRO). On the liability side is, among other items, the deposit facility: money that banks place overnight with the central bank. Its size roughly indicates how much excess liquidity the banking system holds. Monthly averages of the weekly financial statements."
+  spreads:
+    title: "Yield spread over Bunds"
+    ask: "How much more do other euro countries pay than Germany?"
+    caption: "The chart shows by how many percentage points the yield on ten-year government bonds of Italy, France and Spain exceeds the yield on German Bunds, as a monthly average. A wider spread shows that investors demand more interest for a country's risk. In the euro crisis of 2011 and 2012 it rose above 5 percentage points for Italy and Spain. The yields come from the European Central Bank's statistics on the interest-rate criterion of the convergence assessment."
+  yc_curve:
+    title: "Euro area yield curve"
+    ask: "What do short and long maturities pay?"
+    caption: "The chart shows the yield curve for euro area government bonds with the best credit rating (AAA), including federal bonds: the interest rate for maturities from 3 months to 30 years. The hollow dot shows the level a year ago, the solid dot the latest month, both as monthly averages. If long rates are above short rates, the curve is normal. If they are below, investors usually expect policy rates to fall; such an inverted curve has often preceded a recession."
+  yc_slope:
+    title: "Slope of the yield curve"
+    ask: "Is the yield curve inverted?"
+    caption: "The chart shows the slope of the yield curve for euro area government bonds with the best credit rating (AAA): the ten-year rate minus the two-year rate and minus the three-month rate, in percentage points and as monthly averages. Below zero the curve is inverted: short maturities pay more than long ones. This shows that investors expect policy rates to fall, and it has often preceded a recession."
+  corp_yields:
+    title: "Corporate bond yields"
+    ask: "How much do companies pay on bonds?"
+    caption: "The chart shows the yield on outstanding domestic bonds of companies outside the banking sector and of public-sector bonds, as a monthly value across all residual maturities. The yield on outstanding bonds is the return that bonds already traded bring to buyers today. In May 2020 the Bundesbank adjusted the set of corporate bonds included."
+  corp_spread:
+    title: "Corporate bond spread"
+    ask: "What premium do investors demand from companies?"
+    caption: "The chart shows by how many percentage points the yield on outstanding domestic corporate bonds (excluding banks) exceeds the yield on public-sector bonds. If the spread widens, investors demand more compensation for companies' default risk, as in the financial crisis of 2008 and 2009. The residual maturities of the two groups differ, so the spread is only a rough measure. In May 2020 the Bundesbank adjusted the set of corporate bonds included."
+  bls_std:
+    title: "Banks' credit standards"
+    ask: "Are banks tightening lending?"
+    caption: "The chart shows from the Eurosystem's Bank Lending Survey whether banks in Germany tightened or eased their credit standards over the past three months. The balance is the share of banks with tighter standards minus the share with easier ones, in per cent. Above zero means: more banks have tightened. Around 35 banks are surveyed every quarter."
+  bls_dem:
+    title: "Loan demand at banks"
+    ask: "Are businesses and households asking for more loans?"
+    caption: "The chart shows from the Eurosystem's Bank Lending Survey how demand for loans at banks in Germany developed over the past three months. The balance is the share of banks reporting rising demand minus the share reporting falling demand, in per cent. Above zero means: more banks see rising demand."
   fx_usd:
     title: "Euro in US dollars, daily values"
     ask: "How many US dollars does a euro cost?"
@@ -875,6 +912,37 @@ series:
   de_next_ind: {title: "Industry: production expectations (next three months), balance", label: "Industry", unit: "balance", adjustment: "seasonally adjusted"}
   de_bund10: {title: "Yield on federal securities, residual maturity 10 years", label: "10 years", unit: "% p.a.", adjustment: "not adjusted"}
   de_bund2: {title: "Yield on federal securities, residual maturity 2 years", label: "2 years", unit: "% p.a.", adjustment: "not adjusted"}
+  ecb_dfr: {title: "ECB policy rate: deposit facility rate, monthly average", label: "Deposit rate", unit: "% p.a.", adjustment: "not adjusted"}
+  ecb_mro: {title: "ECB policy rate: main refinancing rate (fixed rate or minimum bid rate), monthly average", label: "Main refinancing rate", unit: "% p.a.", adjustment: "not adjusted"}
+  ecb_mlf: {title: "ECB policy rate: marginal lending facility rate, monthly average", label: "Marginal lending rate", unit: "% p.a.", adjustment: "not adjusted"}
+  estr_m: {title: "Euro short-term rate €STR, monthly average", label: "€STR (overnight)", unit: "% p.a.", adjustment: "not adjusted"}
+  ecb_bs_total: {title: "Eurosystem total assets, average of weekly statements", label: "Total assets", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_sec: {title: "Eurosystem: securities held for monetary policy purposes (purchase programmes), average of weekly statements", label: "Bond purchases", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_loans: {title: "Eurosystem: lending to banks in monetary policy operations (tenders), average of weekly statements", label: "Loans to banks", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_df: {title: "Eurosystem: banks' deposit facility, average of weekly statements", label: "Bank deposits", unit: "€ tn", adjustment: "not adjusted"}
+  lt_de: {title: "Ten-year government bond yield, Germany (convergence criterion)", unit: "% p.a.", adjustment: "not adjusted"}
+  lt_it: {title: "Ten-year government bond yield, Italy (convergence criterion)", unit: "% p.a.", adjustment: "not adjusted"}
+  lt_fr: {title: "Ten-year government bond yield, France (convergence criterion)", unit: "% p.a.", adjustment: "not adjusted"}
+  lt_es: {title: "Ten-year government bond yield, Spain (convergence criterion)", unit: "% p.a.", adjustment: "not adjusted"}
+  spread_it: {title: "Ten-year government bond yield spread, Italy minus Germany", label: "Italy", unit: "percentage points", adjustment: "not adjusted"}
+  spread_fr: {title: "Ten-year government bond yield spread, France minus Germany", label: "France", unit: "percentage points", adjustment: "not adjusted"}
+  spread_es: {title: "Ten-year government bond yield spread, Spain minus Germany", label: "Spain", unit: "percentage points", adjustment: "not adjusted"}
+  yc_3m: {title: "Euro area AAA government bond yield curve, spot rate 3 months, monthly average", label: "3 months", unit: "% p.a.", adjustment: "not adjusted"}
+  yc_1y: {title: "Euro area AAA government bond yield curve, spot rate 1 year, monthly average", label: "1 year", unit: "% p.a.", adjustment: "not adjusted"}
+  yc_2y: {title: "Euro area AAA government bond yield curve, spot rate 2 years, monthly average", label: "2 years", unit: "% p.a.", adjustment: "not adjusted"}
+  yc_5y: {title: "Euro area AAA government bond yield curve, spot rate 5 years, monthly average", label: "5 years", unit: "% p.a.", adjustment: "not adjusted"}
+  yc_10y: {title: "Euro area AAA government bond yield curve, spot rate 10 years, monthly average", label: "10 years", unit: "% p.a.", adjustment: "not adjusted"}
+  yc_20y: {title: "Euro area AAA government bond yield curve, spot rate 20 years, monthly average", label: "20 years", unit: "% p.a.", adjustment: "not adjusted"}
+  yc_30y: {title: "Euro area AAA government bond yield curve, spot rate 30 years, monthly average", label: "30 years", unit: "% p.a.", adjustment: "not adjusted"}
+  yc_slope: {title: "Slope of the euro area yield curve (AAA): 10 years minus 2 years", label: "10 minus 2 years", unit: "percentage points", adjustment: "not adjusted"}
+  yc_slope3m: {title: "Slope of the euro area yield curve (AAA): 10 years minus 3 months", label: "10 years minus 3 months", unit: "percentage points", adjustment: "not adjusted"}
+  de_corp_yield: {title: "Yield on outstanding domestic corporate bonds (excluding banks)", label: "Corporate bonds", unit: "% p.a.", adjustment: "not adjusted"}
+  de_pub_yield: {title: "Yield on outstanding domestic public-sector bonds", label: "Public-sector bonds", unit: "% p.a.", adjustment: "not adjusted"}
+  de_corp_spread: {title: "Spread of corporate bonds over public-sector bonds", label: "Spread", unit: "percentage points", adjustment: "not adjusted"}
+  bls_std_nfc: {title: "Bank Lending Survey Germany: credit standards for enterprises, past three months, net balance", label: "Enterprises", unit: "net balance in %", adjustment: "not adjusted"}
+  bls_std_hh: {title: "Bank Lending Survey Germany: credit standards for housing loans to households, past three months, net balance", label: "Housing loans", unit: "net balance in %", adjustment: "not adjusted"}
+  bls_dem_nfc: {title: "Bank Lending Survey Germany: loan demand from enterprises, past three months, net balance", label: "Enterprises", unit: "net balance in %", adjustment: "not adjusted"}
+  bls_dem_hh: {title: "Bank Lending Survey Germany: demand for housing loans, past three months, net balance", label: "Housing loans", unit: "net balance in %", adjustment: "not adjusted"}
   fx_usd: {title: "ECB reference rate: US dollars per euro", label: "US dollar", unit: "US$ per €", adjustment: "not adjusted"}
   fx_usd_m: {title: "ECB reference rate: US dollars per euro", label: "US dollar", unit: "US$ per €", adjustment: "not adjusted"}
   fx_cny: {title: "ECB reference rate: Chinese yuan per euro", label: "Chinese yuan", unit: "yuan per €", adjustment: "not adjusted"}
@@ -1178,6 +1246,8 @@ strings:
   "Mio. €": "€m"
   "Mrd. US-Dollar": "US$bn"
   "Mrd. €": "€bn"
+  "Bio. €": "€tn"
+  "Saldo in %": "net balance in %"
   "Personen": "people"
   "Pp": "pp"
   "Pp ggü. Vorquartal": "pp on previous quarter"
