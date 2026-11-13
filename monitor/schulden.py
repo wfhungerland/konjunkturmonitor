@@ -1,11 +1,11 @@
-"""Sätze zur Schuldenstruktur des Staates: Ebene, Instrument, Gläubiger, Restlaufzeit und Zins.
+"""Sätze zur Schuldenstruktur des Staates, zu Staatsausgaben je Einwohner und zu Vermögen der Haushalte.
 
 Die automatischen Sätze für Linien und gestapelte Balken passen hier nicht (sie sprechen von „Beiträgen“). Diese
 Funktionen bilden aus den Reihen einer Abbildung je ein bis zwei Sätze, deutsch und englisch.
 """
 from __future__ import annotations
 
-CHARTS = {"gov_debt_level", "gov_debt_instr", "gov_debt_holder", "gov_debt_mat", "gov_debt_cost"}
+CHARTS = {"gov_debt_level", "gov_debt_instr", "gov_debt_holder", "gov_debt_mat", "gov_debt_cost", "stx_pk", "hh_wealth", "hh_balance", "hh_share", "hh_spend"}
 
 
 def _last(c: dict, sid: str):
@@ -34,6 +34,7 @@ def saetze(c: dict, lang: str = "de") -> list[str]:
     de = lang == "de"
     num = num_de if de else num_en
     pc = (lambda v, d=1: f"{num(v, d)} %") if de else (lambda v, d=1: f"{num(v, d)}%")
+    k = lambda v: f"€{num(round(v) * 1000, 0)}"  # Werte in Tausend Euro als volle Beträge, etwa €129.000
     ch = c.get("chart")
     try:
         if ch == "gov_debt_level":
@@ -108,6 +109,57 @@ def saetze(c: dict, lang: str = "de") -> list[str]:
                 s1 = f"In {xi[:4]} the government paid an average of {pc(vi)} interest on its debt" + (f", up from {pc(low[1])} at the low in {low[0][:4]}." if low[0] != xi else ".")
                 s2 = f"New ten-year Bunds yielded {pc(vm)} {_when(xm, 'M', 'en')}."
             return [s1, s2]
-    except (KeyError, IndexError, ValueError, ZeroDivisionError):
+        if ch == "stx_pk":
+            ids = [("stx_pk_sozial", "soziale Sicherung", "social protection"), ("stx_pk_gesundheit", "Gesundheit", "health"),
+                   ("stx_pk_bildung", "Bildung", "education"), ("stx_pk_verwaltung", "Verwaltung und Zinsen", "administration and interest"),
+                   ("stx_pk_uebrige", "übrige Aufgaben", "other functions")]
+            vals = [(_last(c, i)[-1], a, b) for i, a, b in ids]
+            y = vals[0][0][0][:4]
+            tot = sum(v[0][1] for v in vals)
+            eur = (lambda v: f"€{num(v, 0)}") if de else (lambda v: f"€{num(v, 0)}")
+            if de:
+                return [f"{y} gab der Staat je Einwohner {eur(tot)} aus, davon {eur(vals[0][0][1])} für soziale Sicherung, {eur(vals[1][0][1])} für Gesundheit und {eur(vals[2][0][1])} für Bildung.",
+                        f"Von €100 Ausgaben flossen damit €{num(vals[0][0][1] / tot * 100, 0)} in die soziale Sicherung."]
+            return [f"In {y} the government spent {eur(tot)} per inhabitant, of which {eur(vals[0][0][1])} on social protection, {eur(vals[1][0][1])} on health and {eur(vals[2][0][1])} on education.",
+                    f"Of every €100 spent, €{num(vals[0][0][1] / tot * 100, 0)} thus went to social protection."]
+        if ch == "hh_wealth":
+            md, mn = _last(c, "hh_nw_median"), _last(c, "hh_nw_mean")
+            x, v = md[-1]
+            m = dict(mn).get(x)
+            w = _when(x, "Q", lang)
+            if de:
+                return [f"{w[0].upper() + w[1:]} besaß der Haushalt in der Mitte netto rund {k(v)}, der Durchschnitt aller Haushalte {k(m)}."]
+            return [f"{w[0].upper() + w[1:]}, the household in the middle had net wealth of about {k(v)}, the average across all households {k(m)}."]
+        if ch == "hh_balance":
+            ids = [("hh_q3_nun", "Immobilien", "property"), ("hh_q3_f2m", "Bargeld und Einlagen", "cash and deposits"), ("hh_q3_f62", "Lebensversicherungen und Renten", "life insurance and pensions")]
+            nw = _last(c, "hh_q3_nwa")
+            x, v = nw[-1]
+            debt = sum(dict(_last(c, i)).get(x, 0) for i in ("hh_q3_f4b", "hh_q3_f4x"))
+            parts = [(dict(_last(c, i)).get(x, 0), a, b) for i, a, b in ids]
+            w = _when(x, "Q", lang)
+            if de:
+                return [f"{w[0].upper() + w[1:]} besaß ein Haushalt im mittleren Fünftel Immobilien für {k(parts[0][0])} und Einlagen von {k(parts[1][0])}; "
+                        f"dem standen Kredite von {k(abs(debt))} gegenüber. Netto blieben {k(v)}."]
+            return [f"{w[0].upper() + w[1:]}, a household in the middle fifth owned property worth {k(parts[0][0])} and deposits of {k(parts[1][0])}, "
+                    f"against loans of {k(abs(debt))}. Net wealth was {k(v)}."]
+        if ch == "hh_spend":
+            ids = [("hh_cons_cp04", "Wohnen und Energie", "housing and energy"), ("hh_cons_cp07", "Verkehr", "transport"), ("hh_cons_cp01", "Nahrungsmittel", "food")]
+            ser = [(dict(_last(c, i)), a, b) for i, a, b in ids]
+            y = max(ser[0][0])
+            y0 = min(ser[0][0])
+            if de:
+                return [f"{y[:4]} gaben die Haushalte {pc(ser[0][0][y])} ihres Konsums für Wohnen und Energie aus, {pc(ser[1][0][y])} für Verkehr und {pc(ser[2][0][y])} für Nahrungsmittel.",
+                        f"{y0[:4]} waren es für Wohnen und Energie {pc(ser[0][0][y0])}, für Nahrungsmittel {pc(ser[2][0][y0])}."]
+            return [f"In {y[:4]} households spent {pc(ser[0][0][y])} of their consumption on housing and energy, {pc(ser[1][0][y])} on transport and {pc(ser[2][0][y])} on food.",
+                    f"In {y0[:4]} the shares were {pc(ser[0][0][y0])} for housing and energy and {pc(ser[2][0][y0])} for food."]
+        if ch == "hh_share":
+            t, b = _last(c, "hh_share_t10"), _last(c, "hh_share_b50")
+            x, vt = t[-1]
+            vb = dict(b).get(x)
+            w = _when(x, "Q", lang)
+            if de:
+                return [f"{w[0].upper() + w[1:]} besaßen die reichsten 10\u00a0% der Haushalte {pc(vt)} des gesamten Nettovermögens, die ärmere Hälfte {pc(vb)}."]
+            return [f"{w[0].upper() + w[1:]}, the richest 10% of households held {pc(vt)} of total net wealth, the poorer half {pc(vb)}."]
+    except (KeyError, IndexError, ValueError, ZeroDivisionError, TypeError):
         return []
     return []

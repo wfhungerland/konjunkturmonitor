@@ -22,6 +22,7 @@ blocks:
   - {id: dienstleistungen, title: Dienstleistungen, sheet: Dienstleistungen}
   - {id: wetter, title: Wetter und Pegel, sheet: Wetter}
   - {id: geopolitik, title: Geopolitik, sheet: Geopolitik}
+  - {id: haushalte, title: Haushalte, sheet: Haushalte}
 
 names:
   staat:
@@ -243,6 +244,11 @@ charts:
   gov_debt_holder: {title: "Schulden nach Gläubiger", decimals: 1}
   gov_debt_mat: {title: "Restlaufzeit der Staatsschulden", decimals: 1}
   gov_debt_cost: {title: "Zins auf die Staatsschulden", decimals: 1}
+  stx_pk: {title: "Staatsausgaben je Einwohner", decimals: 0}
+  hh_wealth: {title: "Nettovermögen je Haushalt", decimals: 0}
+  hh_balance: {title: "Vermögen und Schulden des mittleren Haushalts", decimals: 1}
+  hh_share: {title: "Verteilung des Vermögens", decimals: 1}
+  hh_spend: {title: "Konsum nach Zweck", decimals: 1}
   migration_groups: {title: "Nettozuwanderung nach Staatsangehörigkeit", decimals: 0}
 
   long_rr: {title: "Realzins seit 1871", decimals: 1}
@@ -3162,6 +3168,338 @@ series:
     label: "Durchschnittszins der Schulden"
     license: "Europäische Kommission, AMECO: Wiederverwendung mit Quellenangabe"
     note: "AMECO-Reihe AYIGD: Zinsausgaben des Staates in Prozent des Bruttoschuldenstands des Vorjahres (Abgrenzung des Defizitverfahrens); ohne Prognosejahre; wöchentlich über den AMECO-Abfragedienst abgerufen."
+
+  # Haushalte: Vermögen und Schulden (EZB-Verteilungsrechnung DWA), Konsum nach Zweck (Eurostat)
+  - id: hh_nw_median
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.N.LE.NWA._Z.EUR_MD.S.N
+    title: "Nettovermögen der Haushalte, Median"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_wealth
+    label: "Median"
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_nw_mean
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.N.LE.NWA._Z.EUR_MN.S.N
+    title: "Nettovermögen der Haushalte, Mittelwert"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_wealth
+    label: "Mittelwert"
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_nun
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.NUN.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Immobilien, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Immobilien"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f2m
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.F2M.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Bargeld und Einlagen, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Bargeld und Einlagen"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f62
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.F62.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Lebensversicherungen und Renten, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Lebensversicherungen und Renten"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f52
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.F52.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Investmentfonds, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Investmentfonds"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f51
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.F51.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Aktien und Beteiligungen, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Aktien und Beteiligungen"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_nub
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.NUB.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Betriebsvermögen, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Betriebsvermögen"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f4b
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.L.LE.F4B.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Baukredite, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Baukredite"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f4x
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.L.LE.F4X.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Sonstige Kredite, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Sonstige Kredite"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_nwa
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.N.LE.NWA.Q3.EUR_R_NH.S.N
+    title: "Nettovermögen des mittleren Fünftels, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Nettovermögen"
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_share_t10
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14._Z._Z.NWA.T10.PT.S.N
+    title: "Anteil der reichsten 10 % am Nettovermögen"
+    unit: "% des Nettovermögens"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_share
+    label: "Reichste 10 %"
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_share_b50
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14._Z._Z.NWA.B50.PT.S.N
+    title: "Anteil der ärmeren Hälfte am Nettovermögen"
+    unit: "% des Nettovermögens"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_share
+    label: "Ärmere Hälfte"
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_cons_cp04
+    block: haushalte
+    source: eurostat
+    key: nama_10_co3_p3
+    params: {geo: DE, coicop: CP04, unit: PC_TOT}
+    title: "Konsumausgaben der privaten Haushalte für Wohnen und Energie"
+    unit: "% des Konsums"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 66
+    chart: hh_spend
+    label: "Wohnen und Energie"
+
+  - id: hh_cons_cp07
+    block: haushalte
+    source: eurostat
+    key: nama_10_co3_p3
+    params: {geo: DE, coicop: CP07, unit: PC_TOT}
+    title: "Konsumausgaben der privaten Haushalte für Verkehr"
+    unit: "% des Konsums"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 66
+    chart: hh_spend
+    label: "Verkehr"
+
+  - id: hh_cons_cp01
+    block: haushalte
+    source: eurostat
+    key: nama_10_co3_p3
+    params: {geo: DE, coicop: CP01, unit: PC_TOT}
+    title: "Konsumausgaben der privaten Haushalte für Nahrungsmittel"
+    unit: "% des Konsums"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 66
+    chart: hh_spend
+    label: "Nahrungsmittel"
+
+  - id: hh_cons_cp09
+    block: haushalte
+    source: eurostat
+    key: nama_10_co3_p3
+    params: {geo: DE, coicop: CP09, unit: PC_TOT}
+    title: "Konsumausgaben der privaten Haushalte für Freizeit und Kultur"
+    unit: "% des Konsums"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 66
+    chart: hh_spend
+    label: "Freizeit und Kultur"
+
+  - id: stx_pk_sozial
+    block: staat
+    source: static
+    key: staat_pk_sozial
+    params: {source_name: "Eurostat (gov_10a_exp, nama_10_pe), eigene Berechnung"}
+    title: "Staatsausgaben je Einwohner: Soziale Sicherung"
+    unit: "€"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 30
+    chart: stx_pk
+    label: "Soziale Sicherung"
+    style: bar
+    license: "Eurostat: CC BY 4.0; eigene Berechnung"
+    note: "Ausgaben des Gesamtstaats nach Aufgaben (COFOG, gov_10a_exp, Mio. Euro) geteilt durch die Einwohnerzahl im Jahresmittel (nama_10_pe); jährlich über die Eurostat-Schnittstelle abgerufen."
+
+  - id: stx_pk_gesundheit
+    block: staat
+    source: static
+    key: staat_pk_gesundheit
+    params: {source_name: "Eurostat (gov_10a_exp, nama_10_pe), eigene Berechnung"}
+    title: "Staatsausgaben je Einwohner: Gesundheit"
+    unit: "€"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 30
+    chart: stx_pk
+    label: "Gesundheit"
+    style: bar
+    license: "Eurostat: CC BY 4.0; eigene Berechnung"
+    note: "Ausgaben des Gesamtstaats nach Aufgaben (COFOG, gov_10a_exp, Mio. Euro) geteilt durch die Einwohnerzahl im Jahresmittel (nama_10_pe); jährlich über die Eurostat-Schnittstelle abgerufen."
+
+  - id: stx_pk_bildung
+    block: staat
+    source: static
+    key: staat_pk_bildung
+    params: {source_name: "Eurostat (gov_10a_exp, nama_10_pe), eigene Berechnung"}
+    title: "Staatsausgaben je Einwohner: Bildung"
+    unit: "€"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 30
+    chart: stx_pk
+    label: "Bildung"
+    style: bar
+    license: "Eurostat: CC BY 4.0; eigene Berechnung"
+    note: "Ausgaben des Gesamtstaats nach Aufgaben (COFOG, gov_10a_exp, Mio. Euro) geteilt durch die Einwohnerzahl im Jahresmittel (nama_10_pe); jährlich über die Eurostat-Schnittstelle abgerufen."
+
+  - id: stx_pk_verwaltung
+    block: staat
+    source: static
+    key: staat_pk_verwaltung
+    params: {source_name: "Eurostat (gov_10a_exp, nama_10_pe), eigene Berechnung"}
+    title: "Staatsausgaben je Einwohner: Verwaltung und Zinsen"
+    unit: "€"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 30
+    chart: stx_pk
+    label: "Verwaltung und Zinsen"
+    style: bar
+    license: "Eurostat: CC BY 4.0; eigene Berechnung"
+    note: "Ausgaben des Gesamtstaats nach Aufgaben (COFOG, gov_10a_exp, Mio. Euro) geteilt durch die Einwohnerzahl im Jahresmittel (nama_10_pe); jährlich über die Eurostat-Schnittstelle abgerufen."
+
+  - id: stx_pk_uebrige
+    block: staat
+    source: static
+    key: staat_pk_uebrige
+    params: {source_name: "Eurostat (gov_10a_exp, nama_10_pe), eigene Berechnung"}
+    title: "Staatsausgaben je Einwohner: Übrige Aufgaben"
+    unit: "€"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 30
+    chart: stx_pk
+    label: "Übrige Aufgaben"
+    style: bar
+    license: "Eurostat: CC BY 4.0; eigene Berechnung"
+    note: "Ausgaben des Gesamtstaats nach Aufgaben (COFOG, gov_10a_exp, Mio. Euro) geteilt durch die Einwohnerzahl im Jahresmittel (nama_10_pe); jährlich über die Eurostat-Schnittstelle abgerufen."
 
   # Staatsausgaben nach Aufgaben (COFOG), Gesamtstaat; Anteil an den Ausgaben und in % des BIP
   - id: de_cofog_tot_gf10
