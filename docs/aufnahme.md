@@ -12,7 +12,7 @@ Abruf und Auswertung: `python -m monitor.aufnahme`, nur Standardbibliothek.
 
 Die Rohdaten bleiben unter `C:\Daten\TED`; ins Repo kommen nur die beiden Auswertungsdateien.
 
-Methode, erste Stufe: Ausgewertet werden Bekanntmachungen mit genau einem Sitz-Kreis und einem Leistungskreis. Distanz ist die Luftlinie zwischen den Kreismittelpunkten. Jenseits des eigenen Kreises wird ein exponentieller Abfall angenommen; die Halbwertsdistanz ist dann der Mittelwert der Distanzen mal ln 2. Fahrzeiten und ein Schwerkraftmodell auf Basis der Kantenliste folgen.
+Methode, erste Stufe: Ausgewertet werden Bekanntmachungen mit genau einem Sitz-Kreis und einem Leistungskreis. Distanz ist die Luftlinie zwischen den Kreismittelpunkten. Jenseits des eigenen Kreises wird ein exponentieller Abfall angenommen; die Halbwertsdistanz ist dann der Mittelwert der Distanzen mal ln 2. Ein Schwerkraftmodell auf Basis der Kantenliste folgt.
 
 Sitz oder Niederlassung (geprüft 13.11.2026): Die Auswertung führt Schreibvarianten derselben Firma zusammen und teilt die Firmen ein. Regional sind Firmen mit Zuschlägen in weniger als vier Ländern. Überregionale Firmen „melden die Niederlassung“, wenn sie mindestens drei Postleitzahlen angeben und keine davon die Hälfte der Meldungen erreicht, sonst „melden sie die Zentrale“.
 
@@ -24,6 +24,17 @@ Sitz oder Niederlassung (geprüft 13.11.2026): Die Auswertung führt Schreibvari
 | überregional, meldet Zentrale | 7.571 | 175 | 151 |
 
 Abgleich mit Standortangaben der Firmen: STRABAG AG meldet 47 Postleitzahlen bei rund 50 deutschen Standorten (älteres Firmenprofil), also die Niederlassungen. KONE (80 % Hannover, Länderzentrale; mehr als 50 Standorte in DACH), Lindner SE (98 % Arnstorf; weitere Standorte unter anderem Berlin, Hamburg, Hannover, Nürnberg) und LEONHARD WEISS (59 % Göppingen; Hauptsitz Satteldorf, zahlreiche weitere Standorte) melden dagegen ihre Zentrale. Fliesen Röhlich (97 % Wendelstein) hat nach den gefundenen Angaben nur diesen einen Standort und reist tatsächlich weit. Die Gruppe „meldet Zentrale“ mischt also verzerrte Meldungen von Konzernen mit echten Wanderbetrieben. Der Distanzabfall der regionalen Firmen (Halbwertsdistanz 65 km) ist darum die Untergrenze, der Wert für alle (86 km) die Obergrenze. Für die Gewichtung der Nachbarkreise taugt die Untergrenze je Gewerk (Tabelle „nur regionale Firmen“ in `docs/aufnahme_ted.md`).
+
+Fahrzeit (13.11.2026): `python -m monitor.aufnahme fahrzeiten <ordner>` fragt die Pkw-Fahrzeiten zwischen allen 400 Kreismittelpunkten beim öffentlichen OSRM-Server ab (OpenStreetMap, ohne Verkehr, 64 Teilabfragen zu 50 mal 50 Kreisen, etwa zwei Minuten). Der Host `router.project-osrm.org` muss freigegeben sein. Die Auswertung nutzt die Matrix, sobald `fahrzeiten_nuts3.csv` im Ordner liegt. Ins Repo kommen die Paare bis vier Stunden: `data/static/aufnahme_fahrzeiten.csv`.
+
+| Firmentyp | Median min | Halbwertszeit min | bis 60 min |
+|---|---:|---:|---:|
+| alle | 64 | 80 | 48 % |
+| regional | 53 | 65 | 56 % |
+| überregional, meldet Niederlassung | 54 | 74 | 54 % |
+| überregional, meldet Zentrale | 160 | 129 | 15 % |
+
+Bei den regionalen Firmen reicht die Halbwertszeit von 50 Minuten (Sanitär, Heizung) bis 72 Minuten (Hochbau); Anlagenbau und Gebäudetechnik liegen bei 99 und 122 Minuten.
 
 Erster Lauf 13.11.2026 (Cloud): 56.734 Bauzuschläge seit Januar 2025, je Monat vollständig gegen die Trefferzahl von TED. Ergebnis: `docs/aufnahme_ted.md`, Kantenliste `data/static/aufnahme_kanten.csv`. Die Antwortfelder kommen als Listen oder Sprach-Wörterbücher; `tender-value` ist eine Liste von Texten, fehlende Werte stehen als -1. TED meldet Thüringer Kreise teils mit NUTS-2021-Codes; das Skript schlüsselt sie auf NUTS 2024 um. Für die Rohdaten unter `C:\Daten\TED` den Abzug dort wiederholen (`TED abrufen.bat`).
 

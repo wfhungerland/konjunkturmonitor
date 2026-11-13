@@ -39,6 +39,8 @@ FELDER = [
     "received-submissions-type-code", "received-submissions-type-val", "tender-value",
 ]
 SEITE = 250
+OSRM = "https://router.project-osrm.org/table/v1/driving/"
+BLOCK = 50  # Kreise je Seite der Teilmatrix; der öffentliche OSRM-Server erlaubt 100 Koordinaten je Abfrage
 
 # Gewerke nach CPV-Abteilung 45, vierstellig; Rest unter „sonstiges“
 GEWERKE = {
@@ -141,6 +143,46 @@ def orte(ordner: Path) -> None:
         w.writerow(["nuts3", "name", "lat", "lon"])
         w.writerows(sorted(zeilen))
     print(f"{len(zeilen)} Kreise")
+
+
+def fahrzeiten(ordner: Path) -> None:
+    """Fahrzeit (Minuten) und Straßenkilometer zwischen allen Kreismittelpunkten, Pkw, OSRM auf OpenStreetMap.
+
+    Die Matrix wird in Blöcken von 50 mal 50 Kreisen abgefragt, mit Pause zwischen den Abfragen
+    (Nutzungsregeln des öffentlichen Servers). Ergebnis: fahrzeiten_nuts3.csv im Ordner.
+    """
+    kreise = [(p["nuts3"], p["lon"], p["lat"]) for p in csv.DictReader((ordner / "nuts3_de.csv").open(encoding="utf-8"))]
+    bloecke = [kreise[i:i + BLOCK] for i in range(0, len(kreise), BLOCK)]
+    zeilen = []
+    for a in bloecke:
+        for b in bloecke:
+            punkte = a + b
+            pfad = ";".join(f"{lon},{lat}" for _, lon, lat in punkte)
+            url = (f"{OSRM}{pfad}?sources={';'.join(map(str, range(len(a))))}"
+                   f"&destinations={';'.join(map(str, range(len(a), len(punkte))))}&annotations=duration,distance")
+            for versuch in range(5):
+                try:
+                    req = urllib.request.Request(url, headers={"User-Agent": "konjunkturmonitor (Aufnahmefähigkeit)"})
+                    with urllib.request.urlopen(req, timeout=120) as r:
+                        antwort = json.loads(r.read().decode("utf-8"))
+                    break
+                except (urllib.error.URLError, TimeoutError):
+                    if versuch == 4:
+                        raise
+                    time.sleep(10 * (versuch + 1))
+            if antwort.get("code") != "Ok":
+                raise RuntimeError(f"OSRM antwortet {antwort.get('code')}: {antwort.get('message')}")
+            for i, (von, *_) in enumerate(a):
+                for j, (nach, *_) in enumerate(b):
+                    d, km = antwort["durations"][i][j], antwort["distances"][i][j]
+                    zeilen.append((von, nach, "" if d is None else round(d / 60, 1),
+                                   "" if km is None else round(km / 1000, 1)))
+            time.sleep(1.2)
+        print(f"{len(zeilen)} Paare", flush=True)
+    with (ordner / "fahrzeiten_nuts3.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["von_nuts3", "nach_nuts3", "minuten", "km_strasse"])
+        w.writerows(zeilen)
 
 
 # ---------------------------------------------------------------- Auswertung
@@ -300,23 +342,33 @@ def auswertung(ordner: Path, ziel: Path) -> None:
             c["eindeutig"] += len(z["sitz"]) == 1 and len(z["ort"]) == 1
             c["angebote"] += z["angebote"]
 
+    # Fahrzeiten zwischen Kreismittelpunkten, falls abgerufen (Schritt „fahrzeiten“)
+    fahrt = {}
+    if (ordner / "fahrzeiten_nuts3.csv").exists():
+        for r in csv.DictReader((ordner / "fahrzeiten_nuts3.csv").open(encoding="utf-8")):
+            if r["minuten"]:
+                fahrt[(r["von_nuts3"], r["nach_nuts3"])] = float(r["minuten"])
+
     # Distanzen: nur Bekanntmachungen mit genau einem Sitz-Kreis und einem Leistungskreis
     paare = []
     for z in zeilen:
         if len(z["sitz"]) == 1 and len(z["ort"]) == 1 and z["sitz"][0] in lage and z["ort"][0] in lage:
             km = _km(lage[z["sitz"][0]], lage[z["ort"][0]])
-            paare.append({**z, "km": km, "gleich": z["sitz"][0] == z["ort"][0]})
+            gleich = z["sitz"][0] == z["ort"][0]
+            minuten = 0.0 if gleich else fahrt.get((z["sitz"][0], z["ort"][0]))
+            paare.append({**z, "km": km, "min": minuten, "gleich": gleich})
 
-    def abfall(gruppe: list[dict]) -> dict:
+    def abfall(gruppe: list[dict], mass: str = "km", grenzen=(50, 100, 200)) -> dict:
+        gruppe = [p for p in gruppe if p[mass] is not None]
         n = len(gruppe)
-        aussen = [p["km"] for p in gruppe if not p["gleich"]]
+        aussen = [p[mass] for p in gruppe if not p["gleich"]]
         return {
             "n": n,
             "gleich": _anteil(sum(p["gleich"] for p in gruppe), n),
-            "bis50": _anteil(sum(p["km"] <= 50 for p in gruppe), n),
-            "bis100": _anteil(sum(p["km"] <= 100 for p in gruppe), n),
-            "bis200": _anteil(sum(p["km"] <= 200 for p in gruppe), n),
-            "median": f"{statistics.median([p['km'] for p in gruppe]):.0f}" if n else "-",
+            "bis50": _anteil(sum(p[mass] <= grenzen[0] for p in gruppe), n),
+            "bis100": _anteil(sum(p[mass] <= grenzen[1] for p in gruppe), n),
+            "bis200": _anteil(sum(p[mass] <= grenzen[2] for p in gruppe), n),
+            "median": f"{statistics.median([p[mass] for p in gruppe]):.0f}" if n else "-",
             # Exponentialverteilung jenseits des eigenen Kreises: Schätzer der mittleren Reichweite ist der
             # Mittelwert; Halbwertsdistanz = Mittelwert · ln 2
             "halbwert": f"{statistics.mean(aussen) * math.log(2):.0f}" if len(aussen) >= 20 else "-",
@@ -330,6 +382,13 @@ def auswertung(ordner: Path, ziel: Path) -> None:
     tab_gewerk = {g: abfall([p for p in paare if p["gewerk"] == g]) for g in sorted({p["gewerk"] for p in paare})}
     tab_gewerk_reg = {g: abfall([p for p in paare if p["gewerk"] == g and p["typ"] == "regional"])
                       for g in sorted({p["gewerk"] for p in paare})}
+    mit_fahrt = bool(fahrt)
+    if mit_fahrt:
+        minuten = dict(mass="min", grenzen=(30, 60, 120))
+        tab_typ_min = {"alle": abfall(paare, **minuten),
+                       **{t: abfall([p for p in paare if p["typ"] == t], **minuten) for t in typen}}
+        tab_gewerk_reg_min = {g: abfall([p for p in paare if p["gewerk"] == g and p["typ"] == "regional"], **minuten)
+                              for g in sorted({p["gewerk"] for p in paare})}
     tab_groesse = {g: abfall([p for p in paare if p["groesse"] == g])
                    for g in [n for *_, n in GROESSEN] + ["ohne Wert"]}
     tab_kaeufer = {g: abfall([p for p in paare if p["auftraggeber"] == g])
@@ -359,9 +418,10 @@ def auswertung(ordner: Path, ziel: Path) -> None:
         for (a, b, g), k in sorted(kanten.items()):
             w.writerow([a, b, g, k])
 
-    def tabelle(kopf: str, daten: dict) -> list[str]:
-        t = [f"| {kopf} | Zuschläge | gleicher Kreis | bis 50 km | bis 100 km | bis 200 km | Median km | "
-             "Halbwertsdistanz km |", "|---|---:|---:|---:|---:|---:|---:|---:|"]
+    def tabelle(kopf: str, daten: dict, e: str = "km", grenzen=(50, 100, 200)) -> list[str]:
+        name = "Halbwertsdistanz km" if e == "km" else "Halbwertszeit min"
+        t = [f"| {kopf} | Zuschläge | gleicher Kreis | bis {grenzen[0]} {e} | bis {grenzen[1]} {e} | "
+             f"bis {grenzen[2]} {e} | Median {e} | {name} |", "|---|---:|---:|---:|---:|---:|---:|---:|"]
         for k, v in daten.items():
             t.append(f"| {k} | {v['n']} | {v['gleich']} | {v['bis50']} | {v['bis100']} | {v['bis200']} | "
                      f"{v['median']} | {v['halbwert']} |")
@@ -386,6 +446,12 @@ def auswertung(ordner: Path, ziel: Path) -> None:
              "Meldungen oder mehr; sonst „meldet Zentrale“. Firmennamen nach Schreibvarianten zusammengeführt.", "",
              *tabelle("Firmentyp", tab_typ),
              "", "### Distanzabfall nach Gewerk, nur regionale Firmen", "", *tabelle("Gewerk", tab_gewerk_reg),
+             *(["", "### Fahrzeit nach Firmentyp", "",
+                 "Pkw-Fahrzeit zwischen den Kreismittelpunkten ohne Verkehr (OSRM auf OpenStreetMap); innerhalb "
+                 "des Kreises null.", "",
+                 *tabelle("Firmentyp", tab_typ_min, "min", (30, 60, 120)),
+                 "", "### Fahrzeit nach Gewerk, nur regionale Firmen", "",
+                 *tabelle("Gewerk", tab_gewerk_reg_min, "min", (30, 60, 120))] if mit_fahrt else []),
              "", "### Sitz oder Niederlassung: die 30 häufigsten Auftragnehmer", "",
              "Meldet ein Auftragnehmer viele verschiedene Postleitzahlen, gibt er offenbar die ausführende "
              "Niederlassung an; eine einzige Postleitzahl spricht für den eingetragenen Sitz.", "",
@@ -407,7 +473,7 @@ def auswertung(ordner: Path, ziel: Path) -> None:
 
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(prog="python -m monitor.aufnahme")
-    ap.add_argument("schritt", choices=["abzug", "orte", "auswertung", "alles"])
+    ap.add_argument("schritt", choices=["abzug", "orte", "fahrzeiten", "auswertung", "alles"])
     ap.add_argument("ordner", type=Path)
     ap.add_argument("--ab", default="20250101")
     ap.add_argument("--ziel", type=Path, default=None)
@@ -417,6 +483,8 @@ def main(argv: list[str] | None = None) -> None:
         abzug(a.ordner, a.ab)
     if a.schritt in ("orte", "alles"):
         orte(a.ordner)
+    if a.schritt in ("fahrzeiten", "alles"):
+        fahrzeiten(a.ordner)
     if a.schritt in ("auswertung", "alles"):
         auswertung(a.ordner, ziel)
 

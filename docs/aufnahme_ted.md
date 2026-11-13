@@ -94,6 +94,36 @@ Bekanntmachungen: 56734; davon mit genau einem Sitz- und einem Leistungskreis: 3
 | Zäune, Sonstige Installation | 131 | 11 % | 30 % | 56 % | 81 % | 81 | 96 |
 | sonstiges | 4081 | 24 % | 58 % | 78 % | 91 % | 41 | 67 |
 
+### Fahrzeit nach Firmentyp
+
+Pkw-Fahrzeit zwischen den Kreismittelpunkten ohne Verkehr (OSRM auf OpenStreetMap); innerhalb des Kreises null.
+
+| Firmentyp | Zuschläge | gleicher Kreis | bis 30 min | bis 60 min | bis 120 min | Median min | Halbwertszeit min |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| alle | 38052 | 20 % | 25 % | 48 % | 73 % | 64 | 80 |
+| regional | 28935 | 24 % | 30 % | 56 % | 83 % | 53 | 65 |
+| überregional, meldet Niederlassung | 1361 | 25 % | 33 % | 54 % | 79 % | 54 | 74 |
+| überregional, meldet Zentrale | 7571 | 5 % | 7 % | 15 % | 36 % | 160 | 129 |
+
+### Fahrzeit nach Gewerk, nur regionale Firmen
+
+| Gewerk | Zuschläge | gleicher Kreis | bis 30 min | bis 60 min | bis 120 min | Median min | Halbwertszeit min |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Abbruch, Erdarbeiten | 2228 | 28 % | 36 % | 64 % | 88 % | 45 | 56 |
+| Anlagenbau | 296 | 15 % | 19 % | 35 % | 60 % | 94 | 99 |
+| Ausbau | 5225 | 19 % | 23 % | 48 % | 79 % | 62 | 68 |
+| Dach, Spezialbau | 3352 | 21 % | 27 % | 52 % | 82 % | 58 | 66 |
+| Dämmung | 994 | 20 % | 28 % | 58 % | 87 % | 51 | 56 |
+| Elektro | 3003 | 28 % | 35 % | 62 % | 86 % | 47 | 62 |
+| Gebäudetechnik | 91 | 9 % | 11 % | 22 % | 46 % | 130 | 122 |
+| Hochbau | 3384 | 22 % | 27 % | 51 % | 79 % | 59 | 72 |
+| Ingenieurbau | 1471 | 24 % | 29 % | 57 % | 85 % | 52 | 64 |
+| Sanitär, Heizung | 2737 | 30 % | 38 % | 69 % | 92 % | 42 | 50 |
+| Straßen, Schiene, Leitungen | 1760 | 29 % | 35 % | 60 % | 82 % | 48 | 68 |
+| Wasserbau | 182 | 25 % | 28 % | 54 % | 84 % | 57 | 73 |
+| Zäune, Sonstige Installation | 131 | 11 % | 14 % | 33 % | 63 % | 82 | 88 |
+| sonstiges | 4081 | 24 % | 31 % | 56 % | 82 % | 53 | 66 |
+
 ### Sitz oder Niederlassung: die 30 häufigsten Auftragnehmer
 
 Meldet ein Auftragnehmer viele verschiedene Postleitzahlen, gibt er offenbar die ausführende Niederlassung an; eine einzige Postleitzahl spricht für den eingetragenen Sitz.
