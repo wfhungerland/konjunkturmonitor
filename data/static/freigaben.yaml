@@ -1,0 +1,11 @@
+# Freigaben für angehaltene Reihen (monitor/sperre.py).
+# Der Datenlauf hält Reihen an, deren neue Werte auffällig sind; die Seite zeigt dann den letzten geprüften Stand mit Hinweis,
+# und das Ticket „Datenabruf: angehaltene Reihen“ nennt Reihe und Grund. Sind die neuen Werte echt, hier freigeben:
+#
+#   freigaben:
+#     - {reihe: de_ip, bis: "2026-11-20", grund: "Einbruch bestätigt, Pressemitteilung Destatis vom 07.11.2026"}
+#
+# reihe: Kennung aus series.yaml, oder "*" für alle Reihen (etwa bei einem Schock, der viele Reihen zugleich trifft).
+# bis:   bis zu diesem Tag übernimmt der Lauf die neuen Werte ungeprüft. Ein paar Tage reichen; danach gilt der neue Stand als geprüft.
+# Sind die Werte falsch (neue Basis, andere Einheit, geänderte Tabelle), stattdessen die Reihe in series.yaml anpassen.
+freigaben: []

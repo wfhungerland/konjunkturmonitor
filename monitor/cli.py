@@ -26,12 +26,18 @@ def main(argv: list[str] | None = None) -> int:
         update_all(root)  # Wetter und Rheinpegel als statische Reihen, vor dem Abruf
         from konjunkturwolf.catalog import load_catalog
         from konjunkturwolf.http import HttpClient
-        from konjunkturwolf.pipeline import Paths, run, save
+        from konjunkturwolf.pipeline import Paths, load_previous, run, save
+
+        from .sperre import apply as sperre
 
         paths = Paths(root)
         catalog = load_catalog(paths.catalog)
+        previous = load_previous(paths)  # letzter geprüfter Stand, Maßstab für die Sperre
         result = run(catalog, paths, HttpClient(paths.cache, use_cache=not args.no_cache, offline=False), only=args.only)
+        frozen = sperre(result, previous, catalog, root, only=args.only)  # auffällige Reihen bleiben auf dem letzten Stand
         save(result, paths)
+        if frozen:
+            logging.warning("Angehalten: %s", ", ".join(f["series_id"] for f in frozen))
         logging.info("Daten: %s", ", ".join(f"{k}={v}" for k, v in sorted(result.counts().items())))
     from .build import build_site
 

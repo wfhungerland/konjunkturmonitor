@@ -1,0 +1,14 @@
+# Dependabot schlägt neue Versionen als Pull Request vor; jeder Vorschlag läuft durch die Prüfung, bevor er auf main kommt.
+version: 2
+updates:
+  - package-ecosystem: github-actions   # Commit-SHAs der Actions in .github/workflows
+    directory: /
+    schedule: {interval: weekly, day: monday}
+    groups: {actions: {patterns: ["*"]}}
+  - package-ecosystem: pip              # requirements.in und requirements.txt (Prüfsummen)
+    directory: /
+    schedule: {interval: weekly, day: monday}
+    groups: {python: {patterns: ["*"]}}
+  - package-ecosystem: npm              # package.json und package-lock.json (Browsertest)
+    directory: /
+    schedule: {interval: weekly, day: monday}

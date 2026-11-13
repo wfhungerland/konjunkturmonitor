@@ -292,6 +292,7 @@
   dialog.fbd { border: 0; padding: 28px 32px 22px; width: min(440px, calc(100vw - 32px)); font: 16px/1.5 var(--ff); color: var(--text); box-shadow: 0 12px 48px rgba(0,0,0,.14); }
   dialog.fbd::backdrop { background: rgba(255,255,255,.6); } .fbd form { margin: 0; }
   .fbd textarea { width: 100%; box-sizing: border-box; min-height: 130px; font: 16px/1.5 var(--ff); border: 0; padding: 0; resize: none; background: none; }
+  .fbd .fbhp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }  /* Köderfeld für Formular-Roboter, für Menschen unsichtbar */
   .fbd textarea:focus { outline: none; } .fbd textarea::placeholder { color: #bdbdbd; }
   .fbd .fbrow { display: flex; justify-content: space-between; align-items: baseline; margin-top: 18px; padding-top: 12px; border-top: 1px solid #ececec; }
   .fbd .fbnote { font-size: 12px; } .fbd .fbnote a { color: #bdbdbd; }
@@ -482,6 +483,22 @@
   @media (min-width: 1240px) { .refs { max-width: 1320px; } }
   footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
+  .spktab { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .spktab th { font-weight: 400; font-size: 13px; color: #595959; text-align: left; padding: 0 8px 6px 0; }
+  .spktab th.n, .spktab td.n { text-align: right; white-space: nowrap; }
+  .spktab td { padding: 8px 8px 8px 0; border-top: 1px solid #e6e6e6; vertical-align: middle; font-size: 15px; }
+  .spktab tr.spk-sub td:first-child { padding-left: 14px; }
+  .spktab tr.spk-sub .lab { font-weight: 400; }
+  .spktab .lab { display: block; font-weight: 600; font-size: 15px; }
+  .spktab .u { display: block; font-size: 12px; color: #595959; }
+  .spktab td.g { width: 38%; min-width: 120px; }
+  .spktab td.f { font-weight: 700; color: #002060; font-size: 17px; }
+  .spk { width: 100%; height: 30px; display: block; }
+  .spk-line { fill: none; stroke: #002060; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .spk-dot { stroke: #002060; stroke-width: 6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .spk-war { stroke: #C00000; stroke-width: 1; stroke-dasharray: 2 2; vector-effect: non-scaling-stroke; }
+  .spknote { font-size: 12px; color: #595959; margin: 6px 0 0; }
+  @media (max-width: 560px) { .spktab td.g { min-width: 80px; width: 30%; } .spktab td.f { font-size: 15px; } }
 </style>
 </head>
 <body>
@@ -551,7 +568,7 @@ const LAGETXT = { title: "Lage auf einen Blick", stand: "Stand", komm: "Kommenta
   warn: "Warnlampen", out: "Ausblick", grem: "Was die Gremien raten", neu: "Neu in den letzten sieben Tagen", term: "Nächste Termine (geschätzt)",
   mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", am: "Lage am", rates: "Raten, in %", since: "Verläufe seit 2019",
   when: [["2019", "Jahresmittel,", "vor Corona"], ["vor einem", "Jahr"], ["heute"]], k: ["Hoch seit 2019", "Tief seit 2019", "letzter Wert", "Durchschnitt 2015–19", "Abstand dazu"], fuer: "für", wd: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"] };
-const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
+const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", wait: "Bitte einen Moment warten.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const PHASETXT = { to: "–", L: { "-1": "Lohnzurückhaltung", "0": "Löhne im Spielraum", "1": "kräftigere Löhne" }, G: { "-1": "straffer", "0": "beibehalten", "1": "lockerer" },
   F: { "-1": "Konsolidierung", "0": "neutral", "1": "Impulse" }, A: { "-1": "mehr Schutz", "0": "beibehalten", "1": "Flexibilisierung" } };
 const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen unter „Downloads“." };
@@ -606,7 +623,7 @@ const MORETXT = "Alle Grafiken zu {t} ({n})", BRIEFALL = "Alle {n} Kapitel zeige
 const MATXT = "Mittel über {n} Tage";
 const ANH = { show: "Abbildungen anzeigen" };
 const LONGTXT = { crisis: "Bankenkrisen", rec: "Rezessionen", dec: "Mittel" };
-const VIEWTXT = { raw: "Monatswerte", rawt: "Dünne Linie mit den einzelnen Monatswerten zeigen", edge: "Aktueller Rand", edget: "Jüngste Werte an den Linienenden zeigen", rec: "Rezessionen", more: "Ansicht", all: "Ganze Reihe", allt: "Die Reihe ab ihrem Beginn zeigen" };
+const VIEWTXT = { raw: "Monatswerte", rawt: "Dünne Linie mit den einzelnen Monatswerten zeigen", edge: "Aktueller Rand", edget: "Jüngste Werte an den Linienenden zeigen", rec: "Rezessionen", more: "Ansicht", all: "Ganze Reihe", allt: "Die Reihe ab ihrem Beginn zeigen", ev: "Ereignisse", evt: "Wichtige geldpolitische Ereignisse einblenden; Klick auf den Namen öffnet die Quelle" };
 const GUTTXT = { dl: "Downloads", dlt: "XLSX, PPTX, PNG, CSV, Stata oder Code zum Einbetten", meth: "Methode", link: "Link" };
 const pressed = (b, on) => b.setAttribute("aria-pressed", String(!!on));
 const COLTXT = { pin: "Als Lesezeichen merken", pinned: "Lesezeichen entfernen", title: "Lesezeichen", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. Der Stern ☆ oben rechts an einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Lesezeichen übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
@@ -642,7 +659,7 @@ function xAxis(x0, x1, width) {
   return { tickvals: tv, ticktext: tt, shapes };
 }
 // Abbildungen, an deren Linienenden die jüngsten Werte stehen können
-const labelable = c => Array.isArray(c.series) && !["stacked", "latest", "seasonal", "dumbbell"].includes(c.type) && !c.series.some(s => s.style === "bar")
+const labelable = c => Array.isArray(c.series) && !c.area && !["stacked", "latest", "seasonal", "dumbbell"].includes(c.type) && !c.series.some(s => s.style === "bar")
   && (c.series.filter(s => s.style !== "bar").length <= 4 || c.context_grey) && !(c.multiples && (DATA.layout || {}).small_multiples && (c.series.length > 2 || c.own_scale));
 // Rezessionen nach SVR, die ins Zeitfenster der Abbildung fallen
 const recIn = (c, r) => (c.recessions || []).filter(rc => rc.trough >= r[0] && rc.peak <= r[1]);
@@ -688,6 +705,14 @@ function timeChart(el, c) {
           hovertemplate: `${LONGTXT.dec} ${d0}${open ? "–" : "–" + (d + 9)}: %{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` }); });
     });
   }
+  if (c.area) { // gestapelte Flächen, etwa die Bilanz: Teile addieren sich zur Summe; Summe je Zeitpunkt für die Achse
+    const sum = {};
+    lines.forEach((s, i) => { const col = (c.area_colors || PAL)[i % (c.area_colors || PAL).length];
+      traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, meta: s.id, stackgroup: "a", line: { color: col, width: 0.6 }, fillcolor: col,
+        hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
+      s.x.forEach((x, j) => { sum[x] = (sum[x] || 0) + (s.y[j] || 0); }); });
+    all.push(0, ...Object.values(sum));
+  } else
   lines.filter(s => !s.style || !s.style.startsWith("band_")).forEach((s, i) => {
     const col = c.type === "stacked" ? "#000" : PAL[i % PAL.length];
     const many = !c.emphasis && lines.length >= 5, strong = many ? i === 0 : (!c.emphasis || c.emphasis === s.id);
@@ -763,6 +788,14 @@ function timeChart(el, c) {
     shapes.push({ type: "line", xref: q.x0 ? "x" : "paper", yref: "y", x0: q.x0 || 0, x1: q.x0 ? r[1] : 1, y0: q.y, y1: q.y, line: { color: "#595959", width: 1, dash: "dash" } });  // x0: nur ab diesem Datum, etwa ein Jahresziel
     const qr = q.x0 && (el.clientWidth || 600) < 560;  // schmal: am Linienende rechtsbündig, damit nichts abgeschnitten wird
     annotations.push({ xref: q.x0 ? "x" : "paper", yref: "y", x: qr ? r[1] : q.x0 || 0.005, y: q.y, text: esc(q.label), showarrow: false, xanchor: qr ? "right" : "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); });
+  if (c._ev) { // geldpolitische Ereignisse: senkrechte Linie, Kurzname oben in der ersten freien Zeile, Text beim Darauffahren, Klick öffnet die Quelle
+    const t0 = Date.parse(r[0]), pw = Math.max(200, (el.clientWidth || 600) - 120) / (Date.parse(r[1]) - t0), ends = [];
+    (c.events || []).filter(e => e.date >= r[0] && e.date <= r[1]).forEach(e => {
+    const px = (Date.parse(e.date) - t0) * pw, w = (e.label.length + 2) * 6 + 6;
+    let row = ends.findIndex(end => end < px); if (row < 0) { row = ends.length; ends.push(0); } ends[row] = px + w;
+    shapes.push({ type: "line", xref: "x", yref: "paper", x0: e.date, x1: e.date, y0: 0, y1: 1, line: { color: "#7f7f7f", width: 1, dash: "dot" } });
+    annotations.push({ xref: "x", yref: "paper", x: e.date, y: 1, yshift: -row * 17, yanchor: "top", xanchor: "left", showarrow: false, text: esc(e.label) + (e.url ? " ↗" : ""), hovertext: esc(e.text || e.label),
+      captureevents: true, name: "ev:" + (c.events.indexOf(e)), font: { family: HS.font, size: 11, color: "#3f4752" }, bgcolor: "rgba(255,255,255,0.85)" }); }); }
   (c._shownotes ? c.notes || [] : []).forEach((n, k) => { shapes.push({ type: "line", xref: "x", yref: "paper", x0: n.date, x1: n.date, y0: 0, y1: 1, line: { color: "#595959", width: 1, dash: "dot" } });
     annotations.push({ xref: "x", yref: "paper", x: n.date, y: 1, text: String(k + 1), showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" } }); });
   if (c.band && LY.compare_band) {
@@ -830,6 +863,7 @@ function timeChart(el, c) {
   { const nLeg = traces.filter(t => t.showlegend !== false && t.name).length, w = el.clientWidth || 600;  // Handy: lange Legende bekommt eigene Höhe statt Scrollkasten
     if (L.showlegend && nLeg > 4 && w < 560) { const h = Math.round(w * 0.8) + nLeg * 26; el.style.aspectRatio = "auto"; el.style.height = h + "px"; L.height = h; } }
   Plotly.newPlot(el, traces, L, CFG);
+  if (c.events && !el._evOn) { el._evOn = true; el.on("plotly_clickannotation", ev => { const nm = (ev.annotation || {}).name || "", e = nm.startsWith("ev:") ? c.events[+nm.slice(3)] : null; if (e && e.url) window.open(e.url, "_blank", "noopener"); }); }
 }
 
 // Small Multiples: je Reihe ein kleines Diagramm auf gleicher Skala, die übrigen Reihen grau als Kontext.
@@ -885,6 +919,40 @@ function heatChart(el, c) {
   H.rows.slice().reverse().forEach(r => { html += `<tr><td class="l">${esc(r.label)}</td>${H.cols.map(d => cell(r.values[d])).join("")}`
     + `<td class="k">${sg(r.m3)}</td><td class="k">${r.level == null ? "" : sg(r.level)}</td></tr>`; });
   el.innerHTML = `<div class="heat">${html}</tbody></table></div>`;
+}
+
+// Zinskurven je Land: Rendite über der Restlaufzeit, jüngster Monat durchgezogen, ein Jahr zuvor gepunktet, eine Farbe je Land
+const CURVE_TXT = { x: "Restlaufzeit in Jahren", lang: "de" };
+function curveChart(el, c) {
+  const K = (c.attach || {}).countries || [], en = CURVE_TXT.lang === "en", traces = [], all = [];
+  K.forEach((k, i) => { const col = PAL[i % PAL.length], nm = en ? k.name_en : k.name;
+    [["ago", "dot", 1.6, 6], ["now", "solid", 3, 7]].forEach(([w, dash, wd, ms]) => { const v = k[w]; all.push(...v.values.filter(q => q != null));
+      traces.push({ type: "scatter", mode: "lines+markers", x: k.maturities, y: v.values, name: `${nm}, ${perLong(v.date, "M")}`, line: { color: col, width: wd, dash }, marker: { size: ms, color: col },
+        hovertemplate: `%{x} ${en ? "years" : "Jahre"}: %{y:,.2f} %<extra>${esc(nm)}, ${esc(perLong(v.date, "M"))}</extra>` }); }); });
+  const ya = yAxis(all, c.unit, []), L = baseLayout(el);
+  Object.assign(L, { hovermode: "closest", showlegend: true, legend: { orientation: "h", x: 0, y: -0.18, font: { size: 12 } }, margin: { l: 44, r: 12, t: 34, b: 80 },
+    xaxis: { type: "log", tickvals: [1, 2, 3, 5, 7, 10, 15, 20, 30], ticktext: ["1", "2", "3", "5", "7", "10", "15", "20", "30"], title: { text: CURVE_TXT.x, font: { size: 12 } }, showgrid: false, zeroline: false, fixedrange: true },
+    yaxis: { range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext.map(t => t.replace(/^\+/, "")), showgrid: true, gridcolor: HS.gridH, zeroline: false, fixedrange: true } });
+  el.style.aspectRatio = "auto"; el.style.height = ((el.clientWidth || 600) < 560 ? 460 : 420) + "px";
+  Plotly.newPlot(el, traces, L, CFG);
+}
+
+// Bedingungen des TPI je Euroland: Defizit, Schulden, Defizitverfahren, Renditeabstand; rot: Grenze des Stabilitätspakts überschritten oder Verfahren läuft.
+// Spaltenköpfe sortieren per Klick.
+const TPI_TXT = { land: "Land", def: "Finanzierungssaldo", debt: "Schulden", edp: "Defizitverfahren", sp: "Abstand zu Bund", yes: "läuft", no: "nein", pct: "% des BIP", pp: "Pp", lang: "de" };
+function tpiChart(el, c) {
+  const T = c.attach || {}, en = TPI_TXT.lang === "en", st = el._tpi || (el._tpi = { k: "spread", d: -1 });
+  const nm = r => en ? r.name_en : r.name, red = "color:#C00000;font-weight:600";
+  const rows = (T.rows || []).slice().sort((a, b) => { const x = st.k === "name" ? nm(a) : a[st.k], y = st.k === "name" ? nm(b) : b[st.k];
+    if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * st.d; });
+  const th = (k, t, sub) => `<th data-k="${k}" style="cursor:pointer">${t}${sub ? `<br><span class="sortnote">${sub}</span>` : ""}${st.k === k ? (st.d < 0 ? " ↓" : " ↑") : ""}</th>`;
+  const f = (v, d) => v == null ? "" : fmt(v, d);
+  let html = `<table><thead><tr>${th("name", TPI_TXT.land).replace("<th", '<th class="l"')}${th("deficit", TPI_TXT.def, `${T.year}, ${TPI_TXT.pct}`)}${th("debt", TPI_TXT.debt, `${T.year}, ${TPI_TXT.pct}`)}${th("edp", TPI_TXT.edp, "")}${th("spread", TPI_TXT.sp, `${perLong(T.month + "-01", "M")}, ${TPI_TXT.pp}`)}</tr></thead><tbody>`;
+  rows.forEach(r => { html += `<tr><td class="l">${esc(nm(r))}</td><td class="k" style="${r.deficit != null && r.deficit < -3 ? red : ""}">${r.deficit != null && r.deficit > 0 ? "+" : ""}${f(r.deficit, 1)}</td>`
+    + `<td class="k" style="${r.debt > 60 ? red : ""}">${f(r.debt, 1)}</td><td class="k" style="${r.edp ? red : ""}">${r.edp ? `<a href="${esc(T.edp_url)}" target="_blank" rel="noopener" style="${red}">${TPI_TXT.yes}</a>` : TPI_TXT.no}</td>`
+    + `<td class="k">${r.geo === "DE" ? "" : f(r.spread, 2)}</td></tr>`; });
+  el.innerHTML = `<div class="heat">${html}</tbody></table></div>`;
+  el.querySelectorAll("th[data-k]").forEach(h => h.onclick = () => { const k = h.dataset.k; st.d = st.k === k ? -st.d : (k === "name" ? 1 : -1); st.k = k; tpiChart(el, c); });
 }
 
 // Balken zur Wärmetabelle: Dreimonatsvergleich oder Niveau ggü. 2019, umschaltbar
@@ -1110,6 +1178,23 @@ function cellChart(el, c) {
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl && A.mode !== "bar") uEl.style.display = "none";
   Plotly.react(el, traces, L, CFG);
 }
+// Tabelle mit Wortgrafiken nach Tufte: je Zeile Verlauf auf gemeinsamer Zeitachse, Stand 2021, jüngster Stand, Faktor
+function sparkChart(el, c) {
+  const R = c.sparktable || [], en = DATA.lang === "en", t0 = Math.min(...R.map(r => Date.parse(r.x[0]))), t1 = Math.max(...R.map(r => Date.parse(r.x[r.x.length - 1])));
+  const W = 220, H = 30, fx = (v, d) => en ? v.toLocaleString("en-GB", { minimumFractionDigits: d, maximumFractionDigits: d }) : fmt(v, d);
+  const war = Date.parse("2022-02-24"), px = t => 2 + (t - t0) / (t1 - t0) * (W - 6);
+  const spark = r => { const ys = r.y, lo = Math.min(...ys), hi = Math.max(...ys), py = v => H - 3 - (v - lo) / ((hi - lo) || 1) * (H - 6);
+    const pts = r.x.map((x, i) => `${px(Date.parse(x)).toFixed(1)},${py(ys[i]).toFixed(1)}`).join(" "), n = r.x.length - 1;
+    return `<svg class="spk" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><line x1="${px(war)}" x2="${px(war)}" y1="0" y2="${H}" class="spk-war"/>`
+      + `<polyline points="${pts}" class="spk-line"/><line x1="${px(Date.parse(r.x[n])).toFixed(1)}" x2="${px(Date.parse(r.x[n])).toFixed(1)}" y1="${py(ys[n]).toFixed(1)}" y2="${py(ys[n]).toFixed(1)}" class="spk-dot"/></svg>`; };
+  const T = en ? { since: "Since " + new Date(t0).getFullYear(), y21: "2021", last: "Latest", f: "Factor", war: "Dotted: Russia's attack on Ukraine, 24 Feb 2022." }
+               : { since: "Verlauf seit " + new Date(t0).getFullYear(), y21: "2021", last: "zuletzt", f: "Faktor", war: "Gepunktet: russischer Angriff auf die Ukraine, 24.2.2022." };
+  el.innerHTML = `<table class="spktab"><thead><tr><th></th><th>${T.since}</th><th class="n">${T.y21}</th><th class="n">${T.last}</th><th class="n">${T.f}</th></tr></thead><tbody>`
+    + R.map(r => `<tr class="${r.sub ? "spk-sub" : "spk-main"}"><td><span class="lab">${esc(en ? r.label_en : r.label)}</span><span class="u">${esc(en ? r.unit_en : r.unit)}</span></td>`
+      + `<td class="g">${spark(r)}</td><td class="n">${fx(r.base, r.d)}</td><td class="n"><b>${fx(r.last, r.d)}</b><span class="u">${esc(en ? r.when_en : r.when)}</span></td>`
+      + `<td class="n f">×${fx(r.factor, 1)}</td></tr>`).join("") + `</tbody></table><p class="spknote">${T.war}</p>`;
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+}
 // Kurs der Finanzpolitik gegen erwartetes Wachstum: Balken je Zieljahr, Farbe nach der Empfehlung im Gutachten des Vorjahres
 function stanceBarsChart(el, c) {
   const A = c.attach || {}, g = c.series.find(s => s.id === "svr_bip_prog"), f = c.series.find(s => s.id === "svr_stance_f"); if (!g) return;
@@ -1126,25 +1211,23 @@ function stanceBarsChart(el, c) {
 
 function dumbbellChart(el, c) {
   const pick = s => { const ok = s.x.map((x, i) => [x, s.y[i]]).filter(p => p[1] != null); return ok.length ? { a: ok[0], b: ok[ok.length - 1] } : null; };
-  // curve: Reihenfolge wie im Katalog (etwa Laufzeiten von kurz oben nach lang unten), Legende mit Monat statt Jahr, alle Punkte in der ersten Farbe
-  const rows0 = c.series.map(s => Object.assign({ s }, pick(s))).filter(r => r.a), rows = c.curve ? rows0.reverse() : rows0.sort((p, q) => p.b[1] - q.b[1]);
-  const emph = r => c.curve || r.s.id === c.emphasis, col = r => emph(r) ? PAL[0] : "#7f7f7f", lab = rows.map(r => r.s.label);
-  const dd = c.curve ? c.decimals : 1;
-  const per = x => c.curve ? perLong(x, "M") : x.slice(0, 4), y0 = rows.map(r => per(r.a[0])), y1 = rows.map(r => per(r.b[0]));
+  const rows = c.series.map(s => Object.assign({ s }, pick(s))).filter(r => r.a).sort((p, q) => p.b[1] - q.b[1]);
+  const emph = r => r.s.id === c.emphasis, col = r => emph(r) ? PAL[0] : "#7f7f7f", lab = rows.map(r => r.s.label);
+  const y0 = rows.map(r => r.a[0].slice(0, 4)), y1 = rows.map(r => r.b[0].slice(0, 4));
   const A = [...new Set(y0)].length === 1 ? y0[0] : null, B = [...new Set(y1)].length === 1 ? y1[0] : null;
   const shapes = rows.map((r, i) => ({ type: "line", xref: "x", yref: "y", x0: r.a[1], x1: r.b[1], y0: i, y1: i, line: { color: emph(r) ? PAL[0] : "#bfbfbf", width: emph(r) ? 2.5 : 1.5 }, layer: "below" }));
   const traces = [
     { type: "scatter", mode: "markers", x: rows.map(r => r.a[1]), y: rows.map((_, i) => i), name: A || "erstes Jahr", customdata: rows.map((r, i) => `${esc(lab[i])} ${y0[i]}`),
-      marker: { symbol: "circle-open", size: 10, color: rows.map(col), line: { width: 2 } }, hovertemplate: `%{customdata}: %{x:,.${dd}f} %<extra></extra>` },
+      marker: { symbol: "circle-open", size: 10, color: rows.map(col), line: { width: 2 } }, hovertemplate: "%{customdata}: %{x:,.1f} %<extra></extra>" },
     { type: "scatter", mode: "markers+text", x: rows.map(r => r.b[1]), y: rows.map((_, i) => i), name: B || "jüngstes Jahr", customdata: rows.map((r, i) => `${esc(lab[i])} ${y1[i]}`),
-      text: rows.map(r => fmt(r.b[1], dd)), textposition: rows.map(r => r.b[1] >= r.a[1] ? "middle right" : "middle left"), textfont: { family: HS.font, size: 12, color: rows.map(col) },
-      marker: { size: 10, color: rows.map(col) }, hovertemplate: `%{customdata}: %{x:,.${dd}f} %<extra></extra>` }];
+      text: rows.map(r => fmt(r.b[1], 1)), textposition: rows.map(r => r.b[1] >= r.a[1] ? "middle right" : "middle left"), textfont: { family: HS.font, size: 12, color: rows.map(col) },
+      marker: { size: 10, color: rows.map(col) }, hovertemplate: "%{customdata}: %{x:,.1f} %<extra></extra>" }];
   const v = rows.flatMap(r => [r.a[1], r.b[1]]), lo = Math.min(...v), hi = Math.max(...v), p = (hi - lo) * 0.08;
   const L = baseLayout(el);
   Object.assign(L, { height: Math.max(260, 30 * rows.length + 80), hovermode: "closest", showlegend: true, shapes, margin: { l: 6, r: 16, t: 34, b: 30 },
     legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { size: 12 }, itemclick: false, itemdoubleclick: false },
-    xaxis: { range: [c.curve ? lo - p * 3.5 : Math.max(0, lo - p * 3.5), hi + p * 2], showgrid: true, gridcolor: HS.gridH, zeroline: true, zerolinecolor: HS.zero, fixedrange: true, ticksuffix: "\u202f%" },
-    yaxis: { tickmode: "array", tickvals: rows.map((_, i) => i), ticktext: rows.map((r, i) => emph(r) && !c.curve ? `<b>${esc(lab[i])}</b>` : esc(lab[i])), range: [-0.7, rows.length - 0.3], automargin: true, fixedrange: true, ticks: "", showgrid: false, zeroline: false } });
+    xaxis: { range: [Math.max(0, lo - p * 3.5), hi + p * 2], showgrid: true, gridcolor: HS.gridH, zeroline: true, zerolinecolor: HS.zero, fixedrange: true, ticksuffix: "\u202f%" },
+    yaxis: { tickmode: "array", tickvals: rows.map((_, i) => i), ticktext: rows.map((r, i) => emph(r) ? `<b>${esc(lab[i])}</b>` : esc(lab[i])), range: [-0.7, rows.length - 0.3], automargin: true, fixedrange: true, ticks: "", showgrid: false, zeroline: false } });
   el.style.aspectRatio = "auto"; el.style.height = L.height + "px";
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";  // Einheit steht an der Achse
   Plotly.newPlot(el, traces, L, CFG);
@@ -1506,7 +1589,7 @@ function card(c, no) {
   const ownCfg = c.own_scale;  // so in monitor.yaml gesetzt (dann fehlt die gemeinsame Einheit über der Grafik)
   if (c.multiples && (DATA.layout || {}).small_multiples && (c.series || []).length > 2) { if (c.own_scale == null) c.own_scale = true; c.scale_toggle = true; }  // Standard: eigene Skala je Feld, gemeinsam per Schalter
   const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = FA(no); if (c.chart) el.dataset.chart = c.chart;
-  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
+  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" || c.type === "sparktable" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? (c.all_days ? "Täglich" : "Täglich (Arbeitstage)") : c.freq === "S" ? "Halbjährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Pp, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% ggü. Vorjahr"
     : c.type === "tiles" ? "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
@@ -1525,7 +1608,7 @@ function card(c, no) {
   const main = document.createElement("div"); main.className = "cmain"; body.appendChild(main);
   main.insertAdjacentHTML("beforeend", `<div class="unit">${ownCfg ? "" : esc(unit)}</div>`);
   const box = document.createElement("div"); box.className = "chartbox"; main.appendChild(box);
-  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
+  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar", "tpi", "sparktable"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
   const side = document.createElement("aside"); side.className = "cside"; el.querySelector(".cgrid").appendChild(side);
   const capx = (c.caption || "") + ((c.notes || []).length ? " Über „Ausschläge und Sondereffekte“ erscheinen nummerierte, gepunktete Linien an den betroffenen Monaten." : "");
@@ -1574,6 +1657,9 @@ function card(c, no) {
       rb.onclick = () => { c._rec = !(c._rec ?? c.recessions_on); pressed(rb, c._rec); redraw(); };
       htools.appendChild(rb); }
   }
+  if ((c.events || []).length) { // geldpolitische Ereignisse einblendbar
+    const eb = document.createElement("button"); eb.type = "button"; eb.className = "btn"; eb.textContent = VIEWTXT.ev; eb.title = VIEWTXT.evt; pressed(eb, false);
+    eb.onclick = () => { c._ev = !c._ev; pressed(eb, c._ev); redraw(); }; htools.appendChild(eb); }
   if (c.crisis_toggle) { // lange Reihen: Bankenkrisen (rot) und Rezessionen (grau) einblendbar
     [["_crisis", LONGTXT.crisis, c.crisis_years], ["_recy", LONGTXT.rec, c.recession_years]].forEach(([k, lab, ys]) => { if (!(ys || []).length) return;
       const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = lab; pressed(b, c[k]);
@@ -1588,12 +1674,12 @@ function card(c, no) {
       redraw(); };
     htools.appendChild(fb); }
   // Ein/Aus-Schalter als eine Textzeile direkt unter der Grafik, nach Bedeutung geordnet; oben bleibt nur der Wechsel wie „Grafik | Tabelle“
-  { const prio = [VIEWTXT.all, SCALE_TXT.common, SCALE_TXT.zoom, VIEWTXT.rec, LONGTXT.dec, LONGTXT.crisis, LONGTXT.rec, VIEWTXT.edge, VIEWTXT.raw];
+  { const prio = [VIEWTXT.ev, VIEWTXT.all, SCALE_TXT.common, SCALE_TXT.zoom, VIEWTXT.rec, LONGTXT.dec, LONGTXT.crisis, LONGTXT.rec, VIEWTXT.edge, VIEWTXT.raw];
     [...htools.querySelectorAll(":scope > .btn")].sort((a, b) => (prio.indexOf(a.textContent) + 99) % 99 - (prio.indexOf(b.textContent) + 99) % 99).forEach(b => tools.appendChild(b)); }
   const f = c.files || {}, acts = [], u = x => encodeURI(x);
   if (f.xlsx) acts.push(`<a href="${u(f.xlsx)}" download>XLSX</a>`);
   if (f.pptx) acts.push(`<a href="${u(f.pptx)}" download>PPTX</a>`);
-  if (!["heat", "heatbars", "calendar", "event"].includes(c.type)) acts.push(`<button type="button" class="png">PNG</button>`);
+  if (!["heat", "heatbars", "calendar", "event", "tpi"].includes(c.type)) acts.push(`<button type="button" class="png">PNG</button>`);
   if (f.csv) acts.push(`<a href="${u(f.csv)}" download>CSV</a>`);
   if (f.dta) acts.push(`<a href="${u(f.dta)}" download>Stata</a>`);
   const fv = (c.variant && c.variant.files) || {};  // zweite Ansicht der Karte
@@ -1696,8 +1782,11 @@ function render(ch) {
   else if (c.type === "dumbbell") dumbbellChart(ch, c);
   else if (c.type === "stance") stanceChart(ch, c);
   else if (c.type === "cellgrid") cellChart(ch, c);
+  else if (c.type === "sparktable") sparkChart(ch, c);
   else if (c.type === "stance_bars") stanceBarsChart(ch, c);
   else if (c.type === "heat") heatChart(ch, c);
+  else if (c.type === "tpi") tpiChart(ch, c);
+  else if (c.type === "curve") curveChart(ch, c);
   else if (c.type === "heatbars") heatbarsChart(ch, c);
   else if (c.type === "event") eventChart(ch, c);
   else if (c.type === "enso_comm") ensoCommChart(ch, c);
@@ -1870,7 +1959,7 @@ function build() {
     `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
   document.getElementById("deck").innerHTML = [DATA.deck ? `<a href="${encodeURI(DATA.deck)}" download>Alle Abbildungen als PowerPoint</a>` : ""].filter(Boolean).join(" · ");
   const HL = DATA.health || {};
-  if (HL.n) document.getElementById("reuse").insertAdjacentHTML("afterend", `<p class="tnote">Letzter Datenabruf: ${new Date(HL.finished_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })} Uhr; ${HL.ok} von ${HL.n} Reihen erfolgreich${HL.failed.length ? `, fehlgeschlagen: ${HL.failed.length}` : ""}${HL.outdated.length ? `, länger ohne neue Werte: ${HL.outdated.length}` : ""}. Betroffene Abbildungen tragen einen Hinweis.</p>`);
+  if (HL.n) document.getElementById("reuse").insertAdjacentHTML("afterend", `<p class="tnote">Letzter Datenabruf: ${new Date(HL.finished_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })} Uhr; ${HL.ok} von ${HL.n} Reihen erfolgreich${HL.failed.length ? `, fehlgeschlagen: ${HL.failed.length}` : ""}${HL.outdated.length ? `, länger ohne neue Werte: ${HL.outdated.length}` : ""}${(HL.frozen || []).length ? `, zur Prüfung angehalten: ${HL.frozen.length}` : ""}. Betroffene Abbildungen tragen einen Hinweis.</p>`);
   if (S.repo) document.getElementById("releases").href = S.repo + "/releases";
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const LY = DATA.layout || {};
@@ -2198,16 +2287,19 @@ function lageView() {
 (function feedback() {
   const id = (DATA.site || {}).feedback; if (!id || DATA.embed) return;
   const d = document.createElement("dialog"); d.className = "fbd"; d.setAttribute("aria-label", FBTXT.btn);
-  const form = () => `<form method="dialog"><p class="fbto"></p><textarea name="message" required placeholder="${FBTXT.ph}" aria-label="${FBTXT.btn}"></textarea><div class="fbrow"><span class="fbnote">${FBTXT.note}</span><button type="submit" class="fbsend">${FBTXT.send}</button></div></form>`;
-  document.body.append(d); let ctx = null;
-  const open = c => { ctx = c; d.innerHTML = form(); const f = d.querySelector("form"), ta = f.querySelector("textarea");
+  const form = () => `<form method="dialog"><p class="fbto"></p><textarea name="message" required maxlength="2000" placeholder="${FBTXT.ph}" aria-label="${FBTXT.btn}"></textarea><input type="text" name="_gotcha" class="fbhp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="fbrow"><span class="fbnote">${FBTXT.note}</span><button type="submit" class="fbsend">${FBTXT.send}</button></div></form>`;
+  document.body.append(d); let ctx = null, opened = 0, lastSent = 0, sent = 0;  // Bremse gegen Spam: gilt je Seitenaufruf, speichert nichts
+  const open = c => { ctx = c; opened = Date.now(); d.innerHTML = form(); const f = d.querySelector("form"), ta = f.querySelector("textarea");
     f.querySelector(".fbto").textContent = c.title || c.code;
     f.addEventListener("submit", async e => { e.preventDefault(); const msg = ta.value.trim(); if (!msg) return;
-      const sb = f.querySelector(".fbsend"); sb.disabled = true;
-      const body = { message: msg, grafik: `${c.code} ${c.title}`, link: location.href.split("#")[0] + "#" + c.anchor, sprache: DATA.lang || "de", _subject: `Konjunkturmonitor: Feedback zu ${c.code}` };
+      const sb = f.querySelector(".fbsend"), done = () => { f.innerHTML = `<p class="fbok">${FBTXT.ok}</p>`; setTimeout(() => d.close(), 1400); };
+      if (f.querySelector(".fbhp").value || Date.now() - opened < 3000) return done();  // Köderfeld gefüllt oder schneller als ein Mensch: nicht senden
+      if (Date.now() - lastSent < 30000 || sent >= 5) { f.querySelector(".fbnote").textContent = FBTXT.wait; return; }
+      sb.disabled = true;
+      const body = { message: msg.slice(0, 2000), grafik: `${c.code} ${c.title}`, link: location.href.split("#")[0] + "#" + c.anchor, sprache: DATA.lang || "de", _subject: `Konjunkturmonitor: Feedback zu ${c.code}` };
       try { const r = await fetch(`https://formspree.io/f/${encodeURIComponent(id)}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) });
         if (!r.ok) throw new Error(r.status);
-        f.innerHTML = `<p class="fbok">${FBTXT.ok}</p>`; setTimeout(() => d.close(), 1400);
+        lastSent = Date.now(); sent++; done();
       } catch (x) { sb.disabled = false; f.querySelector(".fbnote").textContent = FBTXT.err; } });
     d.showModal(); ta.focus(); };
   d.addEventListener("click", e => { if (e.target === d) d.close(); });  // Klick daneben schließt
