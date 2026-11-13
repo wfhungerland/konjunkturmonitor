@@ -562,7 +562,7 @@ def tidy(s: str) -> str:
     s = re.sub(r"(?<![\w])(G|g)egenüber ", lambda m: m.group(1) + "gü. ", s)
     s = re.sub(r"Prozentpunkte[n]?", "Pp", s)
     s = re.sub(r"(\d) ?%", "\\1\u202f%", s)
-    s = s.replace("\u2212", "-")
+    s = re.sub(r"(?<![\w\-])-(?=\d)", "\u2212", s)  # Minuszeichen statt Bindestrich vor Zahlen
     return s
 
 
@@ -581,8 +581,8 @@ def _last_x(c: dict) -> str | None:
     if c.get("type") == "tiles":
         return c["tiles"].get("last")
     ss = [s for s in c.get("series") or [] if isinstance(s, dict) and s.get("x")]
-    if c.get("type") == "stacked" and any(s.get("style") == "bar" for s in ss):
-        ss = [s for s in ss if s.get("style") == "bar"]
+    if c.get("type") == "stacked" and any(s.get("style") == "bar" for s in ss) and "gdp" not in (c.get("chart") or ""):
+        ss = [s for s in ss if s.get("style") == "bar"]  # BIP: die Rate liegt ein Quartal vor den Beiträgen vor und zählt mit
     xs = [s["x"][-1] for s in ss]
     return max(xs) if xs else None
 
@@ -788,11 +788,11 @@ def chart_sentences(c: dict) -> list[str]:
             what, noun = c.get("what") or "Zahl", c.get("count_noun") or "Fälle"
             cnt = lambda r: f" ({int(r['sum']):,} {noun})".replace(",", ".") if r.get("sum") is not None else ""
             dat = noun if noun.endswith("n") else noun + "n"  # Dativ Plural
-            pre = f"{w['span']}, unter den {ZAHLWORT.get(len(big), len(big))} Ländern mit den meisten {dat}: " if len(big) < len(w["rows"]) else f"{w['span']}: "
-            out = [f"{pre}Den stärksten Anstieg ggü. demselben Zeitraum ein Jahr zuvor verzeichnete {rows[-1]['name']} mit {num(rows[-1]['change'], 1, True)} %{cnt(rows[-1])}."]
-            low = rows[0]
+            among = f" unter den {ZAHLWORT.get(len(big), len(big))} Ländern mit den meisten {dat}" if len(big) < len(w["rows"]) else ""
             loc = lambda n: {"Saarland": "im Saarland"}.get(n, "in " + n)
-            out.append(f"Am {'stärksten gesunken' if low['change'] < 0 else 'wenigsten gestiegen'} ist die {what} {loc(low['name'])} mit {num(low['change'], 1, True)} %{cnt(low)}.")
+            out = [f"Von {w['span']} {'stieg' if rows[-1]['change'] > 0 else 'sank'} die {what}{among} am {'stärksten' if rows[-1]['change'] > 0 else 'wenigsten'} {loc(rows[-1]['name'])}: {num(rows[-1]['change'], 1, True)} % ggü. demselben Zeitraum ein Jahr zuvor{cnt(rows[-1])}."]
+            low = rows[0]
+            out.append(f"Am {'stärksten sank' if low['change'] < 0 else 'wenigsten stieg'} sie {loc(low['name'])}: {num(low['change'], 1, True)} %{cnt(low)}.")
             return out
         if typ == "enso_comm" and c.get("enso"):
             E = c["enso"]
@@ -895,12 +895,12 @@ def chart_sentences(c: dict) -> list[str]:
             when = f"Im {_per(c['x'][i], 'M')}"
             sp = _subject(c.get("series") if isinstance(c.get("series"), str) else None, lab) or {"subj": f"der Wert für „{lab}“", "pl": False}
             subj, lv = sp["subj"], "lagen" if sp["pl"] else "lag"
-            out = [f"{when} {lv} {subj} bei {num(c['y'][i], d)}{su}."]
+            m = MONTHS[int(c['x'][i][5:7]) - 1]
+            v0, nv = c["y"][i], c["norm"][i]
+            cmp = f", {num(abs(v0 / nv - 1) * 100, 0)} % {'mehr' if v0 > nv else 'weniger'} als im {m} im Schnitt der Jahre 2015 bis 2019" if nv and round(abs(v0 / nv - 1) * 100) >= 1 else (", etwa so viel wie im " + m + " im Schnitt der Jahre 2015 bis 2019" if nv else "")
+            out = [f"{when} {lv} {subj} bei {num(v0, d)}{su}{cmp}."]
             if c["ma12"][i] is not None:
-                out.append(f"In den zwölf Monaten bis {_per(c['x'][i], 'M')} {lv} {subj} im Mittel bei {num(c['ma12'][i], d)}{su} je Monat.")
-            if c["norm"][i] is not None:
-                m = MONTHS[int(c['x'][i][5:7]) - 1]
-                out.append(f"Vor der Pandemie (2015 bis 2019) {lv} {subj} in einem {m} im Schnitt bei {num(c['norm'][i], d)}{su}.")
+                out.append(f"Im Mittel der zwölf Monate bis {_per(c['x'][i], 'M')} waren es {num(c['ma12'][i], d)}{su} je Monat.")
             return out
         if typ == "latest":
             b = c["bars"]
@@ -913,6 +913,12 @@ def chart_sentences(c: dict) -> list[str]:
                     out.append(f"Vom {base} bis zum {_per(bs[0]['period'], freq)} sank die Zahl der Erwerbstätigen im Bereich „{bs[0]['label']}“ am stärksten: um {num(abs(bs[0]['value']), d)} {u}{pc(bs[0])}.")
                 return out
             when = _when(b[0]["period"], freq)
+            if isinstance(c.get("combine"), dict) and c["combine"].get("extremes"):  # nur stärkster Anstieg und stärkster Rückgang
+                hi, lo = max(b, key=lambda x: x["value"]), min(b, key=lambda x: x["value"])
+                nm = lambda x: c["combine"].get("names", {}).get(x["label"], x["label"])
+                out = f"{when} stiegen {nm(hi)} am stärksten ({num(hi['value'], d, True)} %)"
+                out += f", {nm(lo)} sanken am stärksten ({num(lo['value'], d, True)} %)" if lo["value"] < -0.05 else f", am schwächsten entwickelten sich {nm(lo)} ({num(lo['value'], d, True)} %)"
+                return [out + f"; {c['combine']['tail']}."]
             if isinstance(c.get("combine"), dict):  # alle Balken in einem Satz
                 items = [f"{x['label']} {num(x['value'], d, True)} %" for x in b]
                 return [f"{when} {c['combine']['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0]) + "."]
@@ -969,8 +975,11 @@ def chart_sentences(c: dict) -> list[str]:
             when = _when(last, freq)
             whole = c.get("whole") or ("das Wachstum des BIP" if "gdp" in c.get("chart", "") else "die Rate insgesamt")
             if tot and "gdp" in c.get("chart", ""):
-                g = at(tot[0])
-                out = [f"{when} {'wuchs' if g > 0.05 else 'schrumpfte' if g < -0.05 else 'stagnierte'} das reale BIP{' um ' + num(abs(g), d) + ' % ggü. dem Vorquartal' if abs(g) > 0.05 else ''}."]
+                t0 = next(s for s in series if s.get("style") != "bar")  # Rate liegt oft ein Quartal vor den Beiträgen vor
+                g, wg = t0["y"][-1], _when(t0["x"][-1], freq)
+                out = [f"{wg} {'wuchs' if g > 0.05 else 'schrumpfte' if g < -0.05 else 'stagnierte'} das reale BIP{' um ' + num(abs(g), d) + ' % ggü. dem Vorquartal' if abs(g) > 0.05 else ''}."]
+                if t0["x"][-1] != last:
+                    when = f"Die Aufteilung liegt bis zum {_per(last, freq)} vor; im {_per(last, freq)}"
             elif tot and c.get("chart") == "cpi_contrib":
                 out = [f"{when} lag die Inflationsrate bei {num(at(tot[0]), d)} % ggü. dem Vorjahresmonat."]
             elif tot:
@@ -981,6 +990,7 @@ def chart_sentences(c: dict) -> list[str]:
                 hi, lo = max(bars, key=at), min(bars, key=at)
                 sh = _subject(None, hi["label"]) or {"subj": f"„{hi['label']}“", "pl": False}
                 out.append(f"{when} {'trugen' if sh['pl'] else 'trug'} {sh['subj']} am meisten bei: {num(at(hi), d, True)} Pp.")
+                when = _when(last, freq)
                 if round(at(lo), d) < 0:
                     sl = _subject(None, lo["label"]) or {"subj": f"„{lo['label']}“", "pl": False}
                     out.append(f"{when} {'dämpften' if sl['pl'] else 'dämpfte'} {sl['subj']} am stärksten: {num(at(lo), d, True)} Pp.")
