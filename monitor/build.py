@@ -776,10 +776,15 @@ def chart_sentences(c: dict) -> list[str]:
             w = c["tiles"]
             loc = lambda n: {"Saarland": "im Saarland"}.get(n, "in " + n)
             hi, lo = max(w["rows"], key=lambda r: r["level"]), min(w["rows"], key=lambda r: r["level"])
-            up = max(w["rows"], key=lambda r: r["change"])
+            up, dn = max(w["rows"], key=lambda r: r["change"]), min(w["rows"], key=lambda r: r["change"])
             out = [f"Im Jahr {w['span']} war die {c.get('what') or 'Quote'} {loc(hi['name'])} mit {num(hi['level'], 1)} % am höchsten und {loc(lo['name'])} mit {num(lo['level'], 1)} % am niedrigsten."]
-            if up["change"] > 0:
-                out.append(f"Am stärksten gestiegen ist sie im Jahr {w['span']} {loc(up['name'])}: um {num(up['change'], 1)} Pp ggü. dem Vorjahr.")
+            n, n_up = len(w["rows"]), sum(1 for r in w["rows"] if round(r["change"], 1) > 0)
+            n_dn = sum(1 for r in w["rows"] if round(r["change"], 1) < 0)
+            cnt = lambda k: f"allen {ZAHLWORT.get(n, n)}" if k == n else f"{ZAHLWORT.get(k, k)} von {ZAHLWORT[n]}" if n in ZAHLWORT else f"{k} von {n}"  # Zahlwort nur, wenn beide Zahlen eins haben
+            if n_up:  # Breite: in wie vielen Ländern die Quote stieg, und wo am stärksten
+                out.append(f"In {cnt(n_up)} Ländern stieg sie ggü. dem Vorjahr, am stärksten {loc(up['name'])} ({num(up['change'], 1, True)} Pp).")
+            elif n_dn:
+                out.append(f"In {cnt(n_dn)} Ländern sank sie ggü. dem Vorjahr, am stärksten {loc(dn['name'])} ({num(dn['change'], 1, True)} Pp).")
             return out
         if typ == "tiles":
             w = c["tiles"]
@@ -1011,6 +1016,32 @@ def chart_sentences(c: dict) -> list[str]:
         series = [s for s in series if s.get("style") != "norm"]
         if c.get("emphasis"):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
+        if c.get("tpl"):  # ganze Sätze aus monitor.yaml mit Werten mehrerer Reihen, etwa {v[id]}; Stichtag ist der jüngste Zeitpunkt, den alle Reihen haben
+            last = min(s["x"][-1] for s in series)
+            F = {k: {} for k in ("v", "n", "full", "chg", "pabs", "mehr", "ueber", "abs100", "ueber100")}
+            vals, vals0 = {}, {}
+            for s in series:
+                if last not in s["x"] or s["y"][s["x"].index(last)] is None:
+                    continue
+                i, sid = s["x"].index(last), s["id"]
+                v = s["y"][i]
+                ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
+                k = max((j for j, x in enumerate(s["x"]) if x <= ago), default=None)
+                y0 = s["y"][k] if k is not None else None
+                vals[sid], vals0[sid] = v, y0
+                F["v"][sid], F["n"][sid] = val(v), num(v, d)
+                F["full"][sid] = f"{int(round(v)) * 1000:,}".replace(",", ".")
+                F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
+                if y0:
+                    pc = (v / y0 - 1) * 100
+                    F["chg"][sid], F["pabs"][sid] = num(pc, 1, True) + " %", num(abs(pc), 1)
+                    F["mehr"][sid], F["ueber"][sid] = ("mehr" if pc > 0 else "weniger"), ("über" if pc > 0 else "unter")
+            F["q"] = {f"{a}/{b}": num(vals[a] / vals[b], 1) for a in vals for b in vals if a != b and vals[b]}
+            F["q0"] = {f"{a}/{b}": num(vals0[a] / vals0[b], 1) for a in vals0 for b in vals0 if a != b and vals0[a] is not None and vals0[b]}
+            try:
+                return [t.format(when=_when(last, freq), **F) for t in c["tpl"]]
+            except KeyError:
+                return []
         if c.get("brief"):  # ein Satz je Vergleich: ggü. Vorjahresmonat und drei Monate ggü. den drei Monaten davor
             nm, last = c["brief"], max(s["x"][-1] for s in series)
             ss = [s for s in series if s["x"][-1] == last and s.get("id") in nm and len(s["y"]) > 13]
@@ -1027,6 +1058,22 @@ def chart_sentences(c: dict) -> list[str]:
             last = min(s["x"][-1] for s in series) if cb.get("common") else max(s["x"][-1] for s in series)  # common: jüngster Zeitraum, den alle haben
             sym = "%" if unit.startswith("%") else "Pp" if unit.startswith(("Pp", "Saldo")) else u
             at = lambda s: s["y"][s["x"].index(last)] if last in s["x"] else None
+            if cb.get("where") and series and at(series[0]) is not None and unit.startswith("%"):  # Verb vorn: Gesamtgröße, dann Bereiche mit gleicher und mit anderer Richtung
+                sg = lambda v: (round(v, d) > 0) - (round(v, d) < 0)
+                verb = {1: "stieg", -1: "sank", 0: "veränderte sich kaum"}
+                verb_sie = {1: "stieg sie", -1: "sank sie", 0: "veränderte sie sich kaum"}
+                tot, rest = series[0], [s for s in series[1:] if at(s) is not None]
+                amt = lambda v: f" um {num(abs(v), d)} {sym}" if sg(v) else ""
+                g0 = sg(at(tot))
+                same = [f"{cb['where'].get(s['label'], s['label'])}{amt(at(s))}" for s in rest if sg(at(s)) == g0]
+                out = f"{_when(last, freq)} {verb[g0]} {cb['subj']}{amt(at(tot))} ggü. dem {yoy_word}" + "".join(", " + x for x in same)
+                for g in (1, -1, 0):
+                    xs = [f"{cb['where'].get(s['label'], s['label'])}{amt(at(s))}" for s in rest if sg(at(s)) == g and g != g0]
+                    if xs:
+                        head, *more = xs
+                        h = head.split(" um ")[0]
+                        out += f"; {h} {verb_sie[g]}{head[len(h):]}" + "".join(", " + x for x in more)
+                return [out + "."]
             items = [f"{cb.get('pre', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))} {sym}".strip() for s in series if at(s) is not None]
             if items:
                 return [f"{_when(last, freq)} {cb['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0]) + "."]
@@ -1063,7 +1110,7 @@ def chart_sentences(c: dict) -> list[str]:
                 ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
                 k = max((i for i, x in enumerate(s["x"]) if x <= ago), default=None)
                 yago = s["y"][k] if k is not None else None
-            su = s.get("unit") if c.get("own_scale") else unit
+            su = s.get("unit") if c.get("own_scale") or (c.get("each_last") and (s.get("unit") or "").startswith(("% des", "% der"))) else unit
             su = (su or "").split(",")[0]
             su = "Pp" if su.startswith("Prozentpunkte") else su
             uu = su if su.startswith(("% des", "% der")) else "%" if su.startswith("%") else "Pp" if su.startswith(("Pp", "Saldo")) else "" if su.startswith("Index") else su
