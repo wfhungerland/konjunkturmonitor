@@ -75,3 +75,13 @@ def test_trade_sums_partners_over_twelve_months(monkeypatch):
     out = geopolitik.trade(raw)
     assert list(out["a"].index.strftime("%Y-%m")) == ["2020-12", "2021-01"]  # erst ab zwölf Monaten, ohne fehlenden Monat
     assert out["a"].iloc[-1] == 36 and out["b"].iloc[-1] == 6
+
+
+def test_kmpt_reads_origin_table(tmp_path):
+    rows = [[None, "Figure 3"], [None, None], [None, "Year", "Germany only", "Germany and foreign partnership", "European, non-Germany", "Non-European only", "Total"],
+            [None, 2024, 25.0, 11.0, 0.0, 4.3, 40.3], [None, 2099, 1.0, 1.0, 1.0, 1.0, 4.0], [None, "Total", 26.0, 12.0, 1.0, 5.3, 44.3]]
+    path = tmp_path / "kmpt.xlsx"
+    pd.DataFrame(rows).to_excel(path, sheet_name="Fig 3 DE Origin (%)", header=False, index=False)
+    out = geopolitik.kmpt(path)
+    assert list(out["kmpt_noneu"].index.year) == [2024]  # ohne laufendes oder künftiges Jahr und ohne Summenzeile
+    assert out["kmpt_de_only"].iloc[0] == 25.0 and out["kmpt_noneu"].iloc[0] == 4.3
