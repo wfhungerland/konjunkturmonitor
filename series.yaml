@@ -196,6 +196,8 @@ charts:
   ecb_rates: {title: "Leitzinsen der EZB", decimals: 2}
   ecb_bs: {title: "Bilanz des Eurosystems", decimals: 2}
   spreads: {title: "Renditeabstand zu Bundesanleihen", decimals: 2}
+  fr_stress: {title: "Finanzstress in Frankreich und Nachbarländern", decimals: 2}
+  fr_exports: {title: "Frankreichs Anteil an den deutschen Exporten", decimals: 1}
   qe_prog: {title: "Anleihebestände der EZB nach Programm", decimals: 0}
   qe_land: {title: "Käufe von Staatsanleihen nach Land", decimals: 0}
   zinskurven: {title: "Zinskurven von Staatsanleihen", decimals: 2}
@@ -1937,6 +1939,95 @@ series:
     adjustment: nicht bereinigt
     chart: curve_slope
     label: "Spanien"
+
+  - id: ciss_fr
+    block: finanzen
+    source: ecb
+    key: CISS/D.FR.Z0Z.4F.EC.SS_CIN.IDX
+    params: {aggregate: monthly_mean}
+    title: "Finanzstress-Index der EZB (CISS), Frankreich, Monatsmittel"
+    unit: "Punkte, Skala 0 bis 1"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    chart: fr_stress
+    label: "Frankreich"
+
+  - id: ciss_de
+    block: finanzen
+    source: ecb
+    key: CISS/D.DE.Z0Z.4F.EC.SS_CIN.IDX
+    params: {aggregate: monthly_mean}
+    title: "Finanzstress-Index der EZB (CISS), Deutschland, Monatsmittel"
+    unit: "Punkte, Skala 0 bis 1"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    chart: fr_stress
+    label: "Deutschland"
+
+  - id: ciss_it
+    block: finanzen
+    source: ecb
+    key: CISS/D.IT.Z0Z.4F.EC.SS_CIN.IDX
+    params: {aggregate: monthly_mean}
+    title: "Finanzstress-Index der EZB (CISS), Italien, Monatsmittel"
+    unit: "Punkte, Skala 0 bis 1"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    chart: fr_stress
+    label: "Italien"
+
+  - id: ciss_es
+    block: finanzen
+    source: ecb
+    key: CISS/D.ES.Z0Z.4F.EC.SS_CIN.IDX
+    params: {aggregate: monthly_mean}
+    title: "Finanzstress-Index der EZB (CISS), Spanien, Monatsmittel"
+    unit: "Punkte, Skala 0 bis 1"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    chart: fr_stress
+    label: "Spanien"
+
+  - id: fr_deficit
+    block: staat
+    source: eurostat
+    key: gov_10dd_edpt1
+    params: {geo: FR, sector: S13, unit: PC_GDP, na_item: B9}
+    title: "Finanzierungssaldo des Staates, Frankreich"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2000-01-01"
+    stale_after_months: 24
+
+  - id: fr_debt
+    block: staat
+    source: eurostat
+    key: gov_10dd_edpt1
+    params: {geo: FR, sector: S13, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates, Frankreich"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2000-01-01"
+    stale_after_months: 24
+
+  - id: de_exp_share_fr
+    block: export
+    source: static
+    key: de_exp_share_fr
+    params: {source_name: "Deutsche Bundesbank, Außenhandel nach Ländern (eigene Berechnung)"}
+    license: "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)"
+    title: "Anteil Frankreichs an den deutschen Warenexporten, Summe der letzten zwölf Monate"
+    unit: "%"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: fr_exports
+    label: "Anteil Frankreichs"
 
   - id: lt_de
     block: finanzen
