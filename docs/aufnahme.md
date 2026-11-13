@@ -18,17 +18,21 @@ Sitz oder Niederlassung: Für die 30 häufigsten Auftragnehmer zählt die Auswer
 
 Erster Lauf 13.11.2026 (Cloud): 56.734 Bauzuschläge seit Januar 2025, je Monat vollständig gegen die Trefferzahl von TED. Ergebnis: `docs/aufnahme_ted.md`, Kantenliste `data/static/aufnahme_kanten.csv`. Die Antwortfelder kommen als Listen oder Sprach-Wörterbücher; `tender-value` ist eine Liste von Texten, fehlende Werte stehen als -1. TED meldet Thüringer Kreise teils mit NUTS-2021-Codes; das Skript schlüsselt sie auf NUTS 2024 um. Für die Rohdaten unter `C:\Daten\TED` den Abzug dort wiederholen (`TED abrufen.bat`).
 
-## Kreisreihen von BA und Regionalstatistik (Schreibtischprüfung 14.11.2026)
+## Kreisreihen von BA und Regionalstatistik
 
-| Baustein | Quelle | Kreisebene | Stand der Prüfung |
+Abruf: `python -m monitor.aufnahme_kreise kreise <ordner>` (Kreisliste von Destatis mit NUTS 3, Fläche, Bevölkerung) und `python -m monitor.aufnahme_kreise ba <ordner> --stichtag 202603 --ziel data/static`. Nur Standardbibliothek. Ergebnis: `data/static/aufnahme_ba_kreise.csv` im Langformat (ags, nuts3, stichtag, merkmal, wert).
+
+Quelle ist der „Regionalreport über Beschäftigte (Quartalszahlen)“ der BA, eine Excel-Datei je Kreis und Quartal (`.../Statistikdaten/Detail/<JJJJMM>/iiia6/beschaeftigung-reg-bst-reg/bst-reg-<AGS>-0-<JJJJMM>-xlsx.xlsx`), jeweils mit fünf Quartalsstichtagen, Arbeitsort. Ausgelesen werden sozialversicherungspflichtig Beschäftigte insgesamt, Ausländer, Baugewerbe (WZ-Abschnitt F), die BA-Aggregate Bauberufe und Handwerksberufe, die Berufshauptgruppen 31 bis 34 der KldB 2010 sowie Helfer und Fachkräfte. Die BA drosselt Massenabrufe (HTTP 429); das Skript wartet dann und nimmt bereits geladene Dateien aus dem Zwischenspeicher.
+
+| Baustein | Quelle | Kreisebene | Stand der Prüfung (13.11.2026) |
 |---|---|---|---|
-| Beschäftigte nach WZ 41-43 | BA, Beschäftigungsstatistik | ja | Standard, Tabellenabruf noch nicht getestet |
-| Beschäftigte in Berufshauptgruppen 32/33 | BA, Beschäftigungsstatistik | wahrscheinlich | zu prüfen, ob Kreis mal Berufshauptgruppe frei verfügbar ist |
-| Ausländische Beschäftigte nach Staatsangehörigkeit | BA, „Beschäftigte nach Staatsangehörigkeiten – Deutschland, Länder und Kreise“, quartalsweise | ja | Inhalt nennt Beruf und Wirtschaftszweig; ob die Kreuzung mit dem Beruf auf Kreisebene vorliegt, ist offen |
-| Gemeldete Stellen, Vakanzzeit nach Berufshauptgruppen | BA, dynamische Tabellen „Gemeldete Arbeitsstellen“ | ja (auch Agenturen, Geschäftsstellen) | brauchbar für Engpass; Arbeitslose je Stelle aus Arbeitslosenstatistik ergänzen |
+| Beschäftigte im Baugewerbe | BA, Regionalreport | ja, nur Abschnitt F | WZ 41, 42, 43 einzeln nicht im Regionalreport; dafür bräuchte es die interaktive Statistik „Branchen im Fokus“ (CSV-Export) |
+| Beschäftigte in Berufshauptgruppen 31-34, Bauberufe | BA, Regionalreport | ja | im Abruf |
+| Ausländische Beschäftigte | BA, Regionalreport | ja, nur insgesamt | Kreuzung mit Beruf oder Staatsangehörigkeit nicht im Regionalreport; „Beschäftigte nach Staatsangehörigkeiten – Kreise“ noch zu prüfen |
+| Gemeldete Stellen, Vakanzzeit nach Berufshauptgruppen | BA, dynamische Tabellen „Gemeldete Arbeitsstellen“ | ja | noch nicht abgerufen; Arbeitslose je Stelle aus Arbeitslosenstatistik ergänzen |
 | Engpassanalyse (6 Indikatoren) | BA | nein, nur Bund und Länder | nur als Kalibrierung |
 | Zustimmungen zur Arbeitsaufnahme Drittstaatsangehöriger | BA, jährlich | ja | Ergänzung zur Migration |
-| Betriebe, tätige Personen, baugewerblicher Umsatz | Regionalstatistik 44231-01-03-4, Stichtag 30.06., ab 2017 | ja | Kreisergebnisse der Jahreserhebungen beziehen sich teils auf den Unternehmenssitz, dasselbe Problem wie bei TED |
+| Betriebe, tätige Personen, baugewerblicher Umsatz | Regionalstatistik 44231-01-03-4, Stichtag 30.06., ab 2017 | ja | Schnittstelle (GENESIS-Webservice) verlangt ein registriertes Konto, Gastzugang abgewiesen; Kreisergebnisse beziehen sich teils auf den Unternehmenssitz |
 
 Entsendungen (SOKA-BAU, A1-Bescheinigungen) und laufende Großprojekte: noch nicht geprüft.
 
