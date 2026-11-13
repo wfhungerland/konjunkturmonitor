@@ -58,7 +58,7 @@ series:
   ez_unemp_ea20: [die Erwerbslosenquote im Euroraum, s]
   ez_ip_ea21: [die Produktion im Verarbeitenden Gewerbe im Euroraum, s]
   ez_esi_ea21: [die Wirtschaftliche Einschätzung im Euroraum, s]
-  de_wai: [der wöchentliche Aktivitätsindex der Bundesbank, s]
+  de_wai: {tpl: "{when} schätzte der Aktivitätsindex der Bundesbank das Wachstum der Wirtschaftsleistung in den letzten 13 Wochen auf {v} ggü. den 13 Wochen davor."}
   de_maut: [die Fahrleistung der Lkw auf Autobahnen, s]
   de_gdp_index: [die Wirtschaftsleistung (reales BIP), s]
   de_cpi_yoy: [die Verbraucherpreise insgesamt, p]
