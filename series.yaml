@@ -3370,7 +3370,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 54
+    stale_after_months: 66
     chart: hh_spend
     label: "Wohnen und Energie"
 
@@ -3384,7 +3384,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 54
+    stale_after_months: 66
     chart: hh_spend
     label: "Verkehr"
 
@@ -3398,7 +3398,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 54
+    stale_after_months: 66
     chart: hh_spend
     label: "Nahrungsmittel"
 
@@ -3412,7 +3412,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 54
+    stale_after_months: 66
     chart: hh_spend
     label: "Freizeit und Kultur"
 
