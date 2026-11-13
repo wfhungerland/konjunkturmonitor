@@ -2,7 +2,7 @@
 
 Aufruf: python tests/check_onepager.py onepager.docx
 Geprüft wird: heiles ZIP, A4, Schrift Arial Narrow, je Abbildung Sachstand-Etikett oder Bewertung und eine Quelle,
-mindestens ein Bild, jedes Bild ein PNG, keine internen Kürzel wie „Haushalte-2“ im sichtbaren Text.
+mindestens ein Bild, jedes Bild ein PNG, Vektorbilder (SVG) gültig und mit PNG als Ersatzbild, keine internen Kürzel wie „Haushalte-2“ im sichtbaren Text.
 """
 import re
 import sys
@@ -23,9 +23,19 @@ def check(path: str) -> list[str]:
         ET.fromstring(z.read("[Content_Types].xml"))
         ET.fromstring(z.read("word/_rels/document.xml.rels"))
         media = [n for n in names if n.startswith("word/media/")]
+        svgs = [n for n in media if n.endswith(".svg")]
+        media = [n for n in media if not n.endswith(".svg")]
         for n in media:
             if z.read(n)[:8] != b"\x89PNG\r\n\x1a\n":
                 errors.append(f"{n} ist kein PNG")
+        for n in svgs:  # Vektorbild: gültiges XML, und das PNG als Ersatzbild liegt daneben
+            if not ET.fromstring(z.read(n)).tag.endswith("}svg"):
+                errors.append(f"{n} ist kein SVG")
+            if n[:-4] + ".png" not in media:
+                errors.append(f"{n} hat kein Ersatzbild")
+        rels = z.read("word/_rels/document.xml.rels").decode("utf-8")
+        if doc.findall(".//{http://schemas.microsoft.com/office/drawing/2016/SVG/main}svgBlip").__len__() != len(svgs) or rels.count(".svg") != len(svgs):
+            errors.append("Zahl der Vektorbilder und ihrer Verweise weicht ab")
     size = doc.find(f".//{W}pgSz")
     if size is None or (size.get(f"{W}w"), size.get(f"{W}h")) != ("11906", "16838"):
         errors.append("Seitenformat ist nicht A4")
@@ -49,7 +59,7 @@ def check(path: str) -> list[str]:
     short = re.findall(r"\b[A-ZÄÖÜ][a-zäöüß]+-\d{1,2}\b", text(doc))
     if short:
         errors.append(f"internes Kürzel im Text: {short[:3]}")
-    print(f"Onepager-Datei: {len(blocks)} Abbildungen, {len(media)} Bilder")
+    print(f"Onepager-Datei: {len(blocks)} Abbildungen, {len(media)} Bilder, davon {len(svgs)} als Vektorgrafik")
     return errors
 
 

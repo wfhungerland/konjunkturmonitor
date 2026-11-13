@@ -2180,9 +2180,9 @@ function build() {
 // Onepager (Word): baut aus gemerkten Abbildungen im Browser eine DOCX-Datei (A4, eine Spalte, Text links, Grafik rechts).
 // Ohne Fremdbibliothek: eine DOCX-Datei ist ein unkomprimiertes ZIP aus XML und PNG. Je Abbildung: Leitfrage, Sachstand
 // (erster automatischer Satz, Zahlen fett), Bewertung (Platzhalter zum Ausfüllen), Grafik, Einheit und Quelle.
-// Einfache Liniengrafiken zeichnet die Seite für den Druck neu (ohne Rahmen und Legende, jüngster Wert an der Linie);
+// Linien, gestapelte Balken und Länderkarten zeichnet die Seite für den Druck neu, als Vektorgrafik (SVG) mit PNG als Ersatzbild;
 // alle anderen nehmen das Vorschaubild oder die lebendige Grafik. Aufruf von überall: kmOnepager(["retail", …]).
-const WORDTXT = { btn: "Als Onepager (Word)", busy: "Word-Datei entsteht …", sub: n => n === 1 ? "Eine gemerkte Abbildung" : `${n} gemerkte Abbildungen`, stand: "Stand", facts: "Sachstand", view: "Bewertung", add: "[ergänzen]", src: "Quelle", pct: "Prozent", own: "eigene Berechnung", lic: "Texte und eigene Abbildungen: CC BY 4.0. Daten: Lizenzen der Quellen.", foot: "Sachstand: automatisch aus den jüngsten Daten. Bewertung: Einschätzung der Verfasserin oder des Verfassers.", file: "Lesezeichen", loc: "de-DE" };
+const WORDTXT = { btn: "Als Onepager (Word)", busy: "Word-Datei entsteht …", sub: n => n === 1 ? "Eine gemerkte Abbildung" : `${n} gemerkte Abbildungen`, stand: "Stand", facts: "Sachstand", view: "Bewertung", add: "[ergänzen]", src: "Quelle", pct: "Prozent", own: "eigene Berechnung", pp: "Prozentpunkte", hi: "Höchste Werte", lo: "Niedrigste Werte", up: "Stärkster Anstieg", dn: "Stärkster Rückgang", weak: "Schwächste Entwicklung", big: "die acht größten Länder", chg: "Veränderung zum Vorjahr", lic: "Texte und eigene Abbildungen: CC BY 4.0. Daten: Lizenzen der Quellen.", foot: "Sachstand: automatisch aus den jüngsten Daten. Bewertung: Einschätzung der Verfasserin oder des Verfassers.", file: "Lesezeichen", loc: "de-DE" };
 const kmZip = files => {  // [[Name, Uint8Array], …] zu einem ZIP ohne Kompression
   const T = Uint32Array.from({ length: 256 }, (_, n) => { for (let k = 0; k < 8; k++) n = n & 1 ? 0xEDB88320 ^ (n >>> 1) : n >>> 1; return n >>> 0; });
   const crc = b => { let c = ~0; for (let i = 0; i < b.length; i++) c = T[(c ^ b[i]) & 255] ^ (c >>> 8); return ~c >>> 0; };
@@ -2196,49 +2196,104 @@ const kmZip = files => {  // [[Name, Uint8Array], …] zu einem ZIP ohne Kompres
   return new Blob([...parts, ...dir, rec(0x06054b50, [[2, 0], [2, 0], [2, files.length], [2, files.length], [4, dlen], [4, off], [2, 0]])],
     { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
 };
-const KM_SPECIAL = ["variant", "alt", "toggle", "multiples", "transform", "norm", "fx", "scale", "diff", "groups", "proj", "pick", "bilanz", "threshold", "own_scale", "combine", "of", "mad_band", "pot_band", "daily", "each_last", "series_ref", "styles", "bar_colors"];
-const kmSimple = c => c.type === "line" && (c.series || []).length >= 1 && c.series.length <= 3 && c.series.every(s => s.style === "line" && s.x && s.y)
-  && new Set(c.series.map(s => s.unit)).size === 1 && !KM_SPECIAL.some(k => c[k]);
-function kmChart(c) {  // 7,7 × 2,3 cm bei 300 dpi
-  const W = 924, H = 276, cv = Object.assign(document.createElement("canvas"), { width: W, height: H }), g = cv.getContext("2d");
-  const FONT = '"Arial Narrow", "Liberation Sans Narrow", Arial, sans-serif', NAVY = "#002060";
-  const S = c.series.map(s => { const y = s.y; return { label: s.label, pts: s.x.map((x, i) => [Date.parse(x), y[i]])  // ungeglättet: der Wert an der Linie ist der Wert im Sachstand
-   .filter(p => p[1] != null && isFinite(p[1])) }; }).filter(s => s.pts.length > 1);
-  if (!S.length) return null;
-  const all = S.flatMap(s => s.pts), x0 = Math.min(...all.map(p => p[0])), x1 = Math.max(...all.map(p => p[0]));
-  let lo = Math.min(...all.map(p => p[1])), hi = Math.max(...all.map(p => p[1])); if (hi === lo) { hi += 1; lo -= 1; }
-  const raw = (hi - lo) / 4.5, mag = Math.pow(10, Math.floor(Math.log10(raw))), step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(m => m >= raw), pad = (hi - lo) * 0.06; lo -= pad; hi += pad;
-  const L = 62, R = W - 196, T = 16, B = H - 46, X = t => L + (t - x0) / (x1 - x0) * (R - L), Y = v => B - (v - lo) / (hi - lo) * (B - T);
-  const td = step < 0.1 ? 2 : step < 1 || step % 1 ? 1 : 0, num = (v, d) => v.toLocaleString(WORDTXT.loc, { minimumFractionDigits: d, maximumFractionDigits: d });
-  g.fillStyle = "#fff"; g.fillRect(0, 0, W, H); g.textBaseline = "middle"; g.lineJoin = g.lineCap = "round";
-  g.font = `30px ${FONT}`; g.textAlign = "right";
-  for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) { g.strokeStyle = "#D9D9D9"; g.lineWidth = 1.5; g.beginPath(); g.moveTo(L, Y(v)); g.lineTo(R, Y(v)); g.stroke();
-    g.fillStyle = "#595959"; g.fillText(num(Math.abs(v) < 1e-9 ? 0 : v, td), L - 10, Y(v)); }
-  if (lo < 0 && hi > 0) { g.strokeStyle = "#FF0000"; g.lineWidth = 2.5; g.beginPath(); g.moveTo(L, Y(0)); g.lineTo(R, Y(0)); g.stroke(); }  // Nulllinie rot
-  g.strokeStyle = "#7F7F7F"; g.lineWidth = 2; g.beginPath(); g.moveTo(L, B); g.lineTo(R, B); g.stroke();
-  const ya = new Date(x0).getUTCFullYear(), yb = new Date(x1).getUTCFullYear(), every = Math.max(1, Math.ceil((yb - ya + 1) / 5)); g.textAlign = "center"; g.fillStyle = "#595959";
-  for (let y = Math.ceil(ya / every) * every; y <= yb; y += every) { const t = Date.UTC(y, 0, 1); if (t >= x0 - 864e5 * 45 && X(t) <= R - 20) g.fillText(String(y), Math.max(X(t), L + 28), B + 24); }
-  [...S].reverse().forEach((s, j) => { const main = j === S.length - 1; g.strokeStyle = main ? NAVY : "#A6A6A6"; g.lineWidth = main ? 5 : 3; g.beginPath();
-    s.pts.forEach((p, i) => i ? g.lineTo(X(p[0]), Y(p[1])) : g.moveTo(X(p[0]), Y(p[1]))); g.stroke(); });
-  // Beschriftung am Linienende statt Legende; die Hauptreihe trägt ihren jüngsten Wert
-  const wrap = (t, max) => { const out = [""]; t.split(" ").forEach(w => { const cur = out[out.length - 1], nx = cur ? cur + " " + w : w; if (g.measureText(nx).width <= max || !cur) out[out.length - 1] = nx; else out.push(w); }); return out.slice(0, 2); };
-  const labs = S.map((s, i) => { const e = s.pts[s.pts.length - 1]; g.font = `26px ${FONT}`;
-    return { i, x: X(e[0]), y: Y(e[1]), val: num(e[1], c.decimals ?? 1), lines: i === 0 && S.length === 1 ? [] : wrap(s.label, W - R - 22) }; });
-  labs.forEach(l => { l.h = (l.i === 0 ? 36 : 0) + l.lines.length * 27 + 6; l.ty = l.y; });
-  labs.sort((a, b) => a.y - b.y); labs.forEach((l, k) => { if (k) { const p = labs[k - 1], min = p.ty + p.h / 2 + l.h / 2; if (l.ty < min) l.ty = min; } });
-  const over = labs.length ? labs[labs.length - 1].ty + labs[labs.length - 1].h / 2 - (H - 4) : 0; if (over > 0) labs.forEach(l => l.ty -= over);
-  g.textAlign = "left"; labs.forEach(l => { let y = l.ty - l.h / 2 + 3;
-    if (l.i === 0) { g.fillStyle = NAVY; g.beginPath(); g.arc(l.x, l.y, 7, 0, 7); g.fill(); g.font = `bold 35px ${FONT}`; g.fillText(l.val, R + 14, y + 18); y += 36; }
-    g.font = `26px ${FONT}`; g.fillStyle = l.i === 0 ? NAVY : "#7F7F7F"; l.lines.forEach(t => { g.fillText(t, R + 14, y + 13); y += 27; }); });
-  return cv;
-}
-async function kmPicture(c) {  // PNG-Bytes samt Seitenverhältnis; null, wenn kein Bild zu haben ist
+// Druckgrafiken als SVG (Vektor): Linien, gestapelte Balken, Länderkarten. Ohne Rahmen und Legende, Beschriftung am Rand,
+// Nulllinie rot. Maße in Pixeln bei 300 dpi (924 px = 7,7 cm). Kein CSS und kein dominant-baseline: Word liest nur schlichtes SVG.
+const KM_SPECIAL = ["alt", "multiples", "transform", "norm", "fx", "scale", "diff", "groups", "proj", "pick", "bilanz", "threshold", "own_scale", "combine", "of", "mad_band", "pot_band", "each_last", "series_ref", "styles"];
+const kmKind = c => {  // welche Druckfassung es gibt: "line", "stacked", "map" oder null (dann Vorschaubild)
+  const S = Array.isArray(c.series) ? c.series : [], ok = S.every(s => s.x && s.y && s.x.length > 1);
+  if (c.type === "tiles" && DATA.geo && c.tiles && (c.tiles.rows || []).length) return "map";
+  if (KM_SPECIAL.some(k => c[k] && !(c.type === "stacked" && (k === "alt" || k === "groups"))) || !S.length || !ok) return null;  // bei Balken zählt die Grundansicht
+  if (c.type === "stacked" && S.filter(s => s.style === "bar").length >= 2 && S.length <= 9 && S.every(s => s.style === "bar" || s.style === "line")) return "stacked";
+  if (c.type === "line" && S.length <= 5 && S.every(s => s.style === "line") && (new Set(S.map(s => s.unit)).size === 1 || S.every(s => /^%/.test(s.unit || "")))) return "line";
+  return null;
+};
+const kmSvg = (function () {
+  const FF = "Arial Narrow, Liberation Sans Narrow, Arial, sans-serif", NAVY = "#002060", INK = "#595959", W = 924;
+  let ctx = null;
+  const tw = (t, px, bold) => { ctx = ctx || document.createElement("canvas").getContext("2d"); ctx.font = `${bold ? "bold " : ""}${px}px "Arial Narrow", "Liberation Sans Narrow", Arial, sans-serif`; return ctx.measureText(t).width; };
+  const f = v => +v.toFixed(1);
+  const text = (x, y, t, o = {}) => `<text x="${f(x)}" y="${f(y + (o.px || 30) * 0.35)}" font-family="${FF}" font-size="${o.px || 30}"${o.b ? ' font-weight="bold"' : ""}${o.a ? ` text-anchor="${o.a}"` : ""} fill="${o.c || INK}">${esc(t)}</text>`;  // y ist die Mitte der Zeile
+  const line = (x1, y1, x2, y2, c, w) => `<line x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" stroke="${c}" stroke-width="${w}"/>`;
+  const wrap = (t, max, px) => { const out = [""]; t.split(" ").forEach(w => { const cur = out[out.length - 1], nx = cur ? cur + " " + w : w; if (tw(nx, px) <= max || !cur) out[out.length - 1] = nx; else out.push(w); }); return out.slice(0, 2); };
+  const num = (v, d) => (Math.abs(v) < 0.5 * Math.pow(10, -d) ? 0 : v).toLocaleString(WORDTXT.loc, { minimumFractionDigits: d, maximumFractionDigits: d });
+  const doc = (H, body) => ({ w: W, h: H, svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#FFFFFF"/>${body}</svg>` });
+  // Achsen: Skala mit wenigen runden Marken, hauchdünnes Gitter, Jahre unten, rote Nulllinie
+  function frame(lo, hi, x0, x1, H, RW) {
+    if (hi === lo) { hi += 1; lo -= 1; }
+    const raw = (hi - lo) / 4.5, mag = Math.pow(10, Math.floor(Math.log10(raw))), step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(m => m >= raw), pad = (hi - lo) * 0.06, cross = lo < 0 && hi > 0; lo = lo >= 0 && lo - pad < 0 ? 0 : lo - pad; hi = hi <= 0 && hi + pad > 0 ? 0 : hi + pad;  // die Skala kippt nicht über die Null
+    const td = step < 0.1 ? 2 : step < 1 || step % 1 ? 1 : 0, ticks = []; for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) ticks.push(v);
+    const L = 20 + Math.max(...ticks.map(v => tw(num(v, td), 30))), R = W - RW, T = 16, B = H - 46;
+    const X = t => L + (t - x0) / (x1 - x0) * (R - L), Y = v => B - (v - lo) / (hi - lo) * (B - T);
+    let s = ticks.map(v => line(L, Y(v), R, Y(v), "#D9D9D9", 1.5) + text(L - 10, Y(v), num(v, td), { a: "end" })).join("");
+    const ya = new Date(x0).getUTCFullYear(), yb = new Date(x1).getUTCFullYear(), every = Math.max(1, Math.ceil((yb - ya + 1) / 5));
+    for (let y = Math.ceil(ya / every) * every; y <= yb; y += every) { const t = Date.UTC(y, 0, 1); if (t >= x0 - 864e5 * 45 && X(t) <= R - 20) s += text(Math.max(X(t), L + 28), B + 24, String(y), { a: "middle" }); }
+    const zero = cross ? line(L, Y(0), R, Y(0), "#FF0000", 2.5) : "";
+    return { L, R, T, B, X, Y, grid: s + line(L, B, R, B, "#7F7F7F", 2), zero };
+  }
+  // Beschriftungen am rechten Rand: an der Höhe ihres Werts, bei Enge auseinandergeschoben
+  function endLabels(labs, x, H) {
+    labs.forEach(l => { l.h = (l.val ? 36 : 0) + l.lines.length * 27 + 6; l.ty = l.y; });
+    labs.sort((a, b) => a.y - b.y); labs.forEach((l, k) => { if (k) { const p = labs[k - 1], min = p.ty + p.h / 2 + l.h / 2; if (l.ty < min) l.ty = min; } });
+    const over = labs.length ? labs[labs.length - 1].ty + labs[labs.length - 1].h / 2 - (H - 4) : 0; if (over > 0) labs.forEach(l => l.ty -= over);
+    for (let k = labs.length - 2; k >= 0; k--) { const n = labs[k + 1], max = n.ty - n.h / 2 - labs[k].h / 2; if (labs[k].ty > max) labs[k].ty = max; }
+    return labs.map(l => { let y = l.ty - l.h / 2 + 3, s = "";
+      if (l.val) { s += text(x, y + 18, l.val, { px: 35, b: true, c: l.vc || l.c }); y += 36; }
+      l.lines.forEach(t => { s += text(x, y + 13, t, { px: 26, c: l.c }); y += 27; }); return s; }).join("");
+  }
+  const pts = s => s.x.map((x, i) => [Date.parse(x), s.y[i]]).filter(p => p[1] != null && isFinite(p[1]));
+  function lineChart(c) {
+    const H = 276, RW = 196, S = c.series.map(s => ({ label: s.label, pts: pts(s) })).filter(s => s.pts.length > 1); if (!S.length) return null;
+    const all = S.flatMap(s => s.pts), fr = frame(Math.min(...all.map(p => p[1])), Math.max(...all.map(p => p[1])), Math.min(...all.map(p => p[0])), Math.max(...all.map(p => p[0])), H, RW);
+    let body = fr.grid + fr.zero;
+    [...S].reverse().forEach((s, j) => { const main = j === S.length - 1;
+      body += `<polyline fill="none" stroke="${main ? NAVY : "#A6A6A6"}" stroke-width="${main ? 5 : 3}" stroke-linejoin="round" stroke-linecap="round" points="${s.pts.map(p => f(fr.X(p[0])) + "," + f(fr.Y(p[1]))).join(" ")}"/>`; });
+    const e0 = S[0].pts[S[0].pts.length - 1]; body += `<circle cx="${f(fr.X(e0[0]))}" cy="${f(fr.Y(e0[1]))}" r="7" fill="${NAVY}"/>`;
+    return doc(H, body + endLabels(S.map((s, i) => { const e = s.pts[s.pts.length - 1];  // die Hauptreihe trägt ihren jüngsten Wert, ungeglättet wie im Sachstand
+      return { y: fr.Y(e[1]), c: i === 0 ? NAVY : "#7F7F7F", val: i === 0 ? num(e[1], c.decimals ?? 1) : "", lines: i === 0 && S.length === 1 ? [] : wrap(s.label, RW - 22, 26) }; }), fr.R + 14, H));
+  }
+  function stackedChart(c) {
+    const H = 348, RW = 232, bars = c.series.filter(s => s.style === "bar"), tot = c.series.find(s => s.style === "line"), pal = c.bar_colors || BAR_PAL;
+    const xs = [...new Set(bars.flatMap(s => s.x))].sort(), n = xs.length, at = bars.map(s => Object.fromEntries(s.x.map((x, i) => [x, s.y[i]])));
+    const col = xs.map(x => { let up = 0, dn = 0; return at.map(m => { const v = m[x]; if (v == null || !isFinite(v)) return null; const a = v >= 0 ? up : dn; if (v >= 0) up += v; else dn += v; return [a, a + v]; }); });
+    const tp = tot ? pts(tot) : [], ys = [...col.flat().filter(Boolean).flat(), ...tp.map(p => p[1]), 0], t0 = Date.parse(xs[0]), t1 = Math.max(Date.parse(xs[n - 1]), ...tp.map(p => p[0]));
+    const gap = (t1 - t0) / Math.max(n - 1, 1), fr = frame(Math.min(...ys), Math.max(...ys), t0 - gap * 0.6, t1 + gap * 0.6, H, RW), bw = Math.max(2, (fr.X(t0 + gap) - fr.X(t0)) * 0.72);
+    let body = fr.grid;
+    xs.forEach((x, k) => col[k].forEach((seg, i) => { if (!seg) return; const y1 = fr.Y(Math.max(seg[0], seg[1])), y2 = fr.Y(Math.min(seg[0], seg[1]));
+      body += `<rect x="${f(fr.X(Date.parse(x)) - bw / 2)}" y="${f(y1)}" width="${f(bw)}" height="${f(Math.max(y2 - y1, 0.5))}" fill="${pal[i % pal.length]}"/>`; }));
+    body += fr.zero;
+    if (tp.length > 1) body += `<polyline fill="none" stroke="#000000" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" points="${tp.map(p => f(fr.X(p[0])) + "," + f(fr.Y(p[1]))).join(" ")}"/>`;
+    const lastCol = col[n - 1], labs = bars.map((s, i) => lastCol[i] ? { y: fr.Y((lastCol[i][0] + lastCol[i][1]) / 2), c: pal[i % pal.length], val: "", lines: wrap(s.label, RW - 22, 26).slice(0, bars.length > 5 ? 1 : 2) } : null).filter(Boolean);
+    if (tp.length > 1) { const e = tp[tp.length - 1]; labs.push({ y: fr.Y(e[1]), c: "#000000", val: num(e[1], c.decimals ?? 1), lines: wrap(tot.label, RW - 22, 26).slice(0, 1) }); }
+    return doc(H, body + endLabels(labs, fr.R + 14, H));
+  }
+  function mapChart(c) {  // Länderkarte links, daneben die drei höchsten und die drei niedrigsten Werte
+    const H = 420, rows = c.tiles.rows.filter(r => r.code), lvl = rows.every(r => r.level != null), key = lvl ? "level" : "change", by = Object.fromEntries(rows.map(r => [r.code, r]));
+    const vals = rows.map(r => r[key]).filter(v => v != null && isFinite(v)); if (vals.length < 2) return null;
+    const lo = Math.min(...vals), hi = Math.max(...vals), k = Math.cos(51 * Math.PI / 180), P = DATA.geo.flatMap(g => g.rings.flat());
+    const gx0 = Math.min(...P.map(p => p[0])), gx1 = Math.max(...P.map(p => p[0])), gy0 = Math.min(...P.map(p => p[1])), gy1 = Math.max(...P.map(p => p[1]));
+    const sc = (H - 16) / (gy1 - gy0), X = lon => 8 + (lon - gx0) * k * sc, Y = lat => 8 + (gy1 - lat) * sc, MW = (gx1 - gx0) * k * sc + 16;
+    const mix = (a, b, t) => "#" + [1, 3, 5].map(i => Math.round(parseInt(a.slice(i, i + 2), 16) * (1 - t) + parseInt(b.slice(i, i + 2), 16) * t).toString(16).padStart(2, "0")).join("").toUpperCase();
+    const m = Math.max(Math.abs(lo), Math.abs(hi)) || 1;  // Niveau: hell bis dunkelblau; Veränderung: Blau für Anstieg, Violett für Rückgang
+    const fill = v => v == null || !isFinite(v) ? "#F2F2F2" : lvl ? mix("#DCEBF7", NAVY, (v - lo) / (hi - lo || 1)) : v >= 0 ? mix("#F2F2F2", "#0070C0", v / m) : mix("#F2F2F2", "#7030A0", -v / m);
+    let body = DATA.geo.map(g => `<path d="${g.rings.map(r => "M" + r.map(p => f(X(p[0])) + " " + f(Y(p[1]))).join("L") + "Z").join("")}" fill="${fill((by[g.code] || {})[key])}" fill-rule="evenodd" stroke="#FFFFFF" stroke-width="2"/>`).join("");
+    const d = c.decimals ?? 1, pct = WORDTXT.loc === "de-DE" ? " %" : "%", val = v => lvl ? num(v, d) + pct : (v > 0 ? "+" : v < 0 ? "−" : "") + num(Math.abs(v), d) + (c.tiles.measure === "diff" ? " " + WORDTXT.pp : pct);
+    const big = lvl ? rows : [...rows].sort((a, b) => (b.sum || 0) - (a.sum || 0)).slice(0, 8);  // Veränderungen nur unter den acht größten Ländern, wie im Sachstand: kleine Länder schwanken stark
+    const sorted = big.filter(r => r[key] != null).sort((a, b) => b[key] - a[key]), x = MW + 40, xr = W - 8, T = WORDTXT, low = sorted.slice(-3).reverse();
+    const list = (y, head, rs) => { let s = text(x, y, head, { px: 27, b: true, c: "#000000" }) + line(x, y + 20, xr, y + 20, "#BFBFBF", 1.5);
+      rs.forEach((r, i) => { const yy = y + 52 + i * 38; s += `<rect x="${f(x)}" y="${f(yy - 11)}" width="22" height="22" fill="${fill(r[key])}"/>` + text(x + 34, yy, r.name, { px: 29 }) + text(xr, yy, val(r[key]), { px: 29, b: true, a: "end", c: NAVY }); }); return s; };
+    body += text(x, 22, [c.what, lvl ? "" : T.chg].filter(Boolean).join(", "), { px: 25 }) + text(x, 52, c.tiles.span + (lvl ? "" : " · " + T.big), { px: 25 });
+    body += list(104, lvl ? T.hi : T.up, sorted.slice(0, 3)) + list(272, lvl ? T.lo : low.every(r => r[key] < 0) ? T.dn : T.weak, low);
+    return doc(H, body);
+  }
+  return c => { const k = kmKind(c); return k === "line" ? lineChart(c) : k === "stacked" ? stackedChart(c) : k === "map" ? mapChart(c) : null; };
+})();
+async function kmPicture(c) {  // { data: PNG, ratio, svg? }: SVG als Vektorbild, PNG als Ersatzbild für ältere Programme; null, wenn kein Bild zu haben ist
   const png = async cv => ({ data: new Uint8Array(await (await new Promise(r => cv.toBlob(r, "image/png"))).arrayBuffer()), ratio: cv.height / cv.width });
-  try { const cv = kmSimple(c) && kmChart(c); if (cv) return await png(cv); } catch (e) {}
-  try { if (PREVS && PREVS[c.anchor]) {  // Vorschaubild der Seite (WebP) zu PNG umrechnen; Word liest WebP nicht zuverlässig
-    const im = new Image(); im.src = `prev/${c.anchor}-d.webp`; await im.decode();
-    const cv = Object.assign(document.createElement("canvas"), { width: im.naturalWidth, height: im.naturalHeight }), g = cv.getContext("2d");
-    g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height); g.drawImage(im, 0, 0); return await png(cv); } } catch (e) {}
+  const draw = async (src, w, h) => { const im = new Image(); im.src = src; await im.decode();
+    const cv = Object.assign(document.createElement("canvas"), { width: w || im.naturalWidth, height: h || im.naturalHeight }), g = cv.getContext("2d");
+    g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height); g.drawImage(im, 0, 0, cv.width, cv.height); return png(cv); };
+  try { const v = kmSvg(c); if (v) return { ...await draw("data:image/svg+xml;charset=utf-8," + encodeURIComponent(v.svg), v.w, v.h), svg: new TextEncoder().encode('<?xml version="1.0" encoding="UTF-8"?>' + v.svg) }; } catch (e) {}
+  try { if (PREVS && PREVS[c.anchor]) return await draw(`prev/${c.anchor}-d.webp`); } catch (e) {}  // Vorschaubild der Seite (WebP) zu PNG umrechnen; Word liest WebP nicht zuverlässig
   try { const p = document.getElementById(c.anchor)?.querySelector(".js-plotly-plot");
     if (p && window.Plotly) { const u = await Plotly.toImage(p, { format: "png", width: 770, height: 320, scale: 2 });
       return { data: Uint8Array.from(atob(u.split(",")[1]), ch => ch.charCodeAt(0)), ratio: 320 / 770 }; } } catch (e) {}  // ohne fetch: die Sicherheitsrichtlinie der Seite lässt data:-Abrufe nicht zu
@@ -2254,8 +2309,8 @@ async function kmOnepager(ids) {
   const facts = (t, sz) => t.split(NUM).map((s, i) => s ? r(s, { sz, b: i % 2 === 1 && !/^(\d{1,2}|\d{4}|\d{1,2}\.\d{1,2}\.\d{4})$/.test(s) }) : "").join("");  // Zahlen fett, Datumsteile nicht
   const tc = (w, inner, span) => `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${span ? `<w:gridSpan w:val="${span}"/>` : ""}</w:tcPr>${inner}</w:tc>`;
   const tr = cells => `<w:tr><w:trPr><w:cantSplit/></w:trPr>${cells}</w:tr>`;
-  const media = [], pic = (im, alt) => { const id = media.push(im.data), cy = Math.round(Math.min(7.7 * im.ratio, 3.3) * 360000), cx = Math.round(cy / im.ratio);  // höchstens 3,3 cm hoch
-    return `<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${id}" name="Abbildung ${id}" descr="${esc(alt)}"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="${id}" name="image${id}.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rId${id + 1}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`; };
+  const media = [], pic = (im, alt) => { const id = media.push(im), cy = Math.round(Math.min(7.7 * im.ratio, 3.5) * 360000), cx = Math.round(cy / im.ratio);  // höchstens 3,5 cm hoch; rId: PNG gerade, SVG ungerade
+    return `<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${id}" name="Abbildung ${id}" descr="${esc(alt)}"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="${id}" name="image${id}.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rId${id * 2}">${im.svg ? `<a:extLst><a:ext uri="{96DAC541-7B7A-43D3-8B79-37D633B846F1}"><asvg:svgBlip xmlns:asvg="http://schemas.microsoft.com/office/drawing/2016/SVG/main" r:embed="rId${id * 2 + 1}"/></a:ext></a:extLst>` : ""}</a:blip><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`; };
   const stand = new Date(DATA.generated_at).toLocaleDateString(TX.loc, { day: "numeric", month: "long", year: "numeric" });
   let rows = "", last = null;
   for (const { t, c } of items) {
@@ -2278,12 +2333,12 @@ async function kmOnepager(ids) {
     + `<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="850" w:right="1020" w:bottom="850" w:left="1021" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr></w:body></w:document>`;
   const lang = TX.loc === "de-DE" ? "de-DE" : "en-GB", REL = "http://schemas.openxmlformats.org/officeDocument/2006/relationships", enc = s => new TextEncoder().encode(s);
   const files = [
-    ["[Content_Types].xml", enc(`${XML}<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>`)],
+    ["[Content_Types].xml", enc(`${XML}<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Default Extension="svg" ContentType="image/svg+xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>`)],
     ["_rels/.rels", enc(`${XML}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="${REL}/officeDocument" Target="word/document.xml"/></Relationships>`)],
     ["word/document.xml", enc(doc)],
     ["word/styles.xml", enc(`${XML}<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial Narrow" w:hAnsi="Arial Narrow" w:eastAsia="Arial Narrow" w:cs="Arial Narrow"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="${lang}"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="259" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style></w:styles>`)],
-    ["word/_rels/document.xml.rels", enc(`${XML}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="${REL}/styles" Target="styles.xml"/>${media.map((_, i) => `<Relationship Id="rId${i + 2}" Type="${REL}/image" Target="media/image${i + 1}.png"/>`).join("")}</Relationships>`)],
-    ...media.map((m, i) => [`word/media/image${i + 1}.png`, m])];
+    ["word/_rels/document.xml.rels", enc(`${XML}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="${REL}/styles" Target="styles.xml"/>${media.map((m, i) => `<Relationship Id="rId${i * 2 + 2}" Type="${REL}/image" Target="media/image${i + 1}.png"/>` + (m.svg ? `<Relationship Id="rId${i * 2 + 3}" Type="${REL}/image" Target="media/image${i + 1}.svg"/>` : "")).join("")}</Relationships>`)],
+    ...media.flatMap((m, i) => [[`word/media/image${i + 1}.png`, m.data], ...(m.svg ? [[`word/media/image${i + 1}.svg`, m.svg]] : [])])];
   const blob = kmZip(files), a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `${DATA.site.title} (${DATA.stand}) ${TX.file}.docx`;
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 60000); return blob;
 }
