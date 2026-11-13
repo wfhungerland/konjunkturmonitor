@@ -161,18 +161,19 @@ charts:
   emp_sector: {title: "Erwerbstätige nach Wirtschaftsbereichen", decimals: 0}
   migration: {title: "Nettozuwanderung", decimals: 0}
   cit: {title: "Steuersätze auf Unternehmensgewinne", decimals: 1}
-  hybrid: {title: "Russische Sabotage und Subversion in Europa", decimals: 0}
-  gpr: {title: "Geopolitisches Risiko", decimals: 0}
-  milex: {title: "Militärausgaben", decimals: 1}
-  cinc: {title: "Deutschlands Anteil an den Machtmitteln der Welt", decimals: 1}
-  ukraine_aid: {title: "Hilfe Deutschlands für die Ukraine", decimals: 1}
-  trade_harm: {title: "Schädliche Handelseingriffe gegen deutsche Interessen", decimals: 0}
-  arms_prod: {title: "Produktion von Waffen und Munition", decimals: 0}
-  milex_gov: {title: "Militärausgaben im Staatshaushalt", decimals: 1}
-  def_use: {title: "Wofür der Staat Verteidigungsgeld ausgibt", decimals: 1}
-  orders_origin: {title: "Rüstungsaufträge nach Sitz des Auftragnehmers", decimals: 1}
-  milex_eu_ru: {title: "Militärausgaben Europas und Russlands", decimals: 0}
-  trade_ru: {title: "Exporte nach Russland und in Nachbarländer", decimals: 1}
+  hybrid: {title: "Russische Sabotage in Europa erreichte 2024 ihren Höhepunkt", decimals: 0}
+  gpr: {title: "Das Kriegsrisiko in den Zeitungen bleibt seit 2022 erhöht", decimals: 0}
+  milex: {title: "Deutschland gibt erstmals seit 1990 mehr als 2 % für Verteidigung aus", decimals: 1}
+  cinc: {title: "Deutschlands materielles Gewicht ist seit 1913 auf ein Zehntel gefallen", decimals: 1}
+  ukraine_aid: {title: "Deutschland hilft der Ukraine vor allem mit Waffen", decimals: 1}
+  trade_harm: {title: "Die meisten Handelshemmnisse kommen weder aus China noch aus den USA", decimals: 0}
+  arms_prod: {title: "Rüstung wächst, die übrige Industrie schrumpft", decimals: 0}
+  milex_gov: {title: "Verteidigung bekommt einen wachsenden Teil des Haushalts", decimals: 1}
+  def_use: {title: "Das Geld fließt vor allem in Material und Betrieb, kaum in neue Waffen", decimals: 1}
+  orders_origin: {title: "Fast alle Rüstungsaufträge gehen an Firmen in Deutschland", decimals: 1}
+  arms_cycle: {title: "Die Aufträge laufen der Produktion davon", decimals: 0}
+  milex_eu_ru: {title: "Europa gibt mehr als dreimal so viel aus wie Russland", decimals: 0}
+  trade_ru: {title: "Die Exporte nach Russland sind eingebrochen, der Umweg über Nachbarn bleibt", decimals: 1}
   pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}
   price_exp: {title: "Preiserwartungen von Unternehmen und Verbrauchern", decimals: 0}
   gdp_use: {title: "Verwendung der Wirtschaftsleistung im letzten Quartal", decimals: 1}
@@ -5955,3 +5956,35 @@ series:
     style: bar
     license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
     note: "Aufträge nach Jahr der Bekanntgabe und Sitz des Auftragnehmers; Aufträge mit unklarer Herkunft (rund 31 Mrd. € seit 2020) fehlen. Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+
+  - id: kmpt_de_orders_idx
+    block: geopolitik
+    source: static
+    key: kmpt_de_orders_idx
+    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker; eigene Berechnung"}
+    title: "Deutsche Rüstungsaufträge, Summe der letzten zwölf Monate, 2021 = 100"
+    unit: "Index 2021 = 100"
+    frequency: M
+    adjustment: "Monat der Bekanntgabe, jeweilige Preise"
+    start: "2021-12-01"
+    stale_after_months: 14
+    chart: arms_cycle
+    label: "Aufträge"
+    license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
+    note: "Alle öffentlich bekannt gegebenen Rüstungsbestellungen Deutschlands nach Monat der Bekanntgabe; Summe der jeweils letzten zwölf Monate, Summe des Jahres 2021 = 100 (22,3 Mrd. €). Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+
+  - id: arms_prod_12m
+    block: geopolitik
+    source: static
+    key: arms_prod_12m
+    params: {source_name: "Eurostat, Produktionsindex (sts_inpr_m), Zweig 25.4; eigene Berechnung"}
+    title: "Produktion von Waffen und Munition, Durchschnitt der letzten zwölf Monate, 2021 = 100"
+    unit: "Index 2021 = 100"
+    frequency: M
+    adjustment: "saison- und kalenderbereinigt"
+    start: "2021-12-01"
+    stale_after_months: 4
+    chart: arms_cycle
+    label: "Produktion"
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Gleitender Durchschnitt über zwölf Monate, Jahresmittel 2021 = 100; werktäglich abgerufen."

@@ -228,7 +228,38 @@ def kmpt(path: Path) -> dict[str, pd.Series]:
     t = t[pd.to_numeric(t["Year"], errors="coerce").notna()]
     t["Year"] = t["Year"].astype(int)
     t = t[t["Year"] < pd.Timestamp.today().year].set_index("Year")  # nur abgeschlossene Jahre
-    return {key: _years(pd.to_numeric(t[col]).astype(float)) for key, col in KMPT.items()}
+    out = {key: _years(pd.to_numeric(t[col]).astype(float)) for key, col in KMPT.items()}
+    m = pd.read_excel(path, sheet_name="A1 DE Total Orders", header=None)
+    head = m.index[m.apply(lambda r: r.astype(str).eq("Total military orders").any(), axis=1)][0]
+    col = m.columns[m.iloc[head].astype(str).eq("Total military orders")][0]
+    rows = m.iloc[head + 1:]
+    when = pd.to_datetime(rows[col - 1], errors="coerce")
+    s = pd.Series(pd.to_numeric(rows[col], errors="coerce").values, index=when).dropna()
+    s = s[s.index.notna()].sort_index()
+    roll = s.rolling(12).sum().dropna()  # Summe der letzten zwölf Monate
+    out["kmpt_de_orders_idx"] = roll / roll.loc["2021-12-01"] * 100  # 2021 = 100, vergleichbar mit dem Produktionsindex
+    return out
+
+
+ARMS_PROD = ("https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m"
+             "?geo=DE&nace_r2=C254&s_adj=SCA&unit=I21&sinceTimePeriod=2019-01")
+
+
+def arms_prod_12m(raw: str) -> pd.Series:
+    """Produktion von Waffen und Munition, gleitender Zwölfmonatsdurchschnitt, Jahresmittel 2021 = 100."""
+    import json
+    d = json.loads(raw)
+    t = list(d["dimension"]["time"]["category"]["index"])
+    s = pd.Series({pd.Timestamp(t[int(k)]): v for k, v in d["value"].items()}).sort_index()
+    return (s.rolling(12).mean() / s.loc["2021"].mean() * 100).dropna()
+
+
+def update_arms_prod(static: Path) -> None:
+    req = urllib.request.Request(ARMS_PROD, headers={"User-Agent": "konjunkturmonitor"})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        s = arms_prod_12m(r.read().decode("utf-8"))
+    _write(static / "arms_prod_12m.csv", s, 1)
+    log.info("Rüstungsproduktion, Zwölfmonatsmittel: bis %s", s.index.max().strftime("%Y-%m"))
 
 
 def main(argv: list[str] | None = None) -> int:
