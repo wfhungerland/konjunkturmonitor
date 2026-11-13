@@ -1,6 +1,6 @@
 # Ideen und Wiedervorlagen
 
-Gesammelte Notizen für später, grob geordnet. Stand: 12.11.2026.
+Gesammelte Notizen für später, grob geordnet. Stand: 13.11.2026.
 
 ## Funktionen
 - Eigene Startseite aus den Lesezeichen (Sternchen).
@@ -31,6 +31,7 @@ Gesammelte Notizen für später, grob geordnet. Stand: 12.11.2026.
 - Energiemix, Energieintensität des Wachstums
 - Liquidität: Deutschland, Euroraum, global
 - Anleihemärkte, Bundeshaushalt(e)
+- Aufnahmefähigkeit der Landkreise für Infrastrukturinvestitionen (Bau, Ausbau, Handwerk, Bahnbedarf): Index aus Kapazität (Beschäftigte nach WZ 41–43 und KldB 32/33, Betriebe Bauhauptgewerbe), Engpass (Arbeitslose je offene Stelle, Vakanzzeit, Altersstruktur) und Auslastung (Baugenehmigungen, laufende Projekte). Prüfen an Vergabedaten (Angebote je Ausschreibung, Zuschlag gegen Schätzung, TED/NUTS-3) und an Schocks wie Ahrtal-Wiederaufbau oder Generalsanierungen der Bahn.
 
 ## Faustregeln (back of the envelope)
 - Taylor-Regel, Calvo-Parameter, Okun
