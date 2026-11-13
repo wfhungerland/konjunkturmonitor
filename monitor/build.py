@@ -1803,7 +1803,7 @@ def write_embeds(payload: dict, tpl: str, out: Path) -> int:
             p = dict(payload, topics=[dict(t, charts=[cc], question=None, ask=c.get("ask") or t.get("ask"))], start=[], questions=[], news=[], week=[], overview="", embed=True,
                      geo=payload.get("geo") if c.get("type") == "tiles" else None, all_series={}, deck=None)
             js = json.dumps(p, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
-            title = f"{c.get('code') or 'Abb. ' + str(c.get('no'))} {c.get('title', '')} · Konjunkturmonitor"
+            title = f"{c.get('title', '')} · Konjunkturmonitor"
             desc = (c.get("texts") or [""])[0] or c.get("caption", "")
             html = (base.replace("/*__DATA__*/null", js).replace("/*__STATIC__*/", "").replace("/*__OVERVIEW__*/", "")
                     .replace("/*__DESC__*/", escape(desc, quote=True)).replace("/*__URL__*/", escape(f"{url}abb/{c['chart']}.html", quote=True))
