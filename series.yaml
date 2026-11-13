@@ -169,6 +169,8 @@ charts:
   trade_harm: {title: "Schädliche Handelseingriffe gegen deutsche Interessen", decimals: 0}
   arms_prod: {title: "Produktion von Waffen und Munition", decimals: 0}
   milex_gov: {title: "Militärausgaben im Staatshaushalt", decimals: 1}
+  def_use: {title: "Wofür der Staat Verteidigungsgeld ausgibt", decimals: 1}
+  orders_origin: {title: "Rüstungsaufträge nach Sitz des Auftragnehmers", decimals: 1}
   milex_eu_ru: {title: "Militärausgaben Europas und Russlands", decimals: 0}
   trade_ru: {title: "Exporte nach Russland und in Nachbarländer", decimals: 1}
   pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}
@@ -5296,3 +5298,139 @@ series:
     adjustment: nicht bereinigt
     chart: gd_treff
     label: "Arbeitslose (Tsd.)"
+
+  - id: def_staff
+    block: geopolitik
+    source: static
+    key: def_staff
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Personal (Arbeitnehmerentgelt)"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Personal"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."
+
+  - id: def_material
+    block: geopolitik
+    source: static
+    key: def_material
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Material, Wartung und Betrieb (Vorleistungen)"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Material und Betrieb"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."
+
+  - id: def_invest
+    block: geopolitik
+    source: static
+    key: def_invest
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Waffensysteme und Bauten (Bruttoanlageinvestitionen)"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Waffensysteme und Bauten"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."
+
+  - id: def_transfer
+    block: geopolitik
+    source: static
+    key: def_transfer
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Investitionszuschüsse und laufende Transfers an andere"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Transfers an andere"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."
+
+  - id: kmpt_de_only
+    block: geopolitik
+    source: static
+    key: kmpt_de_only
+    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker"}
+    title: "Deutsche Rüstungsaufträge an Unternehmen mit Sitz in Deutschland"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahr der Bekanntgabe, jeweilige Preise"
+    start: "2020-01-01"
+    stale_after_months: 30
+    chart: orders_origin
+    label: "deutsch"
+    style: bar
+    license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
+    note: "Aufträge nach Jahr der Bekanntgabe und Sitz des Auftragnehmers; Aufträge mit unklarer Herkunft (rund 31 Mrd. € seit 2020) fehlen. Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+
+  - id: kmpt_de_partner
+    block: geopolitik
+    source: static
+    key: kmpt_de_partner
+    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker"}
+    title: "Deutsche Rüstungsaufträge an deutsche und ausländische Unternehmen gemeinsam oder mit Fertigung in Deutschland"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahr der Bekanntgabe, jeweilige Preise"
+    start: "2020-01-01"
+    stale_after_months: 30
+    chart: orders_origin
+    label: "deutsch mit Partner"
+    style: bar
+    license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
+    note: "Aufträge nach Jahr der Bekanntgabe und Sitz des Auftragnehmers; Aufträge mit unklarer Herkunft (rund 31 Mrd. € seit 2020) fehlen. Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+
+  - id: kmpt_eu
+    block: geopolitik
+    source: static
+    key: kmpt_eu
+    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker"}
+    title: "Deutsche Rüstungsaufträge an Unternehmen im übrigen Europa"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahr der Bekanntgabe, jeweilige Preise"
+    start: "2020-01-01"
+    stale_after_months: 30
+    chart: orders_origin
+    label: "übriges Europa"
+    style: bar
+    license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
+    note: "Aufträge nach Jahr der Bekanntgabe und Sitz des Auftragnehmers; Aufträge mit unklarer Herkunft (rund 31 Mrd. € seit 2020) fehlen. Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+
+  - id: kmpt_noneu
+    block: geopolitik
+    source: static
+    key: kmpt_noneu
+    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker"}
+    title: "Deutsche Rüstungsaufträge an Unternehmen außerhalb Europas"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahr der Bekanntgabe, jeweilige Preise"
+    start: "2020-01-01"
+    stale_after_months: 30
+    chart: orders_origin
+    label: "außerhalb Europas"
+    style: bar
+    license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
+    note: "Aufträge nach Jahr der Bekanntgabe und Sitz des Auftragnehmers; Aufträge mit unklarer Herkunft (rund 31 Mrd. € seit 2020) fehlen. Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
