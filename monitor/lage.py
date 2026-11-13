@@ -82,6 +82,8 @@ def _rates(data: dict) -> list:
         ("ret", "Einzelhandel real, ggü. Vorjahr", "Retail sales, real, year on year", _yoy(_s(data, "de_retail")), True, "konsum"),
         ("exp", "Exporte, ggü. Vorjahr", "Exports, year on year", _yoy(_s(data, "de_exports")), True, "export"),
         ("ip", "Industrieproduktion, ggü. Vorjahr", "Industrial production, year on year", _yoy(_s(data, "de_ip")), True, "industrie"),
+        ("bau", "Bauzinsen, neue Wohnungsbaukredite", "Mortgage rates, new housing loans", _s(data, "de_rate_house"), False, "zinsen"),
+        ("frb", "Rendite 10-jähriger Staatsanleihen Frankreichs", "10-year French government bond yield", _s(data, "lt_fr"), False, "zinsen"),
         ("ord", "Auftragseingang Industrie, ggü. Vorjahr", "Industrial orders, year on year", _yoy(od.rolling(3).mean().dropna() if od is not None else None), True, "industrie"),
     ]
 
@@ -91,7 +93,8 @@ def _line(s: pd.Series, name: str = "", col: int = 0) -> dict:
     t = s[s.index >= "2019-01-01"]
     m = s[(s.index.year >= 2015) & (s.index.year <= 2019)]
     return {"name": name, "col": col, "x": [d.strftime("%Y-%m") for d in t.index], "y": [round(float(v), 3) for v in t.values],
-            "mean": round(float(m.mean()), 3) if len(m) else None}
+            "mean": round(float(m.mean()), 3) if len(m) else None,
+            "lo": round(float(m.min()), 3) if len(m) else None, "hi": round(float(m.max()), 3) if len(m) else None}
 
 
 def _panels(data: dict, de: bool) -> list:
@@ -128,7 +131,7 @@ def build(data: dict, forecasts: list[dict], lang: str = "de") -> dict:
         if not len(y19) or not len(ago):
             continue
         a, b, c = float(y19.mean()), float(ago.iloc[-1]), float(ser.iloc[-1])
-        slope.append({"key": key, "label": lde if de else len_, "topic": topic, "v": [round(a, 3), round(b, 3), round(c, 3)], "txt": n(c, 1, chg)})
+        slope.append({"key": key, "label": lde if de else len_, "topic": topic, "v": [round(a, 3), round(b, 3), round(c, 3)], "txt": n(c, 1, chg), "txts": [n(a, 1, chg), n(b, 1, chg)]})
 
     q = _s(data, "de_gdp_qoq")
     if q is not None and len(q) > 1:
