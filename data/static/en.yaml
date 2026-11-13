@@ -56,17 +56,17 @@ topics:
   energie: {title: "Energy"}
   aussichten: {title: "Outlook", ask: "What do the forecasts expect?"}
   rezession: {title: "Recession risk", code: "Recession", ask: "Is a recession looming?"}
-  pruefung: {title: "Forecasts and revisions", code: "Forecasts", ask: "How reliable are the first figures and the projection?"}
+  pruefung: {title: "Accuracy", code: "Forecasts", ask: "How reliable are the first figures and the projection?"}
   breite: {title: "Breadth and comparison", code: "Breadth", ask: "How broad is the development, and how unusual is it?"}
   wettbewerb: {title: "Competition", ask: "Who competes with Germany on world markets?"}
   bedrohung: {title: "Threats", code: "Threats", ask: "How much is Germany being targeted?"}
   ruestung: {title: "Defence", code: "Defence", ask: "How much does Germany spend on defence?"}
   ukraine: {title: "Aid to Ukraine", code: "Ukraine-aid", ask: "How much does Germany help Ukraine?"}
   handel: {title: "Trade conflicts", code: "Trade-conflicts", ask: "How often do trade barriers hit German exports?"}
-  struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
-  staat: {title: "Government", ask: "What state are the public finances in?"}
+  struktur: {title: "Foundations of growth", code: "Foundations", ask: "How sound are the foundations of growth?"}
+  staat: {title: "Public finances", code: "Public-finances", ask: "What state are the public finances in?"}
   staatsausgaben: {title: "Government spending", code: "Spending", ask: "What does the government spend its money on?"}
-  haushalte: {title: "Households", code: "Households", ask: "How is a typical household doing?"}
+  haushalte: {title: "Wealth", code: "Wealth", ask: "How much do households own, and how is it distributed?"}
   sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What does the Council of Economic Experts advise, and how accurate was it?"}
   gemeinschaftsdiagnose: {title: "Joint Economic Forecast", code: "Forecast", ask: "What do the economic research institutes advise, and how accurate were they?"}
   kalender: {title: "Calendar", ask: "When are the next figures due?"}

@@ -617,7 +617,7 @@ const CAPM = "Mehr zur Methode";
 const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten, Quellen, Rechenschritte und Methode dieser Abbildung auf einer Seite";
 const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
 const LIC_ALSO = "gilt auch für diese Abbildung und ihren Download";
-const NAVTXT = { groups: { gesamt: "Gesamtwirtschaft", produktion: "Produktion", haushalte: "Arbeit und Haushalte", preise: "Preise und Energie", aussen: "Außenwirtschaft", finanz: "Finanzierung", ausblick: "Stimmung und Aussichten" }, overview: "Übersicht", brief: "Das Wichtigste", all: "Alles zeigen",
+const NAVTXT = { groups: { gesamt: "Gesamtwirtschaft", produktion: "Produktion", haushalte: "Arbeit und Haushalte", preise: "Preise und Energie", aussen: "Außenwirtschaft", finanz: "Finanzierung", ausblick: "Stimmung" }, overview: "Übersicht", brief: "Das Wichtigste", all: "Alles zeigen",
   week: "Diese Woche", calendar: "Kalender", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü", contents: "Inhalt" };
 const KERN = { more: "Weiterlesen" };
 const MORETXT = "Alle Grafiken zu {t} ({n})", BRIEFALL = "Alle {n} Kapitel zeigen";
@@ -2018,11 +2018,11 @@ function build() {
   let no = 0, curPart = null;
   const NAV = [];  // Kapitel für das Menü: Teil, Gruppe, Nummer
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
-    analysen: { no: "Teil III", title: "Analysen", text: "Eigene Auswertungen: Rezessionsrisiko, Treffsicherheit von Prognosen und ersten Zahlen, Breite der Entwicklung und Wettbewerb. Dieser Teil wächst." },
-    geopolitik: { no: "Teil V", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht, Hilfe für die Ukraine und Handelskonflikte. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
-    struktur: { no: "Teil VI", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen und Zuwanderung." },
-    staat: { no: "Teil II", title: "Staat", text: "Geldpolitik, Zinsen, Kredite und Staatsfinanzen: was Geld kostet, wie viel der Staat ausgibt und wie hoch er verschuldet ist." },
-    prognosen: { no: "Teil IV", title: "Expertisen", text: "Was Fachgremien vorhersagen und empfehlen, und wie gut sie lagen: Sachverständigenrat und Gemeinschaftsdiagnose, später auch IWF, EU-Kommission und OECD." },
+    analysen: { no: "Teil V", title: "Analysen", text: "Eigene Auswertungen: Rezessionsrisiko und wie breit und wie ungewöhnlich die Entwicklung ist. Dieser Teil wächst." },
+    geopolitik: { no: "Teil IV", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht, Hilfe für die Ukraine und Handelskonflikte. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
+    struktur: { no: "Teil III", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung und Vermögen." },
+    staat: { no: "Teil II", title: "Geld und Staat", text: "Geldpolitik, Zinsen, Kredite und Staatsfinanzen: was Geld kostet, wie viel der Staat ausgibt und wie hoch er verschuldet ist." },
+    prognosen: { no: "Teil VI", title: "Expertisen", text: "Was Fachgremien vorhersagen und empfehlen, und wie gut sie lagen: Prognosen im Vergleich, Sachverständigenrat, Gemeinschaftsdiagnose und die Treffsicherheit erster Zahlen, später auch IWF, EU-Kommission und OECD." },
     service: { no: "", title: "Termine", text: "" } };
   const railObs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
     const sec = e.target.closest("section.topic"); if (!e.isIntersecting || !sec) return; const r = sec.querySelector(".rail");
@@ -2097,9 +2097,9 @@ function build() {
   // Menü: ein Knopf „Inhalt“ öffnet eine Tafel mit allen Abschnitten und ihrer Frage
   nav.innerHTML = `<button type="button" class="btn navbtn" aria-expanded="false" aria-controls="navpanel">${NAVTXT.contents}</button>`;
   const panel = document.createElement("div"); panel.className = "navpanel"; panel.id = "navpanel"; panel.hidden = true;
-  // Teile II bis V ohne Untergruppen: je eine Spalte nebeneinander, der Teil steht über dem Balken
+  // Teile II bis VI ohne Untergruppen: je eine Spalte nebeneinander, der Teil steht über dem Balken
   const navCol = k => { const xs = NAV.filter(x => x.part === k), P = PARTS[k] || {}; return xs.length ? `<div class="nvg"><p class="nvgh nvph">${P.no ? `<span>${esc(P.no)}</span> ` : ""}${esc(P.title || k)}</p>${xs.map(navA).join("")}</div>` : ""; };
-  panel.innerHTML = `<div class="nvin">${navPart("konjunktur")}<div class="nvpart"><div class="nvgroups">${navCol("staat")}${navCol("analysen")}${navCol("prognosen")}${navCol("geopolitik")}${navCol("struktur")}</div></div>${navFoot}</div>`;
+  panel.innerHTML = `<div class="nvin">${navPart("konjunktur")}<div class="nvpart"><div class="nvgroups">${navCol("staat")}${navCol("struktur")}${navCol("geopolitik")}${navCol("analysen")}${navCol("prognosen")}</div></div>${navFoot}</div>`;
   const header = document.querySelector("header"); header.appendChild(panel);
   const nb = nav.querySelector(".navbtn");
   const closeAll = () => { const was = !panel.hidden; panel.hidden = true; nb.setAttribute("aria-expanded", "false"); document.body.classList.remove("menuopen"); return was; };
