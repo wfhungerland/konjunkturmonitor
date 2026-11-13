@@ -619,7 +619,7 @@ def chart_sentences_en(c: dict) -> list[str]:
                 words = {0: "none", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six"}
                 return [f"{when(last, freq)}, output was below its level of a year earlier in {words.get(below, below)} of {words.get(len(parts), len(parts))} industries: "
                         + "; ".join(f"{lab} {num(p, 1, True)}%" for lab, p in parts) + "."]
-        series = series[:6]
+        series = series if isinstance(c.get("combine"), dict) and c["combine"].get("lead_en") else series[:6]  # Zinskurve: alle Laufzeiten in einem Satz
         last = max(s["x"][-1] for s in series)
         w = when(last, freq)
         if c.get("mad_band"):  # Korrekturen des BIP-Wachstums
@@ -651,6 +651,7 @@ def chart_sentences_en(c: dict) -> list[str]:
                 continue
             v, f = s["y"][-1], s.get("freq", freq)
             su = ((s.get("unit_de") if c.get("own_scale") else c.get("unit_de")) or "").split(",")[0]
+            su = "Pp" if su.startswith("Prozentpunkte") else su  # Abstände in Prozentpunkten wie Pp
             lag = {"M": 12, "Q": 4, "A": 1, "D": 52}.get(f, 12)
             yago = s["y"][-1 - lag] if len(s["y"]) > lag else None
             if f == "B":
@@ -660,7 +661,7 @@ def chart_sentences_en(c: dict) -> list[str]:
             unit_en = (s.get("unit") if c.get("own_scale") else c.get("unit")) or ""
             uu = "%" if su.startswith("%") and not su.startswith(("% des", "% der")) else "pp" if su.startswith(("Pp", "Saldo")) else "" if su.startswith("Index") else unit_en.split(",")[0]
             vv = (f"{num(v, d, su.startswith('Saldo'))}{uu}" if uu == "%" else f"{num(v, d, su.startswith('Saldo'))} {uu}".strip()) if not su.startswith("Index 0") else f"{num(v, d)} out of 100 points"
-            subj = _subject(s.get("label", ""))
+            subj = (c.get("subj_en") or {}).get(s.get("id")) or _subject(s.get("label", ""))
             if s.get("id") in mig:  # Wanderung: wer kam, wer ging
                 out.append(f"{w}, net {num(abs(v), d)} thousand {mig[s['id']]} {'moved to Germany' if v >= 0 else 'left Germany'}.")
                 continue
@@ -920,7 +921,7 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
 _MONEY_EN = [
     (r"Mrd\. US-\$, Preise (\d{4})", r"$bn, \1 prices"), (r"\bEUR bn\b", "€bn"),
     (r"\bEUR ([\d.,]+) billion\b", r"€\1bn"), (r"\bEUR ([\d.,]+) million\b", r"€\1m"),
-    (r"([+-]?)(\d[\d.,]*) ?€bn\b", r"\1€\2bn"), (r"€(\d[\d.,]*) bn\b", r"€\1bn"), (r"US\$(\d[\d.,]*) ?bn\b", r"$\1bn"),
+    (r"([+-]?)(\d[\d.,]*) ?€bn\b", r"\1€\2bn"), (r"([+-]?)(\d[\d.,]*) ?€tn\b", r"\1€\2tn"), (r"€(\d[\d.,]*) bn\b", r"€\1bn"), (r"US\$(\d[\d.,]*) ?bn\b", r"$\1bn"),
     (r"([+-]?)(\d[\d.,]*) US\$", r"\1$\2"), (r"([+-]?)(\d[\d.,]*) € ", r"\1€\2 "), (r"([+-]?)(\d[\d.,]*) €([,.;)]|$)", r"\1€\2\3"),
     (r"([+-]?)(\d[\d.,]*) £", r"\1£\2"), (r"\bUS\$ per\b", "$ per"),
     (r"\bin billions of euros\b", "in €bn"), (r"\bin billion euros\b", "in €bn"), (r"\bin billion US dollars\b", "in $bn"), (r"\bin millions of euros\b", "in €m"),
