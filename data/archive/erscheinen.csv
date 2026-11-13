@@ -645,3 +645,11 @@ stx_pk_gesundheit,2024,2026-11-13
 stx_pk_bildung,2024,2026-11-13
 stx_pk_verwaltung,2024,2026-11-13
 stx_pk_uebrige,2024,2026-11-13
+def_staff,2024,2026-11-13
+def_material,2024,2026-11-13
+def_invest,2024,2026-11-13
+def_transfer,2024,2026-11-13
+kmpt_de_only,2025,2026-11-13
+kmpt_de_partner,2025,2026-11-13
+kmpt_eu,2025,2026-11-13
+kmpt_noneu,2025,2026-11-13
