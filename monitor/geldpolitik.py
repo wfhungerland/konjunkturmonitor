@@ -264,8 +264,27 @@ def update_curves(static: Path) -> None:
     (static / "zinskurven.json").write_text(json.dumps({"countries": out}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
 
+BBK_EXP = "https://api.statistiken.bundesbank.de/rest/data/BBDA1/M.DE.N.EX.S.A.{c}.A.V.ABA.A?startPeriod=2004-01&detail=dataonly"
+
+
+def update_exports_fr(static: Path) -> None:
+    """Anteil Frankreichs an den deutschen Warenexporten in %, Summe der letzten zwölf Monate (Bundesbank, unbereinigt)."""
+    def series(c: str) -> dict[date, float]:
+        rows = [r for r in csv.reader(io.StringIO(_bytes(BBK_EXP.format(c=c), "application/vnd.sdmx.data+csv;version=1.0.0").decode("utf-8-sig")), delimiter=";") if r]
+        h = rows[0]
+        it, iv = h.index("TIME_PERIOD"), h.index("OBS_VALUE")
+        return {date(int(r[it][:4]), int(r[it][5:7]), 1): float(r[iv]) for r in rows[1:] if len(r) > iv and r[iv] not in ("", ".")}
+    fr, w = series("FR"), series("W1")
+    ds = sorted(d for d in fr if d in w)
+    rows = []
+    for k in range(11, len(ds)):
+        win = ds[k - 11:k + 1]
+        rows.append((ds[k], sum(fr[d] for d in win) / sum(w[d] for d in win) * 100))
+    _write(static, "de_exp_share_fr", rows)
+
+
 def update_all(static: Path) -> None:
-    for name, f in (("Anleihekäufe je Programm", update_qe_programmes), ("Anleihekäufe je Land", update_qe_countries), ("TPI-Bedingungen", update_tpi), ("Zinskurven", update_curves)):
+    for name, f in (("Anleihekäufe je Programm", update_qe_programmes), ("Anleihekäufe je Land", update_qe_countries), ("TPI-Bedingungen", update_tpi), ("Zinskurven", update_curves), ("Exporte nach Frankreich", update_exports_fr)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf

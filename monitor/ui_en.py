@@ -175,6 +175,7 @@ PAIRS: list[tuple[str, str]] = [
     ('lic ? `Lizenz: ${lic}` : ""', 'lic ? `Licence: ${lic}` : ""'),
     ('"Rezessionen nach der Datierung des Sachverständigenrats (graue Flächen)"', '"Recessions as dated by the German Council of Economic Experts (grey areas)"'),
     ('title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button>', 'title="Copy a direct link to this chart">${GUTTXT.link}</button>'),
+    ('const GAUGE_TXT = { normal: "normal", crisis: "Eurokrise", now: "jüngster Wert", ago: "vor einem Jahr", lang: "de" };', 'const GAUGE_TXT = { normal: "normal", crisis: "euro crisis", now: "latest value", ago: "a year earlier", lang: "en" };'),
     ('const CURVE_TXT = { x: "Restlaufzeit in Jahren", lang: "de" };', 'const CURVE_TXT = { x: "Residual maturity in years", lang: "en" };'),
     ('const TPI_TXT = { land: "Land", def: "Finanzierungssaldo", debt: "Schulden", edp: "Defizitverfahren", sp: "Abstand zu Bund", yes: "läuft", no: "nein", pct: "% des BIP", pp: "Pp", lang: "de" };',
      'const TPI_TXT = { land: "Country", def: "Budget balance", debt: "Debt", edp: "Deficit procedure", sp: "Spread over Bunds", yes: "ongoing", no: "no", pct: "% of GDP", pp: "pp", lang: "en" };'),

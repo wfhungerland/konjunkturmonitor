@@ -146,3 +146,6 @@ qe_land;Staatsanleihekaeufe Land;2026-11-13;
 tpi;TPI Bedingungen;2026-11-13;
 zinskurven;Zinskurven Laender;2026-11-13;
 curve_slope;Abstand lange kurze Zinsen;2026-11-13;
+fr_gauge;Krisenthermometer Frankreich;2026-11-13;
+fr_stress;Finanzstress Frankreich;2026-11-13;
+fr_exports;Exportanteil Frankreich;2026-11-13;
