@@ -54,6 +54,30 @@
   .stturn { margin: 14px 0 6px; } .stturn ul { list-style: none; margin: 0; padding: 0; } .stturn li { display: grid; grid-template-columns: 3.2em minmax(0, 1fr); font: 13.5px/1.4 var(--ff); margin: 0 0 7px; }
   .stturn .sp { color: #595959; }
   @media (max-width: 600px) { .stnow .sg { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .kmtx { border-left: 2px solid #000; padding-left: 12px; margin: 12px 0 4px; font: 14.5px/1.45 var(--ff); } .kmtx[hidden] { display: none; }
+  .kmtx .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 2px 0 5px; }
+  .gut .kmt[aria-expanded="true"] { font-weight: 700; color: #000; }
+  /* Lage auf einen Blick: erster Bildschirm für eilige Leser */
+  .lage { margin: 6px 0 26px; } .lage[hidden] { display: none; }
+  .lage .lh { display: flex; flex-wrap: wrap; gap: 4px 18px; align-items: baseline; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 6px; }
+  .lage .lh h2 { font: 700 15px var(--ff); letter-spacing: .06em; text-transform: uppercase; margin: 0; } .lage .lh span { font: 13.5px var(--ff); color: #595959; }
+  .lage .lk { font: 13.5px var(--ff); background: none; border: 0; padding: 0; cursor: pointer; color: #595959; } .lage .lk[aria-pressed="true"] { color: #000; font-weight: 700; }
+  .lage .kom { display: none; } body.lagek .lage .kom { display: block; }
+  .lage .say { font: 600 25px/1.3 var(--ff); margin: 16px 0 18px; max-width: 900px; } body.lagek .lage .nokom { display: none; }
+  .lage .lg2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 28px; margin: 6px 0 10px; } .lage .lg2 h3 { font: 400 16px var(--ff); margin: 0 0 4px; text-transform: none; letter-spacing: 0; color: #000; }
+  .lage .lsl svg { width: 100%; height: auto; display: block; } .lage svg text { font-family: var(--ff); } .lage .sh { font-size: 12px; fill: #595959; } .lage .sv { font-size: 14.5px; font-weight: 700; fill: #000; } .lage .sn { font-size: 13px; } .lage .lsl a:hover tspan { text-decoration: underline; }
+  .lage .lkey { display: flex; flex-wrap: wrap; gap: 2px 16px; font: 13px var(--ff); color: #404040; margin: 0 0 10px; } .lage .lkey span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .lage .lpg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 18px; } .lage .lp { display: block; color: #000; text-decoration: none; } .lage .lp b { display: block; font: 400 15px/1.25 var(--ff); } .lage .lp span { display: block; font: 12px/1.3 var(--ff); color: #7f7f7f; min-height: 2.6em; } .lage .lp:hover b { color: #0070C0; }
+  .lage .lp svg { width: 100%; height: auto; display: block; overflow: visible; } .lage .sx { font-size: 10px; fill: #595959; } .lage .sp { font-size: 10px; } .lage .se { font-size: 12px; font-weight: 700; } .lage .sm { font-size: 10px; } .lage .sl { font-size: 10.5px; }
+  .lage .lo { margin: 18px 0 0; font: 15.5px/1.4 var(--ff); max-width: 900px; }
+  .lage .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; margin-top: 26px; max-width: 1100px; }
+  .lage h3 { font: 600 12.5px var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 0 0 8px; }
+  .lage ul { list-style: none; margin: 0 0 14px; padding: 0; } .lage li { margin: 0 0 8px; font: 15px/1.4 var(--ff); } .lage li a { color: #000; }
+  .lage .amp { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 7px; } .lage .amp.r { background: #C00000; } .lage .amp.y { background: #E0A800; } .lage .amp.g { background: #47D359; }
+  .lage .fc b { font-size: 20px; } .lage .mine { margin-top: 6px; border-top: 1px solid var(--line); padding-top: 12px; display: flex; gap: 22px; flex-wrap: wrap; font: 600 15px var(--ff); }
+  .lage .mine a { color: #000; } .lage .mine a.s { color: #0070C0; }
+  @media (max-width: 700px) { .lage .say { font-size: 20px; } .lage .lg2 { grid-template-columns: 1fr; gap: 18px; } .lage .lpg { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; } .lage .sx, .lage .sp, .lage .sm, .lage .sl { font-size: 13px; } .lage .se { font-size: 15px; } .lage .sn { font-size: 12.5px; } .lage .sv { font-size: 14px; } .lage .cols { grid-template-columns: 1fr; gap: 6px; } }
+  body.lagek #lage + .overview, body #lage:not([hidden]) + .overview { display: none; }
   .overview .fz { display: none; } body.fazit .overview .fz { display: block; border-left: 2px solid var(--text); padding-left: 14px; margin: 14px 0 4px; }
   .overview .fz .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 3px 0 5px; }
   body:not(.fazit) .verdict { display: none !important; }
@@ -459,11 +483,28 @@
   @media (min-width: 1240px) { .refs { max-width: 1320px; } }
   footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
+  .spktab { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .spktab th { font-weight: 400; font-size: 13px; color: #595959; text-align: left; padding: 0 8px 6px 0; }
+  .spktab th.n, .spktab td.n { text-align: right; white-space: nowrap; }
+  .spktab td { padding: 8px 8px 8px 0; border-top: 1px solid #e6e6e6; vertical-align: middle; font-size: 15px; }
+  .spktab tr.spk-sub td:first-child { padding-left: 14px; }
+  .spktab tr.spk-sub .lab { font-weight: 400; }
+  .spktab .lab { display: block; font-weight: 600; font-size: 15px; }
+  .spktab .u { display: block; font-size: 12px; color: #595959; }
+  .spktab td.g { width: 38%; min-width: 120px; }
+  .spktab td.f { font-weight: 700; color: #002060; font-size: 17px; }
+  .spk { width: 100%; height: 30px; display: block; }
+  .spk-line { fill: none; stroke: #002060; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .spk-dot { stroke: #002060; stroke-width: 6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .spk-war { stroke: #C00000; stroke-width: 1; stroke-dasharray: 2 2; vector-effect: non-scaling-stroke; }
+  .spknote { font-size: 12px; color: #595959; margin: 6px 0 0; }
+  @media (max-width: 560px) { .spktab td.g { min-width: 80px; width: 30%; } .spktab td.f { font-size: 15px; } }
 </style>
 </head>
 <body>
 <header id="top"><div class="bar"><div class="brand"><h1><a class="home" href="#top" title="Nach oben">Konjunkturmonitor</a></h1><div class="meta"><span class="stand" id="stand"></span><span class="lang" id="lang"></span></div></div><nav id="nav"></nav></div></header>
 <main>
+  <section id="lage" class="lage" hidden></section>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
   <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
@@ -511,16 +552,22 @@ const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
 const FAZTXT = { btn: "Kommentar", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Kommentar bleibt die Seite beschreibend." };
 const ABTXT = { close: "schließen" };
-const TOURTXT = { name: "Rundgang", ask: "Neu hier? Eine Minute Rundgang zeigt, wie die Seite funktioniert.", go: "Los geht’s", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
+const TOURTXT = { name: "Anleitung", ask: "Neu hier? Die Anleitung zeigt in einer Minute, wie die Seite funktioniert.", go: "Los geht’s", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
   steps: [
     ["#nav", "Hier ist das Inhaltsverzeichnis. Ein Klick zeigt alle Kapitel. Die Lupe daneben findet jede Grafik."],
     [".fazitbtn", "Die Seite beschreibt nur, was die Zahlen zeigen. Wer eine Einschätzung lesen will, schaltet hier den Kommentar ein."],
     [".briefbtn", "Am Anfang sehen Sie nur das Wichtigste. Hier klappen Sie alle Kapitel auf."],
+    ["#lage", "Die Lage auf einen Blick: links Raten heute, vor einem Jahr und 2019, rechts Verläufe seit 2019 gegen den Durchschnitt 2015–19. „Kommentar“ blendet eine Einschätzung mit Warnlampen ein."],
     ["#starttable", "Die wichtigsten Zahlen auf einen Blick. ▲ heißt gestiegen, ▼ gesunken, ● gleich geblieben. Rot heißt: eher ungünstig. Ein Klick führt zum Kapitel."],
     ["@card .htools", "Lieber Zahlen statt Linien? Mit „Tabelle“ sehen Sie die letzten zwölf Werte."],
     ["@card .tools", "Mit diesen Schaltern sehen Sie mehr, etwa die ganze Geschichte einer Zahl oder frühere Krisen."],
     ["@card .cside", "Hier steht in wenigen Sätzen, was die Grafik zeigt. Wer es genau wissen will, klickt auf „Mehr zur Methode“."],
     ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik. Und über „Feedback“ erreicht Ihre Meinung zu einer Grafik direkt den Autor."]] };
+const KMTXT = { btn: "Kommentar", title: "Eigene Einschätzung zu dieser Grafik" };
+const LAGETXT = { title: "Lage auf einen Blick", stand: "Stand", komm: "Kommentar", kommt: "Lage-Satz und Warnlampen: Einschätzung nach festen Regeln, automatisch erzeugt",
+  warn: "Warnlampen", out: "Ausblick", grem: "Was die Gremien raten", neu: "Neu in den letzten sieben Tagen", term: "Nächste Termine (geschätzt)",
+  mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", am: "Lage am", rates: "Raten, in %", since: "Verläufe seit 2019",
+  when: [["2019", "Jahresmittel,", "vor Corona"], ["vor einem", "Jahr"], ["heute"]], k: ["Hoch seit 2019", "Tief seit 2019", "letzter Wert", "Durchschnitt 2015–19", "Abstand dazu"], fuer: "für", wd: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"] };
 const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", wait: "Bitte einen Moment warten.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const PHASETXT = { to: "–", L: { "-1": "Lohnzurückhaltung", "0": "Löhne im Spielraum", "1": "kräftigere Löhne" }, G: { "-1": "straffer", "0": "beibehalten", "1": "lockerer" },
   F: { "-1": "Konsolidierung", "0": "neutral", "1": "Impulse" }, A: { "-1": "mehr Schutz", "0": "beibehalten", "1": "Flexibilisierung" } };
@@ -1131,6 +1178,23 @@ function cellChart(el, c) {
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl && A.mode !== "bar") uEl.style.display = "none";
   Plotly.react(el, traces, L, CFG);
 }
+// Tabelle mit Wortgrafiken nach Tufte: je Zeile Verlauf auf gemeinsamer Zeitachse, Stand 2021, jüngster Stand, Faktor
+function sparkChart(el, c) {
+  const R = c.sparktable || [], en = DATA.lang === "en", t0 = Math.min(...R.map(r => Date.parse(r.x[0]))), t1 = Math.max(...R.map(r => Date.parse(r.x[r.x.length - 1])));
+  const W = 220, H = 30, fx = (v, d) => en ? v.toLocaleString("en-GB", { minimumFractionDigits: d, maximumFractionDigits: d }) : fmt(v, d);
+  const war = Date.parse("2022-02-24"), px = t => 2 + (t - t0) / (t1 - t0) * (W - 6);
+  const spark = r => { const ys = r.y, lo = Math.min(...ys), hi = Math.max(...ys), py = v => H - 3 - (v - lo) / ((hi - lo) || 1) * (H - 6);
+    const pts = r.x.map((x, i) => `${px(Date.parse(x)).toFixed(1)},${py(ys[i]).toFixed(1)}`).join(" "), n = r.x.length - 1;
+    return `<svg class="spk" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><line x1="${px(war)}" x2="${px(war)}" y1="0" y2="${H}" class="spk-war"/>`
+      + `<polyline points="${pts}" class="spk-line"/><line x1="${px(Date.parse(r.x[n])).toFixed(1)}" x2="${px(Date.parse(r.x[n])).toFixed(1)}" y1="${py(ys[n]).toFixed(1)}" y2="${py(ys[n]).toFixed(1)}" class="spk-dot"/></svg>`; };
+  const T = en ? { since: "Since " + new Date(t0).getFullYear(), y21: "2021", last: "Latest", f: "Factor", war: "Dotted: Russia's attack on Ukraine, 24 Feb 2022." }
+               : { since: "Verlauf seit " + new Date(t0).getFullYear(), y21: "2021", last: "zuletzt", f: "Faktor", war: "Gepunktet: russischer Angriff auf die Ukraine, 24.2.2022." };
+  el.innerHTML = `<table class="spktab"><thead><tr><th></th><th>${T.since}</th><th class="n">${T.y21}</th><th class="n">${T.last}</th><th class="n">${T.f}</th></tr></thead><tbody>`
+    + R.map(r => `<tr class="${r.sub ? "spk-sub" : "spk-main"}"><td><span class="lab">${esc(en ? r.label_en : r.label)}</span><span class="u">${esc(en ? r.unit_en : r.unit)}</span></td>`
+      + `<td class="g">${spark(r)}</td><td class="n">${fx(r.base, r.d)}</td><td class="n"><b>${fx(r.last, r.d)}</b><span class="u">${esc(en ? r.when_en : r.when)}</span></td>`
+      + `<td class="n f">×${fx(r.factor, 1)}</td></tr>`).join("") + `</tbody></table><p class="spknote">${T.war}</p>`;
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+}
 // Kurs der Finanzpolitik gegen erwartetes Wachstum: Balken je Zieljahr, Farbe nach der Empfehlung im Gutachten des Vorjahres
 function stanceBarsChart(el, c) {
   const A = c.attach || {}, g = c.series.find(s => s.id === "svr_bip_prog"), f = c.series.find(s => s.id === "svr_stance_f"); if (!g) return;
@@ -1525,7 +1589,7 @@ function card(c, no) {
   const ownCfg = c.own_scale;  // so in monitor.yaml gesetzt (dann fehlt die gemeinsame Einheit über der Grafik)
   if (c.multiples && (DATA.layout || {}).small_multiples && (c.series || []).length > 2) { if (c.own_scale == null) c.own_scale = true; c.scale_toggle = true; }  // Standard: eigene Skala je Feld, gemeinsam per Schalter
   const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = FA(no); if (c.chart) el.dataset.chart = c.chart;
-  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
+  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" || c.type === "sparktable" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? (c.all_days ? "Täglich" : "Täglich (Arbeitstage)") : c.freq === "S" ? "Halbjährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Pp, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% ggü. Vorjahr"
     : c.type === "tiles" ? "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
@@ -1544,7 +1608,7 @@ function card(c, no) {
   const main = document.createElement("div"); main.className = "cmain"; body.appendChild(main);
   main.insertAdjacentHTML("beforeend", `<div class="unit">${ownCfg ? "" : esc(unit)}</div>`);
   const box = document.createElement("div"); box.className = "chartbox"; main.appendChild(box);
-  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar", "tpi"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
+  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar", "tpi", "sparktable"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
   const side = document.createElement("aside"); side.className = "cside"; el.querySelector(".cgrid").appendChild(side);
   const capx = (c.caption || "") + ((c.notes || []).length ? " Über „Ausschläge und Sondereffekte“ erscheinen nummerierte, gepunktete Linien an den betroffenen Monaten." : "");
@@ -1626,7 +1690,13 @@ function card(c, no) {
   // alle Optionen offen untereinander, beginnend auf Höhe der Zeichenfläche (siehe alignGut)
   gut.insertAdjacentHTML("beforeend", `<div class="gopts"><button type="button" class="dl" aria-expanded="false" title="${GUTTXT.dlt}">${GUTTXT.dl}</button><div class="dlist" hidden>${acts.join("")}</div>`
     + (c.chart && !capx ? `<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${GUTTXT.meth}</a>` : "")  // mit Erläuterung steht „Mehr zur Methode“ schon rechts
-    + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button></div>`);
+    + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button>`
+    + (c.kommentar ? `<button type="button" class="kmt" aria-expanded="false" title="${KMTXT.title}">${KMTXT.btn}</button>` : "") + `</div>`);
+  if (c.kommentar) {  // Kommentar je Grafik: eigener Absatz mit Linie links, unter der Erläuterung, erst auf Klick
+    const kb = gut.querySelector(".kmt"), kx = document.createElement("div"); kx.className = "kmtx"; kx.hidden = true;
+    kx.innerHTML = `<span class="fzl">${KMTXT.btn}</span>${esc(c.kommentar)}`; side.appendChild(kx);
+    kb.onclick = () => { kx.hidden = !kx.hidden; kb.setAttribute("aria-expanded", String(!kx.hidden)); };
+  }
   // Direkter Link auf diese Abbildung zum Teilen
   const lk = gut.querySelector("button.lnk");
   const dlb = gut.querySelector("button.dl"); dlb.onclick = () => { const l = dlb.nextElementSibling, open = l.hidden; l.hidden = !open; dlb.setAttribute("aria-expanded", String(open)); };  // Formate auf- und zuklappen
@@ -1712,6 +1782,7 @@ function render(ch) {
   else if (c.type === "dumbbell") dumbbellChart(ch, c);
   else if (c.type === "stance") stanceChart(ch, c);
   else if (c.type === "cellgrid") cellChart(ch, c);
+  else if (c.type === "sparktable") sparkChart(ch, c);
   else if (c.type === "stance_bars") stanceBarsChart(ch, c);
   else if (c.type === "heat") heatChart(ch, c);
   else if (c.type === "tpi") tpiChart(ch, c);
@@ -1843,8 +1914,9 @@ function searchBox() {
   box.innerHTML = `<button type="button" class="lupe" aria-label="Suchen" title="Suchen (Taste /)"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="10.2" y1="10.2" x2="15" y2="15" stroke="currentColor" stroke-width="1.6"/></svg></button><input type="search" placeholder="Suchen, z. B. Inflation" aria-label="Abbildungen und Themen durchsuchen" autocomplete="off"><ul hidden role="listbox"></ul>`;
   const inp = box.querySelector("input"), ul = box.querySelector("ul"); let hits = [], sel = 0;
   // Lupe: Feld klappt erst beim Klick (oder Taste /) auf und schließt sich leer wieder
-  box.querySelector(".lupe").onclick = () => { box.classList.add("open"); inp.focus(); };
-  inp.addEventListener("focus", () => box.classList.add("open"));
+  const closeNav = () => { const p = document.getElementById("navpanel"); if (p && !p.hidden) { p.hidden = true; document.querySelector(".navbtn")?.setAttribute("aria-expanded", "false"); document.body.classList.remove("menuopen"); } };  // Suche schließt das Inhaltsmenü
+  box.querySelector(".lupe").onclick = () => { closeNav(); box.classList.add("open"); inp.focus(); };
+  inp.addEventListener("focus", () => { closeNav(); box.classList.add("open"); });
   inp.addEventListener("blur", () => setTimeout(() => { if (!inp.value && document.activeElement !== inp) box.classList.remove("open"); }, 200));
   const mark = (s, ws) => { let h = esc(s); ws.forEach(w => { const i = norm(h).indexOf(w); if (i >= 0 && norm(h).length === h.length) h = h.slice(0, i) + "<mark>" + h.slice(i, i + w.length) + "</mark>" + h.slice(i + w.length); }); return h; };
   const show = () => {
@@ -1894,6 +1966,7 @@ function build() {
   if (LY.minimal) document.body.classList.add("minimal");
   if (DATA.embed) document.body.classList.add("embed");  // Einzelseite zum Einbetten: nur diese Abbildung
   const grid = document.getElementById("grid"), nav = document.getElementById("nav"), topics = document.getElementById("topics");
+  lageView();
   if (LY.start_table && startTable(document.getElementById("starttable"))) grid.style.display = "none";
   else DATA.questions.forEach(q => {
     const a = q.answer, val = (a.signed && a.value > 0 ? "+" : "") + fmt(a.value, a.decimals ?? 1);
@@ -2130,6 +2203,86 @@ const tour = (function () {
   return start;
 })();
 document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = document.createElement("a"); a.href = "#top"; a.textContent = TOURTXT.name; a.onclick = e => { e.preventDefault(); scrollTo(0, 0); setTimeout(tour, 150); }; ft.prepend(a); });
+// Lage auf einen Blick: Raten im Steigungsbild, Verläufe seit 2019, Lage-Satz und Warnlampen (nur mit Kommentar), Ausblick, Gremien, Neues, Termine
+function lageView() {
+  const box = document.getElementById("lage"), L = (DATA.lage || {})[DATA.lang === "en" ? "en" : "de"];
+  if (!box || !L || !(L.slope || []).length || DATA.embed) return;
+  const SV = "http://www.w3.org/2000/svg", NS = DATA.lang === "en" ? "en-GB" : "de-DE";
+  const fmt = (v, d, cur) => (v < 0 ? "−" : "") + (cur || "") + Math.abs(v).toLocaleString(NS, { minimumFractionDigits: d, maximumFractionDigits: d });
+  const spread = (ys, gap) => { const o = ys.map((y, i) => i).sort((i, j) => ys[i] - ys[j]), q = ys.slice();
+    for (let k = 1; k < o.length; k++) if (q[o[k]] - q[o[k - 1]] < gap) q[o[k]] = q[o[k - 1]] + gap; return q; };
+  // Links: Raten im Steigungsbild, drei Zeitpunkte; Wachstum dunkelblau, übrige in Hausfarben nach heutigem Wert
+  const slopeSVG = items => { if (!items.length) return "";
+    const nar = innerWidth < 700, W = nar ? 455 : 560, top = 58, H = nar ? 440 : 470, x = nar ? [38, 104, 158] : [40, 150, 260], xn = nar ? 200 : 318, xl = xn + 7;
+    const all = items.flatMap(i => i.v); let lo = Math.min(...all, 0), hi = Math.max(...all); const pd = (hi - lo) * 0.04; lo -= pd; hi += pd;
+    const Y = v => top + (hi - v) / (hi - lo) * (H - top - 10);
+    const PAL = ["#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#47D359", "#404040", "#7F7F7F", "#A6A6A6"], col = {};
+    let k = 0; items.slice().sort((a, b) => b.v[2] - a.v[2]).forEach(i => { col[i.key] = i.key === "gdp" ? "#002060" : PAL[k++ % PAL.length]; });
+    let g = `<line x1="${x[0] - 12}" x2="${x[2] + 12}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="#E3E3E3"/>`;
+    LAGETXT.when.forEach((t, j) => { g += `<text x="${x[j]}" y="${top - 16}" text-anchor="middle" class="sh">${t.map((l, m) => `<tspan x="${x[j]}" dy="${m ? 13 : -13 * (t.length - 1)}">${esc(l)}</tspan>`).join("")}</text>`; });
+    items.forEach(i => { const c = col[i.key], [a, b, d] = i.v.map(Y);
+      g += `<a href="#${esc(i.topic)}"><line x1="${x[0]}" y1="${a.toFixed(1)}" x2="${x[1]}" y2="${b.toFixed(1)}" stroke="${c}" stroke-width="1.2" opacity=".45"/>`
+        + `<line x1="${x[1]}" y1="${b.toFixed(1)}" x2="${x[2]}" y2="${d.toFixed(1)}" stroke="${c}" stroke-width="2.4"/>`
+        + `<circle cx="${x[0]}" cy="${a.toFixed(1)}" r="2.4" fill="${c}" opacity=".45"/><circle cx="${x[1]}" cy="${b.toFixed(1)}" r="3" fill="${c}"/><circle cx="${x[2]}" cy="${d.toFixed(1)}" r="3" fill="${c}"/></a>`; });
+    const grp = []; items.forEach(i => { const f = grp.find(q => q.txt === i.txt); f ? f.items.push(i) : grp.push({ txt: i.txt, y: i.v[2], items: [i] }); });
+    spread(grp.map(q => Y(q.y)), 19).forEach((y, j) => { const q = grp[j];
+      g += `<text x="${xn}" y="${(y + 5).toFixed(1)}" text-anchor="end" class="sv">${esc(q.txt)}</text><text x="${xl}" y="${(y + 5).toFixed(1)}" class="sn">`
+        + q.items.map((i, m) => `<a href="#${esc(i.topic)}"><tspan fill="${col[i.key]}">${esc(i.label)}${m < q.items.length - 1 ? " · " : ""}</tspan></a>`).join("") + `</text>`; });
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(LAGETXT.rates)}">${g}</svg>`; };
+  // Rechts: Verläufe seit 2019; Hoch rot, Tief blau, letzter Wert in Linienfarbe; Durchschnitt 2015–19 gestrichelt, Abstand dazu hellblau
+  const LC = ["#002060", "#0070C0"], RED = "#D64541", TB = "#0070C0", MC = "#5B8DB8", SH = "#DCEEF8";
+  const t0 = Date.UTC(2019, 0, 1), t1 = Date.UTC(2026, 11, 31), ms = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, 15);
+  const panelSVG = p => { const W = 220, H = 150, x0 = 4, x1 = 150, y0 = 18, y1 = H - 22;
+    const vals = p.lines.flatMap(l => l.y.concat(l.mean != null ? [l.mean] : [])); let lo = Math.min(...vals), hi = Math.max(...vals); const pd = (hi - lo) * 0.02 || 1; lo -= pd; hi += pd;
+    const now = Date.UTC(new Date(DATA.generated_at).getUTCFullYear(), 11, 31), tE = Math.max(t1, now);
+    const X = t => x0 + (t - t0) / (tE - t0) * (x1 - x0), Y = v => y1 - (v - lo) / (hi - lo) * (y1 - y0), f = v => fmt(v, p.d, p.cur);
+    let g = "", lab = [];
+    [2019, 2022, 2025].forEach(yr => { g += `<text x="${X(Date.UTC(yr, 6, 1)).toFixed(1)}" y="${H - 4}" text-anchor="middle" class="sx">${yr}</text>`; });
+    p.lines.forEach(l => { const c = LC[l.col || 0], pts = l.x.map((d, i) => [X(ms(d)), Y(l.y[i])]), P = pts.map(q => q[0].toFixed(1) + "," + q[1].toFixed(1)).join(" ");
+      if (l.mean != null) { const m = Y(l.mean).toFixed(1);
+        g += `<polygon points="${P} ${pts[pts.length - 1][0].toFixed(1)},${m} ${pts[0][0].toFixed(1)},${m}" fill="${SH}"/>`
+          + `<line x1="${x0}" x2="${x1}" y1="${m}" y2="${m}" stroke="${MC}" stroke-width=".9" stroke-dasharray="3 2"/>`;
+        lab.push({ y: Y(l.mean), t: "Ø " + f(l.mean), c: MC, b: 0 }); }
+      g += `<polyline points="${P}" fill="none" stroke="${c}" stroke-width="1.4" stroke-linejoin="round"/>`;
+      const n = l.y.length, iMax = l.y.indexOf(Math.max(...l.y)), iMin = l.y.indexOf(Math.min(...l.y));
+      [[iMax, RED, -5], [iMin, TB, 12]].forEach(([i, cc, dy]) => { if (i >= n - 3) return; const [px, py] = pts[i];
+        g += `<line x1="${(px - 6).toFixed(1)}" x2="${(px + 6).toFixed(1)}" y1="${py.toFixed(1)}" y2="${py.toFixed(1)}" stroke="${cc}" stroke-width="1.1"/>`
+          + `<text x="${px.toFixed(1)}" y="${(py + dy).toFixed(1)}" text-anchor="middle" class="sp" fill="${cc}">${f(l.y[i])}</text>`; });
+      const [ex, ey] = pts[n - 1];
+      g += `<line x1="${(ex - 6).toFixed(1)}" x2="${(ex + 6).toFixed(1)}" y1="${ey.toFixed(1)}" y2="${ey.toFixed(1)}" stroke="${c}" stroke-width="1.8"/>`;
+      lab.push({ y: ey, t: f(l.y[n - 1]), c, b: 1 }); });
+    spread(lab.map(q => q.y), 12).forEach((y, j) => { const q = lab[j]; g += `<text x="${x1 + 9}" y="${(y + 4).toFixed(1)}" class="${q.b ? "se" : "sm"}" fill="${q.c}">${esc(q.t)}</text>`; });
+    if (p.lines.length > 1) p.lines.forEach((l, j) => { const c = LC[l.col || 0], yy = Math.min(...l.y.map(Y)) - (j === 0 ? 6 : 14);
+      g += `<text x="${x0 + 2}" y="${Math.max(10, Math.min(H - 24, yy)).toFixed(1)}" class="sl" fill="${c}">${esc(l.name)}</text>`; });
+    return `<a class="lp" href="#${esc(p.topic)}"><b>${esc(p.title)}</b><span>${esc(p.unit)}</span><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(p.title)}">${g}</svg></a>`; };
+  const key = `<div class="lkey">` + [["p", LAGETXT.k[0]], ["t", LAGETXT.k[1]], ["c", LAGETXT.k[2]], ["m", LAGETXT.k[3]], ["f", LAGETXT.k[4]]].map(([t, l]) =>
+    `<span><svg viewBox="0 0 18 10" width="18" height="10" aria-hidden="true">${t === "f" ? `<rect x="2" y="1" width="14" height="8" fill="${SH}"/>` : `<line x1="1" x2="17" y1="5" y2="5" stroke="${{ p: RED, t: TB, c: "#002060", m: MC }[t]}" stroke-width="${t === "c" ? 1.8 : 1.1}"${t === "m" ? ' stroke-dasharray="3 2"' : ""}/>`}</svg>${esc(l)}</span>`).join("") + `</div>`;
+  const kp = `<div class="lg2"><div class="lsl"><h3>${LAGETXT.rates}</h3>${slopeSVG(L.slope || [])}</div>`
+    + `<div class="lsm"><h3>${LAGETXT.since}</h3>${key}<div class="lpg">${(L.panels || []).map(panelSVG).join("")}</div></div></div>`;
+  const warn = (L.warn || []).map(w => `<li><span class="amp ${w.lvl}"></span><a href="#${esc(w.topic)}"><b>${esc(w.label)}:</b></a> ${esc(w.text)}</li>`).join("");
+  const out = L.outlook ? esc(L.outlook.who) + ": " + L.outlook.vals.map(v => `${esc(v.v)}${DATA.lang === "en" ? "%" : "\u00a0%"} ${LAGETXT.fuer} ${v.year}`).join(", ") + "." : "";
+  const grem = (L.gremien || []).map(g => `<li>${esc(g.split(/(?<=\.)\s/)[0])}</li>`).join("");
+  const neu = (DATA.week || []).slice(0, 4).map(w => `<li><a href="#${FA(w.no)}">${esc(w.title)}</a></li>`).join("");
+  const cal = (DATA.topics || []).flatMap(t => t.charts || []).find(c => c.type === "calendar"), today = new Date().toISOString().slice(0, 10);
+  const term = ((cal && cal.calendar && cal.calendar.events) || []).filter(e => e.date >= today).slice(0, 3)
+    .map(e => { const d = new Date(e.date + "T12:00:00"); return `<li>${LAGETXT.wd[d.getDay()]} ${d.getDate()}.${d.getMonth() + 1}. <a href="#${esc(e.topic)}">${esc(e.name)}</a></li>`; }).join("");
+  let n = 0; try { n = JSON.parse(localStorage.getItem("km.sammlung") || "[]").length; } catch (e) {}
+  const st = new Date(DATA.generated_at);
+  const sd = st.toLocaleDateString(DATA.lang === "en" ? "en-GB" : "de-DE", { day: "numeric", month: "long", year: "numeric" });
+  box.innerHTML = `<div class="lh"><span>${LAGETXT.title} · ${LAGETXT.stand} ${sd}</span>`
+    + `<button type="button" class="lk" aria-pressed="false" title="${LAGETXT.kommt}">${LAGETXT.komm}</button></div>`
+    + (L.say ? `<p class="say kom">${esc(L.say)}</p>` : "") + `<p class="say nokom">${LAGETXT.am} ${sd}</p>`
+    + kp + (out ? `<p class="lo"><b>${LAGETXT.out}:</b> ${out}</p>` : "") + `<div class="cols">`
+    + (warn ? `<div class="kom"><h3>${LAGETXT.warn}</h3><ul>${warn}</ul></div>` : "")
+    + `<div>${grem ? `<h3>${LAGETXT.grem}</h3><ul>${grem}</ul>` : ""}</div>`
+    + `<div>${neu ? `<h3>${LAGETXT.neu}</h3><ul>${neu}</ul>` : ""}${term ? `<h3>${LAGETXT.term}</h3><ul>${term}</ul>` : ""}</div></div>`
+    + `<div class="mine"><a class="s" href="#sammlung">★ ${LAGETXT.mine}${n ? ` (${n})` : ""}</a><a href="#top" class="lall">${LAGETXT.all}</a></div>`;
+  box.hidden = false;
+  const kb = box.querySelector(".lk"), setK = on => { document.body.classList.toggle("lagek", on); kb.setAttribute("aria-pressed", String(on)); try { localStorage.setItem("km_lagek", on ? "1" : "0"); } catch (e) {} };
+  let k0 = false; try { k0 = localStorage.getItem("km_lagek") === "1"; } catch (e) {}
+  setK(k0); kb.onclick = () => setK(!document.body.classList.contains("lagek"));
+  box.querySelector(".lall").onclick = e => { e.preventDefault(); const b = document.querySelector(".navbtn"); scrollTo(0, 0); if (b) setTimeout(() => b.click(), 50); };
+}
 // Rückmeldung: Knopf unten links öffnet ein Fenster mit einem Textfeld; Versand über den Formulardienst (site.feedback)
 (function feedback() {
   const id = (DATA.site || {}).feedback; if (!id || DATA.embed) return;

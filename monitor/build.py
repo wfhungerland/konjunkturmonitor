@@ -33,6 +33,9 @@ def _base(s):
     return s
 
 
+MONTHS_SHORT = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
+
+
 def _source_name(s) -> str:
     """Quellenname je Reihe; statische Reihen können ihn in params.source_name setzen."""
     b = _base(s)
@@ -1570,6 +1573,48 @@ def build_payload(root: Path = ROOT) -> dict:
                              refs=[{"y": pj["target"], "x0": f"{pj['year']}-01-01", "label": f"{pj['round']}: {str(round(pj['target'], 1)).replace('.', ',')} %"}],
                              sources=["Eurostat (BIP des Statistischen Bundesamts)", f"Bundesregierung ({pj['round']})", "eigene Berechnung"],
                              licenses=[SOURCE_LICENSES["eurostat"]])
+            elif typ == "sparktable":  # Tabelle mit Wortgrafiken nach Tufte: je Zeile Verlauf, Stand 2021, jüngster Stand, Faktor
+                rows, used = [], []
+                for r in c.get("rows") or []:
+                    parts = [data[i] for i in r["ids"] if i in data]
+                    if len(parts) != len(r["ids"]):
+                        continue
+                    s = pd.concat(parts, axis=1).dropna().sum(axis=1) if len(parts) > 1 else parts[0].dropna()
+                    if r.get("mean12"):  # gleitender Zwölfmonatsdurchschnitt, Jahresmittel 2021 = 100
+                        s = (s.rolling(12).mean() / s[s.index.year == 2021].mean() * 100).dropna()
+                    s = s[s.index >= pd.Timestamp(c.get("x_start", "2015-01-01"))]
+                    base = r.get("base")
+                    if base is None:
+                        b21 = s[s.index.year == 2021]
+                        if b21.empty:
+                            continue
+                        base = float(b21.iloc[-1])
+                    m = meta[r["ids"][0]]
+                    last = s.index[-1]
+                    when = str(last.year) if m.frequency == "A" else f"{MONTHS_SHORT[last.month - 1]} {last.year}"
+                    when_en = str(last.year) if m.frequency == "A" else last.strftime("%b %Y")
+                    rows.append(dict(label=r["label"], label_en=r.get("label_en", r["label"]), unit=r.get("unit", ""), unit_en=r.get("unit_en", r.get("unit", "")),
+                                     sub=bool(r.get("sub")), d=int(r.get("decimals", 1)), base=round(base, 3), last=round(float(s.iloc[-1]), 3),
+                                     factor=round(float(s.iloc[-1]) / base, 3), when=when, when_en=when_en, say=r.get("say"), say_en=r.get("say_en"),
+                                     tail=r.get("tail"), tail_en=r.get("tail_en"),
+                                     x=[d.strftime("%Y-%m-%d") for d in s.index], y=[round(float(v), 3) for v in s.values]))
+                    used += [meta[i] for i in r["ids"]]
+                if not rows:
+                    continue
+                fx = lambda v: f"{v:.1f}".replace(".", ",")
+                said = [r for r in rows if r["say"]]
+                entry.update(sparktable=rows, freq="M", unit="", sources=list(c.get("sources") or sorted({_source_name(s) for s in used})) + ["eigene Berechnung"],
+                             licenses=sorted({_license(s) for s in used}),
+                             series=[dict(id=f"row{i}", label=r["label"], unit=r["unit"], freq="M", style="line", x=r["x"], y=r["y"]) for i, r in enumerate(rows)])
+                und = lambda xs, w: ", ".join(xs[:-1]) + f" {w} " + xs[-1] if len(xs) > 1 else xs[0]
+                tails = [r for r in rows if r.get("tail")]
+                if said:  # „say“: Satzgegenstand für „stiegen … auf das x-Fache“; „tail“: ganzer Nebensatz mit {f}
+                    de = "Gegenüber 2021 stiegen " + und([f"{r['say']} auf das {fx(r['factor'])}-Fache" for r in said], "und")
+                    en = "Compared with 2021, " + und([f"{r['say_en']} rose {r['factor']:.1f}-fold" for r in said], "and")
+                    if tails:
+                        de += "; " + "; ".join(r["tail"].format(f=fx(r["factor"])) for r in tails)
+                        en += "; " + "; ".join(r["tail_en"].format(f=f"{r['factor']:.1f}") for r in tails)
+                    entry["say"], entry["say_en"] = [de + "."], [en + "."]
             elif typ == "cellgrid":  # Raster je Zeile und Jahr, Daten ganz aus data/static (attach), etwa Themen der Gemeinschaftsdiagnose
                 if not entry.get("attach"):
                     continue
@@ -1852,6 +1897,8 @@ def build_payload(root: Path = ROOT) -> dict:
             c["text"] = " ".join(c["texts"])
             if c.get("caption"):
                 c["caption"] = spell(c["caption"])
+            if c.get("kommentar"):  # eigene Einschätzung je Grafik (monitor.yaml, Feld kommentar), auf Klick in der linken Spalte
+                c["kommentar"] = spell(c["kommentar"])
             for n in c.get("notes", []):
                 n["text"] = spell(n["text"])
     health = _health(root, topics, meta)
@@ -1860,7 +1907,18 @@ def build_payload(root: Path = ROOT) -> dict:
             "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "questions": questions, "topics": topics, "overview": spell(tidy(overview({q["id"]: q["answer"] for q in questions}))),
             "fazit": spell(tidy(fazit({q["id"]: q["answer"] for q in questions}))) if cfg["site"].get("kommentar", True) else "", "glossar": GLOSSAR,
-            "content_license": cfg["site"].get("license", ""), "text_issues": text_issues}
+            "content_license": cfg["site"].get("license", ""), "text_issues": text_issues, "lage": _lage(data, root)}
+
+
+def _lage(data: dict, root: Path) -> dict:
+    """Erster Bildschirm: Kernzahlen, Lage-Satz, Warnlampen, Ausblick und was die Gremien raten, deutsch und englisch."""
+    from . import lage
+    from .gremien import heute
+    fc = _forecasts(root)
+    out = {lang: lage.build(data, fc, lang) for lang in ("de", "en")}
+    for lang in ("de", "en"):
+        out[lang]["gremien"] = [x for x in (heute("svr_positionen.json", "svr", lang), heute("gd_positionen.json", "gd", lang)) if x]
+    return out
 
 
 def write_embeds(payload: dict, tpl: str, out: Path) -> int:
