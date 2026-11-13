@@ -1014,8 +1014,9 @@ def chart_sentences(c: dict) -> list[str]:
         prev_lbl = {"M": "im Vormonat", "Q": "im Vorquartal", "A": "im Vorjahr", "D": "in der Vorwoche", "B": "am Vortag"}
         out = []
         for s in series:
-            if s["x"][-1] != last:
+            if s["x"][-1] != last and not c.get("each_last"):
                 continue
+            when = _when(s["x"][-1], freq) if c.get("each_last") else _when(last, freq)  # each_last: jede Reihe mit ihrem jüngsten Stand
             v = s["y"][-1]
             f = s.get("freq", freq)
             lag = {"M": 12, "Q": 4, "A": 1, "D": 52}.get(f, 12)

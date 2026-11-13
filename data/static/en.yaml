@@ -704,51 +704,55 @@ charts:
     unit: "% on previous year"
 
   hybrid:
-    title: "Russian sabotage and subversion in Europe"
+    title: "Russian sabotage in Europe peaked in 2024"
     ask: "How often does Russian sabotage hit targets in Europe?"
     caption: "Counted are sabotage, arson, reconnaissance and attack plots that authorities or reliable reports attribute to Russia. Cyber attacks and espionage are mostly missing. Dark blue marks cases with a target in Germany. Other databases use other definitions and arrive at other figures. Many cases only become known later, so the latest quarters are too low."
   gpr:
-    title: "Geopolitical risk"
+    title: "Media coverage of war risk has stayed high since 2022"
     ask: "How much do newspapers report on the threat of war?"
     caption: "The index measures how often major English-language newspapers report on the threat of war, war and terrorism. The value for Germany counts only articles that also mention Germany. 100 is the average of 1985 to 2019. Thick: three-month average, thin: monthly values. In studies, high values go along with lower investment."
   milex:
-    title: "Military expenditure"
+    title: "Germany spends over 2% on defence for the first time since 1990"
     ask: "How high is military spending by comparison?"
     caption: "Military expenditure in percent of economic output, as defined by the Stockholm International Peace Research Institute (SIPRI). It includes military pensions and military aid. NATO's targets of 2 percent and 3.5 percent by 2035 rest on a different definition. By NATO's count, Germany is usually somewhat higher. Germany is highlighted."
+  arms_cycle:
+    title: "Orders are running away from production"
+    ask: "Is production keeping up with defence orders?"
+    caption: "Both lines show twelve months compared with 2021 (= 100). Orders: federal defence orders in euros (Kiel Institute). Production: manufacture of weapons and ammunition (Eurostat). Orders have almost quadrupled, production has only roughly doubled. The orders line jumps because large contracts arrive at once. The gap is the order backlog; tanks, aircraft and ships are not part of production, though."
   def_use:
-    title: "What the state spends defence money on"
+    title: "The money goes mainly into material and operations, little into new weapons"
     ask: "What does the state spend defence money on?"
     caption: "Spending of federal, state and local government on defence by type, in billion euros. Since 2021, material, maintenance and operations grew most, that is spare parts, ammunition and services. Investment in new weapon systems stayed flat because it only counts on delivery. The jump in transfers to others coincides with military aid to Ukraine. The data do not show how much of it stays in Germany."
   orders_origin:
-    title: "Defence contracts by contractor's home country"
+    title: "Almost all defence orders go to companies in Germany"
     ask: "How much defence money goes to companies at home?"
     caption: "Federal defence contracts by year of announcement and the contractor's headquarters, in billion euros. \"German with partner\" means a German and a foreign company together, or a foreign company producing in Germany. Headquarters do not show where production takes place; foreign supplies to contractors are not covered. The share of contractors outside Europe fell from 42 percent in 2022 to 4 percent in 2025. Contracts of unclear origin, about €31bn since 2020, are missing."
   arms_prod:
-    title: "Production of weapons and ammunition"
+    title: "Defence grows while the rest of industry shrinks"
     ask: "How fast is the production of weapons and ammunition growing?"
     caption: "Production of weapons and ammunition compared with industry as a whole, 2021 = 100, seasonally and calendar adjusted. Tanks, aircraft and ships belong to other industries and are missing here. Thick: three-month average, thin: monthly values."
   milex_gov:
-    title: "Military spending in the government budget"
+    title: "Defence takes a growing share of the budget"
     ask: "What priority does defence have in the budget?"
     caption: "Share of military expenditure in all government spending, that is federal, state and local government and social security. Definition of the peace research institute SIPRI, government spending according to the International Monetary Fund. Germany is highlighted."
   milex_eu_ru:
-    title: "Military spending of Europe and Russia"
+    title: "Europe spends more than three times as much as Russia"
     ask: "Does Europe spend more on defence than Russia?"
     caption: "Military expenditure in billion US dollars at 2024 prices and exchange rates. Central and Western Europe is Europe without Russia, Belarus, Ukraine and Moldova. Since 2023 SIPRI estimates Russian spending because parts of the budget are secret. In dollars, Russia's budget looks smaller than its purchasing power at home."
   cinc:
-    title: "Germany's share of the world's material capabilities"
+    title: "Germany's material weight has fallen to a tenth of its 1913 level"
     ask: "How much weight does Germany carry among the world's powers?"
     caption: "The index of the Correlates of War research project (CINC) measures a state's material weight. It averages world shares in population, urban population, steel, energy use, soldiers and military expenditure. Germany, Prussia until 1870, reached 14 percent in 1913 and 20 percent in 1941; in 2022 it was 1.5 percent. From 1955 to 1989 West and East Germany are combined. The index measures mass, not technology or alliances."
   trade_harm:
-    title: "Harmful trade interventions against German interests"
+    title: "Most trade barriers come from neither China nor the USA"
     ask: "How many harmful trade interventions affect Germany?"
     caption: "Counted are interventions that Global Trade Alert rates as harmful to trade and that hit German exports: tariffs, subsidies, public procurement rules and export bans. Each intervention counts once, regardless of how much trade it affects. Measures of the European Union are missing because Germany is a member. New cases are often recorded late, so the latest year tends to be too low."
   trade_ru:
-    title: "Exports to Russia and neighbouring countries"
+    title: "Exports to Russia have collapsed; the detour via neighbours remains"
     ask: "Do exports reach Russia via neighbouring countries?"
     caption: "German goods exports, summed over the previous twelve months, in billion euros. Exports to Russia and Belarus collapsed after the war began in 2022. Exports to Armenia, Georgia, Kazakhstan, Kyrgyzstan, Tajikistan and Uzbekistan rose strongly at the same time. Studies by the European Bank for Reconstruction and Development (EBRD) see this partly as goods diverted to Russia."
   ukraine_aid:
-    title: "German aid to Ukraine"
+    title: "Germany helps Ukraine mainly with weapons"
     ask: "How much aid does Germany allocate to Ukraine?"
     caption: "German aid that has been delivered or firmly earmarked for delivery, in billion euros per quarter. Military aid includes money for arms purchases. Missing are Germany's share of aid from the European Union and the costs of refugees. Large packages are often fixed for several years at once."
   gd_treff:
@@ -1026,6 +1030,8 @@ series:
   gpr_de: {title: "Geopolitical risk relating to Germany", label: "Germany", unit: "Index, 1985–2019 average = 100", note: "Country index GPRC_DEU: share of articles in ten major English-language newspapers that mention geopolitical tensions, wars or terrorism together with Germany; rescaled by the monitor to an average of 100 in 1985 to 2019. Retrieved every working day from matteoiacoviello.com.", adjustment: "not adjusted"}
   gpr_world: {title: "Geopolitical risk, world", label: "World", unit: "Index, 1985–2019 average = 100", note: "Overall GPR index, rescaled by the monitor to an average of 100 in 1985 to 2019.", adjustment: "not adjusted"}
   milex: {title: "Military expenditure in % of GDP, {staat_name}", label: "{staat_name}", unit: "% of GDP", note: "Military expenditure as defined by SIPRI (including military pensions, paramilitary forces and military aid) in % of GDP. Germany until 1990 West Germany. April 2026 edition (file v1.2), taken over by hand.", adjustment: "annual, current prices"}
+  kmpt_de_orders_idx: {title: "German defence orders, sum of the previous twelve months, 2021 = 100", label: "Orders", unit: "Index 2021 = 100", adjustment: "month of announcement, current prices"}
+  arms_prod_12m: {title: "Production of weapons and ammunition, twelve-month average, 2021 = 100", label: "Production", unit: "Index 2021 = 100", adjustment: "seasonally and calendar adjusted"}
   kmpt_de_only: {title: "German defence contracts to companies based in Germany", label: "German", unit: "€ bn", adjustment: "year of announcement, current prices"}
   kmpt_de_partner: {title: "German defence contracts to German and foreign companies jointly or with production in Germany", label: "German with partner", unit: "€ bn", adjustment: "year of announcement, current prices"}
   kmpt_eu: {title: "German defence contracts to companies in the rest of Europe", label: "rest of Europe", unit: "€ bn", adjustment: "year of announcement, current prices"}
