@@ -1095,23 +1095,25 @@ function stanceBarsChart(el, c) {
 
 function dumbbellChart(el, c) {
   const pick = s => { const ok = s.x.map((x, i) => [x, s.y[i]]).filter(p => p[1] != null); return ok.length ? { a: ok[0], b: ok[ok.length - 1] } : null; };
-  const rows = c.series.map(s => Object.assign({ s }, pick(s))).filter(r => r.a).sort((p, q) => p.b[1] - q.b[1]);
-  const emph = r => r.s.id === c.emphasis, col = r => emph(r) ? PAL[0] : "#7f7f7f", lab = rows.map(r => r.s.label);
-  const y0 = rows.map(r => r.a[0].slice(0, 4)), y1 = rows.map(r => r.b[0].slice(0, 4));
+  // curve: Reihenfolge wie im Katalog (etwa Laufzeiten von kurz oben nach lang unten), Legende mit Monat statt Jahr, alle Punkte in der ersten Farbe
+  const rows0 = c.series.map(s => Object.assign({ s }, pick(s))).filter(r => r.a), rows = c.curve ? rows0.reverse() : rows0.sort((p, q) => p.b[1] - q.b[1]);
+  const emph = r => c.curve || r.s.id === c.emphasis, col = r => emph(r) ? PAL[0] : "#7f7f7f", lab = rows.map(r => r.s.label);
+  const dd = c.curve ? c.decimals : 1;
+  const per = x => c.curve ? perLong(x, "M") : x.slice(0, 4), y0 = rows.map(r => per(r.a[0])), y1 = rows.map(r => per(r.b[0]));
   const A = [...new Set(y0)].length === 1 ? y0[0] : null, B = [...new Set(y1)].length === 1 ? y1[0] : null;
   const shapes = rows.map((r, i) => ({ type: "line", xref: "x", yref: "y", x0: r.a[1], x1: r.b[1], y0: i, y1: i, line: { color: emph(r) ? PAL[0] : "#bfbfbf", width: emph(r) ? 2.5 : 1.5 }, layer: "below" }));
   const traces = [
     { type: "scatter", mode: "markers", x: rows.map(r => r.a[1]), y: rows.map((_, i) => i), name: A || "erstes Jahr", customdata: rows.map((r, i) => `${esc(lab[i])} ${y0[i]}`),
-      marker: { symbol: "circle-open", size: 10, color: rows.map(col), line: { width: 2 } }, hovertemplate: "%{customdata}: %{x:,.1f} %<extra></extra>" },
+      marker: { symbol: "circle-open", size: 10, color: rows.map(col), line: { width: 2 } }, hovertemplate: `%{customdata}: %{x:,.${dd}f} %<extra></extra>` },
     { type: "scatter", mode: "markers+text", x: rows.map(r => r.b[1]), y: rows.map((_, i) => i), name: B || "jüngstes Jahr", customdata: rows.map((r, i) => `${esc(lab[i])} ${y1[i]}`),
-      text: rows.map(r => fmt(r.b[1], 1)), textposition: rows.map(r => r.b[1] >= r.a[1] ? "middle right" : "middle left"), textfont: { family: HS.font, size: 12, color: rows.map(col) },
-      marker: { size: 10, color: rows.map(col) }, hovertemplate: "%{customdata}: %{x:,.1f} %<extra></extra>" }];
+      text: rows.map(r => fmt(r.b[1], dd)), textposition: rows.map(r => r.b[1] >= r.a[1] ? "middle right" : "middle left"), textfont: { family: HS.font, size: 12, color: rows.map(col) },
+      marker: { size: 10, color: rows.map(col) }, hovertemplate: `%{customdata}: %{x:,.${dd}f} %<extra></extra>` }];
   const v = rows.flatMap(r => [r.a[1], r.b[1]]), lo = Math.min(...v), hi = Math.max(...v), p = (hi - lo) * 0.08;
   const L = baseLayout(el);
   Object.assign(L, { height: Math.max(260, 30 * rows.length + 80), hovermode: "closest", showlegend: true, shapes, margin: { l: 6, r: 16, t: 34, b: 30 },
     legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { size: 12 }, itemclick: false, itemdoubleclick: false },
-    xaxis: { range: [Math.max(0, lo - p * 3.5), hi + p * 2], showgrid: true, gridcolor: HS.gridH, zeroline: true, zerolinecolor: HS.zero, fixedrange: true, ticksuffix: "\u202f%" },
-    yaxis: { tickmode: "array", tickvals: rows.map((_, i) => i), ticktext: rows.map((r, i) => emph(r) ? `<b>${esc(lab[i])}</b>` : esc(lab[i])), range: [-0.7, rows.length - 0.3], automargin: true, fixedrange: true, ticks: "", showgrid: false, zeroline: false } });
+    xaxis: { range: [c.curve ? lo - p * 3.5 : Math.max(0, lo - p * 3.5), hi + p * 2], showgrid: true, gridcolor: HS.gridH, zeroline: true, zerolinecolor: HS.zero, fixedrange: true, ticksuffix: "\u202f%" },
+    yaxis: { tickmode: "array", tickvals: rows.map((_, i) => i), ticktext: rows.map((r, i) => emph(r) && !c.curve ? `<b>${esc(lab[i])}</b>` : esc(lab[i])), range: [-0.7, rows.length - 0.3], automargin: true, fixedrange: true, ticks: "", showgrid: false, zeroline: false } });
   el.style.aspectRatio = "auto"; el.style.height = L.height + "px";
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";  // Einheit steht an der Achse
   Plotly.newPlot(el, traces, L, CFG);
@@ -1850,7 +1852,7 @@ function build() {
     analysen: { no: "Teil III", title: "Analysen", text: "Eigene Auswertungen: Rezessionsrisiko, Treffsicherheit von Prognosen und ersten Zahlen, Breite der Entwicklung und Wettbewerb. Dieser Teil wächst." },
     geopolitik: { no: "Teil V", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht, Hilfe für die Ukraine und Handelskonflikte. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
     struktur: { no: "Teil VI", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen und Zuwanderung." },
-    staat: { no: "Teil II", title: "Staat", text: "Zinsen, Kredite und Staatsfinanzen: was Geld kostet, wie viel der Staat ausgibt und wie hoch er verschuldet ist." },
+    staat: { no: "Teil II", title: "Staat", text: "Geldpolitik, Zinsen, Kredite und Staatsfinanzen: was Geld kostet, wie viel der Staat ausgibt und wie hoch er verschuldet ist." },
     prognosen: { no: "Teil IV", title: "Prognosen und Gutachten", text: "Was Fachgremien vorhersagen und empfehlen, und wie gut sie lagen: Sachverständigenrat und Gemeinschaftsdiagnose, später auch IWF, EU-Kommission und OECD." },
     service: { no: "", title: "Termine", text: "" } };
   const railObs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
