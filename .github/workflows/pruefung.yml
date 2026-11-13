@@ -27,6 +27,12 @@ jobs:
         run: ./tools/install.sh
       - name: Tests
         run: pytest -q
+      - name: Einmalige Prüfung der GENESIS-Tabellen zu Rüstungsbranchen (vor dem Mergen wieder entfernen)
+        continue-on-error: true
+        env:
+          GENESIS_USER: ${{ secrets.GENESIS_USER }}
+          GENESIS_PASSWORD: ${{ secrets.GENESIS_PASSWORD }}
+        run: python tools/genesis_probe.py
       - name: Daten holen und Seite bauen
         env:
           GENESIS_USER: ${{ secrets.GENESIS_USER }}
