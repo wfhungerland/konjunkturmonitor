@@ -128591,89 +128591,135 @@ def_transfer,2021-01-01,0.839,Mrd. €,Eigene Aufbereitung,2026-11-13T05:16:01Z
 def_transfer,2022-01-01,3.344,Mrd. €,Eigene Aufbereitung,2026-11-13T05:16:01Z
 def_transfer,2023-01-01,7.182,Mrd. €,Eigene Aufbereitung,2026-11-13T05:16:01Z
 def_transfer,2024-01-01,8.976,Mrd. €,Eigene Aufbereitung,2026-11-13T05:16:01Z
-kmpt_de_only,2020-01-01,8.126,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_only,2021-01-01,8.448,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_only,2022-01-01,10.78,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_only,2023-01-01,21.254,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_only,2024-01-01,24.986,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_only,2025-01-01,41.651,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_partner,2020-01-01,17.134,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_partner,2021-01-01,12.614,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_partner,2022-01-01,0.937,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_partner,2023-01-01,11.54,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_partner,2024-01-01,10.991,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_partner,2025-01-01,26.027,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_eu,2020-01-01,0,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_eu,2021-01-01,0.024,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_eu,2022-01-01,0.405,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_eu,2023-01-01,0.278,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_eu,2024-01-01,0,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_eu,2025-01-01,1.707,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_noneu,2020-01-01,0,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_noneu,2021-01-01,1.1,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_noneu,2022-01-01,8.893,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_noneu,2023-01-01,8.352,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_noneu,2024-01-01,4.336,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_noneu,2025-01-01,2.922,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2020-12-01,25.44,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-01-01,25.44,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-02-01,25.528,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-03-01,25.528,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-04-01,29.228,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-05-01,31.6,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-06-01,34.747,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-07-01,34.747,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-08-01,34.397,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-09-01,32.013,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-10-01,31.973,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-11-01,22.787,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2021-12-01,22.337,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-01-01,22.337,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-02-01,22.249,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-03-01,22.249,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-04-01,18.699,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-05-01,18.811,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-06-01,2.8,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-07-01,10.316,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-08-01,10.316,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-09-01,10.953,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-10-01,11.058,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-11-01,11.213,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2022-12-01,21.097,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-01-01,21.097,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-02-01,21.318,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-03-01,22.692,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-04-01,23.309,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-05-01,22.811,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-06-01,24.528,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-07-01,26.757,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-08-01,26.757,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-09-01,26.556,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-10-01,30.864,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-11-01,45.659,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2023-12-01,42.026,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-01-01,43.256,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-02-01,45.884,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-03-01,48.942,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-04-01,48.762,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-05-01,48.596,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-06-01,56.219,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-07-01,52.793,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-08-01,52.793,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-09-01,53.309,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-10-01,56.116,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-11-01,43.328,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2024-12-01,57.076,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-01-01,58.366,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-02-01,55.517,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-03-01,51.085,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-04-01,50.498,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-05-01,48.649,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-06-01,44.158,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-07-01,38.609,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-08-01,38.609,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-09-01,40.779,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-10-01,48.176,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-11-01,52.174,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2025-12-01,85.264,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
-kmpt_de_orders_12m,2026-01-01,82.795,Mrd. €,Eigene Aufbereitung,2026-11-13T08:34:36Z
+kmpt_de_only,2020-01-01,8.126,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_only,2021-01-01,8.448,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_only,2022-01-01,10.78,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_only,2023-01-01,21.254,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_only,2024-01-01,24.986,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_only,2025-01-01,41.651,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_partner,2020-01-01,17.134,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_partner,2021-01-01,12.614,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_partner,2022-01-01,0.937,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_partner,2023-01-01,11.54,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_partner,2024-01-01,10.991,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_partner,2025-01-01,26.027,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_eu,2020-01-01,0,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_eu,2021-01-01,0.024,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_eu,2022-01-01,0.405,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_eu,2023-01-01,0.278,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_eu,2024-01-01,0,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_eu,2025-01-01,1.707,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_noneu,2020-01-01,0,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_noneu,2021-01-01,1.1,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_noneu,2022-01-01,8.893,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_noneu,2023-01-01,8.352,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_noneu,2024-01-01,4.336,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_noneu,2025-01-01,2.922,Mrd. €,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2021-12-01,100,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-01-01,100,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-02-01,99.606,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-03-01,99.606,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-04-01,83.713,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-05-01,84.214,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-06-01,12.535,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-07-01,46.183,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-08-01,46.183,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-09-01,49.035,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-10-01,49.504,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-11-01,50.2,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2022-12-01,94.45,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-01-01,94.45,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-02-01,95.438,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-03-01,101.591,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-04-01,104.354,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-05-01,102.121,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-06-01,109.809,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-07-01,119.788,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-08-01,119.788,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-09-01,118.89,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-10-01,138.174,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-11-01,204.409,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2023-12-01,188.147,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-01-01,193.654,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-02-01,205.42,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-03-01,219.108,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-04-01,218.302,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-05-01,217.557,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-06-01,251.688,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-07-01,236.351,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-08-01,236.351,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-09-01,238.66,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-10-01,251.224,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-11-01,193.974,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2024-12-01,255.525,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-01-01,261.299,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-02-01,248.544,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-03-01,228.703,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-04-01,226.075,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-05-01,217.798,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-06-01,197.69,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-07-01,172.847,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-08-01,172.847,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-09-01,182.562,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-10-01,215.68,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-11-01,233.577,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2025-12-01,381.72,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+kmpt_de_orders_idx,2026-01-01,370.664,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:44Z
+arms_prod_12m,2021-12-01,100,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-01-01,104.3,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-02-01,101.8,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-03-01,101.3,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-04-01,98.2,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-05-01,98.5,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-06-01,97.4,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-07-01,97.9,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-08-01,100.1,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-09-01,100.2,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-10-01,107.9,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-11-01,107.5,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2022-12-01,109.5,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-01-01,107.4,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-02-01,110.5,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-03-01,111.2,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-04-01,116,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-05-01,118.2,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-06-01,124.4,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-07-01,124.3,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-08-01,130.9,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-09-01,130.2,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-10-01,126.1,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-11-01,125.4,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2023-12-01,128.9,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-01-01,129.6,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-02-01,130,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-03-01,133,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-04-01,135,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-05-01,140.5,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-06-01,141.9,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-07-01,144,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-08-01,140.4,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-09-01,144.9,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-10-01,144.7,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-11-01,145.3,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2024-12-01,152.2,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-01-01,154.2,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-02-01,159.9,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-03-01,164.3,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-04-01,161.9,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-05-01,163.3,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-06-01,166.4,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-07-01,169,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-08-01,172.6,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-09-01,174.6,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-10-01,176.8,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-11-01,182.6,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2025-12-01,183.4,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2026-01-01,191.4,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2026-02-01,194.5,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2026-03-01,193,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2026-04-01,198,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2026-05-01,201.4,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2026-06-01,208.9,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2026-07-01,214,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2026-08-01,221.6,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z
+arms_prod_12m,2026-09-01,229.8,Index 2021 = 100,Eigene Aufbereitung,2026-11-13T09:26:45Z

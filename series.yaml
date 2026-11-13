@@ -171,7 +171,7 @@ charts:
   milex_gov: {title: "Militärausgaben im Staatshaushalt", decimals: 1}
   def_use: {title: "Wofür der Staat Verteidigungsgeld ausgibt", decimals: 1}
   orders_origin: {title: "Rüstungsaufträge nach Sitz des Auftragnehmers", decimals: 1}
-  arms_cycle: {title: "Rüstungskonjunktur: Aufträge und Produktion", decimals: 0}
+  arms_cycle: {title: "Die Aufträge laufen der Produktion davon", decimals: 0}
   milex_eu_ru: {title: "Militärausgaben Europas und Russlands", decimals: 0}
   trade_ru: {title: "Exporte nach Russland und in Nachbarländer", decimals: 1}
   pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}
@@ -5436,18 +5436,34 @@ series:
     license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
     note: "Aufträge nach Jahr der Bekanntgabe und Sitz des Auftragnehmers; Aufträge mit unklarer Herkunft (rund 31 Mrd. € seit 2020) fehlen. Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
 
-  - id: kmpt_de_orders_12m
+  - id: kmpt_de_orders_idx
     block: geopolitik
     source: static
-    key: kmpt_de_orders_12m
-    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker"}
-    title: "Deutsche Rüstungsaufträge, Summe der letzten zwölf Monate"
-    unit: "Mrd. €"
+    key: kmpt_de_orders_idx
+    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker; eigene Berechnung"}
+    title: "Deutsche Rüstungsaufträge, Summe der letzten zwölf Monate, 2021 = 100"
+    unit: "Index 2021 = 100"
     frequency: M
     adjustment: "Monat der Bekanntgabe, jeweilige Preise"
-    start: "2020-12-01"
+    start: "2021-12-01"
     stale_after_months: 14
     chart: arms_cycle
-    label: "Aufträge, Summe über zwölf Monate"
+    label: "Aufträge"
     license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
-    note: "Alle öffentlich bekannt gegebenen Rüstungsbestellungen Deutschlands nach Monat der Bekanntgabe, einschließlich unklarer Herkunft; Summe der jeweils letzten zwölf Monate. Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+    note: "Alle öffentlich bekannt gegebenen Rüstungsbestellungen Deutschlands nach Monat der Bekanntgabe; Summe der jeweils letzten zwölf Monate, Summe des Jahres 2021 = 100 (22,3 Mrd. €). Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+
+  - id: arms_prod_12m
+    block: geopolitik
+    source: static
+    key: arms_prod_12m
+    params: {source_name: "Eurostat, Produktionsindex (sts_inpr_m), Zweig 25.4; eigene Berechnung"}
+    title: "Produktion von Waffen und Munition, Durchschnitt der letzten zwölf Monate, 2021 = 100"
+    unit: "Index 2021 = 100"
+    frequency: M
+    adjustment: "saison- und kalenderbereinigt"
+    start: "2021-12-01"
+    stale_after_months: 4
+    chart: arms_cycle
+    label: "Produktion"
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Gleitender Durchschnitt über zwölf Monate, Jahresmittel 2021 = 100; werktäglich abgerufen."
