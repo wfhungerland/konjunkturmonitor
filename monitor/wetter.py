@@ -388,10 +388,15 @@ def _trade(static: Path) -> None:
     update_trade(static)
 
 
+def _geld(static: Path) -> None:
+    from .geldpolitik import update_all as update_geld
+    update_geld(static)
+
+
 def update_all(root: Path) -> None:
     static = root / "data" / "static"
     static.mkdir(parents=True, exist_ok=True)
-    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Lkw-Maut täglich", update_maut_daily), ("Indeed", update_indeed), ("Oil Bulletin", update_oil_bulletin), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet), ("Geopolitisches Risiko", _gpr), ("Handel mit Russland", _trade), ("Staatsausgaben je Einwohner", _prokopf), ("Verteidigungsausgaben", _defence), ("Rüstungsproduktion", _arms_prod)):
+    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Lkw-Maut täglich", update_maut_daily), ("Indeed", update_indeed), ("Oil Bulletin", update_oil_bulletin), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet), ("Geopolitisches Risiko", _gpr), ("Handel mit Russland", _trade), ("Staatsausgaben je Einwohner", _prokopf), ("Verteidigungsausgaben", _defence), ("Rüstungsproduktion", _arms_prod), ("Geldpolitik", _geld)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf

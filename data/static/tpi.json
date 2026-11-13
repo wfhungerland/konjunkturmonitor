@@ -1,0 +1,222 @@
+{
+ "year": "2025",
+ "month": "2026-10",
+ "edp_url": "https://economy-finance.ec.europa.eu/economic-governance-framework/stability-and-growth-pact/corrective-arm-excessive-deficit-procedure/excessive-deficit-procedures-overview_en",
+ "rows": [
+  {
+   "geo": "AT",
+   "name": "Österreich",
+   "name_en": "Austria",
+   "deficit": -4.1,
+   "debt": 80.7,
+   "edp": true,
+   "spread": 0.27,
+   "yield": 3.6898
+  },
+  {
+   "geo": "BE",
+   "name": "Belgien",
+   "name_en": "Belgium",
+   "deficit": -5.2,
+   "debt": 108.1,
+   "edp": true,
+   "spread": 0.96,
+   "yield": 4.38
+  },
+  {
+   "geo": "BG",
+   "name": "Bulgarien",
+   "name_en": "Bulgaria",
+   "deficit": -4.0,
+   "debt": 29.9,
+   "edp": true,
+   "spread": 0.67,
+   "yield": 4.09
+  },
+  {
+   "geo": "CY",
+   "name": "Zypern",
+   "name_en": "Cyprus",
+   "deficit": 3.6,
+   "debt": 52.3,
+   "edp": false,
+   "spread": 0.62,
+   "yield": 4.04
+  },
+  {
+   "geo": "DE",
+   "name": "Deutschland",
+   "name_en": "Germany",
+   "deficit": -2.9,
+   "debt": 62.8,
+   "edp": false,
+   "spread": null,
+   "yield": 3.416
+  },
+  {
+   "geo": "EE",
+   "name": "Estland",
+   "name_en": "Estonia",
+   "deficit": -2.0,
+   "debt": 24.0,
+   "edp": false,
+   "spread": 0.85,
+   "yield": 4.27
+  },
+  {
+   "geo": "ES",
+   "name": "Spanien",
+   "name_en": "Spain",
+   "deficit": -2.4,
+   "debt": 100.5,
+   "edp": false,
+   "spread": 0.65,
+   "yield": 4.066
+  },
+  {
+   "geo": "FI",
+   "name": "Finnland",
+   "name_en": "Finland",
+   "deficit": -3.8,
+   "debt": 88.4,
+   "edp": true,
+   "spread": 0.41,
+   "yield": 3.821
+  },
+  {
+   "geo": "FR",
+   "name": "Frankreich",
+   "name_en": "France",
+   "deficit": -5.1,
+   "debt": 115.7,
+   "edp": true,
+   "spread": 1.47,
+   "yield": 4.89
+  },
+  {
+   "geo": "GR",
+   "name": "Griechenland",
+   "name_en": "Greece",
+   "deficit": 2.0,
+   "debt": 145.4,
+   "edp": false,
+   "spread": 0.99,
+   "yield": 4.41
+  },
+  {
+   "geo": "HR",
+   "name": "Kroatien",
+   "name_en": "Croatia",
+   "deficit": -3.0,
+   "debt": 55.7,
+   "edp": false,
+   "spread": 0.17,
+   "yield": 3.59
+  },
+  {
+   "geo": "IE",
+   "name": "Irland",
+   "name_en": "Ireland",
+   "deficit": 1.8,
+   "debt": 34.8,
+   "edp": false,
+   "spread": 0.14,
+   "yield": 3.5525
+  },
+  {
+   "geo": "IT",
+   "name": "Italien",
+   "name_en": "Italy",
+   "deficit": -3.1,
+   "debt": 136.7,
+   "edp": true,
+   "spread": 1.26,
+   "yield": 4.68
+  },
+  {
+   "geo": "LT",
+   "name": "Litauen",
+   "name_en": "Lithuania",
+   "deficit": -1.8,
+   "debt": 39.3,
+   "edp": false,
+   "spread": -0.54,
+   "yield": 2.88
+  },
+  {
+   "geo": "LU",
+   "name": "Luxemburg",
+   "name_en": "Luxembourg",
+   "deficit": -1.8,
+   "debt": 26.0,
+   "edp": false,
+   "spread": 0.28,
+   "yield": 3.695
+  },
+  {
+   "geo": "LV",
+   "name": "Lettland",
+   "name_en": "Latvia",
+   "deficit": -2.5,
+   "debt": 46.2,
+   "edp": false,
+   "spread": 0.86,
+   "yield": 4.28
+  },
+  {
+   "geo": "MT",
+   "name": "Malta",
+   "name_en": "Malta",
+   "deficit": -2.1,
+   "debt": 46.3,
+   "edp": false,
+   "spread": 0.97,
+   "yield": 4.39
+  },
+  {
+   "geo": "NL",
+   "name": "Niederlande",
+   "name_en": "Netherlands",
+   "deficit": -1.6,
+   "debt": 44.7,
+   "edp": false,
+   "spread": 0.12,
+   "yield": 3.535
+  },
+  {
+   "geo": "PT",
+   "name": "Portugal",
+   "name_en": "Portugal",
+   "deficit": 0.7,
+   "debt": 89.2,
+   "edp": false,
+   "spread": 0.5,
+   "yield": 3.917
+  },
+  {
+   "geo": "SI",
+   "name": "Slowenien",
+   "name_en": "Slovenia",
+   "deficit": -2.5,
+   "debt": 65.1,
+   "edp": false,
+   "spread": 0.57,
+   "yield": 3.99
+  },
+  {
+   "geo": "SK",
+   "name": "Slowakei",
+   "name_en": "Slovakia",
+   "deficit": -4.4,
+   "debt": 60.5,
+   "edp": true,
+   "spread": 0.89,
+   "yield": 4.310045
+  }
+ ],
+ "sources": [
+  "Eurostat (gov_10dd_edpt1)",
+  "Europäische Kommission, Übersicht der Defizitverfahren",
+  "EZB (IRS)"
+ ]
+}
