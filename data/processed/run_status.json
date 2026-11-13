@@ -1,8 +1,8 @@
 {
- "started_at": "2026-11-13T05:17:37Z",
- "finished_at": "2026-11-13T05:17:37Z",
+ "started_at": "2026-11-13T07:32:27Z",
+ "finished_at": "2026-11-13T07:32:27Z",
  "counts": {
-  "ok": 428,
+  "ok": 432,
   "stale": 51,
   "cache": 2
  },
@@ -5777,6 +5777,54 @@
    "last_value": 8.976,
    "retrieved_at": "2026-11-13T05:16:01Z",
    "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/def_transfer.csv",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "kmpt_de_only",
+   "status": "ok",
+   "n_obs": 6,
+   "first": "2020",
+   "last": "2025",
+   "last_value": 41.651,
+   "retrieved_at": "2026-11-13T07:31:46Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/kmpt_de_only.csv",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "kmpt_de_partner",
+   "status": "ok",
+   "n_obs": 6,
+   "first": "2020",
+   "last": "2025",
+   "last_value": 26.027,
+   "retrieved_at": "2026-11-13T07:31:46Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/kmpt_de_partner.csv",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "kmpt_eu",
+   "status": "ok",
+   "n_obs": 6,
+   "first": "2020",
+   "last": "2025",
+   "last_value": 1.707,
+   "retrieved_at": "2026-11-13T07:31:46Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/kmpt_eu.csv",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "kmpt_noneu",
+   "status": "ok",
+   "n_obs": 6,
+   "first": "2020",
+   "last": "2025",
+   "last_value": 2.922,
+   "retrieved_at": "2026-11-13T07:31:46Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/kmpt_noneu.csv",
    "message": "",
    "outdated": false
   }
