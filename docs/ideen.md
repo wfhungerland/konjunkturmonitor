@@ -1,6 +1,6 @@
 # Ideen und Wiedervorlagen
 
-Gesammelte Notizen für später, grob geordnet. Stand: 12.11.2026.
+Gesammelte Notizen für später, grob geordnet. Stand: 13.11.2026.
 
 ## Funktionen
 - Eigene Startseite aus den Lesezeichen (Sternchen).
@@ -58,6 +58,8 @@ Gesammelte Notizen für später, grob geordnet. Stand: 12.11.2026.
 ## Darstellung
 - Analyse grün, Beschreibung blau
 - Sunburst, Treemap
+- Wiedervorlage (13.11.2026): Aussagetitel für Abbildungen, also ein Satz mit der Botschaft statt eines Sachtitels („Die Aufträge laufen der Produktion davon“). Im Teil Geopolitik ausprobiert und zurückgenommen. Offen: Feste Titel veralten, wenn die Daten kippen; denkbar wären Titel, die der Bau aus den Daten erzeugt.
+- Wortgrafik-Tabellen nach Tufte (Typ `sparktable`) auch für andere Abschnitte, z. B. Arbeit oder Staat.
 - Jahresbalken auch bei Episodenvergleichen
 - Empfehlungen von Gremien, weitere Darstellungen aus der Tufte-Runde: Stufenlinie je Frage (Höhe statt Farbe), Tabelle nach Jahrzehnten (häufigste Empfehlung und wie oft), Zeichen ▲●▼ statt Farben, Richtung je Jahrzehnt (Balken Lockern nach oben, Bremsen nach unten)
 - Phasenansicht mit „Heute“ und Wendepunkten auch für den Sachverständigenrat; Reiter „Gesamtschau“ mit Vergleich Institute und Rat
