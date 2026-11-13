@@ -1968,7 +1968,9 @@ function build() {
   if (DATA.embed) document.body.classList.add("embed");  // Einzelseite zum Einbetten: nur diese Abbildung
   const grid = document.getElementById("grid"), nav = document.getElementById("nav"), topics = document.getElementById("topics");
   lageView();
-  if (LY.start_table && startTable(document.getElementById("starttable"))) grid.style.display = "none";
+  const lg = document.getElementById("lage");
+  if (lg && !lg.hidden) { grid.style.display = "none"; document.getElementById("starttable").remove(); }  // Lage auf einen Blick ersetzt Kacheln und Kennzahlentabelle
+  else if (LY.start_table && startTable(document.getElementById("starttable"))) grid.style.display = "none";
   else DATA.questions.forEach(q => {
     const a = q.answer, val = (a.signed && a.value > 0 ? "+" : "") + fmt(a.value, a.decimals ?? 1);
     grid.insertAdjacentHTML("beforeend", `<a class="q" href="#${q.topic}"><span class="ask">${esc(q.ask)}</span>
