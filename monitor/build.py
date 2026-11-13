@@ -684,6 +684,7 @@ def chart_sentences(c: dict) -> list[str]:
         return schulden.saetze(c, "de")
     typ, d = c.get("type"), int(c.get("decimals", 1))
     unit = (c.get("unit") or "").split(",")[0]
+    unit = "Pp" if unit.startswith("Prozentpunkte") else unit  # Abstände in Prozentpunkten wie Pp behandeln
     is_rate = unit.startswith(("%", "Pp", "Saldo")) and not unit.startswith(("% des", "% der"))
     u = unit if unit.startswith(("% des", "% der")) else "%" if unit.startswith("%") else "Pp" if unit.startswith(("Pp", "Saldo")) else "" if unit.startswith("Index") else unit
     freq = c.get("freq", "M")
@@ -1025,6 +1026,7 @@ def chart_sentences(c: dict) -> list[str]:
                 yago = s["y"][k] if k is not None else None
             su = s.get("unit") if c.get("own_scale") else unit
             su = (su or "").split(",")[0]
+            su = "Pp" if su.startswith("Prozentpunkte") else su
             uu = su if su.startswith(("% des", "% der")) else "%" if su.startswith("%") else "Pp" if su.startswith(("Pp", "Saldo")) else "" if su.startswith("Index") else su
             vv = f"{num(v, d, su.startswith('Saldo'))} {uu}".strip() if not su.startswith("Index 0") else f"{num(v, d)} von 100 Punkten"
             sp = _subject(s.get("id"), s.get("label", ""), c.get("chart", ""))
@@ -1601,7 +1603,7 @@ def build_payload(root: Path = ROOT) -> dict:
                                        **_xy(data[s.id], c.get("years"), c.get("x_start"))))
                 if not series:
                     continue
-                if full:
+                if full and not c.get("curve"):  # Zinskurve: Vergleich mit dem Vorjahr, keine ganze Reihe
                     entry["_full"] = full
                 if c.get("ref_mean"):  # Mittel eines Zeitraums als graue Referenzlinie
                     a0, a1 = c["ref_mean"]

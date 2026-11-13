@@ -188,6 +188,15 @@ charts:
   sector_now: {title: "Lage nach Bereichen", decimals: 0}
   sector_next: {title: "Erwartungen nach Bereichen", decimals: 0}
   yields: {title: "Zinsen für Bundesanleihen", decimals: 1}
+  ecb_rates: {title: "Leitzinsen der EZB", decimals: 2}
+  ecb_bs: {title: "Bilanz des Eurosystems", decimals: 2}
+  spreads: {title: "Renditeabstand zu Bundesanleihen", decimals: 2}
+  yc_curve: {title: "Zinsstruktur im Euroraum", decimals: 2}
+  yc_slope: {title: "Steigung der Zinsstruktur", decimals: 2}
+  corp_yields: {title: "Renditen von Unternehmensanleihen", decimals: 2}
+  corp_spread: {title: "Renditeabstand der Unternehmensanleihen", decimals: 2}
+  bls_std: {title: "Kreditstandards der Banken", decimals: 0}
+  bls_dem: {title: "Kreditnachfrage bei den Banken", decimals: 0}
   oil: {title: "Ölpreis", decimals: 0}
   oil_d: {title: "Ölpreis, Tageswerte", decimals: 1}
   fuel: {title: "Preise für Benzin, Diesel und Heizöl", decimals: 2}
@@ -1552,6 +1561,380 @@ series:
     stale_after_months: 1
     chart: yields_d
     label: "€STR (Tagesgeld)"
+
+  # Geldpolitik: Leitzinsen, Bilanz des Eurosystems, Staatsanleihe-Spreads, Zinsstruktur, Unternehmensanleihen, Bank Lending Survey
+  - id: ecb_dfr
+    block: finanzen
+    source: ecb
+    key: FM/D.U2.EUR.4F.KR.DFR.LEV
+    params: {aggregate: monthly_mean}
+    title: "Leitzins der EZB: Einlagesatz, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+    chart: ecb_rates
+    label: "Einlagesatz"
+
+  - id: ecb_mro
+    block: finanzen
+    source: ecb
+    key: FM/D.U2.EUR.4F.KR.MRR_RT.LEV
+    params: {aggregate: monthly_mean}
+    title: "Leitzins der EZB: Hauptrefinanzierungssatz (Festsatz oder Mindestbietungssatz), Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+    chart: ecb_rates
+    label: "Hauptrefinanzierungssatz"
+
+  - id: ecb_mlf
+    block: finanzen
+    source: ecb
+    key: FM/D.U2.EUR.4F.KR.MLFR.LEV
+    params: {aggregate: monthly_mean}
+    title: "Leitzins der EZB: Spitzenrefinanzierungssatz, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+    chart: ecb_rates
+    label: "Spitzenrefinanzierungssatz"
+
+  - id: estr_m
+    block: finanzen
+    source: ecb
+    key: EST/B.EU000A2X2A25.WT
+    params: {aggregate: monthly_mean}
+    title: "Euro-Kurzfristzins €STR, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2019-10-01"
+    chart: ecb_rates
+    label: "€STR (Tagesgeld)"
+
+  - id: ecb_bs_total
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.T000000.Z5.Z01
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Bilanzsumme des Eurosystems, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+    chart: ecb_bs
+    label: "Bilanzsumme"
+
+  - id: ecb_bs_sec
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A070100.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Wertpapiere für geldpolitische Zwecke (Ankaufprogramme), Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+    chart: ecb_bs
+    label: "Anleihekäufe"
+
+  - id: ecb_bs_loans
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A050000.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Kredite an Banken aus geldpolitischen Geschäften (Tender), Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+    chart: ecb_bs
+    label: "Kredite an Banken"
+
+  - id: ecb_bs_df
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.L020200.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Einlagefazilität der Banken, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+    chart: ecb_bs
+    label: "Einlagen der Banken"
+
+  - id: lt_de
+    block: finanzen
+    source: ecb
+    key: IRS/M.DE.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Deutschland (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: lt_it
+    block: finanzen
+    source: ecb
+    key: IRS/M.IT.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Italien (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: lt_fr
+    block: finanzen
+    source: ecb
+    key: IRS/M.FR.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Frankreich (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: lt_es
+    block: finanzen
+    source: ecb
+    key: IRS/M.ES.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Spanien (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: spread_it
+    block: finanzen
+    source: derived
+    derive: {from: lt_it, op: diff, minus: lt_de}
+    title: "Renditeabstand zehnjähriger Staatsanleihen Italien minus Deutschland"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: spreads
+    label: "Italien"
+
+  - id: spread_fr
+    block: finanzen
+    source: derived
+    derive: {from: lt_fr, op: diff, minus: lt_de}
+    title: "Renditeabstand zehnjähriger Staatsanleihen Frankreich minus Deutschland"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: spreads
+    label: "Frankreich"
+
+  - id: spread_es
+    block: finanzen
+    source: derived
+    derive: {from: lt_es, op: diff, minus: lt_de}
+    title: "Renditeabstand zehnjähriger Staatsanleihen Spanien minus Deutschland"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: spreads
+    label: "Spanien"
+
+  - id: yc_3m
+    block: finanzen
+    source: ecb
+    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_3M
+    params: {aggregate: monthly_mean}
+    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 3 Monate, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2004-09-01"
+    chart: yc_curve
+    label: "3 Monate"
+
+  - id: yc_1y
+    block: finanzen
+    source: ecb
+    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_1Y
+    params: {aggregate: monthly_mean}
+    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 1 Jahr, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2004-09-01"
+    chart: yc_curve
+    label: "1 Jahr"
+
+  - id: yc_2y
+    block: finanzen
+    source: ecb
+    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_2Y
+    params: {aggregate: monthly_mean}
+    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 2 Jahre, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2004-09-01"
+    chart: yc_curve
+    label: "2 Jahre"
+
+  - id: yc_5y
+    block: finanzen
+    source: ecb
+    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_5Y
+    params: {aggregate: monthly_mean}
+    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 5 Jahre, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2004-09-01"
+    chart: yc_curve
+    label: "5 Jahre"
+
+  - id: yc_10y
+    block: finanzen
+    source: ecb
+    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_10Y
+    params: {aggregate: monthly_mean}
+    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 10 Jahre, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2004-09-01"
+    chart: yc_curve
+    label: "10 Jahre"
+
+  - id: yc_20y
+    block: finanzen
+    source: ecb
+    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_20Y
+    params: {aggregate: monthly_mean}
+    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 20 Jahre, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2004-09-01"
+    chart: yc_curve
+    label: "20 Jahre"
+
+  - id: yc_30y
+    block: finanzen
+    source: ecb
+    key: YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_30Y
+    params: {aggregate: monthly_mean}
+    title: "Zinsstruktur der Staatsanleihen mit AAA-Rating im Euroraum, Kassazins 30 Jahre, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2004-09-01"
+    chart: yc_curve
+    label: "30 Jahre"
+
+  - id: yc_slope
+    block: finanzen
+    source: derived
+    derive: {from: yc_10y, op: diff, minus: yc_2y}
+    title: "Steigung der Zinsstruktur im Euroraum (AAA): 10 Jahre minus 2 Jahre"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: yc_slope
+    label: "10 minus 2 Jahre"
+
+  - id: yc_slope3m
+    block: finanzen
+    source: derived
+    derive: {from: yc_10y, op: diff, minus: yc_3m}
+    title: "Steigung der Zinsstruktur im Euroraum (AAA): 10 Jahre minus 3 Monate"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: yc_slope
+    label: "10 Jahre minus 3 Monate"
+
+  - id: de_corp_yield
+    block: finanzen
+    source: bundesbank
+    key: BBSIS/M.I.UMR.RD.EUR.X2000.B.A.A.R.A.A._Z._Z.A
+    title: "Umlaufsrendite inländischer Anleihen von Unternehmen (ohne Banken)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    chart: corp_yields
+    label: "Unternehmensanleihen"
+
+  - id: de_pub_yield
+    block: finanzen
+    source: bundesbank
+    key: BBSIS/M.I.UMR.RD.EUR.S13.B.A.A.R.A.A._Z._Z.A
+    title: "Umlaufsrendite inländischer Anleihen der öffentlichen Hand"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    chart: corp_yields
+    label: "Anleihen der öffentlichen Hand"
+
+  - id: de_corp_spread
+    block: finanzen
+    source: derived
+    derive: {from: de_corp_yield, op: diff, minus: de_pub_yield}
+    title: "Renditeabstand der Unternehmensanleihen zu Anleihen der öffentlichen Hand"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: corp_spread
+    label: "Abstand"
+
+  - id: bls_std_nfc
+    block: finanzen
+    source: ecb
+    key: BLS/Q.DE.ALL.O.E.Z.B3.ST.S.FNET
+    title: "Bank Lending Survey Deutschland: Kreditstandards für Unternehmen, letzte drei Monate, Saldo"
+    unit: "Saldo in %"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2003-01-01"
+    chart: bls_std
+    label: "Unternehmen"
+
+  - id: bls_std_hh
+    block: finanzen
+    source: ecb
+    key: BLS/Q.DE.ALL.Z.H.H.B3.ST.S.FNET
+    title: "Bank Lending Survey Deutschland: Kreditstandards für Wohnungsbaukredite an Haushalte, letzte drei Monate, Saldo"
+    unit: "Saldo in %"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2003-01-01"
+    chart: bls_std
+    label: "Wohnungsbaukredite"
+
+  - id: bls_dem_nfc
+    block: finanzen
+    source: ecb
+    key: BLS/Q.DE.ALL.O.E.Z.B3.ZZ.D.FNET
+    title: "Bank Lending Survey Deutschland: Kreditnachfrage der Unternehmen, letzte drei Monate, Saldo"
+    unit: "Saldo in %"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2003-01-01"
+    chart: bls_dem
+    label: "Unternehmen"
+
+  - id: bls_dem_hh
+    block: finanzen
+    source: ecb
+    key: BLS/Q.DE.ALL.Z.H.H.B3.ZZ.D.FNET
+    title: "Bank Lending Survey Deutschland: Nachfrage nach Wohnungsbaukrediten, letzte drei Monate, Saldo"
+    unit: "Saldo in %"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2003-01-01"
+    chart: bls_dem
+    label: "Wohnungsbaukredite"
 
   - id: fx_usd
     block: finanzen
