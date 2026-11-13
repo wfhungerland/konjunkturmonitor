@@ -796,6 +796,8 @@ function timeChart(el, c) {
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa2.tickvals, ticktext: xa2.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true, hoverformat: HFMT[c.freq] || "" },
     yaxis: { side: axLeft ? "left" : "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
+  { const nLeg = traces.filter(t => t.showlegend !== false && t.name).length, w = el.clientWidth || 600;  // Handy: lange Legende bekommt eigene Höhe statt Scrollkasten
+    if (L.showlegend && nLeg > 4 && w < 560) { const h = Math.round(w * 0.8) + nLeg * 26; el.style.aspectRatio = "auto"; el.style.height = h + "px"; L.height = h; } }
   Plotly.newPlot(el, traces, L, CFG);
 }
 
