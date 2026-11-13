@@ -368,6 +368,16 @@ def _gpr(static: Path) -> None:
     update_gpr(static)
 
 
+def _defence(static: Path) -> None:
+    from .geopolitik import update_defence
+    update_defence(static)
+
+
+def _prokopf(static: Path) -> None:
+    from .prokopf import update_prokopf
+    update_prokopf(static)
+
+
 def _trade(static: Path) -> None:
     from .geopolitik import update_trade
     update_trade(static)
@@ -376,7 +386,7 @@ def _trade(static: Path) -> None:
 def update_all(root: Path) -> None:
     static = root / "data" / "static"
     static.mkdir(parents=True, exist_ok=True)
-    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Lkw-Maut täglich", update_maut_daily), ("Indeed", update_indeed), ("Oil Bulletin", update_oil_bulletin), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet), ("Geopolitisches Risiko", _gpr), ("Handel mit Russland", _trade)):
+    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Lkw-Maut täglich", update_maut_daily), ("Indeed", update_indeed), ("Oil Bulletin", update_oil_bulletin), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet), ("Geopolitisches Risiko", _gpr), ("Handel mit Russland", _trade), ("Staatsausgaben je Einwohner", _prokopf), ("Verteidigungsausgaben", _defence)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf

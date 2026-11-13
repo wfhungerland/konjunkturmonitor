@@ -12,6 +12,10 @@ series:
   gpr_world: {tpl: "{when} lag der weltweite Index des geopolitischen Risikos bei {v} Punkten."}
   kiel_de_mil: {tpl: "{when} teilte Deutschland der Ukraine Militärhilfe im Wert von {v} zu."}
   kiel_de_other: {tpl: "{when} kamen finanzielle und humanitäre Hilfe im Wert von {v} hinzu."}
+  def_staff: {tpl: "{when} gab der Staat für das Personal der Streitkräfte {v} aus."}
+  def_material: {tpl: "Für Material, Wartung und Betrieb waren es {v}, {chg} ggü. dem Vorjahr."}
+  def_invest: {tpl: "In neue Waffensysteme und Bauten flossen {v}."}
+  def_transfer: {tpl: "Investitionszuschüsse und Transfers an andere beliefen sich auf {v}."}
   de_arms_prod: {tpl: "{when} lag die Produktion von Waffen und Munition bei {n} Punkten (2021 = 100), {chg} ggü. dem Vorjahresmonat."}
   de_manuf_prod: {tpl: "Die Industrie insgesamt kam auf {n} Punkte, {chg} ggü. dem Vorjahresmonat."}
   sipri_usd_rus: {tpl: "{when} gab Russland nach Schätzung von SIPRI {v} für das Militär aus."}
