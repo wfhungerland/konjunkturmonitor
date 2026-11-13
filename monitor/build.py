@@ -33,6 +33,9 @@ def _base(s):
     return s
 
 
+MONTHS_SHORT = ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
+
+
 def _source_name(s) -> str:
     """Quellenname je Reihe; statische Reihen können ihn in params.source_name setzen."""
     b = _base(s)
@@ -143,7 +146,7 @@ def _forecasts(root: Path) -> list[dict]:
     if not path.exists():
         return []
     conv = lambda m: {int(k): float(v) for k, v in m.items()}
-    rows = [dict(r, date=str(r["date"]), **{k: conv(r[k]) for k in ("values", "inflation", "core") if r.get(k)})
+    rows = [dict(r, date=str(r["date"]), **{k: conv(r[k]) for k in ("values", "values_ka", "inflation", "core") if r.get(k)})
             for r in (yaml.safe_load(path.read_text(encoding="utf-8")) or [])]
     newest = {}
     for r in rows:
@@ -152,66 +155,67 @@ def _forecasts(root: Path) -> list[dict]:
     return sorted((dict(r, latest=r["date"] == newest[r["by"]]) for r in rows), key=lambda r: r["date"])
 
 
+def _nwj(known: float, last: float, n: int, goal: float) -> float | None:
+    """Gleiche Rate g ggü. Vorquartal für n fehlende Quartale, mit der die Jahressumme das Ziel erreicht:
+    known + last * ((1+g) + (1+g)^2 + ... + (1+g)^n) = goal. Die linke Seite steigt streng in g, die Lösung ist eindeutig."""
+    f = lambda g: known + last * sum((1 + g) ** j for j in range(1, n + 1)) - goal
+    lo, hi = -0.99, 1.0
+    if f(lo) > 0 or f(hi) < 0:
+        return None
+    for _ in range(200):  # Bisektion
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if f(mid) < 0 else (lo, mid)
+    return (lo + hi) / 2
+
+
 def _projection(c: dict, data: dict, root: Path) -> dict | None:
     """Abgleich mit der jüngsten Projektion der Bundesregierung für das Jahr des jüngsten BIP-Quartals.
 
-    Die Jahresrate der Projektion ist unbereinigt. Sie entspricht näherungsweise dem gewogenen Mittel der unbereinigten
-    Raten ggü. Vorjahresquartal, gewichtet mit dem Anteil jedes Quartals am Vorjahr (Gewichte aus dem bereinigten Index).
-    Für die noch fehlenden Quartale folgt daraus die gleiche Rate je Quartal, die das Jahresziel gerade erreicht.
+    Jahreswert des realen BIP = Summe der vier Quartale (Verkettung mit annual overlap). Unbereinigt: Die fehlenden Quartale
+    müssen zusammen (1 + Ziel) * Summe des Vorjahres - Summe der bekannten Quartale erreichen; verteilt mit gleicher Rate
+    ggü. dem Vorjahresquartal. Bereinigt: gleiche Rate ggü. dem Vorquartal (Null-Wert-J mit Zielrate), Ziel ist die
+    kalenderbereinigte Jahresrate der Projektion; ohne sie entfällt die bereinigte Ansicht.
     """
-    yoy_id, idx_id = c.get("yoy", "de_gdp_yoy"), c.get("index", "de_gdp_index")
-    if yoy_id not in data or idx_id not in data:
+    yoy_id, idx_id, nsa_id = c.get("yoy", "de_gdp_yoy"), c.get("index", "de_gdp_index"), c.get("index_nsa", "de_gdp_index_nsa")
+    if yoy_id not in data or idx_id not in data or nsa_id not in data:
         return None
-    yoy, idx = data[yoy_id].dropna(), data[idx_id].dropna()
-    year = int(yoy.index[-1].year)
+    yoy, idx, nsa = data[yoy_id].dropna(), data[idx_id].dropna(), data[nsa_id].dropna()
+    year = int(nsa.index[-1].year)
     rounds = [f for f in _forecasts(root) if f["by"] == "Bundesregierung" and year in (f.get("values") or {})]
     if not rounds:
         return None
     rounds.sort(key=lambda f: f["date"])
     cur, prev = rounds[-1], (rounds[-2] if len(rounds) > 1 else None)
     target = float(cur["values"][year])
-    base = idx[idx.index.year == year - 1]
+    base, known = nsa[nsa.index.year == year - 1], nsa[nsa.index.year == year]
     if len(base) != 4:
         return None
-    w = {d.month: float(v) / float(base.sum()) for d, v in base.items()}  # Anteil je Quartal am Vorjahr
-    known = yoy[yoy.index.year == year]
-    done = sum(w[d.month] * float(v) for d, v in known.items())
     rest = [m for m in (1, 4, 7, 10) if m not in {d.month for d in known.index}]
-    need = (target - done) / sum(w[m] for m in rest) if rest else None
-    need_qoq = None
-    if rest:  # bereinigt: nötiges Niveau im nächsten Quartal ggü. dem jüngsten bereinigten Stand, ohne Kalendereffekt
-        nxt = pd.Timestamp(year=year, month=rest[0], day=1)
-        ago = idx.get(nxt - pd.DateOffset(years=1))
-        if ago is not None and idx.index[-1] == nxt - pd.DateOffset(months=3):
-            need_qoq = (float(ago) * (1 + need / 100) / float(idx.iloc[-1]) - 1) * 100
-    alt = None
-    if "de_gdp_qoq" in data and rest and idx.index[-1] == pd.Timestamp(year=year, month=rest[0], day=1) - pd.DateOffset(months=3):
-        # zweite Ansicht: bereinigt ggü. Vorquartal. Nötiges bereinigtes Niveau je fehlendem Quartal = Vorjahresquartal mal (1 + nötige Rate),
-        # wie bei need_qoq; daraus die Raten ggü. dem jeweiligen Vorquartal
-        prev_lv, path = float(idx.iloc[-1]), []
-        for m in rest:
-            ago = idx.get(pd.Timestamp(year=year - 1, month=m, day=1))
-            if ago is None:
-                path = []
-                break
-            lv = float(ago) * (1 + need / 100)
-            path.append(round((lv / prev_lv - 1) * 100, 2))
-            prev_lv = lv
-        if path:
-            q = data["de_gdp_qoq"].dropna()
-            q = q[q.index.year >= year - 1]
-            alt = {"label": "ggü. Vorquartal", "base": "ggü. Vorjahresquartal", "label_en": "on previous quarter", "base_en": "on same quarter a year earlier",
-                   "unit": "% ggü. Vorquartal", "refs": [], "sub": "Vierteljährlich · preis-, saison- und kalenderbereinigt", "sub_en": "Quarterly · price, seasonally and calendar adjusted",
-                   "series": [{"id": "de_gdp_qoq", "label": "BIP ggü. Vorquartal", "unit": "% ggü. Vorquartal", "freq": "Q", "style": "bar",
-                               "x": [d.strftime("%Y-%m-%d") for d in q.index] + [f"{year}-{m:02d}-01" for m in rest],
-                               "y": [round(float(v), 4) for v in q.values] + path, "req": len(rest)}]}
+    rest_base = sum(float(v) for d, v in base.items() if d.month in rest)
+    need = (((1 + target / 100) * float(base.sum()) - float(known.sum())) / rest_base - 1) * 100 if rest else None
+    done = (float(known.sum()) / float(base.sum()) - 1) * 100 if not rest else None
+    target_ka = (cur.get("values_ka") or {}).get(year)
+    need_qoq, alt = None, None
+    sa_base, sa_known = idx[idx.index.year == year - 1], idx[idx.index.year == year]
+    if rest and target_ka is not None and len(sa_base) == 4 and list(sa_known.index) == list(known.index) \
+            and idx.index[-1] == pd.Timestamp(year=year, month=rest[0], day=1) - pd.DateOffset(months=3):
+        g = _nwj(float(sa_known.sum()), float(idx.iloc[-1]), len(rest), (1 + float(target_ka) / 100) * float(sa_base.sum()))
+        need_qoq = g * 100 if g is not None else None
+    if need_qoq is not None and "de_gdp_qoq" in data:
+        q = data["de_gdp_qoq"].dropna()
+        q = q[q.index.year >= year - 1]
+        alt = {"label": "ggü. Vorquartal", "base": "ggü. Vorjahresquartal", "label_en": "on previous quarter", "base_en": "on same quarter a year earlier",
+               "unit": "% ggü. Vorquartal", "refs": [], "sub": "Vierteljährlich · preis-, saison- und kalenderbereinigt", "sub_en": "Quarterly · price, seasonally and calendar adjusted",
+               "series": [{"id": "de_gdp_qoq", "label": "BIP ggü. Vorquartal", "unit": "% ggü. Vorquartal", "freq": "Q", "style": "bar",
+                           "x": [d.strftime("%Y-%m-%d") for d in q.index] + [f"{year}-{m:02d}-01" for m in rest],
+                           "y": [round(float(v), 4) for v in q.values] + [round(need_qoq, 2)] * len(rest), "req": len(rest)}]}
     hist = yoy[yoy.index.year >= year - 1]
     xs = [d.strftime("%Y-%m-%d") for d in hist.index] + [f"{year}-{m:02d}-01" for m in rest]
-    ys = [round(float(v), 4) for v in hist.values] + [round(need, 2)] * len(rest)
+    ys = [round(float(v), 4) for v in hist.values] + ([round(need, 2)] * len(rest) if rest else [])
     return {"year": year, "target": target, "round": cur["round"], "date": cur["date"], "source": cur.get("source"),
             "prev": {"round": prev["round"], "value": float(prev["values"][year])} if prev else None,
-            "known": [{"q": (d.month + 2) // 3, "v": float(v)} for d, v in known.items()], "rest": [(m + 2) // 3 for m in rest],
-            "need": need, "need_qoq": need_qoq, "done_rate": done if not rest else None,
+            "known": [{"q": (d.month + 2) // 3, "v": float(yoy[d])} for d in known.index if d in yoy.index], "rest": [(m + 2) // 3 for m in rest],
+            "need": need, "need_qoq": need_qoq, "target_ka": float(target_ka) if target_ka is not None else None, "done_rate": done,
             "last_qoq": float(data["de_gdp_qoq"].dropna().iloc[-1]) if "de_gdp_qoq" in data else None,
             "alt": alt,
             "series": [{"id": yoy_id, "label": "BIP ggü. Vorjahresquartal", "unit": "% ggü. Vorjahresquartal", "freq": "Q", "style": "bar",
@@ -558,7 +562,7 @@ def tidy(s: str) -> str:
     s = re.sub(r"(?<![\w])(G|g)egenüber ", lambda m: m.group(1) + "gü. ", s)
     s = re.sub(r"Prozentpunkte[n]?", "Pp", s)
     s = re.sub(r"(\d) ?%", "\\1\u202f%", s)
-    s = s.replace("\u2212", "-")
+    s = re.sub(r"(?<![\w\-])-(?=\d)", "\u2212", s)  # Minuszeichen statt Bindestrich vor Zahlen
     return s
 
 
@@ -568,13 +572,17 @@ def _last_x(c: dict) -> str | None:
         return max((x for x, y in zip(c["x"], c["y"]) if y is not None), default=None)
     if c.get("type") in ("heat", "heatbars"):
         return c["heat"]["cols"][-1]
+    if c.get("type") == "curve" and (c.get("attach") or {}).get("countries"):
+        return max(k["now"]["date"] for k in c["attach"]["countries"])
+    if c.get("type") == "tpi" and (c.get("attach") or {}).get("month"):
+        return c["attach"]["month"] + "-01"
     if c.get("type") == "clock":
         return c["clock"]["t"][-1]
     if c.get("type") == "tiles":
         return c["tiles"].get("last")
     ss = [s for s in c.get("series") or [] if isinstance(s, dict) and s.get("x")]
-    if c.get("type") == "stacked" and any(s.get("style") == "bar" for s in ss):
-        ss = [s for s in ss if s.get("style") == "bar"]
+    if c.get("type") == "stacked" and any(s.get("style") == "bar" for s in ss) and "gdp" not in (c.get("chart") or ""):
+        ss = [s for s in ss if s.get("style") == "bar"]  # BIP: die Rate liegt ein Quartal vor den Beiträgen vor und zählt mit
     xs = [s["x"][-1] for s in ss]
     return max(xs) if xs else None
 
@@ -674,10 +682,17 @@ def chart_sentences(c: dict) -> list[str]:
     """Kopierfertige Sätze zum jüngsten Stand einer Abbildung. Jeder Satz steht für sich: Zeitraum, Größe, Wert, Vergleich."""
     from .answers import MONTHS
     from .answers import num as _num
+    if c.get("heute"):  # Gremien: zuerst die jüngste Empfehlung, dann der feste Satz
+        from .gremien import heute
+        return [x for x in [heute(c["heute"]["attach"], c["heute"]["who"])] + list(c.get("say") or []) if x]
     if c.get("say"):  # fester Satz aus monitor.yaml statt des automatischen
         return list(c["say"])
+    from . import schulden
+    if c.get("chart") in schulden.CHARTS:  # Schuldenstruktur: eigene Sätze
+        return schulden.saetze(c, "de")
     typ, d = c.get("type"), int(c.get("decimals", 1))
     unit = (c.get("unit") or "").split(",")[0]
+    unit = "Pp" if unit.startswith("Prozentpunkte") else unit  # Abstände in Prozentpunkten wie Pp behandeln
     is_rate = unit.startswith(("%", "Pp", "Saldo")) and not unit.startswith(("% des", "% der"))
     u = unit if unit.startswith(("% des", "% der")) else "%" if unit.startswith("%") else "Pp" if unit.startswith(("Pp", "Saldo")) else "" if unit.startswith("Index") else unit
     freq = c.get("freq", "M")
@@ -750,10 +765,10 @@ def chart_sentences(c: dict) -> list[str]:
                 out = [f"Um die {p['round']} der Bundesregierung von {num(p['target'], 1)} % für {p['year']} zu erreichen, müsste das BIP {qs(p['rest'])} um "
                        f"{num(p['need'], 1)} % über dem Vorjahresquartal liegen" + (f"; im {k['q']}. Quartal waren es {num(k['v'], 1)} %." if k else ".")]
                 if p.get("need_qoq") is not None and p.get("last_qoq") is not None:
-                    out.append(f"Saison- und kalenderbereinigt entspräche das im {p['rest'][0]}. Quartal einem Anstieg ggü. dem Vorquartal um "
-                               f"{num(p['need_qoq'], 1)} %; zuletzt waren es {num(p['last_qoq'], 1)} %.")
+                    out.append(f"Saison- und kalenderbereinigt, mit der kalenderbereinigten Rate der Projektion von {num(p['target_ka'], 1)} % als Ziel, "
+                               f"müsste das BIP {qs(p['rest'])} um {num(p['need_qoq'], 1)} % ggü. dem Vorquartal wachsen; zuletzt waren es {num(p['last_qoq'], 1)} %.")
             else:
-                out = [f"Nach den vier Quartalen wuchs das BIP {p['year']} um etwa {num(p['done_rate'], 1)} %; die {p['round']} der Bundesregierung erwartete {num(p['target'], 1)} %."]
+                out = [f"Nach den vier Quartalen wuchs das BIP {p['year']} um {num(p['done_rate'], 1)} %; die {p['round']} der Bundesregierung erwartete {num(p['target'], 1)} %."]
             if p.get("prev"):
                 out.append(f"Die {p['prev']['round']} hatte für {p['year']} {num(p['prev']['value'], 1)} % erwartet.")
             return out
@@ -773,11 +788,11 @@ def chart_sentences(c: dict) -> list[str]:
             what, noun = c.get("what") or "Zahl", c.get("count_noun") or "Fälle"
             cnt = lambda r: f" ({int(r['sum']):,} {noun})".replace(",", ".") if r.get("sum") is not None else ""
             dat = noun if noun.endswith("n") else noun + "n"  # Dativ Plural
-            pre = f"{w['span']}, unter den {ZAHLWORT.get(len(big), len(big))} Ländern mit den meisten {dat}: " if len(big) < len(w["rows"]) else f"{w['span']}: "
-            out = [f"{pre}Den stärksten Anstieg ggü. demselben Zeitraum ein Jahr zuvor verzeichnete {rows[-1]['name']} mit {num(rows[-1]['change'], 1, True)} %{cnt(rows[-1])}."]
-            low = rows[0]
+            among = f" unter den {ZAHLWORT.get(len(big), len(big))} Ländern mit den meisten {dat}" if len(big) < len(w["rows"]) else ""
             loc = lambda n: {"Saarland": "im Saarland"}.get(n, "in " + n)
-            out.append(f"Am {'stärksten gesunken' if low['change'] < 0 else 'wenigsten gestiegen'} ist die {what} {loc(low['name'])} mit {num(low['change'], 1, True)} %{cnt(low)}.")
+            out = [f"Von {w['span']} {'stieg' if rows[-1]['change'] > 0 else 'sank'} die {what}{among} am {'stärksten' if rows[-1]['change'] > 0 else 'wenigsten'} {loc(rows[-1]['name'])}: {num(rows[-1]['change'], 1, True)} % ggü. demselben Zeitraum ein Jahr zuvor{cnt(rows[-1])}."]
+            low = rows[0]
+            out.append(f"Am {'stärksten sank' if low['change'] < 0 else 'wenigsten stieg'} sie {loc(low['name'])}: {num(low['change'], 1, True)} %{cnt(low)}.")
             return out
         if typ == "enso_comm" and c.get("enso"):
             E = c["enso"]
@@ -880,12 +895,12 @@ def chart_sentences(c: dict) -> list[str]:
             when = f"Im {_per(c['x'][i], 'M')}"
             sp = _subject(c.get("series") if isinstance(c.get("series"), str) else None, lab) or {"subj": f"der Wert für „{lab}“", "pl": False}
             subj, lv = sp["subj"], "lagen" if sp["pl"] else "lag"
-            out = [f"{when} {lv} {subj} bei {num(c['y'][i], d)}{su}."]
+            m = MONTHS[int(c['x'][i][5:7]) - 1]
+            v0, nv = c["y"][i], c["norm"][i]
+            cmp = f", {num(abs(v0 / nv - 1) * 100, 0)} % {'mehr' if v0 > nv else 'weniger'} als im {m} im Schnitt der Jahre 2015 bis 2019" if nv and round(abs(v0 / nv - 1) * 100) >= 1 else (", etwa so viel wie im " + m + " im Schnitt der Jahre 2015 bis 2019" if nv else "")
+            out = [f"{when} {lv} {subj} bei {num(v0, d)}{su}{cmp}."]
             if c["ma12"][i] is not None:
-                out.append(f"In den zwölf Monaten bis {_per(c['x'][i], 'M')} {lv} {subj} im Mittel bei {num(c['ma12'][i], d)}{su} je Monat.")
-            if c["norm"][i] is not None:
-                m = MONTHS[int(c['x'][i][5:7]) - 1]
-                out.append(f"Vor der Pandemie (2015 bis 2019) {lv} {subj} in einem {m} im Schnitt bei {num(c['norm'][i], d)}{su}.")
+                out.append(f"Im Mittel der zwölf Monate bis {_per(c['x'][i], 'M')} waren es {num(c['ma12'][i], d)}{su} je Monat.")
             return out
         if typ == "latest":
             b = c["bars"]
@@ -898,6 +913,12 @@ def chart_sentences(c: dict) -> list[str]:
                     out.append(f"Vom {base} bis zum {_per(bs[0]['period'], freq)} sank die Zahl der Erwerbstätigen im Bereich „{bs[0]['label']}“ am stärksten: um {num(abs(bs[0]['value']), d)} {u}{pc(bs[0])}.")
                 return out
             when = _when(b[0]["period"], freq)
+            if isinstance(c.get("combine"), dict) and c["combine"].get("extremes"):  # nur stärkster Anstieg und stärkster Rückgang
+                hi, lo = max(b, key=lambda x: x["value"]), min(b, key=lambda x: x["value"])
+                nm = lambda x: c["combine"].get("names", {}).get(x["label"], x["label"])
+                out = f"{when} stiegen {nm(hi)} am stärksten ({num(hi['value'], d, True)} %)"
+                out += f", {nm(lo)} sanken am stärksten ({num(lo['value'], d, True)} %)" if lo["value"] < -0.05 else f", am schwächsten entwickelten sich {nm(lo)} ({num(lo['value'], d, True)} %)"
+                return [out + f"; {c['combine']['tail']}."]
             if isinstance(c.get("combine"), dict):  # alle Balken in einem Satz
                 items = [f"{x['label']} {num(x['value'], d, True)} %" for x in b]
                 return [f"{when} {c['combine']['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0]) + "."]
@@ -935,6 +956,16 @@ def chart_sentences(c: dict) -> list[str]:
         if typ == "calendar" or not c.get("series"):
             return []
         series = [s for s in c["series"] if s.get("y")]
+        if c.get("area"):  # gestapelte Flächen: Summe und Anteile der Teile zum jüngsten Zeitpunkt
+            last = max(s["x"][-1] for s in series)
+            parts = [(s["label"], s["y"][s["x"].index(last)]) for s in series if last in s["x"]]
+            tot = sum(v for _, v in parts)
+            ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
+            tot0 = sum(s["y"][s["x"].index(ago)] for s in series if ago in s["x"])
+            out = [f"{_when(last, freq)} lag {c.get('whole', 'die Summe')} bei {val(tot)}" + (f", {num(abs(tot / tot0 - 1) * 100, 1)} % {'mehr' if tot > tot0 else 'weniger'} als ein Jahr zuvor." if tot0 else ".")]
+            big = sorted(parts, key=lambda p: -p[1])[:2]
+            out.append("Davon entfielen " + " und ".join(f"{val(v)} ({num(v / tot * 100, 0)} %) auf „{lab}“" for lab, v in big) + ".")
+            return out
         if typ == "stacked":  # Stichtag ist das jüngste Quartal mit Beiträgen (die Rate liegt oft früher vor)
             bars0 = [s for s in series if s.get("style") == "bar"]
             last = max(s["x"][-1] for s in bars0) if bars0 else max(s["x"][-1] for s in series)
@@ -944,8 +975,11 @@ def chart_sentences(c: dict) -> list[str]:
             when = _when(last, freq)
             whole = c.get("whole") or ("das Wachstum des BIP" if "gdp" in c.get("chart", "") else "die Rate insgesamt")
             if tot and "gdp" in c.get("chart", ""):
-                g = at(tot[0])
-                out = [f"{when} {'wuchs' if g > 0.05 else 'schrumpfte' if g < -0.05 else 'stagnierte'} das reale BIP{' um ' + num(abs(g), d) + ' % ggü. dem Vorquartal' if abs(g) > 0.05 else ''}."]
+                t0 = next(s for s in series if s.get("style") != "bar")  # Rate liegt oft ein Quartal vor den Beiträgen vor
+                g, wg = t0["y"][-1], _when(t0["x"][-1], freq)
+                out = [f"{wg} {'wuchs' if g > 0.05 else 'schrumpfte' if g < -0.05 else 'stagnierte'} das reale BIP{' um ' + num(abs(g), d) + ' % ggü. dem Vorquartal' if abs(g) > 0.05 else ''}."]
+                if t0["x"][-1] != last:
+                    when = f"Die Aufteilung liegt bis zum {_per(last, freq)} vor; im {_per(last, freq)}"
             elif tot and c.get("chart") == "cpi_contrib":
                 out = [f"{when} lag die Inflationsrate bei {num(at(tot[0]), d)} % ggü. dem Vorjahresmonat."]
             elif tot:
@@ -956,6 +990,7 @@ def chart_sentences(c: dict) -> list[str]:
                 hi, lo = max(bars, key=at), min(bars, key=at)
                 sh = _subject(None, hi["label"]) or {"subj": f"„{hi['label']}“", "pl": False}
                 out.append(f"{when} {'trugen' if sh['pl'] else 'trug'} {sh['subj']} am meisten bei: {num(at(hi), d, True)} Pp.")
+                when = _when(last, freq)
                 if round(at(lo), d) < 0:
                     sl = _subject(None, lo["label"]) or {"subj": f"„{lo['label']}“", "pl": False}
                     out.append(f"{when} {'dämpften' if sl['pl'] else 'dämpfte'} {sl['subj']} am stärksten: {num(at(lo), d, True)} Pp.")
@@ -1007,8 +1042,9 @@ def chart_sentences(c: dict) -> list[str]:
         prev_lbl = {"M": "im Vormonat", "Q": "im Vorquartal", "A": "im Vorjahr", "D": "in der Vorwoche", "B": "am Vortag"}
         out = []
         for s in series:
-            if s["x"][-1] != last:
+            if s["x"][-1] != last and not c.get("each_last"):
                 continue
+            when = _when(s["x"][-1], freq) if c.get("each_last") else _when(last, freq)  # each_last: jede Reihe mit ihrem jüngsten Stand
             v = s["y"][-1]
             f = s.get("freq", freq)
             lag = {"M": 12, "Q": 4, "A": 1, "D": 52}.get(f, 12)
@@ -1019,6 +1055,7 @@ def chart_sentences(c: dict) -> list[str]:
                 yago = s["y"][k] if k is not None else None
             su = s.get("unit") if c.get("own_scale") else unit
             su = (su or "").split(",")[0]
+            su = "Pp" if su.startswith("Prozentpunkte") else su
             uu = su if su.startswith(("% des", "% der")) else "%" if su.startswith("%") else "Pp" if su.startswith(("Pp", "Saldo")) else "" if su.startswith("Index") else su
             vv = f"{num(v, d, su.startswith('Saldo'))} {uu}".strip() if not su.startswith("Index 0") else f"{num(v, d)} von 100 Punkten"
             sp = _subject(s.get("id"), s.get("label", ""), c.get("chart", ""))
@@ -1115,9 +1152,12 @@ def _health(root: Path, topics: list, meta: dict) -> dict:
         return {}
     run = json.loads(path.read_text(encoding="utf-8"))
     st = {s["series_id"]: s for s in run.get("series", [])}
+    from .sperre import load_frozen
+    frozen = {f["series_id"] for f in load_frozen(root)}
     for tp in topics:
         for c in tp["charts"]:
             sids = {s.id for s in meta.values() if s.chart_id == c.get("chart")}
+            sids |= {i.lstrip("-") for ids in (c.get("area_groups") or {}).values() for i in ids}
             if isinstance(c.get("series"), list):
                 sids |= {s.get("id") for s in c["series"] if isinstance(s, dict)}
             elif isinstance(c.get("series"), str):
@@ -1128,7 +1168,11 @@ def _health(root: Path, topics: list, meta: dict) -> dict:
                 sids |= {"de_ip", "de_alq_sa", "de_gdp_index"} if c.get("kind") == "downturn" else {x for p in (c.get("panels") or HIST_PANELS) for x in (p["hist"], p["cur"])} if c.get("kind") == "history" else {"enso_roni", "de_vpi", "de_vpi_food", "de_agri"}
             bad = [st[k] for k in sids if k in st and st[k].get("status") in ("failed", "skipped")]
             old = [st[k] for k in sids if k in st and st[k].get("outdated")]
-            if bad:
+            held = sids & frozen
+            if held:  # Sperre vor der Veröffentlichung (monitor/sperre.py)
+                c["warn"] = (f"Die Quelle liefert für {len(held)} {'Reihe' if len(held) == 1 else 'Reihen'} dieser Abbildung auffällige neue Werte; "
+                             "angezeigt wird der zuletzt geprüfte Stand, bis die Werte geprüft sind.")
+            elif bad:
                 c["warn"] = (f"Der letzte Abruf von {len(bad)} {'Reihe' if len(bad) == 1 else 'Reihen'} dieser Abbildung ist fehlgeschlagen; "
                              "angezeigt wird der zuletzt erfolgreich abgerufene Stand.")
             elif old:
@@ -1136,7 +1180,7 @@ def _health(root: Path, topics: list, meta: dict) -> dict:
     ser = run.get("series", [])
     return {"finished_at": run.get("finished_at"), "n": len(ser), "ok": sum(1 for s in ser if s.get("status") in ("ok", "cache")),
             "failed": sorted(s["series_id"] for s in ser if s.get("status") in ("failed", "skipped")),
-            "outdated": sorted(s["series_id"] for s in ser if s.get("outdated"))}
+            "outdated": sorted(s["series_id"] for s in ser if s.get("outdated")), "frozen": sorted(frozen)}
 
 
 def _enso_episodes(roni: pd.Series, strong: float = 2.0) -> list[dict]:
@@ -1416,6 +1460,9 @@ def build_payload(root: Path = ROOT) -> dict:
                     c = dict(c, x_start=str(start))
             entry = dict(c, type=typ, title=(charts_cfg.get(c["chart"], {}) or {}).get("title", c.get("title", "")),
                          decimals=c.get("decimals", (charts_cfg.get(c["chart"], {}) or {}).get("decimals", 1)))
+            if c.get("events"):  # geldpolitische Ereignisse zum Einblenden (data/static/ereignisse_geld.yaml)
+                ev = yaml.safe_load((root / "data" / "static" / "ereignisse_geld.yaml").read_text(encoding="utf-8")).get("events") or []
+                entry["events"] = [{k: str(v) for k, v in e.items()} for e in ev]
             if c.get("attach"):  # Zusatzdaten aus data/static, etwa Sätze und Fundstellen für den Tooltip
                 entry["attach"] = json.loads((root / "data" / "static" / c["attach"]).read_text(encoding="utf-8"))
             if typ == "clock":
@@ -1536,11 +1583,92 @@ def build_payload(root: Path = ROOT) -> dict:
                              refs=[{"y": pj["target"], "x0": f"{pj['year']}-01-01", "label": f"{pj['round']}: {str(round(pj['target'], 1)).replace('.', ',')} %"}],
                              sources=["Eurostat (BIP des Statistischen Bundesamts)", f"Bundesregierung ({pj['round']})", "eigene Berechnung"],
                              licenses=[SOURCE_LICENSES["eurostat"]])
+            elif typ == "sparktable":  # Tabelle mit Wortgrafiken nach Tufte: je Zeile Verlauf, Stand 2021, jüngster Stand, Faktor
+                rows, used = [], []
+                for r in c.get("rows") or []:
+                    parts = [data[i] for i in r["ids"] if i in data]
+                    if len(parts) != len(r["ids"]):
+                        continue
+                    s = pd.concat(parts, axis=1).dropna().sum(axis=1) if len(parts) > 1 else parts[0].dropna()
+                    if r.get("mean12"):  # gleitender Zwölfmonatsdurchschnitt, Jahresmittel 2021 = 100
+                        s = (s.rolling(12).mean() / s[s.index.year == 2021].mean() * 100).dropna()
+                    s = s[s.index >= pd.Timestamp(c.get("x_start", "2015-01-01"))]
+                    base = r.get("base")
+                    if base is None:
+                        b21 = s[s.index.year == 2021]
+                        if b21.empty:
+                            continue
+                        base = float(b21.iloc[-1])
+                    m = meta[r["ids"][0]]
+                    last = s.index[-1]
+                    when = str(last.year) if m.frequency == "A" else f"{MONTHS_SHORT[last.month - 1]} {last.year}"
+                    when_en = str(last.year) if m.frequency == "A" else last.strftime("%b %Y")
+                    rows.append(dict(label=r["label"], label_en=r.get("label_en", r["label"]), unit=r.get("unit", ""), unit_en=r.get("unit_en", r.get("unit", "")),
+                                     sub=bool(r.get("sub")), d=int(r.get("decimals", 1)), base=round(base, 3), last=round(float(s.iloc[-1]), 3),
+                                     factor=round(float(s.iloc[-1]) / base, 3), when=when, when_en=when_en, say=r.get("say"), say_en=r.get("say_en"),
+                                     tail=r.get("tail"), tail_en=r.get("tail_en"),
+                                     x=[d.strftime("%Y-%m-%d") for d in s.index], y=[round(float(v), 3) for v in s.values]))
+                    used += [meta[i] for i in r["ids"]]
+                if not rows:
+                    continue
+                fx = lambda v: f"{v:.1f}".replace(".", ",")
+                said = [r for r in rows if r["say"]]
+                entry.update(sparktable=rows, freq="M", unit="", sources=list(c.get("sources") or sorted({_source_name(s) for s in used})) + ["eigene Berechnung"],
+                             licenses=sorted({_license(s) for s in used}),
+                             series=[dict(id=f"row{i}", label=r["label"], unit=r["unit"], freq="M", style="line", x=r["x"], y=r["y"]) for i, r in enumerate(rows)])
+                und = lambda xs, w: ", ".join(xs[:-1]) + f" {w} " + xs[-1] if len(xs) > 1 else xs[0]
+                tails = [r for r in rows if r.get("tail")]
+                if said:  # „say“: Satzgegenstand für „stiegen … auf das x-Fache“; „tail“: ganzer Nebensatz mit {f}
+                    de = "Gegenüber 2021 stiegen " + und([f"{r['say']} auf das {fx(r['factor'])}-Fache" for r in said], "und")
+                    en = "Compared with 2021, " + und([f"{r['say_en']} rose {r['factor']:.1f}-fold" for r in said], "and")
+                    if tails:
+                        de += "; " + "; ".join(r["tail"].format(f=fx(r["factor"])) for r in tails)
+                        en += "; " + "; ".join(r["tail_en"].format(f=f"{r['factor']:.1f}") for r in tails)
+                    entry["say"], entry["say_en"] = [de + "."], [en + "."]
             elif typ == "cellgrid":  # Raster je Zeile und Jahr, Daten ganz aus data/static (attach), etwa Themen der Gemeinschaftsdiagnose
                 if not entry.get("attach"):
                     continue
                 entry.update(sources=list(c.get("sources") or []), licenses=list(c.get("licenses") or []), freq="A",
                              unit=c.get("unit", entry["attach"].get("unit", "")))
+            elif typ == "curve":  # Zinskurven je Land, Daten aus data/static/zinskurven.json (werktäglich, monitor/geldpolitik.py)
+                from .answers import MONTHS as MONTHS_DE
+                K = (entry.get("attach") or {}).get("countries") or []
+                if not K:
+                    continue
+                entry.update(sources=[k["source"] for k in K], licenses=sorted({"Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)" if k["code"] == "de" else
+                             "Wiederverwendung mit Quellenangabe (Fonte: Banca d'Italia)" if k["code"] == "it" else "Wiederverwendung mit Quellenangabe (Banco de España)" for k in K}),
+                             freq="M", unit="% p. a.")
+                pm = lambda d: f"{MONTHS_DE[int(d[5:7]) - 1]} {d[:4]}"
+                pe = lambda d: pd.Timestamp(d).strftime("%B %Y")
+                ten = [(k, k["now"]["values"][k["maturities"].index(10)]) for k in K if 10 in k["maturities"]]
+                nz = lambda v: f"{v:.2f}".replace(".", ",")
+                entry["say"] = ["Die Rendite zehnjähriger Staatsanleihen lag zuletzt " + "; ".join(f"in {k['name']} bei {nz(v)} % ({pm(k['now']['date'])})" for k, v in ten) + "."]
+                entry["say_en"] = ["The ten-year government bond yield was most recently " + "; ".join(f"{v:.2f}% in {k['name_en']} ({pe(k['now']['date'])})" for k, v in ten) + "."]
+                up = [k for k in K if k["now"]["values"][-1] is not None and k["now"]["values"][0] is not None and k["now"]["values"][-1] > k["now"]["values"][0]]
+                if len(up) == len(K):
+                    entry["say"].append("In allen drei Ländern bringen lange Laufzeiten mehr als kurze." if len(K) == 3 else "In allen Ländern bringen lange Laufzeiten mehr als kurze.")
+                    entry["say_en"].append("In all countries long maturities pay more than short ones.")
+            elif typ == "tpi":  # Bedingungen des TPI je Euroland, Daten aus data/static/tpi.json (werktäglich, monitor/geldpolitik.py)
+                from .answers import MONTHS as MONTHS_DE
+                T = entry.get("attach") or {}
+                if not T.get("rows"):
+                    continue
+                entry.update(sources=T.get("sources", []), licenses=[SOURCE_LICENSES["eurostat"], SOURCE_LICENSES["ecb"]], freq="M", unit="")
+                und = lambda xs: ", ".join(xs[:-1]) + " und " + xs[-1] if len(xs) > 1 else (xs[0] if xs else "")
+                and_ = lambda xs: ", ".join(xs[:-1]) + " and " + xs[-1] if len(xs) > 1 else (xs[0] if xs else "")
+                edp = [r for r in T["rows"] if r["edp"]]
+                top = max((r for r in T["rows"] if r.get("spread") is not None), key=lambda r: r["spread"], default=None)
+                art = {"SK": "die Slowakei", "NL": "die Niederlande"}  # Länder mit Artikel im Satz
+                zw = {1: "ein", 2: "zwei", 3: "drei", 4: "vier", 5: "fünf", 6: "sechs", 7: "sieben", 8: "acht", 9: "neun", 10: "zehn", 11: "elf", 12: "zwölf"}
+                entry["say"] = [(f"Gegen {zw.get(len(edp), len(edp))} {'Euroland' if len(edp) == 1 else 'Euroländer'} läuft ein Defizitverfahren der EU: "
+                                 f"{und([art.get(r['geo'], r['name']) for r in edp])}.") if edp else "Gegen kein Euroland läuft ein Defizitverfahren der EU."]
+                we = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten", 11: "Eleven", 12: "Twelve"}
+                entry["say_en"] = [(f"{we.get(len(edp), len(edp))} euro {'country is' if len(edp) == 1 else 'countries are'} in an EU excessive deficit procedure: "
+                                    f"{and_([r['name_en'] for r in edp])}.") if edp else "No euro country is in an EU excessive deficit procedure."]
+                if top:
+                    m = pd.Timestamp(T["month"] + "-01")
+                    entry["say"].append(f"Den höchsten Renditeabstand zu Bundesanleihen hatte im {MONTHS_DE[m.month - 1]} {m.year} {top['name']} mit {str(round(top['spread'], 2)).replace('.', ',')} Pp.")
+                    entry["say_en"].append(f"In {m.strftime('%B %Y')}, {top['name_en']} had the widest spread over Bunds at {round(top['spread'], 2)} pp.")
             elif typ == "treemap":  # Grundriss: Daten ganz aus data/static (attach), von Hand aktualisiert
                 if not entry.get("attach"):
                     continue
@@ -1562,7 +1690,18 @@ def build_payload(root: Path = ROOT) -> dict:
                     continue
                 specs = [meta[x] for x in c["pick"] if x in meta] if c.get("pick") else [s for s in meta.values() if s.chart_id == c["chart"]]
                 series, full = [], {}
-                for s in specs:
+                if c.get("area_groups"):  # gestapelte Flächen aus Summen von Reihen; „-id“ zieht ab (etwa Wertpapiere ohne Ankaufprogramme)
+                    for k, (label, ids) in enumerate(c["area_groups"].items()):
+                        cols = [data[i.lstrip("-")].dropna() * (-1 if i.startswith("-") else 1) for i in ids if i.lstrip("-") in data]
+                        if not cols:
+                            continue
+                        m = meta[ids[0].lstrip("-")]
+                        ser = pd.concat(cols, axis=1).fillna(0).sum(axis=1)
+                        ser = ser[ser.index >= max(x.index[0] for x, i in zip(cols, ids) if not i.startswith("-"))] if len(cols) > 1 else ser
+                        series.append(dict(id=f"{c['chart']}_{k}", label=label, unit=c.get("unit", m.unit), freq=m.frequency, style="line",
+                                           **_xy(ser * float(c.get("scale", 1)), c.get("years"), c.get("x_start"))))
+                    specs = [meta[i.lstrip("-")] for ids in c["area_groups"].values() for i in ids if i.lstrip("-") in meta]  # Quellen und Lizenzen
+                for s in ([] if c.get("area_groups") else specs):
                     if s.id not in data:
                         continue
                     ser = data[s.id]
@@ -1768,6 +1907,8 @@ def build_payload(root: Path = ROOT) -> dict:
             c["text"] = " ".join(c["texts"])
             if c.get("caption"):
                 c["caption"] = spell(c["caption"])
+            if c.get("kommentar"):  # eigene Einschätzung je Grafik (monitor.yaml, Feld kommentar), auf Klick in der linken Spalte
+                c["kommentar"] = spell(c["kommentar"])
             for n in c.get("notes", []):
                 n["text"] = spell(n["text"])
     health = _health(root, topics, meta)
@@ -1775,8 +1916,19 @@ def build_payload(root: Path = ROOT) -> dict:
     return {"layout": layout, "health": health, "start": _start_rows(cfg, data, meta, {t["id"]: t["title"] for t in cfg["topics"]}), "geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
             "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "questions": questions, "topics": topics, "overview": spell(tidy(overview({q["id"]: q["answer"] for q in questions}))),
-            "fazit": spell(tidy(fazit({q["id"]: q["answer"] for q in questions}))), "glossar": GLOSSAR,
-            "content_license": cfg["site"].get("license", ""), "text_issues": text_issues}
+            "fazit": spell(tidy(fazit({q["id"]: q["answer"] for q in questions}))) if cfg["site"].get("kommentar", True) else "", "glossar": GLOSSAR,
+            "content_license": cfg["site"].get("license", ""), "text_issues": text_issues, "lage": _lage(data, root)}
+
+
+def _lage(data: dict, root: Path) -> dict:
+    """Erster Bildschirm: Kernzahlen, Lage-Satz, Warnlampen, Ausblick und was die Gremien raten, deutsch und englisch."""
+    from . import lage
+    from .gremien import heute
+    fc = _forecasts(root)
+    out = {lang: lage.build(data, fc, lang) for lang in ("de", "en")}
+    for lang in ("de", "en"):
+        out[lang]["gremien"] = [x for x in (heute("svr_positionen.json", "svr", lang), heute("gd_positionen.json", "gd", lang)) if x]
+    return out
 
 
 def write_embeds(payload: dict, tpl: str, out: Path) -> int:
@@ -1797,7 +1949,7 @@ def write_embeds(payload: dict, tpl: str, out: Path) -> int:
             p = dict(payload, topics=[dict(t, charts=[cc], question=None, ask=c.get("ask") or t.get("ask"))], start=[], questions=[], news=[], week=[], overview="", embed=True,
                      geo=payload.get("geo") if c.get("type") == "tiles" else None, all_series={}, deck=None)
             js = json.dumps(p, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
-            title = f"{c.get('code') or 'Abb. ' + str(c.get('no'))} {c.get('title', '')} · Konjunkturmonitor"
+            title = f"{c.get('title', '')} · Konjunkturmonitor"
             desc = (c.get("texts") or [""])[0] or c.get("caption", "")
             html = (base.replace("/*__DATA__*/null", js).replace("/*__STATIC__*/", "").replace("/*__OVERVIEW__*/", "")
                     .replace("/*__DESC__*/", escape(desc, quote=True)).replace("/*__URL__*/", escape(f"{url}abb/{c['chart']}.html", quote=True))

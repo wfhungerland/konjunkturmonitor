@@ -13,6 +13,7 @@ from pathlib import Path
 TITLE = "Datenabruf: Ausfälle"
 TITLE_JUMP = "Datenabruf: auffällige Werte"
 TITLE_TEXT = "Automatische Sätze: Auffälligkeiten"
+TITLE_HOLD = "Datenabruf: angehaltene Reihen"
 
 
 def gh(*args: str) -> str:
@@ -74,6 +75,13 @@ def main() -> None:
     sync(TITLE_JUMP, ("Diese Reihen haben sich im letzten Lauf stärker verändert als je zuvor. Das kann echt sein (etwa ein Preisschock), "
                       "aber auch auf eine geänderte Einheit, eine neue Basis oder einen Abruffehler hindeuten. Bitte prüfen.\n\n" + "\n".join(j)) if j else None,
          "Keine auffälligen Werte mehr im letzten Lauf.")
+    hold = Path("data/processed/sperre.json")
+    fr = json.loads(hold.read_text(encoding="utf-8")).get("angehalten", []) if hold.exists() else []
+    sync(TITLE_HOLD, ("Diese Reihen zeigen auf der Seite den zuletzt geprüften Stand, weil ihre neuen Werte auffällig sind. Bitte bei der Quelle prüfen.\n\n"
+                      + "\n".join(f"- `{f['series_id']}` (seit {f['seit']}): {f['grund']}" for f in fr)
+                      + "\n\nSind die Werte echt: Eintrag in `data/static/freigaben.yaml` (Reihe, Datum „bis“, Grund). "
+                        "Sind sie falsch (neue Basis, andere Einheit, geänderte Tabelle): Reihe in `series.yaml` anpassen.") if fr else None,
+         "Keine angehaltenen Reihen mehr.")
     site = Path("site/data.json")
     ti = json.loads(site.read_text(encoding="utf-8")).get("text_issues") or [] if site.exists() else []
     sync(TITLE_TEXT, ("Diese automatischen Sätze haben die Satzprüfung nicht bestanden und erscheinen nicht auf der Seite. "

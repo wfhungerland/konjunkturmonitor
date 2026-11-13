@@ -132,3 +132,17 @@ gd_vergleich;Vergleich mit SVR;2026-11-12;
 gd_themen;Themen Seitenanteile;2026-11-12;
 gd_schwerpunkte;Schwerpunktthemen;2026-11-12;
 gd_dissens;Abweichende Voten;2026-11-12;
+ecb_rates;Leitzinsen EZB;2026-11-13;
+ecb_bs;Bilanz Eurosystem;2026-11-13;
+spreads;Renditeabstand Staatsanleihen;2026-11-13;
+yc_curve;Zinsstrukturkurve Euroraum;2026-11-13;2026-11-13
+yc_slope;Steigung Zinskurve;2026-11-13;2026-11-13
+corp_yields;Rendite Unternehmensanleihen;2026-11-13;
+corp_spread;Abstand Unternehmensanleihen;2026-11-13;
+bls_std;Kreditstandards Banken;2026-11-13;
+bls_dem;Kreditnachfrage Banken;2026-11-13;
+qe_prog;Anleihebestaende Programm;2026-11-13;
+qe_land;Staatsanleihekaeufe Land;2026-11-13;
+tpi;TPI Bedingungen;2026-11-13;
+zinskurven;Zinskurven Laender;2026-11-13;
+curve_slope;Abstand lange kurze Zinsen;2026-11-13;

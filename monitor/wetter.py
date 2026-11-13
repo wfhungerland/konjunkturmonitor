@@ -212,11 +212,16 @@ def _smard(filt: int, region: str, res: str = "month", since: pd.Timestamp | Non
 
 
 def update_smard(static: Path) -> None:
-    """Stromverbrauch (Netzlast) und Großhandelspreis Day-Ahead DE/LU, Lizenz CC BY 4.0.
+    """Stromverbrauch (Netzlast) und Großhandelspreis Day-Ahead DE/LU (bis September 2018 DE/AT/LU), Lizenz CC BY 4.0.
     Monatswerte (TWh, €/MWh) seit 2015 und Tageswerte (GWh, €/MWh) der letzten drei Jahre."""
     load = _smard(410, "DE") / 1e6
     _write(static / "smard_load.csv", load)
     price = _smard(4169, "DE-LU")
+    try:  # bis September 2018 gemeinsame Preiszone Deutschland/Österreich/Luxemburg
+        old = _smard(4996, "DE")
+        price = pd.concat([old[old.index < price.index[0]], price])
+    except Exception as e:
+        log.warning("SMARD Preiszone DE/AT/LU nicht geladen: %s", e)
     _write(static / "smard_price.csv", price)
     since = pd.Timestamp.now().normalize() - pd.DateOffset(years=3)
     load_d = _smard(410, "DE", "day", since) / 1e3
@@ -368,15 +373,35 @@ def _gpr(static: Path) -> None:
     update_gpr(static)
 
 
+def _arms_prod(static: Path) -> None:
+    from .geopolitik import update_arms_prod
+    update_arms_prod(static)
+
+
+def _defence(static: Path) -> None:
+    from .geopolitik import update_defence
+    update_defence(static)
+
+
+def _prokopf(static: Path) -> None:
+    from .prokopf import update_prokopf
+    update_prokopf(static)
+
+
 def _trade(static: Path) -> None:
     from .geopolitik import update_trade
     update_trade(static)
 
 
+def _geld(static: Path) -> None:
+    from .geldpolitik import update_all as update_geld
+    update_geld(static)
+
+
 def update_all(root: Path) -> None:
     static = root / "data" / "static"
     static.mkdir(parents=True, exist_ok=True)
-    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Lkw-Maut täglich", update_maut_daily), ("Indeed", update_indeed), ("Oil Bulletin", update_oil_bulletin), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet), ("Geopolitisches Risiko", _gpr), ("Handel mit Russland", _trade)):
+    for name, f in (("Wetter", update_weather), ("Pegel", update_pegel), ("El Niño", update_enso), ("SMARD", update_smard), ("Lkw-Maut täglich", update_maut_daily), ("Indeed", update_indeed), ("Oil Bulletin", update_oil_bulletin), ("Gasspeicher", update_gas_storage), ("Echtzeitdaten", update_revisions), ("Potenzial", _potential), ("Rohstoffpreise Weltbank", _pinksheet), ("Geopolitisches Risiko", _gpr), ("Handel mit Russland", _trade), ("Staatsausgaben je Einwohner", _prokopf), ("Verteidigungsausgaben", _defence), ("Rüstungsproduktion", _arms_prod), ("Geldpolitik", _geld)):
         try:
             f(static)
         except Exception as e:  # ein gestörter Abruf hält den Lauf nicht auf

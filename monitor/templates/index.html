@@ -48,6 +48,36 @@
   .q .num { font: bold 32px/1 var(--ff); color: var(--dark); }
   .q .u { font: 15px var(--ff); color: var(--muted); }
   /* Kommentar: eigener Absatz mit Linie links und kleiner Marke, klar getrennt von der Beschreibung darunter */
+  .stnow { margin: 4px 0 14px; } .stnow .sg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 16px; }
+  .stnow .sq, .stnow .ss { display: block; font: 12.5px/1.3 var(--ff); color: #595959; } .stnow b { display: block; font: 700 17px/1.25 var(--ff); margin: 2px 0; }
+  .stnow .sh, .stturn .sh { font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 0 0 8px; }
+  .stturn { margin: 14px 0 6px; } .stturn ul { list-style: none; margin: 0; padding: 0; } .stturn li { display: grid; grid-template-columns: 3.2em minmax(0, 1fr); font: 13.5px/1.4 var(--ff); margin: 0 0 7px; }
+  .stturn .sp { color: #595959; }
+  @media (max-width: 600px) { .stnow .sg { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .kmtx { border-left: 2px solid #000; padding-left: 12px; margin: 12px 0 4px; font: 14.5px/1.45 var(--ff); } .kmtx[hidden] { display: none; }
+  .kmtx .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 2px 0 5px; }
+  .gut .kmt[aria-expanded="true"] { font-weight: 700; color: #000; }
+  /* Lage auf einen Blick: erster Bildschirm für eilige Leser */
+  .lage { margin: 6px 0 26px; } .lage[hidden] { display: none; }
+  .lage .lh { display: flex; flex-wrap: wrap; gap: 4px 18px; align-items: baseline; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 6px; }
+  .lage .lh h2 { font: 700 15px var(--ff); letter-spacing: .06em; text-transform: uppercase; margin: 0; } .lage .lh span { font: 13.5px var(--ff); color: #595959; }
+  .lage .lk { font: 13.5px var(--ff); background: none; border: 0; padding: 0; cursor: pointer; color: #595959; } .lage .lk[aria-pressed="true"] { color: #000; font-weight: 700; }
+  .lage .kom { display: none; } body.lagek .lage .kom { display: block; }
+  .lage .say { font: 600 25px/1.3 var(--ff); margin: 16px 0 18px; max-width: 900px; } body.lagek .lage .nokom { display: none; }
+  .lage .lg2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 28px; margin: 6px 0 10px; } .lage .lg2 h3 { font: 400 16px var(--ff); margin: 0 0 4px; text-transform: none; letter-spacing: 0; color: #000; }
+  .lage .lsl svg { width: 100%; height: auto; display: block; } .lage svg text { font-family: var(--ff); } .lage .sh { font-size: 12px; fill: #595959; } .lage .sv { font-size: 14.5px; font-weight: 700; fill: #000; } .lage .sn { font-size: 13px; } .lage .lsl a:hover tspan { text-decoration: underline; }
+  .lage .lkey { display: flex; flex-wrap: wrap; gap: 2px 16px; font: 13px var(--ff); color: #404040; margin: 0 0 10px; } .lage .lkey span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .lage .lpg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 18px; } .lage .lp { display: block; color: #000; text-decoration: none; } .lage .lp b { display: block; font: 400 15px/1.25 var(--ff); } .lage .lp span { display: block; font: 12px/1.3 var(--ff); color: #7f7f7f; min-height: 2.6em; } .lage .lp:hover b { color: #0070C0; }
+  .lage .lp svg { width: 100%; height: auto; display: block; overflow: visible; } .lage .sx { font-size: 10px; fill: #595959; } .lage .sp { font-size: 10px; } .lage .se { font-size: 12px; font-weight: 700; } .lage .sm { font-size: 10px; } .lage .sl { font-size: 10.5px; }
+  .lage .lo { margin: 18px 0 0; font: 15.5px/1.4 var(--ff); max-width: 900px; }
+  .lage .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; margin-top: 26px; max-width: 1100px; }
+  .lage h3 { font: 600 12.5px var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 0 0 8px; }
+  .lage ul { list-style: none; margin: 0 0 14px; padding: 0; } .lage li { margin: 0 0 8px; font: 15px/1.4 var(--ff); } .lage li a { color: #000; }
+  .lage .amp { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 7px; } .lage .amp.r { background: #C00000; } .lage .amp.y { background: #E0A800; } .lage .amp.g { background: #47D359; }
+  .lage .fc b { font-size: 20px; } .lage .mine { margin-top: 6px; border-top: 1px solid var(--line); padding-top: 12px; display: flex; gap: 22px; flex-wrap: wrap; font: 600 15px var(--ff); }
+  .lage .mine a { color: #000; } .lage .mine a.s { color: #0070C0; }
+  @media (max-width: 700px) { .lage .say { font-size: 20px; } .lage .lg2 { grid-template-columns: 1fr; gap: 18px; } .lage .lpg { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; } .lage .sx, .lage .sp, .lage .sm, .lage .sl { font-size: 13px; } .lage .se { font-size: 15px; } .lage .sn { font-size: 12.5px; } .lage .sv { font-size: 14px; } .lage .cols { grid-template-columns: 1fr; gap: 6px; } }
+  body.lagek #lage + .overview, body #lage:not([hidden]) + .overview { display: none; }
   .overview .fz { display: none; } body.fazit .overview .fz { display: block; border-left: 2px solid var(--text); padding-left: 14px; margin: 14px 0 4px; }
   .overview .fz .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 3px 0 5px; }
   body:not(.fazit) .verdict { display: none !important; }
@@ -91,7 +121,7 @@
   /* Abbildungskarte: links Nummer, Stern, Download, Methode, Link; Mitte Titel und Grafik; rechts Erläuterung */
   .cgrid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: baseline; column-gap: 22px; }
   .gut { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; font: 13.5px/1.6 var(--ff); order: 2; margin-top: 6px; }
-  .gut .cno { display: none; }
+  .gut .cno { display: none; } .cin .abbno { display: none; }  /* Kürzel wie „Haushalte-2“ nur intern, nie sichtbar */
   .gut .gopts { display: flex; flex-wrap: wrap; gap: 2px 14px; }
   .gut .gopts a, .gut .gopts button { color: #a6a6a6; background: none; border: 0; padding: 0; font: 12.5px/1.6 var(--ff); cursor: pointer; border-radius: 0; text-align: inherit; }
   .gut .gopts a:hover, .gut .gopts button:hover { color: var(--text); text-decoration: none; }
@@ -256,18 +286,18 @@
   .tourask { position: fixed; left: 50%; transform: translateX(-50%); bottom: 16px; z-index: 65; background: #fff; border: 1px solid var(--grey); padding: 8px 14px; font: 14px var(--ff); box-shadow: 0 4px 16px rgba(0,0,0,.12); display: flex; gap: 14px; align-items: center; }
   .tourask button { font: inherit; background: none; border: 0; cursor: pointer; padding: 0; color: #8c8c8c; } .tourask button.go { color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
   /* Rückmeldung: ein Klick, ein Textfeld, kein Formular-Ballast */
-  .fbk { position: fixed; left: 14px; bottom: 14px; z-index: 6; background: #fff; color: var(--text); font: 13.5px var(--ff); padding: 5px 10px; border: 1px solid var(--grey); border-radius: 0; cursor: pointer; }
-  .fbk:hover { border-color: var(--text); } body.menuopen .fbk, body.embed .fbk { display: none; }
-  dialog.fbd { border: 1px solid var(--grey); border-radius: 0; padding: 18px 18px 14px; width: min(520px, calc(100vw - 32px)); font: 15px/1.45 var(--ff); color: var(--text); box-shadow: 0 8px 28px rgba(0,0,0,.18); }
-  dialog.fbd::backdrop { background: rgba(0,0,0,.25); } .fbd form { margin-top: 14px; }
-  .fbd textarea { width: 100%; box-sizing: border-box; min-height: 150px; font: 15px/1.45 var(--ff); border: 1px solid #cfcfcf; padding: 8px 10px; resize: vertical; }
-  .fbd textarea:focus, .fbd input:focus { outline: none; border-color: var(--text); }
-  .fbd input { width: 100%; box-sizing: border-box; font: 13.5px var(--ff); border: 0; border-bottom: 1px solid #cfcfcf; padding: 6px 0; margin-top: 8px; }
-  .fbd .fbrow { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; gap: 12px; }
-  .fbd .fbnote { font-size: 12px; color: #8c8c8c; } .fbd .fbnote a { color: inherit; }
-  .fbd button.fbsend { font: 600 14px var(--ff); background: var(--text); color: #fff; border: 0; padding: 6px 16px; cursor: pointer; }
-  .fbd button.fbx { position: absolute; right: 10px; top: 6px; border: 0; background: none; font-size: 20px; color: #8c8c8c; cursor: pointer; }
-  .fbd .fbok { font-size: 15px; margin: 6px 0 2px; }
+  @media (max-width: 600px) { .chead { flex-wrap: wrap; } .chead .htools { margin-left: 0; width: 100%; order: 2; } .chead .ctitle { width: 100%; } }  /* Handy: Knöpfe unter den Titel, der Titel behält die volle Breite */
+   body.embed .fbc { display: none; }
+  .fbd .fbto { font: 12px var(--ff); color: #bdbdbd; margin: 0 0 14px; letter-spacing: .02em; }
+  dialog.fbd { border: 0; padding: 28px 32px 22px; width: min(440px, calc(100vw - 32px)); font: 16px/1.5 var(--ff); color: var(--text); box-shadow: 0 12px 48px rgba(0,0,0,.14); }
+  dialog.fbd::backdrop { background: rgba(255,255,255,.6); } .fbd form { margin: 0; }
+  .fbd textarea { width: 100%; box-sizing: border-box; min-height: 130px; font: 16px/1.5 var(--ff); border: 0; padding: 0; resize: none; background: none; }
+  .fbd .fbhp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }  /* Köderfeld für Formular-Roboter, für Menschen unsichtbar */
+  .fbd textarea:focus { outline: none; } .fbd textarea::placeholder { color: #bdbdbd; }
+  .fbd .fbrow { display: flex; justify-content: space-between; align-items: baseline; margin-top: 18px; padding-top: 12px; border-top: 1px solid #ececec; }
+  .fbd .fbnote { font-size: 12px; } .fbd .fbnote a { color: #bdbdbd; }
+  .fbd button.fbsend { font: 600 15px var(--ff); background: none; color: #0070C0; border: 0; padding: 0; cursor: pointer; }
+  .fbd .fbok { font-size: 16px; margin: 0; }
   .fab { position: fixed; right: 14px; bottom: 14px; z-index: 6; background: #fff; color: var(--text); font: 13.5px var(--ff); padding: 5px 10px; border: 1px solid var(--grey); border-radius: 0; }
   .fab:hover { border-color: var(--dark); text-decoration: none; }
   .card .cap.notes { color: var(--muted); }
@@ -453,11 +483,28 @@
   @media (min-width: 1240px) { .refs { max-width: 1320px; } }
   footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
+  .spktab { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .spktab th { font-weight: 400; font-size: 13px; color: #595959; text-align: left; padding: 0 8px 6px 0; }
+  .spktab th.n, .spktab td.n { text-align: right; white-space: nowrap; }
+  .spktab td { padding: 8px 8px 8px 0; border-top: 1px solid #e6e6e6; vertical-align: middle; font-size: 15px; }
+  .spktab tr.spk-sub td:first-child { padding-left: 14px; }
+  .spktab tr.spk-sub .lab { font-weight: 400; }
+  .spktab .lab { display: block; font-weight: 600; font-size: 15px; }
+  .spktab .u { display: block; font-size: 12px; color: #595959; }
+  .spktab td.g { width: 38%; min-width: 120px; }
+  .spktab td.f { font-weight: 700; color: #002060; font-size: 17px; }
+  .spk { width: 100%; height: 30px; display: block; }
+  .spk-line { fill: none; stroke: #002060; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .spk-dot { stroke: #002060; stroke-width: 6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .spk-war { stroke: #C00000; stroke-width: 1; stroke-dasharray: 2 2; vector-effect: non-scaling-stroke; }
+  .spknote { font-size: 12px; color: #595959; margin: 6px 0 0; }
+  @media (max-width: 560px) { .spktab td.g { min-width: 80px; width: 30%; } .spktab td.f { font-size: 15px; } }
 </style>
 </head>
 <body>
 <header id="top"><div class="bar"><div class="brand"><h1><a class="home" href="#top" title="Nach oben">Konjunkturmonitor</a></h1><div class="meta"><span class="stand" id="stand"></span><span class="lang" id="lang"></span></div></div><nav id="nav"></nav></div></header>
 <main>
+  <section id="lage" class="lage" hidden></section>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
   <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
@@ -505,18 +552,25 @@ const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
 const FAZTXT = { btn: "Kommentar", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Kommentar bleibt die Seite beschreibend." };
 const ABTXT = { close: "schließen" };
-const TOURTXT = { name: "Rundgang", ask: "Neu hier? Eine Minute Rundgang zeigt, wie die Seite funktioniert.", go: "Los geht’s", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
+const TOURTXT = { name: "Anleitung", ask: "Neu hier? Die Anleitung zeigt in einer Minute, wie die Seite funktioniert.", go: "Los geht’s", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
   steps: [
     ["#nav", "Hier ist das Inhaltsverzeichnis. Ein Klick zeigt alle Kapitel. Die Lupe daneben findet jede Grafik."],
     [".fazitbtn", "Die Seite beschreibt nur, was die Zahlen zeigen. Wer eine Einschätzung lesen will, schaltet hier den Kommentar ein."],
     [".briefbtn", "Am Anfang sehen Sie nur das Wichtigste. Hier klappen Sie alle Kapitel auf."],
+    ["#lage", "Die Lage auf einen Blick: links Raten heute, vor einem Jahr und 2019, rechts Verläufe seit 2019 gegen den Durchschnitt 2015–19. „Kommentar“ blendet eine Einschätzung mit Warnlampen ein."],
     ["#starttable", "Die wichtigsten Zahlen auf einen Blick. ▲ heißt gestiegen, ▼ gesunken, ● gleich geblieben. Rot heißt: eher ungünstig. Ein Klick führt zum Kapitel."],
     ["@card .htools", "Lieber Zahlen statt Linien? Mit „Tabelle“ sehen Sie die letzten zwölf Werte."],
     ["@card .tools", "Mit diesen Schaltern sehen Sie mehr, etwa die ganze Geschichte einer Zahl oder frühere Krisen."],
     ["@card .cside", "Hier steht in wenigen Sätzen, was die Grafik zeigt. Wer es genau wissen will, klickt auf „Mehr zur Methode“."],
-    ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik."],
-    [".fbk", "Fällt Ihnen etwas auf, gut oder schlecht? Schreiben Sie es hier hinein. Es kommt direkt beim Autor an."]] };
-const FBTXT = { btn: "Rückmeldung", ph: "Was fällt Ihnen auf? Was ist gut, was schlecht, was ließe sich besser machen?", mail: "E-Mail für eine Antwort (freiwillig)", send: "Senden", ok: "Danke, ist angekommen.", err: "Senden hat nicht geklappt. Bitte später noch einmal versuchen.", note: "Geht direkt an den Autor. <a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
+    ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik. Und über „Feedback“ erreicht Ihre Meinung zu einer Grafik direkt den Autor."]] };
+const KMTXT = { btn: "Kommentar", title: "Eigene Einschätzung zu dieser Grafik" };
+const LAGETXT = { title: "Lage auf einen Blick", stand: "Stand", komm: "Kommentar", kommt: "Lage-Satz und Warnlampen: Einschätzung nach festen Regeln, automatisch erzeugt",
+  warn: "Warnlampen", out: "Ausblick", grem: "Was die Gremien raten", neu: "Neu in den letzten sieben Tagen", term: "Nächste Termine (geschätzt)",
+  mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", am: "Lage am", rates: "Raten, in %", since: "Verläufe seit 2019",
+  when: [["2019", "Jahresmittel,", "vor Corona"], ["vor einem", "Jahr"], ["heute"]], k: ["Hoch seit 2019", "Tief seit 2019", "letzter Wert", "Durchschnitt 2015–19", "Abstand dazu"], fuer: "für", wd: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"] };
+const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", wait: "Bitte einen Moment warten.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
+const PHASETXT = { to: "–", L: { "-1": "Lohnzurückhaltung", "0": "Löhne im Spielraum", "1": "kräftigere Löhne" }, G: { "-1": "straffer", "0": "beibehalten", "1": "lockerer" },
+  F: { "-1": "Konsolidierung", "0": "neutral", "1": "Impulse" }, A: { "-1": "mehr Schutz", "0": "beibehalten", "1": "Flexibilisierung" } };
 const TABTXT = { chart: "Grafik", table: "Tabelle", period: "Zeitraum", more: "Die Tabelle zeigt die ersten {k} von {n} Reihen; alle Werte stehen unter „Downloads“." };
 const WARN = "#C00000"; // Rot nur für Warnsignale: ungünstige Richtung (↗) und Schwellen
 const isBad = (c, sid) => c.up_bad === true || (Array.isArray(c.up_bad) && c.up_bad.includes(sid));
@@ -569,7 +623,7 @@ const MORETXT = "Alle Grafiken zu {t} ({n})", BRIEFALL = "Alle {n} Kapitel zeige
 const MATXT = "Mittel über {n} Tage";
 const ANH = { show: "Abbildungen anzeigen" };
 const LONGTXT = { crisis: "Bankenkrisen", rec: "Rezessionen", dec: "Mittel" };
-const VIEWTXT = { raw: "Monatswerte", rawt: "Dünne Linie mit den einzelnen Monatswerten zeigen", edge: "Aktueller Rand", edget: "Jüngste Werte an den Linienenden zeigen", rec: "Rezessionen", more: "Ansicht", all: "Ganze Reihe", allt: "Die Reihe ab ihrem Beginn zeigen" };
+const VIEWTXT = { raw: "Monatswerte", rawt: "Dünne Linie mit den einzelnen Monatswerten zeigen", edge: "Aktueller Rand", edget: "Jüngste Werte an den Linienenden zeigen", rec: "Rezessionen", more: "Ansicht", all: "Ganze Reihe", allt: "Die Reihe ab ihrem Beginn zeigen", ev: "Ereignisse", evt: "Wichtige geldpolitische Ereignisse einblenden; Klick auf den Namen öffnet die Quelle" };
 const GUTTXT = { dl: "Downloads", dlt: "XLSX, PPTX, PNG, CSV, Stata oder Code zum Einbetten", meth: "Methode", link: "Link" };
 const pressed = (b, on) => b.setAttribute("aria-pressed", String(!!on));
 const COLTXT = { pin: "Als Lesezeichen merken", pinned: "Lesezeichen entfernen", title: "Lesezeichen", intro: "Die gemerkten Abbildungen, jeweils mit den neuesten Daten. Die Auswahl bleibt in diesem Browser gespeichert.", empty: "Noch keine Abbildung gemerkt. Der Stern ☆ oben rechts an einer Abbildung nimmt sie auf.", shared: "Eine geteilte Auswahl von Abbildungen, jeweils mit den neuesten Daten.", take: "In meine Lesezeichen übernehmen", link: "Link zum Teilen kopieren", copied: "Link kopiert", print: "Drucken", back: "Zurück zum ganzen Monitor", gone: n => n === 1 ? "Eine gemerkte Abbildung gibt es nicht mehr." : `${n} gemerkte Abbildungen gibt es nicht mehr.` };
@@ -605,7 +659,7 @@ function xAxis(x0, x1, width) {
   return { tickvals: tv, ticktext: tt, shapes };
 }
 // Abbildungen, an deren Linienenden die jüngsten Werte stehen können
-const labelable = c => Array.isArray(c.series) && !["stacked", "latest", "seasonal", "dumbbell"].includes(c.type) && !c.series.some(s => s.style === "bar")
+const labelable = c => Array.isArray(c.series) && !c.area && !["stacked", "latest", "seasonal", "dumbbell"].includes(c.type) && !c.series.some(s => s.style === "bar")
   && (c.series.filter(s => s.style !== "bar").length <= 4 || c.context_grey) && !(c.multiples && (DATA.layout || {}).small_multiples && (c.series.length > 2 || c.own_scale));
 // Rezessionen nach SVR, die ins Zeitfenster der Abbildung fallen
 const recIn = (c, r) => (c.recessions || []).filter(rc => rc.trough >= r[0] && rc.peak <= r[1]);
@@ -651,6 +705,14 @@ function timeChart(el, c) {
           hovertemplate: `${LONGTXT.dec} ${d0}${open ? "–" : "–" + (d + 9)}: %{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` }); });
     });
   }
+  if (c.area) { // gestapelte Flächen, etwa die Bilanz: Teile addieren sich zur Summe; Summe je Zeitpunkt für die Achse
+    const sum = {};
+    lines.forEach((s, i) => { const col = (c.area_colors || PAL)[i % (c.area_colors || PAL).length];
+      traces.push({ type: "scatter", mode: "lines", x: s.x, y: s.y, name: s.label, meta: s.id, stackgroup: "a", line: { color: col, width: 0.6 }, fillcolor: col,
+        hovertemplate: `%{y:,.${c.decimals}f}<extra>${esc(s.label)}</extra>` });
+      s.x.forEach((x, j) => { sum[x] = (sum[x] || 0) + (s.y[j] || 0); }); });
+    all.push(0, ...Object.values(sum));
+  } else
   lines.filter(s => !s.style || !s.style.startsWith("band_")).forEach((s, i) => {
     const col = c.type === "stacked" ? "#000" : PAL[i % PAL.length];
     const many = !c.emphasis && lines.length >= 5, strong = many ? i === 0 : (!c.emphasis || c.emphasis === s.id);
@@ -726,6 +788,14 @@ function timeChart(el, c) {
     shapes.push({ type: "line", xref: q.x0 ? "x" : "paper", yref: "y", x0: q.x0 || 0, x1: q.x0 ? r[1] : 1, y0: q.y, y1: q.y, line: { color: "#595959", width: 1, dash: "dash" } });  // x0: nur ab diesem Datum, etwa ein Jahresziel
     const qr = q.x0 && (el.clientWidth || 600) < 560;  // schmal: am Linienende rechtsbündig, damit nichts abgeschnitten wird
     annotations.push({ xref: q.x0 ? "x" : "paper", yref: "y", x: qr ? r[1] : q.x0 || 0.005, y: q.y, text: esc(q.label), showarrow: false, xanchor: qr ? "right" : "left", yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" }, bgcolor: "rgba(255,255,255,0.85)" }); });
+  if (c._ev) { // geldpolitische Ereignisse: senkrechte Linie, Kurzname oben in der ersten freien Zeile, Text beim Darauffahren, Klick öffnet die Quelle
+    const t0 = Date.parse(r[0]), pw = Math.max(200, (el.clientWidth || 600) - 120) / (Date.parse(r[1]) - t0), ends = [];
+    (c.events || []).filter(e => e.date >= r[0] && e.date <= r[1]).forEach(e => {
+    const px = (Date.parse(e.date) - t0) * pw, w = (e.label.length + 2) * 6 + 6;
+    let row = ends.findIndex(end => end < px); if (row < 0) { row = ends.length; ends.push(0); } ends[row] = px + w;
+    shapes.push({ type: "line", xref: "x", yref: "paper", x0: e.date, x1: e.date, y0: 0, y1: 1, line: { color: "#7f7f7f", width: 1, dash: "dot" } });
+    annotations.push({ xref: "x", yref: "paper", x: e.date, y: 1, yshift: -row * 17, yanchor: "top", xanchor: "left", showarrow: false, text: esc(e.label) + (e.url ? " ↗" : ""), hovertext: esc(e.text || e.label),
+      captureevents: true, name: "ev:" + (c.events.indexOf(e)), font: { family: HS.font, size: 11, color: "#3f4752" }, bgcolor: "rgba(255,255,255,0.85)" }); }); }
   (c._shownotes ? c.notes || [] : []).forEach((n, k) => { shapes.push({ type: "line", xref: "x", yref: "paper", x0: n.date, x1: n.date, y0: 0, y1: 1, line: { color: "#595959", width: 1, dash: "dot" } });
     annotations.push({ xref: "x", yref: "paper", x: n.date, y: 1, text: String(k + 1), showarrow: false, yanchor: "bottom", font: { family: HS.font, size: 12, color: "#595959" } }); });
   if (c.band && LY.compare_band) {
@@ -790,7 +860,10 @@ function timeChart(el, c) {
   Object.assign(L, { barmode: "relative", bargap: 0.25, shapes, annotations, showlegend: !direct && traces.filter(t => t.showlegend !== false).length > 1,
     xaxis: { type: "date", range: r, tickmode: "array", tickvals: xa2.tickvals, ticktext: xa2.ticktext, showgrid: false, zeroline: false, showline: false, ticks: "", fixedrange: true, hoverformat: HFMT[c.freq] || "" },
     yaxis: { side: axLeft ? "left" : "right", range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext, showgrid: true, gridcolor: HS.gridH, gridwidth: 0.5, zeroline: false, showline: false, ticks: "", fixedrange: true, automargin: true } });
+  { const nLeg = traces.filter(t => t.showlegend !== false && t.name).length, w = el.clientWidth || 600;  // Handy: lange Legende bekommt eigene Höhe statt Scrollkasten
+    if (L.showlegend && nLeg > 4 && w < 560) { const h = Math.round(w * 0.8) + nLeg * 26; el.style.aspectRatio = "auto"; el.style.height = h + "px"; L.height = h; } }
   Plotly.newPlot(el, traces, L, CFG);
+  if (c.events && !el._evOn) { el._evOn = true; el.on("plotly_clickannotation", ev => { const nm = (ev.annotation || {}).name || "", e = nm.startsWith("ev:") ? c.events[+nm.slice(3)] : null; if (e && e.url) window.open(e.url, "_blank", "noopener"); }); }
 }
 
 // Small Multiples: je Reihe ein kleines Diagramm auf gleicher Skala, die übrigen Reihen grau als Kontext.
@@ -846,6 +919,40 @@ function heatChart(el, c) {
   H.rows.slice().reverse().forEach(r => { html += `<tr><td class="l">${esc(r.label)}</td>${H.cols.map(d => cell(r.values[d])).join("")}`
     + `<td class="k">${sg(r.m3)}</td><td class="k">${r.level == null ? "" : sg(r.level)}</td></tr>`; });
   el.innerHTML = `<div class="heat">${html}</tbody></table></div>`;
+}
+
+// Zinskurven je Land: Rendite über der Restlaufzeit, jüngster Monat durchgezogen, ein Jahr zuvor gepunktet, eine Farbe je Land
+const CURVE_TXT = { x: "Restlaufzeit in Jahren", lang: "de" };
+function curveChart(el, c) {
+  const K = (c.attach || {}).countries || [], en = CURVE_TXT.lang === "en", traces = [], all = [];
+  K.forEach((k, i) => { const col = PAL[i % PAL.length], nm = en ? k.name_en : k.name;
+    [["ago", "dot", 1.6, 6], ["now", "solid", 3, 7]].forEach(([w, dash, wd, ms]) => { const v = k[w]; all.push(...v.values.filter(q => q != null));
+      traces.push({ type: "scatter", mode: "lines+markers", x: k.maturities, y: v.values, name: `${nm}, ${perLong(v.date, "M")}`, line: { color: col, width: wd, dash }, marker: { size: ms, color: col },
+        hovertemplate: `%{x} ${en ? "years" : "Jahre"}: %{y:,.2f} %<extra>${esc(nm)}, ${esc(perLong(v.date, "M"))}</extra>` }); }); });
+  const ya = yAxis(all, c.unit, []), L = baseLayout(el);
+  Object.assign(L, { hovermode: "closest", showlegend: true, legend: { orientation: "h", x: 0, y: -0.18, font: { size: 12 } }, margin: { l: 44, r: 12, t: 34, b: 80 },
+    xaxis: { type: "log", tickvals: [1, 2, 3, 5, 7, 10, 15, 20, 30], ticktext: ["1", "2", "3", "5", "7", "10", "15", "20", "30"], title: { text: CURVE_TXT.x, font: { size: 12 } }, showgrid: false, zeroline: false, fixedrange: true },
+    yaxis: { range: ya.range, tickmode: "array", tickvals: ya.tickvals, ticktext: ya.ticktext.map(t => t.replace(/^\+/, "")), showgrid: true, gridcolor: HS.gridH, zeroline: false, fixedrange: true } });
+  el.style.aspectRatio = "auto"; el.style.height = ((el.clientWidth || 600) < 560 ? 460 : 420) + "px";
+  Plotly.newPlot(el, traces, L, CFG);
+}
+
+// Bedingungen des TPI je Euroland: Defizit, Schulden, Defizitverfahren, Renditeabstand; rot: Grenze des Stabilitätspakts überschritten oder Verfahren läuft.
+// Spaltenköpfe sortieren per Klick.
+const TPI_TXT = { land: "Land", def: "Finanzierungssaldo", debt: "Schulden", edp: "Defizitverfahren", sp: "Abstand zu Bund", yes: "läuft", no: "nein", pct: "% des BIP", pp: "Pp", lang: "de" };
+function tpiChart(el, c) {
+  const T = c.attach || {}, en = TPI_TXT.lang === "en", st = el._tpi || (el._tpi = { k: "spread", d: -1 });
+  const nm = r => en ? r.name_en : r.name, red = "color:#C00000;font-weight:600";
+  const rows = (T.rows || []).slice().sort((a, b) => { const x = st.k === "name" ? nm(a) : a[st.k], y = st.k === "name" ? nm(b) : b[st.k];
+    if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * st.d; });
+  const th = (k, t, sub) => `<th data-k="${k}" style="cursor:pointer">${t}${sub ? `<br><span class="sortnote">${sub}</span>` : ""}${st.k === k ? (st.d < 0 ? " ↓" : " ↑") : ""}</th>`;
+  const f = (v, d) => v == null ? "" : fmt(v, d);
+  let html = `<table><thead><tr>${th("name", TPI_TXT.land).replace("<th", '<th class="l"')}${th("deficit", TPI_TXT.def, `${T.year}, ${TPI_TXT.pct}`)}${th("debt", TPI_TXT.debt, `${T.year}, ${TPI_TXT.pct}`)}${th("edp", TPI_TXT.edp, "")}${th("spread", TPI_TXT.sp, `${perLong(T.month + "-01", "M")}, ${TPI_TXT.pp}`)}</tr></thead><tbody>`;
+  rows.forEach(r => { html += `<tr><td class="l">${esc(nm(r))}</td><td class="k" style="${r.deficit != null && r.deficit < -3 ? red : ""}">${r.deficit != null && r.deficit > 0 ? "+" : ""}${f(r.deficit, 1)}</td>`
+    + `<td class="k" style="${r.debt > 60 ? red : ""}">${f(r.debt, 1)}</td><td class="k" style="${r.edp ? red : ""}">${r.edp ? `<a href="${esc(T.edp_url)}" target="_blank" rel="noopener" style="${red}">${TPI_TXT.yes}</a>` : TPI_TXT.no}</td>`
+    + `<td class="k">${r.geo === "DE" ? "" : f(r.spread, 2)}</td></tr>`; });
+  el.innerHTML = `<div class="heat">${html}</tbody></table></div>`;
+  el.querySelectorAll("th[data-k]").forEach(h => h.onclick = () => { const k = h.dataset.k; st.d = st.k === k ? -st.d : (k === "name" ? 1 : -1); st.k = k; tpiChart(el, c); });
 }
 
 // Balken zur Wärmetabelle: Dreimonatsvergleich oder Niveau ggü. 2019, umschaltbar
@@ -954,7 +1061,14 @@ function forecastChart(el, c) {
 
 // Hantelgrafik: je Land der Wert im ersten (hohl) und im jüngsten Jahr (voll), nach dem jüngsten Wert geordnet
 // Empfehlungen des Sachverständigenrats: je Frage ein Farbstreifen über die Jahre, Antippen zeigt Satz und Fundstelle; darunter Minderheitsvoten
-const STANCE_COL = { "-1": "#1F5F8B", "0": "#BDBDBD", "1": "#C8553D" };
+// Politisch gelesen: Rot sozial-progressiv (kräftigere Löhne, lockere Geldpolitik, Impulse, mehr Schutz), Dunkelblau konservativ-liberal
+// (Lohnzurückhaltung, straffere Geldpolitik, sparen, Flexibilisierung; Mittelblau, damit die Flächen nicht zu dunkel werden), Grau beibehalten. Beim Arbeitsmarkt läuft die Stufe umgekehrt.
+const STANCE_COL = { "-1": "#0070C0", "0": "#BFBFBF", "1": "#D64541" }, STANCE_FLIP = { A: 1, GA: 1 };
+const stanceCol = (k, v) => STANCE_COL[String(STANCE_FLIP[k] ? -(+v) || 0 : +v)];
+// Kurzwörter je Frage und Richtung für „Heute“ und die Wendepunkte
+const STANCEW = { L: { "-1": "zurückhaltend", "0": "im Rahmen", "1": "kräftiger" }, G: { "-1": "straffer", "0": "gleich", "1": "lockerer" },
+  F: { "-1": "sparen", "0": "neutral", "1": "anschieben" }, A: { "-1": "mehr Schutz", "0": "gleich", "1": "flexibler" } };
+const STANCEV = { now: "Heute", none: "keine Empfehlung", last: "zuletzt", turns: "Wendepunkte seit 2000", turnsSub: "Jahre, in denen sich eine Empfehlung änderte, jüngste zuerst", page: "S.", quote: true, labs: {} };
 const STANCE_TXT = { fund: "Ziffer", page: "S.", none: "keine Empfehlung erkennbar", jg: "Jahresgutachten", votes: "Stellen mit Minderheitsvotum", exp: "erwartetes Wachstum", open: "Einordnung noch offen", notext: "kein Gutachtentext vorhanden" };
 function stanceWrap(t, n) { const w = String(t || "").split(" "), out = []; let l = ""; w.forEach(x => { if ((l + " " + x).trim().length > n) { out.push(l.trim()); l = x; } else l += " " + x; }); if (l.trim()) out.push(l.trim()); return out.join("<br>"); }
 function stanceHover(A, k, y) {
@@ -972,13 +1086,28 @@ function stanceChart(el, c) {
   const rows = ids.map(id => c.series.find(s => s.id === id)).filter(Boolean), keyOf = s => (c.stance_keys || {})[s.id] || s.id.slice(-1).toUpperCase();
   const ys = [...new Set(c.series.flatMap(s => s.x.map(x => +x.slice(0, 4))))].sort((a, b) => a - b), y0 = ys[0], y1 = ys[ys.length - 1], years = []; for (let y = y0; y <= y1; y++) years.push(y);
   const narrow = (el.clientWidth || 700) < 560, bh = narrow ? 0.5 : 0.8, b0 = narrow ? -0.45 : -0.4, traces = [];
-  rows.forEach((s, i) => { const k = keyOf(s), m = Object.fromEntries(s.x.map((x, j) => [+x.slice(0, 4), s.y[j]]));
-    [-1, 0, 1].forEach(v => { const yy = years.filter(y => m[y] === v); if (!yy.length) return;
-      traces.push({ type: "bar", x: yy, y: yy.map(() => bh), base: yy.map(() => i + b0), width: 0.92, yaxis: "y", marker: { color: STANCE_COL[String(v)], line: { width: 0 } }, showlegend: false,
-        hovertext: yy.map(y => stanceHover(A, k, y)), hoverinfo: "text", hoverlabel: { align: "left", bgcolor: "#fff", bordercolor: "#7f7f7f", font: { color: "#000" } } }); });
+  const PH = c.view === "phasen", bandShapes = [], runLen = m => { const r = {}; let y = y0; while (y <= y1) { let e = y; while (e + 1 <= y1 && m[e + 1] === m[y]) e++; for (let t = y; t <= e; t++) r[t] = e - y + 1; y = e + 1; } return r; };
+  rows.forEach((s, i) => { const k = keyOf(s), m = Object.fromEntries(s.x.map((x, j) => [+x.slice(0, 4), s.y[j]])), rl = runLen(m);
+    // Phasenansicht: Läufe ab drei Jahren als volles Band, einzelne Jahre als schmaler Strich
+    [-1, 0, 1].forEach(v => [true, false].forEach(long => { const yy = years.filter(y => m[y] === v && (!PH || (rl[y] >= 3) === long)); if (!yy.length || (!PH && !long)) return;
+      const hh = long ? bh : bh * 0.38, bb = long ? i + b0 : i + b0 + (bh - hh) / 2;
+      // Bänder als Flächen ohne Fugen; die Balken darüber bleiben unsichtbar und tragen nur die Erklärung beim Antippen
+      if (PH && long) yy.forEach(y => { if (m[y - 1] !== v || !(rl[y - 1] >= 3)) bandShapes.push({ type: "rect", xref: "x", yref: "y", x0: y - 0.5, x1: y + rl[y] - 0.5, y0: bb, y1: bb + hh, fillcolor: stanceCol(k, v), line: { width: 0 }, layer: "below" }); });
+      traces.push({ type: "bar", x: yy, y: yy.map(() => hh), base: yy.map(() => bb), width: 0.92, yaxis: "y", opacity: long ? 1 : 0.75, marker: { color: PH && long ? "rgba(0,0,0,0)" : stanceCol(k, v), line: { width: 0 } }, showlegend: false,
+        hovertext: yy.map(y => stanceHover(A, k, y)), hoverinfo: "text", hoverlabel: { align: "left", bgcolor: "#fff", bordercolor: "#7f7f7f", font: { color: "#000" } } }); }));
     const na = years.filter(y => m[y] == null);
-    if (na.length) traces.push({ type: "bar", x: na, y: na.map(() => bh), base: na.map(() => i + b0), width: 0.92, yaxis: "y", marker: { color: "rgba(0,0,0,0)", line: { color: "#D9D9D9", width: 0.5 } }, showlegend: false,
+    if (na.length) traces.push({ type: "bar", x: na, y: na.map(() => bh), base: na.map(() => i + b0), width: 0.92, yaxis: "y", marker: { color: "rgba(0,0,0,0)", line: { color: PH ? "rgba(0,0,0,0)" : "#D9D9D9", width: 0.5 } }, showlegend: false,
       hovertext: na.map(y => stanceHover(A, k, y)), hoverinfo: "text", hoverlabel: { align: "left", bgcolor: "#fff", bordercolor: "#7f7f7f", font: { color: "#000" } } }); });
+  // Lange Phasen gleicher Empfehlung direkt im Streifen benennen (Tufte: Beschriftung am Datum statt Legende)
+  const phaseAnn = [];
+  if (c.phases) rows.forEach((s, i) => { const k = keyOf(s), m = Object.fromEntries(s.x.map((x, j) => [+x.slice(0, 4), s.y[j]])), minLen = PH ? 3 : narrow ? 14 : 8;
+    let y = y0; while (y <= y1) { const v = m[y]; let e = y; while (e + 1 <= y1 && m[e + 1] === v) e++;
+      const pxPerYear = Math.max(1, (el.clientWidth || 700) - (narrow ? 20 : 190)) / Math.max(1, y1 - y0 + 1), fit = t => t.length * (PH ? 5.4 : narrow ? 5.6 : 6.3) + 8 <= (e - y + 1) * pxPerYear;
+      const lab = v != null && (PH ? (STANCEW[k] || {})[String(v)] : (PHASETXT[k] || {})[String(v)]), full = lab ? `${lab} ${y}${PHASETXT.to}${String(e).slice(-2)}` : "";
+      const txt = !lab ? "" : fit(full) ? full : PH && fit(lab) ? lab : "";  // mit Jahren, sonst nur das Wort
+      if (txt && e - y + 1 >= minLen) phaseAnn.push({ x: (y + e) / 2, y: i + b0 + bh / 2, xref: "x", yref: "y", showarrow: false, xanchor: "center", yanchor: "middle",
+        text: esc(txt), font: { family: HS.font, size: narrow || PH ? 10.5 : 11.5, color: v === 0 ? "#002060" : "#fff" } });
+      y = e + 1; } });
   if (vt) traces.push({ type: "bar", x: vt.x.map(x => +x.slice(0, 4)), y: vt.y, yaxis: "y2", marker: { color: "#595959", line: { width: 0 } }, width: 0.7, showlegend: false, hovertemplate: `%{x}: %{y} ${STANCE_TXT.votes}<extra></extra>` });
   const L = baseLayout(el);
   const top = vt ? 0.4 : 0, h0 = Math.max(narrow ? 400 : 340, Math.round(rows.length * (narrow ? 44 : 40) / (1 - top) + 40));
@@ -987,12 +1116,37 @@ function stanceChart(el, c) {
     yaxis: { domain: [top, 1], range: [-0.55, rows.length - 0.45], tickmode: "array", tickvals: rows.map((_, i) => i), ticktext: rows.map(s => narrow ? "" : esc(s.label)), automargin: true, fixedrange: true, showgrid: false, zeroline: false, ticks: "" },
     yaxis2: { domain: [0, 0.22], fixedrange: true, showgrid: true, gridcolor: HS.gridH, zeroline: false, rangemode: "tozero", nticks: 3, automargin: true },
     annotations: vt ? [{ xref: "paper", yref: "paper", x: 0, y: 0.24, xanchor: "left", yanchor: "bottom", showarrow: false, text: esc(c.votes_label || STANCE_TXT.votes), font: { family: HS.font, size: 12, color: "#595959" } }] : [] });
+  L.annotations = (L.annotations || []).concat(phaseAnn); if (bandShapes.length) L.shapes = (L.shapes || []).concat(bandShapes);
   if (!vt) delete L.yaxis2;
   if (narrow) rows.forEach((r, i) => L.annotations.push({ xref: "paper", yref: "y", x: 0, y: i + 0.07, xanchor: "left", yanchor: "bottom", showarrow: false, text: esc(r.label), font: { family: HS.font, size: 12 } }));
   if (narrow) L.yaxis.range = [-0.55, rows.length - 0.35];
   el.style.aspectRatio = "auto"; el.style.height = L.height + "px";
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+  if (PH) stanceExtras(el, A, rows.slice().reverse().map(s => [keyOf(s), s.label]));
   Plotly.react(el, traces, L, CFG);
+}
+// „Heute“ über der Grafik (jüngste Empfehlung in Worten) und „Wendepunkte“ darunter (Jahre mit geänderter Empfehlung, mit Satz und Seite)
+function stanceExtras(el, A, qs) {
+  const ok = r => r && !r.x && !r.o && r.s != null && r.s !== "NA", sv = r => String(+r.s), col = (k, v) => v === "0" ? "#595959" : stanceCol(k, v);
+  const yAll = qs.flatMap(([k]) => Object.keys(A[k] || {}).map(Number)), Y1 = Math.max(...yAll); if (!isFinite(Y1)) return;
+  const word = (k, v) => (STANCEW[k] || {})[v] || "";
+  let h = "";
+  qs.forEach(([k, lab]) => { const r = (A[k] || {})[Y1]; let sub = "", main;
+    if (ok(r)) { main = `<b style="color:${col(k, sv(r))}">${esc(word(k, sv(r)))}</b>`; sub = esc(Object.entries(STANCEV.labs).reduce((t, [a, b]) => t.replace(a, b), r.lab || `${STANCE_TXT.jg} ${Y1}`)); }
+    else { main = `<b style="color:#8c8c8c">${STANCEV.none}</b>`; const ys = Object.keys(A[k] || {}).map(Number).filter(y => ok(A[k][y])).sort((a, b) => b - a);
+      if (ys.length) sub = `${STANCEV.last} ${ys[0]}: ${esc(word(k, sv(A[k][ys[0]])))}`; }
+    h += `<div><span class="sq">${esc(lab)}</span>${main}<span class="ss">${sub}</span></div>`; });
+  const items = [];
+  qs.forEach(([k, lab]) => { let prev = null; Object.keys(A[k] || {}).map(Number).sort((a, b) => a - b).forEach(y => { const r = A[k][y]; if (!ok(r)) return; const v = sv(r);
+    if (y >= 2000 && prev != null && v !== prev) items.push({ y, k, lab, v, r }); prev = v; }); });
+  items.sort((a, b) => b.y - a.y || a.lab.localeCompare(b.lab));
+  const li = items.slice(0, 6).map(({ y, k, lab, v, r }) => { let p = STANCEV.quote ? String(r.p || "").split(/(?<=\.)\s/)[0] : "";
+    return `<li><b>${y}</b><span><span style="color:${col(k, v)};font-weight:700">${esc(lab)}: ${esc(word(k, v))}</span>${p ? ` <span class="sp">${esc(p)}</span>` : ""}${r.seite ? ` <span class="sp">(${STANCEV.page} ${esc(r.seite)})</span>` : ""}</span></li>`; }).join("");
+  let top = el._sxTop, bot = el._sxBot;
+  if (!top) { top = el._sxTop = document.createElement("div"); top.className = "stnow"; el.parentNode.insertBefore(top, el);
+    bot = el._sxBot = document.createElement("div"); bot.className = "stturn"; el.parentNode.insertBefore(bot, el.nextSibling); }
+  top.innerHTML = `<div class="sh">${STANCEV.now}</div><div class="sg">${h}</div>`;
+  bot.innerHTML = li ? `<div class="sh">${STANCEV.turns}</div><ul>${li}</ul>` : "";
 }
 // Raster je Zeile und Jahr, Daten ganz aus attach: mode share (Anteil als Farbstärke), dot (Punkt je Eintrag), bar (Zahl je Jahr); Tooltip je Zelle aus attach
 function cellChart(el, c) {
@@ -1024,11 +1178,28 @@ function cellChart(el, c) {
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl && A.mode !== "bar") uEl.style.display = "none";
   Plotly.react(el, traces, L, CFG);
 }
+// Tabelle mit Wortgrafiken nach Tufte: je Zeile Verlauf auf gemeinsamer Zeitachse, Stand 2021, jüngster Stand, Faktor
+function sparkChart(el, c) {
+  const R = c.sparktable || [], en = DATA.lang === "en", t0 = Math.min(...R.map(r => Date.parse(r.x[0]))), t1 = Math.max(...R.map(r => Date.parse(r.x[r.x.length - 1])));
+  const W = 220, H = 30, fx = (v, d) => en ? v.toLocaleString("en-GB", { minimumFractionDigits: d, maximumFractionDigits: d }) : fmt(v, d);
+  const war = Date.parse("2022-02-24"), px = t => 2 + (t - t0) / (t1 - t0) * (W - 6);
+  const spark = r => { const ys = r.y, lo = Math.min(...ys), hi = Math.max(...ys), py = v => H - 3 - (v - lo) / ((hi - lo) || 1) * (H - 6);
+    const pts = r.x.map((x, i) => `${px(Date.parse(x)).toFixed(1)},${py(ys[i]).toFixed(1)}`).join(" "), n = r.x.length - 1;
+    return `<svg class="spk" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><line x1="${px(war)}" x2="${px(war)}" y1="0" y2="${H}" class="spk-war"/>`
+      + `<polyline points="${pts}" class="spk-line"/><line x1="${px(Date.parse(r.x[n])).toFixed(1)}" x2="${px(Date.parse(r.x[n])).toFixed(1)}" y1="${py(ys[n]).toFixed(1)}" y2="${py(ys[n]).toFixed(1)}" class="spk-dot"/></svg>`; };
+  const T = en ? { since: "Since " + new Date(t0).getFullYear(), y21: "2021", last: "Latest", f: "Factor", war: "Dotted: Russia's attack on Ukraine, 24 Feb 2022." }
+               : { since: "Verlauf seit " + new Date(t0).getFullYear(), y21: "2021", last: "zuletzt", f: "Faktor", war: "Gepunktet: russischer Angriff auf die Ukraine, 24.2.2022." };
+  el.innerHTML = `<table class="spktab"><thead><tr><th></th><th>${T.since}</th><th class="n">${T.y21}</th><th class="n">${T.last}</th><th class="n">${T.f}</th></tr></thead><tbody>`
+    + R.map(r => `<tr class="${r.sub ? "spk-sub" : "spk-main"}"><td><span class="lab">${esc(en ? r.label_en : r.label)}</span><span class="u">${esc(en ? r.unit_en : r.unit)}</span></td>`
+      + `<td class="g">${spark(r)}</td><td class="n">${fx(r.base, r.d)}</td><td class="n"><b>${fx(r.last, r.d)}</b><span class="u">${esc(en ? r.when_en : r.when)}</span></td>`
+      + `<td class="n f">×${fx(r.factor, 1)}</td></tr>`).join("") + `</tbody></table><p class="spknote">${T.war}</p>`;
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+}
 // Kurs der Finanzpolitik gegen erwartetes Wachstum: Balken je Zieljahr, Farbe nach der Empfehlung im Gutachten des Vorjahres
 function stanceBarsChart(el, c) {
   const A = c.attach || {}, g = c.series.find(s => s.id === "svr_bip_prog"), f = c.series.find(s => s.id === "svr_stance_f"); if (!g) return;
   const fm = f ? Object.fromEntries(f.x.map((x, j) => [+x.slice(0, 4) + 1, f.y[j]])) : {};
-  const xs = g.x.map(x => +x.slice(0, 4)), col = xs.map(y => fm[y] == null ? "#E7E6E6" : STANCE_COL[String(fm[y])]);
+  const xs = g.x.map(x => +x.slice(0, 4)), col = xs.map(y => fm[y] == null ? "#E7E6E6" : stanceCol("F", fm[y]));
   const tr = { type: "bar", x: xs, y: g.y, marker: { color: col, line: { width: 0 } }, width: 0.75, showlegend: false, hoverlabel: { align: "left", bgcolor: "#fff", bordercolor: "#7f7f7f", font: { color: "#000" } }, hoverinfo: "text",
     hovertext: xs.map((y, j) => `<b>${y}</b>: ${STANCE_TXT.exp} ${fmt(g.y[j], 1)} %<br>${stanceHover(A, "F", y - 1)}`) };
   const L = baseLayout(el);
@@ -1383,7 +1554,7 @@ async function pngDownload(el, ch, c, no, sub, unit) {
   const cap = wrap(c.caption, W - 2 * pad, `15px ${font}`), src = wrap(el.querySelector(".src").textContent, W - 2 * pad, `12px ${font}`);
   const H = 110 + plotH + 16 + cap.length * 20 + src.length * 18 + 24;
   cv.width = W * S; cv.height = H * S; x.scale(S, S); x.fillStyle = "#fff"; x.fillRect(0, 0, W, H); x.textBaseline = "top";
-  x.fillStyle = "#000"; x.font = `bold 22px Georgia, serif`; x.fillText(`${FC(no)} ${c.title || ""}`, pad, 18);
+  x.fillStyle = "#000"; x.font = `bold 22px Georgia, serif`; x.fillText(`${c.title || ""}`, pad, 18);
   x.fillStyle = "#555"; x.font = `15px ${font}`; if (sub) x.fillText(sub, pad, 52);
   x.textAlign = "right"; x.fillText(unit, W - pad, 80); x.textAlign = "left";
   if (img && c.type === "tiles") x.drawImage(img, (W - 520) / 2, 104, 520, plotH);
@@ -1418,7 +1589,7 @@ function card(c, no) {
   const ownCfg = c.own_scale;  // so in monitor.yaml gesetzt (dann fehlt die gemeinsame Einheit über der Grafik)
   if (c.multiples && (DATA.layout || {}).small_multiples && (c.series || []).length > 2) { if (c.own_scale == null) c.own_scale = true; c.scale_toggle = true; }  // Standard: eigene Skala je Feld, gemeinsam per Schalter
   const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = FA(no); if (c.chart) el.dataset.chart = c.chart;
-  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
+  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" || c.type === "sparktable" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? (c.all_days ? "Täglich" : "Täglich (Arbeitstage)") : c.freq === "S" ? "Halbjährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Pp, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% ggü. Vorjahr"
     : c.type === "tiles" ? "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
@@ -1429,15 +1600,15 @@ function card(c, no) {
   const meta = sub ? esc(sub) : "";  // Hinweis auf neue Daten steht unter der Grafik
   const texts = c.texts || [];
   el.innerHTML = `${!lead && c.ask ? `<h4 class="cask">${esc(c.ask)}</h4>` : ""}${!lead && texts.length ? `<p class="ctext">${sentHtml(texts)}</p>` : ""}`
-    + `<div class="cgrid"><div class="gut"><b class="cno" title="${esc(FC(no))}">${c.k ?? no}</b></div><div class="cin"><div class="chead"><div class="ctitle"><h3><span class="abbno">${esc(FC(no))} </span>${esc(c.title || "")}</h3>${meta ? `<div class="sub">${meta}</div>` : ""}</div><div class="htools"></div></div></div></div>`;
-  if (!lead) bindCopies(el, texts, FC(no));
+    + `<div class="cgrid"><div class="gut"><b class="cno">${c.k ?? no}</b></div><div class="cin"><div class="chead"><div class="ctitle"><h3><span class="abbno">${esc(FC(no))} </span>${esc(c.title || "")}</h3>${meta ? `<div class="sub">${meta}</div>` : ""}</div><div class="htools"></div></div></div></div>`;
+  if (!lead) bindCopies(el, texts, c.title || FC(no));
   const cin = el.querySelector(".cin"), gut = el.querySelector(".gut");
   if (c.warn) cin.insertAdjacentHTML("beforeend", `<div class="warn">⚠ ${esc(c.warn)}</div>`);
   const body = document.createElement("div"); body.className = "cbody"; cin.appendChild(body);
   const main = document.createElement("div"); main.className = "cmain"; body.appendChild(main);
   main.insertAdjacentHTML("beforeend", `<div class="unit">${ownCfg ? "" : esc(unit)}</div>`);
   const box = document.createElement("div"); box.className = "chartbox"; main.appendChild(box);
-  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
+  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar", "tpi", "sparktable"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
   const side = document.createElement("aside"); side.className = "cside"; el.querySelector(".cgrid").appendChild(side);
   const capx = (c.caption || "") + ((c.notes || []).length ? " Über „Ausschläge und Sondereffekte“ erscheinen nummerierte, gepunktete Linien an den betroffenen Monaten." : "");
@@ -1447,7 +1618,7 @@ function card(c, no) {
     const nb = document.createElement("button"); nb.type = "button"; nb.className = "btn"; nb.textContent = "Ausschläge und Sondereffekte"; nb.setAttribute("aria-pressed", "false");
     const nbox = document.createElement("div"); nbox.className = "notebox"; nbox.hidden = true;
     nbox.innerHTML = `<b>Ausschläge und Sondereffekte</b>${sentHtml(nts, "<br>")}<p class="tnote" style="margin:4px 0 0">Automatisch markiert: Veränderung zum Vormonat mehr als drei Standardabweichungen vom Üblichen 2015 bis 2019. Die Ursache nennt die Quelle.</p>`;
-    bindCopies(nbox, nts, FC(no));
+    bindCopies(nbox, nts, c.title || FC(no));
     nb.onclick = () => { nbox.hidden = !nbox.hidden; nb.setAttribute("aria-pressed", String(!nbox.hidden)); c._shownotes = !nbox.hidden; if ((c.notes || []).length && ch.dataset.done) redraw(); };
     side.appendChild(nb); side.appendChild(nbox);
   }
@@ -1486,6 +1657,9 @@ function card(c, no) {
       rb.onclick = () => { c._rec = !(c._rec ?? c.recessions_on); pressed(rb, c._rec); redraw(); };
       htools.appendChild(rb); }
   }
+  if ((c.events || []).length) { // geldpolitische Ereignisse einblendbar
+    const eb = document.createElement("button"); eb.type = "button"; eb.className = "btn"; eb.textContent = VIEWTXT.ev; eb.title = VIEWTXT.evt; pressed(eb, false);
+    eb.onclick = () => { c._ev = !c._ev; pressed(eb, c._ev); redraw(); }; htools.appendChild(eb); }
   if (c.crisis_toggle) { // lange Reihen: Bankenkrisen (rot) und Rezessionen (grau) einblendbar
     [["_crisis", LONGTXT.crisis, c.crisis_years], ["_recy", LONGTXT.rec, c.recession_years]].forEach(([k, lab, ys]) => { if (!(ys || []).length) return;
       const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = lab; pressed(b, c[k]);
@@ -1500,12 +1674,12 @@ function card(c, no) {
       redraw(); };
     htools.appendChild(fb); }
   // Ein/Aus-Schalter als eine Textzeile direkt unter der Grafik, nach Bedeutung geordnet; oben bleibt nur der Wechsel wie „Grafik | Tabelle“
-  { const prio = [VIEWTXT.all, SCALE_TXT.common, SCALE_TXT.zoom, VIEWTXT.rec, LONGTXT.dec, LONGTXT.crisis, LONGTXT.rec, VIEWTXT.edge, VIEWTXT.raw];
+  { const prio = [VIEWTXT.ev, VIEWTXT.all, SCALE_TXT.common, SCALE_TXT.zoom, VIEWTXT.rec, LONGTXT.dec, LONGTXT.crisis, LONGTXT.rec, VIEWTXT.edge, VIEWTXT.raw];
     [...htools.querySelectorAll(":scope > .btn")].sort((a, b) => (prio.indexOf(a.textContent) + 99) % 99 - (prio.indexOf(b.textContent) + 99) % 99).forEach(b => tools.appendChild(b)); }
   const f = c.files || {}, acts = [], u = x => encodeURI(x);
   if (f.xlsx) acts.push(`<a href="${u(f.xlsx)}" download>XLSX</a>`);
   if (f.pptx) acts.push(`<a href="${u(f.pptx)}" download>PPTX</a>`);
-  if (!["heat", "heatbars", "calendar", "event"].includes(c.type)) acts.push(`<button type="button" class="png">PNG</button>`);
+  if (!["heat", "heatbars", "calendar", "event", "tpi"].includes(c.type)) acts.push(`<button type="button" class="png">PNG</button>`);
   if (f.csv) acts.push(`<a href="${u(f.csv)}" download>CSV</a>`);
   if (f.dta) acts.push(`<a href="${u(f.dta)}" download>Stata</a>`);
   const fv = (c.variant && c.variant.files) || {};  // zweite Ansicht der Karte
@@ -1516,19 +1690,25 @@ function card(c, no) {
   // alle Optionen offen untereinander, beginnend auf Höhe der Zeichenfläche (siehe alignGut)
   gut.insertAdjacentHTML("beforeend", `<div class="gopts"><button type="button" class="dl" aria-expanded="false" title="${GUTTXT.dlt}">${GUTTXT.dl}</button><div class="dlist" hidden>${acts.join("")}</div>`
     + (c.chart && !capx ? `<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${GUTTXT.meth}</a>` : "")  // mit Erläuterung steht „Mehr zur Methode“ schon rechts
-    + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button></div>`);
+    + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button>`
+    + (c.kommentar ? `<button type="button" class="kmt" aria-expanded="false" title="${KMTXT.title}">${KMTXT.btn}</button>` : "") + `</div>`);
+  if (c.kommentar) {  // Kommentar je Grafik: eigener Absatz mit Linie links, unter der Erläuterung, erst auf Klick
+    const kb = gut.querySelector(".kmt"), kx = document.createElement("div"); kx.className = "kmtx"; kx.hidden = true;
+    kx.innerHTML = `<span class="fzl">${KMTXT.btn}</span>${esc(c.kommentar)}`; side.appendChild(kx);
+    kb.onclick = () => { kx.hidden = !kx.hidden; kb.setAttribute("aria-expanded", String(!kx.hidden)); };
+  }
   // Direkter Link auf diese Abbildung zum Teilen
   const lk = gut.querySelector("button.lnk");
   const dlb = gut.querySelector("button.dl"); dlb.onclick = () => { const l = dlb.nextElementSibling, open = l.hidden; l.hidden = !open; dlb.setAttribute("aria-expanded", String(open)); };  // Formate auf- und zuklappen
   const eb = gut.querySelector("button.emb");
   if (eb) eb.onclick = () => { const src = (DATA.site.url || "").replace(/en\/$/, "") + "abb/" + encodeURIComponent(c.chart) + ".html";
-    const code = `<iframe src="${src}" title="${esc(`${FC(no)} ${c.title || ""} (Konjunkturmonitor)`)}" width="100%" height="620" style="border:0" loading="lazy"></iframe>`;
+    const code = `<iframe src="${src}" title="${esc(`${c.title || ""} (Konjunkturmonitor)`)}" width="100%" height="620" style="border:0" loading="lazy"></iframe>`;
     const done = () => { const o = eb.textContent; eb.textContent = EMB.done; setTimeout(() => eb.textContent = o, 1500); };
     if (navigator.clipboard) navigator.clipboard.writeText(code).then(done, () => prompt(EMB.label, code)); else prompt(EMB.label, code); };
   lk.onclick = () => { const url = (DATA.site.url || location.href.split("#")[0]).replace(/#.*$/, "") + "#" + FA(no);
     const done = () => { lk.textContent = "Link kopiert"; setTimeout(() => lk.textContent = GUTTXT.link, 1500); };
     if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => prompt("Link kopieren:", url)); else prompt("Link kopieren:", url); };
-  ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `${FC(no)} ${c.title || ""}. ${c.text || ""}`);
+  ch.setAttribute("role", "img"); ch.setAttribute("aria-label", `${c.title || ""}. ${c.text || ""}`);
   const pb = el.querySelector("button.png"); if (pb) pb.onclick = () => pngDownload(el, ch, c, no, sub, unit);
   ch._c = c;
   if (tabOk(c)) { const seg = document.createElement("div"); seg.className = "seg tabseg"; seg.setAttribute("role", "group");
@@ -1602,8 +1782,11 @@ function render(ch) {
   else if (c.type === "dumbbell") dumbbellChart(ch, c);
   else if (c.type === "stance") stanceChart(ch, c);
   else if (c.type === "cellgrid") cellChart(ch, c);
+  else if (c.type === "sparktable") sparkChart(ch, c);
   else if (c.type === "stance_bars") stanceBarsChart(ch, c);
   else if (c.type === "heat") heatChart(ch, c);
+  else if (c.type === "tpi") tpiChart(ch, c);
+  else if (c.type === "curve") curveChart(ch, c);
   else if (c.type === "heatbars") heatbarsChart(ch, c);
   else if (c.type === "event") eventChart(ch, c);
   else if (c.type === "enso_comm") ensoCommChart(ch, c);
@@ -1724,15 +1907,16 @@ function searchBox() {
     items.push({ href: "#" + t.id, label: t.title, sub: head !== t.title ? head : "Abschnitt", key: norm([t.title, head].join(" ")), w: 3 });
     t.charts.forEach(c => { if (c.no == null) return;
       const ser = Array.isArray(c.series) ? c.series.map(s => s.label) : [];
-      items.push({ href: "#" + FA(c.no), label: `${FC(c.no)} ${c.title || ""}`, sub: t.title + (c.ask ? " · " + c.ask : ""),
+      items.push({ href: "#" + FA(c.no), label: `${c.title || ""}`, sub: t.title + (c.ask ? " · " + c.ask : ""),
         key: norm([c.title, c.ask, t.title, ...ser].join(" ")), w: 2 }); });
   });
   const box = document.createElement("div"); box.className = "search"; box.setAttribute("role", "search");
   box.innerHTML = `<button type="button" class="lupe" aria-label="Suchen" title="Suchen (Taste /)"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="10.2" y1="10.2" x2="15" y2="15" stroke="currentColor" stroke-width="1.6"/></svg></button><input type="search" placeholder="Suchen, z. B. Inflation" aria-label="Abbildungen und Themen durchsuchen" autocomplete="off"><ul hidden role="listbox"></ul>`;
   const inp = box.querySelector("input"), ul = box.querySelector("ul"); let hits = [], sel = 0;
   // Lupe: Feld klappt erst beim Klick (oder Taste /) auf und schließt sich leer wieder
-  box.querySelector(".lupe").onclick = () => { box.classList.add("open"); inp.focus(); };
-  inp.addEventListener("focus", () => box.classList.add("open"));
+  const closeNav = () => { const p = document.getElementById("navpanel"); if (p && !p.hidden) { p.hidden = true; document.querySelector(".navbtn")?.setAttribute("aria-expanded", "false"); document.body.classList.remove("menuopen"); } };  // Suche schließt das Inhaltsmenü
+  box.querySelector(".lupe").onclick = () => { closeNav(); box.classList.add("open"); inp.focus(); };
+  inp.addEventListener("focus", () => { closeNav(); box.classList.add("open"); });
   inp.addEventListener("blur", () => setTimeout(() => { if (!inp.value && document.activeElement !== inp) box.classList.remove("open"); }, 200));
   const mark = (s, ws) => { let h = esc(s); ws.forEach(w => { const i = norm(h).indexOf(w); if (i >= 0 && norm(h).length === h.length) h = h.slice(0, i) + "<mark>" + h.slice(i, i + w.length) + "</mark>" + h.slice(i + w.length); }); return h; };
   const show = () => {
@@ -1775,13 +1959,14 @@ function build() {
     `<a href="${encodeURI(DATA.archive_file || "")}" download>Archiv der Kernzahlen je Tagesstand (CSV)</a>`, `<a href="feed.xml">Feed mit neuen Zahlen (RSS)</a>`].filter(Boolean).join(" · ");
   document.getElementById("deck").innerHTML = [DATA.deck ? `<a href="${encodeURI(DATA.deck)}" download>Alle Abbildungen als PowerPoint</a>` : ""].filter(Boolean).join(" · ");
   const HL = DATA.health || {};
-  if (HL.n) document.getElementById("reuse").insertAdjacentHTML("afterend", `<p class="tnote">Letzter Datenabruf: ${new Date(HL.finished_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })} Uhr; ${HL.ok} von ${HL.n} Reihen erfolgreich${HL.failed.length ? `, fehlgeschlagen: ${HL.failed.length}` : ""}${HL.outdated.length ? `, länger ohne neue Werte: ${HL.outdated.length}` : ""}. Betroffene Abbildungen tragen einen Hinweis.</p>`);
+  if (HL.n) document.getElementById("reuse").insertAdjacentHTML("afterend", `<p class="tnote">Letzter Datenabruf: ${new Date(HL.finished_at).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })} Uhr; ${HL.ok} von ${HL.n} Reihen erfolgreich${HL.failed.length ? `, fehlgeschlagen: ${HL.failed.length}` : ""}${HL.outdated.length ? `, länger ohne neue Werte: ${HL.outdated.length}` : ""}${(HL.frozen || []).length ? `, zur Prüfung angehalten: ${HL.frozen.length}` : ""}. Betroffene Abbildungen tragen einen Hinweis.</p>`);
   if (S.repo) document.getElementById("releases").href = S.repo + "/releases";
   document.getElementById("cite").textContent = `Zitiervorschlag: ${S.author} (${d.getFullYear()}): Konjunkturmonitor. Stand ${d.toLocaleDateString("de-DE")}. ${S.url}`;
   const LY = DATA.layout || {};
   if (LY.minimal) document.body.classList.add("minimal");
   if (DATA.embed) document.body.classList.add("embed");  // Einzelseite zum Einbetten: nur diese Abbildung
   const grid = document.getElementById("grid"), nav = document.getElementById("nav"), topics = document.getElementById("topics");
+  lageView();
   if (LY.start_table && startTable(document.getElementById("starttable"))) grid.style.display = "none";
   else DATA.questions.forEach(q => {
     const a = q.answer, val = (a.signed && a.value > 0 ? "+" : "") + fmt(a.value, a.decimals ?? 1);
@@ -1795,7 +1980,7 @@ function build() {
     analysen: { no: "Teil III", title: "Analysen", text: "Eigene Auswertungen: Rezessionsrisiko, Treffsicherheit von Prognosen und ersten Zahlen, Breite der Entwicklung und Wettbewerb. Dieser Teil wächst." },
     geopolitik: { no: "Teil V", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht, Hilfe für die Ukraine und Handelskonflikte. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
     struktur: { no: "Teil VI", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen und Zuwanderung." },
-    staat: { no: "Teil II", title: "Staat", text: "Zinsen, Kredite und Staatsfinanzen: was Geld kostet, wie viel der Staat ausgibt und wie hoch er verschuldet ist." },
+    staat: { no: "Teil II", title: "Staat", text: "Geldpolitik, Zinsen, Kredite und Staatsfinanzen: was Geld kostet, wie viel der Staat ausgibt und wie hoch er verschuldet ist." },
     prognosen: { no: "Teil IV", title: "Prognosen und Gutachten", text: "Was Fachgremien vorhersagen und empfehlen, und wie gut sie lagen: Sachverständigenrat und Gemeinschaftsdiagnose, später auch IWF, EU-Kommission und OECD." },
     service: { no: "", title: "Termine", text: "" } };
   const railObs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
@@ -1817,7 +2002,7 @@ function build() {
         + (q ? `<div class="explain">${esc(q.explain)}</div>` : "") + `</div>` : "");
     if (t.charts[0]) t.charts[0]._lead = true;
     // Textbaustein: Antwort und die Sätze aller Abbildungen des Abschnitts als ein zusammenhängender Text
-    const allText = () => [ans.join(" "), ...t.charts.slice(1).map(x => (x.texts || []).length ? `${x.texts.join(" ")} (${FC(x.no)})` : "")].filter(Boolean).join(" ");
+    const allText = () => [ans.join(" "), ...t.charts.slice(1).map(x => (x.texts || []).length ? x.texts.join(" ") : "")].filter(Boolean).join(" ");
     const cpb = sec.querySelector(".answer button.copy");
     if (cpb) cpb.onclick = () => copyText(allText(), cpb, t.title);
     else if (t.charts.some(x => (x.texts || []).length)) { sec.insertAdjacentHTML("beforeend", `<p class="answer"><button type="button" class="copy" title="Textbaustein kopieren" aria-label="Textbaustein kopieren">⧉</button></p>`); const b2 = sec.querySelector(".answer button.copy"); b2.onclick = () => copyText(allText(), b2, t.title); }
@@ -1826,12 +2011,12 @@ function build() {
     t.charts.forEach((c, i) => {
       if (i === 0 && t.part === "anhang") { // Anhang: alle Abbildungen eingeklappt
         const det = document.createElement("details"); det.className = "morecharts";
-        det.innerHTML = `<summary>${ANH.show} (${t.charts.length})<span class="list">${t.charts.map(x => `${esc(FC(x.no))} ${esc(x.title || "")}`).join("<br>")}</span></summary>`;
+        det.innerHTML = `<summary>${ANH.show} (${t.charts.length})<span class="list">${t.charts.map(x => esc(x.title || "")).join("<br>")}</span></summary>`;
         target = document.createElement("div"); target.className = "charts"; det.appendChild(target); sec.appendChild(det);
       }
       if (i === 1 && LY.lead_chart_only && t.charts.length > 1 && t.part !== "anhang") {
         const det = document.createElement("details"); det.className = "morecharts";
-        det.innerHTML = `<summary>${MORETXT.replace("{t}", esc(t.title || "")).replace("{n}", t.charts.length)}<span class="list">${t.charts.slice(1).map(x => `${esc(FC(x.no))} ${esc(x.title || "")}`).join("<br>")}</span></summary>`;
+        det.innerHTML = `<summary>${MORETXT.replace("{t}", esc(t.title || "")).replace("{n}", t.charts.length)}<span class="list">${t.charts.slice(1).map(x => `${esc(x.title || "")}`).join("<br>")}</span></summary>`;
         target = document.createElement("div"); target.className = "charts"; det.appendChild(target); sec.appendChild(det);
       }
       no += 1; const el = card(c, c.no ?? no); target.appendChild(el); const ch = el.querySelector(".chart, .tilewrap"); obs ? obs.observe(ch) : show(ch);
@@ -1859,7 +2044,7 @@ function build() {
   if (W.length) {
     const dd = s => `${+s.slice(8, 10)}.${+s.slice(5, 7)}.`;
     topics.insertAdjacentHTML("afterend", `<section class="weekrev" id="woche"><h2>Diese Woche neu</h2><p class="tnote">Abbildungen, die in den letzten sieben Tagen neue Daten erhalten haben, jüngste zuerst.</p><ol>`
-      + W.map(w => `<li><a href="#${FA(w.no)}">${esc(FC(w.no))} ${esc(w.title)}</a><span>neue Daten am ${dd(w.date)}</span></li>`).join("") + `</ol></section>`);
+      + W.map(w => `<li><a href="#${FA(w.no)}">${esc(w.title)}</a><span>neue Daten am ${dd(w.date)}</span></li>`).join("") + `</ol></section>`);
   }
   // Menütafel: drei Teile wie auf der Seite; Konjunktur in Gruppen; Service als Fußzeile. Die Frage steht im Tooltip.
   const navA = x => `<a href="#${x.id}" data-t="${x.id}"${x.ask ? ` title="${esc(x.ask)}"` : ""}><b>${x.n}</b><span>${esc(x.title)}</span></a>`;
@@ -1928,7 +2113,7 @@ function build() {
   const fb = document.createElement("button"); fb.type = "button"; fb.className = "btn fazitbtn"; fb.textContent = FAZTXT.btn; fb.title = FAZTXT.title;
   const setFazit = on => { document.body.classList.toggle("fazit", on); fb.setAttribute("aria-pressed", String(on)); try { localStorage.setItem("km_fazit", on ? "1" : "0"); } catch (e) {} };
   let fz0 = false; try { fz0 = localStorage.getItem("km_fazit") === "1"; } catch (e) {}
-  setFazit(fz0 && !DATA.embed); fb.onclick = () => setFazit(!document.body.classList.contains("fazit"));
+  setFazit(fz0 && !DATA.embed && !!DATA.fazit); fb.onclick = () => setFazit(!document.body.classList.contains("fazit"));
   if (!DATA.fazit) fb.hidden = true;
   const cl = document.createElement("a"); cl.className = "btn colllink"; cl.href = "#sammlung";
   document.querySelector("header .bar").append(searchBox(), fb, bb, cl);
@@ -2018,24 +2203,111 @@ const tour = (function () {
   return start;
 })();
 document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = document.createElement("a"); a.href = "#top"; a.textContent = TOURTXT.name; a.onclick = e => { e.preventDefault(); scrollTo(0, 0); setTimeout(tour, 150); }; ft.prepend(a); });
+// Lage auf einen Blick: Raten im Steigungsbild, Verläufe seit 2019, Lage-Satz und Warnlampen (nur mit Kommentar), Ausblick, Gremien, Neues, Termine
+function lageView() {
+  const box = document.getElementById("lage"), L = (DATA.lage || {})[DATA.lang === "en" ? "en" : "de"];
+  if (!box || !L || !(L.slope || []).length || DATA.embed) return;
+  const SV = "http://www.w3.org/2000/svg", NS = DATA.lang === "en" ? "en-GB" : "de-DE";
+  const fmt = (v, d, cur) => (v < 0 ? "−" : "") + (cur || "") + Math.abs(v).toLocaleString(NS, { minimumFractionDigits: d, maximumFractionDigits: d });
+  const spread = (ys, gap) => { const o = ys.map((y, i) => i).sort((i, j) => ys[i] - ys[j]), q = ys.slice();
+    for (let k = 1; k < o.length; k++) if (q[o[k]] - q[o[k - 1]] < gap) q[o[k]] = q[o[k - 1]] + gap; return q; };
+  // Links: Raten im Steigungsbild, drei Zeitpunkte; Wachstum dunkelblau, übrige in Hausfarben nach heutigem Wert
+  const slopeSVG = items => { if (!items.length) return "";
+    const nar = innerWidth < 700, W = nar ? 455 : 560, top = 58, H = nar ? 440 : 470, x = nar ? [38, 104, 158] : [40, 150, 260], xn = nar ? 200 : 318, xl = xn + 7;
+    const all = items.flatMap(i => i.v); let lo = Math.min(...all, 0), hi = Math.max(...all); const pd = (hi - lo) * 0.04; lo -= pd; hi += pd;
+    const Y = v => top + (hi - v) / (hi - lo) * (H - top - 10);
+    const PAL = ["#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#47D359", "#404040", "#7F7F7F", "#A6A6A6"], col = {};
+    let k = 0; items.slice().sort((a, b) => b.v[2] - a.v[2]).forEach(i => { col[i.key] = i.key === "gdp" ? "#002060" : PAL[k++ % PAL.length]; });
+    let g = `<line x1="${x[0] - 12}" x2="${x[2] + 12}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="#E3E3E3"/>`;
+    LAGETXT.when.forEach((t, j) => { g += `<text x="${x[j]}" y="${top - 16}" text-anchor="middle" class="sh">${t.map((l, m) => `<tspan x="${x[j]}" dy="${m ? 13 : -13 * (t.length - 1)}">${esc(l)}</tspan>`).join("")}</text>`; });
+    items.forEach(i => { const c = col[i.key], [a, b, d] = i.v.map(Y);
+      g += `<a href="#${esc(i.topic)}"><line x1="${x[0]}" y1="${a.toFixed(1)}" x2="${x[1]}" y2="${b.toFixed(1)}" stroke="${c}" stroke-width="1.2" opacity=".45"/>`
+        + `<line x1="${x[1]}" y1="${b.toFixed(1)}" x2="${x[2]}" y2="${d.toFixed(1)}" stroke="${c}" stroke-width="2.4"/>`
+        + `<circle cx="${x[0]}" cy="${a.toFixed(1)}" r="2.4" fill="${c}" opacity=".45"/><circle cx="${x[1]}" cy="${b.toFixed(1)}" r="3" fill="${c}"/><circle cx="${x[2]}" cy="${d.toFixed(1)}" r="3" fill="${c}"/></a>`; });
+    const grp = []; items.forEach(i => { const f = grp.find(q => q.txt === i.txt); f ? f.items.push(i) : grp.push({ txt: i.txt, y: i.v[2], items: [i] }); });
+    spread(grp.map(q => Y(q.y)), 19).forEach((y, j) => { const q = grp[j];
+      g += `<text x="${xn}" y="${(y + 5).toFixed(1)}" text-anchor="end" class="sv">${esc(q.txt)}</text><text x="${xl}" y="${(y + 5).toFixed(1)}" class="sn">`
+        + q.items.map((i, m) => `<a href="#${esc(i.topic)}"><tspan fill="${col[i.key]}">${esc(i.label)}${m < q.items.length - 1 ? " · " : ""}</tspan></a>`).join("") + `</text>`; });
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(LAGETXT.rates)}">${g}</svg>`; };
+  // Rechts: Verläufe seit 2019; Hoch rot, Tief blau, letzter Wert in Linienfarbe; Durchschnitt 2015–19 gestrichelt, Abstand dazu hellblau
+  const LC = ["#002060", "#0070C0"], RED = "#D64541", TB = "#0070C0", MC = "#5B8DB8", SH = "#DCEEF8";
+  const t0 = Date.UTC(2019, 0, 1), t1 = Date.UTC(2026, 11, 31), ms = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, 15);
+  const panelSVG = p => { const W = 220, H = 150, x0 = 4, x1 = 150, y0 = 18, y1 = H - 22;
+    const vals = p.lines.flatMap(l => l.y.concat(l.mean != null ? [l.mean] : [])); let lo = Math.min(...vals), hi = Math.max(...vals); const pd = (hi - lo) * 0.02 || 1; lo -= pd; hi += pd;
+    const now = Date.UTC(new Date(DATA.generated_at).getUTCFullYear(), 11, 31), tE = Math.max(t1, now);
+    const X = t => x0 + (t - t0) / (tE - t0) * (x1 - x0), Y = v => y1 - (v - lo) / (hi - lo) * (y1 - y0), f = v => fmt(v, p.d, p.cur);
+    let g = "", lab = [];
+    [2019, 2022, 2025].forEach(yr => { g += `<text x="${X(Date.UTC(yr, 6, 1)).toFixed(1)}" y="${H - 4}" text-anchor="middle" class="sx">${yr}</text>`; });
+    p.lines.forEach(l => { const c = LC[l.col || 0], pts = l.x.map((d, i) => [X(ms(d)), Y(l.y[i])]), P = pts.map(q => q[0].toFixed(1) + "," + q[1].toFixed(1)).join(" ");
+      if (l.mean != null) { const m = Y(l.mean).toFixed(1);
+        g += `<polygon points="${P} ${pts[pts.length - 1][0].toFixed(1)},${m} ${pts[0][0].toFixed(1)},${m}" fill="${SH}"/>`
+          + `<line x1="${x0}" x2="${x1}" y1="${m}" y2="${m}" stroke="${MC}" stroke-width=".9" stroke-dasharray="3 2"/>`;
+        lab.push({ y: Y(l.mean), t: "Ø " + f(l.mean), c: MC, b: 0 }); }
+      g += `<polyline points="${P}" fill="none" stroke="${c}" stroke-width="1.4" stroke-linejoin="round"/>`;
+      const n = l.y.length, iMax = l.y.indexOf(Math.max(...l.y)), iMin = l.y.indexOf(Math.min(...l.y));
+      [[iMax, RED, -5], [iMin, TB, 12]].forEach(([i, cc, dy]) => { if (i >= n - 3) return; const [px, py] = pts[i];
+        g += `<line x1="${(px - 6).toFixed(1)}" x2="${(px + 6).toFixed(1)}" y1="${py.toFixed(1)}" y2="${py.toFixed(1)}" stroke="${cc}" stroke-width="1.1"/>`
+          + `<text x="${px.toFixed(1)}" y="${(py + dy).toFixed(1)}" text-anchor="middle" class="sp" fill="${cc}">${f(l.y[i])}</text>`; });
+      const [ex, ey] = pts[n - 1];
+      g += `<line x1="${(ex - 6).toFixed(1)}" x2="${(ex + 6).toFixed(1)}" y1="${ey.toFixed(1)}" y2="${ey.toFixed(1)}" stroke="${c}" stroke-width="1.8"/>`;
+      lab.push({ y: ey, t: f(l.y[n - 1]), c, b: 1 }); });
+    spread(lab.map(q => q.y), 12).forEach((y, j) => { const q = lab[j]; g += `<text x="${x1 + 9}" y="${(y + 4).toFixed(1)}" class="${q.b ? "se" : "sm"}" fill="${q.c}">${esc(q.t)}</text>`; });
+    if (p.lines.length > 1) p.lines.forEach((l, j) => { const c = LC[l.col || 0], yy = Math.min(...l.y.map(Y)) - (j === 0 ? 6 : 14);
+      g += `<text x="${x0 + 2}" y="${Math.max(10, Math.min(H - 24, yy)).toFixed(1)}" class="sl" fill="${c}">${esc(l.name)}</text>`; });
+    return `<a class="lp" href="#${esc(p.topic)}"><b>${esc(p.title)}</b><span>${esc(p.unit)}</span><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(p.title)}">${g}</svg></a>`; };
+  const key = `<div class="lkey">` + [["p", LAGETXT.k[0]], ["t", LAGETXT.k[1]], ["c", LAGETXT.k[2]], ["m", LAGETXT.k[3]], ["f", LAGETXT.k[4]]].map(([t, l]) =>
+    `<span><svg viewBox="0 0 18 10" width="18" height="10" aria-hidden="true">${t === "f" ? `<rect x="2" y="1" width="14" height="8" fill="${SH}"/>` : `<line x1="1" x2="17" y1="5" y2="5" stroke="${{ p: RED, t: TB, c: "#002060", m: MC }[t]}" stroke-width="${t === "c" ? 1.8 : 1.1}"${t === "m" ? ' stroke-dasharray="3 2"' : ""}/>`}</svg>${esc(l)}</span>`).join("") + `</div>`;
+  const kp = `<div class="lg2"><div class="lsl"><h3>${LAGETXT.rates}</h3>${slopeSVG(L.slope || [])}</div>`
+    + `<div class="lsm"><h3>${LAGETXT.since}</h3>${key}<div class="lpg">${(L.panels || []).map(panelSVG).join("")}</div></div></div>`;
+  const warn = (L.warn || []).map(w => `<li><span class="amp ${w.lvl}"></span><a href="#${esc(w.topic)}"><b>${esc(w.label)}:</b></a> ${esc(w.text)}</li>`).join("");
+  const out = L.outlook ? esc(L.outlook.who) + ": " + L.outlook.vals.map(v => `${esc(v.v)}${DATA.lang === "en" ? "%" : "\u00a0%"} ${LAGETXT.fuer} ${v.year}`).join(", ") + "." : "";
+  const grem = (L.gremien || []).map(g => `<li>${esc(g.split(/(?<=\.)\s/)[0])}</li>`).join("");
+  const neu = (DATA.week || []).slice(0, 4).map(w => `<li><a href="#${FA(w.no)}">${esc(w.title)}</a></li>`).join("");
+  const cal = (DATA.topics || []).flatMap(t => t.charts || []).find(c => c.type === "calendar"), today = new Date().toISOString().slice(0, 10);
+  const term = ((cal && cal.calendar && cal.calendar.events) || []).filter(e => e.date >= today).slice(0, 3)
+    .map(e => { const d = new Date(e.date + "T12:00:00"); return `<li>${LAGETXT.wd[d.getDay()]} ${d.getDate()}.${d.getMonth() + 1}. <a href="#${esc(e.topic)}">${esc(e.name)}</a></li>`; }).join("");
+  let n = 0; try { n = JSON.parse(localStorage.getItem("km.sammlung") || "[]").length; } catch (e) {}
+  const st = new Date(DATA.generated_at);
+  const sd = st.toLocaleDateString(DATA.lang === "en" ? "en-GB" : "de-DE", { day: "numeric", month: "long", year: "numeric" });
+  box.innerHTML = `<div class="lh"><span>${LAGETXT.title} · ${LAGETXT.stand} ${sd}</span>`
+    + `<button type="button" class="lk" aria-pressed="false" title="${LAGETXT.kommt}">${LAGETXT.komm}</button></div>`
+    + (L.say ? `<p class="say kom">${esc(L.say)}</p>` : "") + `<p class="say nokom">${LAGETXT.am} ${sd}</p>`
+    + kp + (out ? `<p class="lo"><b>${LAGETXT.out}:</b> ${out}</p>` : "") + `<div class="cols">`
+    + (warn ? `<div class="kom"><h3>${LAGETXT.warn}</h3><ul>${warn}</ul></div>` : "")
+    + `<div>${grem ? `<h3>${LAGETXT.grem}</h3><ul>${grem}</ul>` : ""}</div>`
+    + `<div>${neu ? `<h3>${LAGETXT.neu}</h3><ul>${neu}</ul>` : ""}${term ? `<h3>${LAGETXT.term}</h3><ul>${term}</ul>` : ""}</div></div>`
+    + `<div class="mine"><a class="s" href="#sammlung">★ ${LAGETXT.mine}${n ? ` (${n})` : ""}</a><a href="#top" class="lall">${LAGETXT.all}</a></div>`;
+  box.hidden = false;
+  const kb = box.querySelector(".lk"), setK = on => { document.body.classList.toggle("lagek", on); kb.setAttribute("aria-pressed", String(on)); try { localStorage.setItem("km_lagek", on ? "1" : "0"); } catch (e) {} };
+  let k0 = false; try { k0 = localStorage.getItem("km_lagek") === "1"; } catch (e) {}
+  setK(k0); kb.onclick = () => setK(!document.body.classList.contains("lagek"));
+  box.querySelector(".lall").onclick = e => { e.preventDefault(); const b = document.querySelector(".navbtn"); scrollTo(0, 0); if (b) setTimeout(() => b.click(), 50); };
+}
 // Rückmeldung: Knopf unten links öffnet ein Fenster mit einem Textfeld; Versand über den Formulardienst (site.feedback)
 (function feedback() {
   const id = (DATA.site || {}).feedback; if (!id || DATA.embed) return;
-  const b = document.createElement("button"); b.type = "button"; b.className = "fbk"; b.textContent = FBTXT.btn; document.body.append(b);
   const d = document.createElement("dialog"); d.className = "fbd"; d.setAttribute("aria-label", FBTXT.btn);
-  d.innerHTML = `<form method="dialog"><button type="button" class="fbx" aria-label="${FBTXT.close}">×</button><textarea name="message" required placeholder="${FBTXT.ph}" aria-label="${FBTXT.btn}"></textarea><input type="email" name="email" placeholder="${FBTXT.mail}" autocomplete="email"><div class="fbrow"><span class="fbnote">${FBTXT.note}</span><button type="submit" class="fbsend">${FBTXT.send}</button></div></form>`;
-  document.body.append(d);
-  const f = d.querySelector("form"), ta = f.querySelector("textarea");
-  b.onclick = () => { d.showModal(); ta.focus(); };
-  d.querySelector(".fbx").onclick = () => d.close();
+  const form = () => `<form method="dialog"><p class="fbto"></p><textarea name="message" required maxlength="2000" placeholder="${FBTXT.ph}" aria-label="${FBTXT.btn}"></textarea><input type="text" name="_gotcha" class="fbhp" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="fbrow"><span class="fbnote">${FBTXT.note}</span><button type="submit" class="fbsend">${FBTXT.send}</button></div></form>`;
+  document.body.append(d); let ctx = null, opened = 0, lastSent = 0, sent = 0;  // Bremse gegen Spam: gilt je Seitenaufruf, speichert nichts
+  const open = c => { ctx = c; opened = Date.now(); d.innerHTML = form(); const f = d.querySelector("form"), ta = f.querySelector("textarea");
+    f.querySelector(".fbto").textContent = c.title || c.code;
+    f.addEventListener("submit", async e => { e.preventDefault(); const msg = ta.value.trim(); if (!msg) return;
+      const sb = f.querySelector(".fbsend"), done = () => { f.innerHTML = `<p class="fbok">${FBTXT.ok}</p>`; setTimeout(() => d.close(), 1400); };
+      if (f.querySelector(".fbhp").value || Date.now() - opened < 3000) return done();  // Köderfeld gefüllt oder schneller als ein Mensch: nicht senden
+      if (Date.now() - lastSent < 30000 || sent >= 5) { f.querySelector(".fbnote").textContent = FBTXT.wait; return; }
+      sb.disabled = true;
+      const body = { message: msg.slice(0, 2000), grafik: `${c.code} ${c.title}`, link: location.href.split("#")[0] + "#" + c.anchor, sprache: DATA.lang || "de", _subject: `Konjunkturmonitor: Feedback zu ${c.code}` };
+      try { const r = await fetch(`https://formspree.io/f/${encodeURIComponent(id)}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) });
+        if (!r.ok) throw new Error(r.status);
+        lastSent = Date.now(); sent++; done();
+      } catch (x) { sb.disabled = false; f.querySelector(".fbnote").textContent = FBTXT.err; } });
+    d.showModal(); ta.focus(); };
   d.addEventListener("click", e => { if (e.target === d) d.close(); });  // Klick daneben schließt
-  f.addEventListener("submit", async e => { e.preventDefault(); const msg = ta.value.trim(); if (!msg) return;
-    const sb = f.querySelector(".fbsend"); sb.disabled = true;
-    const body = { message: msg, email: f.email.value.trim(), seite: location.href, kapitel: (document.querySelector("#nav .navcur")?.textContent || "").replace(/^\s*>\s*/, ""), sprache: DATA.lang || "de", _subject: "Konjunkturmonitor: Rückmeldung" };
-    try { const r = await fetch(`https://formspree.io/f/${encodeURIComponent(id)}`, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) });
-      if (!r.ok) throw new Error(r.status);
-      f.innerHTML = `<button type="button" class="fbx" aria-label="${FBTXT.close}">×</button><p class="fbok">${FBTXT.ok}</p>`; f.querySelector(".fbx").onclick = () => d.close();
-    } catch (x) { sb.disabled = false; f.querySelector(".fbnote").textContent = FBTXT.err; } });
+  // je Grafik oben rechts neben „Grafik | Tabelle“; die Nachricht nennt die Grafik
+  document.querySelectorAll(".card[data-chart]").forEach(cd => { const ht = cd.querySelector(".htools");
+    const b = document.createElement("button"); b.type = "button"; b.className = "fbc"; b.textContent = FBTXT.btn;
+    b.onclick = e => { e.stopPropagation(); const ab = cd.querySelector("h3 .abbno"); const t = cd.querySelector("h3"); open({ code: (ab?.textContent || "").trim(), title: (t?.textContent || "").replace(ab?.textContent || "", "").trim(), anchor: cd.id }); };
+    (cd.querySelector(".gut .gopts") || ht).append(b); });  // links unter Stern, Downloads und Link
 })();
 // Kurzformen in Köpfen, Einheiten und Kacheln: gepunktet unterstrichen, Erklärung beim Darauftippen oder Überfahren
 (function abbrify() {

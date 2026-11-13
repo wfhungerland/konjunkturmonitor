@@ -184,6 +184,19 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
             tab[A["rows"][q["r"]]][q["y"]] = q["v"] if A.get("mode") == "share" else _plain(q["t"])
         df = pd.DataFrame([{"Zeile": r, **{str(y): tab[r].get(y) for y in A["years"]}} for r in A["rows"]])
         return df.iloc[::-1].reset_index(drop=True), {"kind": "list"}
+    if typ == "curve" and c.get("attach"):  # Zinskurven: je Land und Laufzeit eine Zeile
+        rows = []
+        for k in c["attach"].get("countries") or []:
+            for j, m in enumerate(k["maturities"]):
+                rows.append({"Land": k["name"], "Restlaufzeit in Jahren": m, f"Rendite in %, {k['ago']['date'][:7]}": k["ago"]["values"][j],
+                             f"Rendite in %, {k['now']['date'][:7]}": k["now"]["values"][j]})
+        return pd.DataFrame(rows), {"kind": "list"}
+    if typ == "tpi" and c.get("attach"):  # Bedingungen des TPI: je Land eine Zeile
+        T = c["attach"]
+        df = pd.DataFrame([{"Land": r["name"], f"Finanzierungssaldo {T['year']}, % des BIP": r["deficit"], f"Schuldenstand {T['year']}, % des BIP": r["debt"],
+                            "Laufendes Defizitverfahren": "ja" if r["edp"] else "nein", f"Rendite 10 Jahre {T['month']}, %": r.get("yield"),
+                            f"Abstand zu Deutschland {T['month']}, Pp": r["spread"]} for r in T["rows"]])
+        return df, {"kind": "list"}
     if typ == "treemap" and c.get("attach") and c["attach"].get("views"):  # mehrere Gliederungen untereinander
         T0 = c["attach"]
         parts = []
@@ -805,7 +818,7 @@ def clean_title(title: str) -> str:
 
 
 def file_stem(c: dict, date: str, width: int, shorts: dict) -> str:
-    kind = "Tab." if c.get("type") in ("heat", "calendar") else "Abb."
+    kind = "Tab." if c.get("type") in ("heat", "calendar", "tpi") else "Abb."
     title = clean_title(shorts.get(c["chart"]) or c.get("title", ""))
     code = c.get("code") or f"{kind} {c['no']:0{width}d}"  # festes Kurzzeichen, etwa „Preise-3“
     return f"Konjunkturmonitor ({date}, {code}) {title}"[:79]

@@ -8,17 +8,20 @@ on:
     - cron: "17 5 * * 1"
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   bump:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
         with:
           python-version: "3.12"
       - name: Neuen Stand ermitteln
@@ -36,7 +39,7 @@ jobs:
           NEW: ${{ steps.sha.outputs.new }}
         run: |
           sed -i "s/konjunkturwolf@$OLD/konjunkturwolf@$NEW/" pyproject.toml
-          pip install -e ".[dev]"
+          ./tools/install.sh
           pytest -q
           python -m monitor build
           branch="pipeline-${NEW:0:7}"
@@ -44,5 +47,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
           git commit -am "konjunkturwolf auf ${NEW:0:7} aktualisieren"
-          git push origin "$branch"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$branch"
           gh pr create --title "konjunkturwolf auf ${NEW:0:7} aktualisieren" --body "Neuer Stand der Pipeline: https://github.com/wfhungerland/konjunkturwolf/compare/$OLD...$NEW. Tests und der Bau aus den vorhandenen Daten liefen in diesem Lauf durch. Nach dem Merge holt der nächste Datenlauf die Daten mit dem neuen Stand."

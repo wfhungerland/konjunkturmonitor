@@ -30,7 +30,7 @@ def write_page(rows: list[dict], payload: dict, out: Path) -> None:
     def figs(r):
         if not r["charts"]:
             return "ganze Seite"
-        return ", ".join(f'<a href="methodik/{escape(k, True)}.html">{escape(titles[k][0])} {escape(titles[k][1])}</a>' if k in titles else escape(k) for k in r["charts"])
+        return ", ".join(f'<a href="methodik/{escape(k, True)}.html">{escape(titles[k][1])}</a>' if k in titles else escape(k) for k in r["charts"])
 
     body = "".join(
         f"<tr><td class=nw>{_de(r['date'])}</td><td>{escape(r['art'])}<br><span class=small>{escape(ART.get(r['art'], ''))}</span></td>"

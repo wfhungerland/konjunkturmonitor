@@ -49,6 +49,7 @@ topics:
   stimmung: {title: "Sentiment"}
   sonderfaktoren: {title: "Special factors", code: "Special", ask: "Which special factors affect the economy?"}
   insolvenzen: {title: "Insolvencies"}
+  geldpolitik: {title: "Monetary policy", code: "Monetary", ask: "How tight is monetary policy?"}
   zinsen: {title: "Interest rates and credit", code: "Rates"}
   wechselkurse: {title: "Exchange rates", code: "FX", ask: "How is the euro doing?"}
   energie: {title: "Energy"}
@@ -64,8 +65,9 @@ topics:
   struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
   staat: {title: "Government", ask: "What state are the public finances in?"}
   staatsausgaben: {title: "Government spending", code: "Spending", ask: "What does the government spend its money on?"}
-  sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What did the Council of Economic Experts forecast and recommend?"}
-  gemeinschaftsdiagnose: {title: "Joint Economic Forecast", code: "Forecast", ask: "How well did the economic research institutes forecast?"}
+  haushalte: {title: "Households", code: "Households", ask: "How is a typical household doing?"}
+  sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What does the Council of Economic Experts advise, and how accurate was it?"}
+  gemeinschaftsdiagnose: {title: "Joint Economic Forecast", code: "Forecast", ask: "What do the economic research institutes advise, and how accurate were they?"}
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
 
 charts:
@@ -426,6 +428,54 @@ charts:
     title: "Federal bond yields and overnight rate, daily"
     ask: "How have interest rates moved in recent weeks?"
     caption: "The chart shows daily values for the yield on federal bonds with 10 or 2 years left until repayment (Bundesbank term structure). It also shows the euro short-term rate €STR: the rate at which banks lend to each other overnight. The €STR closely follows the European Central Bank's deposit rate, the rate banks receive on money held at the central bank."
+  ecb_rates:
+    title: "ECB policy rates"
+    ask: "Where are the ECB's policy rates?"
+    caption: "The chart shows the European Central Bank's three policy rates as monthly averages. Banks receive the deposit facility rate on money they leave at the central bank overnight. At the main refinancing rate they borrow for one week, at the marginal lending rate overnight. Since banks have held very large amounts of money at the central bank, the deposit rate has mainly steered money-market rates. The chart also shows the euro short-term rate €STR, at which banks lend to each other overnight."
+  ecb_bs:
+    title: "Eurosystem balance sheet"
+    ask: "How large is the central banks' balance sheet?"
+    caption: "The area shows the asset side of the Eurosystem, i.e. the European Central Bank and the national central banks of the euro area, in trillions of euros. Together the parts add up to total assets. Bond purchases are securities from the purchase programmes APP (from 2009, broad from 2015) and PEPP (from 2020). Loans to banks come from monetary policy operations such as the targeted longer-term operations (TLTRO). Other securities are held for non-monetary purposes. The “Events” switch shows key decisions. Monthly averages of the weekly financial statements."
+  qe_prog:
+    title: "ECB bond holdings by programme"
+    ask: "What has the ECB bought with its programmes?"
+    caption: "The area shows the Eurosystem's holdings under its purchase programmes at the end of each month, in trillions of euros, at book value. The public sector purchase programme (PSPP) is the largest part of the APP launched in 2015. It is joined by corporate bonds (CSPP), covered bank bonds (CBPP3) and asset-backed securities (ABSPP). The pandemic programme PEPP ran from 2020. Since July 2023 the ECB no longer replaces maturing APP bonds, and since early 2025 no longer PEPP bonds either; holdings are shrinking. Source: the European Central Bank's monthly data on the purchase programmes."
+  qe_land:
+    title: "Government bond purchases by country"
+    ask: "Whose government bonds has the ECB bought?"
+    caption: "The lines show how much the Eurosystem has spent since 2015 on government bonds of the four largest euro countries, net of maturing bonds it did not replace, in billions of euros. They cover the public sector purchase programme (PSPP) and the public part of the pandemic programme (PEPP). The ECB buys roughly in line with the countries' shares in its capital, not in line with their debt. The values are cumulated net purchases at book value; valuation changes are not included. Source: the European Central Bank's monthly data on the purchase programmes."
+  tpi:
+    title: "Conditions for the TPI"
+    ask: "Which countries could get help from the TPI?"
+    caption: "Since July 2022 the Transmission Protection Instrument (TPI) allows the ECB to buy a country's government bonds if its yields rise sharply without good reason. The ECB names no fixed yield threshold. It does set four conditions: the country complies with the EU fiscal rules, has no severe economic imbalances, its debt is sustainable, and it implements its reform commitments. The table shows two measurable parts: whether an EU excessive deficit procedure is ongoing (European Commission page) and the government budget balance and debt in the latest year (Eurostat). Red marks an ongoing procedure, a deficit above 3% and debt above 60% of GDP, the limits of the Stability and Growth Pact. An ongoing procedure does not rule out the TPI if the country follows the recommendations; the ECB checks this case by case. The spread over Bunds is the ten-year government bond yield minus Germany's, in the latest month. Click a column header to sort the table."
+  spreads:
+    title: "Yield spread over Bunds"
+    ask: "How much more do other euro countries pay than Germany?"
+    caption: "The chart shows by how many percentage points the yield on ten-year government bonds of Italy, France and Spain exceeds the yield on German Bunds, as a monthly average. A wider spread shows that investors demand more interest for a country's risk. In the euro crisis of 2011 and 2012 it rose above 5 percentage points for Italy and Spain. The yields come from the European Central Bank's statistics on the interest-rate criterion of the convergence assessment."
+  zinskurven:
+    title: "Government bond yield curves"
+    ask: "What do governments pay for short and long maturities?"
+    caption: "The lines show the yield on government bonds of Germany, Italy and Spain by residual maturity, in per cent. Solid is the latest month, dotted the same month a year earlier. If the line rises to the right, long maturities pay more than short ones; that is the normal case. A higher line means investors demand more interest from that country. Values are monthly averages; for Italy they are the yields of the benchmark bond for each maturity. Sources are the Deutsche Bundesbank, the Banca d'Italia and the Banco de España. France is missing because no freely usable data exist: the Banque de France curve (TEC indices) may not be redistributed without the consent of the index provider Euronext."
+  curve_slope:
+    title: "Gap between long and short rates"
+    ask: "Do long maturities pay more than short ones?"
+    caption: "The lines show for each country the yield on ten-year government bonds minus the yield on three-year bonds, in percentage points, monthly. Above zero long maturities pay more than short ones; that is the normal case. Below zero investors usually expect policy rates to fall; this has often preceded a recession. If a country's gap widens sharply, a higher risk premium on long maturities may also be behind it. Sources are the Deutsche Bundesbank, the Banca d'Italia and the Banco de España."
+  corp_yields:
+    title: "Corporate bond yields"
+    ask: "How much do companies pay on bonds?"
+    caption: "The chart shows the yield on outstanding domestic bonds of companies outside the banking sector and of public-sector bonds, as a monthly value across all residual maturities. The yield on outstanding bonds is the return that bonds already traded bring to buyers today. In May 2020 the Bundesbank adjusted the set of corporate bonds included."
+  corp_spread:
+    title: "Corporate bond spread"
+    ask: "What premium do investors demand from companies?"
+    caption: "The chart shows by how many percentage points the yield on outstanding domestic corporate bonds (excluding banks) exceeds the yield on public-sector bonds. If the spread widens, investors demand more compensation for companies' default risk, as in the financial crisis of 2008 and 2009. The residual maturities of the two groups differ, so the spread is only a rough measure. In May 2020 the Bundesbank adjusted the set of corporate bonds included."
+  bls_std:
+    title: "Banks' credit standards"
+    ask: "Are banks tightening lending?"
+    caption: "The chart shows from the Eurosystem's Bank Lending Survey whether banks in Germany tightened or eased their credit standards over the past three months. The balance is the share of banks with tighter standards minus the share with easier ones, in per cent. Above zero means: more banks have tightened. Around 35 banks are surveyed every quarter."
+  bls_dem:
+    title: "Loan demand at banks"
+    ask: "Are businesses and households asking for more loans?"
+    caption: "The chart shows from the Eurosystem's Bank Lending Survey how demand for loans at banks in Germany developed over the past three months. The balance is the share of banks reporting rising demand minus the share reporting falling demand, in per cent. Above zero means: more banks see rising demand."
   fx_usd:
     title: "Euro in US dollars, daily values"
     ask: "How many US dollars does a euro cost?"
@@ -477,7 +527,7 @@ charts:
   proj_gap:
     title: "GDP and the Federal Government's projection"
     ask: "Is growth on track for the Federal Government's projection?"
-    caption: "The bars show growth in real economic output (gross domestic product) on the same quarter a year earlier in %, unadjusted like the annual rate of the Federal Government's projection. The light bars show the rate each remaining quarter of the year would have to reach for the year to meet the latest projection (dashed line); revisions to earlier quarters change this required rate. The annual rate is roughly the mean of the four quarterly rates, weighted by each quarter's share of the previous year. Once all four quarters are in, the chart shows the outcome of the past year until the first quarter of the following year. A switch changes to the seasonally and calendar adjusted rate on the previous quarter: the light bars then show how much adjusted gross domestic product would have to grow in each missing quarter to reach the required rate on the same quarter a year earlier, without taking calendar effects into account."
+    caption: "The bars show growth in real economic output (gross domestic product) on the same quarter a year earlier in %, unadjusted like the annual rate of the Federal Government's projection. The light bars show the rate each remaining quarter of the year would have to reach for the year to meet the latest projection (dashed line); revisions to earlier quarters change this required rate. The annual figure is the sum of the four quarters; the calculation uses the unadjusted volume index, not rounded rates. Once all four quarters are in, the chart shows the outcome of the past year until the first quarter of the following year. A switch changes to the seasonally and calendar adjusted rate on the previous quarter: the light bars then show the same rate in each missing quarter with which the adjusted year reaches the projection's calendar-adjusted rate. The switch is missing if the projection gives no calendar-adjusted rate."
   forecast:
     title: "Growth forecasts"
     ask: "What do the forecasts expect for growth?"
@@ -533,6 +583,46 @@ charts:
     title: "Government debt"
     ask: "How high is government debt?"
     caption: "The chart shows general government gross debt as a percentage of economic output, as defined in the Maastricht Treaty. Dashed grey is the treaty's reference value of 60%."
+  gov_debt_level:
+    title: "Debt by level of government"
+    ask: "Who in government holds the debt?"
+    caption: "The lines show the gross debt of the federal government, the Länder, municipalities and social security as a percentage of economic output, as defined in the Maastricht Treaty. The federal government includes its special funds and extra-budgetary entities. Each level is counted on its own, so loans between levels appear twice and the sum is slightly above total government debt."
+  gov_debt_instr:
+    title: "Debt by instrument"
+    ask: "In what form does the government borrow?"
+    caption: "The bars split general government gross debt at year-end into securities (bonds, notes and bills), loans (mainly bank loans to Länder and municipalities) and currency and deposits (mainly coins), each as a percentage of economic output."
+  gov_debt_holder:
+    title: "Debt by creditor"
+    ask: "Who does the government owe?"
+    caption: "The bars split general government gross debt at year-end by who holds the bonds and loans, as a percentage of economic output. The Bundesbank holds government bonds mainly from the Eurosystem's purchase programmes since 2015. Rest of the world covers all creditors outside Germany, including foreign central banks and funds."
+  gov_debt_mat:
+    title: "Maturity of government debt"
+    ask: "How long does government debt run?"
+    caption: "The lines show how many years government debt at year-end still has to run on average, weighted by amount. The longer, the more slowly higher interest rates feed through to the budget. Eurostat reports values for France, Italy and Spain only from 2020."
+  stx_pk:
+    title: "Government spending per inhabitant"
+    ask: "How much does the government spend per inhabitant, and on what?"
+    caption: "The bars show spending by the federal government, Länder, municipalities and social security per inhabitant and year, in euros at current prices, by function. Social protection covers pensions, family benefits and unemployment benefit; administration includes interest on government debt; other functions are defence, public order, economic affairs and transport, environment, housing and culture. Prices have risen by about two thirds since 1995, so part of the increase is inflation."
+  hh_wealth:
+    title: "Net wealth per household"
+    ask: "How much does a typical household own?"
+    caption: "The lines show net wealth per household, that is property, savings and securities minus debt, in thousand euros at current prices. The median is the wealth of the household in the middle: half of households own more, half less. The mean is far higher because a few very wealthy households pull it up. The ECB estimates the figures by aligning the Bundesbank's household survey with the national wealth accounts."
+  hh_balance:
+    title: "Assets and debt of the middle household"
+    ask: "What does the wealth of a middle household consist of?"
+    caption: "The bars show the assets and debt of a household in the middle fifth of the wealth distribution, in thousand euros per household: above zero what it owns, below zero what it owes. The line is net wealth. The middle fifth are the households between the richest 40% and the poorest 40%."
+  hh_share:
+    title: "Distribution of wealth"
+    ask: "How unequally is wealth distributed?"
+    caption: "The lines show the share of total household net wealth held by the richest 10% and by the poorer half of households. The ECB additionally estimates the top of the distribution from rich lists, because very wealthy people rarely appear in surveys."
+  hh_spend:
+    title: "Consumption by purpose"
+    ask: "What do households spend their money on?"
+    caption: "The lines show four large spending categories of private households as a percentage of their total consumption, according to the national accounts. Housing and energy includes the rental value of owner-occupied homes. These are averages across all households; individual households differ widely by income and housing."
+  gov_debt_cost:
+    title: "Interest on government debt"
+    ask: "How expensive is government debt?"
+    caption: "The thick line shows the average interest rate on all government debt: interest spending in a year as a percentage of the previous year's debt. The thin line shows the monthly yield on ten-year Bunds, roughly the rate on new debt. When the yield is above the average rate, interest spending rises as old bonds mature and are refinanced."
   stx_share:
     title: "Government spending by function, share of spending"
     ask: "What does the government spend its money on?"
@@ -573,10 +663,15 @@ charts:
     ask: "How well did the Council of Economic Experts forecast unemployment?"
     caption: "The chart compares the forecast of the Council of Economic Experts for registered unemployment (annual average) in the following year with the first release from the annual report a year later. West Germany until 1991, Germany afterwards; the jump in 1991/92 comes from the change of territory. From 2005 recipients of unemployment benefit II are included, which raises the count. The forecast line shows only years for which the Council printed a figure; years with only a change or a vague threshold are missing there."
     unit: "thousand people"
+  svr_treff:
+    title: "Accuracy of the Council of Economic Experts' forecasts"
+    ask: "How accurate were the Council's forecasts?"
+    caption: "Each panel shows how far the Council's forecast for the following year, from its annual report, deviated from the first release: above zero too high, below zero too low. Growth and inflation in percentage points, unemployment in thousand people. The individual forecasts and releases are under \"Downloads\"."
+    unit: "deviation"
   svr_rat:
     title: "Recommendations of the Council of Economic Experts on four standing questions"
     ask: "What did the Council of Economic Experts recommend on wages, money, public finances and the labour market?"
-    caption: "The colours show, on a fixed scale per question, what the Council majority recommended in its annual report for the following year; white means no recommendation is discernible. Wages: blue below the distributive margin (productivity plus price rise), grey within it, red above; monetary policy: blue tighter, grey unchanged, red looser. Fiscal policy: blue consolidation (cutting the deficit), grey cyclically neutral, red stimulus; labour market and welfare: blue more protection or benefits, grey unchanged, red more flexibility, benefit cuts or incentives to take up work. Tap for the recommendation in one sentence (in German) with paragraph and page; the bars below count, per annual report, the passages with a minority vote (a dissenting opinion of one member), counted per topic. The classification rests on our own coding of all annual reports 1964/65 to 2025/26 and is an interpretation; the references are in data/static/svr_positionen_dauerfragen.csv."
+    caption: "The top line gives the Council of Economic Experts' latest recommendation in words. Below, each row shows what it recommended for the following year in its annual report. Red stands for socially progressive recommendations: stronger wages, looser monetary policy, fiscal stimulus, more protection in the labour market. Blue stands for conservative-liberal ones: wage restraint, tighter monetary policy, saving, more flexibility. Grey means unchanged. The political reading is our own. Wide bands are phases of three years or more, thin strokes single years, gaps years without a recommendation. The bars below count the passages with a minority vote. At the bottom are the latest turning points with references. Tapping shows the recommendation with its source; the classification is our own analysis."
     unit: "level -1, 0, +1"
   svr_fiskal:
     title: "Recommended fiscal stance and expected growth"
@@ -632,6 +727,22 @@ charts:
     title: "Military expenditure"
     ask: "How high is military spending by comparison?"
     caption: "Military expenditure in percent of economic output, as defined by the Stockholm International Peace Research Institute (SIPRI). It includes military pensions and military aid. NATO's targets of 2 percent and 3.5 percent by 2035 rest on a different definition. By NATO's count, Germany is usually somewhat higher. Germany is highlighted."
+  arms_overview:
+    title: "Defence in Germany since 2021: from budget to factory"
+    ask: "How does defence money reach the factory?"
+    caption: "Each row compares the latest level with 2021. The small lines show the course since 2015 on the same time axis; the dot marks the latest value. Spending and orders in euros, production as volume. Orders also include tanks, aircraft and ships, production only weapons and ammunition. The dates differ because the sources report at different speeds."
+  arms_cycle:
+    title: "Defence: orders and production"
+    ask: "Is production keeping up with defence orders?"
+    caption: "Both lines show twelve months compared with 2021 (= 100). Orders: federal defence orders in euros (Kiel Institute). Production: manufacture of weapons and ammunition (Eurostat). Orders have almost quadrupled, production has only roughly doubled. The orders line jumps because large contracts arrive at once. The gap is the order backlog; tanks, aircraft and ships are not part of production, though."
+  def_use:
+    title: "What the state spends defence money on"
+    ask: "What does the state spend defence money on?"
+    caption: "Spending of federal, state and local government on defence by type, in billion euros. Since 2021, material, maintenance and operations grew most, that is spare parts, ammunition and services. Investment in new weapon systems stayed flat because it only counts on delivery. The jump in transfers to others coincides with military aid to Ukraine. The data do not show how much of it stays in Germany."
+  orders_origin:
+    title: "Defence contracts by contractor's home country"
+    ask: "How much defence money goes to companies at home?"
+    caption: "Federal defence contracts by year of announcement and the contractor's headquarters, in billion euros. \"German with partner\" means a German and a foreign company together, or a foreign company producing in Germany. Headquarters do not show where production takes place; foreign supplies to contractors are not covered. The share of contractors outside Europe fell from 42 percent in 2022 to 4 percent in 2025. Contracts of unclear origin, about €31bn since 2020, are missing."
   arms_prod:
     title: "Production of weapons and ammunition"
     ask: "How fast is the production of weapons and ammunition growing?"
@@ -660,18 +771,23 @@ charts:
     title: "German aid to Ukraine"
     ask: "How much aid does Germany allocate to Ukraine?"
     caption: "German aid that has been delivered or firmly earmarked for delivery, in billion euros per quarter. Military aid includes money for arms purchases. Missing are Germany's share of aid from the European Union and the costs of refugees. Large packages are often fixed for several years at once."
+  gd_treff:
+    title: "Accuracy of the Joint Economic Forecast"
+    ask: "How accurate were the institutes' forecasts?"
+    caption: "Each panel shows how far the institutes' autumn forecast for the following year deviated from the first release: above zero too high, below zero too low. Growth, inflation and the government balance in percentage points, unemployment in thousand people. The individual forecasts and releases are under \"Downloads\"."
+    unit: "deviation"
   gd_rat:
     votes_label: "Dissenting votes of single institutes"
     rail: "Recommendations"
     title: "Recommendations of the Joint Economic Forecast on four standing questions"
     ask: "What did the institutes recommend on wages, money, public finances and the labour market?"
-    caption: "Recommendation of the institutes in the autumn report for the following year, on a fixed scale per question, the same scale as for the Council of Economic Experts. Wages: blue restraint below the distributive margin (productivity plus price rise), grey within, red above. Monetary policy: blue tighter, grey unchanged, red looser. Fiscal policy: blue consolidation, grey cyclically neutral, red stimulus. Labour market and welfare: blue more protection or benefits, grey unchanged, red flexibility, benefit cuts or work incentives. White with a frame: no recommendation discernible, classification still open, or no report text; tapping shows which, otherwise the recommendation in one sentence with page. Bars below: dissenting votes of single institutes in both reports of the year, one per point. Two reviewers classified each recommendation independently; the classification is an interpretation. Sources for every entry in data/static/gd_positionen_dauerfragen.csv and gd_voten.csv."
+    caption: "The top line gives the institutes' latest recommendation in words. Below, each row shows what they recommended for the following year in their autumn report. Red stands for socially progressive recommendations: stronger wages, looser monetary policy, fiscal stimulus, more protection in the labour market. Blue stands for conservative-liberal ones: wage restraint, tighter monetary policy, saving, more flexibility. Grey means unchanged. The political reading is our own. Wide bands are phases of three years or more, thin strokes single years, gaps years without a recommendation. The bars below count dissenting votes by individual institutes. At the bottom are the latest turning points with references. Two reviewers classified each recommendation independently; tap to see it with its reference."
     unit: "level -1, 0, +1"
   gd_vergleich:
     rail: "Comparison with the Council"
     title: "Recommendations of the Joint Economic Forecast and the Council of Economic Experts compared"
     ask: "Did the institutes recommend the same as the Council of Economic Experts?"
-    caption: "Two rows per question: the Joint Economic Forecast (autumn report) above, the Council of Economic Experts (annual report in November) below, each with its recommendation for the following year. Wages: blue restraint below the distributive margin (productivity plus price rise), grey within, red above. Monetary policy: blue tighter, grey unchanged, red looser. Fiscal policy: blue consolidation, grey cyclically neutral, red stimulus. Labour market and welfare: blue more protection or benefits, grey unchanged, red flexibility, benefit cuts or work incentives. Only years in which both were assigned a level are counted. Tapping shows the recommendation in one sentence with source."
+    caption: "Each question has two rows: the institutes on top, the Council of Economic Experts below. The same colour means: they gave the same advice. Red stands for socially progressive recommendations: stronger wages, looser monetary policy, fiscal stimulus, more protection in the labour market. Blue stands for conservative-liberal ones: wage restraint, tighter monetary policy, saving, more flexibility. Grey means unchanged. The political reading is our own. Only years in which both gave a recommendation are counted. Tapping shows the recommendation with its source."
     unit: "level -1, 0, +1"
   gd_themen:
     rail: "Topics"
@@ -816,6 +932,49 @@ series:
   de_next_ind: {title: "Industry: production expectations (next three months), balance", label: "Industry", unit: "balance", adjustment: "seasonally adjusted"}
   de_bund10: {title: "Yield on federal securities, residual maturity 10 years", label: "10 years", unit: "% p.a.", adjustment: "not adjusted"}
   de_bund2: {title: "Yield on federal securities, residual maturity 2 years", label: "2 years", unit: "% p.a.", adjustment: "not adjusted"}
+  ecb_dfr: {title: "ECB policy rate: deposit facility rate, monthly average", label: "Deposit rate", unit: "% p.a.", adjustment: "not adjusted"}
+  ecb_mro: {title: "ECB policy rate: main refinancing rate (fixed rate or minimum bid rate), monthly average", label: "Main refinancing rate", unit: "% p.a.", adjustment: "not adjusted"}
+  ecb_mlf: {title: "ECB policy rate: marginal lending facility rate, monthly average", label: "Marginal lending rate", unit: "% p.a.", adjustment: "not adjusted"}
+  estr_m: {title: "Euro short-term rate €STR, monthly average", label: "€STR (overnight)", unit: "% p.a.", adjustment: "not adjusted"}
+  ecb_bs_total: {title: "Eurosystem total assets, average of weekly statements", label: "Total assets", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_sec: {title: "Eurosystem: securities held for monetary policy purposes (purchase programmes), average of weekly statements", label: "Bond purchases", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_loans: {title: "Eurosystem: lending to banks in monetary policy operations (tenders), average of weekly statements", label: "Loans to banks", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_df: {title: "Eurosystem: banks' deposit facility, average of weekly statements", label: "Bank deposits", unit: "€ tn", adjustment: "not adjusted"}
+  lt_de: {title: "Ten-year government bond yield, Germany (convergence criterion)", unit: "% p.a.", adjustment: "not adjusted"}
+  lt_it: {title: "Ten-year government bond yield, Italy (convergence criterion)", unit: "% p.a.", adjustment: "not adjusted"}
+  lt_fr: {title: "Ten-year government bond yield, France (convergence criterion)", unit: "% p.a.", adjustment: "not adjusted"}
+  lt_es: {title: "Ten-year government bond yield, Spain (convergence criterion)", unit: "% p.a.", adjustment: "not adjusted"}
+  spread_it: {title: "Ten-year government bond yield spread, Italy minus Germany", label: "Italy", unit: "percentage points", adjustment: "not adjusted"}
+  spread_fr: {title: "Ten-year government bond yield spread, France minus Germany", label: "France", unit: "percentage points", adjustment: "not adjusted"}
+  spread_es: {title: "Ten-year government bond yield spread, Spain minus Germany", label: "Spain", unit: "percentage points", adjustment: "not adjusted"}
+  de_corp_yield: {title: "Yield on outstanding domestic corporate bonds (excluding banks)", label: "Corporate bonds", unit: "% p.a.", adjustment: "not adjusted"}
+  de_pub_yield: {title: "Yield on outstanding domestic public-sector bonds", label: "Public-sector bonds", unit: "% p.a.", adjustment: "not adjusted"}
+  de_corp_spread: {title: "Spread of corporate bonds over public-sector bonds", label: "Spread", unit: "percentage points", adjustment: "not adjusted"}
+  bls_std_nfc: {title: "Bank Lending Survey Germany: credit standards for enterprises, past three months, net balance", label: "Enterprises", unit: "net balance in %", adjustment: "not adjusted"}
+  bls_std_hh: {title: "Bank Lending Survey Germany: credit standards for housing loans to households, past three months, net balance", label: "Housing loans", unit: "net balance in %", adjustment: "not adjusted"}
+  bls_dem_nfc: {title: "Bank Lending Survey Germany: loan demand from enterprises, past three months, net balance", label: "Enterprises", unit: "net balance in %", adjustment: "not adjusted"}
+  bls_dem_hh: {title: "Bank Lending Survey Germany: demand for housing loans, past three months, net balance", label: "Housing loans", unit: "net balance in %", adjustment: "not adjusted"}
+  qe_pspp: {title: "ECB bond purchases: public sector (PSPP), end-of-month holdings", label: "Government bonds (PSPP)", unit: "€bn", adjustment: "not adjusted"}
+  qe_pepp_pub: {title: "ECB bond purchases: pandemic programme PEPP, public sector, end-of-month holdings", label: "Pandemic programme (PEPP), public", unit: "€bn", adjustment: "not adjusted"}
+  qe_cspp: {title: "ECB bond purchases: corporate bonds (CSPP), end-of-month holdings", label: "Corporate bonds (CSPP)", unit: "€bn", adjustment: "not adjusted"}
+  qe_cbpp3: {title: "ECB bond purchases: covered bonds (CBPP3), end-of-month holdings", label: "Covered bonds (CBPP3)", unit: "€bn", adjustment: "not adjusted"}
+  qe_pepp_priv: {title: "ECB bond purchases: pandemic programme PEPP, private sector, end-of-month holdings", label: "Pandemic programme (PEPP), private", unit: "€bn", adjustment: "not adjusted"}
+  qe_abspp: {title: "ECB bond purchases: asset-backed securities (ABSPP), end-of-month holdings", label: "Asset-backed securities (ABSPP)", unit: "€bn", adjustment: "not adjusted"}
+  qe_net_de: {title: "Cumulative net purchases of government bonds by the Eurosystem (PSPP and PEPP), Germany", label: "Germany", unit: "€bn", adjustment: "not adjusted"}
+  qe_net_fr: {title: "Cumulative net purchases of government bonds by the Eurosystem (PSPP and PEPP), France", label: "France", unit: "€bn", adjustment: "not adjusted"}
+  qe_net_it: {title: "Cumulative net purchases of government bonds by the Eurosystem (PSPP and PEPP), Italy", label: "Italy", unit: "€bn", adjustment: "not adjusted"}
+  qe_net_es: {title: "Cumulative net purchases of government bonds by the Eurosystem (PSPP and PEPP), Spain", label: "Spain", unit: "€bn", adjustment: "not adjusted"}
+  curve_slope_de: {title: "Ten-year minus three-year government bond yield, Germany, monthly", label: "Germany", unit: "percentage points", adjustment: "not adjusted"}
+  curve_slope_it: {title: "Ten-year minus three-year government bond yield, Italy, monthly", label: "Italy", unit: "percentage points", adjustment: "not adjusted"}
+  curve_slope_es: {title: "Ten-year minus three-year government bond yield, Spain, monthly", label: "Spain", unit: "percentage points", adjustment: "not adjusted"}
+  ecb_bs_gold: {title: "Eurosystem: gold and gold receivables, average of weekly statements", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_fx1: {title: "Eurosystem: foreign-currency claims on non-euro area residents, average of weekly statements", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_fx2: {title: "Eurosystem: foreign-currency claims on euro area residents, average of weekly statements", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_fx3: {title: "Eurosystem: euro claims on non-euro area residents, average of weekly statements", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_oth_ci: {title: "Eurosystem: other claims on euro area credit institutions, average of weekly statements", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_secall: {title: "Eurosystem: securities of euro area residents, total, average of weekly statements", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_gov: {title: "Eurosystem: general government debt, average of weekly statements", unit: "€ tn", adjustment: "not adjusted"}
+  ecb_bs_other: {title: "Eurosystem: other assets, average of weekly statements", unit: "€ tn", adjustment: "not adjusted"}
   fx_usd: {title: "ECB reference rate: US dollars per euro", label: "US dollar", unit: "US$ per €", adjustment: "not adjusted"}
   fx_usd_m: {title: "ECB reference rate: US dollars per euro", label: "US dollar", unit: "US$ per €", adjustment: "not adjusted"}
   fx_cny: {title: "ECB reference rate: Chinese yuan per euro", label: "Chinese yuan", unit: "yuan per €", adjustment: "not adjusted"}
@@ -839,7 +998,7 @@ series:
   rhine_lowdays_year: {title: "Low-water days at the Kaub gauge per year (daily mean below 78 cm)", label: "Low-water days", unit: "days", note: "Number of days per calendar year with a daily mean below 78 cm; current year up to the latest day.", adjustment: "not adjusted"}
   de_power_load: {title: "Electricity consumption (grid load) in Germany, TWh per month", unit: "TWh", adjustment: "not adjusted"}
   de_power_load_yoy: {title: "Electricity consumption (grid load), % on a year earlier", label: "Electricity consumption", unit: "% on a year earlier", adjustment: "not adjusted"}
-  de_power_price: {title: "Wholesale electricity price (day-ahead, DE/LU), monthly average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
+  de_power_price: {title: "Wholesale electricity price (day-ahead, DE/LU, until September 2018 DE/AT/LU), monthly average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
   de_power_price_d: {title: "Wholesale electricity price (day-ahead, DE/LU), daily average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
   de_power_load_d: {title: "Electricity consumption (grid load) in Germany, GWh per day", label: "Electricity consumption", unit: "GWh per day", adjustment: "not adjusted"}
   de_permits: {title: "Building permits: dwellings (new buildings and work on existing buildings), thousands", label: "Dwellings approved", unit: "thousand dwellings", adjustment: "not adjusted"}
@@ -899,6 +1058,16 @@ series:
   gpr_de: {title: "Geopolitical risk relating to Germany", label: "Germany", unit: "Index, 1985–2019 average = 100", note: "Country index GPRC_DEU: share of articles in ten major English-language newspapers that mention geopolitical tensions, wars or terrorism together with Germany; rescaled by the monitor to an average of 100 in 1985 to 2019. Retrieved every working day from matteoiacoviello.com.", adjustment: "not adjusted"}
   gpr_world: {title: "Geopolitical risk, world", label: "World", unit: "Index, 1985–2019 average = 100", note: "Overall GPR index, rescaled by the monitor to an average of 100 in 1985 to 2019.", adjustment: "not adjusted"}
   milex: {title: "Military expenditure in % of GDP, {staat_name}", label: "{staat_name}", unit: "% of GDP", note: "Military expenditure as defined by SIPRI (including military pensions, paramilitary forces and military aid) in % of GDP. Germany until 1990 West Germany. April 2026 edition (file v1.2), taken over by hand.", adjustment: "annual, current prices"}
+  kmpt_de_orders_idx: {title: "German defence orders, sum of the previous twelve months, 2021 = 100", label: "Orders", unit: "Index 2021 = 100", adjustment: "month of announcement, current prices"}
+  arms_prod_12m: {title: "Production of weapons and ammunition, twelve-month average, 2021 = 100", label: "Production", unit: "Index 2021 = 100", adjustment: "seasonally and calendar adjusted"}
+  kmpt_de_only: {title: "German defence contracts to companies based in Germany", label: "German", unit: "€ bn", adjustment: "year of announcement, current prices"}
+  kmpt_de_partner: {title: "German defence contracts to German and foreign companies jointly or with production in Germany", label: "German with partner", unit: "€ bn", adjustment: "year of announcement, current prices"}
+  kmpt_eu: {title: "German defence contracts to companies in the rest of Europe", label: "rest of Europe", unit: "€ bn", adjustment: "year of announcement, current prices"}
+  kmpt_noneu: {title: "German defence contracts to companies outside Europe", label: "outside Europe", unit: "€ bn", adjustment: "year of announcement, current prices"}
+  def_staff: {title: "Government defence spending: personnel (compensation of employees)", label: "Personnel", unit: "€ bn", adjustment: "annual, current prices"}
+  def_material: {title: "Government defence spending: material, maintenance and operations (intermediate consumption)", label: "Material and operations", unit: "€ bn", adjustment: "annual, current prices"}
+  def_invest: {title: "Government defence spending: weapon systems and buildings (gross fixed capital formation)", label: "Weapon systems and buildings", unit: "€ bn", adjustment: "annual, current prices"}
+  def_transfer: {title: "Government defence spending: investment grants and current transfers to others", label: "Transfers to others", unit: "€ bn", adjustment: "annual, current prices"}
   de_arms_prod: {title: "Production of weapons and ammunition, index 2021 = 100", label: "Weapons and ammunition", unit: "Index 2021 = 100", note: "Industry 25.4 of NACE Rev. 2 (manufacture of weapons and ammunition); tanks, aircraft and ships belong to other industries.", adjustment: "seasonally and calendar adjusted"}
   de_manuf_prod: {title: "Production in manufacturing, index 2021 = 100", label: "Industry as a whole", unit: "Index 2021 = 100", adjustment: "seasonally and calendar adjusted"}
   milex_gov: {title: "Military expenditure in % of government spending, {staat_name}", label: "{staat_name}", unit: "% of government spending", note: "Military expenditure as defined by SIPRI in % of spending of all levels of government (IMF). April 2026 edition, taken over by hand.", adjustment: "annual, current prices"}
@@ -946,6 +1115,45 @@ series:
   de_gov_interest: {title: "Government interest expenditure", label: "Interest expenditure", unit: "% of GDP", adjustment: "annual data"}
   de_gov_inv: {title: "Government gross fixed capital formation", label: "Investment", unit: "% of GDP", adjustment: "annual data"}
   de_gov_debt: {title: "General government gross debt (Maastricht definition)", label: "Debt", unit: "% of GDP", adjustment: "not adjusted"}
+  hh_nw_median: {title: "Household net wealth, median", label: "Median", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_nw_mean: {title: "Household net wealth, mean", label: "Mean", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_nun: {title: "Balance sheet of the middle fifth: property, per household", label: "Property", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f2m: {title: "Balance sheet of the middle fifth: cash and deposits, per household", label: "Cash and deposits", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f62: {title: "Balance sheet of the middle fifth: life insurance and pensions, per household", label: "Life insurance and pensions", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f52: {title: "Balance sheet of the middle fifth: investment funds, per household", label: "Investment funds", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f51: {title: "Balance sheet of the middle fifth: shares and equity, per household", label: "Shares and equity", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_nub: {title: "Balance sheet of the middle fifth: business assets, per household", label: "Business assets", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f4b: {title: "Balance sheet of the middle fifth: housing loans, per household", label: "Housing loans", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_f4x: {title: "Balance sheet of the middle fifth: other loans, per household", label: "Other loans", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_q3_nwa: {title: "Net wealth of the middle fifth, per household", label: "Net wealth", unit: "€ thousand", adjustment: "not adjusted"}
+  hh_share_t10: {title: "Share of the richest 10% in net wealth", label: "Richest 10%", unit: "% of net wealth", adjustment: "not adjusted"}
+  hh_share_b50: {title: "Share of the poorer half in net wealth", label: "Poorer half", unit: "% of net wealth", adjustment: "not adjusted"}
+  hh_cons_cp04: {title: "Household consumption on housing and energy", label: "Housing and energy", unit: "% of consumption", adjustment: "annual, current prices"}
+  hh_cons_cp07: {title: "Household consumption on transport", label: "Transport", unit: "% of consumption", adjustment: "annual, current prices"}
+  hh_cons_cp01: {title: "Household consumption on food", label: "Food", unit: "% of consumption", adjustment: "annual, current prices"}
+  hh_cons_cp09: {title: "Household consumption on recreation and culture", label: "Recreation and culture", unit: "% of consumption", adjustment: "annual, current prices"}
+  stx_pk_sozial: {title: "Government spending per inhabitant: social protection", label: "Social protection", unit: "€", adjustment: "annual, current prices"}
+  stx_pk_gesundheit: {title: "Government spending per inhabitant: health", label: "Health", unit: "€", adjustment: "annual, current prices"}
+  stx_pk_bildung: {title: "Government spending per inhabitant: education", label: "Education", unit: "€", adjustment: "annual, current prices"}
+  stx_pk_verwaltung: {title: "Government spending per inhabitant: administration and interest", label: "Administration and interest", unit: "€", adjustment: "annual, current prices"}
+  stx_pk_uebrige: {title: "Government spending per inhabitant: other functions", label: "Other functions", unit: "€", adjustment: "annual, current prices"}
+  de_debt_s1311: {title: "Gross debt, federal government (Maastricht definition)", label: "Federal government", unit: "% of GDP", adjustment: "not adjusted"}
+  de_debt_s1312: {title: "Gross debt, Länder (Maastricht definition)", label: "Länder", unit: "% of GDP", adjustment: "not adjusted"}
+  de_debt_s1313: {title: "Gross debt, municipalities (Maastricht definition)", label: "Municipalities", unit: "% of GDP", adjustment: "not adjusted"}
+  de_debt_s1314: {title: "Gross debt, social security (Maastricht definition)", label: "Social security", unit: "% of GDP", adjustment: "not adjusted"}
+  de_debt_gd_f3: {title: "General government gross debt by instrument: securities", label: "Securities", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_gd_f4: {title: "General government gross debt by instrument: loans", label: "Loans", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_gd_f2: {title: "General government gross debt by instrument: currency and deposits", label: "Currency and deposits", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_h_s121: {title: "General government gross debt by creditor: Bundesbank", label: "Bundesbank", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_h_s122_s123: {title: "General government gross debt by creditor: Banks", label: "Banks", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_h_s124_s129: {title: "General government gross debt by creditor: Insurers, funds and others", label: "Insurers, funds and others", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_h_s11_s14_s15: {title: "General government gross debt by creditor: Firms and households", label: "Firms and households", unit: "% of GDP", adjustment: "year-end"}
+  de_debt_h_s2: {title: "General government gross debt by creditor: Rest of the world", label: "Rest of the world", unit: "% of GDP", adjustment: "year-end"}
+  rmd_de: {title: "Average remaining maturity of government debt, Germany", label: "Germany", unit: "years", adjustment: "year-end"}
+  rmd_fr: {title: "Average remaining maturity of government debt, France", label: "France", unit: "years", adjustment: "year-end"}
+  rmd_it: {title: "Average remaining maturity of government debt, Italy", label: "Italy", unit: "years", adjustment: "year-end"}
+  rmd_es: {title: "Average remaining maturity of government debt, Spain", label: "Spain", unit: "years", adjustment: "year-end"}
+  de_gov_implicit: {title: "Average interest rate on government debt (interest as % of previous year's debt)", label: "Average rate on debt", unit: "% p. a.", adjustment: "annual"}
   de_cofog_tot_gf10: {title: "Government expenditure on social protection", label: "Social protection", unit: "% of government expenditure", adjustment: "annual data"}
   de_cofog_tot_gf07: {title: "Government expenditure on health", label: "Health", unit: "% of government expenditure", adjustment: "annual data"}
   de_cofog_tot_gf01: {title: "Government expenditure on administration and interest", label: "Administration and interest", unit: "% of government expenditure", adjustment: "annual data"}
@@ -1072,6 +1280,8 @@ strings:
   "Mio. €": "€m"
   "Mrd. US-Dollar": "US$bn"
   "Mrd. €": "€bn"
+  "Bio. €": "€tn"
+  "Saldo in %": "net balance in %"
   "Personen": "people"
   "Pp": "pp"
   "Pp ggü. Vorquartal": "pp on previous quarter"
@@ -1195,6 +1405,13 @@ names:
     "16": "Thuringia"
 # Feste Beschriftungen und Kalendertermine (deutsch: englisch), für Grafiken, Kalender und Gruppen
 labels:
+  "Anleihekäufe (APP, PEPP)": "Bond purchases (APP, PEPP)"
+  "Kredite an Banken": "Loans to banks"
+  "Sonstige Wertpapiere": "Other securities"
+  "Gold und Devisen": "Gold and foreign currency"
+  "Übrige": "Other"
+  "Rendite zehnjähriger Bundesanleihen": "Ten-year Bund yield"
+  "Durchschnittszins der Schulden": "Average rate on debt"
   "NATO-Ziel 2 %": "NATO target 2%"
   "NATO-Ziel 3,5 % bis 2035": "NATO target 3.5% by 2035"
   "Mittel 1985–2019 = 100": "1985–2019 average = 100"

@@ -1,0 +1,14 @@
+# Fremdpakete des Konjunkturmonitors und der Pipeline konjunkturwolf (ohne konjunkturwolf selbst, das als fester Git-Commit in pyproject.toml steht).
+# Daraus entsteht requirements.txt mit Prüfsummen:
+#   uv pip compile requirements.in --generate-hashes --python-version 3.12 --universal -o requirements.txt
+# Kommt in pyproject.toml (hier oder in konjunkturwolf) ein Paket dazu, gehört es auch in diese Liste.
+pandas>=2.0
+PyYAML>=6.0
+python-pptx>=1.0
+XlsxWriter>=3.1
+pyreadr>=0.5
+openpyxl>=3.1
+requests>=2.31
+global_macro_data>=2.0
+pytest>=8
+setuptools>=68

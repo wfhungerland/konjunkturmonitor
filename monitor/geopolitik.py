@@ -13,6 +13,9 @@ Von Hand nach einer neuen Ausgabe der Quelle (python -m monitor.geopolitik <quel
 - kiel: Kiel Ukraine Support Tracker, Zuteilungen Deutschlands je Quartal in Mrd. €.
 - de_exp_rusblr, de_exp_cauca (täglich): Exporte nach Russland und Belarus sowie in sechs Länder in Kaukasus und
   Zentralasien (Comext), Summe der letzten zwölf Monate in Mrd. €.
+- def_staff, def_material, def_invest, def_transfer (täglich): Staatsausgaben für Verteidigung nach Art (Eurostat,
+  COFOG GF02) in Mrd. €.
+- kmpt: Kiel Military Procurement Tracker, deutsche Rüstungsaufträge je Jahr nach Sitz des Auftragnehmers in Mrd. €.
 - gta: Global Trade Alert, Export aller Eingriffe (interventions.csv): schädliche Eingriffe (rot und gelb)
   mit Deutschland unter den betroffenen Ländern je Jahr des Inkrafttretens, nach China, USA und übrigen Staaten.
 """
@@ -122,6 +125,39 @@ def trade(raw: str) -> dict[str, pd.Series]:
     return out
 
 
+DEFENCE = ("https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/gov_10a_exp"
+           "?geo=DE&cofog99=GF02&sector=S13&unit=MIO_EUR&sinceTimePeriod=2010")
+DEF_PARTS = {"def_staff": ["D1"], "def_material": ["P2"], "def_invest": ["P51G"], "def_transfer": ["D7", "D9"]}
+
+
+def defence(raw: str) -> dict[str, pd.Series]:
+    """Staatsausgaben für Verteidigung (COFOG GF02) nach Art, Mrd. €: Personal, Vorleistungen, Investitionen, Transfers."""
+    import json
+    d = json.loads(raw)
+    dims, size = d["id"], d["size"]
+    idx = {k: d["dimension"][k]["category"]["index"] for k in dims}
+    stride = {k: int(pd.Series(size[i + 1:]).prod()) if i + 1 < len(dims) else 1 for i, k in enumerate(dims)}
+    val = {int(k): v for k, v in d["value"].items()}
+    times = sorted(idx["time"], key=idx["time"].get)
+    get = lambda item, t: val.get(idx["na_item"][item] * stride["na_item"] + idx["time"][t] * stride["time"])
+    times = [t for t in times if get("TE", t) is not None]
+    out = {key: _years(pd.Series({int(t): sum(get(i, t) or 0.0 for i in items) / 1000 for t in times})) for key, items in DEF_PARTS.items()}
+    total = pd.Series({int(t): get("TE", t) / 1000 for t in times})
+    gap = (total.values - sum(s.values for s in out.values())).__abs__().max()
+    if gap > 0.5:  # die vier Teile müssen die Summe ergeben
+        raise ValueError(f"Teile weichen um {gap:.1f} Mrd. € von der Summe ab")
+    return out
+
+
+def update_defence(static: Path) -> None:
+    req = urllib.request.Request(DEFENCE, headers={"User-Agent": "konjunkturmonitor"})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        raw = r.read().decode("utf-8")
+    for key, s in defence(raw).items():
+        _write(static / f"{key}.csv", s, 3)
+    log.info("Verteidigungsausgaben nach Art: bis %d", s.index.max().year)
+
+
 def update_trade(static: Path) -> None:
     partners = "&".join(f"partner={p}" for ps in TRADE.values() for p in ps)
     req = urllib.request.Request(COMEXT.format(partners=partners), headers={"User-Agent": "konjunkturmonitor"})
@@ -179,13 +215,60 @@ def gta(path: Path) -> dict[str, pd.Series]:
     return out
 
 
+KMPT = {"kmpt_de_only": "Germany only", "kmpt_de_partner": "Germany and foreign partnership",
+        "kmpt_eu": "European, non-Germany", "kmpt_noneu": "Non-European only"}
+
+
+def kmpt(path: Path) -> dict[str, pd.Series]:
+    """Kiel Military Procurement Tracker: deutsche Rüstungsaufträge je Jahr nach Sitz des Auftragnehmers, Mrd. €."""
+    raw = pd.read_excel(path, sheet_name="Fig 3 DE Origin (%)", header=None)
+    head = raw.index[raw.apply(lambda r: r.astype(str).eq("Germany only").any(), axis=1)][0]
+    t = raw.iloc[head + 1:].copy()
+    t.columns = raw.iloc[head].astype(str).str.strip()
+    t = t[pd.to_numeric(t["Year"], errors="coerce").notna()]
+    t["Year"] = t["Year"].astype(int)
+    t = t[t["Year"] < pd.Timestamp.today().year].set_index("Year")  # nur abgeschlossene Jahre
+    out = {key: _years(pd.to_numeric(t[col]).astype(float)) for key, col in KMPT.items()}
+    m = pd.read_excel(path, sheet_name="A1 DE Total Orders", header=None)
+    head = m.index[m.apply(lambda r: r.astype(str).eq("Total military orders").any(), axis=1)][0]
+    col = m.columns[m.iloc[head].astype(str).eq("Total military orders")][0]
+    rows = m.iloc[head + 1:]
+    when = pd.to_datetime(rows[col - 1], errors="coerce")
+    s = pd.Series(pd.to_numeric(rows[col], errors="coerce").values, index=when).dropna()
+    s = s[s.index.notna()].sort_index()
+    roll = s.rolling(12).sum().dropna()  # Summe der letzten zwölf Monate
+    out["kmpt_de_orders_idx"] = roll / roll.loc["2021-12-01"] * 100  # 2021 = 100, vergleichbar mit dem Produktionsindex
+    return out
+
+
+ARMS_PROD = ("https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m"
+             "?geo=DE&nace_r2=C254&s_adj=SCA&unit=I21&sinceTimePeriod=2019-01")
+
+
+def arms_prod_12m(raw: str) -> pd.Series:
+    """Produktion von Waffen und Munition, gleitender Zwölfmonatsdurchschnitt, Jahresmittel 2021 = 100."""
+    import json
+    d = json.loads(raw)
+    t = list(d["dimension"]["time"]["category"]["index"])
+    s = pd.Series({pd.Timestamp(t[int(k)]): v for k, v in d["value"].items()}).sort_index()
+    return (s.rolling(12).mean() / s.loc["2021"].mean() * 100).dropna()
+
+
+def update_arms_prod(static: Path) -> None:
+    req = urllib.request.Request(ARMS_PROD, headers={"User-Agent": "konjunkturmonitor"})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        s = arms_prod_12m(r.read().decode("utf-8"))
+    _write(static / "arms_prod_12m.csv", s, 1)
+    log.info("Rüstungsproduktion, Zwölfmonatsmittel: bis %s", s.index.max().strftime("%Y-%m"))
+
+
 def main(argv: list[str] | None = None) -> int:
     argv = sys.argv[1:] if argv is None else argv
-    if len(argv) != 2 or argv[0] not in ("leiden", "sipri", "cow", "kiel", "gta"):
-        print("Aufruf: python -m monitor.geopolitik leiden|sipri|cow|kiel|gta <datei>")
+    if len(argv) != 2 or argv[0] not in ("leiden", "sipri", "cow", "kiel", "gta", "kmpt"):
+        print("Aufruf: python -m monitor.geopolitik leiden|sipri|cow|kiel|gta|kmpt <datei>")
         return 2
     static = Path("data/static")
-    digits = {"leiden": 0, "sipri": 3, "cow": 3, "kiel": 3, "gta": 0}[argv[0]]
+    digits = {"leiden": 0, "sipri": 3, "cow": 3, "kiel": 3, "gta": 0, "kmpt": 3}[argv[0]]
     for key, s in globals()[argv[0]](Path(argv[1])).items():
         _write(static / f"{key}.csv", s, digits)
         print(f"{key}: {len(s)} Werte bis {s.index.max():%Y-%m}")
