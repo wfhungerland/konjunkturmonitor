@@ -46,6 +46,7 @@ jobs:
           npm ci --silent   # Version und Prüfsummen aus package-lock.json
           npx playwright install --with-deps chromium > /dev/null
           node monitor/previews.js site  # Vorschaubilder je Grafik; die Seite lädt die lebendige Grafik erst beim Überfahren oder Antippen
+          python -m monitor.csp site     # Content-Security-Policy eintragen, nach den Vorschaubildern (die ändern die Seite noch)
           node tests/smoke.js site/index.html
           if [ -f site/en/index.html ]; then node tests/smoke.js site/en/index.html; fi
       - name: Manifest der Seite (Prüfsummen)

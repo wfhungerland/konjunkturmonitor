@@ -38,5 +38,6 @@ jobs:
           npm ci --silent
           npx playwright install --with-deps chromium > /dev/null
           node monitor/previews.js site
+          python -m monitor.csp site     # Content-Security-Policy eintragen, nach den Vorschaubildern (die ändern die Seite noch)
           node tests/smoke.js site/index.html
           if [ -f site/en/index.html ]; then node tests/smoke.js site/en/index.html; fi

@@ -51,7 +51,7 @@ Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global
 - **Beträge:** Währungszeichen vor der Zahl, britischer Stil: „€141,1 Mrd.“, „$107 je Barrel“, „£0,84“; Yuan und Franken ausgeschrieben.
 - **Abkürzungen:** In Sätzen ausgeschrieben (`monitor/ausschreiben.py`, nach der Satzprüfung); in Köpfen, Einheiten und Kacheln gepunktet unterstrichen mit Erklärung beim Darauftippen (`GLOSSAR`).
 - **Rundgang:** Beim ersten Besuch bietet die Seite unten einen kurzen Rundgang an (gemerkt in `km_tour`); sonst steht „Rundgang“ im Menü. Die Schritte stehen in `TOURTXT` der Vorlage; Schritte ohne sichtbares Ziel entfallen, etwa auf dem Handy.
-- **Feedback:** Knopf „Feedback“ in der linken Spalte jeder Grafik (unter Downloads und Link) öffnet ein Fenster mit einem Textfeld; „Senden“ schickt über Formspree an den Autor, mit Kurzzeichen, Titel und Link der Grafik. Die öffentliche Formular-Kennung steht in `monitor.yaml` unter `site.feedback`; leer heißt kein Knopf.
+- **Feedback:** Knopf „Feedback“ in der linken Spalte jeder Grafik (unter Downloads und Link) öffnet ein Fenster mit einem Textfeld (höchstens 2000 Zeichen); „Senden“ schickt über Formspree an den Autor, mit Kurzzeichen, Titel und Link der Grafik. Die öffentliche Formular-Kennung steht in `monitor.yaml` unter `site.feedback`; leer heißt kein Knopf.
 - **Grafik | Tabelle:** Zeitreihen-Grafiken haben oben rechts einen Umschalter; die Tabelle zeigt die letzten zwölf Werte, jüngster zuerst.
 - **Vorschaubilder:** `node monitor/previews.js site` fotografiert nach dem Bau jede einfache Zeitreihen-Grafik (breit und Handy, WebP, zusammen rund 6 MB) und trägt die Liste in die Seite ein. Die Seite zeigt zuerst das Bild und lädt die lebendige Grafik beim Überfahren, Antippen oder Bedienen. Ohne diesen Lauf, bei Jahresflächen und auf Einbettseiten zeichnet sie sofort.
 
@@ -124,6 +124,10 @@ Sind die neuen Werte echt, gibt ein Eintrag in `data/static/freigaben.yaml` sie 
 
 ### Manifest
 Jeder Lauf schreibt `manifest.json` auf die Seite (SHA-256 jeder Datei, Zeitpunkt, Code-Stand) und die Prüfsumme des Manifests nach `data/archive/manifest.sha256`. Der Wächter vergleicht täglich die Seite im Netz damit: Manifest gegen Repository, Kernseiten und eine Stichprobe von 60 Dateien gegen das Manifest. Bei Abweichung öffnet er das Ticket „Wächter: Seite weicht vom Manifest ab“.
+
+### Schutz im Browser und im Formular
+- **Content-Security-Policy:** `python -m monitor.csp site` trägt im Workflow in jede Seite ein, was der Browser laden darf: Dateien vom eigenen Server und genau die Skripte, die beim Bau in der Seite stehen (per SHA-256). Daten können nur an den eigenen Server und an Formspree gehen. Der Seitentest lädt die Seite über einen lokalen Webserver und scheitert bei einem Verstoß. Lokal gebaute Seiten bleiben ohne diese Regel, damit sie sich als Datei öffnen lassen.
+- **Feedback:** Das Formular hat ein Köderfeld für Roboter, höchstens 2000 Zeichen, sendet frühestens drei Sekunden nach dem Öffnen und höchstens fünfmal je Seitenaufruf mit 30 Sekunden Abstand. Es speichert dafür nichts im Browser. Wer die Formular-Adresse direkt anschreibt, umgeht das; dagegen helfen nur Spamfilter und Captcha im Formspree-Konto.
 
 ### Korrekturen dokumentieren
 Jede Änderung, die Zahlen oder Aussagen berührt (behobener Fehler, neue Quelle, geänderte Rechnung), bekommt einen Eintrag in `data/static/korrekturen.yaml`: Datum, Art, betroffene Abbildungen, ein bis zwei Sätze und die Nummer des Pull Requests. Daraus entstehen die Seite `korrekturen.html` und der Abschnitt „Änderungen“ im Methodenblatt der Abbildung.
