@@ -47,24 +47,26 @@ def main() -> int:
         print("== Katalog 42111*:\n" + cat[:4000])
     except Exception as e:  # Katalog ist nur Zusatz
         print("Katalog nicht abrufbar:", type(e).__name__, str(e)[:200])
-    for t in TABLES:
-        try:
-            body = text(post("data/tablefile", {"name": t, "area": "all", "compress": "false", "format": "ffcsv",
-                                                "language": "de", "startyear": "2021"}))
-        except Exception as e:
-            print(f"== {t}: Fehler {type(e).__name__}: {str(e)[:200]}")
-            continue
-        lines = body.splitlines()
-        print(f"== {t}: {len(lines)} Zeilen")
-        print("Kopf:", lines[0][:1500] if lines else "")
-        hits = [l for l in lines if any(c in l for c in CODES)]
-        print(f"Zeilen mit 25.40 oder 30.40: {len(hits)}")
-        for l in hits[:40]:
-            print("  ", l[:600])
-        if not hits and len(lines) > 1:
-            print("Beispielzeilen:")
-            for l in lines[1:6]:
-                print("  ", l[:600])
+    # Feingliederung ausdrücklich anfordern: Betriebe (0003) und fachliche Betriebsteile (0023), Jahre
+    for t in ("42111-0003", "42111-0023"):
+        for var in ("WZ08X4", "WZ08X3", "WZ08X2"):
+            fields = {"name": t, "area": "all", "compress": "false", "format": "ffcsv", "language": "de", "startyear": "2019",
+                      "classifyingvariable1": var, "classifyingkey1": "WZ08-25-40,WZ08-30-40,WZ08-25-4,WZ08-30-4"}
+            try:
+                body = text(post("data/tablefile", fields))
+            except Exception as e:
+                print(f"== {t} {var}: Fehler {type(e).__name__}: {str(e)[:300]}")
+                continue
+            lines = body.splitlines()
+            hits = [l for l in lines if "WZ08-25-4" in l or "WZ08-30-4" in l]
+            print(f"== {t} {var}: {len(lines)} Zeilen, davon {len(hits)} mit 25.4/30.4")
+            if not hits:
+                print("   ", body[:400].replace(chr(10), " | "))
+            for l in hits:
+                cols = l.split(";")
+                print("   ", ";".join(cols[4:5] + cols[-8:]))
+            if hits:
+                break
     return 0
 
 
