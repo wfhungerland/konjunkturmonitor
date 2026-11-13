@@ -260,6 +260,7 @@ PAIRS: list[tuple[str, str]] = [
     (" Uhr; ${HL.ok} von ${HL.n} Reihen erfolgreich", "; ${HL.ok} of ${HL.n} series retrieved"),
     ("`, fehlgeschlagen: ${", "`, failed: ${"),
     ("`, länger ohne neue Werte: ${", "`, without new values for longer: ${"),
+    ("`, zur Prüfung angehalten: ${", "`, held for review: ${"),
     (". Betroffene Abbildungen tragen einen Hinweis.</p>`", ". Affected charts carry a notice.</p>`"),
     # Achsenlogik: Vorzeichen auch bei englischen Einheiten
     ("/gg\\.|gegenüber|Veränderung|Beiträge|^Pp|^Saldo/", "/gg\\.|gegenüber|Veränderung|Beiträge|^Pp|^Saldo| on |change|contribution|^pp|balance/i"),

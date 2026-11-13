@@ -35,12 +35,24 @@ jobs:
       - name: Tests
         run: pytest -q
       - name: Daten holen und Seite bauen
+        id: daten
         env:
           GENESIS_USER: ${{ secrets.GENESIS_USER }}
           GENESIS_PASSWORD: ${{ secrets.GENESIS_PASSWORD }}
           GIE_API_KEY: ${{ secrets.GIE_API_KEY }}
         run: python -m monitor run --no-cache
-      - name: Daten committen
+      - name: Vorschaubilder und Seitentest im Browser
+        run: |
+          npm ci --silent   # Version und Prüfsummen aus package-lock.json
+          npx playwright install --with-deps chromium > /dev/null
+          node monitor/previews.js site  # Vorschaubilder je Grafik; die Seite lädt die lebendige Grafik erst beim Überfahren oder Antippen
+          node tests/smoke.js site/index.html
+          if [ -f site/en/index.html ]; then node tests/smoke.js site/en/index.html; fi
+      - name: Manifest der Seite (Prüfsummen)
+        run: python -m monitor.manifest site   # site/manifest.json und data/archive/manifest.sha256
+      - name: Daten und Manifest committen
+        # auch wenn der Seitentest scheitert: Die Daten gehören ins Archiv; das Manifest ändert sich dann nicht
+        if: ${{ !cancelled() && steps.daten.outcome == 'success' }}
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ github.ref_name }}
@@ -52,7 +64,7 @@ jobs:
           git commit -m "Daten aktualisiert ($(date -u +%Y-%m-%d))"
           git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:${BRANCH}" || echo "::warning::Push abgelehnt (Branch geändert); nächster Lauf holt das nach."
       - name: Wöchentlicher Datenstand (Archiv)
-        if: github.event_name == 'schedule' && github.ref_name == github.event.repository.default_branch
+        if: ${{ !cancelled() && steps.daten.outcome == 'success' && github.event_name == 'schedule' && github.ref_name == github.event.repository.default_branch }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
@@ -62,13 +74,6 @@ jobs:
           mkdir -p archiv && gzip -c data/processed/observations.csv > archiv/observations.csv.gz
           cp data/processed/run_status.json series.yaml monitor.yaml archiv/
           gh release create "$tag" archiv/* --title "Datenstand $(date -u +%d.%m.%Y) (KW $(date -u +%V))" --notes "Vollständiger Datenstand des Konjunkturmonitors, Code-Stand ${GITHUB_SHA}. Nachrechnen: Repository auf diesen Commit setzen, observations.csv.gz nach data/processed/observations.csv entpacken, python -m monitor build."
-      - name: Vorschaubilder und Seitentest im Browser
-        run: |
-          npm ci --silent   # Version und Prüfsummen aus package-lock.json
-          npx playwright install --with-deps chromium > /dev/null
-          node monitor/previews.js site  # Vorschaubilder je Grafik; die Seite lädt die lebendige Grafik erst beim Überfahren oder Antippen
-          node tests/smoke.js site/index.html
-          if [ -f site/en/index.html ]; then node tests/smoke.js site/en/index.html; fi
       - name: Ticket bei Ausfällen
         if: github.ref_name == github.event.repository.default_branch
         continue-on-error: true

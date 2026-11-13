@@ -105,7 +105,7 @@ Der Workflow `update.yml` läuft werktags zweimal (7:23 und 12:23 UTC), bei Änd
 - **Datenlauf** (`.github/workflows/update.yml`): werktags 7:23 und 12:23 UTC Daten holen, Seite bauen, testen, veröffentlichen.
 - **Datenarchiv:** der erste geplante Lauf jeder Woche legt den vollständigen Datenstand (`observations.csv.gz`, `run_status.json`, Katalog, Seitenaufbau) als Release `daten-JJJJ-KWnn` ab, mit dem Code-Stand in der Beschreibung.
 - **Tickets:** `monitor/alert.py` pflegt drei Issues: „Datenabruf: Ausfälle“ (fehlgeschlagene oder veraltete Reihen) , „Datenabruf: auffällige Werte“ (jüngste Veränderung weit außerhalb des Bisherigen) und „Automatische Sätze: Auffälligkeiten“ (Sätze, die die Satzprüfung in `monitor/satzpruefung.py` nicht bestehen und deshalb entfallen). Alle schließen sich selbst, sobald alles wieder stimmt.
-- **Wächter** (`.github/workflows/waechter.yml`, täglich): prüft, ob die veröffentlichte Seite erreichbar ist und ihr Stand höchstens drei Werktage alt ist; sonst Issue „Wächter: Seite veraltet oder nicht erreichbar“.
+- **Wächter** (`.github/workflows/waechter.yml`, täglich): prüft, ob die veröffentlichte Seite erreichbar ist, ihr Stand höchstens drei Werktage alt ist und ihre Dateien zum Manifest passen; sonst Issue „Wächter: Seite veraltet oder nicht erreichbar“ oder „Wächter: Seite weicht vom Manifest ab“.
 - **Pipeline-Stand** (`.github/workflows/pipeline-stand.yml`, montags): konjunkturwolf ist in `pyproject.toml` auf einen Commit festgelegt. Gibt es einen neueren Stand, testet der Lauf ihn und öffnet einen Pull Request. Dafür einmalig unter Settings › Actions › General „Allow GitHub Actions to create and approve pull requests“ aktivieren.
 
 Damit Tickets ankommen: Repository auf „Watch“ stellen (mindestens „Issues“) und Benachrichtigungen per E-Mail einschalten.
@@ -117,11 +117,20 @@ Damit Tickets ankommen: Repository auf „Watch“ stellen (mindestens „Issues
 - **Aktualisierungen:** Dependabot (`.github/dependabot.yml`) schlägt montags neue Versionen als Pull Request vor.
 - **Rechte:** Jeder Job nennt seine Rechte selbst. Das Token des Laufs bekommen nur die Schritte, die committen, ein Archiv anlegen oder Tickets pflegen; Tests, Datenabruf und Seitenbau laufen ohne.
 
+### Sperre vor der Veröffentlichung
+Nach jedem Abruf vergleicht `monitor/sperre.py` jede Reihe mit dem zuletzt gespeicherten Stand. Eine Reihe wird angehalten, wenn sie mehr als ein Fünftel ihrer Werte verliert, wenn mehr als ein Viertel ihrer bisherigen Werte stark abweicht (neue Basis, andere Einheit, Abruffehler, veränderte Quelle) oder wenn ihr jüngster Wert dreimal so stark springt wie je zuvor. Angehaltene Reihen und die aus ihnen berechneten zeigen den alten Stand mit Hinweis an der Abbildung; alle anderen erscheinen wie gewohnt. Die Liste steht in `data/processed/sperre.json` und im Ticket „Datenabruf: angehaltene Reihen“.
+
+Sind die neuen Werte echt, gibt ein Eintrag in `data/static/freigaben.yaml` sie frei (Reihe oder `"*"` für alle, Datum `bis`, Grund). Sind sie falsch, die Reihe in `series.yaml` anpassen. In der Rückrechnung ab 2015 hätte die Sprungregel außerhalb von 2020 siebenmal angeschlagen, 2020 bei 23 Reihen; für solche Schocks ist die Freigabe `"*"` gedacht.
+
+### Manifest
+Jeder Lauf schreibt `manifest.json` auf die Seite (SHA-256 jeder Datei, Zeitpunkt, Code-Stand) und die Prüfsumme des Manifests nach `data/archive/manifest.sha256`. Der Wächter vergleicht täglich die Seite im Netz damit: Manifest gegen Repository, Kernseiten und eine Stichprobe von 60 Dateien gegen das Manifest. Bei Abweichung öffnet er das Ticket „Wächter: Seite weicht vom Manifest ab“.
+
 ### Korrekturen dokumentieren
 Jede Änderung, die Zahlen oder Aussagen berührt (behobener Fehler, neue Quelle, geänderte Rechnung), bekommt einen Eintrag in `data/static/korrekturen.yaml`: Datum, Art, betroffene Abbildungen, ein bis zwei Sätze und die Nummer des Pull Requests. Daraus entstehen die Seite `korrekturen.html` und der Abschnitt „Änderungen“ im Methodenblatt der Abbildung.
 
 ### Was zu tun ist, wenn …
 - **eine Quelle ausfällt** (Ticket „Ausfälle“): Meldung im Ticket lesen. Bei Zeitüberschreitung oder Serverfehler reicht meist Abwarten; die Seite zeigt solange den letzten Stand mit Hinweis. Bei geänderter Tabelle oder Kennung die Reihe in `series.yaml` anpassen (Schlüssel, `params`, bei GENESIS `query`), lokal mit `python -m monitor run` prüfen, Pull Request.
+- **eine Reihe angehalten ist** (Ticket „angehaltene Reihen“): bei der Quelle prüfen. Echte Werte in `data/static/freigaben.yaml` freigeben, falsche durch Anpassen der Reihe in `series.yaml` beheben.
 - **Werte auffällig springen** (Ticket „auffällige Werte“): bei der Quelle nachsehen, ob sich Einheit, Basisjahr oder Abgrenzung geändert haben. Echte Ausschläge brauchen nichts; das Ticket schließt sich, sobald der Sprung nicht mehr der jüngste Wert ist.
 - **die Seite veraltet ist** (Ticket „Wächter“): unter Actions den letzten Lauf von „Daten holen und Seite veröffentlichen“ öffnen; meist bricht ein Schritt ab (Test, Seitentest, Veröffentlichung). Nach der Korrektur den Lauf über „Run workflow“ neu starten.
 - **Zugangsdaten ablaufen** (GENESIS, GIE): unter Settings › Secrets and variables › Actions `GENESIS_USER`, `GENESIS_PASSWORD` oder `GIE_API_KEY` neu setzen. Die Werte nie in Dateien oder Tickets schreiben.

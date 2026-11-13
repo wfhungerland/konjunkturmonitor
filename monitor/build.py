@@ -1123,6 +1123,8 @@ def _health(root: Path, topics: list, meta: dict) -> dict:
         return {}
     run = json.loads(path.read_text(encoding="utf-8"))
     st = {s["series_id"]: s for s in run.get("series", [])}
+    from .sperre import load_frozen
+    frozen = {f["series_id"] for f in load_frozen(root)}
     for tp in topics:
         for c in tp["charts"]:
             sids = {s.id for s in meta.values() if s.chart_id == c.get("chart")}
@@ -1136,7 +1138,11 @@ def _health(root: Path, topics: list, meta: dict) -> dict:
                 sids |= {"de_ip", "de_alq_sa", "de_gdp_index"} if c.get("kind") == "downturn" else {x for p in (c.get("panels") or HIST_PANELS) for x in (p["hist"], p["cur"])} if c.get("kind") == "history" else {"enso_roni", "de_vpi", "de_vpi_food", "de_agri"}
             bad = [st[k] for k in sids if k in st and st[k].get("status") in ("failed", "skipped")]
             old = [st[k] for k in sids if k in st and st[k].get("outdated")]
-            if bad:
+            held = sids & frozen
+            if held:  # Sperre vor der Veröffentlichung (monitor/sperre.py)
+                c["warn"] = (f"Die Quelle liefert für {len(held)} {'Reihe' if len(held) == 1 else 'Reihen'} dieser Abbildung auffällige neue Werte; "
+                             "angezeigt wird der zuletzt geprüfte Stand, bis die Werte geprüft sind.")
+            elif bad:
                 c["warn"] = (f"Der letzte Abruf von {len(bad)} {'Reihe' if len(bad) == 1 else 'Reihen'} dieser Abbildung ist fehlgeschlagen; "
                              "angezeigt wird der zuletzt erfolgreich abgerufene Stand.")
             elif old:
@@ -1144,7 +1150,7 @@ def _health(root: Path, topics: list, meta: dict) -> dict:
     ser = run.get("series", [])
     return {"finished_at": run.get("finished_at"), "n": len(ser), "ok": sum(1 for s in ser if s.get("status") in ("ok", "cache")),
             "failed": sorted(s["series_id"] for s in ser if s.get("status") in ("failed", "skipped")),
-            "outdated": sorted(s["series_id"] for s in ser if s.get("outdated"))}
+            "outdated": sorted(s["series_id"] for s in ser if s.get("outdated")), "frozen": sorted(frozen)}
 
 
 def _enso_episodes(roni: pd.Series, strong: float = 2.0) -> list[dict]:
