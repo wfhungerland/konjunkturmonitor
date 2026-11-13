@@ -49,6 +49,9 @@ jobs:
           python -m monitor.csp site     # Content-Security-Policy eintragen, nach den Vorschaubildern (die ändern die Seite noch)
           node tests/smoke.js site/index.html
           if [ -f site/en/index.html ]; then node tests/smoke.js site/en/index.html; fi
+          node tests/onepager.js site/index.html "$RUNNER_TEMP/onepager.docx"  # Lesezeichen als Word-Seite: Download auslösen und Datei prüfen
+          python tests/check_onepager.py "$RUNNER_TEMP/onepager.docx"
+          if [ -f site/en/index.html ]; then node tests/onepager.js site/en/index.html "$RUNNER_TEMP/onepager-en.docx" && python tests/check_onepager.py "$RUNNER_TEMP/onepager-en.docx"; fi
       - name: Manifest der Seite (Prüfsummen)
         run: python -m monitor.manifest site   # site/manifest.json und data/archive/manifest.sha256
       - name: Daten und Manifest committen
