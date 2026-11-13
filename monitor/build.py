@@ -868,18 +868,17 @@ def chart_sentences(c: dict) -> list[str]:
                 return []
             below = sum(1 for r in lv if r["level"] < 0)
             m3 = sorted([r for r in rows if r.get("m3") is not None], key=lambda r: r["m3"])
-            first = [f"In den drei Monaten bis {per} legte die Branche „{m3[-1]['label']}“ am stärksten zu ({num(m3[-1]['m3'], 1, True)} % ggü. den drei Monaten davor), "
-                     f"„{m3[0]['label']}“ entwickelte sich am schwächsten ({num(m3[0]['m3'], 1, True)} %)."] if m3 else []
-            return first + [f"Im {per} lagen {below} von {len(lv)} Branchen unter ihrem Durchschnitt des Jahres 2019, dem letzten vollen Jahr vor der Pandemie.",
-                    f"Am weitesten über dem Stand von 2019 lag im {per} die Branche „{lv[-1]['label']}“ ({num(lv[-1]['level'], 1, True)} %), am weitesten darunter „{lv[0]['label']}“ ({num(lv[0]['level'], 1, True)} %)."]
+            nb = lambda t: re.sub(r"^\d+\s+", "", t)
+            return [f"Im {per} lagen {below} von {len(lv)} Branchen unter ihrem Durchschnitt des Jahres 2019, dem letzten vollen Jahr vor der Pandemie.",
+                    f"Am weitesten über dem Stand von 2019 lag im {per} die Branche „{nb(lv[-1]['label'])}“ ({num(lv[-1]['level'], 1, True)} %), am weitesten darunter „{nb(lv[0]['label'])}“ ({num(lv[0]['level'], 1, True)} %)."]
         if typ == "heat":
             rows = c["heat"]["rows"]
             last = c["heat"]["cols"][-1]
             per = _per(last, "M")
             vol = lambda r: " (von Großaufträgen geprägt, stark schwankend)" if r["label"] in (c.get("volatile") or []) else ""
-            out = [f"In den drei Monaten bis {per} wuchs die Branche „{rows[-1]['label']}“{vol(rows[-1])} am stärksten: {num(rows[-1]['m3'], 1, True)} % ggü. den drei Monaten davor.",
-                   f"In den drei Monaten bis {per} entwickelte sich die Branche „{rows[0]['label']}“ am schwächsten: {num(rows[0]['m3'], 1, True)} % ggü. den drei Monaten davor."]
-            return out
+            nb = lambda t: re.sub(r"^\d+\s+", "", t)
+            return [f"In den drei Monaten bis {per} legte die Branche „{nb(rows[-1]['label'])}“{vol(rows[-1])} am stärksten zu ({num(rows[-1]['m3'], 1, True)} %), "
+                    f"„{nb(rows[0]['label'])}“ entwickelte sich am schwächsten ({num(rows[0]['m3'], 1, True)} %); jeweils ggü. den drei Monaten davor."]
         if typ == "clock":
             k = c["clock"]
             x, y, t0 = k["x"][-1], k["y"][-1], pd.Timestamp(k["t"][-1])
@@ -1012,6 +1011,17 @@ def chart_sentences(c: dict) -> list[str]:
         series = [s for s in series if s.get("style") != "norm"]
         if c.get("emphasis"):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
+        if c.get("brief"):  # ein Satz je Vergleich: ggü. Vorjahresmonat und drei Monate ggü. den drei Monaten davor
+            nm, last = c["brief"], max(s["x"][-1] for s in series)
+            ss = [s for s in series if s["x"][-1] == last and s.get("id") in nm and len(s["y"]) > 13]
+            if ss:
+                lst = lambda xs: ", ".join(xs[:-1]) + " und " + xs[-1] if len(xs) > 1 else xs[0]
+                yy = [f"{nm[s['id']]} {num((s['y'][-1] / s['y'][-13] - 1) * 100, 1, True)} %" for s in ss if s["y"][-13]]
+                m3 = [f"{nm[s['id']]} {num((sum(s['y'][-3:]) / sum(s['y'][-6:-3]) - 1) * 100, 1, True)} %" for s in ss if None not in s["y"][-6:] and sum(s["y"][-6:-3])]
+                out = [f"{_when(last, freq)} veränderten sich ggü. dem {yoy_word}: {lst(yy)}."] if yy else []
+                if m3:
+                    out.append(f"In den drei Monaten bis {_per(last, freq)} veränderten sich ggü. den drei Monaten davor: {lst(m3)}.")
+                return out
         cb = c.get("combine")
         if isinstance(cb, dict):  # gleich gebaute Reihen in einem Satz, etwa Länder oder Bereiche
             last = min(s["x"][-1] for s in series) if cb.get("common") else max(s["x"][-1] for s in series)  # common: jüngster Zeitraum, den alle haben
@@ -1065,7 +1075,11 @@ def chart_sentences(c: dict) -> list[str]:
                 continue
             if sp and sp.get("tpl"):  # ganzer Satz als Vorlage
                 chg = num((v / yago - 1) * 100, 1, True) + " %" if yago else ""
-                out.append(sp["tpl"].format(when=when, year=s["x"][-1][:4], v=vv, n=num(v, d), abs=num(abs(v), d), ueber="über" if v >= 0 else "unter", zu_ab="zu" if v >= 0 else "ab",
+                thr = c.get("threshold")
+                up = c.get("upto") if c.get("upto", "")[:4] == s["x"][-1][:4] else None
+                if up:
+                    when = f"{when} bis zum {int(up[8:10])}. {MONTHS[int(up[5:7]) - 1]}"
+                out.append(sp["tpl"].format(when=when, year=s["x"][-1][:4], v=vv, tdiff=num(abs(v - thr), 0) if thr is not None else "", tword=("über" if v >= thr else "unter") if thr is not None else "", n=num(v, d), abs=num(abs(v), d), ueber="über" if v >= 0 else "unter", zu_ab="zu" if v >= 0 else "ab",
                                             waermer="wärmer" if v >= 0 else "kälter", hoeher="höher" if v >= 0 else "niedriger", oben_unten="oben" if v >= 0 else "unten", chg=chg).replace(" ( ggü. Vorjahr)", ""))
                 continue
             if not sp:  # Rückfall: neutrale Formulierung mit Beschriftung
@@ -1832,6 +1846,8 @@ def build_payload(root: Path = ROOT) -> dict:
                 c["recessions"], c["recessions_on"] = recs, False  # etwa Inflationsbeiträge, die einen eigenen Zweig haben
             if c.get("recessions") is False:
                 c.pop("recessions")
+            if c.get("partial_last") and c.get("upto_series") in data:  # laufendes Jahr: bis zum jüngsten Tag
+                c["upto"] = data[c["upto_series"]].dropna().index[-1].strftime("%Y-%m-%d")
             c["texts"] = [] if c.get("no_texts") else [x.replace(" in Euroraum", " im Euroraum").replace(" in Europäische Union", " in der Europäischen Union") for x in chart_sentences(c)]  # no_texts: etwa Tageswerte, deren Einzeltag nur Rauschen zeigt
             c["text"] = " ".join(c["texts"])
             c["last_x"] = _last_x(c)
