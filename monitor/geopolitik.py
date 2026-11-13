@@ -228,7 +228,16 @@ def kmpt(path: Path) -> dict[str, pd.Series]:
     t = t[pd.to_numeric(t["Year"], errors="coerce").notna()]
     t["Year"] = t["Year"].astype(int)
     t = t[t["Year"] < pd.Timestamp.today().year].set_index("Year")  # nur abgeschlossene Jahre
-    return {key: _years(pd.to_numeric(t[col]).astype(float)) for key, col in KMPT.items()}
+    out = {key: _years(pd.to_numeric(t[col]).astype(float)) for key, col in KMPT.items()}
+    m = pd.read_excel(path, sheet_name="A1 DE Total Orders", header=None)
+    head = m.index[m.apply(lambda r: r.astype(str).eq("Total military orders").any(), axis=1)][0]
+    col = m.columns[m.iloc[head].astype(str).eq("Total military orders")][0]
+    rows = m.iloc[head + 1:]
+    when = pd.to_datetime(rows[col - 1], errors="coerce")
+    s = pd.Series(pd.to_numeric(rows[col], errors="coerce").values, index=when).dropna()
+    s = s[s.index.notna()].sort_index()
+    out["kmpt_de_orders_12m"] = s.rolling(12).sum().dropna()  # Summe der letzten zwölf Monate, Mrd. €
+    return out
 
 
 def main(argv: list[str] | None = None) -> int:

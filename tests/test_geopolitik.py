@@ -81,7 +81,11 @@ def test_kmpt_reads_origin_table(tmp_path):
     rows = [[None, "Figure 3"], [None, None], [None, "Year", "Germany only", "Germany and foreign partnership", "European, non-Germany", "Non-European only", "Total"],
             [None, 2024, 25.0, 11.0, 0.0, 4.3, 40.3], [None, 2099, 1.0, 1.0, 1.0, 1.0, 4.0], [None, "Total", 26.0, 12.0, 1.0, 5.3, 44.3]]
     path = tmp_path / "kmpt.xlsx"
-    pd.DataFrame(rows).to_excel(path, sheet_name="Fig 3 DE Origin (%)", header=False, index=False)
+    months = [[None, "Month", "Total military orders"]] + [[None, pd.Timestamp(2024, m, 1), float(m)] for m in range(1, 13)] + [[None, pd.Timestamp(2025, 1, 1), 0.0], [None, "Total", 78.0]]
+    with pd.ExcelWriter(path) as w:
+        pd.DataFrame(rows).to_excel(w, sheet_name="Fig 3 DE Origin (%)", header=False, index=False)
+        pd.DataFrame([[None, "Figure A1"]] + months).to_excel(w, sheet_name="A1 DE Total Orders", header=False, index=False)
     out = geopolitik.kmpt(path)
+    assert list(out["kmpt_de_orders_12m"].round(1)) == [78.0, 77.0]  # Summe 1 bis 12, dann ohne Januar 2024
     assert list(out["kmpt_noneu"].index.year) == [2024]  # ohne laufendes oder künftiges Jahr und ohne Summenzeile
     assert out["kmpt_de_only"].iloc[0] == 25.0 and out["kmpt_noneu"].iloc[0] == 4.3

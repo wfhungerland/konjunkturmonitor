@@ -678,6 +678,10 @@ charts:
     title: "Military expenditure"
     ask: "How high is military spending by comparison?"
     caption: "Military expenditure in percent of economic output, as defined by the Stockholm International Peace Research Institute (SIPRI). It includes military pensions and military aid. NATO's targets of 2 percent and 3.5 percent by 2035 rest on a different definition. By NATO's count, Germany is usually somewhat higher. Germany is highlighted."
+  arms_cycle:
+    title: "Defence cycle: orders and production"
+    ask: "Does production follow defence orders?"
+    caption: "The first chart shows federal defence orders, summed over the previous twelve months, in billion euros (Kiel Institute). The second shows production of weapons and ammunition, 2021 = 100, seasonally and calendar adjusted (Eurostat). Since 2023, orders have grown faster than production; tanks, aircraft and ships are not part of the production index. Orders end in January 2026, production runs further."
   def_use:
     title: "What the state spends defence money on"
     ask: "What does the state spend defence money on?"
@@ -958,6 +962,7 @@ series:
   gpr_de: {title: "Geopolitical risk relating to Germany", label: "Germany", unit: "Index, 1985–2019 average = 100", note: "Country index GPRC_DEU: share of articles in ten major English-language newspapers that mention geopolitical tensions, wars or terrorism together with Germany; rescaled by the monitor to an average of 100 in 1985 to 2019. Retrieved every working day from matteoiacoviello.com.", adjustment: "not adjusted"}
   gpr_world: {title: "Geopolitical risk, world", label: "World", unit: "Index, 1985–2019 average = 100", note: "Overall GPR index, rescaled by the monitor to an average of 100 in 1985 to 2019.", adjustment: "not adjusted"}
   milex: {title: "Military expenditure in % of GDP, {staat_name}", label: "{staat_name}", unit: "% of GDP", note: "Military expenditure as defined by SIPRI (including military pensions, paramilitary forces and military aid) in % of GDP. Germany until 1990 West Germany. April 2026 edition (file v1.2), taken over by hand.", adjustment: "annual, current prices"}
+  kmpt_de_orders_12m: {title: "German defence orders, sum of the previous twelve months", label: "Orders, twelve-month sum", unit: "€ bn", adjustment: "month of announcement, current prices"}
   kmpt_de_only: {title: "German defence contracts to companies based in Germany", label: "German", unit: "€ bn", adjustment: "year of announcement, current prices"}
   kmpt_de_partner: {title: "German defence contracts to German and foreign companies jointly or with production in Germany", label: "German with partner", unit: "€ bn", adjustment: "year of announcement, current prices"}
   kmpt_eu: {title: "German defence contracts to companies in the rest of Europe", label: "rest of Europe", unit: "€ bn", adjustment: "year of announcement, current prices"}
