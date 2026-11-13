@@ -54,6 +54,31 @@
   .stturn { margin: 14px 0 6px; } .stturn ul { list-style: none; margin: 0; padding: 0; } .stturn li { display: grid; grid-template-columns: 3.2em minmax(0, 1fr); font: 13.5px/1.4 var(--ff); margin: 0 0 7px; }
   .stturn .sp { color: #595959; }
   @media (max-width: 600px) { .stnow .sg { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .kmtx { border-left: 2px solid #000; padding-left: 12px; margin: 12px 0 4px; font: 14.5px/1.45 var(--ff); } .kmtx[hidden] { display: none; }
+  .kmtx .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 2px 0 5px; }
+  .gut .kmt[aria-expanded="true"] { font-weight: 700; color: #000; }
+  /* Lage auf einen Blick: erster Bildschirm für eilige Leser */
+  .lage { margin: 6px 0 26px; } .lage[hidden] { display: none; }
+  .lage .lh { display: flex; flex-wrap: wrap; gap: 4px 18px; align-items: baseline; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 6px; }
+  .lage .lh h2 { font: 700 15px var(--ff); letter-spacing: .06em; text-transform: uppercase; margin: 0; } .lage .lh span { font: 13.5px var(--ff); color: #595959; }
+  .lage .lk { font: 13.5px var(--ff); background: none; border: 0; padding: 0; cursor: pointer; color: #595959; } .lage .lk[aria-pressed="true"] { color: #000; font-weight: 700; }
+  .lage .kom { display: none; } body.lagek .lage .kom { display: block; }
+  .lage .say { font: 600 24px/1.3 var(--ff); margin: 18px 0 4px; max-width: 900px; } .lage .say2 { color: #595959; margin: 0 0 4px; max-width: 900px; }
+  .lage .kp { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-bottom: 1px solid var(--line); margin-top: 16px; }
+  .lage .kp a { display: block; color: #000; text-decoration: none; padding: 12px 12px 14px; border-left: 1px solid var(--line); }
+  .lage .kp a:first-child { border-left: 0; padding-left: 0; } .lage .kp a:hover .kv { color: #0070C0; }
+  .lage .kl { font: 13px var(--ff); color: #595959; text-transform: uppercase; letter-spacing: .05em; }
+  .lage .kv { font: 700 30px/1.15 var(--ff); margin: 4px 0 2px; white-space: nowrap; } .lage .kv small { font-size: 15px; font-weight: 600; margin-left: 3px; }
+  .lage .kc { font: 14px/1.35 var(--ff); } .lage .kc .t { margin-right: 4px; } .lage .kpp { font: 12.5px/1.3 var(--ff); color: #595959; margin-top: 4px; }
+  .lage .cols { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 28px; margin-top: 20px; }
+  .lage h3 { font: 600 12.5px var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 0 0 8px; }
+  .lage ul { list-style: none; margin: 0 0 14px; padding: 0; } .lage li { margin: 0 0 8px; font: 15px/1.4 var(--ff); } .lage li a { color: #000; }
+  .lage .amp { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 7px; } .lage .amp.r { background: #C00000; } .lage .amp.y { background: #E0A800; } .lage .amp.g { background: #47D359; }
+  .lage .fc b { font-size: 20px; } .lage .mine { margin-top: 6px; border-top: 1px solid var(--line); padding-top: 12px; display: flex; gap: 22px; flex-wrap: wrap; font: 600 15px var(--ff); }
+  .lage .mine a { color: #000; } .lage .mine a.s { color: #0070C0; }
+  @media (max-width: 700px) { .lage .say { font-size: 20px; } .lage .kp { grid-template-columns: 1fr 1fr; } .lage .kp a, .lage .kp a:first-child { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
+    .lage .kp a:nth-child(even) { padding-left: 12px; border-left: 1px solid var(--line); } .lage .kp a:nth-child(-n+2) { border-top: 0; } .lage .kv { font-size: 26px; } .lage .cols { grid-template-columns: 1fr; gap: 6px; } }
+  body.lagek #lage + .overview, body #lage:not([hidden]) + .overview { display: none; }
   .overview .fz { display: none; } body.fazit .overview .fz { display: block; border-left: 2px solid var(--text); padding-left: 14px; margin: 14px 0 4px; }
   .overview .fz .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 3px 0 5px; }
   body:not(.fazit) .verdict { display: none !important; }
@@ -463,6 +488,7 @@
 <body>
 <header id="top"><div class="bar"><div class="brand"><h1><a class="home" href="#top" title="Nach oben">Konjunkturmonitor</a></h1><div class="meta"><span class="stand" id="stand"></span><span class="lang" id="lang"></span></div></div><nav id="nav"></nav></div></header>
 <main>
+  <section id="lage" class="lage" hidden></section>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
   <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
@@ -510,16 +536,21 @@ const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
 const FAZTXT = { btn: "Kommentar", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Kommentar bleibt die Seite beschreibend." };
 const ABTXT = { close: "schließen" };
-const TOURTXT = { name: "Rundgang", ask: "Neu hier? Eine Minute Rundgang zeigt, wie die Seite funktioniert.", go: "Los geht’s", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
+const TOURTXT = { name: "Anleitung", ask: "Neu hier? Die Anleitung zeigt in einer Minute, wie die Seite funktioniert.", go: "Los geht’s", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
   steps: [
     ["#nav", "Hier ist das Inhaltsverzeichnis. Ein Klick zeigt alle Kapitel. Die Lupe daneben findet jede Grafik."],
     [".fazitbtn", "Die Seite beschreibt nur, was die Zahlen zeigen. Wer eine Einschätzung lesen will, schaltet hier den Kommentar ein."],
     [".briefbtn", "Am Anfang sehen Sie nur das Wichtigste. Hier klappen Sie alle Kapitel auf."],
+    ["#lage", "Die Lage auf einen Blick: sieben Kernzahlen mit Richtung, Ausblick und was die Gremien raten. „Kommentar“ blendet eine Einschätzung mit Warnlampen ein."],
     ["#starttable", "Die wichtigsten Zahlen auf einen Blick. ▲ heißt gestiegen, ▼ gesunken, ● gleich geblieben. Rot heißt: eher ungünstig. Ein Klick führt zum Kapitel."],
     ["@card .htools", "Lieber Zahlen statt Linien? Mit „Tabelle“ sehen Sie die letzten zwölf Werte."],
     ["@card .tools", "Mit diesen Schaltern sehen Sie mehr, etwa die ganze Geschichte einer Zahl oder frühere Krisen."],
     ["@card .cside", "Hier steht in wenigen Sätzen, was die Grafik zeigt. Wer es genau wissen will, klickt auf „Mehr zur Methode“."],
     ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik. Und über „Feedback“ erreicht Ihre Meinung zu einer Grafik direkt den Autor."]] };
+const KMTXT = { btn: "Kommentar", title: "Eigene Einschätzung zu dieser Grafik" };
+const LAGETXT = { title: "Lage auf einen Blick", stand: "Stand", komm: "Kommentar", kommt: "Lage-Satz und Warnlampen: Einschätzung nach festen Regeln, automatisch erzeugt",
+  warn: "Warnlampen", out: "Ausblick", grem: "Was die Gremien raten", neu: "Neu in den letzten sieben Tagen", term: "Nächste Termine (geschätzt)",
+  mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", wd: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"] };
 const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const PHASETXT = { to: "–", L: { "-1": "Lohnzurückhaltung", "0": "Löhne im Spielraum", "1": "kräftigere Löhne" }, G: { "-1": "straffer", "0": "beibehalten", "1": "lockerer" },
   F: { "-1": "Konsolidierung", "0": "neutral", "1": "Impulse" }, A: { "-1": "mehr Schutz", "0": "beibehalten", "1": "Flexibilisierung" } };
@@ -1573,7 +1604,13 @@ function card(c, no) {
   // alle Optionen offen untereinander, beginnend auf Höhe der Zeichenfläche (siehe alignGut)
   gut.insertAdjacentHTML("beforeend", `<div class="gopts"><button type="button" class="dl" aria-expanded="false" title="${GUTTXT.dlt}">${GUTTXT.dl}</button><div class="dlist" hidden>${acts.join("")}</div>`
     + (c.chart && !capx ? `<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${GUTTXT.meth}</a>` : "")  // mit Erläuterung steht „Mehr zur Methode“ schon rechts
-    + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button></div>`);
+    + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button>`
+    + (c.kommentar ? `<button type="button" class="kmt" aria-expanded="false" title="${KMTXT.title}">${KMTXT.btn}</button>` : "") + `</div>`);
+  if (c.kommentar) {  // Kommentar je Grafik: eigener Absatz mit Linie links, unter der Erläuterung, erst auf Klick
+    const kb = gut.querySelector(".kmt"), kx = document.createElement("div"); kx.className = "kmtx"; kx.hidden = true;
+    kx.innerHTML = `<span class="fzl">${KMTXT.btn}</span>${esc(c.kommentar)}`; side.appendChild(kx);
+    kb.onclick = () => { kx.hidden = !kx.hidden; kb.setAttribute("aria-expanded", String(!kx.hidden)); };
+  }
   // Direkter Link auf diese Abbildung zum Teilen
   const lk = gut.querySelector("button.lnk");
   const dlb = gut.querySelector("button.dl"); dlb.onclick = () => { const l = dlb.nextElementSibling, open = l.hidden; l.hidden = !open; dlb.setAttribute("aria-expanded", String(open)); };  // Formate auf- und zuklappen
@@ -1788,8 +1825,9 @@ function searchBox() {
   box.innerHTML = `<button type="button" class="lupe" aria-label="Suchen" title="Suchen (Taste /)"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="10.2" y1="10.2" x2="15" y2="15" stroke="currentColor" stroke-width="1.6"/></svg></button><input type="search" placeholder="Suchen, z. B. Inflation" aria-label="Abbildungen und Themen durchsuchen" autocomplete="off"><ul hidden role="listbox"></ul>`;
   const inp = box.querySelector("input"), ul = box.querySelector("ul"); let hits = [], sel = 0;
   // Lupe: Feld klappt erst beim Klick (oder Taste /) auf und schließt sich leer wieder
-  box.querySelector(".lupe").onclick = () => { box.classList.add("open"); inp.focus(); };
-  inp.addEventListener("focus", () => box.classList.add("open"));
+  const closeNav = () => { const p = document.getElementById("navpanel"); if (p && !p.hidden) { p.hidden = true; document.querySelector(".navbtn")?.setAttribute("aria-expanded", "false"); document.body.classList.remove("menuopen"); } };  // Suche schließt das Inhaltsmenü
+  box.querySelector(".lupe").onclick = () => { closeNav(); box.classList.add("open"); inp.focus(); };
+  inp.addEventListener("focus", () => { closeNav(); box.classList.add("open"); });
   inp.addEventListener("blur", () => setTimeout(() => { if (!inp.value && document.activeElement !== inp) box.classList.remove("open"); }, 200));
   const mark = (s, ws) => { let h = esc(s); ws.forEach(w => { const i = norm(h).indexOf(w); if (i >= 0 && norm(h).length === h.length) h = h.slice(0, i) + "<mark>" + h.slice(i, i + w.length) + "</mark>" + h.slice(i + w.length); }); return h; };
   const show = () => {
@@ -1839,6 +1877,7 @@ function build() {
   if (LY.minimal) document.body.classList.add("minimal");
   if (DATA.embed) document.body.classList.add("embed");  // Einzelseite zum Einbetten: nur diese Abbildung
   const grid = document.getElementById("grid"), nav = document.getElementById("nav"), topics = document.getElementById("topics");
+  lageView();
   if (LY.start_table && startTable(document.getElementById("starttable"))) grid.style.display = "none";
   else DATA.questions.forEach(q => {
     const a = q.answer, val = (a.signed && a.value > 0 ? "+" : "") + fmt(a.value, a.decimals ?? 1);
@@ -2075,6 +2114,36 @@ const tour = (function () {
   return start;
 })();
 document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = document.createElement("a"); a.href = "#top"; a.textContent = TOURTXT.name; a.onclick = e => { e.preventDefault(); scrollTo(0, 0); setTimeout(tour, 150); }; ft.prepend(a); });
+// Lage auf einen Blick: Kernzahlen mit Richtung, Lage-Satz und Warnlampen (nur mit Kommentar), Ausblick, Gremien, Neues, Termine
+function lageView() {
+  const box = document.getElementById("lage"), L = (DATA.lage || {})[DATA.lang === "en" ? "en" : "de"];
+  if (!box || !L || !(L.kpis || []).length || DATA.embed) return;
+  const tri = k => `<span class="t ${k.tri === "flat" ? "flat" : k.tri === "up" ? (k.bad ? "up-bad" : "up-ok") : "down"}">${TRI[k.tri]}</span>`;
+  const kp = L.kpis.map(k => `<a href="#${esc(k.topic)}"><div class="kl">${esc(k.label)}</div><div class="kv">${esc(k.value)}${k.unit ? `<small>${esc(k.unit)}</small>` : ""}</div>`
+    + `<div class="kc">${k.lines.filter(Boolean).map((l, i) => (i ? "" : tri(k)) + esc(l)).join("<br>")}</div><div class="kpp">${esc(k.per)}</div></a>`).join("");
+  const warn = (L.warn || []).map(w => `<li><span class="amp ${w.lvl}"></span><a href="#${esc(w.topic)}"><b>${esc(w.label)}:</b></a> ${esc(w.text)}</li>`).join("");
+  const out = L.outlook ? `<div class="fc">${esc(L.outlook.who)}:<br>${L.outlook.vals.map(v => `<b>${esc(v.v)}${DATA.lang === "en" ? "%" : "\u00a0%"}</b> ${v.year}`).join(" · ")}</div>` : "";
+  const grem = (L.gremien || []).map(g => `<li>${esc(g.split(/(?<=\.)\s/)[0])}</li>`).join("");
+  const neu = (DATA.week || []).slice(0, 4).map(w => `<li><a href="#${FA(w.no)}">${esc(w.title)}</a></li>`).join("");
+  const cal = (DATA.topics || []).flatMap(t => t.charts || []).find(c => c.type === "calendar"), today = new Date().toISOString().slice(0, 10);
+  const term = ((cal && cal.calendar && cal.calendar.events) || []).filter(e => e.date >= today).slice(0, 3)
+    .map(e => { const d = new Date(e.date + "T12:00:00"); return `<li>${LAGETXT.wd[d.getDay()]} ${d.getDate()}.${d.getMonth() + 1}. <a href="#${esc(e.topic)}">${esc(e.name)}</a></li>`; }).join("");
+  let n = 0; try { n = JSON.parse(localStorage.getItem("km.sammlung") || "[]").length; } catch (e) {}
+  const st = new Date(DATA.generated_at);
+  box.innerHTML = `<div class="lh"><h2>${LAGETXT.title}</h2><span>${LAGETXT.stand} ${st.toLocaleDateString(DATA.lang === "en" ? "en-GB" : "de-DE", { day: "numeric", month: "long", year: "numeric" })}</span>`
+    + `<button type="button" class="lk" aria-pressed="false" title="${LAGETXT.kommt}">${LAGETXT.komm}</button></div>`
+    + (L.say ? `<div class="kom"><p class="say">${esc(L.say)}</p><p class="say2">${esc(L.say2 || "")}</p></div>` : "")
+    + `<div class="kp">${kp}</div><div class="cols">`
+    + `<div>${warn ? `<div class="kom"><h3>${LAGETXT.warn}</h3><ul>${warn}</ul></div>` : ""}${out ? `<h3>${LAGETXT.out}</h3>${out}` : ""}</div>`
+    + `<div>${grem ? `<h3>${LAGETXT.grem}</h3><ul>${grem}</ul>` : ""}</div>`
+    + `<div>${neu ? `<h3>${LAGETXT.neu}</h3><ul>${neu}</ul>` : ""}${term ? `<h3>${LAGETXT.term}</h3><ul>${term}</ul>` : ""}</div></div>`
+    + `<div class="mine"><a class="s" href="#sammlung">★ ${LAGETXT.mine}${n ? ` (${n})` : ""}</a><a href="#top" class="lall">${LAGETXT.all}</a></div>`;
+  box.hidden = false;
+  const kb = box.querySelector(".lk"), setK = on => { document.body.classList.toggle("lagek", on); kb.setAttribute("aria-pressed", String(on)); try { localStorage.setItem("km_lagek", on ? "1" : "0"); } catch (e) {} };
+  let k0 = false; try { k0 = localStorage.getItem("km_lagek") === "1"; } catch (e) {}
+  setK(k0); kb.onclick = () => setK(!document.body.classList.contains("lagek"));
+  box.querySelector(".lall").onclick = e => { e.preventDefault(); const b = document.querySelector(".navbtn"); scrollTo(0, 0); if (b) setTimeout(() => b.click(), 50); };
+}
 // Rückmeldung: Knopf unten links öffnet ein Fenster mit einem Textfeld; Versand über den Formulardienst (site.feedback)
 (function feedback() {
   const id = (DATA.site || {}).feedback; if (!id || DATA.embed) return;
