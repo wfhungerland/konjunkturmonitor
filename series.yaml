@@ -22,6 +22,7 @@ blocks:
   - {id: dienstleistungen, title: Dienstleistungen, sheet: Dienstleistungen}
   - {id: wetter, title: Wetter und Pegel, sheet: Wetter}
   - {id: geopolitik, title: Geopolitik, sheet: Geopolitik}
+  - {id: haushalte, title: Haushalte, sheet: Haushalte}
 
 names:
   staat:
@@ -160,16 +161,19 @@ charts:
   emp_sector: {title: "Erwerbstätige nach Wirtschaftsbereichen", decimals: 0}
   migration: {title: "Nettozuwanderung", decimals: 0}
   cit: {title: "Steuersätze auf Unternehmensgewinne", decimals: 1}
-  hybrid: {title: "Russische Sabotage und Subversion in Europa", decimals: 0}
-  gpr: {title: "Geopolitisches Risiko", decimals: 0}
-  milex: {title: "Militärausgaben", decimals: 1}
-  cinc: {title: "Deutschlands Anteil an den Machtmitteln der Welt", decimals: 1}
-  ukraine_aid: {title: "Hilfe Deutschlands für die Ukraine", decimals: 1}
-  trade_harm: {title: "Schädliche Handelseingriffe gegen deutsche Interessen", decimals: 0}
-  arms_prod: {title: "Produktion von Waffen und Munition", decimals: 0}
-  milex_gov: {title: "Militärausgaben im Staatshaushalt", decimals: 1}
-  milex_eu_ru: {title: "Militärausgaben Europas und Russlands", decimals: 0}
-  trade_ru: {title: "Exporte nach Russland und in Nachbarländer", decimals: 1}
+  hybrid: {title: "Russische Sabotage in Europa erreichte 2024 ihren Höhepunkt", decimals: 0}
+  gpr: {title: "Das Kriegsrisiko in den Zeitungen bleibt seit 2022 erhöht", decimals: 0}
+  milex: {title: "Deutschland gibt erstmals seit 1990 mehr als 2 % für Verteidigung aus", decimals: 1}
+  cinc: {title: "Deutschlands materielles Gewicht ist seit 1913 auf ein Zehntel gefallen", decimals: 1}
+  ukraine_aid: {title: "Deutschland hilft der Ukraine vor allem mit Waffen", decimals: 1}
+  trade_harm: {title: "Die meisten Handelshemmnisse kommen weder aus China noch aus den USA", decimals: 0}
+  arms_prod: {title: "Rüstung wächst, die übrige Industrie schrumpft", decimals: 0}
+  milex_gov: {title: "Verteidigung bekommt einen wachsenden Teil des Haushalts", decimals: 1}
+  def_use: {title: "Das Geld fließt vor allem in Material und Betrieb, kaum in neue Waffen", decimals: 1}
+  orders_origin: {title: "Fast alle Rüstungsaufträge gehen an Firmen in Deutschland", decimals: 1}
+  arms_cycle: {title: "Die Aufträge laufen der Produktion davon", decimals: 0}
+  milex_eu_ru: {title: "Europa gibt mehr als dreimal so viel aus wie Russland", decimals: 0}
+  trade_ru: {title: "Die Exporte nach Russland sind eingebrochen, der Umweg über Nachbarn bleibt", decimals: 1}
   pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}
   price_exp: {title: "Preiserwartungen von Unternehmen und Verbrauchern", decimals: 0}
   gdp_use: {title: "Verwendung der Wirtschaftsleistung im letzten Quartal", decimals: 1}
@@ -188,6 +192,17 @@ charts:
   sector_now: {title: "Lage nach Bereichen", decimals: 0}
   sector_next: {title: "Erwartungen nach Bereichen", decimals: 0}
   yields: {title: "Zinsen für Bundesanleihen", decimals: 1}
+  ecb_rates: {title: "Leitzinsen der EZB", decimals: 2}
+  ecb_bs: {title: "Bilanz des Eurosystems", decimals: 2}
+  spreads: {title: "Renditeabstand zu Bundesanleihen", decimals: 2}
+  qe_prog: {title: "Anleihebestände der EZB nach Programm", decimals: 0}
+  qe_land: {title: "Käufe von Staatsanleihen nach Land", decimals: 0}
+  zinskurven: {title: "Zinskurven von Staatsanleihen", decimals: 2}
+  curve_slope: {title: "Abstand langer zu kurzer Zinsen", decimals: 2}
+  corp_yields: {title: "Renditen von Unternehmensanleihen", decimals: 2}
+  corp_spread: {title: "Renditeabstand der Unternehmensanleihen", decimals: 2}
+  bls_std: {title: "Kreditstandards der Banken", decimals: 0}
+  bls_dem: {title: "Kreditnachfrage bei den Banken", decimals: 0}
   oil: {title: "Ölpreis", decimals: 0}
   oil_d: {title: "Ölpreis, Tageswerte", decimals: 1}
   fuel: {title: "Preise für Benzin, Diesel und Heizöl", decimals: 2}
@@ -213,6 +228,7 @@ charts:
   svr_bip: {title: "Wachstumsprognosen des Sachverständigenrats und erste Meldung", decimals: 1}
   svr_vpi: {title: "Inflationsprognosen des Sachverständigenrats und erste Meldung", decimals: 1}
   svr_alo: {title: "Arbeitslosenprognosen des Sachverständigenrats und erste Meldung", decimals: 0}
+  svr_treff: {title: "Treffsicherheit der Prognosen des Sachverständigenrats", decimals: 1}
   svr_rat: {title: "Empfehlungen des Sachverständigenrats zu vier Dauerfragen", decimals: 0}
   svr_fiskal: {title: "Empfohlener Kurs der Finanzpolitik und erwartetes Wachstum", decimals: 1}
   gd_bip: {title: "Wachstumsprognosen der Gemeinschaftsdiagnose und erste Meldung", decimals: 1}
@@ -221,6 +237,7 @@ charts:
   gd_saldo: {title: "Prognosen der Gemeinschaftsdiagnose zum Finanzierungssaldo des Staates", decimals: 1}
   gd_fehler: {title: "Fehler der Wachstumsprognosen der Gemeinschaftsdiagnose", decimals: 1}
   gd_ziel: {title: "Wachstumsprognosen der Gemeinschaftsdiagnose für ein Zieljahr", decimals: 1}
+  gd_treff: {title: "Treffsicherheit der Prognosen der Gemeinschaftsdiagnose", decimals: 1}
   gd_rat: {title: "Empfehlungen der Gemeinschaftsdiagnose zu vier Dauerfragen", decimals: 0}
   gd_vergleich: {title: "Empfehlungen von Gemeinschaftsdiagnose und Sachverständigenrat im Vergleich", decimals: 0}
   gd_themen: {title: "Themen der Gemeinschaftsdiagnose: Anteil der Seiten", decimals: 1}
@@ -236,6 +253,16 @@ charts:
   gov_balance: {title: "Finanzierungssaldo des Staates", decimals: 1}
   gov_spend: {title: "Zinsausgaben und Investitionen des Staates", decimals: 1}
   gov_debt: {title: "Schuldenstand des Staates", decimals: 1}
+  gov_debt_level: {title: "Schulden nach staatlicher Ebene", decimals: 1}
+  gov_debt_instr: {title: "Schulden nach Instrument", decimals: 1}
+  gov_debt_holder: {title: "Schulden nach Gläubiger", decimals: 1}
+  gov_debt_mat: {title: "Restlaufzeit der Staatsschulden", decimals: 1}
+  gov_debt_cost: {title: "Zins auf die Staatsschulden", decimals: 1}
+  stx_pk: {title: "Staatsausgaben je Einwohner", decimals: 0}
+  hh_wealth: {title: "Nettovermögen je Haushalt", decimals: 0}
+  hh_balance: {title: "Vermögen und Schulden des mittleren Haushalts", decimals: 1}
+  hh_share: {title: "Verteilung des Vermögens", decimals: 1}
+  hh_spend: {title: "Konsum nach Zweck", decimals: 1}
   migration_groups: {title: "Nettozuwanderung nach Staatsangehörigkeit", decimals: 0}
 
   long_rr: {title: "Realzins seit 1871", decimals: 1}
@@ -1555,6 +1582,516 @@ series:
     stale_after_months: 1
     chart: yields_d
     label: "€STR (Tagesgeld)"
+
+  # Geldpolitik: Leitzinsen, Bilanz des Eurosystems, Staatsanleihe-Spreads, Zinsstruktur, Unternehmensanleihen, Bank Lending Survey
+  - id: ecb_dfr
+    block: finanzen
+    source: ecb
+    key: FM/D.U2.EUR.4F.KR.DFR.LEV
+    params: {aggregate: monthly_mean}
+    title: "Leitzins der EZB: Einlagesatz, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+    chart: ecb_rates
+    label: "Einlagesatz"
+
+  - id: ecb_mro
+    block: finanzen
+    source: ecb
+    key: FM/D.U2.EUR.4F.KR.MRR_RT.LEV
+    params: {aggregate: monthly_mean}
+    title: "Leitzins der EZB: Hauptrefinanzierungssatz (Festsatz oder Mindestbietungssatz), Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+    chart: ecb_rates
+    label: "Hauptrefinanzierungssatz"
+
+  - id: ecb_mlf
+    block: finanzen
+    source: ecb
+    key: FM/D.U2.EUR.4F.KR.MLFR.LEV
+    params: {aggregate: monthly_mean}
+    title: "Leitzins der EZB: Spitzenrefinanzierungssatz, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+    chart: ecb_rates
+    label: "Spitzenrefinanzierungssatz"
+
+  - id: estr_m
+    block: finanzen
+    source: ecb
+    key: EST/B.EU000A2X2A25.WT
+    params: {aggregate: monthly_mean}
+    title: "Euro-Kurzfristzins €STR, Monatsmittel"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2019-10-01"
+    chart: ecb_rates
+    label: "€STR (Tagesgeld)"
+
+  - id: ecb_bs_total
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.T000000.Z5.Z01
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Bilanzsumme des Eurosystems, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_sec
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A070100.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Wertpapiere für geldpolitische Zwecke (Ankaufprogramme), Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_loans
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A050000.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Kredite an Banken aus geldpolitischen Geschäften (Tender), Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_df
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.L020200.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Einlagefazilität der Banken, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_gold
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A010000.Z5.Z0Z
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Gold und Goldforderungen, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_fx1
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A020000.U4.Z06
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Fremdwährungsforderungen an Ansässige außerhalb des Euroraums, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_fx2
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A030000.U2.Z06
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Fremdwährungsforderungen an Ansässige im Euroraum, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_fx3
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A040000.U4.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Euro-Forderungen an Ansässige außerhalb des Euroraums, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_oth_ci
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A060000.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Sonstige Forderungen an Kreditinstitute im Euroraum, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_secall
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A070000.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Wertpapiere von Ansässigen im Euroraum, insgesamt, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_gov
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A080000.U2.EUR
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Forderungen an öffentliche Haushalte, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: ecb_bs_other
+    block: finanzen
+    source: ecb
+    key: ILM/W.U2.C.A110000.Z5.Z01
+    params: {aggregate: monthly_mean, scale: 0.000001}
+    title: "Eurosystem: Sonstige Aktiva, Mittel der Wochenausweise"
+    unit: "Bio. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2007-01-01"
+
+  - id: qe_pspp
+    block: finanzen
+    source: static
+    key: qe_pspp
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: Staatsanleihen (PSPP), Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Staatsanleihen (PSPP)"
+
+  - id: qe_pepp_pub
+    block: finanzen
+    source: static
+    key: qe_pepp_pub
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: Pandemieprogramm PEPP, öffentliche Anleihen, Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Pandemieprogramm (PEPP), Staat"
+
+  - id: qe_cspp
+    block: finanzen
+    source: static
+    key: qe_cspp
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: Unternehmensanleihen (CSPP), Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Unternehmensanleihen (CSPP)"
+
+  - id: qe_cbpp3
+    block: finanzen
+    source: static
+    key: qe_cbpp3
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: gedeckte Bankanleihen (CBPP3), Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Gedeckte Bankanleihen (CBPP3)"
+
+  - id: qe_pepp_priv
+    block: finanzen
+    source: static
+    key: qe_pepp_priv
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: Pandemieprogramm PEPP, private Anleihen, Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Pandemieprogramm (PEPP), privat"
+
+  - id: qe_abspp
+    block: finanzen
+    source: static
+    key: qe_abspp
+    params: {source_name: "EZB, Anleihekäufe (APP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Anleihekäufe der EZB: Kreditverbriefungen (ABSPP), Bestand zum Monatsende"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_prog
+    label: "Kreditverbriefungen (ABSPP)"
+
+  - id: qe_net_de
+    block: finanzen
+    source: static
+    key: qe_net_de
+    params: {source_name: "EZB, Anleihekäufe (PSPP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Kumulierte Nettokäufe von Staatsanleihen durch das Eurosystem (PSPP und PEPP), Deutschland"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_land
+    label: "Deutschland"
+
+  - id: qe_net_fr
+    block: finanzen
+    source: static
+    key: qe_net_fr
+    params: {source_name: "EZB, Anleihekäufe (PSPP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Kumulierte Nettokäufe von Staatsanleihen durch das Eurosystem (PSPP und PEPP), Frankreich"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_land
+    label: "Frankreich"
+
+  - id: qe_net_it
+    block: finanzen
+    source: static
+    key: qe_net_it
+    params: {source_name: "EZB, Anleihekäufe (PSPP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Kumulierte Nettokäufe von Staatsanleihen durch das Eurosystem (PSPP und PEPP), Italien"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_land
+    label: "Italien"
+
+  - id: qe_net_es
+    block: finanzen
+    source: static
+    key: qe_net_es
+    params: {source_name: "EZB, Anleihekäufe (PSPP und PEPP)"}
+    license: "Wiederverwendung mit Quellenangabe (EZB)"
+    title: "Kumulierte Nettokäufe von Staatsanleihen durch das Eurosystem (PSPP und PEPP), Spanien"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: qe_land
+    label: "Spanien"
+
+  - id: curve_slope_de
+    block: finanzen
+    source: static
+    key: curve_slope_de
+    params: {source_name: "Deutsche Bundesbank, Zinsstruktur"}
+    license: "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)"
+    title: "Rendite zehnjähriger minus dreijähriger Staatsanleihen, Deutschland, Monatswerte"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: curve_slope
+    label: "Deutschland"
+
+  - id: curve_slope_it
+    block: finanzen
+    source: static
+    key: curve_slope_it
+    params: {source_name: "Banca d'Italia (BMK0100)"}
+    license: "Wiederverwendung mit Quellenangabe (Fonte: Banca d'Italia)"
+    title: "Rendite zehnjähriger minus dreijähriger Staatsanleihen, Italien, Monatswerte"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: curve_slope
+    label: "Italien"
+
+  - id: curve_slope_es
+    block: finanzen
+    source: static
+    key: curve_slope_es
+    params: {source_name: "Banco de España (Tabelle 1.3)"}
+    license: "Wiederverwendung mit Quellenangabe (Banco de España)"
+    title: "Rendite zehnjähriger minus dreijähriger Staatsanleihen, Spanien, Monatswerte"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: curve_slope
+    label: "Spanien"
+
+  - id: lt_de
+    block: finanzen
+    source: ecb
+    key: IRS/M.DE.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Deutschland (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: lt_it
+    block: finanzen
+    source: ecb
+    key: IRS/M.IT.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Italien (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: lt_fr
+    block: finanzen
+    source: ecb
+    key: IRS/M.FR.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Frankreich (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: lt_es
+    block: finanzen
+    source: ecb
+    key: IRS/M.ES.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Spanien (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: spread_it
+    block: finanzen
+    source: derived
+    derive: {from: lt_it, op: diff, minus: lt_de}
+    title: "Renditeabstand zehnjähriger Staatsanleihen Italien minus Deutschland"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: spreads
+    label: "Italien"
+
+  - id: spread_fr
+    block: finanzen
+    source: derived
+    derive: {from: lt_fr, op: diff, minus: lt_de}
+    title: "Renditeabstand zehnjähriger Staatsanleihen Frankreich minus Deutschland"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: spreads
+    label: "Frankreich"
+
+  - id: spread_es
+    block: finanzen
+    source: derived
+    derive: {from: lt_es, op: diff, minus: lt_de}
+    title: "Renditeabstand zehnjähriger Staatsanleihen Spanien minus Deutschland"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: spreads
+    label: "Spanien"
+
+  - id: de_corp_yield
+    block: finanzen
+    source: bundesbank
+    key: BBSIS/M.I.UMR.RD.EUR.X2000.B.A.A.R.A.A._Z._Z.A
+    title: "Umlaufsrendite inländischer Anleihen von Unternehmen (ohne Banken)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    chart: corp_yields
+    label: "Unternehmensanleihen"
+
+  - id: de_pub_yield
+    block: finanzen
+    source: bundesbank
+    key: BBSIS/M.I.UMR.RD.EUR.S13.B.A.A.R.A.A._Z._Z.A
+    title: "Umlaufsrendite inländischer Anleihen der öffentlichen Hand"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    chart: corp_yields
+    label: "Anleihen der öffentlichen Hand"
+
+  - id: de_corp_spread
+    block: finanzen
+    source: derived
+    derive: {from: de_corp_yield, op: diff, minus: de_pub_yield}
+    title: "Renditeabstand der Unternehmensanleihen zu Anleihen der öffentlichen Hand"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: corp_spread
+    label: "Abstand"
+
+  - id: bls_std_nfc
+    block: finanzen
+    source: ecb
+    key: BLS/Q.DE.ALL.O.E.Z.B3.ST.S.FNET
+    title: "Bank Lending Survey Deutschland: Kreditstandards für Unternehmen, letzte drei Monate, Saldo"
+    unit: "Saldo in %"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2003-01-01"
+    chart: bls_std
+    label: "Unternehmen"
+
+  - id: bls_std_hh
+    block: finanzen
+    source: ecb
+    key: BLS/Q.DE.ALL.Z.H.H.B3.ST.S.FNET
+    title: "Bank Lending Survey Deutschland: Kreditstandards für Wohnungsbaukredite an Haushalte, letzte drei Monate, Saldo"
+    unit: "Saldo in %"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2003-01-01"
+    chart: bls_std
+    label: "Wohnungsbaukredite"
+
+  - id: bls_dem_nfc
+    block: finanzen
+    source: ecb
+    key: BLS/Q.DE.ALL.O.E.Z.B3.ZZ.D.FNET
+    title: "Bank Lending Survey Deutschland: Kreditnachfrage der Unternehmen, letzte drei Monate, Saldo"
+    unit: "Saldo in %"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2003-01-01"
+    chart: bls_dem
+    label: "Unternehmen"
+
+  - id: bls_dem_hh
+    block: finanzen
+    source: ecb
+    key: BLS/Q.DE.ALL.Z.H.H.B3.ZZ.D.FNET
+    title: "Bank Lending Survey Deutschland: Nachfrage nach Wohnungsbaukrediten, letzte drei Monate, Saldo"
+    unit: "Saldo in %"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2003-01-01"
+    chart: bls_dem
+    label: "Wohnungsbaukredite"
 
   - id: fx_usd
     block: finanzen
@@ -2916,6 +3453,587 @@ series:
     start: "2005-01-01"
     chart: gov_debt
     label: "Schuldenstand"
+
+  # Schuldenstruktur des Staates: wer schuldet, in welcher Form, bei wem, wie lange, zu welchem Zins
+  - id: de_debt_s1311
+    block: staat
+    source: eurostat
+    key: gov_10q_ggdebt
+    params: {geo: DE, sector: S1311, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden, Bund (Maastricht-Abgrenzung)"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    stale_after_months: 9
+    chart: gov_debt_level
+    label: "Bund"
+
+  - id: de_debt_s1312
+    block: staat
+    source: eurostat
+    key: gov_10q_ggdebt
+    params: {geo: DE, sector: S1312, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden, Länder (Maastricht-Abgrenzung)"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    stale_after_months: 9
+    chart: gov_debt_level
+    label: "Länder"
+
+  - id: de_debt_s1313
+    block: staat
+    source: eurostat
+    key: gov_10q_ggdebt
+    params: {geo: DE, sector: S1313, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden, Gemeinden (Maastricht-Abgrenzung)"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    stale_after_months: 9
+    chart: gov_debt_level
+    label: "Gemeinden"
+
+  - id: de_debt_s1314
+    block: staat
+    source: eurostat
+    key: gov_10q_ggdebt
+    params: {geo: DE, sector: S1314, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden, Sozialversicherung (Maastricht-Abgrenzung)"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    stale_after_months: 9
+    chart: gov_debt_level
+    label: "Sozialversicherung"
+
+  - id: de_debt_gd_f3
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: S1_S2, maturity: TOTAL, unit: PC_GDP, na_item: GD_F3}
+    title: "Bruttoschulden des Staates nach Instrument: Wertpapiere"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_instr
+    label: "Wertpapiere"
+    style: bar
+
+  - id: de_debt_gd_f4
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: S1_S2, maturity: TOTAL, unit: PC_GDP, na_item: GD_F4}
+    title: "Bruttoschulden des Staates nach Instrument: Kredite"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_instr
+    label: "Kredite"
+    style: bar
+
+  - id: de_debt_gd_f2
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: S1_S2, maturity: TOTAL, unit: PC_GDP, na_item: GD_F2}
+    title: "Bruttoschulden des Staates nach Instrument: Bargeld und Einlagen"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_instr
+    label: "Bargeld und Einlagen"
+    style: bar
+
+  - id: de_debt_h_s121
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: "S121", maturity: TOTAL, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates nach Gläubiger: Bundesbank"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_holder
+    label: "Bundesbank"
+    style: bar
+
+  - id: de_debt_h_s122_s123
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: "S122_S123", maturity: TOTAL, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates nach Gläubiger: Banken"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_holder
+    label: "Banken"
+    style: bar
+
+  - id: de_debt_h_s124_s129
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: "S124-S129", maturity: TOTAL, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates nach Gläubiger: Versicherer, Fonds und andere"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_holder
+    label: "Versicherer, Fonds und andere"
+    style: bar
+
+  - id: de_debt_h_s11_s14_s15
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: "S11_S14_S15", maturity: TOTAL, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates nach Gläubiger: Unternehmen und Haushalte"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_holder
+    label: "Unternehmen und Haushalte"
+    style: bar
+
+  - id: de_debt_h_s2
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: "S2", maturity: TOTAL, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates nach Gläubiger: Ausland"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_holder
+    label: "Ausland"
+    style: bar
+
+  - id: rmd_de
+    block: staat
+    source: eurostat
+    key: gov_10dd_rmd
+    params: {geo: DE, sector: S13, maturity: TOTAL, unit: YR, na_item: GD}
+    title: "Durchschnittliche Restlaufzeit der Staatsschulden, Deutschland"
+    unit: "Jahre"
+    frequency: A
+    adjustment: Jahresende
+    start: "2000-01-01"
+    stale_after_months: 24
+    chart: gov_debt_mat
+    label: "Deutschland"
+
+  - id: rmd_fr
+    block: staat
+    source: eurostat
+    key: gov_10dd_rmd
+    params: {geo: FR, sector: S13, maturity: TOTAL, unit: YR, na_item: GD}
+    title: "Durchschnittliche Restlaufzeit der Staatsschulden, Frankreich"
+    unit: "Jahre"
+    frequency: A
+    adjustment: Jahresende
+    start: "2000-01-01"
+    stale_after_months: 24
+    chart: gov_debt_mat
+    label: "Frankreich"
+
+  - id: rmd_it
+    block: staat
+    source: eurostat
+    key: gov_10dd_rmd
+    params: {geo: IT, sector: S13, maturity: TOTAL, unit: YR, na_item: GD}
+    title: "Durchschnittliche Restlaufzeit der Staatsschulden, Italien"
+    unit: "Jahre"
+    frequency: A
+    adjustment: Jahresende
+    start: "2000-01-01"
+    stale_after_months: 24
+    chart: gov_debt_mat
+    label: "Italien"
+
+  - id: rmd_es
+    block: staat
+    source: eurostat
+    key: gov_10dd_rmd
+    params: {geo: ES, sector: S13, maturity: TOTAL, unit: YR, na_item: GD}
+    title: "Durchschnittliche Restlaufzeit der Staatsschulden, Spanien"
+    unit: "Jahre"
+    frequency: A
+    adjustment: Jahresende
+    start: "2000-01-01"
+    stale_after_months: 24
+    chart: gov_debt_mat
+    label: "Spanien"
+
+  - id: de_gov_implicit
+    block: staat
+    source: static
+    key: ameco_implicit_rate_de
+    params: {source_name: "Europäische Kommission, AMECO"}
+    title: "Durchschnittsverzinsung der Staatsschulden (Zinsausgaben in % der Schulden des Vorjahres)"
+    unit: "% p. a."
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1996-01-01"
+    stale_after_months: 24
+    chart: gov_debt_cost
+    label: "Durchschnittszins der Schulden"
+    license: "Europäische Kommission, AMECO: Wiederverwendung mit Quellenangabe"
+    note: "AMECO-Reihe AYIGD: Zinsausgaben des Staates in Prozent des Bruttoschuldenstands des Vorjahres (Abgrenzung des Defizitverfahrens); ohne Prognosejahre; wöchentlich über den AMECO-Abfragedienst abgerufen."
+
+  # Haushalte: Vermögen und Schulden (EZB-Verteilungsrechnung DWA), Konsum nach Zweck (Eurostat)
+  - id: hh_nw_median
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.N.LE.NWA._Z.EUR_MD.S.N
+    title: "Nettovermögen der Haushalte, Median"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_wealth
+    label: "Median"
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_nw_mean
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.N.LE.NWA._Z.EUR_MN.S.N
+    title: "Nettovermögen der Haushalte, Mittelwert"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_wealth
+    label: "Mittelwert"
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_nun
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.NUN.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Immobilien, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Immobilien"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f2m
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.F2M.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Bargeld und Einlagen, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Bargeld und Einlagen"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f62
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.F62.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Lebensversicherungen und Renten, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Lebensversicherungen und Renten"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f52
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.F52.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Investmentfonds, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Investmentfonds"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f51
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.F51.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Aktien und Beteiligungen, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Aktien und Beteiligungen"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_nub
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.A.LE.NUB.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Betriebsvermögen, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Betriebsvermögen"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f4b
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.L.LE.F4B.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Baukredite, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Baukredite"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_f4x
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.L.LE.F4X.Q3.EUR_R_NH.S.N
+    title: "Vermögensbilanz des mittleren Fünftels: Sonstige Kredite, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Sonstige Kredite"
+    style: bar
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_q3_nwa
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14.N.LE.NWA.Q3.EUR_R_NH.S.N
+    title: "Nettovermögen des mittleren Fünftels, je Haushalt"
+    unit: "Tsd. €"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_balance
+    label: "Nettovermögen"
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_share_t10
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14._Z._Z.NWA.T10.PT.S.N
+    title: "Anteil der reichsten 10 % am Nettovermögen"
+    unit: "% des Nettovermögens"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_share
+    label: "Reichste 10 %"
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_share_b50
+    block: haushalte
+    source: ecb
+    key: DWA/Q.DE.S14._Z._Z.NWA.B50.PT.S.N
+    title: "Anteil der ärmeren Hälfte am Nettovermögen"
+    unit: "% des Nettovermögens"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2011-01-01"
+    stale_after_months: 15
+    chart: hh_share
+    label: "Ärmere Hälfte"
+    license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
+
+  - id: hh_cons_cp04
+    block: haushalte
+    source: eurostat
+    key: nama_10_co3_p3
+    params: {geo: DE, coicop: CP04, unit: PC_TOT}
+    title: "Konsumausgaben der privaten Haushalte für Wohnen und Energie"
+    unit: "% des Konsums"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 66
+    chart: hh_spend
+    label: "Wohnen und Energie"
+
+  - id: hh_cons_cp07
+    block: haushalte
+    source: eurostat
+    key: nama_10_co3_p3
+    params: {geo: DE, coicop: CP07, unit: PC_TOT}
+    title: "Konsumausgaben der privaten Haushalte für Verkehr"
+    unit: "% des Konsums"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 66
+    chart: hh_spend
+    label: "Verkehr"
+
+  - id: hh_cons_cp01
+    block: haushalte
+    source: eurostat
+    key: nama_10_co3_p3
+    params: {geo: DE, coicop: CP01, unit: PC_TOT}
+    title: "Konsumausgaben der privaten Haushalte für Nahrungsmittel"
+    unit: "% des Konsums"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 66
+    chart: hh_spend
+    label: "Nahrungsmittel"
+
+  - id: hh_cons_cp09
+    block: haushalte
+    source: eurostat
+    key: nama_10_co3_p3
+    params: {geo: DE, coicop: CP09, unit: PC_TOT}
+    title: "Konsumausgaben der privaten Haushalte für Freizeit und Kultur"
+    unit: "% des Konsums"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 66
+    chart: hh_spend
+    label: "Freizeit und Kultur"
+
+  - id: stx_pk_sozial
+    block: staat
+    source: static
+    key: staat_pk_sozial
+    params: {source_name: "Eurostat (gov_10a_exp, nama_10_pe), eigene Berechnung"}
+    title: "Staatsausgaben je Einwohner: Soziale Sicherung"
+    unit: "€"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_pk
+    label: "Soziale Sicherung"
+    style: bar
+    license: "Eurostat: CC BY 4.0; eigene Berechnung"
+    note: "Ausgaben des Gesamtstaats nach Aufgaben (COFOG, gov_10a_exp, Mio. Euro) geteilt durch die Einwohnerzahl im Jahresmittel (nama_10_pe); jährlich über die Eurostat-Schnittstelle abgerufen."
+
+  - id: stx_pk_gesundheit
+    block: staat
+    source: static
+    key: staat_pk_gesundheit
+    params: {source_name: "Eurostat (gov_10a_exp, nama_10_pe), eigene Berechnung"}
+    title: "Staatsausgaben je Einwohner: Gesundheit"
+    unit: "€"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_pk
+    label: "Gesundheit"
+    style: bar
+    license: "Eurostat: CC BY 4.0; eigene Berechnung"
+    note: "Ausgaben des Gesamtstaats nach Aufgaben (COFOG, gov_10a_exp, Mio. Euro) geteilt durch die Einwohnerzahl im Jahresmittel (nama_10_pe); jährlich über die Eurostat-Schnittstelle abgerufen."
+
+  - id: stx_pk_bildung
+    block: staat
+    source: static
+    key: staat_pk_bildung
+    params: {source_name: "Eurostat (gov_10a_exp, nama_10_pe), eigene Berechnung"}
+    title: "Staatsausgaben je Einwohner: Bildung"
+    unit: "€"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_pk
+    label: "Bildung"
+    style: bar
+    license: "Eurostat: CC BY 4.0; eigene Berechnung"
+    note: "Ausgaben des Gesamtstaats nach Aufgaben (COFOG, gov_10a_exp, Mio. Euro) geteilt durch die Einwohnerzahl im Jahresmittel (nama_10_pe); jährlich über die Eurostat-Schnittstelle abgerufen."
+
+  - id: stx_pk_verwaltung
+    block: staat
+    source: static
+    key: staat_pk_verwaltung
+    params: {source_name: "Eurostat (gov_10a_exp, nama_10_pe), eigene Berechnung"}
+    title: "Staatsausgaben je Einwohner: Verwaltung und Zinsen"
+    unit: "€"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_pk
+    label: "Verwaltung und Zinsen"
+    style: bar
+    license: "Eurostat: CC BY 4.0; eigene Berechnung"
+    note: "Ausgaben des Gesamtstaats nach Aufgaben (COFOG, gov_10a_exp, Mio. Euro) geteilt durch die Einwohnerzahl im Jahresmittel (nama_10_pe); jährlich über die Eurostat-Schnittstelle abgerufen."
+
+  - id: stx_pk_uebrige
+    block: staat
+    source: static
+    key: staat_pk_uebrige
+    params: {source_name: "Eurostat (gov_10a_exp, nama_10_pe), eigene Berechnung"}
+    title: "Staatsausgaben je Einwohner: Übrige Aufgaben"
+    unit: "€"
+    frequency: A
+    adjustment: Jahreswerte, in jeweiligen Preisen
+    start: "1995-01-01"
+    stale_after_months: 36
+    chart: stx_pk
+    label: "Übrige Aufgaben"
+    style: bar
+    license: "Eurostat: CC BY 4.0; eigene Berechnung"
+    note: "Ausgaben des Gesamtstaats nach Aufgaben (COFOG, gov_10a_exp, Mio. Euro) geteilt durch die Einwohnerzahl im Jahresmittel (nama_10_pe); jährlich über die Eurostat-Schnittstelle abgerufen."
 
   # Staatsausgaben nach Aufgaben (COFOG), Gesamtstaat; Anteil an den Ausgaben und in % des BIP
   - id: de_cofog_tot_gf10
@@ -4641,3 +5759,242 @@ series:
     label: "Kaukasus und Zentralasien"
     license: "Eurostat: Wiederverwendung mit Quellenangabe"
     note: "Sechs Länder, über die nach Studien der Osteuropabank (EBRD) Waren nach Russland umgeleitet werden; Summe der jeweils letzten zwölf Monate; werktäglich abgerufen."
+
+  - id: svr_err_bip
+    block: wachstum
+    source: derived
+    derive: {from: svr_bip_prog, minus: svr_bip_ist, op: diff}
+    title: "Wachstum: Prognose des Sachverständigenrats minus erste Meldung"
+    unit: "Prozentpunkte"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: svr_treff
+    label: "Wachstum"
+  - id: svr_err_vpi
+    block: wachstum
+    source: derived
+    derive: {from: svr_vpi_prog, minus: svr_vpi_ist, op: diff}
+    title: "Inflation: Prognose des Sachverständigenrats minus erste Meldung"
+    unit: "Prozentpunkte"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: svr_treff
+    label: "Inflation"
+  - id: svr_err_alo
+    block: wachstum
+    source: derived
+    derive: {from: svr_alo_prog, minus: svr_alo_ist, op: diff}
+    title: "Arbeitslose: Prognose des Sachverständigenrats minus erste Meldung"
+    unit: "Tsd. Personen"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: svr_treff
+    label: "Arbeitslose (Tsd.)"
+  - id: gd_err_bip
+    block: wachstum
+    source: derived
+    derive: {from: gd_bip_prog, minus: gd_bip_ist, op: diff}
+    title: "Wachstum: Prognose der Gemeinschaftsdiagnose minus erste Meldung"
+    unit: "Prozentpunkte"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: gd_treff
+    label: "Wachstum"
+  - id: gd_err_vpi
+    block: wachstum
+    source: derived
+    derive: {from: gd_vpi_prog, minus: gd_vpi_ist, op: diff}
+    title: "Inflation: Prognose der Gemeinschaftsdiagnose minus erste Meldung"
+    unit: "Prozentpunkte"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: gd_treff
+    label: "Inflation"
+  - id: gd_err_saldo
+    block: wachstum
+    source: derived
+    derive: {from: gd_saldo_prog, minus: gd_saldo_ist, op: diff}
+    title: "Staatssaldo: Prognose der Gemeinschaftsdiagnose minus erste Meldung"
+    unit: "Prozentpunkte"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: gd_treff
+    label: "Staatssaldo"
+  - id: gd_err_alo
+    block: wachstum
+    source: derived
+    derive: {from: gd_alo_prog, minus: gd_alo_ist, op: diff}
+    title: "Arbeitslose: Prognose der Gemeinschaftsdiagnose minus erste Meldung"
+    unit: "Tsd. Personen"
+    frequency: A
+    adjustment: nicht bereinigt
+    chart: gd_treff
+    label: "Arbeitslose (Tsd.)"
+
+  - id: def_staff
+    block: geopolitik
+    source: static
+    key: def_staff
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Personal (Arbeitnehmerentgelt)"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Personal"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."
+
+  - id: def_material
+    block: geopolitik
+    source: static
+    key: def_material
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Material, Wartung und Betrieb (Vorleistungen)"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Material und Betrieb"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."
+
+  - id: def_invest
+    block: geopolitik
+    source: static
+    key: def_invest
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Waffensysteme und Bauten (Bruttoanlageinvestitionen)"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Waffensysteme und Bauten"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."
+
+  - id: def_transfer
+    block: geopolitik
+    source: static
+    key: def_transfer
+    params: {source_name: "Eurostat, Staatsausgaben nach Aufgabenbereichen (gov_10a_exp)"}
+    title: "Staatsausgaben für Verteidigung: Investitionszuschüsse und laufende Transfers an andere"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahreswerte, jeweilige Preise"
+    start: "2010-01-01"
+    stale_after_months: 40
+    chart: def_use
+    label: "Transfers an andere"
+    style: bar
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) nach Ausgabeart; werktäglich abgerufen."
+
+  - id: kmpt_de_only
+    block: geopolitik
+    source: static
+    key: kmpt_de_only
+    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker"}
+    title: "Deutsche Rüstungsaufträge an Unternehmen mit Sitz in Deutschland"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahr der Bekanntgabe, jeweilige Preise"
+    start: "2020-01-01"
+    stale_after_months: 30
+    chart: orders_origin
+    label: "deutsch"
+    style: bar
+    license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
+    note: "Aufträge nach Jahr der Bekanntgabe und Sitz des Auftragnehmers; Aufträge mit unklarer Herkunft (rund 31 Mrd. € seit 2020) fehlen. Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+
+  - id: kmpt_de_partner
+    block: geopolitik
+    source: static
+    key: kmpt_de_partner
+    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker"}
+    title: "Deutsche Rüstungsaufträge an deutsche und ausländische Unternehmen gemeinsam oder mit Fertigung in Deutschland"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahr der Bekanntgabe, jeweilige Preise"
+    start: "2020-01-01"
+    stale_after_months: 30
+    chart: orders_origin
+    label: "deutsch mit Partner"
+    style: bar
+    license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
+    note: "Aufträge nach Jahr der Bekanntgabe und Sitz des Auftragnehmers; Aufträge mit unklarer Herkunft (rund 31 Mrd. € seit 2020) fehlen. Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+
+  - id: kmpt_eu
+    block: geopolitik
+    source: static
+    key: kmpt_eu
+    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker"}
+    title: "Deutsche Rüstungsaufträge an Unternehmen im übrigen Europa"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahr der Bekanntgabe, jeweilige Preise"
+    start: "2020-01-01"
+    stale_after_months: 30
+    chart: orders_origin
+    label: "übriges Europa"
+    style: bar
+    license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
+    note: "Aufträge nach Jahr der Bekanntgabe und Sitz des Auftragnehmers; Aufträge mit unklarer Herkunft (rund 31 Mrd. € seit 2020) fehlen. Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+
+  - id: kmpt_noneu
+    block: geopolitik
+    source: static
+    key: kmpt_noneu
+    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker"}
+    title: "Deutsche Rüstungsaufträge an Unternehmen außerhalb Europas"
+    unit: "Mrd. €"
+    frequency: A
+    adjustment: "Jahr der Bekanntgabe, jeweilige Preise"
+    start: "2020-01-01"
+    stale_after_months: 30
+    chart: orders_origin
+    label: "außerhalb Europas"
+    style: bar
+    license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
+    note: "Aufträge nach Jahr der Bekanntgabe und Sitz des Auftragnehmers; Aufträge mit unklarer Herkunft (rund 31 Mrd. € seit 2020) fehlen. Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+
+  - id: kmpt_de_orders_idx
+    block: geopolitik
+    source: static
+    key: kmpt_de_orders_idx
+    params: {source_name: "Kiel Institut, Kiel Military Procurement Tracker; eigene Berechnung"}
+    title: "Deutsche Rüstungsaufträge, Summe der letzten zwölf Monate, 2021 = 100"
+    unit: "Index 2021 = 100"
+    frequency: M
+    adjustment: "Monat der Bekanntgabe, jeweilige Preise"
+    start: "2021-12-01"
+    stale_after_months: 14
+    chart: arms_cycle
+    label: "Aufträge"
+    license: "Kiel Institut für Weltwirtschaft, Nutzung mit Quellenangabe (Wolff u. a. 2026)"
+    note: "Alle öffentlich bekannt gegebenen Rüstungsbestellungen Deutschlands nach Monat der Bekanntgabe; Summe der jeweils letzten zwölf Monate, Summe des Jahres 2021 = 100 (22,3 Mrd. €). Dritte Ausgabe, Daten bis Januar 2026, von Hand übernommen."
+
+  - id: arms_prod_12m
+    block: geopolitik
+    source: static
+    key: arms_prod_12m
+    params: {source_name: "Eurostat, Produktionsindex (sts_inpr_m), Zweig 25.4; eigene Berechnung"}
+    title: "Produktion von Waffen und Munition, Durchschnitt der letzten zwölf Monate, 2021 = 100"
+    unit: "Index 2021 = 100"
+    frequency: M
+    adjustment: "saison- und kalenderbereinigt"
+    start: "2021-12-01"
+    stale_after_months: 4
+    chart: arms_cycle
+    label: "Produktion"
+    license: "Eurostat: Wiederverwendung mit Quellenangabe"
+    note: "Gleitender Durchschnitt über zwölf Monate, Jahresmittel 2021 = 100; werktäglich abgerufen."

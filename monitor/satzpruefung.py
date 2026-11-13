@@ -62,6 +62,9 @@ def check(c: dict, text: str) -> str | None:
                 lasts |= {round(ys[-1], k) for k in range(4)}
                 if c.get("ma3") and len(ys) >= 3:
                     lasts |= {round(sum(ys[-3:]) / 3, k) for k in range(3)}
+        if c.get("area"):  # gestapelte Flächen: auch die Summe der jüngsten Werte zählt
+            tot = sum(ys[-1] for s in c["series"] if (ys := [v for v in (s.get("y") or []) if v is not None]))
+            lasts |= {round(tot, k) for k in range(4)}
         for m in re.finditer(r"\b(?:lag|lagen|betrug)\b[^.;]*?\bbei ([-−+]?\d[\d.]*(?:,\d+)?)", text):
             v = _num(m.group(1))
             if lasts and not any(abs(v - x) < 1e-9 for x in lasts):

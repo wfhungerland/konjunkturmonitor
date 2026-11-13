@@ -569,6 +569,10 @@ def _last_x(c: dict) -> str | None:
         return max((x for x, y in zip(c["x"], c["y"]) if y is not None), default=None)
     if c.get("type") in ("heat", "heatbars"):
         return c["heat"]["cols"][-1]
+    if c.get("type") == "curve" and (c.get("attach") or {}).get("countries"):
+        return max(k["now"]["date"] for k in c["attach"]["countries"])
+    if c.get("type") == "tpi" and (c.get("attach") or {}).get("month"):
+        return c["attach"]["month"] + "-01"
     if c.get("type") == "clock":
         return c["clock"]["t"][-1]
     if c.get("type") == "tiles":
@@ -675,10 +679,17 @@ def chart_sentences(c: dict) -> list[str]:
     """Kopierfertige Sätze zum jüngsten Stand einer Abbildung. Jeder Satz steht für sich: Zeitraum, Größe, Wert, Vergleich."""
     from .answers import MONTHS
     from .answers import num as _num
+    if c.get("heute"):  # Gremien: zuerst die jüngste Empfehlung, dann der feste Satz
+        from .gremien import heute
+        return [x for x in [heute(c["heute"]["attach"], c["heute"]["who"])] + list(c.get("say") or []) if x]
     if c.get("say"):  # fester Satz aus monitor.yaml statt des automatischen
         return list(c["say"])
+    from . import schulden
+    if c.get("chart") in schulden.CHARTS:  # Schuldenstruktur: eigene Sätze
+        return schulden.saetze(c, "de")
     typ, d = c.get("type"), int(c.get("decimals", 1))
     unit = (c.get("unit") or "").split(",")[0]
+    unit = "Pp" if unit.startswith("Prozentpunkte") else unit  # Abstände in Prozentpunkten wie Pp behandeln
     is_rate = unit.startswith(("%", "Pp", "Saldo")) and not unit.startswith(("% des", "% der"))
     u = unit if unit.startswith(("% des", "% der")) else "%" if unit.startswith("%") else "Pp" if unit.startswith(("Pp", "Saldo")) else "" if unit.startswith("Index") else unit
     freq = c.get("freq", "M")
@@ -936,6 +947,16 @@ def chart_sentences(c: dict) -> list[str]:
         if typ == "calendar" or not c.get("series"):
             return []
         series = [s for s in c["series"] if s.get("y")]
+        if c.get("area"):  # gestapelte Flächen: Summe und Anteile der Teile zum jüngsten Zeitpunkt
+            last = max(s["x"][-1] for s in series)
+            parts = [(s["label"], s["y"][s["x"].index(last)]) for s in series if last in s["x"]]
+            tot = sum(v for _, v in parts)
+            ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
+            tot0 = sum(s["y"][s["x"].index(ago)] for s in series if ago in s["x"])
+            out = [f"{_when(last, freq)} lag {c.get('whole', 'die Summe')} bei {val(tot)}" + (f", {num(abs(tot / tot0 - 1) * 100, 1)} % {'mehr' if tot > tot0 else 'weniger'} als ein Jahr zuvor." if tot0 else ".")]
+            big = sorted(parts, key=lambda p: -p[1])[:2]
+            out.append("Davon entfielen " + " und ".join(f"{val(v)} ({num(v / tot * 100, 0)} %) auf „{lab}“" for lab, v in big) + ".")
+            return out
         if typ == "stacked":  # Stichtag ist das jüngste Quartal mit Beiträgen (die Rate liegt oft früher vor)
             bars0 = [s for s in series if s.get("style") == "bar"]
             last = max(s["x"][-1] for s in bars0) if bars0 else max(s["x"][-1] for s in series)
@@ -1008,8 +1029,9 @@ def chart_sentences(c: dict) -> list[str]:
         prev_lbl = {"M": "im Vormonat", "Q": "im Vorquartal", "A": "im Vorjahr", "D": "in der Vorwoche", "B": "am Vortag"}
         out = []
         for s in series:
-            if s["x"][-1] != last:
+            if s["x"][-1] != last and not c.get("each_last"):
                 continue
+            when = _when(s["x"][-1], freq) if c.get("each_last") else _when(last, freq)  # each_last: jede Reihe mit ihrem jüngsten Stand
             v = s["y"][-1]
             f = s.get("freq", freq)
             lag = {"M": 12, "Q": 4, "A": 1, "D": 52}.get(f, 12)
@@ -1020,6 +1042,7 @@ def chart_sentences(c: dict) -> list[str]:
                 yago = s["y"][k] if k is not None else None
             su = s.get("unit") if c.get("own_scale") else unit
             su = (su or "").split(",")[0]
+            su = "Pp" if su.startswith("Prozentpunkte") else su
             uu = su if su.startswith(("% des", "% der")) else "%" if su.startswith("%") else "Pp" if su.startswith(("Pp", "Saldo")) else "" if su.startswith("Index") else su
             vv = f"{num(v, d, su.startswith('Saldo'))} {uu}".strip() if not su.startswith("Index 0") else f"{num(v, d)} von 100 Punkten"
             sp = _subject(s.get("id"), s.get("label", ""), c.get("chart", ""))
@@ -1116,9 +1139,12 @@ def _health(root: Path, topics: list, meta: dict) -> dict:
         return {}
     run = json.loads(path.read_text(encoding="utf-8"))
     st = {s["series_id"]: s for s in run.get("series", [])}
+    from .sperre import load_frozen
+    frozen = {f["series_id"] for f in load_frozen(root)}
     for tp in topics:
         for c in tp["charts"]:
             sids = {s.id for s in meta.values() if s.chart_id == c.get("chart")}
+            sids |= {i.lstrip("-") for ids in (c.get("area_groups") or {}).values() for i in ids}
             if isinstance(c.get("series"), list):
                 sids |= {s.get("id") for s in c["series"] if isinstance(s, dict)}
             elif isinstance(c.get("series"), str):
@@ -1129,7 +1155,11 @@ def _health(root: Path, topics: list, meta: dict) -> dict:
                 sids |= {"de_ip", "de_alq_sa", "de_gdp_index"} if c.get("kind") == "downturn" else {x for p in (c.get("panels") or HIST_PANELS) for x in (p["hist"], p["cur"])} if c.get("kind") == "history" else {"enso_roni", "de_vpi", "de_vpi_food", "de_agri"}
             bad = [st[k] for k in sids if k in st and st[k].get("status") in ("failed", "skipped")]
             old = [st[k] for k in sids if k in st and st[k].get("outdated")]
-            if bad:
+            held = sids & frozen
+            if held:  # Sperre vor der Veröffentlichung (monitor/sperre.py)
+                c["warn"] = (f"Die Quelle liefert für {len(held)} {'Reihe' if len(held) == 1 else 'Reihen'} dieser Abbildung auffällige neue Werte; "
+                             "angezeigt wird der zuletzt geprüfte Stand, bis die Werte geprüft sind.")
+            elif bad:
                 c["warn"] = (f"Der letzte Abruf von {len(bad)} {'Reihe' if len(bad) == 1 else 'Reihen'} dieser Abbildung ist fehlgeschlagen; "
                              "angezeigt wird der zuletzt erfolgreich abgerufene Stand.")
             elif old:
@@ -1137,7 +1167,7 @@ def _health(root: Path, topics: list, meta: dict) -> dict:
     ser = run.get("series", [])
     return {"finished_at": run.get("finished_at"), "n": len(ser), "ok": sum(1 for s in ser if s.get("status") in ("ok", "cache")),
             "failed": sorted(s["series_id"] for s in ser if s.get("status") in ("failed", "skipped")),
-            "outdated": sorted(s["series_id"] for s in ser if s.get("outdated"))}
+            "outdated": sorted(s["series_id"] for s in ser if s.get("outdated")), "frozen": sorted(frozen)}
 
 
 def _enso_episodes(roni: pd.Series, strong: float = 2.0) -> list[dict]:
@@ -1417,6 +1447,9 @@ def build_payload(root: Path = ROOT) -> dict:
                     c = dict(c, x_start=str(start))
             entry = dict(c, type=typ, title=(charts_cfg.get(c["chart"], {}) or {}).get("title", c.get("title", "")),
                          decimals=c.get("decimals", (charts_cfg.get(c["chart"], {}) or {}).get("decimals", 1)))
+            if c.get("events"):  # geldpolitische Ereignisse zum Einblenden (data/static/ereignisse_geld.yaml)
+                ev = yaml.safe_load((root / "data" / "static" / "ereignisse_geld.yaml").read_text(encoding="utf-8")).get("events") or []
+                entry["events"] = [{k: str(v) for k, v in e.items()} for e in ev]
             if c.get("attach"):  # Zusatzdaten aus data/static, etwa Sätze und Fundstellen für den Tooltip
                 entry["attach"] = json.loads((root / "data" / "static" / c["attach"]).read_text(encoding="utf-8"))
             if typ == "clock":
@@ -1542,6 +1575,45 @@ def build_payload(root: Path = ROOT) -> dict:
                     continue
                 entry.update(sources=list(c.get("sources") or []), licenses=list(c.get("licenses") or []), freq="A",
                              unit=c.get("unit", entry["attach"].get("unit", "")))
+            elif typ == "curve":  # Zinskurven je Land, Daten aus data/static/zinskurven.json (werktäglich, monitor/geldpolitik.py)
+                from .answers import MONTHS as MONTHS_DE
+                K = (entry.get("attach") or {}).get("countries") or []
+                if not K:
+                    continue
+                entry.update(sources=[k["source"] for k in K], licenses=sorted({"Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)" if k["code"] == "de" else
+                             "Wiederverwendung mit Quellenangabe (Fonte: Banca d'Italia)" if k["code"] == "it" else "Wiederverwendung mit Quellenangabe (Banco de España)" for k in K}),
+                             freq="M", unit="% p. a.")
+                pm = lambda d: f"{MONTHS_DE[int(d[5:7]) - 1]} {d[:4]}"
+                pe = lambda d: pd.Timestamp(d).strftime("%B %Y")
+                ten = [(k, k["now"]["values"][k["maturities"].index(10)]) for k in K if 10 in k["maturities"]]
+                nz = lambda v: f"{v:.2f}".replace(".", ",")
+                entry["say"] = ["Die Rendite zehnjähriger Staatsanleihen lag zuletzt " + "; ".join(f"in {k['name']} bei {nz(v)} % ({pm(k['now']['date'])})" for k, v in ten) + "."]
+                entry["say_en"] = ["The ten-year government bond yield was most recently " + "; ".join(f"{v:.2f}% in {k['name_en']} ({pe(k['now']['date'])})" for k, v in ten) + "."]
+                up = [k for k in K if k["now"]["values"][-1] is not None and k["now"]["values"][0] is not None and k["now"]["values"][-1] > k["now"]["values"][0]]
+                if len(up) == len(K):
+                    entry["say"].append("In allen drei Ländern bringen lange Laufzeiten mehr als kurze." if len(K) == 3 else "In allen Ländern bringen lange Laufzeiten mehr als kurze.")
+                    entry["say_en"].append("In all countries long maturities pay more than short ones.")
+            elif typ == "tpi":  # Bedingungen des TPI je Euroland, Daten aus data/static/tpi.json (werktäglich, monitor/geldpolitik.py)
+                from .answers import MONTHS as MONTHS_DE
+                T = entry.get("attach") or {}
+                if not T.get("rows"):
+                    continue
+                entry.update(sources=T.get("sources", []), licenses=[SOURCE_LICENSES["eurostat"], SOURCE_LICENSES["ecb"]], freq="M", unit="")
+                und = lambda xs: ", ".join(xs[:-1]) + " und " + xs[-1] if len(xs) > 1 else (xs[0] if xs else "")
+                and_ = lambda xs: ", ".join(xs[:-1]) + " and " + xs[-1] if len(xs) > 1 else (xs[0] if xs else "")
+                edp = [r for r in T["rows"] if r["edp"]]
+                top = max((r for r in T["rows"] if r.get("spread") is not None), key=lambda r: r["spread"], default=None)
+                art = {"SK": "die Slowakei", "NL": "die Niederlande"}  # Länder mit Artikel im Satz
+                zw = {1: "ein", 2: "zwei", 3: "drei", 4: "vier", 5: "fünf", 6: "sechs", 7: "sieben", 8: "acht", 9: "neun", 10: "zehn", 11: "elf", 12: "zwölf"}
+                entry["say"] = [(f"Gegen {zw.get(len(edp), len(edp))} {'Euroland' if len(edp) == 1 else 'Euroländer'} läuft ein Defizitverfahren der EU: "
+                                 f"{und([art.get(r['geo'], r['name']) for r in edp])}.") if edp else "Gegen kein Euroland läuft ein Defizitverfahren der EU."]
+                we = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten", 11: "Eleven", 12: "Twelve"}
+                entry["say_en"] = [(f"{we.get(len(edp), len(edp))} euro {'country is' if len(edp) == 1 else 'countries are'} in an EU excessive deficit procedure: "
+                                    f"{and_([r['name_en'] for r in edp])}.") if edp else "No euro country is in an EU excessive deficit procedure."]
+                if top:
+                    m = pd.Timestamp(T["month"] + "-01")
+                    entry["say"].append(f"Den höchsten Renditeabstand zu Bundesanleihen hatte im {MONTHS_DE[m.month - 1]} {m.year} {top['name']} mit {str(round(top['spread'], 2)).replace('.', ',')} Pp.")
+                    entry["say_en"].append(f"In {m.strftime('%B %Y')}, {top['name_en']} had the widest spread over Bunds at {round(top['spread'], 2)} pp.")
             elif typ == "treemap":  # Grundriss: Daten ganz aus data/static (attach), von Hand aktualisiert
                 if not entry.get("attach"):
                     continue
@@ -1563,7 +1635,18 @@ def build_payload(root: Path = ROOT) -> dict:
                     continue
                 specs = [meta[x] for x in c["pick"] if x in meta] if c.get("pick") else [s for s in meta.values() if s.chart_id == c["chart"]]
                 series, full = [], {}
-                for s in specs:
+                if c.get("area_groups"):  # gestapelte Flächen aus Summen von Reihen; „-id“ zieht ab (etwa Wertpapiere ohne Ankaufprogramme)
+                    for k, (label, ids) in enumerate(c["area_groups"].items()):
+                        cols = [data[i.lstrip("-")].dropna() * (-1 if i.startswith("-") else 1) for i in ids if i.lstrip("-") in data]
+                        if not cols:
+                            continue
+                        m = meta[ids[0].lstrip("-")]
+                        ser = pd.concat(cols, axis=1).fillna(0).sum(axis=1)
+                        ser = ser[ser.index >= max(x.index[0] for x, i in zip(cols, ids) if not i.startswith("-"))] if len(cols) > 1 else ser
+                        series.append(dict(id=f"{c['chart']}_{k}", label=label, unit=c.get("unit", m.unit), freq=m.frequency, style="line",
+                                           **_xy(ser * float(c.get("scale", 1)), c.get("years"), c.get("x_start"))))
+                    specs = [meta[i.lstrip("-")] for ids in c["area_groups"].values() for i in ids if i.lstrip("-") in meta]  # Quellen und Lizenzen
+                for s in ([] if c.get("area_groups") else specs):
                     if s.id not in data:
                         continue
                     ser = data[s.id]
@@ -1776,7 +1859,7 @@ def build_payload(root: Path = ROOT) -> dict:
     return {"layout": layout, "health": health, "start": _start_rows(cfg, data, meta, {t["id"]: t["title"] for t in cfg["topics"]}), "geo": geo, "geo_source": "Ländergrenzen: © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung – Version 2.0",
             "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "questions": questions, "topics": topics, "overview": spell(tidy(overview({q["id"]: q["answer"] for q in questions}))),
-            "fazit": spell(tidy(fazit({q["id"]: q["answer"] for q in questions}))), "glossar": GLOSSAR,
+            "fazit": spell(tidy(fazit({q["id"]: q["answer"] for q in questions}))) if cfg["site"].get("kommentar", True) else "", "glossar": GLOSSAR,
             "content_license": cfg["site"].get("license", ""), "text_issues": text_issues}
 
 
@@ -1798,7 +1881,7 @@ def write_embeds(payload: dict, tpl: str, out: Path) -> int:
             p = dict(payload, topics=[dict(t, charts=[cc], question=None, ask=c.get("ask") or t.get("ask"))], start=[], questions=[], news=[], week=[], overview="", embed=True,
                      geo=payload.get("geo") if c.get("type") == "tiles" else None, all_series={}, deck=None)
             js = json.dumps(p, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
-            title = f"{c.get('code') or 'Abb. ' + str(c.get('no'))} {c.get('title', '')} · Konjunkturmonitor"
+            title = f"{c.get('title', '')} · Konjunkturmonitor"
             desc = (c.get("texts") or [""])[0] or c.get("caption", "")
             html = (base.replace("/*__DATA__*/null", js).replace("/*__STATIC__*/", "").replace("/*__OVERVIEW__*/", "")
                     .replace("/*__DESC__*/", escape(desc, quote=True)).replace("/*__URL__*/", escape(f"{url}abb/{c['chart']}.html", quote=True))

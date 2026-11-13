@@ -32,6 +32,8 @@ FORM = {
     "seasonal": "Monatswerte (dünn), gleitendes Zwölfmonatsmittel (dick) und das übliche Niveau desselben Monats vor Corona (gestrichelt).",
     "calendar": "Kalender der nächsten Veröffentlichungen mit Verweis auf die betroffenen Abbildungen.",
     "dumbbell": "Hantelgrafik: je Land ein hohler Punkt für das erste und ein voller Punkt für das jüngste Jahr, verbunden durch eine Linie.",
+    "curve": "Zinskurven: Rendite über der Restlaufzeit (logarithmische Achse), je Land eine Farbe; durchgezogen der jüngste Monat, gepunktet derselbe Monat ein Jahr zuvor.",
+    "tpi": "Tabelle je Euroland: Finanzierungssaldo und Schulden des Staates im jüngsten Jahr, laufendes Defizitverfahren und Renditeabstand zu Deutschland; rot sind ein laufendes Verfahren und Werte jenseits der Grenzen des Stabilitätspakts. Die Daten holt der werktägliche Lauf von Eurostat, der Seite der EU-Kommission und der EZB.",
 }
 
 DERIVE = {
@@ -234,11 +236,11 @@ def _page(c: dict, topic: dict, meta: dict, status: dict, texts: dict, payload: 
               f"Zeitfenster: rund {years} Jahre." if years and c.get("type") in (None, "line", "stacked", "threshold") else "")
     files = c.get("files") or {}
     dl = " · ".join(f'<a href="../{escape(v, True)}">{k.upper()}</a>' for k, v in files.items() if isinstance(v, str))
-    cite = f"{payload['site'].get('author', '')} ({stand[:4]}): Konjunkturmonitor, {no} {title}. Stand {stand_de}. {payload['site'].get('url', '')}"
+    cite = f"{payload['site'].get('author', '')} ({stand[:4]}): Konjunkturmonitor, {title}. Stand {stand_de}. {payload['site'].get('url', '')}"
     steps = "".join(f"<li>{x}</li>" for x in _steps(c, meta, ids))
     return f"""<!DOCTYPE html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Methodenblatt {no}: {escape(title)} · Konjunkturmonitor</title>
+<title>Methodenblatt: {escape(title)} · Konjunkturmonitor</title>
 <style>
 @font-face {{ font-family: "Source Sans 3"; font-weight: 400; src: url("../fonts/source-sans-3-latin-400-normal.woff2") format("woff2"); }}
 @font-face {{ font-family: "Source Sans 3"; font-weight: 700; src: url("../fonts/source-sans-3-latin-700-normal.woff2") format("woff2"); }}
@@ -253,7 +255,7 @@ ol, ul {{ margin: 4px 0; padding-left: 20px; }} li {{ margin: 2px 0; }} .ask {{ 
   p {{ margin: 2pt 0; }} table {{ font-size: 7.2pt; }} td, th {{ padding: 1pt 3pt; }} .small {{ font-size: 7pt; }} .ask {{ font-size: 10pt; }} a {{ text-decoration: none; }} .noprint {{ display: none; }} li {{ margin: 0; }} }}
 </style></head><body>
 <p class="top">Konjunkturmonitor · Methodenblatt · Stand {stand_de} · Abschnitt {escape(topic.get('title', ''))} <span class="noprint">· <a href="../index.html#{anchor}">zur Abbildung</a> · <a href="index.html">alle Methodenblätter</a></span></p>
-<h1>{no}: {escape(title)}</h1>
+<h1>{escape(title)}</h1>
 <p class="ask">{escape(c.get('ask') or (topic.get('question') or {}).get('ask', ''))}</p>
 <h2>Kurz gesagt</h2>
 <p>{escape(c.get('text', ''))}</p>
@@ -293,7 +295,7 @@ def write_method_pages(payload: dict, meta: dict, root: Path, out: Path, lic_of=
             if not c.get("chart"):
                 continue
             (d / f"{c['chart']}.html").write_text(_page(c, topic, meta, status, texts, payload, lic_of or (lambda s: s.license), for_chart(corr, c["chart"])), encoding="utf-8")
-            items.append(f'<li><a href="{escape(c["chart"])}.html">{escape(c.get("code") or "Abb. " + str(c.get("no")))}: {escape(c.get("title", ""))}</a></li>')
+            items.append(f'<li><a href="{escape(c["chart"])}.html">{escape(c.get("title", ""))}</a></li>')
     (d / "index.html").write_text(f"""<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Methodenblätter · Konjunkturmonitor</title><style>body {{ font-family: "Source Sans 3", Arial, sans-serif; max-width: 820px; margin: 24px auto; padding: 0 16px; line-height: 1.5; }} a {{ color: #000; }}</style></head>
 <body><p><a href="../index.html">Konjunkturmonitor</a></p><h1>Methodenblätter</h1>

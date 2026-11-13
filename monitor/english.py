@@ -564,8 +564,14 @@ def _special_en(c: dict) -> list[str] | None:
 
 def chart_sentences_en(c: dict) -> list[str]:
     """Englische Fassung der automatischen Sätze: Sonderabbildungen eigens, Linien und Balken nach der Einheit."""
+    if c.get("heute"):  # Gremien: zuerst die jüngste Empfehlung
+        from .gremien import heute
+        return [x for x in [heute(c["heute"]["attach"], c["heute"]["who"], "en")] + list(c.get("say_en") or []) if x]
     if c.get("say_en"):  # fester Satz aus monitor.yaml statt des automatischen
         return list(c["say_en"])
+    from . import schulden
+    if c.get("chart") in schulden.CHARTS:
+        return schulden.saetze(c, "en")
     typ, d = c.get("type"), int(c.get("decimals", 1))
     try:
         sp = _special_en(c)
@@ -597,6 +603,19 @@ def chart_sentences_en(c: dict) -> list[str]:
         return out
     if typ not in ("line", "dumbbell", None) or not isinstance(c.get("series"), list):
         return []
+    if c.get("area") and c.get("series"):  # gestapelte Flächen: Summe und größte Teile
+        ser = [s for s in c["series"] if s.get("y")]
+        last = max(s["x"][-1] for s in ser)
+        parts = [(s["label"], s["y"][s["x"].index(last)]) for s in ser if last in s["x"]]
+        tot = sum(v for _, v in parts)
+        ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
+        tot0 = sum(s["y"][s["x"].index(ago)] for s in ser if ago in s["x"])
+        u = (c.get("unit") or "").split(",")[0]
+        big = sorted(parts, key=lambda p: -p[1])[:2]
+        out = [f"{when(last, c.get('freq', 'M'))}, {c.get('whole_en', 'the total')} stood at {num(tot, d)} {u}" + (f", {num(abs(tot / tot0 - 1) * 100, 1)}% {'more' if tot > tot0 else 'less'} than a year earlier." if tot0 else ".")]
+        low = lambda t: t if t[:2].isupper() else t[:1].lower() + t[1:]
+        out.append("Of this, " + " and ".join(f"{num(v, d)} {u} ({num(v / tot * 100, 0)}%) was {low(lab)}" for lab, v in big) + ".")
+        return out
     try:
         series = [s for s in c["series"] if s.get("y")]
         norm = next((s for s in series if s.get("style") == "norm"), None)
@@ -613,7 +632,7 @@ def chart_sentences_en(c: dict) -> list[str]:
                 words = {0: "none", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six"}
                 return [f"{when(last, freq)}, output was below its level of a year earlier in {words.get(below, below)} of {words.get(len(parts), len(parts))} industries: "
                         + "; ".join(f"{lab} {num(p, 1, True)}%" for lab, p in parts) + "."]
-        series = series[:6]
+        series = series if isinstance(c.get("combine"), dict) and c["combine"].get("lead_en") else series[:6]  # Zinskurve: alle Laufzeiten in einem Satz
         last = max(s["x"][-1] for s in series)
         w = when(last, freq)
         if c.get("mad_band"):  # Korrekturen des BIP-Wachstums
@@ -645,6 +664,7 @@ def chart_sentences_en(c: dict) -> list[str]:
                 continue
             v, f = s["y"][-1], s.get("freq", freq)
             su = ((s.get("unit_de") if c.get("own_scale") else c.get("unit_de")) or "").split(",")[0]
+            su = "Pp" if su.startswith("Prozentpunkte") else su  # Abstände in Prozentpunkten wie Pp
             lag = {"M": 12, "Q": 4, "A": 1, "D": 52}.get(f, 12)
             yago = s["y"][-1 - lag] if len(s["y"]) > lag else None
             if f == "B":
@@ -654,7 +674,7 @@ def chart_sentences_en(c: dict) -> list[str]:
             unit_en = (s.get("unit") if c.get("own_scale") else c.get("unit")) or ""
             uu = "%" if su.startswith("%") and not su.startswith(("% des", "% der")) else "pp" if su.startswith(("Pp", "Saldo")) else "" if su.startswith("Index") else unit_en.split(",")[0]
             vv = (f"{num(v, d, su.startswith('Saldo'))}{uu}" if uu == "%" else f"{num(v, d, su.startswith('Saldo'))} {uu}".strip()) if not su.startswith("Index 0") else f"{num(v, d)} out of 100 points"
-            subj = _subject(s.get("label", ""))
+            subj = (c.get("subj_en") or {}).get(s.get("id")) or _subject(s.get("label", ""))
             if s.get("id") in mig:  # Wanderung: wer kam, wer ging
                 out.append(f"{w}, net {num(abs(v), d)} thousand {mig[s['id']]} {'moved to Germany' if v >= 0 else 'left Germany'}.")
                 continue
@@ -868,12 +888,14 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
         for c in t["charts"]:
             if c.get("ref_labels_en"):
                 c["ref_labels"] = c["ref_labels_en"]
+            for e in c.get("events") or []:  # geldpolitische Ereignisse englisch
+                e["label"], e["text"] = e.get("label_en", e["label"]), e.get("text_en", e.get("text", ""))
     for q in p.get("questions") or []:
         q["ask"] = tr.get("questions", q["id"], "ask", q["ask"])
         if q["id"] in ans:
             q["answer"] = ans[q["id"]]
     p["overview"] = overview_en(ans)
-    p["fazit"] = fazit_en(ans)
+    p["fazit"] = fazit_en(ans) if p.get("fazit") else ""
     from .ausschreiben import GLOSSARY_EN
     p["glossar"] = GLOSSARY_EN
     for r in p.get("start") or []:
@@ -914,7 +936,7 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
 _MONEY_EN = [
     (r"Mrd\. US-\$, Preise (\d{4})", r"$bn, \1 prices"), (r"\bEUR bn\b", "€bn"),
     (r"\bEUR ([\d.,]+) billion\b", r"€\1bn"), (r"\bEUR ([\d.,]+) million\b", r"€\1m"),
-    (r"([+-]?)(\d[\d.,]*) ?€bn\b", r"\1€\2bn"), (r"€(\d[\d.,]*) bn\b", r"€\1bn"), (r"US\$(\d[\d.,]*) ?bn\b", r"$\1bn"),
+    (r"([+-]?)(\d[\d.,]*) ?€bn\b", r"\1€\2bn"), (r"([+-]?)(\d[\d.,]*) ?€tn\b", r"\1€\2tn"), (r"€(\d[\d.,]*) bn\b", r"€\1bn"), (r"US\$(\d[\d.,]*) ?bn\b", r"$\1bn"),
     (r"([+-]?)(\d[\d.,]*) US\$", r"\1$\2"), (r"([+-]?)(\d[\d.,]*) € ", r"\1€\2 "), (r"([+-]?)(\d[\d.,]*) €([,.;)]|$)", r"\1€\2\3"),
     (r"([+-]?)(\d[\d.,]*) £", r"\1£\2"), (r"\bUS\$ per\b", "$ per"),
     (r"\bin billions of euros\b", "in €bn"), (r"\bin billion euros\b", "in €bn"), (r"\bin billion US dollars\b", "in $bn"), (r"\bin millions of euros\b", "in €m"),

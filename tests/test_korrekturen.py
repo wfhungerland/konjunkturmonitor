@@ -13,4 +13,4 @@ def test_korrekturen(tmp_path):
     payload = {"site": {"repo": "https://github.com/x/y"}, "topics": [{"charts": [{"chart": "potential", "no": 3, "title": "Potenzial"}]}]}
     write_page(rows, payload, tmp_path)
     html = (tmp_path / "korrekturen.html").read_text(encoding="utf-8")
-    assert "Abb. 3 Potenzial" in html and "/pull/50" in html
+    assert ">Potenzial</a>" in html and "Abb. 3" not in html and "/pull/50" in html

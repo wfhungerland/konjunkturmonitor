@@ -21,6 +21,7 @@ GLOSSAR = {
     "ggü.": "gegenüber",
     "Pp": "Prozentpunkte: Abstand zwischen zwei Prozentwerten",
     "Mrd.": "Milliarden",
+    "Bio.": "Billionen",
     "Pkt.": "Punkte",
     "Mio.": "Millionen",
     "Tsd.": "Tausend",
@@ -50,6 +51,7 @@ GLOSSARY_EN = {
 _NBSP = "\u00a0"
 _RULES = [
     (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mrd."),
+    (r"([+-]?)(\d[\d.,]*) (?:Billionen|Bio\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Bio."),
     (r"([+-]?)(\d[\d.,]*) (?:Millionen|Mio\.) (?:€|Euro\b)", r"\1€\2" + _NBSP + "Mio."),
     (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) EUR\b", r"\1€\2" + _NBSP + "Mrd."),
     (r"([+-]?)(\d[\d.,]*) (?:Milliarden|Mrd\.) US-Dollar\b", r"\1$\2" + _NBSP + "Mrd."),
@@ -58,7 +60,7 @@ _RULES = [
     (r"\bin (?:Millionen|Mio\.) (?:Euro|€|EUR)\b", "in €" + _NBSP + "Mio."),
     (r"\bin (?:Milliarden|Mrd\.) US-Dollar\b", "in $" + _NBSP + "Mrd."),
     (r"([+-]?)(\d[\d.,]*) €", r"\1€\2"),
-    (r"(Mrd|Mio)\.\.", r"\1."),  # Satzende: kein doppelter Punkt
+    (r"(Bio|Mrd|Mio)\.\.", r"\1."),  # Satzende: kein doppelter Punkt
     (r"([+-]?)(\d[\d.,]*) US-Dollar\b", r"\1$\2"),
     (r"([+-]?)(\d[\d.,]*) Pfund\b", r"\1£\2"),
     (r"\b([Gg])gü\.\s(?=(?:Vor\w*|Durchschnitt|Mittel)\b)", r"\1egenüber dem "),

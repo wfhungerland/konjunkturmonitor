@@ -59,3 +59,5 @@ Gesammelte Notizen für später, grob geordnet. Stand: 12.11.2026.
 - Analyse grün, Beschreibung blau
 - Sunburst, Treemap
 - Jahresbalken auch bei Episodenvergleichen
+- Empfehlungen von Gremien, weitere Darstellungen aus der Tufte-Runde: Stufenlinie je Frage (Höhe statt Farbe), Tabelle nach Jahrzehnten (häufigste Empfehlung und wie oft), Zeichen ▲●▼ statt Farben, Richtung je Jahrzehnt (Balken Lockern nach oben, Bremsen nach unten)
+- Phasenansicht mit „Heute“ und Wendepunkten auch für den Sachverständigenrat; Reiter „Gesamtschau“ mit Vergleich Institute und Rat

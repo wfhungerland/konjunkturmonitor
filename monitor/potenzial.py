@@ -2,6 +2,7 @@
 
 Läuft vor dem Datenabruf (python -m monitor run) und schreibt nach data/static/<key>.csv (date,value):
 - ameco_potential_de: Europäische Kommission, AMECO, Potenzial-BIP zu Preisen von 2020 (OVGDP), AMECO-Abfragedienst.
+- ameco_implicit_rate_de: AMECO, Zinsausgaben in % der Staatsschulden des Vorjahres (AYIGD), ohne Prognosejahre.
 - oecd_potential_de: OECD Economic Outlook, Potenzial-BIP in konstanten Preisen (GDPVTR).
 - imf_potential_de: IWF World Economic Outlook; Potenzialwachstum aus realem BIP-Wachstum (NGDP_RPCH) und
   Produktionslücke in % des Potenzials (NGAP_NPGDP): (1 + g) * (1 + Lücke Vorjahr) / (1 + Lücke) - 1.
@@ -55,21 +56,24 @@ def imf() -> pd.Series:
     return pot.dropna().round(3)
 
 
-def ameco() -> pd.Series:
+def ameco(var: str = "OVGDP", growth: bool = True) -> pd.Series:
     import re
     from datetime import date
     years = ",".join(str(y) for y in range(1991, date.today().year + 3))
-    html = _get(AMECO.format(years=years))
+    html = _get(AMECO.format(years=years).replace("OVGDP", var))
     head = re.findall(r"<th>(\d{4})</th>", html)
     vals = re.findall(r'<td formula="[^"]*">([-0-9.]*)</td>', html)  # leere Zelle: Jahr ohne Wert
     if not head or len(vals) != len(head):
         raise ValueError("Tabelle nicht lesbar")
     s = pd.Series([float(v) if v else None for v in vals], index=[int(y) for y in head], dtype=float).dropna()
+    if not growth:  # Stand ohne Prognosejahre der Kommission
+        return s[s.index < date.today().year].round(3)
     return _growth(s)
 
 
 def update_potential(static: Path) -> None:
-    for key, f in (("oecd_potential_de", oecd), ("imf_potential_de", imf), ("ameco_potential_de", ameco)):
+    for key, f in (("oecd_potential_de", oecd), ("imf_potential_de", imf), ("ameco_potential_de", ameco),
+                   ("ameco_implicit_rate_de", lambda: ameco("AYIGD", growth=False))):  # Durchschnittsverzinsung der Staatsschulden
         try:
             s = f()
             s = s[s.index >= 1992]

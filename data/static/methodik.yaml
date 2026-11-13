@@ -215,6 +215,27 @@ charts:
     grenzen:
       - "Ohne den deutschen Anteil an der Hilfe der EU und ohne Kosten für Geflüchtete in Deutschland; die Bundesregierung nennt deshalb höhere Summen."
       - "Mehrjährige Pakete erscheinen im Monat der Festlegung; die Quartale schwanken deshalb stark."
+  arms_cycle:
+    methode: "Aufträge: monatliche Rüstungsbestellungen Deutschlands aus dem Kiel Military Procurement Tracker, summiert über die jeweils letzten zwölf Monate und geteilt durch die Summe des Jahres 2021 (22,3 Mrd. €). Produktion: Produktionsindex für den Wirtschaftszweig 25.4 (Waffen und Munition) von Eurostat, gemittelt über die letzten zwölf Monate und auf das Jahresmittel 2021 bezogen. Beide Reihen stehen so auf derselben Skala; ihr Abstand zeigt, ob Bestellungen schneller wachsen als die Fertigung."
+    grenzen:
+      - "Die Aufträge umfassen auch Panzer, Flugzeuge, Schiffe und Dienstleistungen; die Produktion nur Waffen und Munition. Der Abstand überzeichnet den Stau deshalb."
+      - "Aufträge zählen bei Bekanntgabe; die Fertigung zieht sich über Jahre. Ein Abstand ist darum normal, seine Zunahme ist die Botschaft."
+      - "Aufträge in jeweiligen Preisen, Produktion als Menge; Preissteigerungen heben die Auftragslinie."
+      - "Die Beschäftigung der Branche fehlt noch: Die Bundesagentur für Arbeit veröffentlicht sie nur als Excel-Tabelle, die der Monitor nicht automatisch abrufen kann."
+  def_use:
+    methode: "Ausgaben des Gesamtstaats im Aufgabenbereich Verteidigung (COFOG 02) aus der Statistik der Staatsausgaben nach Aufgaben von Eurostat, aufgeteilt nach Ausgabeart der Volkswirtschaftlichen Gesamtrechnungen: Arbeitnehmerentgelt (D1), Vorleistungen (P2), Bruttoanlageinvestitionen (P51G) sowie Vermögens- und laufende Transfers (D9, D7). Die vier Teile ergeben die Gesamtausgaben; der Monitor prüft das bei jedem Abruf."
+    grenzen:
+      - "Waffensysteme zählen als Investition erst bei Lieferung; Anzahlungen erscheinen dort nicht."
+      - "Die Statistik trennt nicht nach in- und ausländischen Lieferanten. Destatis hält Angaben zu Waffensystemen geheim, und große Käufe von Staat zu Staat fehlen in der Außenhandelsstatistik."
+      - "Dass der Sprung bei den Transfers die Militärhilfe für die Ukraine abbildet, ist eine Deutung aus dem zeitlichen Zusammenfall."
+      - "Daten bis 2024; Eurostat veröffentlicht das Folgejahr meist im Frühjahr."
+  orders_origin:
+    methode: "Der Kiel Military Procurement Tracker des Kiel Instituts erfasst jede öffentlich bekannt gegebene Rüstungsbestellung Deutschlands seit Januar 2020 mit Gegenstand, Betrag und Auftragnehmer, aus Mitteilungen des Verteidigungsministeriums, der Beschaffungsbehörde und der Hersteller. Das Institut ordnet jeden Auftrag nach dem Sitz des Auftragnehmers zu: Deutschland, Deutschland mit ausländischem Partner oder ausländischer Fertigung in Deutschland, übriges Europa, außerhalb Europas. Der Monitor zeigt die Jahressummen aus der dritten Ausgabe (Daten bis Januar 2026)."
+    grenzen:
+      - "Der Sitz des Auftragnehmers sagt nicht, wo gefertigt wird; Zulieferungen aus dem Ausland an deutsche Hersteller bleiben unsichtbar."
+      - "Aufträge zählen im Jahr der Bekanntgabe, nicht bei Zahlung; mehrjährige Rahmenverträge erscheinen auf einen Schlag."
+      - "Rund 31 Mrd. € seit 2020 lassen sich keiner Herkunft zuordnen und fehlen."
+      - "Nur öffentlich bekannt gegebene Aufträge; geheime Beschaffungen fehlen."
   arms_prod:
     methode: "Produktionsindex des Wirtschaftszweigs 25.4 (Herstellung von Waffen und Munition) und des Verarbeitenden Gewerbes insgesamt aus der Konjunkturstatistik von Eurostat, Index 2021 = 100, saison- und kalenderbereinigt. Der Monitor ruft beide Reihen werktäglich ab und zeigt dazu den gleitenden Durchschnitt über drei Monate."
     grenzen:
