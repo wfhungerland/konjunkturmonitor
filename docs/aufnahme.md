@@ -34,4 +34,15 @@ Entsendungen (SOKA-BAU, A1-Bescheinigungen) und laufende Großprojekte: noch nic
 
 ## Aufträge unter der EU-Schwelle
 
-Der Datenservice Öffentlicher Einkauf des Beschaffungsamts (oeffentlichevergabe.de) bündelt seit dem 25.10.2023 die Bekanntmachungen von Bund, Ländern und Kommunen im Format eForms-DE. Unterschwellige Bekanntmachungen gehen nach der Prüfung direkt an den Bekanntmachungsservice. Die Daten sind CC0 und als tägliche Exporte (OCDS oder eForms) über eine offene Schnittstelle abrufbar. Offen: wie vollständig die Vergabeplattformen unterschwellige Zuschläge melden und ob Auftragnehmer-Postleitzahl und Leistungsort dort ebenso gefüllt sind wie bei TED. Dafür einen Monat Exporte ziehen und den Füllgrad wie bei TED auswerten.
+Der Datenservice Öffentlicher Einkauf des Beschaffungsamts (oeffentlichevergabe.de) bündelt seit dem 25.10.2023 die Bekanntmachungen von Bund, Ländern und Kommunen im Format eForms-DE, auch die unterschwelligen. Die Daten sind CC0.
+
+Abruf (geprüft 13.11.2026, ohne Schlüssel): `https://oeffentlichevergabe.de/api/notice-exports?pubMonth=2026-10&format=ocds.zip` oder `format=eforms.zip`; statt `pubMonth` auch `pubDay=2026-10-01`. Oktober 2026: 24.577 Bekanntmachungen, als ZIP 43 MB (OCDS) bzw. 101 MB (eForms). Der Host ohne „www“ muss freigegeben sein, `www.oeffentlichevergabe.de` leitet dorthin um. Das Regime steht nur im eForms-Export im Feld `RegulatoryDomain`: eine EU-Richtlinie (etwa 32014L0024) über der Schwelle, `de-vob`, `de-uvgo`, `de-vol` oder `de-hhr` darunter. Beide Exporte lassen sich über die Kennung der Bekanntmachung (Dateiname ohne Versionsendung) verknüpfen.
+
+Füllgrad der Bauzuschläge (CPV 45) im Oktober 2026:
+
+| Regime | Zuschläge | Auftragnehmer | Sitz-Kreis | Leistungskreis | beides eindeutig | Zahl der Angebote | Auftragswert |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| über der EU-Schwelle | 1.688 | 94 % | 94 % | 99 % | 91 % | 94 % | 73 % |
+| unter der EU-Schwelle | 963 | 0 % | 0 % | 0 % | 0 % | 0 % | 0 % |
+
+Befund: Unterschwellige Zuschlagsbekanntmachungen nennen weder Auftragnehmer noch Wert noch Zahl der Angebote. Der Leistungsort steht nur als Freitext mit Postleitzahl (99 %), NUTS höchstens auf Landesebene. Für den Distanzabfall taugen sie nicht; sie zeigen nur, wie viele kleine Bauaufträge wo vergeben werden. Zum Vergleich: Im selben Monat gab es 4.239 unterschwellige Bauausschreibungen nach VOB (de-vob), aber nur 963 Zuschlagsmeldungen. Für die Reichweite der Firmen bleibt TED die Grundlage; die EU-Zuschläge im Datenservice sind besser gefüllt als in TED insgesamt, weil die DB dort kaum meldet.
