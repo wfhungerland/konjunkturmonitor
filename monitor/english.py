@@ -569,6 +569,9 @@ def chart_sentences_en(c: dict) -> list[str]:
         return [x for x in [heute(c["heute"]["attach"], c["heute"]["who"], "en")] + list(c.get("say_en") or []) if x]
     if c.get("say_en"):  # fester Satz aus monitor.yaml statt des automatischen
         return list(c["say_en"])
+    from . import schulden
+    if c.get("chart") in schulden.CHARTS:
+        return schulden.saetze(c, "en")
     typ, d = c.get("type"), int(c.get("decimals", 1))
     try:
         sp = _special_en(c)

@@ -679,6 +679,9 @@ def chart_sentences(c: dict) -> list[str]:
         return [x for x in [heute(c["heute"]["attach"], c["heute"]["who"])] + list(c.get("say") or []) if x]
     if c.get("say"):  # fester Satz aus monitor.yaml statt des automatischen
         return list(c["say"])
+    from . import schulden
+    if c.get("chart") in schulden.CHARTS:  # Schuldenstruktur: eigene Sätze
+        return schulden.saetze(c, "de")
     typ, d = c.get("type"), int(c.get("decimals", 1))
     unit = (c.get("unit") or "").split(",")[0]
     is_rate = unit.startswith(("%", "Pp", "Saldo")) and not unit.startswith(("% des", "% der"))

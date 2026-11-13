@@ -238,6 +238,11 @@ charts:
   gov_balance: {title: "Finanzierungssaldo des Staates", decimals: 1}
   gov_spend: {title: "Zinsausgaben und Investitionen des Staates", decimals: 1}
   gov_debt: {title: "Schuldenstand des Staates", decimals: 1}
+  gov_debt_level: {title: "Schulden nach staatlicher Ebene", decimals: 1}
+  gov_debt_instr: {title: "Schulden nach Instrument", decimals: 1}
+  gov_debt_holder: {title: "Schulden nach Gläubiger", decimals: 1}
+  gov_debt_mat: {title: "Restlaufzeit der Staatsschulden", decimals: 1}
+  gov_debt_cost: {title: "Zins auf die Staatsschulden", decimals: 1}
   migration_groups: {title: "Nettozuwanderung nach Staatsangehörigkeit", decimals: 0}
 
   long_rr: {title: "Realzins seit 1871", decimals: 1}
@@ -2908,6 +2913,255 @@ series:
     start: "2005-01-01"
     chart: gov_debt
     label: "Schuldenstand"
+
+  # Schuldenstruktur des Staates: wer schuldet, in welcher Form, bei wem, wie lange, zu welchem Zins
+  - id: de_debt_s1311
+    block: staat
+    source: eurostat
+    key: gov_10q_ggdebt
+    params: {geo: DE, sector: S1311, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden, Bund (Maastricht-Abgrenzung)"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    stale_after_months: 9
+    chart: gov_debt_level
+    label: "Bund"
+
+  - id: de_debt_s1312
+    block: staat
+    source: eurostat
+    key: gov_10q_ggdebt
+    params: {geo: DE, sector: S1312, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden, Länder (Maastricht-Abgrenzung)"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    stale_after_months: 9
+    chart: gov_debt_level
+    label: "Länder"
+
+  - id: de_debt_s1313
+    block: staat
+    source: eurostat
+    key: gov_10q_ggdebt
+    params: {geo: DE, sector: S1313, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden, Gemeinden (Maastricht-Abgrenzung)"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    stale_after_months: 9
+    chart: gov_debt_level
+    label: "Gemeinden"
+
+  - id: de_debt_s1314
+    block: staat
+    source: eurostat
+    key: gov_10q_ggdebt
+    params: {geo: DE, sector: S1314, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden, Sozialversicherung (Maastricht-Abgrenzung)"
+    unit: "% des BIP"
+    frequency: Q
+    adjustment: nicht bereinigt
+    start: "2000-01-01"
+    stale_after_months: 9
+    chart: gov_debt_level
+    label: "Sozialversicherung"
+
+  - id: de_debt_gd_f3
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: S1_S2, maturity: TOTAL, unit: PC_GDP, na_item: GD_F3}
+    title: "Bruttoschulden des Staates nach Instrument: Wertpapiere"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_instr
+    label: "Wertpapiere"
+    style: bar
+
+  - id: de_debt_gd_f4
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: S1_S2, maturity: TOTAL, unit: PC_GDP, na_item: GD_F4}
+    title: "Bruttoschulden des Staates nach Instrument: Kredite"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_instr
+    label: "Kredite"
+    style: bar
+
+  - id: de_debt_gd_f2
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: S1_S2, maturity: TOTAL, unit: PC_GDP, na_item: GD_F2}
+    title: "Bruttoschulden des Staates nach Instrument: Bargeld und Einlagen"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_instr
+    label: "Bargeld und Einlagen"
+    style: bar
+
+  - id: de_debt_h_s121
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: "S121", maturity: TOTAL, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates nach Gläubiger: Bundesbank"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_holder
+    label: "Bundesbank"
+    style: bar
+
+  - id: de_debt_h_s122_s123
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: "S122_S123", maturity: TOTAL, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates nach Gläubiger: Banken"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_holder
+    label: "Banken"
+    style: bar
+
+  - id: de_debt_h_s124_s129
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: "S124-S129", maturity: TOTAL, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates nach Gläubiger: Versicherer, Fonds und andere"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_holder
+    label: "Versicherer, Fonds und andere"
+    style: bar
+
+  - id: de_debt_h_s11_s14_s15
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: "S11_S14_S15", maturity: TOTAL, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates nach Gläubiger: Unternehmen und Haushalte"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_holder
+    label: "Unternehmen und Haushalte"
+    style: bar
+
+  - id: de_debt_h_s2
+    block: staat
+    source: eurostat
+    key: gov_10dd_ggd
+    params: {geo: DE, sector: S13, sector2: "S2", maturity: TOTAL, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates nach Gläubiger: Ausland"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahresende
+    start: "1995-01-01"
+    stale_after_months: 24
+    chart: gov_debt_holder
+    label: "Ausland"
+    style: bar
+
+  - id: rmd_de
+    block: staat
+    source: eurostat
+    key: gov_10dd_rmd
+    params: {geo: DE, sector: S13, maturity: TOTAL, unit: YR, na_item: GD}
+    title: "Durchschnittliche Restlaufzeit der Staatsschulden, Deutschland"
+    unit: "Jahre"
+    frequency: A
+    adjustment: Jahresende
+    start: "2000-01-01"
+    stale_after_months: 24
+    chart: gov_debt_mat
+    label: "Deutschland"
+
+  - id: rmd_fr
+    block: staat
+    source: eurostat
+    key: gov_10dd_rmd
+    params: {geo: FR, sector: S13, maturity: TOTAL, unit: YR, na_item: GD}
+    title: "Durchschnittliche Restlaufzeit der Staatsschulden, Frankreich"
+    unit: "Jahre"
+    frequency: A
+    adjustment: Jahresende
+    start: "2000-01-01"
+    stale_after_months: 24
+    chart: gov_debt_mat
+    label: "Frankreich"
+
+  - id: rmd_it
+    block: staat
+    source: eurostat
+    key: gov_10dd_rmd
+    params: {geo: IT, sector: S13, maturity: TOTAL, unit: YR, na_item: GD}
+    title: "Durchschnittliche Restlaufzeit der Staatsschulden, Italien"
+    unit: "Jahre"
+    frequency: A
+    adjustment: Jahresende
+    start: "2000-01-01"
+    stale_after_months: 24
+    chart: gov_debt_mat
+    label: "Italien"
+
+  - id: rmd_es
+    block: staat
+    source: eurostat
+    key: gov_10dd_rmd
+    params: {geo: ES, sector: S13, maturity: TOTAL, unit: YR, na_item: GD}
+    title: "Durchschnittliche Restlaufzeit der Staatsschulden, Spanien"
+    unit: "Jahre"
+    frequency: A
+    adjustment: Jahresende
+    start: "2000-01-01"
+    stale_after_months: 24
+    chart: gov_debt_mat
+    label: "Spanien"
+
+  - id: de_gov_implicit
+    block: staat
+    source: static
+    key: ameco_implicit_rate_de
+    params: {source_name: "Europäische Kommission, AMECO"}
+    title: "Durchschnittsverzinsung der Staatsschulden (Zinsausgaben in % der Schulden des Vorjahres)"
+    unit: "% p. a."
+    frequency: A
+    adjustment: Jahreswerte
+    start: "1996-01-01"
+    stale_after_months: 24
+    chart: gov_debt_cost
+    label: "Durchschnittszins der Schulden"
+    license: "Europäische Kommission, AMECO: Wiederverwendung mit Quellenangabe"
+    note: "AMECO-Reihe AYIGD: Zinsausgaben des Staates in Prozent des Bruttoschuldenstands des Vorjahres (Abgrenzung des Defizitverfahrens); ohne Prognosejahre; wöchentlich über den AMECO-Abfragedienst abgerufen."
 
   # Staatsausgaben nach Aufgaben (COFOG), Gesamtstaat; Anteil an den Ausgaben und in % des BIP
   - id: de_cofog_tot_gf10
