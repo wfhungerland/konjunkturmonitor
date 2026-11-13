@@ -5,7 +5,7 @@ Funktionen bilden aus den Reihen einer Abbildung je ein bis zwei Sätze, deutsch
 """
 from __future__ import annotations
 
-CHARTS = {"gov_debt_level", "gov_debt_instr", "gov_debt_holder", "gov_debt_mat", "gov_debt_cost", "stx_pk", "hh_wealth", "hh_balance", "hh_share"}
+CHARTS = {"gov_debt_level", "gov_debt_instr", "gov_debt_holder", "gov_debt_mat", "gov_debt_cost", "stx_pk", "hh_wealth", "hh_balance", "hh_share", "hh_spend"}
 
 
 def _last(c: dict, sid: str):
@@ -34,6 +34,7 @@ def saetze(c: dict, lang: str = "de") -> list[str]:
     de = lang == "de"
     num = num_de if de else num_en
     pc = (lambda v, d=1: f"{num(v, d)} %") if de else (lambda v, d=1: f"{num(v, d)}%")
+    k = lambda v: f"€{num(round(v) * 1000, 0)}"  # Werte in Tausend Euro als volle Beträge, etwa €129.000
     ch = c.get("chart")
     try:
         if ch == "gov_debt_level":
@@ -127,9 +128,8 @@ def saetze(c: dict, lang: str = "de") -> list[str]:
             m = dict(mn).get(x)
             w = _when(x, "Q", lang)
             if de:
-                s1 = f"{w[0].upper() + w[1:]} besaß der Haushalt in der Mitte netto rund €{num(v, 0)}\u00a0Tsd., der Durchschnitt aller Haushalte €{num(m, 0)}\u00a0Tsd."
-                return [s1]
-            return [f"{w[0].upper() + w[1:]}, the household in the middle had net wealth of about €{num(v, 0)}k, the average across all households €{num(m, 0)}k."]
+                return [f"{w[0].upper() + w[1:]} besaß der Haushalt in der Mitte netto rund {k(v)}, der Durchschnitt aller Haushalte {k(m)}."]
+            return [f"{w[0].upper() + w[1:]}, the household in the middle had net wealth of about {k(v)}, the average across all households {k(m)}."]
         if ch == "hh_balance":
             ids = [("hh_q3_nun", "Immobilien", "property"), ("hh_q3_f2m", "Bargeld und Einlagen", "cash and deposits"), ("hh_q3_f62", "Lebensversicherungen und Renten", "life insurance and pensions")]
             nw = _last(c, "hh_q3_nwa")
@@ -138,10 +138,20 @@ def saetze(c: dict, lang: str = "de") -> list[str]:
             parts = [(dict(_last(c, i)).get(x, 0), a, b) for i, a, b in ids]
             w = _when(x, "Q", lang)
             if de:
-                return [f"{w[0].upper() + w[1:]} besaß ein Haushalt im mittleren Fünftel Immobilien für €{num(parts[0][0], 0)}\u00a0Tsd. und Einlagen von €{num(parts[1][0], 0)}\u00a0Tsd.; "
-                        f"dem standen Kredite von €{num(abs(debt), 0)}\u00a0Tsd. gegenüber. Netto blieben €{num(v, 0)}\u00a0Tsd."]
-            return [f"{w[0].upper() + w[1:]}, a household in the middle fifth owned property worth €{num(parts[0][0], 0)}k and deposits of €{num(parts[1][0], 0)}k, "
-                    f"against loans of €{num(abs(debt), 0)}k. Net wealth was €{num(v, 0)}k."]
+                return [f"{w[0].upper() + w[1:]} besaß ein Haushalt im mittleren Fünftel Immobilien für {k(parts[0][0])} und Einlagen von {k(parts[1][0])}; "
+                        f"dem standen Kredite von {k(abs(debt))} gegenüber. Netto blieben {k(v)}."]
+            return [f"{w[0].upper() + w[1:]}, a household in the middle fifth owned property worth {k(parts[0][0])} and deposits of {k(parts[1][0])}, "
+                    f"against loans of {k(abs(debt))}. Net wealth was {k(v)}."]
+        if ch == "hh_spend":
+            ids = [("hh_cons_cp04", "Wohnen und Energie", "housing and energy"), ("hh_cons_cp07", "Verkehr", "transport"), ("hh_cons_cp01", "Nahrungsmittel", "food")]
+            ser = [(dict(_last(c, i)), a, b) for i, a, b in ids]
+            y = max(ser[0][0])
+            y0 = min(ser[0][0])
+            if de:
+                return [f"{y[:4]} gaben die Haushalte {pc(ser[0][0][y])} ihres Konsums für Wohnen und Energie aus, {pc(ser[1][0][y])} für Verkehr und {pc(ser[2][0][y])} für Nahrungsmittel.",
+                        f"{y0[:4]} waren es für Wohnen und Energie {pc(ser[0][0][y0])}, für Nahrungsmittel {pc(ser[2][0][y0])}."]
+            return [f"In {y[:4]} households spent {pc(ser[0][0][y])} of their consumption on housing and energy, {pc(ser[1][0][y])} on transport and {pc(ser[2][0][y])} on food.",
+                    f"In {y0[:4]} the shares were {pc(ser[0][0][y0])} for housing and energy and {pc(ser[2][0][y0])} for food."]
         if ch == "hh_share":
             t, b = _last(c, "hh_share_t10"), _last(c, "hh_share_b50")
             x, vt = t[-1]

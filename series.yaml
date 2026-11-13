@@ -3179,7 +3179,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_wealth
     label: "Median"
     license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
@@ -3193,7 +3193,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_wealth
     label: "Mittelwert"
     license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
@@ -3207,7 +3207,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_balance
     label: "Immobilien"
     style: bar
@@ -3222,7 +3222,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_balance
     label: "Bargeld und Einlagen"
     style: bar
@@ -3237,7 +3237,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_balance
     label: "Lebensversicherungen und Renten"
     style: bar
@@ -3252,7 +3252,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_balance
     label: "Investmentfonds"
     style: bar
@@ -3267,7 +3267,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_balance
     label: "Aktien und Beteiligungen"
     style: bar
@@ -3282,7 +3282,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_balance
     label: "Betriebsvermögen"
     style: bar
@@ -3297,7 +3297,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_balance
     label: "Baukredite"
     style: bar
@@ -3312,7 +3312,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_balance
     label: "Sonstige Kredite"
     style: bar
@@ -3327,7 +3327,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_balance
     label: "Nettovermögen"
     license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
@@ -3341,7 +3341,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_share
     label: "Reichste 10 %"
     license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
@@ -3355,7 +3355,7 @@ series:
     frequency: Q
     adjustment: nicht bereinigt
     start: "2011-01-01"
-    stale_after_months: 9
+    stale_after_months: 15
     chart: hh_share
     label: "Ärmere Hälfte"
     license: "Europäische Zentralbank, Distributional Wealth Accounts: freie Weiterverwendung mit Quellenangabe"
@@ -3370,7 +3370,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 24
+    stale_after_months: 54
     chart: hh_spend
     label: "Wohnen und Energie"
 
@@ -3384,7 +3384,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 24
+    stale_after_months: 54
     chart: hh_spend
     label: "Verkehr"
 
@@ -3398,7 +3398,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 24
+    stale_after_months: 54
     chart: hh_spend
     label: "Nahrungsmittel"
 
@@ -3412,37 +3412,9 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 24
+    stale_after_months: 54
     chart: hh_spend
     label: "Freizeit und Kultur"
-
-  - id: hh_cons_cp11
-    block: haushalte
-    source: eurostat
-    key: nama_10_co3_p3
-    params: {geo: DE, coicop: CP11, unit: PC_TOT}
-    title: "Konsumausgaben der privaten Haushalte für Gaststätten und Hotels"
-    unit: "% des Konsums"
-    frequency: A
-    adjustment: Jahreswerte, in jeweiligen Preisen
-    start: "1995-01-01"
-    stale_after_months: 24
-    chart: hh_spend
-    label: "Gaststätten und Hotels"
-
-  - id: hh_cons_cp06
-    block: haushalte
-    source: eurostat
-    key: nama_10_co3_p3
-    params: {geo: DE, coicop: CP06, unit: PC_TOT}
-    title: "Konsumausgaben der privaten Haushalte für Gesundheit"
-    unit: "% des Konsums"
-    frequency: A
-    adjustment: Jahreswerte, in jeweiligen Preisen
-    start: "1995-01-01"
-    stale_after_months: 24
-    chart: hh_spend
-    label: "Gesundheit"
 
   - id: stx_pk_sozial
     block: staat
@@ -3454,7 +3426,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 24
+    stale_after_months: 30
     chart: stx_pk
     label: "Soziale Sicherung"
     style: bar
@@ -3471,7 +3443,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 24
+    stale_after_months: 30
     chart: stx_pk
     label: "Gesundheit"
     style: bar
@@ -3488,7 +3460,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 24
+    stale_after_months: 30
     chart: stx_pk
     label: "Bildung"
     style: bar
@@ -3505,7 +3477,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 24
+    stale_after_months: 30
     chart: stx_pk
     label: "Verwaltung und Zinsen"
     style: bar
@@ -3522,7 +3494,7 @@ series:
     frequency: A
     adjustment: Jahreswerte, in jeweiligen Preisen
     start: "1995-01-01"
-    stale_after_months: 24
+    stale_after_months: 30
     chart: stx_pk
     label: "Übrige Aufgaben"
     style: bar

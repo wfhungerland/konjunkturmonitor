@@ -569,7 +569,7 @@ charts:
   hh_spend:
     title: "Consumption by purpose"
     ask: "What do households spend their money on?"
-    caption: "The lines show the six largest spending categories of private households as a percentage of their total consumption, according to the national accounts. Housing and energy includes the rental value of owner-occupied homes. These are averages across all households; individual households differ widely by income and housing."
+    caption: "The lines show four large spending categories of private households as a percentage of their total consumption, according to the national accounts. Housing and energy includes the rental value of owner-occupied homes. These are averages across all households; individual households differ widely by income and housing."
   gov_debt_cost:
     title: "Interest on government debt"
     ask: "How expensive is government debt?"
@@ -1014,8 +1014,6 @@ series:
   hh_cons_cp07: {title: "Household consumption on transport", label: "Transport", unit: "% of consumption", adjustment: "annual, current prices"}
   hh_cons_cp01: {title: "Household consumption on food", label: "Food", unit: "% of consumption", adjustment: "annual, current prices"}
   hh_cons_cp09: {title: "Household consumption on recreation and culture", label: "Recreation and culture", unit: "% of consumption", adjustment: "annual, current prices"}
-  hh_cons_cp11: {title: "Household consumption on restaurants and hotels", label: "Restaurants and hotels", unit: "% of consumption", adjustment: "annual, current prices"}
-  hh_cons_cp06: {title: "Household consumption on health", label: "Health", unit: "% of consumption", adjustment: "annual, current prices"}
   stx_pk_sozial: {title: "Government spending per inhabitant: social protection", label: "Social protection", unit: "€", adjustment: "annual, current prices"}
   stx_pk_gesundheit: {title: "Government spending per inhabitant: health", label: "Health", unit: "€", adjustment: "annual, current prices"}
   stx_pk_bildung: {title: "Government spending per inhabitant: education", label: "Education", unit: "€", adjustment: "annual, current prices"}
