@@ -998,7 +998,7 @@ series:
   rhine_lowdays_year: {title: "Low-water days at the Kaub gauge per year (daily mean below 78 cm)", label: "Low-water days", unit: "days", note: "Number of days per calendar year with a daily mean below 78 cm; current year up to the latest day.", adjustment: "not adjusted"}
   de_power_load: {title: "Electricity consumption (grid load) in Germany, TWh per month", unit: "TWh", adjustment: "not adjusted"}
   de_power_load_yoy: {title: "Electricity consumption (grid load), % on a year earlier", label: "Electricity consumption", unit: "% on a year earlier", adjustment: "not adjusted"}
-  de_power_price: {title: "Wholesale electricity price (day-ahead, DE/LU), monthly average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
+  de_power_price: {title: "Wholesale electricity price (day-ahead, DE/LU, until September 2018 DE/AT/LU), monthly average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
   de_power_price_d: {title: "Wholesale electricity price (day-ahead, DE/LU), daily average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
   de_power_load_d: {title: "Electricity consumption (grid load) in Germany, GWh per day", label: "Electricity consumption", unit: "GWh per day", adjustment: "not adjusted"}
   de_permits: {title: "Building permits: dwellings (new buildings and work on existing buildings), thousands", label: "Dwellings approved", unit: "thousand dwellings", adjustment: "not adjusted"}

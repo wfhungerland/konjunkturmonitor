@@ -800,7 +800,7 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                         ln["label"] = ln["label"].replace("Finanzkrise ab", "Financial crisis from").replace("Corona ab", "COVID from").replace("Energiekrise ab", "Energy crisis from").replace("Finanzkrise ", "Financial crisis ").replace("Weltwirtschaftskrise ", "Great Depression ").replace("Korea-Boom ", "Korean War boom ").replace("Zweite Ölkrise ", "Second oil crisis ").replace("Ölkrise ", "Oil crisis ").replace("Wiedervereinigung ", "Reunification ").replace("Corona ", "COVID ").replace("laufend, seit ", "ongoing, since ").replace("seit ", "since ")
             c["sources"] = [tr.src(x) for x in c.get("sources") or []]
             c["licenses"] = [tr.src(x) for x in c.get("licenses") or []]
-            for f in ("title", "ask", "caption", "what", "rail", "votes_label"):
+            for f in ("title", "ask", "caption", "what", "rail", "votes_label", "kommentar"):
                 if c.get(f):
                     c[f] = tr.get("charts", cid, f, c[f])
             c["unit_de"] = c.get("unit")

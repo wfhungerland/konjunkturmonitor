@@ -1896,6 +1896,8 @@ def build_payload(root: Path = ROOT) -> dict:
             c["text"] = " ".join(c["texts"])
             if c.get("caption"):
                 c["caption"] = spell(c["caption"])
+            if c.get("kommentar"):  # eigene Einschätzung je Grafik (monitor.yaml, Feld kommentar), auf Klick in der linken Spalte
+                c["kommentar"] = spell(c["kommentar"])
             for n in c.get("notes", []):
                 n["text"] = spell(n["text"])
     health = _health(root, topics, meta)
@@ -1904,7 +1906,18 @@ def build_payload(root: Path = ROOT) -> dict:
             "site": cfg["site"], "stand": stand, "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "questions": questions, "topics": topics, "overview": spell(tidy(overview({q["id"]: q["answer"] for q in questions}))),
             "fazit": spell(tidy(fazit({q["id"]: q["answer"] for q in questions}))) if cfg["site"].get("kommentar", True) else "", "glossar": GLOSSAR,
-            "content_license": cfg["site"].get("license", ""), "text_issues": text_issues}
+            "content_license": cfg["site"].get("license", ""), "text_issues": text_issues, "lage": _lage(data, root)}
+
+
+def _lage(data: dict, root: Path) -> dict:
+    """Erster Bildschirm: Kernzahlen, Lage-Satz, Warnlampen, Ausblick und was die Gremien raten, deutsch und englisch."""
+    from . import lage
+    from .gremien import heute
+    fc = _forecasts(root)
+    out = {lang: lage.build(data, fc, lang) for lang in ("de", "en")}
+    for lang in ("de", "en"):
+        out[lang]["gremien"] = [x for x in (heute("svr_positionen.json", "svr", lang), heute("gd_positionen.json", "gd", lang)) if x]
+    return out
 
 
 def write_embeds(payload: dict, tpl: str, out: Path) -> int:
