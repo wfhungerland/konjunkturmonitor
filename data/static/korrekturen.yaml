@@ -4,6 +4,10 @@
 # text (was sich geändert hat und was das für die Zahlen bedeutet), pr (Nummer des Pull Requests, optional).
 # Reine Gestaltung ohne Folgen für Zahlen oder Aussagen gehört nicht hierher.
 
+- date: 2026-11-13
+  art: Quelle
+  charts: [gd_treff, gd_ziel, gd_rat, gd_themen, gd_schwerpunkte, gd_dissens]
+  text: "Das Herbstgutachten 2026 der Gemeinschaftsdiagnose ist ergänzt: Prognosen für 2026 bis 2028 und die inhaltliche Auswertung, nach denselben Regeln wie die übrigen Gutachten. Quelle ist die frei zugängliche Fassung beim Kiel Institut."
 - date: 2026-11-12
   art: Methode
   charts: [bund_tree]
