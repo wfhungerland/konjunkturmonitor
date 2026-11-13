@@ -102,7 +102,7 @@ series:
   de_orders_euro: [der Auftragseingang aus dem Euroraum, s]
   de_orders_noneuro: [der Auftragseingang von außerhalb des Euroraums, s]
   rhine_lowdays_year: {tpl: "{when} gab es am Pegel Kaub {v} mit einem Wasserstand unter 78 cm."}
-  rhine_kaub: {tpl: "{when} lag der Wasserstand am Pegel Kaub im Tagesmittel bei {v}."}
+  rhine_kaub: {tpl: "{when} lag der Wasserstand am Pegel Kaub im Tagesmittel bei {v} und damit {tdiff} cm {tword} der Marke von 78 cm."}
   de_prod_vorl: [die Produktion von Vorleistungsgütern, s]
   de_prod_inve: [die Produktion von Investitionsgütern, s]
   de_prod_kons: [die Produktion von Konsumgütern, s]
