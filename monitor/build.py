@@ -1129,6 +1129,8 @@ def chart_sentences(c: dict) -> list[str]:
             last = min(s["x"][-1] for s in series) if cb.get("common") and not cb.get("each_month") else max(s["x"][-1] for s in series)  # common: jüngster Zeitraum, den alle haben
             sym = "%" if unit.startswith("%") else "Pp" if unit.startswith(("Pp", "Saldo")) else u
             at = lambda s: s["y"][s["x"].index(last)] if last in s["x"] else None
+            if cb.get("sort"):  # absteigend nach dem jüngsten Wert
+                series = sorted(series, key=lambda s: -(at(s) if at(s) is not None else float("-inf")))
             if cb.get("where") and series and at(series[0]) is not None and unit.startswith("%"):  # Verb vorn: Gesamtgröße, dann Bereiche mit gleicher und mit anderer Richtung
                 sg = lambda v: (round(v, d) > 0) - (round(v, d) < 0)
                 verb = {1: "stiegen", -1: "sanken", 0: "veränderten sich kaum"} if cb.get("pl") else {1: "stieg", -1: "sank", 0: "veränderte sich kaum"}
@@ -1170,10 +1172,15 @@ def chart_sentences(c: dict) -> list[str]:
                         ups, dns = [x for x in ch if round(x[1], d) > 0], [x for x in ch if round(x[1], d) < 0]
                         if len(ups) >= len(dns) and ups:
                             w = max(ups, key=lambda x: x[1])
-                            out.append(f"Ggü. dem {prev_word} stiegen sie am stärksten {w[0]} ({num(w[1], d, True)} {sym}).")
+                            out.append(f"Ggü. dem {prev_word} {'stieg er' if cb.get('sing') else 'stiegen sie'} am stärksten {w[0]} ({num(w[1], d, True)} {sym}).")
                         elif dns:
                             w = min(dns, key=lambda x: x[1])
-                            out.append(f"Ggü. dem {prev_word} sanken sie am stärksten {w[0]} ({num(w[1], d, True)} {sym}).")
+                            out.append(f"Ggü. dem {prev_word} {'sank er' if cb.get('sing') else 'sanken sie'} am stärksten {w[0]} ({num(w[1], d, True)} {sym}).")
+                if cb.get("yago"):  # Stand ein Jahr zuvor, in derselben Reihenfolge
+                    ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
+                    old = [f"{num(s['y'][s['x'].index(ago)], d)} {sym}".strip() for s in series if ago in s["x"] and at(s) is not None]
+                    if len(old) == len(items):
+                        out.append("Ein Jahr zuvor waren es " + _und(old) + ".")
                 return out
         if c.get("vs_year") and unit.startswith("Index"):  # gleich gebaute Reihen gegen das Mittel eines Basisjahres
             vy = c["vs_year"]
@@ -1315,6 +1322,17 @@ def chart_sentences(c: dict) -> list[str]:
                     out.append(f"Im Mittel des Jahres {ry} waren es {num(m, d)} {'%' if unit.startswith('%') else u}.".replace(" .", "."))
         if spread and out:
             out.append(spread)
+        if c.get("last_change") and out:  # wann sich ein Satz zuletzt geändert hat, etwa der Einlagesatz der EZB
+            s0 = next((s for s in c["series"] if s.get("id") == c["last_change"]), None)
+            if s0:
+                pts = [(x, y) for x, y in zip(s0["x"], s0["y"]) if y is not None]
+                k = next((i for i in range(len(pts) - 1, 0, -1) if round(pts[i][1], 2) != round(pts[i - 1][1], 2)), None)
+                if k is not None:  # Monatsmittel: Monate mit Zwischenwerten überspringen, bis zum vorigen festen Stand
+                    j = k - 1
+                    while j > 0 and round(pts[j][1], 2) != round(pts[j - 1][1], 2):
+                        j -= 1
+                    a0, a1 = pts[j][1], pts[k][1]
+                    out[-1] = out[-1][:-1] + f"; zuletzt hat die EZB ihn im {_per(pts[j + 1][0], freq)} von {num(a0, d)} auf {num(a1, d)} % {'angehoben' if a1 > a0 else 'gesenkt'}."
         if norm and out and norm["x"][-1] == last and series and series[0]["y"][-1] is not None and norm["y"][-1]:
             v, m = series[0]["y"][-1], norm["y"][-1]
             a0, a1 = c.get("norm") or ("", "")
