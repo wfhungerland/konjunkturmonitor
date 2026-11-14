@@ -1,47 +1,47 @@
 ## Baukapazität je Einzugsgebiet vom 14.11.2026
 
-Merkmal: svb_bauberufe (BA, Arbeitsort, Stichtag 2026-03). Nachfrage: Bevölkerung (Destatis). Abfall aus dem Schwerkraftmodell der regionalen Firmen: β = 0.0251 je Minute (Halbwertszeit 28 min), Faktor eigener Kreis 1.9. Bund: 22.4 je 1.000 Einwohner.
+Merkmal: svb_wz_f_baugewerbe (BA, Arbeitsort, Stichtag 2026-03). Nachfrage: Bevölkerung (Destatis). Abfall aus dem Schwerkraftmodell der regionalen Firmen: β = 0.0251 je Minute (Halbwertszeit 28 min), Faktor eigener Kreis 1.9. Bund: 23.3 je 1.000 Einwohner. Von der BA gesperrt und aus den Bauberufen des Kreises geschätzt (bundesweites Verhältnis 1.043): Flensburg, Stadt, Delmenhorst, Stadt, Remscheid, Stadt, Frankenthal (Pfalz), kreisfreie Stadt, Speyer, kreisfreie Stadt, Landshut, Amberg, Hof, Ansbach, Schwabach, Kaufbeuren.
 
-Das Einzugsgebiet gleicht aus: Die Streuung über die Kreise (Variationskoeffizient) sinkt von 0.24 auf 0.23; die Korrelation zwischen beiden Maßen beträgt 0.11.
+Das Einzugsgebiet gleicht aus: Die Streuung über die Kreise (Variationskoeffizient) sinkt von 0.28 auf 0.23; die Korrelation zwischen beiden Maßen beträgt 0.13.
 
 ### Geringste Kapazität im Einzugsgebiet
 
 | Kreis | je 1.000 Einwohner im Kreis | je 1.000 Einwohner im Einzugsgebiet | Index Bund = 100 |
 |---|---:|---:|---:|
-| Eifelkreis Bitburg-Prüm | 21.3 | 9.4 | 42 |
-| Kyffhäuserkreis | 22.0 | 10.5 | 47 |
-| Frankfurt (Oder), Stadt | 22.3 | 10.6 | 48 |
-| Ahrweiler | 23.0 | 11.1 | 50 |
-| Vogelsbergkreis | 20.1 | 11.1 | 50 |
-| Lüchow-Dannenberg | 21.2 | 11.3 | 50 |
-| Merzig-Wadern | 18.5 | 11.7 | 52 |
-| Holzminden | 18.7 | 11.9 | 53 |
-| Havelland | 15.3 | 11.9 | 53 |
-| Saalfeld-Rudolstadt | 19.3 | 11.9 | 53 |
-| Elbe-Elster | 22.4 | 12.0 | 54 |
-| Kronach | 18.1 | 12.1 | 54 |
-| Uckermark | 23.3 | 12.2 | 54 |
-| Goslar | 17.4 | 12.2 | 54 |
-| Altmarkkreis Salzwedel | 22.4 | 12.4 | 55 |
+| Kyffhäuserkreis | 19.9 | 10.3 | 44 |
+| Eifelkreis Bitburg-Prüm | 28.1 | 10.9 | 47 |
+| Ahrweiler | 25.8 | 11.6 | 50 |
+| Vogelsbergkreis | 21.7 | 11.6 | 50 |
+| Lüchow-Dannenberg | 21.2 | 11.9 | 51 |
+| Frankfurt (Oder), Stadt | 27.4 | 12.0 | 52 |
+| Merzig-Wadern | 19.8 | 12.1 | 52 |
+| Holzminden | 19.9 | 12.1 | 52 |
+| Kronach | 14.7 | 12.6 | 54 |
+| Havelland | 16.0 | 12.7 | 54 |
+| Goslar | 19.5 | 12.8 | 55 |
+| Uckermark | 22.5 | 12.8 | 55 |
+| Kassel | 15.6 | 12.8 | 55 |
+| Northeim | 18.6 | 13.2 | 57 |
+| Saalfeld-Rudolstadt | 22.7 | 13.3 | 57 |
 
 ### Höchste Kapazität im Einzugsgebiet
 
 | Kreis | je 1.000 Einwohner im Kreis | je 1.000 Einwohner im Einzugsgebiet | Index Bund = 100 |
 |---|---:|---:|---:|
-| Hamburg, Freie und Hansestadt | 23.1 | 34.3 | 153 |
-| München, Landeshauptstadt | 20.2 | 34.1 | 152 |
-| Frankfurt am Main, Stadt | 26.6 | 33.1 | 148 |
-| Region Hannover | 22.8 | 31.3 | 140 |
-| Stuttgart, Stadtkreis | 33.0 | 31.2 | 140 |
-| Nürnberg | 24.2 | 30.2 | 135 |
-| Mannheim, Stadtkreis | 31.6 | 29.5 | 132 |
-| Köln, Stadt | 22.6 | 29.3 | 131 |
-| Bochum, Stadt | 26.3 | 28.9 | 129 |
-| München | 28.5 | 28.8 | 129 |
-| Dortmund, Stadt | 20.9 | 28.7 | 128 |
-| Berlin, Stadt | 20.5 | 28.7 | 128 |
-| Essen, Stadt | 21.3 | 28.7 | 128 |
-| Karlsruhe, Stadtkreis | 32.2 | 28.5 | 127 |
-| Herne, Stadt | 31.1 | 28.5 | 127 |
+| München, Landeshauptstadt | 15.6 | 34.7 | 149 |
+| Hamburg, Freie und Hansestadt | 21.2 | 34.4 | 147 |
+| Frankfurt am Main, Stadt | 21.7 | 33.0 | 141 |
+| München | 35.5 | 32.4 | 139 |
+| Nürnberg | 23.0 | 32.1 | 137 |
+| Region Hannover | 22.7 | 31.7 | 136 |
+| Mannheim, Stadtkreis | 33.3 | 30.6 | 131 |
+| Stuttgart, Stadtkreis | 24.1 | 30.5 | 131 |
+| Karlsruhe | 22.9 | 29.7 | 127 |
+| Ludwigsburg | 22.4 | 29.6 | 127 |
+| Offenbach am Main, Stadt | 30.3 | 29.3 | 125 |
+| Offenbach | 26.4 | 29.3 | 125 |
+| Rhein-Neckar-Kreis | 19.7 | 29.2 | 125 |
+| Esslingen | 23.0 | 29.2 | 125 |
+| Essen, Stadt | 22.0 | 29.1 | 125 |
 
 Alle Kreise: data/static/aufnahme_einzug.csv. Lesart: Kapazität im Einzugsgebiet ist der Teil der Bauleute aller Kreise, der nach Fahrzeit und Nachfrage auf diesen Kreis entfällt.

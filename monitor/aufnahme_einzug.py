@@ -1,6 +1,7 @@
 """Aufnahmefähigkeit der Kreise: Baukapazität je Einzugsgebiet.
 
-Die Bauleute eines Kreises arbeiten nicht nur dort. Das Schwerkraftmodell (monitor.aufnahme_schwerkraft) sagt,
+Hauptmaß: sozialversicherungspflichtig Beschäftigte im Baugewerbe (WZ-Abschnitt F); Gegenprobe mit den Bauberufen
+(--merkmal svb_bauberufe). Die Bauleute eines Kreises arbeiten nicht nur dort. Das Schwerkraftmodell (monitor.aufnahme_schwerkraft) sagt,
 wie stark der Strom der Aufträge mit der Fahrzeit abfällt. Damit wird die Kapazität jedes Sitz-Kreises i auf
 die Leistungskreise j verteilt, im Verhältnis zu Erreichbarkeit und Nachfrage (Huff-Verteilung, wie im
 Zwei-Stufen-Einzugsgebietsverfahren):
@@ -12,7 +13,7 @@ N ist die Nachfrage (Bevölkerung), t die Pkw-Fahrzeit, β und δ stammen aus de
 Firmen. Jede Fachkraft zählt so genau einmal. Kennzahl: Kapazität im Einzugsgebiet je 1.000 Einwohner, verglichen
 mit der Zahl im eigenen Kreis.
 
-    python -m monitor.aufnahme_einzug [--merkmal svb_bauberufe] [--stichtag 2026-03] [--ziel docs]
+    python -m monitor.aufnahme_einzug [--merkmal svb_wz_f_baugewerbe] [--stichtag 2026-03] [--ziel docs]
 
 Liest data/static/aufnahme_ba_kreise.csv, aufnahme_kreise_de.csv, aufnahme_fahrzeiten.csv und
 aufnahme_schwerkraft.csv; schreibt aufnahme_einzug.csv (data/static) und aufnahme_einzug.md (docs).
@@ -28,6 +29,7 @@ from pathlib import Path
 import numpy as np
 
 DATEN = Path(__file__).resolve().parent.parent / "data" / "static"
+HAUPTMASS = "svb_wz_f_baugewerbe"  # Beschäftigte im Baugewerbe; Bauberufe als Gegenprobe
 
 
 def parameter(gruppe: str = "regional") -> tuple[float, float]:
@@ -47,7 +49,7 @@ def verteilen(S: np.ndarray, N: np.ndarray, T: np.ndarray, beta: float, delta: f
 
 
 def berechnen(merkmal: str, stichtag: str, ziel_md: Path, ziel_csv: Path) -> None:
-    endung = "" if merkmal == "svb_bauberufe" else "_" + merkmal.removeprefix("svb_")
+    endung = "" if merkmal == HAUPTMASS else "_" + merkmal.removeprefix("svb_")
     kreise = list(csv.DictReader((DATEN / "aufnahme_kreise_de.csv").open(encoding="utf-8")))
     idx = {k["nuts3"]: i for i, k in enumerate(kreise)}
     n = len(kreise)
@@ -57,7 +59,7 @@ def berechnen(merkmal: str, stichtag: str, ziel_md: Path, ziel_csv: Path) -> Non
         if r["merkmal"] == merkmal and r["stichtag"] == stichtag and r["wert"]:
             werte[r["nuts3"]] = float(r["wert"])
     fehlt = [k["nuts3"] for k in kreise if k["nuts3"] not in werte]
-    if fehlt and merkmal != "svb_bauberufe":
+    if fehlt and merkmal != "svb_bauberufe":  # Schätzung über die Bauberufe des Kreises
         # Gesperrte Werte (BA-Geheimhaltung) schätzen: Bauberufe des Kreises mal bundesweites Verhältnis
         bb = {}
         for r in csv.DictReader((DATEN / "aufnahme_ba_kreise.csv").open(encoding="utf-8")):
@@ -120,7 +122,7 @@ def berechnen(merkmal: str, stichtag: str, ziel_md: Path, ziel_csv: Path) -> Non
 
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(prog="python -m monitor.aufnahme_einzug")
-    ap.add_argument("--merkmal", default="svb_bauberufe")
+    ap.add_argument("--merkmal", default=HAUPTMASS)
     ap.add_argument("--stichtag", default="2026-03")
     ap.add_argument("--ziel", type=Path, default=Path("docs"))
     ap.add_argument("--daten", type=Path, default=DATEN)
