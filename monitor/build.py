@@ -920,9 +920,10 @@ def chart_sentences(c: dict) -> list[str]:
                 base = _per(c["base"], freq)
                 bs = sorted(b, key=lambda x: x["value"])
                 pc = lambda x: f" ({num(x['pct'], 1, True)} %)" if x.get("pct") is not None else ""
-                out = [f"Vom {base} bis zum {_per(bs[-1]['period'], freq)} stieg die Zahl der Erwerbstätigen im Bereich „{bs[-1]['label']}“ am stärksten: um {num(bs[-1]['value'], d)} {u}{pc(bs[-1])}."]
+                amt = (lambda v: f"{int(round(v)) * 1000:,} {u[5:]}".replace(",", ".")) if u.startswith("Tsd. ") else (lambda v: f"{num(v, d)} {u}")  # 624.000 Personen statt 624 Tausend
+                out = [f"Vom {base} bis zum {_per(bs[-1]['period'], freq)} stieg die Zahl der Erwerbstätigen im Bereich „{bs[-1]['label']}“ am stärksten: um {amt(bs[-1]['value'])}{pc(bs[-1])}."]
                 if bs[0]["value"] < 0:
-                    out.append(f"Vom {base} bis zum {_per(bs[0]['period'], freq)} sank die Zahl der Erwerbstätigen im Bereich „{bs[0]['label']}“ am stärksten: um {num(abs(bs[0]['value']), d)} {u}{pc(bs[0])}.")
+                    out.append(f"Vom {base} bis zum {_per(bs[0]['period'], freq)} sank die Zahl der Erwerbstätigen im Bereich „{bs[0]['label']}“ am stärksten: um {amt(abs(bs[0]['value']))}{pc(bs[0])}.")
                 return out
             when = _when(b[0]["period"], freq)
             if isinstance(c.get("combine"), dict) and c["combine"].get("extremes"):  # nur stärkster Anstieg und stärkster Rückgang
@@ -1116,6 +1117,7 @@ def chart_sentences(c: dict) -> list[str]:
                     F["n0"][sid], F["dabs"][sid], F["dmehr"][sid] = num(y0, d), num(abs(v - y0), d), "mehr" if v > y0 else "weniger"
                     F.setdefault("hoeher", {})[sid] = "höher" if v > y0 else "niedriger"
                     F.setdefault("dsg", {})[sid] = num(v - y0, d, True)
+                    F.setdefault("tsd0", {})[sid] = f"{int(round(abs(y0) * (1000 if (s.get('unit') or unit).startswith('Mio') else 1))) * 1000:,}".replace(",", ".")
                     F.setdefault("hoeher_inv", {})[sid] = "höher" if v < y0 else "niedriger"  # etwa Defizit: niedrigerer Saldo heißt höheres Defizit
                 F.setdefault("sw", {})[sid] = "der Überschuss" if v >= 0 else "das Defizit"  # Saldo mit Artikel
                 F.setdefault("x100", {})[sid] = num(v / 100, 1)  # Vielfaches eines Index mit Mittel = 100
@@ -1124,6 +1126,9 @@ def chart_sentences(c: dict) -> list[str]:
                     F.setdefault("um", {})[sid] = "über" if vm > c["tpl_mark"] else "unter" if vm < c["tpl_mark"] else "auf"
                 F["v"][sid], F["n"][sid] = val(v), num(v, int(c.get("tpl_decimals", d)))  # tpl_decimals: eigene Rundung nur für den Satz
                 F["full"][sid] = f"{int(round(v)) * 1000:,}".replace(",", ".")
+                mult = 1000 if (s.get("unit") or unit).startswith("Mio") else 1  # Mengen in Tausend oder Millionen als volle Zahl, gerundet auf Tausend
+                F.setdefault("tsd", {})[sid] = f"{int(round(abs(v) * mult)) * 1000:,}".replace(",", ".")
+                F.setdefault("abzu", {})[sid] = "zu" if v >= 0 else "ab"
                 F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
                 F["abs"][sid], F["sg"][sid] = num(abs(v), d), num(v, d, True)
                 F["up_pl"][sid], F["trend_pl"][sid] = ("stiegen", "steigen") if v > 0 else ("sanken", "sinken")
@@ -1371,6 +1376,17 @@ def chart_sentences(c: dict) -> list[str]:
                     out.append(f"Im Mittel des Jahres {ry} waren es {num(m, d)} {'%' if unit.startswith('%') else u}.".replace(" .", "."))
         if spread and out:
             out.append(spread)
+        if c.get("rank") and c.get("emphasis") and out:  # Rang der hervorgehobenen Reihe unter allen gezeigten, etwa Steuersätze im Ländervergleich
+            pts = [(s.get("label", ""), s["y"][-1]) for s in c["series"] if s.get("y") and s["y"][-1] is not None]
+            me = next((s["y"][-1] for s in c["series"] if s.get("id") == c["emphasis"]), None)
+            if me is not None and len(pts) > 2:
+                hi = sorted([p for p in pts if round(p[1], d) > round(me, d)], key=lambda p: -p[1])
+                lo = min(pts, key=lambda p: p[1])
+                n = ZAHLWORT.get(len(pts), len(pts))
+                head = (f"Unter den {n} verglichenen Ländern liegt kein anderes höher" if not hi else
+                        f"Unter den {n} verglichenen Ländern liegt nur {hi[0][0]} höher ({num(hi[0][1], d)} %)" if len(hi) == 1 else
+                        f"Unter den {n} verglichenen Ländern liegen {ZAHLWORT.get(len(hi), len(hi))} höher, am höchsten {hi[0][0]} ({num(hi[0][1], d)} %)")
+                out.append(head + (f", am niedrigsten liegt {lo[0]} ({num(lo[1], d)} %)." if round(lo[1], d) < round(me, d) else "."))
         if c.get("last_change") and out:  # wann sich ein Satz zuletzt geändert hat, etwa der Einlagesatz der EZB
             s0 = next((s for s in c["series"] if s.get("id") == c["last_change"]), None)
             if s0:
