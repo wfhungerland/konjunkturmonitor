@@ -174,7 +174,7 @@ charts:
   arms_cycle: {title: "Rüstung: Aufträge und Produktion", decimals: 0}
   arms_turnover: {title: "Umsatz der Hersteller von Waffen und Munition", decimals: 1}
   arms_employment: {title: "Beschäftigte der Hersteller von Waffen und Munition", decimals: 0}
-  arms_overview: {title: "Rüstung in Deutschland seit 2021: vom Haushalt in die Fabrik", decimals: 1}
+  arms_overview: {title: "Rüstungsgeld in Deutschland: vom Haushalt in die Fabrik", decimals: 1}
   milex_eu_ru: {title: "Militärausgaben Europas und Russlands", decimals: 0}
   trade_ru: {title: "Exporte nach Russland und in Nachbarländer", decimals: 1}
   pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}
@@ -278,6 +278,7 @@ charts:
   stx_share_gdp: {title: "Staatsausgaben nach Aufgaben, in % des BIP", decimals: 1}
   stx_levels: {title: "Ausgaben von Bund, Ländern, Gemeinden und Sozialversicherung", decimals: 1}
   stx_tree: {title: "Grundriss der Staatsausgaben", decimals: 1}
+  aufnahme_karte: {title: "Beschäftigte im Baugewerbe je Einwohner, im Kreis und im Einzugsgebiet", decimals: 0}
   bund_tree: {title: "Grundriss des Bundeshaushalts", decimals: 1}
   long_growth: {title: "Wachstum je Einwohner seit 1871, Zehnjahresdurchschnitt", decimals: 1}
   long_inv: {title: "Investitionsquote seit 1871", decimals: 1}
@@ -2315,7 +2316,7 @@ series:
     unit: "US-$ je €"
     frequency: D
     adjustment: "nicht bereinigt"
-    start: "2019-01-01"
+    start: "2015-01-01"  # 2015–19 nötig für die Bänder von Rohöl und Erdgas in Euro (lage.py)
     stale_after_months: 1
     chart: fx_usd
     label: "US-Dollar"

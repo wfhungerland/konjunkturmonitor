@@ -25,6 +25,9 @@ SOURCE_LICENSES = {"genesis": "Datenlizenz Deutschland – Namensnennung – Ver
 _META: dict = {}
 
 
+TABLE_TYPES = ("heat", "calendar", "tpi")  # Abbildungen, die als Tabelle zählen
+
+
 def _base(s):
     """Für abgeleitete Reihen die Ausgangsreihe (Quelle und Lizenz kommen von dort)."""
     seen = 0
@@ -1059,7 +1062,10 @@ def chart_sentences(c: dict) -> list[str]:
                 F["w"][sid], F["p"][sid] = _when(lx, s.get("freq", freq)), _per(lx, s.get("freq", freq))
                 if y0 is not None:
                     F["n0"][sid], F["dabs"][sid], F["dmehr"][sid] = num(y0, d), num(abs(v - y0), d), "mehr" if v > y0 else "weniger"
-                F["v"][sid], F["n"][sid] = val(v), num(v, d)
+                    F.setdefault("hoeher", {})[sid] = "höher" if v > y0 else "niedriger"
+                F.setdefault("sw", {})[sid] = "der Überschuss" if v >= 0 else "das Defizit"  # Saldo mit Artikel
+                F.setdefault("x100", {})[sid] = num(v / 100, 1)  # Vielfaches eines Index mit Mittel = 100
+                F["v"][sid], F["n"][sid] = val(v), num(v, int(c.get("tpl_decimals", d)))  # tpl_decimals: eigene Rundung nur für den Satz
                 F["full"][sid] = f"{int(round(v)) * 1000:,}".replace(",", ".")
                 F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
                 F["abs"][sid], F["sg"][sid] = num(abs(v), d), num(v, d, True)
@@ -1080,8 +1086,9 @@ def chart_sentences(c: dict) -> list[str]:
             F["cmp"] = {f"{a}-{b}": "so schnell wie" if round(vals[a] - vals[b], d) == 0 else f"{num(abs(vals[a] - vals[b]), d)} Pp {'schneller' if vals[a] > vals[b] else 'langsamer'} als"
                         for a in vals for b in vals if a != b}
             F["q0"] = {f"{a}/{b}": num(vals0[a] / vals0[b], 1) for a in vals0 for b in vals0 if a != b and vals0[a] is not None and vals0[b]}
+            ref = num(c["refs"][-1]["y"], 1) if c.get("refs") else ""  # graue Referenzlinie, etwa ein langjähriges Mittel
             try:
-                return [t.format(when=_when(last, freq), per=_per(last, freq), **F) for t in c["tpl"]]
+                return [t.format(when=_when(last, freq), per=_per(last, freq), ref=ref, **F) for t in c["tpl"]]
             except KeyError:
                 return []
         if c.get("brief"):  # ein Satz je Vergleich: ggü. Vorjahresmonat und drei Monate ggü. den drei Monaten davor
@@ -1097,7 +1104,7 @@ def chart_sentences(c: dict) -> list[str]:
                 return out
         cb = c.get("combine")
         if isinstance(cb, dict):  # gleich gebaute Reihen in einem Satz, etwa Länder oder Bereiche
-            last = min(s["x"][-1] for s in series) if cb.get("common") else max(s["x"][-1] for s in series)  # common: jüngster Zeitraum, den alle haben
+            last = min(s["x"][-1] for s in series) if cb.get("common") and not cb.get("each_month") else max(s["x"][-1] for s in series)  # common: jüngster Zeitraum, den alle haben
             sym = "%" if unit.startswith("%") else "Pp" if unit.startswith(("Pp", "Saldo")) else u
             at = lambda s: s["y"][s["x"].index(last)] if last in s["x"] else None
             if cb.get("where") and series and at(series[0]) is not None and unit.startswith("%"):  # Verb vorn: Gesamtgröße, dann Bereiche mit gleicher und mit anderer Richtung
@@ -1116,9 +1123,24 @@ def chart_sentences(c: dict) -> list[str]:
                         h = head.split(" um ")[0]
                         out += f"; {h} {verb_sie[g]}{head[len(h):]}" + "".join(", " + x for x in more)
                 return [out + "."]
-            items = [f"{cb.get('pre', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))} {'' if cb.get('bare') else sym}".strip() for s in series if at(s) is not None]  # bare: Einheit steht im Satzanfang
+            mid = cb.get("mid", "")  # etwa „ bei“ zwischen Land und Wert
+            items = [f"{cb.get('pre', '')}{s.get('label', '')}{mid} {num(at(s), d, cb.get('sign', True))} {'' if cb.get('bare') else sym}".strip() for s in series if at(s) is not None]  # bare: Einheit steht im Satzanfang
+            late = [s for s in series if at(s) is None and s.get("y") and s["y"][-1] is not None] if cb.get("each_month") else []
             if items:
-                out = [f"{_when(last, freq)} {cb['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0]) + "."]
+                out = [f"{_when(last, freq)} {cb['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0])
+                       + "".join(f"; {cb.get('pre', '')}{s.get('label', '')} im {_per(s['x'][-1], freq)}{mid} {num(s['y'][-1], d, cb.get('sign', True))} {sym}".rstrip() for s in late) + "."]
+                if cb.get("above") is not None:  # welche Länder über einer Marke liegen, etwa dem langjährigen Durchschnitt
+                    lim, agg = cb["above"], set(cb.get("agg") or [])
+                    ctry = [s for s in series if s.get("label") not in agg and at(s) is not None]
+                    up = [s["label"] for s in ctry if round(at(s), d) > lim]
+                    mark = cb.get("above_word", f"der Marke von {num(lim, 0)}")
+                    if not up:
+                        tail = f"kein Land lag über {mark}"
+                    elif len(up) == len(ctry):
+                        tail = f"alle Länder lagen über {mark}"
+                    else:
+                        tail = f"über {mark} {'lag' if len(up) == 1 else 'lagen'} nur {_und(up)}"
+                    out[0] = out[0][:-1] + f"; {tail}."
                 if cb.get("mom"):  # stärkste Veränderung ggü. dem Vormonat
                     ch = [(cb["mom"].get(s.get("label"), s.get("label")), s["y"][-1] - s["y"][-2]) for s in series
                           if s["x"][-1] == last and len(s["y"]) > 1 and None not in s["y"][-2:]]
@@ -1251,9 +1273,11 @@ def chart_sentences(c: dict) -> list[str]:
             parts = [(s.get("label", ""), [v for x, v in zip(s["x"], s["y"]) if v is not None and not skip(x)]) for s in series if s.get("y")]
             parts = [(lab, v) for lab, v in parts if v]
             if parts:
-                many = len(parts) > 1
-                out.append(f"Zum Vergleich, Durchschnitt {series[0]['x'][0][:4]} bis {series[0]['x'][-1][:4]} {c.get('mean_note', 'ohne Kriegsjahre')}: "
-                           + "; ".join(f"{lab + ' ' if many else ''}{num(sum(v) / len(v), d)} {u0}".strip() for lab, v in parts) + ".")
+                ms = [num(sum(v) / len(v), d) for _, v in parts]  # Reihenfolge wie in den Sätzen davor; Einheit nur am Ende
+                short = "%" if u0.startswith("%") else u0
+                vals_txt = " und ".join([f"{m} {short}".strip() for m in ms[:-1]] + [f"{ms[-1]} {u0}".strip()])
+                note = c.get("mean_note", "ohne Kriegsjahre")
+                out.append(f"Im Mittel der Jahre {series[0]['x'][0][:4]} bis {series[0]['x'][-1][:4]}{' ' + note if note else ''} waren es {vals_txt}.")
         if typ == "threshold" and c.get("threshold") is not None and out and series and series[0]["y"][-1] is not None:
             th = float(c["threshold"])
             out.append("Ein Rezessionssignal liegt damit vor." if series[0]["y"][-1] >= th else "Ein Rezessionssignal liegt damit nicht vor.")
@@ -1782,6 +1806,53 @@ def build_payload(root: Path = ROOT) -> dict:
                         de += "; " + "; ".join(r["tail"].format(f=fx(r["factor"])) for r in tails)
                         en += "; " + "; ".join(r["tail_en"].format(f=f"{r['factor']:.1f}") for r in tails)
                     entry["say"], entry["say_en"] = [de + "."], [en + "."]
+            elif typ == "numtable":  # Zahlentafel: Jahreswerte je Zeile, Veränderung seit dem ersten Jahr, Faktor als Balken; dazu Planwerte
+                y0, y1 = (int(v) for v in c.get("span", [2021, 2025]))
+                years, blocks, used, said = list(range(y0, y1 + 1)), [], [], []
+                for b in c.get("blocks") or []:
+                    rows = []
+                    for r in b.get("rows") or []:
+                        parts = [data[i].dropna() for i in r["ids"] if i in data]
+                        if len(parts) != len(r["ids"]):
+                            continue
+                        s = pd.concat(parts, axis=1).dropna().sum(axis=1) if len(parts) > 1 else parts[0]
+                        if meta[r["ids"][0]].frequency != "A":  # nur volle Kalenderjahre
+                            g = s.groupby(s.index.year)
+                            s = (g.mean() if r.get("agg") == "mean" else g.sum())[g.count() >= 12]
+                        else:
+                            s = s.groupby(s.index.year).last()
+                        s = s * float(r.get("scale", 1))
+                        vals = {y: round(float(s[y]), 3) for y in years if y in s.index}
+                        if y0 not in vals or len(vals) < 2:
+                            continue
+                        last = max(vals)
+                        rows.append(dict(label=r["label"], label_en=r.get("label_en", r["label"]), sub=bool(r.get("sub")), d=int(r.get("decimals", 1)),
+                                         pp=bool(r.get("pp")), values=vals, last=last, change=round(vals[last] - vals[y0], 3),
+                                         factor=round(vals[last] / vals[y0], 3) if vals[y0] > 0.5 else None))
+                        used += [meta[i] for i in r["ids"]]
+                        if r.get("say"):
+                            said.append((r, rows[-1]))
+                    if rows:
+                        blocks.append(dict(label=b["label"], label_en=b.get("label_en", b["label"]), rows=rows))
+                if not blocks:
+                    continue
+                plan = c.get("plan")
+                if plan:
+                    plan = dict(plan, rows=[dict(r, values={int(k): v for k, v in r["values"].items()}) for r in plan["rows"]])
+                entry.update(numtable=dict(years=years, blocks=blocks, plan=plan), freq="A", unit=c.get("unit", "Mrd. €"),
+                             sources=list(c.get("sources") or sorted({_source_name(s) for s in used})) + ["eigene Berechnung"],
+                             licenses=sorted({_license(s) for s in used}),
+                             series=[dict(id=f"row{i}", label=r["label"], unit=c.get("unit", "Mrd. €"), freq="A", style="line",
+                                          x=[f"{y}-01-01" for y in r["values"]], y=list(r["values"].values()))
+                                     for i, r in enumerate(r for b in blocks for r in b["rows"])])
+                fx = lambda v: f"{v:,.1f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                if said:  # „say“: Satzgegenstand, Veränderung in Mrd. € seit dem ersten Jahr
+                    de = [f"{r['say']} bis {x['last']} um {fx(abs(x['change']))} Mrd. Euro" for r, x in said]
+                    en = [f"{r['say_en']} rose by €{abs(x['change']):,.1f} bn by {x['last']}" for r, x in said]
+                    entry["say"] = [f"Gegenüber {y0} stiegen " + _und(de) + "."]
+                    entry["say_en"] = [f"Compared with {y0}, " + (", ".join(en[:-1]) + " and " if len(en) > 1 else "") + en[-1] + "."]
+                    if plan and plan.get("say"):
+                        entry["say"].append(plan["say"]); entry["say_en"].append(plan.get("say_en", plan["say"]))
             elif typ == "cellgrid":  # Raster je Zeile und Jahr, Daten ganz aus data/static (attach), etwa Themen der Gemeinschaftsdiagnose
                 if not entry.get("attach"):
                     continue
@@ -1910,6 +1981,28 @@ def build_payload(root: Path = ROOT) -> dict:
                     m = pd.Timestamp(T["month"] + "-01")
                     entry["say"].append(f"Den höchsten Renditeabstand zu Bundesanleihen hatte im {MONTHS_DE[m.month - 1]} {m.year} {top['name']} mit {str(round(top['spread'], 2)).replace('.', ',')} Pp.")
                     entry["say_en"].append(f"In {m.strftime('%B %Y')}, {top['name_en']} had the widest spread over Bunds at {round(top['spread'], 2)} pp.")
+            elif typ == "kreise":  # Kreiskarte der Baukapazität, Daten aus data/static (monitor.aufnahme_karte), von Hand aktualisiert
+                K = (entry.get("attach") or {}).get("kreise") or []
+                if not K:
+                    continue
+                A = entry["attach"]
+                entry.update(sources=list(c.get("sources") or []), licenses=list(c.get("licenses") or []), freq="A",
+                             unit=A.get("unit", ""), unit_en=A.get("unit_en", ""))
+                basis = lambda n: n.split(",")[0]
+                doppelt = {b for b in map(basis, (k["name"] for k in K)) if sum(basis(x["name"]) == b for x in K) > 1}
+                def kurz(n, en=False):  # gleichnamige Stadt und Landkreis unterscheiden, etwa München
+                    b = basis(n)
+                    if b not in doppelt:
+                        return b
+                    return f"{b} ({'city' if en else 'Stadt'})" if "," in n else (f"{b} (district)" if en else f"Landkreis {b}")
+                tief = sorted(K, key=lambda k: k["einzug"])[:3]
+                hoch = sorted(K, key=lambda k: -k["einzug"])[:3]
+                unter = sum(k["einzug"] < 80 for k in K)
+                liste = lambda ks, en=False: ", ".join(f"{kurz(k['name'], en)} {k['einzug']:.0f}" for k in ks)
+                entry["say"] = [f"Geringste Baukapazität im Einzugsgebiet (Bund = 100): {liste(tief)}.",
+                                f"Höchste: {liste(hoch)}. {unter} von {len(K)} Kreisen liegen unter 80."]
+                entry["say_en"] = [f"Lowest construction capacity in the catchment area (Germany = 100): {liste(tief, True)}.",
+                                   f"Highest: {liste(hoch, True)}. {unter} of {len(K)} districts are below 80."]
             elif typ == "treemap":  # Grundriss: Daten ganz aus data/static (attach), von Hand aktualisiert
                 if not entry.get("attach"):
                     continue
@@ -2099,12 +2192,17 @@ def build_payload(root: Path = ROOT) -> dict:
             if c.get("ma3") or c.get("outliers"):
                 c["outliers"] = _outliers(c)
     _merge_toggles(topics)  # zwei Abbildungen mit Umschalter in einer Karte
-    no = 0
+    no = chap = 0
     for t in topics:
-        lab = t.get("code") or t["title"].split()[0]  # festes Kurzzeichen je Abbildung: Kapitel und Platz im Kapitel, etwa „Preise-3“
+        # Kapitelnummer wie im Menü (ohne Service-Teil); Nummer je Abbildung: Kapitel und Platz, etwa „Abb. 8.1“
+        if t.get("part") != "service" and (t["charts"] or t.get("question")):
+            chap += 1
+            t["chap"] = chap
         for k, c in enumerate(t["charts"], 1):
             no += 1
-            c["no"], c["k"], c["code"], c["anchor"] = no, k, f"{lab}-{k}", f"{t['id']}-{k}"
+            kind = "Tab." if c.get("type") in TABLE_TYPES else "Abb."
+            c["no"], c["k"], c["anchor"] = no, k, f"{t['id']}-{k}"
+            c["code"] = f"{kind} {t['chap']}.{k}" if t.get("chap") else ""
     # Nächste voraussichtliche Aktualisierung je Abbildung und Verweise vom Kalender auf die Abbildungen
     numbers = {c["chart"]: c["no"] for t in topics for c in t["charts"]}
     cal = next((c["calendar"] for t in topics for c in t["charts"] if c.get("type") == "calendar"), None)

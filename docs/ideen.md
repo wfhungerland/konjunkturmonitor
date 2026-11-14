@@ -31,6 +31,11 @@ Gesammelte Notizen für später, grob geordnet. Stand: 13.11.2026.
 - Energiemix, Energieintensität des Wachstums
 - Liquidität: Deutschland, Euroraum, global
 - Anleihemärkte, Bundeshaushalt(e)
+- Aufnahmefähigkeit der Landkreise für Infrastrukturinvestitionen (Bau, Ausbau, Handwerk, Bahnbedarf): Index aus Kapazität (Beschäftigte nach WZ 41–43 und KldB 32/33, Betriebe Bauhauptgewerbe), Engpass (Arbeitslose je offene Stelle, Vakanzzeit, Altersstruktur) und Auslastung (Baugenehmigungen, laufende Projekte). Prüfen an Vergabedaten (Angebote je Ausschreibung, Zuschlag gegen Schätzung, TED/NUTS-3) und an Schocks wie Ahrtal-Wiederaufbau oder Generalsanierungen der Bahn.
+  - Migration: ausländische Beschäftigte in Bauberufen nach Staatsangehörigkeit je Kreis (BA), Entsendungen in den Bau (SOKA-BAU, A1-Bescheinigungen), Zuzüge. Zeigt, wie stark ein Kreis Engpässe über Zuwanderung schließt.
+  - Reichweite der Firmen: Kapazität nicht je Kreis zählen, sondern als Einzugsgebiet. Distanzabfall empirisch schätzen aus TED-Zuschlägen (Sitz des Auftragnehmers gegen Ort der Leistung), getrennt nach Gewerk und Auftragsgröße. Kapazität der Nachbarkreise dann mit diesem Abfall nach Fahrzeit gewichten; Pendlerverflechtungen der BA als Gegenprobe.
+  - TED geprüft 13.11.2026: Such-API (POST api.ted.europa.eu/v3/notices/search, ohne Schlüssel) liefert winner-post-code, winner-country-sub (NUTS-3), winner-city, winner-name, place-of-performance-subdiv-lot und -proc, received-submissions-type-code/-val, tender-value. Abfrage: notice-type IN (can-standard can-social can-desg can-modif) AND buyer-country=DEU AND classification-cpv IN (45000000) AND publication-date>=20250101; can-util wird nicht angenommen. Rund 56.700 Bauzuschläge seit 2025. Stichprobe der ersten 500 (nicht zufällig): 281 mit Auftragnehmer und Sitz-Kreis, 244 mit Sitz und Leistungskreis, davon 56 im selben Kreis, 3 Auftragnehmer aus dem Ausland. DB InfraGO: 6.892 Zuschläge, Leistungsort immer auf Verfahrensebene, Auftragnehmer in 150 von 250 Fällen. Grenzen: nur Aufträge über der EU-Schwelle; gemeldet ist womöglich der eingetragene Sitz statt der ausführenden Niederlassung.
+  - Umsetzung und Datenlage: docs/aufnahme.md, Abruf und Auswertung mit python -m monitor.aufnahme.
 
 ## Faustregeln (back of the envelope)
 - Taylor-Regel, Calvo-Parameter, Okun
