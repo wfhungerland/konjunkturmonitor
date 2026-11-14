@@ -987,6 +987,35 @@ def chart_sentences(c: dict) -> list[str]:
             if hv:
                 out.append(f"{_und(['Die ' + h if h == 'Bundesbank' else h for h in hv])} {'rechnet' if len(hv) == 1 else 'rechnen'} mit dem HVPI, die übrigen mit dem Verbraucherpreisindex.")
             return out
+        if typ == "treemap" and c.get("attach"):  # Grundriss: Summe des jüngsten Schritts und größter Block
+            A = c["attach"]
+            vw = (A.get("views") or [A])[0]
+            steps, par, lab = vw["steps"], vw.get("parent") or {}, vw.get("labels") or {}
+            top_of = lambda k: top_of(par[k]) if par.get(k) else k
+            def blocks(vals):
+                agg = {}
+                for k, x in vals.items():
+                    agg[top_of(k)] = agg.get(top_of(k), 0) + x
+                return sorted(agg.items(), key=lambda p: -p[1])
+            bn = lambda x: f"{num(x, 0)} Mrd. €"
+            if A.get("views"):  # Bundeshaushalt: geltendes Soll, mit Sondervermögen, und der Entwurf
+                soll = next((st for st in reversed(steps) if st.get("kind") == "Soll"), steps[-1])
+                tot, (k0, x0) = sum(soll["values"].values()), blocks(soll["values"])[0]
+                alt = sum((soll.get("alt") or {}).get("values", {}).values())
+                out = [f"Der Bundeshaushalt {soll['key']} ({soll['kind']}) sieht Ausgaben von {bn(tot)} vor" + (f", {A.get('alt_label', 'mit Sondervermögen')} {bn(alt)}" if alt else "")
+                       + f"; der größte Bereich ist „{lab.get(k0, k0)}“ mit {bn(x0)}."]
+                nxt = next((st for st in steps if st["key"] > soll["key"] and st.get("kind") == "Entwurf"), None)
+                if nxt:
+                    out.append(f"Der Entwurf für {nxt['key']} nennt {bn(sum(nxt['values'].values()))}.")
+                return out
+            st = steps[-1]
+            tot, bl = sum(st["values"].values()), blocks(st["values"])
+            k0, x0 = bl[0]
+            leaf = max(((k, x) for k, x in st["values"].items() if top_of(k) == k0), key=lambda p: p[1])
+            out = [f"Im Jahr {st['label']} gab der Staat {bn(tot)} aus, davon {bn(x0)} ({num(x0 / tot * 100, 0)} %) für „{lab.get(k0, k0)}“, am meisten davon für „{lab.get(leaf[0], leaf[0])}“ ({bn(leaf[1])})."]
+            if A.get("price_base") and len(steps) > 1:
+                out.append(f"Im Jahr {steps[0]['key']} waren es {bn(sum(steps[0]['values'].values()))} (in Preisen von {A['price_base']}).")
+            return out
         if typ == "calendar" or not c.get("series"):
             return []
         series = [s for s in c["series"] if s.get("y")]
@@ -1114,6 +1143,11 @@ def chart_sentences(c: dict) -> list[str]:
                     F["chg"][sid], F["pabs"][sid] = num(pc, 1, True) + " %", num(abs(pc), 1)
                     F["mehr"][sid], F["ueber"][sid] = ("mehr" if pc > 0 else "weniger"), ("über" if pc > 0 else "unter")
             F["q"] = {f"{a}/{b}": num(vals[a] / vals[b], 1) for a in vals for b in vals if a != b and vals[b]}
+            u0 = (series[0].get("unit") or "") if series else ""
+            ch = [(s.get("label", ""), vals[s["id"]] - vals0[s["id"]]) for s in series if s.get("unit") == u0 and s["id"] in vals and vals0.get(s["id"]) is not None]
+            if ch:  # stärkste Veränderung ggü. dem Vorjahr unter gleich gebauten Reihen
+                lb, dv = max(ch, key=lambda p: abs(p[1]))
+                F["maxd"] = f"„{lb}“ ({num(dv, d, True)} {'Pp' if u0.startswith('%') else u0})"
             F["mw"] = {f"{a}-{b}": "mehr" if vals[a] > vals[b] else "weniger" for a in vals for b in vals if a != b}
             F["cmp"] = {f"{a}-{b}": "so schnell wie" if round(vals[a] - vals[b], d) == 0 else f"{num(abs(vals[a] - vals[b]), d)} Pp {'schneller' if vals[a] > vals[b] else 'langsamer'} als"
                         for a in vals for b in vals if a != b}
