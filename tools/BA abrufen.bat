@@ -10,8 +10,8 @@ if not exist "%ZIEL%\monitor" mkdir "%ZIEL%\monitor"
 cd /d "%ZIEL%"
 
 echo Lade Skripte ...
-curl -s -f -o monitor\aufnahme.py %QUELLE%/aufnahme.py || goto fehler
-curl -s -f -o monitor\aufnahme_kreise.py %QUELLE%/aufnahme_kreise.py || goto fehler
+curl -s -f -H "Cache-Control: no-cache" -o monitor\aufnahme.py %QUELLE%/aufnahme.py?frisch=%RANDOM%%RANDOM% || goto fehler
+curl -s -f -H "Cache-Control: no-cache" -o monitor\aufnahme_kreise.py %QUELLE%/aufnahme_kreise.py?frisch=%RANDOM%%RANDOM% || goto fehler
 
 set PY=py -3
 %PY% --version >nul 2>&1 || set PY=python

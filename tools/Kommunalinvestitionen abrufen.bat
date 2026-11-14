@@ -9,7 +9,7 @@ set PYTHONUTF8=1
 if not exist "%ZIEL%\monitor" mkdir "%ZIEL%\monitor"
 cd /d "%ZIEL%"
 echo Lade Skript ...
-curl -s -f -o monitor\kommunal_invest.py %QUELLE%/kommunal_invest.py || goto fehler
+curl -s -f -H "Cache-Control: no-cache" -o monitor\kommunal_invest.py %QUELLE%/kommunal_invest.py?frisch=%RANDOM%%RANDOM% || goto fehler
 
 set PY=py -3
 %PY% --version >nul 2>&1 || set PY=python
