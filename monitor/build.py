@@ -955,15 +955,37 @@ def chart_sentences(c: dict) -> list[str]:
                 if ys:
                     vs = [f"{num(g['values'][y], 1)} % für {y}" for y in ys]
                     out.append(f"Die Bundesregierung erwartet in ihrer {g['round']} {what} von " + (vs[0] if len(vs) == 1 else ", ".join(vs[:-1]) + " und " + vs[-1]) + ".")
+            others = [f for f in fs if not f["by"].startswith("Bundesregierung")]  # Spanne ohne die Bundesregierung, die oben steht
+            span, single, used, med = [], [], {}, None
             for y in years:
                 latest = {}
-                for f in sorted(fs, key=lambda f: f["date"]):
+                for f in sorted(others, key=lambda f: f["date"]):
                     if y in f["values"]:
-                        latest[f["by"]] = f["values"][y]
-                if len(latest) < 2:
+                        latest[f["by"]] = (f["values"][y], f["date"])
+                if not latest:
                     continue
-                v = sorted(latest.values())
-                out.append(f"Die jüngsten Prognosen von {ZAHLWORT.get(len(v), len(v))} Institutionen für {y} reichen von {num(v[0], 1)} bis {num(v[-1], 1)} %.")
+                used.update({k: d for k, (_, d) in latest.items()})
+                v = sorted(x for x, _ in latest.values())
+                n = len(v)
+                if n == 1:
+                    single.append(f"für {y} liegt nur eine vor ({num(v[0], 1)} %)")
+                    continue
+                span.append(f"für {y} von {num(v[0], 1)} bis {num(v[-1], 1)} % ({ZAHLWORT.get(n, n)}{' Institutionen' if not span else ''})")
+                if med is None and n >= 3:
+                    m = v[n // 2] if n % 2 else (v[n // 2 - 1] + v[n // 2]) / 2
+                    med = f"Im Mittel (Median) erwarten sie für {y} {num(m, 1)} %."
+            if span:
+                out.append("Die jüngsten Prognosen anderer Institutionen reichen " + _und(span) + ("; " + "; ".join(single) if single else "") + ".")
+            if med:
+                out.append(med)
+            if used:
+                d0, d1 = pd.Timestamp(min(used.values())), pd.Timestamp(max(used.values()))
+                m0 = MONTHS[d0.month - 1] + ("" if d0.year == d1.year else f" {d0.year}")
+                out.append(f"Diese Prognosen stammen aus dem {MONTHS[d0.month - 1]} {d0.year}." if (d0.year, d0.month) == (d1.year, d1.month)
+                           else f"Diese Prognosen stammen von {m0} bis {MONTHS[d1.month - 1]} {d1.year}.")
+            hv = [k.replace(" (HVPI)", "") for k in used if "(HVPI)" in k]
+            if hv:
+                out.append(f"{_und(['Die ' + h if h == 'Bundesbank' else h for h in hv])} {'rechnet' if len(hv) == 1 else 'rechnen'} mit dem HVPI, die übrigen mit dem Verbraucherpreisindex.")
             return out
         if typ == "calendar" or not c.get("series"):
             return []
