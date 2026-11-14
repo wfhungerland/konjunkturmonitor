@@ -27,6 +27,7 @@ import urllib.request
 from pathlib import Path
 
 API = "https://www.regionalstatistik.de/genesisws/rest/2020/"
+SKRIPTSTAND = "14.11.2026, Fassung 5 (mit Verbindungstest)"
 TABELLEN = [
     ("71717-Z-05", "2018", "2030"),
     ("71517-02-03-4", "1995", "2014"),
@@ -76,6 +77,7 @@ def _meldung(daten: bytes) -> dict | None:
 
 def abruf(ordner: Path) -> None:
     ordner.mkdir(parents=True, exist_ok=True)
+    print(f"Skriptstand: {SKRIPTSTAND}")
     nutzer = input("Benutzername Regionaldatenbank: ").strip()
     kopf = {"username": nutzer, "password": getpass.getpass("Passwort (wird nicht angezeigt): ")}
     # Prüfung 1: Sonderzeichen im Passwort, die im Kopf der Anfrage nicht sicher ankommen

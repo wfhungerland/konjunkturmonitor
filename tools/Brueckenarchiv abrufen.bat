@@ -3,13 +3,13 @@ rem Holt frühere Ausgaben der BASt-Brückenstatistik aus dem Internet Archive n
 rem Doppelklick genügt. Braucht nur ein installiertes Python 3 (python.org).
 setlocal
 set ZIEL=C:\Daten\BASt
-set QUELLE=https://raw.githubusercontent.com/wfhungerland/konjunkturmonitor/claude/sweet-hypatia-at9ep0/monitor
+set QUELLE=https://api.github.com/repos/wfhungerland/konjunkturmonitor/contents/monitor
 set PYTHONUTF8=1
 
 if not exist "%ZIEL%\monitor" mkdir "%ZIEL%\monitor"
 cd /d "%ZIEL%"
 echo Lade Skript ...
-curl -s -f -H "Cache-Control: no-cache" -o monitor\bruecken_archiv.py %QUELLE%/bruecken_archiv.py?frisch=%RANDOM%%RANDOM% || goto fehler
+curl -s -f -H "Accept: application/vnd.github.raw" -o monitor\bruecken_archiv.py "%QUELLE%/bruecken_archiv.py?ref=claude/sweet-hypatia-at9ep0" || goto fehler
 
 set PY=py -3
 %PY% --version >nul 2>&1 || set PY=python

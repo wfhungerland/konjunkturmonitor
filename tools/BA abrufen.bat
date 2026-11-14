@@ -3,15 +3,15 @@ rem Zieht die BA-Regionalreports aller 400 Kreise und schreibt aufnahme_ba_kreis
 rem Doppelklick genügt. Braucht nur ein installiertes Python 3 (python.org).
 setlocal
 set ZIEL=C:\Daten\BA
-set QUELLE=https://raw.githubusercontent.com/wfhungerland/konjunkturmonitor/claude/sweet-hypatia-at9ep0/monitor
+set QUELLE=https://api.github.com/repos/wfhungerland/konjunkturmonitor/contents/monitor
 set PYTHONUTF8=1
 
 if not exist "%ZIEL%\monitor" mkdir "%ZIEL%\monitor"
 cd /d "%ZIEL%"
 
 echo Lade Skripte ...
-curl -s -f -H "Cache-Control: no-cache" -o monitor\aufnahme.py %QUELLE%/aufnahme.py?frisch=%RANDOM%%RANDOM% || goto fehler
-curl -s -f -H "Cache-Control: no-cache" -o monitor\aufnahme_kreise.py %QUELLE%/aufnahme_kreise.py?frisch=%RANDOM%%RANDOM% || goto fehler
+curl -s -f -H "Accept: application/vnd.github.raw" -o monitor\aufnahme.py "%QUELLE%/aufnahme.py?ref=claude/sweet-hypatia-at9ep0" || goto fehler
+curl -s -f -H "Accept: application/vnd.github.raw" -o monitor\aufnahme_kreise.py "%QUELLE%/aufnahme_kreise.py?ref=claude/sweet-hypatia-at9ep0" || goto fehler
 
 set PY=py -3
 %PY% --version >nul 2>&1 || set PY=python
