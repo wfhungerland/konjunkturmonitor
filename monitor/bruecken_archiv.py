@@ -65,8 +65,17 @@ def main(argv: list[str] | None = None) -> None:
             trenner = ";" if text[:2000].count(";") > text[:2000].count(",") else ","
             leser = csv.DictReader(io.StringIO(text), delimiter=trenner)
             felder = {f.strip().strip('"').lower(): f for f in leser.fieldnames or []}
+            # Spaltennamen wechseln zwischen den Ausgaben (etwa teil_bw_zustandsnote statt zustandsnote):
+            # fehlt ein Name, die erste Spalte nehmen, die ihn enthält
+            for s, auch in (("zustandsnote", ("zustandsnote", "zust_note", "zn")), ("baujahr", ("baujahr",)),
+                            ("flaeche", ("flaeche", "fläche")), ("baustoffklasse", ("baustoff",))):
+                if s not in felder:
+                    k = next((f for f in felder if any(a in f for a in auch)), None)
+                    if k:
+                        felder[s] = felder[k]
+                        print(f"  Spalte {s}: {k}")
             if not all(s in felder for s in ("bwnr", "zustandsnote")):
-                print(f"  übersprungen, Spalten: {list(felder)[:8]}")
+                print(f"  übersprungen, Spalten: {', '.join(felder)}")
                 continue
             n = 0
             for r in leser:
