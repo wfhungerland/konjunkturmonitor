@@ -568,7 +568,7 @@ def tidy(s: str) -> str:
     s = re.sub(r"(?<![\w])(G|g)egenüber ", lambda m: m.group(1) + "gü. ", s)
     s = re.sub(r"Prozentpunkte[n]?", "Pp", s)
     s = re.sub(r"(\d) ?%", "\\1\u202f%", s)
-    s = re.sub(r"(?<![\w\-])-(?=\d)", "\u2212", s)  # Minuszeichen statt Bindestrich vor Zahlen
+    s = s.replace("\u2212", "-")  # Regel B14: Bindestrich als Minuszeichen
     return s
 
 
@@ -920,9 +920,10 @@ def chart_sentences(c: dict) -> list[str]:
                 base = _per(c["base"], freq)
                 bs = sorted(b, key=lambda x: x["value"])
                 pc = lambda x: f" ({num(x['pct'], 1, True)} %)" if x.get("pct") is not None else ""
-                out = [f"Vom {base} bis zum {_per(bs[-1]['period'], freq)} stieg die Zahl der Erwerbstätigen im Bereich „{bs[-1]['label']}“ am stärksten: um {num(bs[-1]['value'], d)} {u}{pc(bs[-1])}."]
+                amt = (lambda v: f"{int(round(v)) * 1000:,} {u[5:]}".replace(",", ".")) if u.startswith("Tsd. ") else (lambda v: f"{num(v, d)} {u}")  # 624.000 Personen statt 624 Tausend
+                out = [f"Vom {base} bis zum {_per(bs[-1]['period'], freq)} stieg die Zahl der Erwerbstätigen im Bereich „{bs[-1]['label']}“ am stärksten: um {amt(bs[-1]['value'])}{pc(bs[-1])}."]
                 if bs[0]["value"] < 0:
-                    out.append(f"Vom {base} bis zum {_per(bs[0]['period'], freq)} sank die Zahl der Erwerbstätigen im Bereich „{bs[0]['label']}“ am stärksten: um {num(abs(bs[0]['value']), d)} {u}{pc(bs[0])}.")
+                    out.append(f"Vom {base} bis zum {_per(bs[0]['period'], freq)} sank die Zahl der Erwerbstätigen im Bereich „{bs[0]['label']}“ am stärksten: um {amt(abs(bs[0]['value']))}{pc(bs[0])}.")
                 return out
             when = _when(b[0]["period"], freq)
             if isinstance(c.get("combine"), dict) and c["combine"].get("extremes"):  # nur stärkster Anstieg und stärkster Rückgang
@@ -985,7 +986,36 @@ def chart_sentences(c: dict) -> list[str]:
                            else f"Diese Prognosen stammen von {m0} bis {MONTHS[d1.month - 1]} {d1.year}.")
             hv = [k.replace(" (HVPI)", "") for k in used if "(HVPI)" in k]
             if hv:
-                out.append(f"{_und(['Die ' + h if h == 'Bundesbank' else h for h in hv])} {'rechnet' if len(hv) == 1 else 'rechnen'} mit dem HVPI, die übrigen mit dem Verbraucherpreisindex.")
+                out.append(f"{_und(['Die ' + h if h == 'Bundesbank' else h for h in hv])} {'rechnet' if len(hv) == 1 else 'rechnen'} mit dem EU-weit harmonisierten Verbraucherpreisindex, die übrigen mit dem Verbraucherpreisindex.")
+            return out
+        if typ == "treemap" and c.get("attach"):  # Grundriss: Summe des jüngsten Schritts und größter Block
+            A = c["attach"]
+            vw = (A.get("views") or [A])[0]
+            steps, par, lab = vw["steps"], vw.get("parent") or {}, vw.get("labels") or {}
+            top_of = lambda k: top_of(par[k]) if par.get(k) else k
+            def blocks(vals):
+                agg = {}
+                for k, x in vals.items():
+                    agg[top_of(k)] = agg.get(top_of(k), 0) + x
+                return sorted(agg.items(), key=lambda p: -p[1])
+            bn = lambda x: f"{num(x, 0)} Mrd. €"
+            if A.get("views"):  # Bundeshaushalt: geltendes Soll, mit Sondervermögen, und der Entwurf
+                soll = next((st for st in reversed(steps) if st.get("kind") == "Soll"), steps[-1])
+                tot, (k0, x0) = sum(soll["values"].values()), blocks(soll["values"])[0]
+                alt = sum((soll.get("alt") or {}).get("values", {}).values())
+                out = [f"Der Bundeshaushalt {soll['key']} ({soll['kind']}) sieht Ausgaben von {bn(tot)} vor" + (f", {A.get('alt_label', 'mit Sondervermögen')} {bn(alt)}" if alt else "")
+                       + f"; der größte Bereich ist „{lab.get(k0, k0)}“ mit {bn(x0)}."]
+                nxt = next((st for st in steps if st["key"] > soll["key"] and st.get("kind") == "Entwurf"), None)
+                if nxt:
+                    out.append(f"Der Entwurf für {nxt['key']} nennt {bn(sum(nxt['values'].values()))}.")
+                return out
+            st = steps[-1]
+            tot, bl = sum(st["values"].values()), blocks(st["values"])
+            k0, x0 = bl[0]
+            leaf = max(((k, x) for k, x in st["values"].items() if top_of(k) == k0), key=lambda p: p[1])
+            out = [f"Im Jahr {st['label']} gab der Staat {bn(tot)} aus, davon {bn(x0)} ({num(x0 / tot * 100, 0)} %) für „{lab.get(k0, k0)}“, am meisten davon für „{lab.get(leaf[0], leaf[0])}“ ({bn(leaf[1])})."]
+            if A.get("price_base") and len(steps) > 1:
+                out.append(f"Im Jahr {steps[0]['key']} waren es {bn(sum(steps[0]['values'].values()))} (in Preisen von {A['price_base']}).")
             return out
         if typ == "calendar" or not c.get("series"):
             return []
@@ -1087,10 +1117,18 @@ def chart_sentences(c: dict) -> list[str]:
                     F["n0"][sid], F["dabs"][sid], F["dmehr"][sid] = num(y0, d), num(abs(v - y0), d), "mehr" if v > y0 else "weniger"
                     F.setdefault("hoeher", {})[sid] = "höher" if v > y0 else "niedriger"
                     F.setdefault("dsg", {})[sid] = num(v - y0, d, True)
+                    F.setdefault("tsd0", {})[sid] = f"{int(round(abs(y0) * (1000 if (s.get('unit') or unit).startswith('Mio') else 1))) * 1000:,}".replace(",", ".")
+                    F.setdefault("hoeher_inv", {})[sid] = "höher" if v < y0 else "niedriger"  # etwa Defizit: niedrigerer Saldo heißt höheres Defizit
                 F.setdefault("sw", {})[sid] = "der Überschuss" if v >= 0 else "das Defizit"  # Saldo mit Artikel
                 F.setdefault("x100", {})[sid] = num(v / 100, 1)  # Vielfaches eines Index mit Mittel = 100
+                if c.get("tpl_mark") is not None:  # über oder unter einer Marke, etwa 60 % Schuldenstand; tpl_mark_abs: Betrag, etwa beim Defizit
+                    vm = abs(v) if c.get("tpl_mark_abs") else v
+                    F.setdefault("um", {})[sid] = "über" if vm > c["tpl_mark"] else "unter" if vm < c["tpl_mark"] else "auf"
                 F["v"][sid], F["n"][sid] = val(v), num(v, int(c.get("tpl_decimals", d)))  # tpl_decimals: eigene Rundung nur für den Satz
                 F["full"][sid] = f"{int(round(v)) * 1000:,}".replace(",", ".")
+                mult = 1000 if (s.get("unit") or unit).startswith("Mio") else 1  # Mengen in Tausend oder Millionen als volle Zahl, gerundet auf Tausend
+                F.setdefault("tsd", {})[sid] = f"{int(round(abs(v) * mult)) * 1000:,}".replace(",", ".")
+                F.setdefault("abzu", {})[sid] = "zu" if v >= 0 else "ab"
                 F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
                 F["abs"][sid], F["sg"][sid] = num(abs(v), d), num(v, d, True)
                 F["up_pl"][sid], F["trend_pl"][sid] = ("stiegen", "steigen") if v > 0 else ("sanken", "sinken")
@@ -1110,6 +1148,11 @@ def chart_sentences(c: dict) -> list[str]:
                     F["chg"][sid], F["pabs"][sid] = num(pc, 1, True) + " %", num(abs(pc), 1)
                     F["mehr"][sid], F["ueber"][sid] = ("mehr" if pc > 0 else "weniger"), ("über" if pc > 0 else "unter")
             F["q"] = {f"{a}/{b}": num(vals[a] / vals[b], 1) for a in vals for b in vals if a != b and vals[b]}
+            u0 = (series[0].get("unit") or "") if series else ""
+            ch = [(s.get("label", ""), vals[s["id"]] - vals0[s["id"]]) for s in series if s.get("unit") == u0 and s["id"] in vals and vals0.get(s["id"]) is not None]
+            if ch:  # stärkste Veränderung ggü. dem Vorjahr unter gleich gebauten Reihen
+                lb, dv = max(ch, key=lambda p: abs(p[1]))
+                F["maxd"] = f"„{lb}“ ({num(dv, d, True)} {'Pp' if u0.startswith('%') else u0})"
             F["mw"] = {f"{a}-{b}": "mehr" if vals[a] > vals[b] else "weniger" for a in vals for b in vals if a != b}
             F["cmp"] = {f"{a}-{b}": "so schnell wie" if round(vals[a] - vals[b], d) == 0 else f"{num(abs(vals[a] - vals[b]), d)} Pp {'schneller' if vals[a] > vals[b] else 'langsamer'} als"
                         for a in vals for b in vals if a != b}
@@ -1333,6 +1376,17 @@ def chart_sentences(c: dict) -> list[str]:
                     out.append(f"Im Mittel des Jahres {ry} waren es {num(m, d)} {'%' if unit.startswith('%') else u}.".replace(" .", "."))
         if spread and out:
             out.append(spread)
+        if c.get("rank") and c.get("emphasis") and out:  # Rang der hervorgehobenen Reihe unter allen gezeigten, etwa Steuersätze im Ländervergleich
+            pts = [(s.get("label", ""), s["y"][-1]) for s in c["series"] if s.get("y") and s["y"][-1] is not None]
+            me = next((s["y"][-1] for s in c["series"] if s.get("id") == c["emphasis"]), None)
+            if me is not None and len(pts) > 2:
+                hi = sorted([p for p in pts if round(p[1], d) > round(me, d)], key=lambda p: -p[1])
+                lo = min(pts, key=lambda p: p[1])
+                n = ZAHLWORT.get(len(pts), len(pts))
+                head = (f"Unter den {n} verglichenen Ländern liegt kein anderes höher" if not hi else
+                        f"Unter den {n} verglichenen Ländern liegt nur {hi[0][0]} höher ({num(hi[0][1], d)} %)" if len(hi) == 1 else
+                        f"Unter den {n} verglichenen Ländern liegen {ZAHLWORT.get(len(hi), len(hi))} höher, am höchsten {hi[0][0]} ({num(hi[0][1], d)} %)")
+                out.append(head + (f", am niedrigsten liegt {lo[0]} ({num(lo[1], d)} %)." if round(lo[1], d) < round(me, d) else "."))
         if c.get("last_change") and out:  # wann sich ein Satz zuletzt geändert hat, etwa der Einlagesatz der EZB
             s0 = next((s for s in c["series"] if s.get("id") == c["last_change"]), None)
             if s0:
@@ -2019,10 +2073,10 @@ def build_payload(root: Path = ROOT) -> dict:
                 if c.get("tpi_geo") and tp.exists():  # Stützung durch die EZB: läuft ein Defizitverfahren, ist das TPI nicht sicher
                     trow = next((x for x in json.loads(tp.read_text(encoding="utf-8")).get("rows", []) if x["geo"] == c["tpi_geo"]), None)
                     if trow and trow.get("edp"):
-                        entry["say"].append(f"Gegen {c.get('who', 'das Land')} läuft ein Defizitverfahren der EU; ob die EZB dann mit dem TPI Anleihen kaufen würde, entscheidet sie im Einzelfall.")
+                        entry["say"].append(f"Gegen {c.get('who', 'das Land')} läuft ein Defizitverfahren der EU; ob die EZB dann mit ihrem Schutzinstrument für die Geldpolitik (Transmission Protection Instrument, TPI) Anleihen kaufen würde, entscheidet sie im Einzelfall.")
                         entry["say_en"].append(f"{c.get('who_en', 'The country')} is in an EU excessive deficit procedure; whether the ECB would then buy its bonds under the TPI is decided case by case.")
                     elif trow:
-                        entry["say"].append(f"Gegen {c.get('who', 'das Land')} läuft kein Defizitverfahren der EU; eine Bedingung für Käufe der EZB über das TPI ist damit erfüllt.")
+                        entry["say"].append(f"Gegen {c.get('who', 'das Land')} läuft kein Defizitverfahren der EU; eine Bedingung für Käufe der EZB über ihr Schutzinstrument für die Geldpolitik (Transmission Protection Instrument, TPI) ist damit erfüllt.")
                         entry["say_en"].append(f"{c.get('who_en', 'The country')} is not in an EU excessive deficit procedure, so one condition for ECB purchases under the TPI is met.")
                 gc = by_role("cont")
                 if gc and all(r["now_pct"] <= 10 for r in gc):
@@ -2069,7 +2123,7 @@ def build_payload(root: Path = ROOT) -> dict:
                                     f"{and_([r['name_en'] for r in edp])}.") if edp else "No euro country is in an EU excessive deficit procedure."]
                 if top:
                     m = pd.Timestamp(T["month"] + "-01")
-                    entry["say"].append(f"Den höchsten Renditeabstand zu Bundesanleihen hatte im {MONTHS_DE[m.month - 1]} {m.year} {top['name']} mit {str(round(top['spread'], 2)).replace('.', ',')} Pp.")
+                    entry["say"].append(f"Den höchsten Risikoaufschlag zu Bundesanleihen hatte im {MONTHS_DE[m.month - 1]} {m.year} {top['name']} mit {str(round(top['spread'], 2)).replace('.', ',')} Pp.")
                     entry["say_en"].append(f"In {m.strftime('%B %Y')}, {top['name_en']} had the widest spread over Bunds at {round(top['spread'], 2)} pp.")
             elif typ == "kreise":  # Kreiskarte der Baukapazität, Daten aus data/static (monitor.aufnahme_karte), von Hand aktualisiert
                 K = (entry.get("attach") or {}).get("kreise") or []
