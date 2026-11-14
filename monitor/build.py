@@ -261,7 +261,10 @@ def _merge_toggles(topics: list[dict]) -> None:
                 continue
             src["charts"].remove(o)
             c["variant"] = o
-            c["texts"] = list(c.get("texts") or []) + list(o.get("texts") or [])
+            if tg.get("tpl"):  # Sätze über beide Ansichten zugleich, etwa insgesamt und ohne Energie in einem Satz
+                c["texts"] = chart_sentences({k: v for k, v in c.items() if k != "toggle"} | {"series": list(c.get("series") or []) + list(o.get("series") or []), "tpl": tg["tpl"]})
+            else:
+                c["texts"] = list(c.get("texts") or []) + list(o.get("texts") or [])
             c["text"] = " ".join(c["texts"])
             if o.get("caption"):
                 c["caption"] = f"{c.get('caption', '')} Ansicht „{tg['label']}“: {o['caption']}".strip()
@@ -992,6 +995,16 @@ def chart_sentences(c: dict) -> list[str]:
                 out = [f"{when} lag die Rate insgesamt bei {num(at(tot[0]), d)} %."]
             else:
                 out = []
+            if bars and c.get("contrib_one") and tot:  # ein Satz: die zwei größten Beiträge mit der Rate insgesamt
+                top = sorted(bars, key=at, reverse=True)[:2]
+                sj = [_subject(None, x["label"]) or {"subj": f"„{x['label']}“", "pl": False} for x in top]
+                out = [f"{when} {'trugen' if sj[0]['pl'] else 'trug'} {sj[0]['subj']} {num(at(top[0]), d)} Pp zur Inflationsrate von {num(at(tot[0]), d)} % bei"
+                       + (f", {sj[1]['subj']} {num(at(top[1]), d)} Pp." if len(top) > 1 else ".")]
+                lo = min(bars, key=at)
+                if round(at(lo), d) < 0:
+                    sl = _subject(None, lo["label"]) or {"subj": f"„{lo['label']}“", "pl": False}
+                    out.append(f"{when} {'dämpften' if sl['pl'] else 'dämpfte'} {sl['subj']} am stärksten: {num(at(lo), d, True)} Pp.")
+                return out
             if bars:
                 hi, lo = max(bars, key=at), min(bars, key=at)
                 sh = _subject(None, hi["label"]) or {"subj": f"„{hi['label']}“", "pl": False}
@@ -1016,6 +1029,14 @@ def chart_sentences(c: dict) -> list[str]:
                 return out
         norm = next((s for s in series if s.get("style") == "norm"), None)
         series = [s for s in series if s.get("style") != "norm"]
+        spread = None
+        if c.get("spread") and c.get("emphasis"):  # stärkster und schwächster Bereich neben der hervorgehobenen Reihe
+            nm = c["spread"]
+            last0 = next((s["x"][-1] for s in series if s["id"] == c["emphasis"]), None)
+            pts = [(nm[s["id"]], s["y"][-1]) for s in series if s["id"] in nm and s["x"][-1] == last0 and s["y"][-1] is not None]
+            if len(pts) > 1:
+                (lh, vh), (ll, vl) = max(pts, key=lambda p: p[1]), min(pts, key=lambda p: p[1])
+                spread = f"Am stärksten stiegen die Preise für {lh} ({num(vh, d, True)} %), " + (f"am schwächsten für {ll} ({num(vl, d, True)} %)." if vl > 0 else f"für {ll} sanken sie ({num(vl, d, True)} %).")
         if c.get("emphasis"):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         if c.get("tpl"):  # ganze Sätze aus monitor.yaml mit Werten mehrerer Reihen, etwa {v[id]}; Stichtag ist der jüngste Zeitpunkt, den alle Reihen haben
@@ -1091,7 +1112,19 @@ def chart_sentences(c: dict) -> list[str]:
                 return [out + "."]
             items = [f"{cb.get('pre', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))} {sym}".strip() for s in series if at(s) is not None]
             if items:
-                return [f"{_when(last, freq)} {cb['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0]) + "."]
+                out = [f"{_when(last, freq)} {cb['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0]) + "."]
+                if cb.get("mom"):  # stärkste Veränderung ggü. dem Vormonat
+                    ch = [(cb["mom"].get(s.get("label"), s.get("label")), s["y"][-1] - s["y"][-2]) for s in series
+                          if s["x"][-1] == last and len(s["y"]) > 1 and None not in s["y"][-2:]]
+                    if ch:
+                        ups, dns = [x for x in ch if round(x[1], d) > 0], [x for x in ch if round(x[1], d) < 0]
+                        if len(ups) >= len(dns) and ups:
+                            w = max(ups, key=lambda x: x[1])
+                            out.append(f"Ggü. dem {prev_word} stiegen sie am stärksten {w[0]} ({num(w[1], d, True)} {sym}).")
+                        elif dns:
+                            w = min(dns, key=lambda x: x[1])
+                            out.append(f"Ggü. dem {prev_word} sanken sie am stärksten {w[0]} ({num(w[1], d, True)} {sym}).")
+                return out
         if c.get("combine") and unit.startswith("Index"):  # gleich gebaute Reihen, etwa Branchen: ein Satz mit allen Werten
             last = max(s["x"][-1] for s in series)
             parts = []
@@ -1207,6 +1240,8 @@ def chart_sentences(c: dict) -> list[str]:
                     out.append(f"Das sind {num(abs(pc), 1)} % {'mehr' if pc > 0 else 'weniger'} als im Mittel des Jahres {ry}." if round(pc, 1) else f"Das ist so viel wie im Mittel des Jahres {ry}.")
                 else:
                     out.append(f"Im Mittel des Jahres {ry} waren es {num(m, d)} {'%' if unit.startswith('%') else u}.".replace(" .", "."))
+        if spread and out:
+            out.append(spread)
         if norm and out and norm["x"][-1] == last and series and series[0]["y"][-1] is not None and norm["y"][-1]:
             v, m = series[0]["y"][-1], norm["y"][-1]
             a0, a1 = c.get("norm") or ("", "")
