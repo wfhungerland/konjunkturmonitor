@@ -265,7 +265,7 @@ def _merge_toggles(topics: list[dict]) -> None:
             src["charts"].remove(o)
             c["variant"] = o
             if tg.get("tpl"):  # Sätze über beide Ansichten zugleich, etwa insgesamt und ohne Energie in einem Satz
-                c["texts"] = chart_sentences({k: v for k, v in c.items() if k != "toggle"} | {"series": list(c.get("series") or []) + list(o.get("series") or []), "tpl": tg["tpl"], "tpl_own": tg.get("tpl_own")})
+                c["texts"] = chart_sentences({k: v for k, v in c.items() if k != "toggle"} | {"series": list(c.get("series") or []) + list(o.get("series") or []), "tpl": tg["tpl"], "tpl_own": tg.get("tpl_own")} | ({"decimals": tg["decimals"]} if "decimals" in tg else {}))
             else:
                 c["texts"] = list(c.get("texts") or []) + list(o.get("texts") or [])
             c["text"] = " ".join(c["texts"])
@@ -1085,6 +1085,7 @@ def chart_sentences(c: dict) -> list[str]:
                 if y0 is not None:
                     F["n0"][sid], F["dabs"][sid], F["dmehr"][sid] = num(y0, d), num(abs(v - y0), d), "mehr" if v > y0 else "weniger"
                     F.setdefault("hoeher", {})[sid] = "höher" if v > y0 else "niedriger"
+                    F.setdefault("dsg", {})[sid] = num(v - y0, d, True)
                 F.setdefault("sw", {})[sid] = "der Überschuss" if v >= 0 else "das Defizit"  # Saldo mit Artikel
                 F.setdefault("x100", {})[sid] = num(v / 100, 1)  # Vielfaches eines Index mit Mittel = 100
                 F["v"][sid], F["n"][sid] = val(v), num(v, int(c.get("tpl_decimals", d)))  # tpl_decimals: eigene Rundung nur für den Satz
@@ -1092,6 +1093,9 @@ def chart_sentences(c: dict) -> list[str]:
                 F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
                 F["abs"][sid], F["sg"][sid] = num(abs(v), d), num(v, d, True)
                 F["up_pl"][sid], F["trend_pl"][sid] = ("stiegen", "steigen") if v > 0 else ("sanken", "sinken")
+                z = round(v, d) == 0
+                F.setdefault("up_s", {})[sid] = "veränderte sich kaum" if z else "stieg" if v > 0 else "sank"
+                F.setdefault("std_v", {})[sid], F.setdefault("std_k", {})[sid] = ("veränderten", " kaum") if z else ("verschärften", "") if v > 0 else ("lockerten", "")  # Kreditstandards: Saldo > 0 heißt verschärft
                 ys = [y for y in s["y"][:i + 1] if y is not None]
                 k = next((j for j, y in enumerate(reversed(ys)) if (y > 0) != (v > 0)), len(ys))  # Perioden in Folge mit gleichem Vorzeichen
                 F["streak"][sid] = f"einem {noun[0]}" if k == 1 else f"{ZAHLWORT.get(k, k)} {noun[1]}"
