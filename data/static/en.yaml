@@ -162,6 +162,10 @@ charts:
     title: "Expenditure components of output in the latest quarter"
     ask: "How did the expenditure components develop in the latest quarter?"
     caption: "The bars show how each part of demand changed in the latest quarter, price adjusted. The diamond shows the value for the quarter before. Investment is split into equipment (machinery, vehicles, weapons systems), construction and other assets (mainly software and research)."
+  prices_overview:
+    title: "Prices at a glance"
+    ask: "How do prices compare with the past?"
+    caption: "The table shows the main price measures at a glance. Each row: the course over the past five years, the latest value, the value a year earlier and the average for 2015 to 2019, when inflation was close to target. The grey line in the chart marks that average. Each row has its own scale. Price expectations are balances from European Commission surveys: share of answers 'rise' minus share 'fall'. The forecasters' expectation comes from the European Central Bank's survey for the euro area."
   cpi:
     title: "Inflation rate (CPI) and components"
     ask: "Which areas are becoming more expensive?"

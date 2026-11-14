@@ -530,6 +530,11 @@
   .numtab .nb { fill: #002060; } .numtab .nbg { fill: #d9dde8; }
   .numnote { font-size: 12px; color: #595959; margin: 4px 0 0 14px; }
   @media (max-width: 600px) { .numtab { font-size: 12.5px; } .numtab .mid { display: none; } .numtab td.nt-bar, .numtab th.nt-bar { display: none; } }
+  .spk-norm { stroke: #a6a6a6; stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .spklev td.n b { font-size: 16px; }
+  .spklev .sh { display: none; }
+  @media (max-width: 560px) { .spklev .lg { display: none; } .spklev .sh { display: inline; } .spklev th, .spklev td { padding-right: 4px; font-size: 13px; }
+    .spklev .lab { font-size: 13.5px; } .spklev .u { font-size: 11px; } .spklev td.g { min-width: 44px; width: 20%; } .spklev td.n b { font-size: 14px; } .spktab.spklev td.n .u { white-space: nowrap; } }
   .spknote { font-size: 12px; color: #595959; margin: 6px 0 0; }
   @media (max-width: 560px) { .spktab td.g { min-width: 80px; width: 30%; } .spktab td.f { font-size: 15px; } }
 </style>
@@ -1284,8 +1289,29 @@ function numChart(el, c) {
   el.innerHTML = h;
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
 }
+// Wortgrafik-Tafel mit Niveaus: je Zeile Verlauf mit Linie für den Schnitt der Normaljahre, jüngster Wert, vor einem Jahr, Schnitt
+function sparkLevel(el, c) {
+  const R = c.sparktable || [], en = DATA.lang === "en", t0 = Math.min(...R.map(r => Date.parse(r.x[0]))), t1 = Math.max(...R.map(r => Date.parse(r.x[r.x.length - 1])));
+  const W = 220, H = 30, fx = (v, d) => v == null ? "–" : (en ? v.toLocaleString("en-GB", { minimumFractionDigits: d, maximumFractionDigits: d }) : fmt(v, d)).replace(/^-/, "−");
+  const px = t => 2 + (t - t0) / ((t1 - t0) || 1) * (W - 6);
+  const spark = r => { const ys = r.y.concat(r.norm == null ? [] : [r.norm]), lo = Math.min(...ys), hi = Math.max(...ys), py = v => H - 3 - (v - lo) / ((hi - lo) || 1) * (H - 6);
+    const pts = r.x.map((x, i) => `${px(Date.parse(x)).toFixed(1)},${py(r.y[i]).toFixed(1)}`).join(" "), n = r.x.length - 1, xe = px(Date.parse(r.x[n])).toFixed(1);
+    return `<svg class="spk" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">`
+      + (r.norm == null ? "" : `<line x1="0" x2="${W}" y1="${py(r.norm).toFixed(1)}" y2="${py(r.norm).toFixed(1)}" class="spk-norm"/>`)
+      + `<polyline points="${pts}" class="spk-line"/><line x1="${xe}" x2="${xe}" y1="${py(r.y[n]).toFixed(1)}" y2="${py(r.y[n]).toFixed(1)}" class="spk-dot"/></svg>`; };
+  const [n0, n1] = c.norm || [2015, 2019], nl = `${n0}–${String(n1).slice(2)}`;
+  const two = (a, b) => `<span class="lg">${a}</span><span class="sh">${b}</span>`, y0 = new Date(t0).getFullYear();
+  const T = en ? { since: two("Since " + y0, "Since " + y0), last: two("Latest", "Latest"), prev: two("A year earlier", "Year ago"), norm: two("Average " + nl, "Ø " + nl), note: `Grey line: average ${n0} to ${n1}.` }
+               : { since: two("Verlauf seit " + y0, "seit " + y0), last: two("zuletzt", "zuletzt"), prev: two("vor einem Jahr", "Vorjahr"), norm: two("Schnitt " + nl, "Ø " + nl), note: `Graue Linie: Schnitt ${n0} bis ${n1}.` };
+  el.innerHTML = `<table class="spktab spklev"><thead><tr><th></th><th>${T.since}</th><th class="n">${T.last}</th><th class="n">${T.prev}</th><th class="n">${T.norm}</th></tr></thead><tbody>`
+    + R.map(r => `<tr class="${r.sub ? "spk-sub" : "spk-main"}"><td><span class="lab">${esc(en ? r.label_en : r.label)}</span><span class="u">${esc(en ? r.unit_en : r.unit)}</span></td>`
+      + `<td class="g">${spark(r)}</td><td class="n"><b>${fx(r.last, r.d)}</b><span class="u">${esc(en ? r.when_en : r.when)}</span></td>`
+      + `<td class="n">${fx(r.prev, r.d)}</td><td class="n">${fx(r.norm, r.d)}</td></tr>`).join("") + `</tbody></table><p class="spknote">${T.note}</p>`;
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+}
 // Tabelle mit Wortgrafiken nach Tufte: je Zeile Verlauf auf gemeinsamer Zeitachse, Stand 2021, jüngster Stand, Faktor
 function sparkChart(el, c) {
+  if (c.spk_mode === "level") return sparkLevel(el, c);
   const R = c.sparktable || [], en = DATA.lang === "en", t0 = Math.min(...R.map(r => Date.parse(r.x[0]))), t1 = Math.max(...R.map(r => Date.parse(r.x[r.x.length - 1])));
   const W = 220, H = 30, fx = (v, d) => en ? v.toLocaleString("en-GB", { minimumFractionDigits: d, maximumFractionDigits: d }) : fmt(v, d);
   const war = Date.parse("2022-02-24"), px = t => 2 + (t - t0) / (t1 - t0) * (W - 6);
