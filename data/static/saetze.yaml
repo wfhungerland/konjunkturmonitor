@@ -14,6 +14,8 @@ series:
   kiel_de_other: {tpl: "{when} kamen finanzielle und humanitäre Hilfe im Wert von {v} hinzu."}
   kmpt_de_orders_idx: {tpl: "{when} lagen die Rüstungsaufträge der letzten zwölf Monate bei {n} Punkten (2021 = 100)."}
   arms_prod_12m: {tpl: "{when} lag die Produktion von Waffen und Munition bei {n} Punkten."}
+  de_arms_turnover: {tpl: "{when} setzten die Hersteller von Waffen und Munition über zwölf Monate {v} um."}
+  de_arms_turnover_abroad: {tpl: "Davon kamen {v} von Kunden im Ausland."}
   def_staff: {tpl: "{when} gab der Staat für das Personal der Streitkräfte {v} aus."}
   def_material: {tpl: "Für Material, Wartung und Betrieb waren es {v}, {chg} ggü. dem Vorjahr."}
   def_invest: {tpl: "In neue Waffensysteme und Bauten flossen {v}."}
@@ -49,6 +51,8 @@ series:
   de_corp_yield: [die Umlaufsrendite der Unternehmensanleihen, s]
   de_pub_yield: [die Umlaufsrendite der Anleihen der öffentlichen Hand, s]
   de_corp_spread: [der Renditeabstand der Unternehmensanleihen zu Anleihen der öffentlichen Hand, s]
+  ciss_fr: [der Finanzstress-Index für Frankreich, s]
+  de_exp_share_fr: [der Anteil Frankreichs an den deutschen Warenexporten, s]
   bls_std_nfc: [der Saldo der Kreditstandards für Unternehmen, s]
   bls_std_hh: [der Saldo der Kreditstandards für Wohnungsbaukredite, s]
   bls_dem_nfc: [der Saldo der Kreditnachfrage von Unternehmen, s]
@@ -58,7 +62,7 @@ series:
   ez_unemp_ea20: [die Erwerbslosenquote im Euroraum, s]
   ez_ip_ea21: [die Produktion im Verarbeitenden Gewerbe im Euroraum, s]
   ez_esi_ea21: [die Wirtschaftliche Einschätzung im Euroraum, s]
-  de_wai: [der wöchentliche Aktivitätsindex der Bundesbank, s]
+  de_wai: {tpl: "{when} schätzte der Aktivitätsindex der Bundesbank das Wachstum der Wirtschaftsleistung in den letzten 13 Wochen auf {v} ggü. den 13 Wochen davor."}
   de_maut: [die Fahrleistung der Lkw auf Autobahnen, s]
   de_gdp_index: [die Wirtschaftsleistung (reales BIP), s]
   de_cpi_yoy: [die Verbraucherpreise insgesamt, p]
@@ -102,7 +106,7 @@ series:
   de_orders_euro: [der Auftragseingang aus dem Euroraum, s]
   de_orders_noneuro: [der Auftragseingang von außerhalb des Euroraums, s]
   rhine_lowdays_year: {tpl: "{when} gab es am Pegel Kaub {v} mit einem Wasserstand unter 78 cm."}
-  rhine_kaub: {tpl: "{when} lag der Wasserstand am Pegel Kaub im Tagesmittel bei {v}."}
+  rhine_kaub: {tpl: "{when} lag der Wasserstand am Pegel Kaub im Tagesmittel bei {v} und damit {tdiff} cm {tword} der Marke von 78 cm."}
   de_prod_vorl: [die Produktion von Vorleistungsgütern, s]
   de_prod_inve: [die Produktion von Investitionsgütern, s]
   de_prod_kons: [die Produktion von Konsumgütern, s]

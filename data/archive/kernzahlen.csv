@@ -197,3 +197,21 @@ stand,series,label,date,period,value
 2026-11-13,de_vac_sa,Gemeldete offene Stellen,2026-10-01,Oktober 2026,645.0
 2026-11-13,de_vpi_core_yoy,Kernrate (ohne Energie und Nahrungsmittel),2026-10-01,Oktober 2026,2.0956
 2026-11-13,w_brent,Rohöl Brent,2026-10-01,Oktober 2026,123.93
+2026-11-14,de_alq_sa,Arbeitslosenquote,2026-10-01,Oktober 2026,6.4
+2026-11-14,de_bau_prod,Produktion im Baugewerbe,2026-09-01,September 2026,89.9
+2026-11-14,de_bund10,"Rendite Bundesanleihen, 10 Jahre",2026-10-01,Oktober 2026,3.4
+2026-11-14,de_consumer_conf,Verbrauchervertrauen,2026-10-01,Oktober 2026,-14.5
+2026-11-14,de_cpi_yoy,Inflationsrate (VPI),2026-10-01,Oktober 2026,2.8
+2026-11-14,de_emp_m,Erwerbstätige,2026-09-01,September 2026,45.632
+2026-11-14,de_esi,Wirtschaftsklima (ESI),2026-10-01,Oktober 2026,94.1
+2026-11-14,de_exports,"Warenexporte, nominal",2026-09-01,September 2026,141.12
+2026-11-14,de_gdp_index,"BIP, real",2026-07-01,3. Quartal 2026,106.694
+2026-11-14,de_insolv,Unternehmensinsolvenzen,2026-08-01,August 2026,2067.0
+2026-11-14,de_ip,Produktion der Industrie,2026-09-01,September 2026,92.4
+2026-11-14,de_orders,Auftragseingang der Industrie,2026-09-01,September 2026,90.3
+2026-11-14,de_ppi_yoy,Erzeugerpreise,2026-09-01,September 2026,6.7247
+2026-11-14,de_retail,"Einzelhandelsumsatz, real",2026-09-01,September 2026,98.1
+2026-11-14,de_sahm,"Rezessionssignal (Schwelle 0,25)",2026-10-01,Oktober 2026,0.0025
+2026-11-14,de_vac_sa,Gemeldete offene Stellen,2026-10-01,Oktober 2026,645.0
+2026-11-14,de_vpi_core_yoy,Kernrate (ohne Energie und Nahrungsmittel),2026-10-01,Oktober 2026,2.0956
+2026-11-14,w_brent,Rohöl Brent,2026-10-01,Oktober 2026,123.93

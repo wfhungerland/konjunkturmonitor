@@ -33,6 +33,7 @@ FORM = {
     "calendar": "Kalender der nächsten Veröffentlichungen mit Verweis auf die betroffenen Abbildungen.",
     "dumbbell": "Hantelgrafik: je Land ein hohler Punkt für das erste und ein voller Punkt für das jüngste Jahr, verbunden durch eine Linie.",
     "curve": "Zinskurven: Rendite über der Restlaufzeit (logarithmische Achse), je Land eine Farbe; durchgezogen der jüngste Monat, gepunktet derselbe Monat ein Jahr zuvor.",
+    "gauge": "Krisenthermometer: je Indikator eine Zeile auf gemeinsamer Skala. 0 % ist das Mittel 2015 bis 2019, 100 % der Höchststand der Eurokrise (Juli 2011 bis Dezember 2012); Werte dazwischen sind linear eingeordnet, Werte unter 0 % liegen günstiger als normal. Voller Punkt: jüngster Wert, hohler Punkt: ein Jahr zuvor. Die Skala zeigt den Abstand zu einer früheren Krise, keine Wahrscheinlichkeit für eine neue.",
     "tpi": "Tabelle je Euroland: Finanzierungssaldo und Schulden des Staates im jüngsten Jahr, laufendes Defizitverfahren und Renditeabstand zu Deutschland; rot sind ein laufendes Verfahren und Werte jenseits der Grenzen des Stabilitätspakts. Die Daten holt der werktägliche Lauf von Eurostat, der Seite der EU-Kommission und der EZB.",
 }
 
@@ -76,6 +77,8 @@ def chart_series_ids(c: dict, meta: dict, status_ids) -> list[str]:
         hist = [x for p in (c.get("panels") or HIST_PANELS) for x in (p["hist"], p["cur"])]
         ids += [k for k in ({"downturn": ["de_ip", "de_alq_sa", "de_gdp_index"], "history": hist}
                             .get(c.get("kind"), ["enso_roni", "de_vpi", "de_vpi_food", "de_agri"])) if k not in ids]
+    if c.get("type") == "projection" or c.get("proj"):
+        ids += [k for k in (c.get("yoy", "de_gdp_yoy"), c.get("index_nsa", "de_gdp_index_nsa"), c.get("index", "de_gdp_index"), "de_gdp_qoq") if k not in ids]
     for k in ("x", "y", "total", "fx"):
         if isinstance(c.get(k), str) and c[k] in meta and c[k] not in ids:
             ids.append(c[k])
@@ -149,6 +152,13 @@ def _steps(c: dict, meta: dict, ids: list[str]) -> list[str]:
         st.append("Index: Wert ÷ Wert im Ausgangszeitpunkt (Hoch) × 100. Arbeitslosenquote: Wert minus Wert im Ausgangszeitpunkt, in Prozentpunkten.")
     if c.get("type") == "stacked":
         st.append("Wachstumsbeiträge in Prozentpunkten: Veränderung eines Bestandteils, gewichtet mit seinem Anteil an der Gesamtgröße der Vorperiode. Gruppen (etwa Konsum) sind die Summe ihrer Bestandteile.")
+    if c.get("type") == "projection" or c.get("proj"):
+        st += ["Jahreswert des realen BIP = Summe seiner vier Quartale. Das gilt exakt, weil die Statistik die Quartale innerhalb des Vorjahres verkettet (annual overlap); so ergibt die Summe der unbereinigten Quartale 2025 die amtliche Jahresrate von 0,2 %.",
+               "Nötige Summe der fehlenden Quartale (unbereinigter Index U, Jahresrate der Projektion ohne Bereinigung Z): S = (1 + Z) × (U<sub>1</sub> + U<sub>2</sub> + U<sub>3</sub> + U<sub>4</sub> des Vorjahres) − Summe der bekannten Quartale des laufenden Jahres. Diese Größe ist eindeutig.",
+               "Helle Balken ggü. Vorjahresquartal: gleiche Rate r für jedes fehlende Quartal, r = S ÷ (Summe derselben Quartale im Vorjahr) − 1. Fehlt nur ein Quartal, ist r eindeutig; bei mehreren ist die gleiche Rate eine Festlegung.",
+               "Helle Balken ggü. Vorquartal (Null-Wert-J mit Zielrate): saison- und kalenderbereinigter Index B, Ziel ist die kalenderbereinigte Jahresrate der Projektion Z<sub>k</sub>. Gesucht ist die gleiche Rate g für die n fehlenden Quartale mit Summe der bekannten Quartale + B<sub>letztes</sub> × ((1+g) + … + (1+g)<sup>n</sup>) = (1 + Z<sub>k</sub>) × Summe des Vorjahres. Die linke Seite steigt streng in g; der Monitor löst die Gleichung numerisch (Bisektion). Bei einem fehlenden Quartal: g = ((1 + Z<sub>k</sub>) × Summe des Vorjahres − Summe der bekannten Quartale) ÷ B<sub>letztes</sub> − 1.",
+               "Unbereinigte Zielrate und bereinigte Werte werden nie gemischt: Nennt die Projektion keine kalenderbereinigte Rate, entfällt die Ansicht ggü. Vorquartal.",
+               "Liegen alle vier Quartale vor, zeigt der Satz die Jahresrate (Summe des Jahres ÷ Summe des Vorjahres − 1) aus dem unbereinigten Index."]
     if c.get("refs"):
         st.append("Referenzwerte (grau gestrichelt): " + "; ".join(escape(str(r.get("label", ""))) for r in c["refs"]) + ".")
     if c.get("ref") not in (None, 0):

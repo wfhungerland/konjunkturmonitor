@@ -54,6 +54,31 @@
   .stturn { margin: 14px 0 6px; } .stturn ul { list-style: none; margin: 0; padding: 0; } .stturn li { display: grid; grid-template-columns: 3.2em minmax(0, 1fr); font: 13.5px/1.4 var(--ff); margin: 0 0 7px; }
   .stturn .sp { color: #595959; }
   @media (max-width: 600px) { .stnow .sg { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .kmtx { border-left: 2px solid #000; padding-left: 12px; margin: 12px 0 4px; font: 14.5px/1.45 var(--ff); } .kmtx[hidden] { display: none; }
+  .kmtx .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 2px 0 5px; }
+  .gut .kmt[aria-expanded="true"] { font-weight: 700; color: #000; }
+  /* Lage auf einen Blick: erster Bildschirm für eilige Leser */
+  .lage { margin: 6px 0 26px; } .lage[hidden] { display: none; }
+  .lage .lh { display: flex; flex-wrap: wrap; gap: 4px 18px; align-items: baseline; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 6px; }
+  .lage .lh h2 { font: 700 15px var(--ff); letter-spacing: .06em; text-transform: uppercase; margin: 0; } .lage .lh span { font: 13.5px var(--ff); color: #595959; }
+  .lage .lk { font: 13.5px var(--ff); background: none; border: 0; padding: 0; cursor: pointer; color: #595959; } .lage .lk[aria-pressed="true"] { color: #000; font-weight: 700; }
+  .lage .kom { display: none; } body.lagek .lage .kom { display: block; }
+  .lage .say { font: 600 25px/1.3 var(--ff); margin: 16px 0 18px; max-width: 900px; } body.lagek .lage .nokom { display: none; }
+  .lage .lg2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 28px; margin: 6px 0 10px; } .lage .lg2 h3 { font: 400 16px var(--ff); margin: 0 0 4px; text-transform: none; letter-spacing: 0; color: #000; }
+  .lage .lsl svg { width: 100%; height: auto; display: block; } .lage svg text { font-family: var(--ff); } .lage .sh { font-size: 12px; fill: #595959; } .lage .sv { font-size: 14.5px; font-weight: 700; fill: #000; } .lage .sn { font-size: 13px; } .lage .lsl a:hover tspan { text-decoration: underline; } .lage .sq { font-size: 9.5px; opacity: .85; } .lage .sv2 { font-weight: 700; fill: #000; }
+  .lage .lmode { font: 12px var(--ff); color: #7f7f7f; border: 0; background: none; padding: 0; cursor: pointer; margin-left: auto; text-decoration: underline dotted; text-underline-offset: 3px; } .lage .lmode:hover { color: #0070C0; } .lage .lmode[aria-pressed="true"] { color: #0070C0; text-decoration-style: solid; }
+  .lage .lkey { display: flex; flex-wrap: wrap; gap: 2px 16px; font: 13px var(--ff); color: #404040; margin: 0 0 10px; } .lage .lkey span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .lage .lpg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 18px; } .lage .lp { display: block; color: #000; text-decoration: none; } .lage .lp b { display: block; font: 400 15px/1.25 var(--ff); } .lage .lp span { display: block; font: 12px/1.3 var(--ff); color: #7f7f7f; min-height: 2.6em; } .lage .lp:hover b { color: #0070C0; }
+  .lage .lp svg { width: 100%; height: auto; display: block; overflow: visible; } .lage .sx { font-size: 10px; fill: #595959; } .lage .sp { font-size: 10px; } .lage .se { font-size: 12px; font-weight: 700; } .lage .sm { font-size: 10px; } .lage .sl { font-size: 10.5px; }
+  .lage .lo { margin: 18px 0 0; font: 15.5px/1.4 var(--ff); max-width: 900px; }
+  .lage .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; margin-top: 26px; max-width: 1100px; }
+  .lage h3 { font: 600 12.5px var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 0 0 8px; }
+  .lage ul { list-style: none; margin: 0 0 14px; padding: 0; } .lage li { margin: 0 0 8px; font: 15px/1.4 var(--ff); } .lage li a { color: #000; }
+  .lage .amp { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 7px; } .lage .amp.r { background: #C00000; } .lage .amp.y { background: #E0A800; } .lage .amp.g { background: #47D359; }
+  .lage .fc b { font-size: 20px; } .lage .mine { margin-top: 6px; border-top: 1px solid var(--line); padding-top: 12px; display: flex; gap: 22px; flex-wrap: wrap; font: 600 15px var(--ff); }
+  .lage .mine a { color: #000; } .lage .mine a.s { color: #0070C0; }
+  @media (max-width: 700px) { .lage .say { font-size: 20px; } .lage .lg2 { grid-template-columns: 1fr; gap: 18px; } .lage .lpg { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; } .lage .sx, .lage .sp, .lage .sm, .lage .sl { font-size: 13px; } .lage .se { font-size: 15px; } .lage .sn { font-size: 12.5px; } .lage .sv { font-size: 14px; } .lage .cols { grid-template-columns: 1fr; gap: 6px; } }
+  body.lagek #lage + .overview, body #lage:not([hidden]) + .overview { display: none; }
   .overview .fz { display: none; } body.fazit .overview .fz { display: block; border-left: 2px solid var(--text); padding-left: 14px; margin: 14px 0 4px; }
   .overview .fz .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 3px 0 5px; }
   body:not(.fazit) .verdict { display: none !important; }
@@ -466,11 +491,45 @@
   @media (min-width: 1240px) { .refs { max-width: 1320px; } }
   footer { text-align: center; color: var(--muted); font-size: 13.5px; padding: 24px 16px 40px; }
   footer a { color: var(--muted); text-decoration: underline; }
+  .spktab { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .spktab th { font-weight: 400; font-size: 13px; color: #595959; text-align: left; padding: 0 8px 6px 0; }
+  .spktab th.n, .spktab td.n { text-align: right; white-space: nowrap; }
+  .spktab td { padding: 8px 8px 8px 0; border-top: 1px solid #e6e6e6; vertical-align: middle; font-size: 15px; }
+  .spktab tr.spk-sub td:first-child { padding-left: 14px; }
+  .spktab tr.spk-sub .lab { font-weight: 400; }
+  .spktab .lab { display: block; font-weight: 600; font-size: 15px; }
+  .spktab .u { display: block; font-size: 12px; color: #595959; }
+  .spktab td.g { width: 38%; min-width: 120px; }
+  .spktab td.f { font-weight: 700; color: #002060; font-size: 17px; }
+  .spk { width: 100%; height: 30px; display: block; }
+  .spk-line { fill: none; stroke: #002060; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .spk-dot { stroke: #002060; stroke-width: 6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .spk-war { stroke: #C00000; stroke-width: 1; stroke-dasharray: 2 2; vector-effect: non-scaling-stroke; }
+  .numtab { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; }
+  .numtab th { font-weight: 400; font-size: 12px; color: #595959; text-align: right; padding: 0 0 4px 6px; white-space: nowrap; vertical-align: bottom; }
+  .numtab th small { display: block; font-size: 11px; }
+  .numtab td { padding: 4px 0 4px 6px; text-align: right; white-space: nowrap; }
+  .numtab td.l { text-align: left; white-space: normal; padding-left: 0; font-weight: 600; }
+  .numtab tr.nt-sub td.l { padding-left: 14px; font-weight: 400; }
+  .numtab tr.nt-sub td { font-weight: 400; }
+  .numtab tr.nt-main td.last, .numtab td.ch { font-weight: 700; }
+  .numtab td.ch { color: #002060; }
+  .numtab td.p { color: #002060; }
+  .numtab tr.nt-head td { text-align: left; font-weight: 700; padding-top: 14px; border-bottom: 1px solid #e6e6e6; }
+  .numtab td.nt-bar { width: 100px; text-align: left; white-space: nowrap; }
+  .numtab td.nt-bar svg { display: inline-block; width: 60px; height: 10px; vertical-align: middle; }
+  .numtab td.nt-bar small { display: inline; font-size: 11px; color: #595959; margin-left: 4px; }
+  .numtab .nb { fill: #002060; } .numtab .nbg { fill: #d9dde8; }
+  .numnote { font-size: 12px; color: #595959; margin: 4px 0 0 14px; }
+  @media (max-width: 600px) { .numtab { font-size: 12.5px; } .numtab .mid { display: none; } .numtab td.nt-bar, .numtab th.nt-bar { display: none; } }
+  .spknote { font-size: 12px; color: #595959; margin: 6px 0 0; }
+  @media (max-width: 560px) { .spktab td.g { min-width: 80px; width: 30%; } .spktab td.f { font-size: 15px; } }
 </style>
 </head>
 <body>
 <header id="top"><div class="bar"><div class="brand"><h1><a class="home" href="#top" title="Nach oben">Konjunkturmonitor</a></h1><div class="meta"><span class="stand" id="stand"></span><span class="lang" id="lang"></span></div></div><nav id="nav"></nav></div></header>
 <main>
+  <section id="lage" class="lage" hidden></section>
   <p class="overview" id="overview">/*__OVERVIEW__*/</p>
   <p class="news" id="news"></p>
   <div class="grid" id="grid"></div>
@@ -518,16 +577,22 @@ const HS = { band: "rgba(193,229,245,0.10)", gridH: "#D9D9D9", gridV: null, zero
 const BAR_PAL = ["#0070C0", "#D86DCD", "#00B0F0", "#51154A", "#47D359", "#7030A0", "#002060"];
 const FAZTXT = { btn: "Kommentar", title: "Einordnung nach festen Regeln, automatisch erzeugt: Wachstum, Inflation gemessen am Zwei-Prozent-Ziel, Arbeitsmarkt und Stimmung. Ohne Kommentar bleibt die Seite beschreibend." };
 const ABTXT = { close: "schließen" };
-const TOURTXT = { name: "Rundgang", ask: "Neu hier? Eine Minute Rundgang zeigt, wie die Seite funktioniert.", go: "Los geht’s", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
+const TOURTXT = { name: "Anleitung", ask: "Neu hier? Die Anleitung zeigt in einer Minute, wie die Seite funktioniert.", go: "Los geht’s", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
   steps: [
     ["#nav", "Hier ist das Inhaltsverzeichnis. Ein Klick zeigt alle Kapitel. Die Lupe daneben findet jede Grafik."],
     [".fazitbtn", "Die Seite beschreibt nur, was die Zahlen zeigen. Wer eine Einschätzung lesen will, schaltet hier den Kommentar ein."],
     [".briefbtn", "Am Anfang sehen Sie nur das Wichtigste. Hier klappen Sie alle Kapitel auf."],
+    ["#lage", "Die Lage auf einen Blick: links Raten heute, vor einem Jahr und 2019, rechts Verläufe seit 2019 gegen den Durchschnitt 2015–19. „Kommentar“ blendet eine Einschätzung mit Warnlampen ein."],
     ["#starttable", "Die wichtigsten Zahlen auf einen Blick. ▲ heißt gestiegen, ▼ gesunken, ● gleich geblieben. Rot heißt: eher ungünstig. Ein Klick führt zum Kapitel."],
     ["@card .htools", "Lieber Zahlen statt Linien? Mit „Tabelle“ sehen Sie die letzten zwölf Werte."],
     ["@card .tools", "Mit diesen Schaltern sehen Sie mehr, etwa die ganze Geschichte einer Zahl oder frühere Krisen."],
     ["@card .cside", "Hier steht in wenigen Sätzen, was die Grafik zeigt. Wer es genau wissen will, klickt auf „Mehr zur Methode“."],
     ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik. Und über „Feedback“ erreicht Ihre Meinung zu einer Grafik direkt den Autor."]] };
+const KMTXT = { btn: "Kommentar", title: "Eigene Einschätzung zu dieser Grafik" };
+const LAGETXT = { title: "Lage auf einen Blick", stand: "Stand", komm: "Kommentar", kommt: "Lage-Satz und Warnlampen: Einschätzung nach festen Regeln, automatisch erzeugt",
+  warn: "Warnlampen", out: "Ausblick", grem: "Was die Gremien raten", neu: "Neu in den letzten sieben Tagen", term: "Nächste Termine (geschätzt)",
+  mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", am: "Lage am", rates: "Raten, in %", since: "Verläufe seit 2019",
+  when: [["2019", "Jahresmittel,", "vor Corona"], ["vor einem", "Jahr"], ["heute"]], k: ["Hoch seit 2019", "Tief seit 2019", "letzter Wert", "Durchschnitt 2015–19", "Abstand dazu", "über dem Höchst- oder unter dem Tiefstwert 2015–19"], meanbtn: "Ø 2015–19", meant: "Abstand zum Durchschnitt 2015–19 zeigen", fuer: "für", wd: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"] };
 const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", wait: "Bitte einen Moment warten.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const PHASETXT = { to: "–", L: { "-1": "Lohnzurückhaltung", "0": "Löhne im Spielraum", "1": "kräftigere Löhne" }, G: { "-1": "straffer", "0": "beibehalten", "1": "lockerer" },
   F: { "-1": "Konsolidierung", "0": "neutral", "1": "Impulse" }, A: { "-1": "mehr Schutz", "0": "beibehalten", "1": "Flexibilisierung" } };
@@ -576,7 +641,7 @@ const CAPM = "Mehr zur Methode";
 const METH_BASE = "methodik/", METH_LABEL = "Methodenblatt", METH_TITLE = "Daten, Quellen, Rechenschritte und Methode dieser Abbildung auf einer Seite";
 const LIC_NOTE = "Diese Abbildung und ihr Download stehen unter";
 const LIC_ALSO = "gilt auch für diese Abbildung und ihren Download";
-const NAVTXT = { groups: { gesamt: "Gesamtwirtschaft", produktion: "Produktion", haushalte: "Arbeit und Haushalte", preise: "Preise und Energie", aussen: "Außenwirtschaft", finanz: "Finanzierung", ausblick: "Stimmung und Aussichten" }, overview: "Übersicht", brief: "Das Wichtigste", all: "Alles zeigen",
+const NAVTXT = { groups: { gesamt: "Gesamtwirtschaft", produktion: "Produktion", haushalte: "Arbeit und Haushalte", preise: "Preise und Energie", aussen: "Außenwirtschaft", finanz: "Finanzierung", ausblick: "Stimmung" }, overview: "Übersicht", brief: "Das Wichtigste", all: "Alles zeigen",
   week: "Diese Woche", calendar: "Kalender", sources: "Quellen und Hinweise", method: "Methodenblätter", menu: "Menü", contents: "Inhalt" };
 const KERN = { more: "Weiterlesen" };
 const MORETXT = "Alle Grafiken zu {t} ({n})", BRIEFALL = "Alle {n} Kapitel zeigen";
@@ -881,6 +946,43 @@ function heatChart(el, c) {
   el.innerHTML = `<div class="heat">${html}</tbody></table></div>`;
 }
 
+// Krisenthermometer: je Zeile ein Indikator auf gemeinsamer Skala, 0 % = Normalniveau (Mittel der Basisjahre), 100 % = Krisenhoch;
+// voller Punkt heute, hohler Punkt vor einem Jahr; jenseits von 100 % rot hinterlegt. Gruppen als fette Zwischenzeilen.
+const GAUGE_TXT = { normal: "normal", crisis: "Eurokrise", now: "jüngster Wert", ago: "vor einem Jahr", lang: "de" };
+function gaugeChart(el, c) {
+  const G = c.gauge || {}, en = GAUGE_TXT.lang === "en", R = G.rows || [], lines = [];
+  let g0 = null; R.forEach(r => { const g = en ? r.group_en : r.group; if (g && g !== g0) { lines.push({ head: g }); g0 = g; } lines.push(r); });
+  const n = lines.length, yv = i => n - 1 - i, lab = r => en ? r.label_en : r.label, un = r => en ? r.unit_en : r.unit;
+  const pts = R.flatMap(r => [r.now_pct, r.ago_pct]).filter(v => v != null), lo = Math.min(-25, ...pts) - 8, hi = Math.max(125, ...pts) + 28;
+  const red = "#C00000", per = r => perLong(r.now_date, r.freq), perA = r => r.ago_date ? perLong(r.ago_date, r.freq) : "";
+  const traces = [], shapes = [
+    { type: "rect", xref: "x", yref: "paper", x0: 100, x1: hi, y0: 0, y1: 1, fillcolor: "rgba(192,0,0,0.07)", line: { width: 0 }, layer: "below" },
+    { type: "line", xref: "x", yref: "paper", x0: 0, x1: 0, y0: 0, y1: 1, line: { color: "#7f7f7f", width: 1 } },
+    { type: "line", xref: "x", yref: "paper", x0: 100, x1: 100, y0: 0, y1: 1, line: { color: red, width: 1.5, dash: "dash" } }];
+  const ann = [{ xref: "x", yref: "paper", x: 0, y: 1, yanchor: "bottom", showarrow: false, text: `${GAUGE_TXT.normal} ${G.base[0]}–${G.base[1]}`, font: { family: HS.font, size: 12, color: "#595959" } },
+    { xref: "x", yref: "paper", x: 100, y: 1, yanchor: "bottom", showarrow: false, text: `${GAUGE_TXT.crisis} ${G.peak[0].slice(0, 4)}/${G.peak[1].slice(2, 4)}`, font: { family: HS.font, size: 12, color: red } }];
+  lines.forEach((r, i) => { if (r.head) return;
+    const hot = r.now_pct >= 100, col = hot ? red : r.now_pct >= 50 ? "#C55A11" : PAL[0];
+    if (r.ago_pct != null) shapes.push({ type: "line", xref: "x", yref: "y", x0: r.ago_pct, x1: r.now_pct, y0: yv(i), y1: yv(i), line: { color: "#bfbfbf", width: 2 }, layer: "below" });
+    traces.push({ type: "scatter", mode: "markers", x: [r.ago_pct], y: [yv(i)], showlegend: false, marker: { symbol: "circle-open", size: 11, color: "#7f7f7f", line: { width: 2 } },
+      hovertemplate: `${esc(lab(r))}, ${esc(perA(r))}: ${fmt(r.ago, r.decimals)} ${esc(un(r))} (%{x:.0f} %)<extra></extra>` });
+    traces.push({ type: "scatter", mode: "markers+text", x: [r.now_pct], y: [yv(i)], showlegend: false, marker: { size: 13, color: col },
+      text: [`${fmt(Math.round(r.now_pct), 0).replace("-", "−")} %`], textposition: "middle right", textfont: { family: HS.font, size: 12, color: col },
+      hovertemplate: `${esc(lab(r))}, ${esc(per(r))}: ${fmt(r.now, r.decimals)} ${esc(un(r))}<br>${GAUGE_TXT.normal}: ${fmt(r.base, r.decimals)}, ${GAUGE_TXT.crisis}: ${fmt(r.peak, r.decimals)} (${esc(perLong(r.peak_date, r.freq))})<extra></extra>` }); });
+  traces.push({ type: "scatter", mode: "markers", x: [null], y: [null], name: GAUGE_TXT.now, marker: { size: 12, color: PAL[0] } },
+              { type: "scatter", mode: "markers", x: [null], y: [null], name: GAUGE_TXT.ago, marker: { symbol: "circle-open", size: 11, color: "#7f7f7f", line: { width: 2 } } });
+  const L = baseLayout(el), narrow = (el.clientWidth || 600) < 560;
+  Object.assign(L, { height: 50 * n + 150, hovermode: "closest", showlegend: true, shapes, annotations: ann, margin: { l: 8, r: 16, t: 44, b: 80 },
+    legend: { orientation: "h", x: 0, y: -0.03, yanchor: "top", font: { size: 12 }, itemclick: false, itemdoubleclick: false },
+    xaxis: { range: [lo, hi], tickvals: [0, 25, 50, 75, 100], ticktext: ["0 %", "25 %", "50 %", "75 %", "100 %"], showgrid: true, gridcolor: HS.gridH, zeroline: false, fixedrange: true },
+    yaxis: { range: [-0.7, n - 0.3], tickmode: "array", tickvals: lines.map((r, i) => yv(i)),
+      ticktext: lines.map(r => r.head ? `<b>${esc(r.head)}</b>` : esc(lab(r)) + (narrow ? "" : `<br><span style="font-size:11px;color:#595959">${fmt(r.now, r.decimals)} ${esc(un(r))}, ${esc(per(r))}</span>`)),
+      automargin: true, fixedrange: true, ticks: "", showgrid: false, zeroline: false } });
+  el.style.aspectRatio = "auto"; el.style.height = L.height + "px"; el.style.maxHeight = "none";  // höher als die übliche Grenze von 440 px
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+  Plotly.newPlot(el, traces, L, CFG);
+}
+
 // Zinskurven je Land: Rendite über der Restlaufzeit, jüngster Monat durchgezogen, ein Jahr zuvor gepunktet, eine Farbe je Land
 const CURVE_TXT = { x: "Restlaufzeit in Jahren", lang: "de" };
 function curveChart(el, c) {
@@ -1137,6 +1239,58 @@ function cellChart(el, c) {
   el.style.aspectRatio = "auto"; el.style.height = L.height + "px";
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl && A.mode !== "bar") uEl.style.display = "none";
   Plotly.react(el, traces, L, CFG);
+}
+// Zahlentafel: Jahreswerte je Zeile, Veränderung seit dem ersten Jahr, Vielfaches als Balken; darunter Planwerte des Bundes
+function numChart(el, c) {
+  const N = c.numtable, en = DATA.lang === "en", Y = N.years, y0 = Y[0];
+  const fx = (v, d) => v == null ? "" : en ? v.toLocaleString("en-GB", { minimumFractionDigits: d, maximumFractionDigits: d }) : fmt(v, d);
+  const sg = (v, d) => (v >= 0 ? "+" : "−") + fx(Math.abs(v), d);
+  const bar = f => { if (f == null) return ""; const w = Math.min(f, 4) / 4 * 60;
+    return `<svg viewBox="0 0 60 10" aria-hidden="true"><rect class="nbg" x="0" y="0" width="15" height="10"/><rect class="nb" x="0" y="0" width="${w.toFixed(1)}" height="10"/></svg><small>×${fx(f, 1)}</small>`; };
+  // auf dem Handy ausgeblendete Jahre: in der Tafel die mittleren, im Plan die späten Finanzplanjahre vor dem letzten
+  const mid = (y, ys) => (ys === Y ? y !== ys[0] && y < ys[ys.length - 2] : y > ys[2] && y !== ys[ys.length - 1]) ? ' class="mid"' : "";
+  const ncol = Y.length + 3, T = en ? { since: "Since " + y0, pp: " pp" } : { since: "seit " + y0, pp: " Pp." };
+  let h = `<table class="numtab"><thead><tr><th></th>${Y.map(y => `<th${mid(y, Y)}>${y}</th>`).join("")}<th>${T.since}</th><th class="nt-bar"></th></tr></thead><tbody>`;
+  for (const b of N.blocks) {
+    h += `<tr class="nt-head"><td colspan="${ncol}">${esc(en ? b.label_en : b.label)}</td></tr>`;
+    for (const r of b.rows) {
+      h += `<tr class="${r.sub ? "nt-sub" : "nt-main"}"><td class="l">${esc(en ? r.label_en : r.label)}</td>`
+        + Y.map(y => { const v = r.values[y]; const cl = (y === r.last ? "last" : "") + (mid(y, Y) ? " mid" : ""); return `<td class="${cl.trim()}">${fx(v, r.d)}</td>`; }).join("")
+        + `<td class="ch">${sg(r.change, r.d)}${r.pp ? T.pp : ""}</td><td class="nt-bar">${bar(r.factor)}</td></tr>`;
+    }
+  }
+  const P = N.plan;
+  if (P) {
+    const PY = P.years, st = en ? P.status_en : P.status;
+    h += `</tbody></table><table class="numtab"><thead><tr class="nt-head"><td colspan="${PY.length + 3}">${esc(en ? P.label_en : P.label)}</td></tr>`
+      + `<tr><th></th>${PY.map(y => `<th${mid(y, PY)}>${y}${st[y] ? `<small>${esc(st[y])}</small>` : ""}</th>`).join("")}<th>${en ? "Since " : "seit "}${PY[0]}</th><th class="nt-bar"></th></tr></thead><tbody>`;
+    for (const r of P.rows) {
+      const v0 = r.values[PY[0]], vl = r.values[PY[PY.length - 1]];
+      h += `<tr class="${r.sub ? "nt-sub" : "nt-main"}"><td class="l">${esc(en ? r.label_en : r.label)}</td>`
+        + PY.map(y => `<td class="${y > PY[0] ? "p" : ""}${mid(y, PY) ? " mid" : ""}">${fx(r.values[y], 1)}</td>`).join("")
+        + `<td class="ch">${v0 != null && vl != null ? sg(vl - v0, 1) : ""}</td><td class="nt-bar">${v0 != null && vl != null ? bar(vl / v0) : ""}</td></tr>`;
+    }
+    h += `</tbody></table>` + (P.note ? `<p class="numnote">${esc(en ? P.note_en : P.note)}</p>` : "");
+  } else h += `</tbody></table>`;
+  el.innerHTML = h;
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+}
+// Tabelle mit Wortgrafiken nach Tufte: je Zeile Verlauf auf gemeinsamer Zeitachse, Stand 2021, jüngster Stand, Faktor
+function sparkChart(el, c) {
+  const R = c.sparktable || [], en = DATA.lang === "en", t0 = Math.min(...R.map(r => Date.parse(r.x[0]))), t1 = Math.max(...R.map(r => Date.parse(r.x[r.x.length - 1])));
+  const W = 220, H = 30, fx = (v, d) => en ? v.toLocaleString("en-GB", { minimumFractionDigits: d, maximumFractionDigits: d }) : fmt(v, d);
+  const war = Date.parse("2022-02-24"), px = t => 2 + (t - t0) / (t1 - t0) * (W - 6);
+  const spark = r => { const ys = r.y, lo = Math.min(...ys), hi = Math.max(...ys), py = v => H - 3 - (v - lo) / ((hi - lo) || 1) * (H - 6);
+    const pts = r.x.map((x, i) => `${px(Date.parse(x)).toFixed(1)},${py(ys[i]).toFixed(1)}`).join(" "), n = r.x.length - 1;
+    return `<svg class="spk" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><line x1="${px(war)}" x2="${px(war)}" y1="0" y2="${H}" class="spk-war"/>`
+      + `<polyline points="${pts}" class="spk-line"/><line x1="${px(Date.parse(r.x[n])).toFixed(1)}" x2="${px(Date.parse(r.x[n])).toFixed(1)}" y1="${py(ys[n]).toFixed(1)}" y2="${py(ys[n]).toFixed(1)}" class="spk-dot"/></svg>`; };
+  const T = en ? { since: "Since " + new Date(t0).getFullYear(), y21: "2021", last: "Latest", f: "Factor", war: "Dotted: Russia's attack on Ukraine, 24 Feb 2022." }
+               : { since: "Verlauf seit " + new Date(t0).getFullYear(), y21: "2021", last: "zuletzt", f: "Faktor", war: "Gepunktet: russischer Angriff auf die Ukraine, 24.2.2022." };
+  el.innerHTML = `<table class="spktab"><thead><tr><th></th><th>${T.since}</th><th class="n">${T.y21}</th><th class="n">${T.last}</th><th class="n">${T.f}</th></tr></thead><tbody>`
+    + R.map(r => `<tr class="${r.sub ? "spk-sub" : "spk-main"}"><td><span class="lab">${esc(en ? r.label_en : r.label)}</span><span class="u">${esc(en ? r.unit_en : r.unit)}</span></td>`
+      + `<td class="g">${spark(r)}</td><td class="n">${fx(r.base, r.d)}</td><td class="n"><b>${fx(r.last, r.d)}</b><span class="u">${esc(en ? r.when_en : r.when)}</span></td>`
+      + `<td class="n f">×${fx(r.factor, 1)}</td></tr>`).join("") + `</tbody></table><p class="spknote">${T.war}</p>`;
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
 }
 // Kurs der Finanzpolitik gegen erwartetes Wachstum: Balken je Zieljahr, Farbe nach der Empfehlung im Gutachten des Vorjahres
 function stanceBarsChart(el, c) {
@@ -1567,7 +1721,7 @@ function card(c, no) {
   const ownCfg = c.own_scale;  // so in monitor.yaml gesetzt (dann fehlt die gemeinsame Einheit über der Grafik)
   if (c.multiples && (DATA.layout || {}).small_multiples && (c.series || []).length > 2) { if (c.own_scale == null) c.own_scale = true; c.scale_toggle = true; }  // Standard: eigene Skala je Feld, gemeinsam per Schalter
   const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = FA(no); if (c.chart) el.dataset.chart = c.chart;
-  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
+  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" || c.type === "sparktable" || c.type === "numtable" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : c.type === "kreise" ? (c.attach && c.attach.stichtag ? (TM_TXT.lang === "en" ? "Employment as of " : "Beschäftigte am Stichtag ") + c.attach.stichtag.split("-").reverse().join("/") : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? (c.all_days ? "Täglich" : "Täglich (Arbeitstage)") : c.freq === "S" ? "Halbjährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Pp, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% ggü. Vorjahr"
@@ -1587,7 +1741,7 @@ function card(c, no) {
   const main = document.createElement("div"); main.className = "cmain"; body.appendChild(main);
   main.insertAdjacentHTML("beforeend", `<div class="unit">${ownCfg ? "" : esc(unit)}</div>`);
   const box = document.createElement("div"); box.className = "chartbox"; main.appendChild(box);
-  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar", "tpi"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
+  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar", "tpi", "sparktable", "numtable"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
   const side = document.createElement("aside"); side.className = "cside"; el.querySelector(".cgrid").appendChild(side);
   const capx = (c.caption || "") + ((c.notes || []).length ? " Über „Ausschläge und Sondereffekte“ erscheinen nummerierte, gepunktete Linien an den betroffenen Monaten." : "");
@@ -1669,7 +1823,13 @@ function card(c, no) {
   // alle Optionen offen untereinander, beginnend auf Höhe der Zeichenfläche (siehe alignGut)
   gut.insertAdjacentHTML("beforeend", `<div class="gopts"><button type="button" class="dl" aria-expanded="false" title="${GUTTXT.dlt}">${GUTTXT.dl}</button><div class="dlist" hidden>${acts.join("")}</div>`
     + (c.chart && !capx ? `<a href="${METH_BASE}${encodeURIComponent(c.chart)}.html" title="${METH_TITLE}">${GUTTXT.meth}</a>` : "")  // mit Erläuterung steht „Mehr zur Methode“ schon rechts
-    + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button></div>`);
+    + `<button type="button" class="lnk gl" title="Direkten Link auf diese Abbildung kopieren">${GUTTXT.link}</button>`
+    + (c.kommentar ? `<button type="button" class="kmt" aria-expanded="false" title="${KMTXT.title}">${KMTXT.btn}</button>` : "") + `</div>`);
+  if (c.kommentar) {  // Kommentar je Grafik: eigener Absatz mit Linie links, unter der Erläuterung, erst auf Klick
+    const kb = gut.querySelector(".kmt"), kx = document.createElement("div"); kx.className = "kmtx"; kx.hidden = true;
+    kx.innerHTML = `<span class="fzl">${KMTXT.btn}</span>${esc(c.kommentar)}`; side.appendChild(kx);
+    kb.onclick = () => { kx.hidden = !kx.hidden; kb.setAttribute("aria-expanded", String(!kx.hidden)); };
+  }
   // Direkter Link auf diese Abbildung zum Teilen
   const lk = gut.querySelector("button.lnk");
   const dlb = gut.querySelector("button.dl"); dlb.onclick = () => { const l = dlb.nextElementSibling, open = l.hidden; l.hidden = !open; dlb.setAttribute("aria-expanded", String(open)); };  // Formate auf- und zuklappen
@@ -1755,10 +1915,13 @@ function render(ch) {
   else if (c.type === "dumbbell") dumbbellChart(ch, c);
   else if (c.type === "stance") stanceChart(ch, c);
   else if (c.type === "cellgrid") cellChart(ch, c);
+  else if (c.type === "sparktable") sparkChart(ch, c);
+  else if (c.type === "numtable") numChart(ch, c);
   else if (c.type === "stance_bars") stanceBarsChart(ch, c);
   else if (c.type === "heat") heatChart(ch, c);
   else if (c.type === "tpi") tpiChart(ch, c);
   else if (c.type === "curve") curveChart(ch, c);
+  else if (c.type === "gauge") gaugeChart(ch, c);
   else if (c.type === "heatbars") heatbarsChart(ch, c);
   else if (c.type === "event") eventChart(ch, c);
   else if (c.type === "enso_comm") ensoCommChart(ch, c);
@@ -1887,8 +2050,9 @@ function searchBox() {
   box.innerHTML = `<button type="button" class="lupe" aria-label="Suchen" title="Suchen (Taste /)"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="10.2" y1="10.2" x2="15" y2="15" stroke="currentColor" stroke-width="1.6"/></svg></button><input type="search" placeholder="Suchen, z. B. Inflation" aria-label="Abbildungen und Themen durchsuchen" autocomplete="off"><ul hidden role="listbox"></ul>`;
   const inp = box.querySelector("input"), ul = box.querySelector("ul"); let hits = [], sel = 0;
   // Lupe: Feld klappt erst beim Klick (oder Taste /) auf und schließt sich leer wieder
-  box.querySelector(".lupe").onclick = () => { box.classList.add("open"); inp.focus(); };
-  inp.addEventListener("focus", () => box.classList.add("open"));
+  const closeNav = () => { const p = document.getElementById("navpanel"); if (p && !p.hidden) { p.hidden = true; document.querySelector(".navbtn")?.setAttribute("aria-expanded", "false"); document.body.classList.remove("menuopen"); } };  // Suche schließt das Inhaltsmenü
+  box.querySelector(".lupe").onclick = () => { closeNav(); box.classList.add("open"); inp.focus(); };
+  inp.addEventListener("focus", () => { closeNav(); box.classList.add("open"); });
   inp.addEventListener("blur", () => setTimeout(() => { if (!inp.value && document.activeElement !== inp) box.classList.remove("open"); }, 200));
   const mark = (s, ws) => { let h = esc(s); ws.forEach(w => { const i = norm(h).indexOf(w); if (i >= 0 && norm(h).length === h.length) h = h.slice(0, i) + "<mark>" + h.slice(i, i + w.length) + "</mark>" + h.slice(i + w.length); }); return h; };
   const show = () => {
@@ -1922,7 +2086,7 @@ function searchBox() {
 function build() {
   const S = DATA.site;
   const nw = document.getElementById("news");
-  if ((DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();
+  if (false && (DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();  // vorerst ausgeblendet
   const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = sentHtml(os.map(s => s.trim())) + (DATA.fazit ? `<span class="fz" title="${esc(FAZTXT.title)}"><span class="fzl">${FAZTXT.btn}</span>${esc(DATA.fazit)}</span>` : "");  /* Kommentar unter der Beschreibung */ bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
   if (DATA.has_en || DATA.lang === "en") document.getElementById("lang").innerHTML = DATA.lang === "en" ? `<a href="../" hreflang="de" lang="de" title="Deutsch">DE</a> <b>EN</b>` : `<b>DE</b> <a href="en/" hreflang="en" lang="en" title="English">EN</a>`;
   const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `Stand ${d.toLocaleDateString("de-DE")}`;
@@ -1938,7 +2102,10 @@ function build() {
   if (LY.minimal) document.body.classList.add("minimal");
   if (DATA.embed) document.body.classList.add("embed");  // Einzelseite zum Einbetten: nur diese Abbildung
   const grid = document.getElementById("grid"), nav = document.getElementById("nav"), topics = document.getElementById("topics");
-  if (LY.start_table && startTable(document.getElementById("starttable"))) grid.style.display = "none";
+  lageView();
+  const lg = document.getElementById("lage");
+  if (lg && !lg.hidden) { grid.style.display = "none"; document.getElementById("starttable").remove(); }  // Lage auf einen Blick ersetzt Kacheln und Kennzahlentabelle
+  else if (LY.start_table && startTable(document.getElementById("starttable"))) grid.style.display = "none";
   else DATA.questions.forEach(q => {
     const a = q.answer, val = (a.signed && a.value > 0 ? "+" : "") + fmt(a.value, a.decimals ?? 1);
     grid.insertAdjacentHTML("beforeend", `<a class="q" href="#${q.topic}"><span class="ask">${esc(q.ask)}</span>
@@ -1948,11 +2115,11 @@ function build() {
   let no = 0, curPart = null;
   const NAV = [];  // Kapitel für das Menü: Teil, Gruppe, Nummer
   const PARTS = { konjunktur: { no: "Teil I", title: "Konjunktur", text: "Wie läuft die Wirtschaft gerade? Monats- und Quartalszahlen zu Produktion, Preisen, Arbeit, Nachfrage und Stimmung." },
-    analysen: { no: "Teil III", title: "Analysen", text: "Eigene Auswertungen: Rezessionsrisiko, Treffsicherheit von Prognosen und ersten Zahlen, Breite der Entwicklung und Wettbewerb. Dieser Teil wächst." },
-    geopolitik: { no: "Teil V", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht, Hilfe für die Ukraine und Handelskonflikte. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
-    struktur: { no: "Teil VI", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen und Zuwanderung." },
-    staat: { no: "Teil II", title: "Staat", text: "Geldpolitik, Zinsen, Kredite und Staatsfinanzen: was Geld kostet, wie viel der Staat ausgibt und wie hoch er verschuldet ist." },
-    prognosen: { no: "Teil IV", title: "Prognosen und Gutachten", text: "Was Fachgremien vorhersagen und empfehlen, und wie gut sie lagen: Sachverständigenrat und Gemeinschaftsdiagnose, später auch IWF, EU-Kommission und OECD." },
+    analysen: { no: "Teil V", title: "Analysen", text: "Eigene Auswertungen: Rezessionsrisiko und wie breit und wie ungewöhnlich die Entwicklung ist. Dieser Teil wächst." },
+    geopolitik: { no: "Teil IV", title: "Geopolitik", text: "Sicherheitslage Deutschlands: russische Sabotage in Europa, geopolitisches Risiko, Militärausgaben, Machtgewicht, Hilfe für die Ukraine und Handelskonflikte. Bis auf den Risikoindex erscheinen die Daten selten und werden von Hand übernommen." },
+    struktur: { no: "Teil III", title: "Struktur", text: "Was bestimmt das Wachstum auf längere Sicht? Jahreszahlen zu Potenzial, Produktivität, Investitionen, Zuwanderung und Vermögen." },
+    staat: { no: "Teil II", title: "Geld und Staat", text: "Geldpolitik, Zinsen, Kredite und Staatsfinanzen: was Geld kostet, wie viel der Staat ausgibt und wie hoch er verschuldet ist." },
+    prognosen: { no: "Teil VI", title: "Expertisen", text: "Was Fachgremien vorhersagen und empfehlen, und wie gut sie lagen: Prognosen im Vergleich, Sachverständigenrat, Gemeinschaftsdiagnose und die Treffsicherheit erster Zahlen, später auch IWF, EU-Kommission und OECD." },
     service: { no: "", title: "Termine", text: "" } };
   const railObs = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
     const sec = e.target.closest("section.topic"); if (!e.isIntersecting || !sec) return; const r = sec.querySelector(".rail");
@@ -2027,9 +2194,9 @@ function build() {
   // Menü: ein Knopf „Inhalt“ öffnet eine Tafel mit allen Abschnitten und ihrer Frage
   nav.innerHTML = `<button type="button" class="btn navbtn" aria-expanded="false" aria-controls="navpanel">${NAVTXT.contents}</button>`;
   const panel = document.createElement("div"); panel.className = "navpanel"; panel.id = "navpanel"; panel.hidden = true;
-  // Teile II bis V ohne Untergruppen: je eine Spalte nebeneinander, der Teil steht über dem Balken
+  // Teile II bis VI ohne Untergruppen: je eine Spalte nebeneinander, der Teil steht über dem Balken
   const navCol = k => { const xs = NAV.filter(x => x.part === k), P = PARTS[k] || {}; return xs.length ? `<div class="nvg"><p class="nvgh nvph">${P.no ? `<span>${esc(P.no)}</span> ` : ""}${esc(P.title || k)}</p>${xs.map(navA).join("")}</div>` : ""; };
-  panel.innerHTML = `<div class="nvin">${navPart("konjunktur")}<div class="nvpart"><div class="nvgroups">${navCol("staat")}${navCol("analysen")}${navCol("prognosen")}${navCol("geopolitik")}${navCol("struktur")}</div></div>${navFoot}</div>`;
+  panel.innerHTML = `<div class="nvin">${navPart("konjunktur")}<div class="nvpart"><div class="nvgroups">${navCol("staat")}${navCol("struktur")}${navCol("geopolitik")}${navCol("analysen")}${navCol("prognosen")}</div></div>${navFoot}</div>`;
   const header = document.querySelector("header"); header.appendChild(panel);
   const nb = nav.querySelector(".navbtn");
   const closeAll = () => { const was = !panel.hidden; panel.hidden = true; nb.setAttribute("aria-expanded", "false"); document.body.classList.remove("menuopen"); return was; };
@@ -2118,6 +2285,7 @@ function build() {
       const url = location.href.split("#")[0] + "#sammlung=" + found.map(cd => encodeURIComponent(cd.dataset.chart)).join(",");
       const lb = btn(COLTXT.link, () => (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => { lb.textContent = COLTXT.copied; }, () => prompt(COLTXT.link, url)));
       btn(COLTXT.print, () => print());
+      const wb = btn(WORDTXT.btn, () => { wb.disabled = true; wb.textContent = WORDTXT.busy; kmOnepager(found.map(cd => cd.dataset.chart)).catch(() => {}).then(() => { wb.disabled = false; wb.textContent = WORDTXT.btn; }); });
     }
     btn(COLTXT.back, () => { location.hash = "#top"; });
     found.forEach(cd => { const ph = document.createComment(""); cd.before(ph); homes.set(cd, ph); wrapC.appendChild(cd); });
@@ -2144,6 +2312,117 @@ function build() {
     e.preventDefault(); if (location.hash) history.pushState(null, "", location.pathname + location.search); route(); scrollTo({ top: 0, behavior: "smooth" }); });
   if (DATA.embed) { const c0 = DATA.topics[0].charts[0]; topics.insertAdjacentHTML("afterend", `<p class="embedsrc">${EMB.src} · <a href="${esc(DATA.site.url)}#${FA(c0.no)}" target="_blank" rel="noopener">${EMB.full}</a></p>`); }
 }
+// Onepager (Word): baut aus gemerkten Abbildungen im Browser eine DOCX-Datei (A4, eine Spalte, Text links, Grafik rechts).
+// Ohne Fremdbibliothek: eine DOCX-Datei ist ein unkomprimiertes ZIP aus XML und PNG. Je Abbildung: Leitfrage, Sachstand
+// (erster automatischer Satz, Zahlen fett), Bewertung (Platzhalter zum Ausfüllen), Grafik, Einheit und Quelle.
+// Einfache Liniengrafiken zeichnet die Seite für den Druck neu (ohne Rahmen und Legende, jüngster Wert an der Linie);
+// alle anderen nehmen das Vorschaubild oder die lebendige Grafik. Aufruf von überall: kmOnepager(["retail", …]).
+const WORDTXT = { btn: "Als Onepager (Word)", busy: "Word-Datei entsteht …", sub: n => n === 1 ? "Eine gemerkte Abbildung" : `${n} gemerkte Abbildungen`, stand: "Stand", facts: "Sachstand", view: "Bewertung", add: "[ergänzen]", src: "Quelle", pct: "Prozent", own: "eigene Berechnung", lic: "Texte und eigene Abbildungen: CC BY 4.0. Daten: Lizenzen der Quellen.", foot: "Sachstand: automatisch aus den jüngsten Daten. Bewertung: Einschätzung der Verfasserin oder des Verfassers.", file: "Lesezeichen", loc: "de-DE" };
+const kmZip = files => {  // [[Name, Uint8Array], …] zu einem ZIP ohne Kompression
+  const T = Uint32Array.from({ length: 256 }, (_, n) => { for (let k = 0; k < 8; k++) n = n & 1 ? 0xEDB88320 ^ (n >>> 1) : n >>> 1; return n >>> 0; });
+  const crc = b => { let c = ~0; for (let i = 0; i < b.length; i++) c = T[(c ^ b[i]) & 255] ^ (c >>> 8); return ~c >>> 0; };
+  const enc = new TextEncoder(), parts = [], dir = []; let off = 0;
+  const rec = (sig, fields) => { const b = new Uint8Array(4 + fields.reduce((a, f) => a + f[0], 0)), v = new DataView(b.buffer); v.setUint32(0, sig, true); let p = 4;
+    fields.forEach(([n, x]) => { n === 2 ? v.setUint16(p, x, true) : v.setUint32(p, x, true); p += n; }); return b; };
+  files.forEach(([name, data]) => { const nm = enc.encode(name), c = crc(data), common = [[2, 20], [2, 0x0800], [2, 0], [2, 0], [2, 0x21], [4, c], [4, data.length], [4, data.length], [2, nm.length], [2, 0]];
+    parts.push(rec(0x04034b50, common), nm, data);
+    dir.push(rec(0x02014b50, [[2, 20], ...common, [2, 0], [2, 0], [2, 0], [4, 0], [4, off]]), nm); off += 30 + nm.length + data.length; });
+  const dlen = dir.reduce((a, b) => a + b.length, 0);
+  return new Blob([...parts, ...dir, rec(0x06054b50, [[2, 0], [2, 0], [2, files.length], [2, files.length], [4, dlen], [4, off], [2, 0]])],
+    { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+};
+const KM_SPECIAL = ["variant", "alt", "toggle", "multiples", "transform", "norm", "fx", "scale", "diff", "groups", "proj", "pick", "bilanz", "threshold", "own_scale", "combine", "of", "mad_band", "pot_band", "daily", "each_last", "series_ref", "styles", "bar_colors"];
+const kmSimple = c => c.type === "line" && (c.series || []).length >= 1 && c.series.length <= 3 && c.series.every(s => s.style === "line" && s.x && s.y)
+  && new Set(c.series.map(s => s.unit)).size === 1 && !KM_SPECIAL.some(k => c[k]);
+function kmChart(c) {  // 7,7 × 2,3 cm bei 300 dpi
+  const W = 924, H = 276, cv = Object.assign(document.createElement("canvas"), { width: W, height: H }), g = cv.getContext("2d");
+  const FONT = '"Arial Narrow", "Liberation Sans Narrow", Arial, sans-serif', NAVY = "#002060";
+  const S = c.series.map(s => { const y = s.y; return { label: s.label, pts: s.x.map((x, i) => [Date.parse(x), y[i]])  // ungeglättet: der Wert an der Linie ist der Wert im Sachstand
+   .filter(p => p[1] != null && isFinite(p[1])) }; }).filter(s => s.pts.length > 1);
+  if (!S.length) return null;
+  const all = S.flatMap(s => s.pts), x0 = Math.min(...all.map(p => p[0])), x1 = Math.max(...all.map(p => p[0]));
+  let lo = Math.min(...all.map(p => p[1])), hi = Math.max(...all.map(p => p[1])); if (hi === lo) { hi += 1; lo -= 1; }
+  const raw = (hi - lo) / 4.5, mag = Math.pow(10, Math.floor(Math.log10(raw))), step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(m => m >= raw), pad = (hi - lo) * 0.06; lo -= pad; hi += pad;
+  const L = 62, R = W - 196, T = 16, B = H - 46, X = t => L + (t - x0) / (x1 - x0) * (R - L), Y = v => B - (v - lo) / (hi - lo) * (B - T);
+  const td = step < 0.1 ? 2 : step < 1 || step % 1 ? 1 : 0, num = (v, d) => v.toLocaleString(WORDTXT.loc, { minimumFractionDigits: d, maximumFractionDigits: d });
+  g.fillStyle = "#fff"; g.fillRect(0, 0, W, H); g.textBaseline = "middle"; g.lineJoin = g.lineCap = "round";
+  g.font = `30px ${FONT}`; g.textAlign = "right";
+  for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) { g.strokeStyle = "#D9D9D9"; g.lineWidth = 1.5; g.beginPath(); g.moveTo(L, Y(v)); g.lineTo(R, Y(v)); g.stroke();
+    g.fillStyle = "#595959"; g.fillText(num(Math.abs(v) < 1e-9 ? 0 : v, td), L - 10, Y(v)); }
+  if (lo < 0 && hi > 0) { g.strokeStyle = "#FF0000"; g.lineWidth = 2.5; g.beginPath(); g.moveTo(L, Y(0)); g.lineTo(R, Y(0)); g.stroke(); }  // Nulllinie rot
+  g.strokeStyle = "#7F7F7F"; g.lineWidth = 2; g.beginPath(); g.moveTo(L, B); g.lineTo(R, B); g.stroke();
+  const ya = new Date(x0).getUTCFullYear(), yb = new Date(x1).getUTCFullYear(), every = Math.max(1, Math.ceil((yb - ya + 1) / 5)); g.textAlign = "center"; g.fillStyle = "#595959";
+  for (let y = Math.ceil(ya / every) * every; y <= yb; y += every) { const t = Date.UTC(y, 0, 1); if (t >= x0 - 864e5 * 45 && X(t) <= R - 20) g.fillText(String(y), Math.max(X(t), L + 28), B + 24); }
+  [...S].reverse().forEach((s, j) => { const main = j === S.length - 1; g.strokeStyle = main ? NAVY : "#A6A6A6"; g.lineWidth = main ? 5 : 3; g.beginPath();
+    s.pts.forEach((p, i) => i ? g.lineTo(X(p[0]), Y(p[1])) : g.moveTo(X(p[0]), Y(p[1]))); g.stroke(); });
+  // Beschriftung am Linienende statt Legende; die Hauptreihe trägt ihren jüngsten Wert
+  const wrap = (t, max) => { const out = [""]; t.split(" ").forEach(w => { const cur = out[out.length - 1], nx = cur ? cur + " " + w : w; if (g.measureText(nx).width <= max || !cur) out[out.length - 1] = nx; else out.push(w); }); return out.slice(0, 2); };
+  const labs = S.map((s, i) => { const e = s.pts[s.pts.length - 1]; g.font = `26px ${FONT}`;
+    return { i, x: X(e[0]), y: Y(e[1]), val: num(e[1], c.decimals ?? 1), lines: i === 0 && S.length === 1 ? [] : wrap(s.label, W - R - 22) }; });
+  labs.forEach(l => { l.h = (l.i === 0 ? 36 : 0) + l.lines.length * 27 + 6; l.ty = l.y; });
+  labs.sort((a, b) => a.y - b.y); labs.forEach((l, k) => { if (k) { const p = labs[k - 1], min = p.ty + p.h / 2 + l.h / 2; if (l.ty < min) l.ty = min; } });
+  const over = labs.length ? labs[labs.length - 1].ty + labs[labs.length - 1].h / 2 - (H - 4) : 0; if (over > 0) labs.forEach(l => l.ty -= over);
+  g.textAlign = "left"; labs.forEach(l => { let y = l.ty - l.h / 2 + 3;
+    if (l.i === 0) { g.fillStyle = NAVY; g.beginPath(); g.arc(l.x, l.y, 7, 0, 7); g.fill(); g.font = `bold 35px ${FONT}`; g.fillText(l.val, R + 14, y + 18); y += 36; }
+    g.font = `26px ${FONT}`; g.fillStyle = l.i === 0 ? NAVY : "#7F7F7F"; l.lines.forEach(t => { g.fillText(t, R + 14, y + 13); y += 27; }); });
+  return cv;
+}
+async function kmPicture(c) {  // PNG-Bytes samt Seitenverhältnis; null, wenn kein Bild zu haben ist
+  const png = async cv => ({ data: new Uint8Array(await (await new Promise(r => cv.toBlob(r, "image/png"))).arrayBuffer()), ratio: cv.height / cv.width });
+  try { const cv = kmSimple(c) && kmChart(c); if (cv) return await png(cv); } catch (e) {}
+  try { if (PREVS && PREVS[c.anchor]) {  // Vorschaubild der Seite (WebP) zu PNG umrechnen; Word liest WebP nicht zuverlässig
+    const im = new Image(); im.src = `prev/${c.anchor}-d.webp`; await im.decode();
+    const cv = Object.assign(document.createElement("canvas"), { width: im.naturalWidth, height: im.naturalHeight }), g = cv.getContext("2d");
+    g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height); g.drawImage(im, 0, 0); return await png(cv); } } catch (e) {}
+  try { const p = document.getElementById(c.anchor)?.querySelector(".js-plotly-plot");
+    if (p && window.Plotly) { const u = await Plotly.toImage(p, { format: "png", width: 770, height: 320, scale: 2 });
+      return { data: Uint8Array.from(atob(u.split(",")[1]), ch => ch.charCodeAt(0)), ratio: 320 / 770 }; } } catch (e) {}  // ohne fetch: die Sicherheitsrichtlinie der Seite lässt data:-Abrufe nicht zu
+  return null;
+}
+async function kmOnepager(ids) {
+  const items = []; DATA.topics.forEach(t => (t.charts || []).forEach(c => { if (c.chart && ids.includes(c.chart)) items.push({ t, c }); }));  // Reihenfolge der Seite, jede Abbildung einmal
+  if (!items.length) return null;
+  const NAVY = "002060", GREY = "595959", CW = [5216, 283, 4366], TW = CW[0] + CW[1] + CW[2], TX = WORDTXT;
+  const r = (t, o = {}) => `<w:r><w:rPr>${o.b ? "<w:b/>" : ""}${o.i ? "<w:i/>" : ""}${o.col ? `<w:color w:val="${o.col}"/>` : ""}<w:sz w:val="${Math.round((o.sz || 10) * 2)}"/></w:rPr>${o.tab ? "<w:tab/>" : ""}<w:t xml:space="preserve">${esc(t)}</w:t></w:r>`;
+  const p = (inner, o = {}) => `<w:p><w:pPr>${o.keep ? "<w:keepNext/>" : ""}${o.rule ? `<w:pBdr><w:${o.rule[0]} w:val="single" w:sz="${o.rule[2]}" w:space="2" w:color="${o.rule[1]}"/></w:pBdr>` : ""}${o.bar ? '<w:shd w:val="clear" w:color="auto" w:fill="E6E6E6"/>' : ""}${o.tab ? `<w:tabs><w:tab w:val="right" w:pos="${TW}"/></w:tabs>` : ""}<w:spacing w:before="${(o.before || 0) * 20}" w:after="${(o.after || 0) * 20}"/>${o.bar ? '<w:ind w:left="57"/>' : ""}</w:pPr>${inner}</w:p>`;
+  const NUM = /((?:[+\-−]|[€$£])?\d(?:[\d.,]*\d)?(?:[   ]?(?:%|Prozentpunkte|percentage points|Mrd\.|bn|Millionen|million|Tausend|thousand))?)/;
+  const facts = (t, sz) => t.split(NUM).map((s, i) => s ? r(s, { sz, b: i % 2 === 1 && !/^(\d{1,2}|\d{4}|\d{1,2}\.\d{1,2}\.\d{4})$/.test(s) }) : "").join("");  // Zahlen fett, Datumsteile nicht
+  const tc = (w, inner, span) => `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${span ? `<w:gridSpan w:val="${span}"/>` : ""}</w:tcPr>${inner}</w:tc>`;
+  const tr = cells => `<w:tr><w:trPr><w:cantSplit/></w:trPr>${cells}</w:tr>`;
+  const media = [], pic = (im, alt) => { const id = media.push(im.data), cy = Math.round(Math.min(7.7 * im.ratio, 3.3) * 360000), cx = Math.round(cy / im.ratio);  // höchstens 3,3 cm hoch
+    return `<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${id}" name="Abbildung ${id}" descr="${esc(alt)}"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="${id}" name="image${id}.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rId${id + 1}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`; };
+  const stand = new Date(DATA.generated_at).toLocaleDateString(TX.loc, { day: "numeric", month: "long", year: "numeric" });
+  let rows = "", last = null;
+  for (const { t, c } of items) {
+    if (t !== last) { rows += tr(tc(TW, p(r(t.title, { sz: 11, b: true }), { bar: 1, keep: 1, before: 3, after: 2 }), 3)); last = t; }  // Ebene 1: hellgrauer Balken, schwarz, fett
+    const im = await kmPicture(c), unit = curU(c.unit || "").replace(/^%$/, TX.pct), own = /\s*\((eigene Berechnung|own calculations?)\)$/, base = [...new Set((c.sources || []).map(x => x.replace(own, "")))],
+      srcs = base.join("; ") + ((c.sources || []).some(x => own.test(x)) ? "; " + TX.own : "");  // jede Quelle einmal, eigene Berechnung einmal am Ende
+    const left = p(r(c.ask || c.title || "", { sz: 11, b: true, col: NAVY }), { before: 3, after: 2 })
+      + ((c.texts || []).length ? p(r(TX.facts + "  ", { sz: 8.5, b: true }) + facts(c.texts[0], 9.5), { after: 2 }) : "")
+      + p(r(TX.view + "  ", { sz: 8.5, b: true, col: NAVY }) + r(TX.add, { sz: 9.5, i: true, col: GREY }), { after: 2 });
+    const cap = [unit ? unit.charAt(0).toUpperCase() + unit.slice(1).replace(/\.$/, "") + "." : "", srcs ? `${TX.src}: ${srcs}.` : ""].filter(Boolean).join(" ");
+    rows += tr(tc(CW[0], left) + tc(CW[1], p("")) + tc(CW[2], (im ? p(pic(im, c.title || ""), { before: 2 }) : "") + p(r(cap, { sz: 7.5, col: GREY }), { before: im ? 0 : 4, after: 2 })));
+  }
+  const NS = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"';
+  const XML = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+  const doc = `${XML}<w:document ${NS}><w:body>`
+    + p(r(DATA.site.title, { sz: 20, b: true, col: NAVY }) + r(`${TX.stand}: ${stand}`, { sz: 10, col: GREY, tab: 1 }), { tab: 1 })
+    + p(r(TX.sub(items.length), { sz: 11, col: GREY }), { rule: ["bottom", NAVY, 8], after: 2 })
+    + `<w:tbl><w:tblPr><w:tblW w:w="${TW}" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${CW.map(w => `<w:gridCol w:w="${w}"/>`).join("")}</w:tblGrid>${rows}</w:tbl>`
+    + p(r(`${TX.foot} ${DATA.site.url}. ${TX.lic}`, { sz: 8, col: GREY }), { rule: ["top", "7F7F7F", 4], before: 6 })
+    + `<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="850" w:right="1020" w:bottom="850" w:left="1021" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  const lang = TX.loc === "de-DE" ? "de-DE" : "en-GB", REL = "http://schemas.openxmlformats.org/officeDocument/2006/relationships", enc = s => new TextEncoder().encode(s);
+  const files = [
+    ["[Content_Types].xml", enc(`${XML}<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>`)],
+    ["_rels/.rels", enc(`${XML}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="${REL}/officeDocument" Target="word/document.xml"/></Relationships>`)],
+    ["word/document.xml", enc(doc)],
+    ["word/styles.xml", enc(`${XML}<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial Narrow" w:hAnsi="Arial Narrow" w:eastAsia="Arial Narrow" w:cs="Arial Narrow"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="${lang}"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="259" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style></w:styles>`)],
+    ["word/_rels/document.xml.rels", enc(`${XML}<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="${REL}/styles" Target="styles.xml"/>${media.map((_, i) => `<Relationship Id="rId${i + 2}" Type="${REL}/image" Target="media/image${i + 1}.png"/>`).join("")}</Relationships>`)],
+    ...media.map((m, i) => [`word/media/image${i + 1}.png`, m])];
+  const blob = kmZip(files), a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `${DATA.site.title} (${DATA.stand}) ${TX.file}.docx`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 60000); return blob;
+}
+window.kmOnepager = kmOnepager;
 build();
 
 
@@ -2174,6 +2453,98 @@ const tour = (function () {
   return start;
 })();
 document.querySelectorAll("#navpanel .nvfoot").forEach(ft => { const a = document.createElement("a"); a.href = "#top"; a.textContent = TOURTXT.name; a.onclick = e => { e.preventDefault(); scrollTo(0, 0); setTimeout(tour, 150); }; ft.prepend(a); });
+// Lage auf einen Blick: Raten im Steigungsbild, Verläufe seit 2019, Lage-Satz und Warnlampen (nur mit Kommentar), Ausblick, Gremien, Neues, Termine
+function lageView() {
+  const box = document.getElementById("lage"), L = (DATA.lage || {})[DATA.lang === "en" ? "en" : "de"];
+  if (!box || !L || !(L.slope || []).length || DATA.embed) return;
+  const SV = "http://www.w3.org/2000/svg", NS = DATA.lang === "en" ? "en-GB" : "de-DE";
+  const fmt = (v, d, cur) => (v < 0 ? "−" : "") + (cur || "") + Math.abs(v).toLocaleString(NS, { minimumFractionDigits: d, maximumFractionDigits: d });
+  const spread = (ys, gap) => { const o = ys.map((y, i) => i).sort((i, j) => ys[i] - ys[j]), q = ys.slice();
+    for (let k = 1; k < o.length; k++) if (q[o[k]] - q[o[k - 1]] < gap) q[o[k]] = q[o[k - 1]] + gap; return q; };
+  // Links: Raten im Steigungsbild, drei Zeitpunkte mit senkrechten Achsen; Wachstum dunkelblau, übrige in Hausfarben nach heutigem Wert
+  const slopeSVG = items => { if (!items.length) return "";
+    const nar = innerWidth < 700, top = 58, x = nar ? [52, 114, 168] : [70, 178, 286], xn = x[2] + 92, xl = xn + 7, W = xn + (nar ? 260 : 290);
+    const H = nar ? 460 : 490, HP = H;
+    const all = items.flatMap(i => i.v); let lo = Math.min(...all, 0), hi = Math.max(...all); const pd = (hi - lo) * 0.04; lo -= pd; hi += pd;
+    const Y = v => top + (hi - v) / (hi - lo) * (HP - top - 10);
+    const PAL = ["#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#47D359", "#404040", "#7F7F7F", "#A6A6A6", "#BF8F00", "#843C0C"], col = {};
+    let k = 0; items.slice().sort((a, b) => b.v[2] - a.v[2]).forEach(i => { col[i.key] = i.key === "gdp" ? "#002060" : PAL[k++ % PAL.length]; });
+    let g = x.map(xx => `<line x1="${xx}" x2="${xx}" y1="${top - 6}" y2="${HP - 4}" stroke="#D9D9D9" stroke-width=".8"/>`).join("")
+      + `<line x1="${x[0]}" x2="${x[2]}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}" stroke="#E3E3E3" stroke-dasharray="2 2"/>`;
+    LAGETXT.when.forEach((t, j) => { g += `<text x="${x[j]}" y="${top - 16}" text-anchor="middle" class="sh">${t.map((l, m) => `<tspan x="${x[j]}" dy="${m ? 13 : -13 * (t.length - 1)}">${esc(l)}</tspan>`).join("")}</text>`; });
+    items.forEach(i => { const c = col[i.key], [a, b, d] = i.v.map(Y);
+      g += `<a href="#${esc(i.topic)}"><line x1="${x[0]}" y1="${a.toFixed(1)}" x2="${x[1]}" y2="${b.toFixed(1)}" stroke="${c}" stroke-width="1.1" opacity=".45"/>`
+        + `<line x1="${x[1]}" y1="${b.toFixed(1)}" x2="${x[2]}" y2="${d.toFixed(1)}" stroke="${c}" stroke-width="2.4"/>`
+        + `<circle cx="${x[0]}" cy="${a.toFixed(1)}" r="2.2" fill="${c}" opacity=".5"/><circle cx="${x[1]}" cy="${b.toFixed(1)}" r="2.6" fill="${c}" opacity=".8"/><circle cx="${x[2]}" cy="${d.toFixed(1)}" r="3.2" fill="${c}"/></a>`; });
+    // frühere Werte klein und blass links neben den Punkten
+    [0, 1].forEach(j => { spread(items.map(i => Y(i.v[j])), 10.5).forEach((y, m) => { const i = items[m];
+      g += `<text x="${x[j] - 5}" y="${(y + 3.5).toFixed(1)}" text-anchor="end" class="sq" fill="${col[i.key]}">${esc(i.txts ? i.txts[j] : "")}</text>`; }); });
+    const lab = (q, y, names) => `<text x="${xn}" y="${(y + 5).toFixed(1)}" text-anchor="end" class="sv">${esc(q)}</text>`
+      + (names ? `<text x="${xl}" y="${(y + 5).toFixed(1)}" class="sn">${names}</text>` : "");
+    const nm = (i, sep) => `<a href="#${esc(i.topic)}"><tspan fill="${col[i.key]}">${esc(i.label)}${sep || ""}</tspan></a>`;
+    const lead = (i, y) => `<line x1="${x[2] + 5}" y1="${Y(i.v[2]).toFixed(1)}" x2="${xn - 34}" y2="${y.toFixed(1)}" stroke="${col[i.key]}" stroke-width=".7" opacity=".6"/>`;
+    // Rangliste: Etiketten in festem Abstand nach heutigem Wert, dünne Linie zum Punkt
+    const o = items.slice().sort((a, b) => b.v[2] - a.v[2]), step = (HP - top - 10) / Math.max(1, o.length - 1);
+    o.forEach((i, m) => { const y = top + m * step; g += lead(i, y) + lab(i.txt, y, nm(i)); });
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(LAGETXT.rates)}">${g}</svg>`; };
+  // Rechts: Verläufe seit 2019; Hoch rot, Tief blau, letzter Wert in Linienfarbe.
+  // Ansicht „Spanne“ (Standard): hellblau, wo der Wert höher oder tiefer liegt als je 2015–19. Ansicht „Durchschnitt“: Abstand zum Mittel 2015–19.
+  const LC = ["#002060", "#0070C0"], RED = "#D64541", TB = "#0070C0", MC = "#5B8DB8", SH = "#DCEEF8";
+  let mode = "band"; try { mode = localStorage.getItem("km_lagev") === "mean" ? "mean" : "band"; } catch (e) {}
+  const t0 = Date.UTC(2019, 0, 1), t1 = Date.UTC(2026, 11, 31), ms = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, 15);
+  const panelSVG = p => { const W = 220, H = 150, x0 = 4, x1 = 150, y0 = 18, y1 = H - 22, mean = mode === "mean";
+    const vals = p.lines.flatMap(l => l.y.concat(mean ? (l.mean != null ? [l.mean] : []) : [l.lo, l.hi].filter(v => v != null)));
+    let lo = Math.min(...vals), hi = Math.max(...vals); const pd = (hi - lo) * 0.04 || 1; lo -= pd; hi += pd;
+    const now = Date.UTC(new Date(DATA.generated_at).getUTCFullYear(), 11, 31), tE = Math.max(t1, now);
+    const X = t => x0 + (t - t0) / (tE - t0) * (x1 - x0), Y = v => y1 - (v - lo) / (hi - lo) * (y1 - y0), f = v => fmt(v, p.d, p.cur);
+    let g = "", lab = [];
+    if (!mean) {  // Bereiche außerhalb der Spannen 2015–19 aller Linien
+      const iv = p.lines.filter(l => l.lo != null).map(l => [l.lo, l.hi]).sort((a, b) => a[0] - b[0]); let cur = lo;
+      iv.concat([[hi, hi]]).forEach(([a, b]) => { if (a > cur) g += `<rect x="${x0}" width="${x1 - x0}" y="${Y(a).toFixed(1)}" height="${(Y(cur) - Y(a)).toFixed(1)}" fill="${SH}"/>`; cur = Math.max(cur, b); });
+    }
+    [2019, 2022, 2025].forEach(yr => { g += `<text x="${X(Date.UTC(yr, 6, 1)).toFixed(1)}" y="${H - 4}" text-anchor="middle" class="sx">${yr}</text>`; });
+    p.lines.forEach(l => { const c = LC[l.col || 0], pts = l.x.map((d, i) => [X(ms(d)), Y(l.y[i])]), P = pts.map(q => q[0].toFixed(1) + "," + q[1].toFixed(1)).join(" ");
+      if (mean && l.mean != null) { const m = Y(l.mean).toFixed(1);
+        g += `<polygon points="${P} ${pts[pts.length - 1][0].toFixed(1)},${m} ${pts[0][0].toFixed(1)},${m}" fill="${SH}"/>`
+          + `<line x1="${x0}" x2="${x1}" y1="${m}" y2="${m}" stroke="${MC}" stroke-width=".9" stroke-dasharray="3 2"/>`;
+        lab.push({ y: Y(l.mean), t: "Ø " + f(l.mean), c: MC, b: 0 }); }
+      g += `<polyline points="${P}" fill="none" stroke="${c}" stroke-width="1.4" stroke-linejoin="round"/>`;
+      const n = l.y.length, iMax = l.y.indexOf(Math.max(...l.y)), iMin = l.y.indexOf(Math.min(...l.y));
+      [[iMax, RED, -5], [iMin, TB, 12]].forEach(([i, cc, dy]) => { if (i >= n - 3) return; const [px, py] = pts[i];
+        g += `<line x1="${(px - 6).toFixed(1)}" x2="${(px + 6).toFixed(1)}" y1="${py.toFixed(1)}" y2="${py.toFixed(1)}" stroke="${cc}" stroke-width="1.1"/>`
+          + `<text x="${px.toFixed(1)}" y="${(py + dy).toFixed(1)}" text-anchor="middle" class="sp" fill="${cc}">${f(l.y[i])}</text>`; });
+      const [ex, ey] = pts[n - 1];
+      g += `<line x1="${(ex - 6).toFixed(1)}" x2="${(ex + 6).toFixed(1)}" y1="${ey.toFixed(1)}" y2="${ey.toFixed(1)}" stroke="${c}" stroke-width="1.8"/>`;
+      lab.push({ y: ey, t: f(l.y[n - 1]), c, b: 1 }); });
+    spread(lab.map(q => q.y), 12).forEach((y, j) => { const q = lab[j]; g += `<text x="${x1 + 9}" y="${(y + 4).toFixed(1)}" class="${q.b ? "se" : "sm"}" fill="${q.c}">${esc(q.t)}</text>`; });
+    if (p.lines.length > 1) p.lines.forEach((l, j) => { const c = LC[l.col || 0], yy = Math.min(...l.y.map(Y)) - (j === 0 ? 6 : 14);
+      g += `<text x="${x0 + 2}" y="${Math.max(10, Math.min(H - 24, yy)).toFixed(1)}" class="sl" fill="${c}">${esc(l.name)}</text>`; });
+    return `<a class="lp" href="#${esc(p.topic)}"><b>${esc(p.title)}</b><span>${esc(p.unit)}</span><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(p.title)}">${g}</svg></a>`; };
+  const keyHTML = () => `<div class="lkey">` + [["p", LAGETXT.k[0]], ["t", LAGETXT.k[1]], ["c", LAGETXT.k[2]]].concat(mode === "mean" ? [["m", LAGETXT.k[3]], ["f", LAGETXT.k[4]]] : [["f", LAGETXT.k[5]]]).map(([t, l]) =>
+    `<span><svg viewBox="0 0 18 10" width="18" height="10" aria-hidden="true">${t === "f" ? `<rect x="2" y="1" width="14" height="8" fill="${SH}"/>` : `<line x1="1" x2="17" y1="5" y2="5" stroke="${{ p: RED, t: TB, c: "#002060", m: MC }[t]}" stroke-width="${t === "c" ? 1.8 : 1.1}"${t === "m" ? ' stroke-dasharray="3 2"' : ""}/>`}</svg>${esc(l)}</span>`).join("")
+    + `<button type="button" class="lmode" aria-pressed="${mode === "mean"}" title="${LAGETXT.meant}">${LAGETXT.meanbtn}</button></div>`;
+  const kp = `<div class="lg2"><div class="lsl"><h3>${LAGETXT.rates}</h3>${slopeSVG(L.slope || [])}</div>`
+    + `<div class="lsm"><h3>${LAGETXT.since}</h3><div class="lkw">${keyHTML()}</div><div class="lpg">${(L.panels || []).map(panelSVG).join("")}</div></div></div>`;
+  const warn = (L.warn || []).map(w => `<li><span class="amp ${w.lvl}"></span><a href="#${esc(w.topic)}"><b>${esc(w.label)}:</b></a> ${esc(w.text)}</li>`).join("");
+  const cal = (DATA.topics || []).flatMap(t => t.charts || []).find(c => c.type === "calendar"), today = new Date().toISOString().slice(0, 10);
+  const term = ((cal && cal.calendar && cal.calendar.events) || []).filter(e => e.date >= today).slice(0, 3)
+    .map(e => { const d = new Date(e.date + "T12:00:00"); return `<li>${LAGETXT.wd[d.getDay()]} ${d.getDate()}.${d.getMonth() + 1}. <a href="#${esc(e.topic)}">${esc(e.name)}</a></li>`; }).join("");
+  const st = new Date(DATA.generated_at);
+  const sd = st.toLocaleDateString(DATA.lang === "en" ? "en-GB" : "de-DE", { day: "numeric", month: "long", year: "numeric" });
+  box.innerHTML = `<div class="lh"><span>${LAGETXT.title} · ${LAGETXT.stand} ${sd}</span>`
+    + `<button type="button" class="lk" aria-pressed="false" title="${LAGETXT.kommt}">${LAGETXT.komm}</button></div>`
+    + (L.say ? `<p class="say kom">${esc(L.say)}</p>` : "") + `<p class="say nokom">${LAGETXT.am} ${sd}</p>`
+    + kp + `<div class="cols">`
+    + (warn ? `<div class="kom"><h3>${LAGETXT.warn}</h3><ul>${warn}</ul></div>` : "")
+    + `<div>${term ? `<h3>${LAGETXT.term}</h3><ul>${term}</ul>` : ""}</div></div>`;
+  box.hidden = false;
+  const kb = box.querySelector(".lk"), setK = on => { document.body.classList.toggle("lagek", on); kb.setAttribute("aria-pressed", String(on)); try { localStorage.setItem("km_lagek", on ? "1" : "0"); } catch (e) {} };
+  let k0 = false; try { k0 = localStorage.getItem("km_lagek") === "1"; } catch (e) {}
+  setK(k0); kb.onclick = () => setK(!document.body.classList.contains("lagek"));
+  const wire = () => { const mb = box.querySelector(".lmode"); if (mb) mb.onclick = () => { mode = mode === "mean" ? "band" : "mean"; try { localStorage.setItem("km_lagev", mode); } catch (e) {}
+    box.querySelector(".lkw").innerHTML = keyHTML(); box.querySelector(".lpg").innerHTML = (L.panels || []).map(panelSVG).join(""); wire(); }; };
+  wire();
+}
 // Rückmeldung: Knopf unten links öffnet ein Fenster mit einem Textfeld; Versand über den Formulardienst (site.feedback)
 (function feedback() {
   const id = (DATA.site || {}).feedback; if (!id || DATA.embed) return;

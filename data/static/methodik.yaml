@@ -162,10 +162,13 @@ charts:
       - "Der Vergleich zeigt, wo die Stimmung besser oder schlechter als üblich ist, nicht, wo sie absolut besser ist."
       - "Umfragen messen Einschätzungen, keine Produktion; sie laufen der Produktion oft voraus, aber nicht immer."
   proj_gap:
-    methode: "Die Projektion der Bundesregierung nennt eine Jahresrate des realen BIP, unbereinigt. Diese Rate ist näherungsweise das gewogene Mittel der unbereinigten Raten ggü. dem Vorjahresquartal; Gewicht jedes Quartals ist sein Anteil am BIP des Vorjahres (aus dem saison- und kalenderbereinigten Index). Aus den schon gemeldeten Quartalen und dem Jahresziel folgt die Rate, die jedes noch fehlende Quartal erreichen müsste. Für das nächste Quartal rechnet der Monitor diese Rate zusätzlich in eine bereinigte Rate ggü. dem Vorquartal um: nötiges Niveau = Vorjahresquartal mal (1 + nötige Rate), verglichen mit dem jüngsten bereinigten Stand. Maßgeblich ist die jüngste Projektion, die eine Zahl für das Jahr des jüngsten Quartals enthält (data/static/prognosen.yaml); für 2025 ergibt die Näherung 0,2 % wie die amtliche Jahresrate."
+    methode: "Die Projektion der Bundesregierung nennt als Hauptzahl die Jahresrate des realen BIP ohne Bereinigung. Das Jahres-BIP ist die Summe seiner vier Quartale; das gilt exakt, weil die Statistik die Quartale innerhalb des Vorjahres verkettet (annual overlap). Daraus folgt eindeutig, welche Summe die noch fehlenden Quartale zusammen erreichen müssen. Der Monitor rechnet sie aus dem unbereinigten Volumenindex (Eurostat, Index 2020 = 100) und verteilt sie mit gleicher Rate ggü. dem Vorjahresquartal auf die fehlenden Quartale; fehlt nur ein Quartal, ist diese Rate eindeutig. Die Ansicht ggü. Vorquartal rechnet ganz mit bereinigten Größen: saison- und kalenderbereinigter Index und als Ziel die kalenderbereinigte Jahresrate der Projektion. Gesucht ist die gleiche Rate ggü. Vorquartal für alle fehlenden Quartale (Null-Wert-J mit Zielrate). Maßgeblich ist die jüngste Projektion, die eine Zahl für das Jahr des jüngsten Quartals enthält (data/static/prognosen.yaml). Die Herleitung der Formeln steht im Repository unter docs/nullwerte_projektion.md."
     grenzen:
-      - "Die Quartalsraten sind auf eine Nachkommastelle gerundet; die Näherung weicht deshalb um bis zu etwa 0,1 Prozentpunkte ab."
-      - "Die Umrechnung in eine Rate ggü. dem Vorquartal unterstellt, dass das Quartal keinen Kalendereffekt hat."
+      - "Bei mehreren fehlenden Quartalen ist die gleiche Rate je Quartal eine Festlegung; eindeutig ist nur die nötige Summe."
+      - "Die Jahressumme der saison- und kalenderbereinigten Quartale kann leicht vom kalenderbereinigten Jahreswert des Statistischen Bundesamts abweichen."
+      - "Die kalenderbereinigte Rate steht in der Tabelle „Technische Details“ der Projektion (Herbstprojektion 2026: 1,0 % für 2026, Kalendereffekt 0,3 Prozentpunkte). Probe: Die Jahresverlaufsrate der Projektion (1,2 %, viertes Quartal ggü. Vorjahresquartal, bereinigt) setzt für das 4. Quartal 2026 gut 0,2 % ggü. Vorquartal voraus; die Rechnung mit der gerundeten Jahresrate ergibt 0,1 %. Der Unterschied liegt im Rundungsspielraum."
+      - "Die Projektion nennt ihre Raten mit einer Nachkommastelle. Fehlt nur ein Quartal, bewegt dieser Rundungsspielraum von ±0,05 Prozentpunkten die nötige Rate um rund ±0,2 Prozentpunkte, weil ein Quartal etwa ein Viertel des Jahres ausmacht."
+      - "Der Index von Eurostat hat zwei Nachkommastellen; das verschiebt die nötige Rate um höchstens etwa 0,01 Prozentpunkte."
       - "Revisionen früherer Quartale verschieben die nötige Rate; die Projektion selbst rechnet mit dem Datenstand ihres Stichtags."
   forecast:
     methode: "Der Monitor sammelt die jüngsten Prognosen von Bundesregierung, Instituten und internationalen Organisationen (data/static/prognosen.yaml) mit Datum und Quelle. Je Herausgeber gilt die jüngste Prognose; die Bundesregierung ist hervorgehoben, weil ihre Projektion Grundlage für Haushalt und Steuerschätzung ist."
@@ -212,6 +215,20 @@ charts:
     grenzen:
       - "Ohne den deutschen Anteil an der Hilfe der EU und ohne Kosten für Geflüchtete in Deutschland; die Bundesregierung nennt deshalb höhere Summen."
       - "Mehrjährige Pakete erscheinen im Monat der Festlegung; die Quartale schwanken deshalb stark."
+  arms_turnover:
+    methode: "Monatsbericht im Verarbeitenden Gewerbe des Statistischen Bundesamts, Tabelle 42111-0024: Umsatz und Beschäftigte der fachlichen Betriebsteile in der Klasse 25.40 (Herstellung von Waffen und Munition) der Wirtschaftszweigklassifikation 2008. Fachliche Betriebsteile sind die Teile eines Betriebs, die überwiegend eine Tätigkeit ausüben; die Zuordnung hängt deshalb an der Tätigkeit im Werk, nicht an der Firma. Erfasst sind Betriebe ab 50 tätigen Personen. Der Monitor summiert die Monatswerte über zwölf Monate und ruft sie werktäglich ab."
+    grenzen:
+      - "Militärische Kampffahrzeuge (Klasse 30.40) hält das Statistische Bundesamt geheim; sie fehlen ganz."
+      - "Kleine Betriebe unter der Abschneidegrenze fehlen; die Werte sind eine Untergrenze."
+      - "Die Strukturstatistik von Eurostat zählt je Firma und zeigt deshalb andere, durch Umbuchungen verzerrte Werte."
+  arms_overview:
+    methode: "Die Zahlentafel zeigt Jahreswerte in Milliarden Euro. Ausgaben: Staatsausgaben für Verteidigung nach Eurostat (COFOG 02), aufgeteilt in Arbeitnehmerentgelt, Vorleistungen, Bruttoanlageinvestitionen sowie Vermögens- und laufende Transfers. Aufträge: Jahressummen des Kiel Military Procurement Tracker nach Sitz des Auftragnehmers. Hersteller: Umsatz und Auslandsumsatz als Summe, Beschäftigte als Mittel der zwölf Monate eines Kalenderjahres, Klasse 25.40 nach Tabelle 42111-0024 des Statistischen Bundesamts; nur volle Jahre. Verhältnisse: SIPRI. Plan: Tabelle 8 des Finanzplans des Bundes 2026 bis 2030 (Drucksache 21/7301) für Ist 2025, Soll 2026, Entwurf 2027 und Finanzplan 2028 bis 2030; Sondervermögen Bundeswehr 2027 laut Finanzplan, 2026 laut Wirtschaftsplan. Die Spalte rechts zeigt die Veränderung vom ersten bis zum jüngsten Jahr der Zeile, der Balken das Vielfache."
+    grenzen:
+      - "Die Zeilen enden in verschiedenen Jahren, weil die Quellen verschieden schnell melden; die Staatsausgaben liegen erst bis 2024 vor."
+      - "Staatsausgaben umfassen Bund, Länder und Gemeinden in der Abgrenzung der Volkswirtschaftlichen Gesamtrechnungen; der Plan zählt nur den Bundeshaushalt. Beide Teile sind deshalb nicht direkt vergleichbar."
+      - "Die Hersteller umfassen nur Waffen und Munition in Betrieben ab 50 Beschäftigten; Kampffahrzeuge (Klasse 30.40) hält das Statistische Bundesamt geheim."
+      - "Werte in jeweiligen Preisen; Preissteigerungen heben die Veränderungen."
+      - "Die Planwerte trägt der Monitor von Hand nach, wenn ein neuer Finanzplan erscheint."
   arms_cycle:
     methode: "Aufträge: monatliche Rüstungsbestellungen Deutschlands aus dem Kiel Military Procurement Tracker, summiert über die jeweils letzten zwölf Monate und geteilt durch die Summe des Jahres 2021 (22,3 Mrd. €). Produktion: Produktionsindex für den Wirtschaftszweig 25.4 (Waffen und Munition) von Eurostat, gemittelt über die letzten zwölf Monate und auf das Jahresmittel 2021 bezogen. Beide Reihen stehen so auf derselben Skala; ihr Abstand zeigt, ob Bestellungen schneller wachsen als die Fertigung."
     grenzen:

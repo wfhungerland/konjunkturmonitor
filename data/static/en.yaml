@@ -50,12 +50,13 @@ topics:
   sonderfaktoren: {title: "Special factors", code: "Special", ask: "Which special factors affect the economy?"}
   insolvenzen: {title: "Insolvencies"}
   geldpolitik: {title: "Monetary policy", code: "Monetary", ask: "How tight is monetary policy?"}
+  frankreich: {title: "France crisis monitor", code: "France", ask: "Is a debt crisis looming in France, and what would it mean for Germany?"}
   zinsen: {title: "Interest rates and credit", code: "Rates"}
   wechselkurse: {title: "Exchange rates", code: "FX", ask: "How is the euro doing?"}
   energie: {title: "Energy"}
   aussichten: {title: "Outlook", ask: "What do the forecasts expect?"}
   rezession: {title: "Recession risk", code: "Recession", ask: "Is a recession looming?"}
-  pruefung: {title: "Forecasts and revisions", code: "Forecasts", ask: "How reliable are the first figures and the projection?"}
+  pruefung: {title: "Accuracy", code: "Forecasts", ask: "How reliable are the first figures and the projection?"}
   breite: {title: "Breadth and comparison", code: "Breadth", ask: "How broad is the development, and how unusual is it?"}
   wettbewerb: {title: "Competition", ask: "Who competes with Germany on world markets?"}
   aufnahme: {title: "Construction capacity", ask: "Where can districts take on additional construction work?"}
@@ -63,10 +64,10 @@ topics:
   ruestung: {title: "Defence", code: "Defence", ask: "How much does Germany spend on defence?"}
   ukraine: {title: "Aid to Ukraine", code: "Ukraine-aid", ask: "How much does Germany help Ukraine?"}
   handel: {title: "Trade conflicts", code: "Trade-conflicts", ask: "How often do trade barriers hit German exports?"}
-  struktur: {title: "Structure", ask: "How sound are the foundations of growth?"}
-  staat: {title: "Government", ask: "What state are the public finances in?"}
+  struktur: {title: "Foundations of growth", code: "Foundations", ask: "How sound are the foundations of growth?"}
+  staat: {title: "Public finances", code: "Public-finances", ask: "What state are the public finances in?"}
   staatsausgaben: {title: "Government spending", code: "Spending", ask: "What does the government spend its money on?"}
-  haushalte: {title: "Households", code: "Households", ask: "How is a typical household doing?"}
+  haushalte: {title: "Wealth", code: "Wealth", ask: "How much do households own, and how is it distributed?"}
   sachverstaendigenrat: {title: "Council of Economic Experts", code: "Council", ask: "What does the Council of Economic Experts advise, and how accurate was it?"}
   gemeinschaftsdiagnose: {title: "Joint Economic Forecast", code: "Forecast", ask: "What do the economic research institutes advise, and how accurate were they?"}
   kalender: {title: "Calendar", ask: "When are the next figures due?"}
@@ -449,6 +450,18 @@ charts:
     title: "Conditions for the TPI"
     ask: "Which countries could get help from the TPI?"
     caption: "Since July 2022 the Transmission Protection Instrument (TPI) allows the ECB to buy a country's government bonds if its yields rise sharply without good reason. The ECB names no fixed yield threshold. It does set four conditions: the country complies with the EU fiscal rules, has no severe economic imbalances, its debt is sustainable, and it implements its reform commitments. The table shows two measurable parts: whether an EU excessive deficit procedure is ongoing (European Commission page) and the government budget balance and debt in the latest year (Eurostat). Red marks an ongoing procedure, a deficit above 3% and debt above 60% of GDP, the limits of the Stability and Growth Pact. An ongoing procedure does not rule out the TPI if the country follows the recommendations; the ECB checks this case by case. The spread over Bunds is the ten-year government bond yield minus Germany's, in the latest month. Click a column header to sort the table."
+  fr_gauge:
+    title: "How close is France to the euro crisis?"
+    ask: "How close is France to the 2011 euro crisis?"
+    caption: "Each row shows how far an indicator has moved from its normal level (0%, the 2015–2019 average) towards its worst value in the euro crisis (100%, July 2011 to December 2012). Solid dot: latest value; hollow dot: a year earlier. Above 100% a value is worse than in the euro crisis. The spread is the ten-year government bond yield minus Germany's (ECB). The budget deficit is the general government balance in the latest year (Eurostat). Financial market stress is the ECB's Composite Indicator of Systemic Stress (CISS), which condenses volatility and risk premia in equity, bond, money and foreign exchange markets into a number between 0 and 1. The debt ratio is left out because it was lower in 2011/12 than later; it is now about 116% of GDP against about 92% in 2012. The chart shows the distance to a past crisis, not the probability of a new one. For Germany what matters most is whether stress spreads to other countries; the lower group measures that."
+  fr_stress:
+    title: "Financial stress in France and neighbouring countries"
+    ask: "Is stress rising in France's financial markets?"
+    caption: "The lines show the European Central Bank's Composite Indicator of Systemic Stress (CISS) for France, Germany, Italy and Spain, as monthly averages. The index condenses volatility and risk premia in equity, bond, money and foreign exchange markets into a number between 0 and 1; 1 is maximum stress. If the lines rise together, stress spreads from one country to others, as in 2008 and 2011. The “Events” switch shows key monetary policy decisions."
+  fr_exports:
+    title: "France's share of German exports"
+    ask: "How important is France for German exports?"
+    caption: "The line shows France's share of all German goods exports, calculated over the latest twelve months, in per cent. A crisis in France would hit Germany first through this trade: if demand there falls, German exports fall. Losses for banks and investors holding French bonds would come on top; no freely usable monthly data exist for that. Source: Deutsche Bundesbank foreign trade statistics, not adjusted; the share is our own calculation."
   spreads:
     title: "Yield spread over Bunds"
     ask: "How much more do other euro countries pay than Germany?"
@@ -528,7 +541,7 @@ charts:
   proj_gap:
     title: "GDP and the Federal Government's projection"
     ask: "Is growth on track for the Federal Government's projection?"
-    caption: "The bars show growth in real economic output (gross domestic product) on the same quarter a year earlier in %, unadjusted like the annual rate of the Federal Government's projection. The light bars show the rate each remaining quarter of the year would have to reach for the year to meet the latest projection (dashed line); revisions to earlier quarters change this required rate. The annual rate is roughly the mean of the four quarterly rates, weighted by each quarter's share of the previous year. Once all four quarters are in, the chart shows the outcome of the past year until the first quarter of the following year. A switch changes to the seasonally and calendar adjusted rate on the previous quarter: the light bars then show how much adjusted gross domestic product would have to grow in each missing quarter to reach the required rate on the same quarter a year earlier, without taking calendar effects into account."
+    caption: "The bars show growth in real economic output (gross domestic product) on the same quarter a year earlier in %, unadjusted like the annual rate of the Federal Government's projection. The light bars show the rate each remaining quarter of the year would have to reach for the year to meet the latest projection (dashed line); revisions to earlier quarters change this required rate. The annual figure is the sum of the four quarters; the calculation uses the unadjusted volume index, not rounded rates. Once all four quarters are in, the chart shows the outcome of the past year until the first quarter of the following year. A switch changes to the seasonally and calendar adjusted rate on the previous quarter: the light bars then show the same rate in each missing quarter with which the adjusted year reaches the projection's calendar-adjusted rate. The switch is missing if the projection gives no calendar-adjusted rate."
   forecast:
     title: "Growth forecasts"
     ask: "What do the forecasts expect for growth?"
@@ -722,55 +735,63 @@ charts:
     unit: "% on previous year"
 
   hybrid:
-    title: "Russian sabotage in Europe peaked in 2024"
+    title: "Russian sabotage and subversion in Europe"
     ask: "How often does Russian sabotage hit targets in Europe?"
     caption: "Counted are sabotage, arson, reconnaissance and attack plots that authorities or reliable reports attribute to Russia. Cyber attacks and espionage are mostly missing. Dark blue marks cases with a target in Germany. Other databases use other definitions and arrive at other figures. Many cases only become known later, so the latest quarters are too low."
   gpr:
-    title: "Media coverage of war risk has stayed high since 2022"
+    title: "Geopolitical risk"
     ask: "How much do newspapers report on the threat of war?"
     caption: "The index measures how often major English-language newspapers report on the threat of war, war and terrorism. The value for Germany counts only articles that also mention Germany. 100 is the average of 1985 to 2019. Thick: three-month average, thin: monthly values. In studies, high values go along with lower investment."
   milex:
-    title: "Germany spends over 2% on defence for the first time since 1990"
+    title: "Military expenditure"
     ask: "How high is military spending by comparison?"
     caption: "Military expenditure in percent of economic output, as defined by the Stockholm International Peace Research Institute (SIPRI). It includes military pensions and military aid. NATO's targets of 2 percent and 3.5 percent by 2035 rest on a different definition. By NATO's count, Germany is usually somewhat higher. Germany is highlighted."
+  arms_turnover:
+    title: "Turnover of makers of weapons and ammunition"
+    ask: "How much do makers of weapons and ammunition sell?"
+    caption: "Turnover of plants making weapons and ammunition, summed over the previous twelve months, in billion euros; establishments with 50 or more employees. Counted per plant, not per company, so a reclassification of companies does not shift the figures. Tanks and other fighting vehicles are missing because the Federal Statistical Office keeps their data confidential. Foreign turnover covers deliveries to customers outside Germany."
+  arms_overview:
+    title: "Defence money in Germany: from budget to factory"
+    ask: "How much money flows into defence, and what reaches the factory?"
+    caption: "The table follows defence money from the budget through orders to the factory, in billion euros per year. The column on the right shows the change since 2021, the bar the multiple. Government spending from Eurostat is available up to 2024. Orders by the contractor's seat; about €31 bn of unclear origin are missing. Makers cover only weapons and ammunition, because the Federal Statistical Office keeps tanks and other fighting vehicles confidential. The federal plan covers only the federal level and is therefore not comparable with government spending."
   arms_cycle:
-    title: "Orders are running away from production"
+    title: "Defence: orders and production"
     ask: "Is production keeping up with defence orders?"
     caption: "Both lines show twelve months compared with 2021 (= 100). Orders: federal defence orders in euros (Kiel Institute). Production: manufacture of weapons and ammunition (Eurostat). Orders have almost quadrupled, production has only roughly doubled. The orders line jumps because large contracts arrive at once. The gap is the order backlog; tanks, aircraft and ships are not part of production, though."
   def_use:
-    title: "The money goes mainly into material and operations, little into new weapons"
+    title: "What the state spends defence money on"
     ask: "What does the state spend defence money on?"
     caption: "Spending of federal, state and local government on defence by type, in billion euros. Since 2021, material, maintenance and operations grew most, that is spare parts, ammunition and services. Investment in new weapon systems stayed flat because it only counts on delivery. The jump in transfers to others coincides with military aid to Ukraine. The data do not show how much of it stays in Germany."
   orders_origin:
-    title: "Almost all defence orders go to companies in Germany"
+    title: "Defence contracts by contractor's home country"
     ask: "How much defence money goes to companies at home?"
     caption: "Federal defence contracts by year of announcement and the contractor's headquarters, in billion euros. \"German with partner\" means a German and a foreign company together, or a foreign company producing in Germany. Headquarters do not show where production takes place; foreign supplies to contractors are not covered. The share of contractors outside Europe fell from 42 percent in 2022 to 4 percent in 2025. Contracts of unclear origin, about €31bn since 2020, are missing."
   arms_prod:
-    title: "Defence grows while the rest of industry shrinks"
+    title: "Production of weapons and ammunition"
     ask: "How fast is the production of weapons and ammunition growing?"
     caption: "Production of weapons and ammunition compared with industry as a whole, 2021 = 100, seasonally and calendar adjusted. Tanks, aircraft and ships belong to other industries and are missing here. Thick: three-month average, thin: monthly values."
   milex_gov:
-    title: "Defence takes a growing share of the budget"
+    title: "Military spending in the government budget"
     ask: "What priority does defence have in the budget?"
     caption: "Share of military expenditure in all government spending, that is federal, state and local government and social security. Definition of the peace research institute SIPRI, government spending according to the International Monetary Fund. Germany is highlighted."
   milex_eu_ru:
-    title: "Europe spends more than three times as much as Russia"
+    title: "Military spending of Europe and Russia"
     ask: "Does Europe spend more on defence than Russia?"
     caption: "Military expenditure in billion US dollars at 2024 prices and exchange rates. Central and Western Europe is Europe without Russia, Belarus, Ukraine and Moldova. Since 2023 SIPRI estimates Russian spending because parts of the budget are secret. In dollars, Russia's budget looks smaller than its purchasing power at home."
   cinc:
-    title: "Germany's material weight has fallen to a tenth of its 1913 level"
+    title: "Germany's share of the world's material capabilities"
     ask: "How much weight does Germany carry among the world's powers?"
     caption: "The index of the Correlates of War research project (CINC) measures a state's material weight. It averages world shares in population, urban population, steel, energy use, soldiers and military expenditure. Germany, Prussia until 1870, reached 14 percent in 1913 and 20 percent in 1941; in 2022 it was 1.5 percent. From 1955 to 1989 West and East Germany are combined. The index measures mass, not technology or alliances."
   trade_harm:
-    title: "Most trade barriers come from neither China nor the USA"
+    title: "Harmful trade interventions against German interests"
     ask: "How many harmful trade interventions affect Germany?"
     caption: "Counted are interventions that Global Trade Alert rates as harmful to trade and that hit German exports: tariffs, subsidies, public procurement rules and export bans. Each intervention counts once, regardless of how much trade it affects. Measures of the European Union are missing because Germany is a member. New cases are often recorded late, so the latest year tends to be too low."
   trade_ru:
-    title: "Exports to Russia have collapsed; the detour via neighbours remains"
+    title: "Exports to Russia and neighbouring countries"
     ask: "Do exports reach Russia via neighbouring countries?"
     caption: "German goods exports, summed over the previous twelve months, in billion euros. Exports to Russia and Belarus collapsed after the war began in 2022. Exports to Armenia, Georgia, Kazakhstan, Kyrgyzstan, Tajikistan and Uzbekistan rose strongly at the same time. Studies by the European Bank for Reconstruction and Development (EBRD) see this partly as goods diverted to Russia."
   ukraine_aid:
-    title: "Germany helps Ukraine mainly with weapons"
+    title: "German aid to Ukraine"
     ask: "How much aid does Germany allocate to Ukraine?"
     caption: "German aid that has been delivered or firmly earmarked for delivery, in billion euros per quarter. Military aid includes money for arms purchases. Missing are Germany's share of aid from the European Union and the costs of refugees. Large packages are often fixed for several years at once."
   gd_treff:
@@ -977,6 +998,13 @@ series:
   ecb_bs_secall: {title: "Eurosystem: securities of euro area residents, total, average of weekly statements", unit: "€ tn", adjustment: "not adjusted"}
   ecb_bs_gov: {title: "Eurosystem: general government debt, average of weekly statements", unit: "€ tn", adjustment: "not adjusted"}
   ecb_bs_other: {title: "Eurosystem: other assets, average of weekly statements", unit: "€ tn", adjustment: "not adjusted"}
+  ciss_fr: {title: "ECB Composite Indicator of Systemic Stress (CISS), France, monthly average", label: "France", unit: "points, scale 0 to 1", adjustment: "not adjusted"}
+  ciss_de: {title: "ECB Composite Indicator of Systemic Stress (CISS), Germany, monthly average", label: "Germany", unit: "points, scale 0 to 1", adjustment: "not adjusted"}
+  ciss_it: {title: "ECB Composite Indicator of Systemic Stress (CISS), Italy, monthly average", label: "Italy", unit: "points, scale 0 to 1", adjustment: "not adjusted"}
+  ciss_es: {title: "ECB Composite Indicator of Systemic Stress (CISS), Spain, monthly average", label: "Spain", unit: "points, scale 0 to 1", adjustment: "not adjusted"}
+  fr_deficit: {title: "General government balance, France", unit: "% of GDP", adjustment: "annual"}
+  fr_debt: {title: "General government gross debt, France", unit: "% of GDP", adjustment: "annual"}
+  de_exp_share_fr: {title: "France's share of German goods exports, sum of the last twelve months", label: "France's share", unit: "%", adjustment: "not adjusted"}
   fx_usd: {title: "ECB reference rate: US dollars per euro", label: "US dollar", unit: "US$ per €", adjustment: "not adjusted"}
   fx_usd_m: {title: "ECB reference rate: US dollars per euro", label: "US dollar", unit: "US$ per €", adjustment: "not adjusted"}
   fx_cny: {title: "ECB reference rate: Chinese yuan per euro", label: "Chinese yuan", unit: "yuan per €", adjustment: "not adjusted"}
@@ -1000,7 +1028,7 @@ series:
   rhine_lowdays_year: {title: "Low-water days at the Kaub gauge per year (daily mean below 78 cm)", label: "Low-water days", unit: "days", note: "Number of days per calendar year with a daily mean below 78 cm; current year up to the latest day.", adjustment: "not adjusted"}
   de_power_load: {title: "Electricity consumption (grid load) in Germany, TWh per month", unit: "TWh", adjustment: "not adjusted"}
   de_power_load_yoy: {title: "Electricity consumption (grid load), % on a year earlier", label: "Electricity consumption", unit: "% on a year earlier", adjustment: "not adjusted"}
-  de_power_price: {title: "Wholesale electricity price (day-ahead, DE/LU), monthly average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
+  de_power_price: {title: "Wholesale electricity price (day-ahead, DE/LU, until September 2018 DE/AT/LU), monthly average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
   de_power_price_d: {title: "Wholesale electricity price (day-ahead, DE/LU), daily average", label: "Wholesale price", unit: "€ per MWh", adjustment: "not adjusted"}
   de_power_load_d: {title: "Electricity consumption (grid load) in Germany, GWh per day", label: "Electricity consumption", unit: "GWh per day", adjustment: "not adjusted"}
   de_permits: {title: "Building permits: dwellings (new buildings and work on existing buildings), thousands", label: "Dwellings approved", unit: "thousand dwellings", adjustment: "not adjusted"}
@@ -1066,6 +1094,9 @@ series:
   kmpt_de_partner: {title: "German defence contracts to German and foreign companies jointly or with production in Germany", label: "German with partner", unit: "€ bn", adjustment: "year of announcement, current prices"}
   kmpt_eu: {title: "German defence contracts to companies in the rest of Europe", label: "rest of Europe", unit: "€ bn", adjustment: "year of announcement, current prices"}
   kmpt_noneu: {title: "German defence contracts to companies outside Europe", label: "outside Europe", unit: "€ bn", adjustment: "year of announcement, current prices"}
+  de_arms_turnover: {title: "Turnover of plants making weapons and ammunition (NACE 25.40)", label: "Turnover, total", unit: "€ bn", adjustment: "not adjusted"}
+  de_arms_turnover_abroad: {title: "Foreign turnover of plants making weapons and ammunition (NACE 25.40)", label: "of which abroad", unit: "€ bn", adjustment: "not adjusted"}
+  de_arms_employment: {title: "Employment in plants making weapons and ammunition (NACE 25.40)", label: "Employment", unit: "persons", adjustment: "not adjusted"}
   def_staff: {title: "Government defence spending: personnel (compensation of employees)", label: "Personnel", unit: "€ bn", adjustment: "annual, current prices"}
   def_material: {title: "Government defence spending: material, maintenance and operations (intermediate consumption)", label: "Material and operations", unit: "€ bn", adjustment: "annual, current prices"}
   def_invest: {title: "Government defence spending: weapon systems and buildings (gross fixed capital formation)", label: "Weapon systems and buildings", unit: "€ bn", adjustment: "annual, current prices"}
@@ -1293,6 +1324,7 @@ strings:
   "Mrd. US-Dollar": "US$bn"
   "Mrd. €": "€bn"
   "Bio. €": "€tn"
+  "Punkte, Skala 0 bis 1": "points, scale 0 to 1"
   "Saldo in %": "net balance in %"
   "Personen": "people"
   "Pp": "pp"

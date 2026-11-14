@@ -77,7 +77,7 @@ _RULES = [
     (r"von AMECO, OECD und IWF\b", "von EU-Kommission, OECD und Internationalem Währungsfonds"),
     (r"\bje MWh\b", "je Megawattstunde"),
     (r"\bje MMBtu\b", "je Million British Thermal Units"),
-    (r"\b(bei|von|mit|in) ((?:[+-]?[\d.,]+ )?)Pp\b", r"\1 \2Prozentpunkten"),
+    (r"\b(bei|von|mit|in) ((?:[+\-−]?[\d.,]+ )?)Pp\b", r"\1 \2Prozentpunkten"),
     (r"(?<![\d,])1 Pp\b", "1 Prozentpunkt"),
     (r"\bPp\b", "Prozentpunkte"),
     (r"(?<= )Mrd\.(?=\s)", "Milliarden"),

@@ -161,19 +161,22 @@ charts:
   emp_sector: {title: "Erwerbstätige nach Wirtschaftsbereichen", decimals: 0}
   migration: {title: "Nettozuwanderung", decimals: 0}
   cit: {title: "Steuersätze auf Unternehmensgewinne", decimals: 1}
-  hybrid: {title: "Russische Sabotage in Europa erreichte 2024 ihren Höhepunkt", decimals: 0}
-  gpr: {title: "Das Kriegsrisiko in den Zeitungen bleibt seit 2022 erhöht", decimals: 0}
-  milex: {title: "Deutschland gibt erstmals seit 1990 mehr als 2 % für Verteidigung aus", decimals: 1}
-  cinc: {title: "Deutschlands materielles Gewicht ist seit 1913 auf ein Zehntel gefallen", decimals: 1}
-  ukraine_aid: {title: "Deutschland hilft der Ukraine vor allem mit Waffen", decimals: 1}
-  trade_harm: {title: "Die meisten Handelshemmnisse kommen weder aus China noch aus den USA", decimals: 0}
-  arms_prod: {title: "Rüstung wächst, die übrige Industrie schrumpft", decimals: 0}
-  milex_gov: {title: "Verteidigung bekommt einen wachsenden Teil des Haushalts", decimals: 1}
-  def_use: {title: "Das Geld fließt vor allem in Material und Betrieb, kaum in neue Waffen", decimals: 1}
-  orders_origin: {title: "Fast alle Rüstungsaufträge gehen an Firmen in Deutschland", decimals: 1}
-  arms_cycle: {title: "Die Aufträge laufen der Produktion davon", decimals: 0}
-  milex_eu_ru: {title: "Europa gibt mehr als dreimal so viel aus wie Russland", decimals: 0}
-  trade_ru: {title: "Die Exporte nach Russland sind eingebrochen, der Umweg über Nachbarn bleibt", decimals: 1}
+  hybrid: {title: "Russische Sabotage und Subversion in Europa", decimals: 0}
+  gpr: {title: "Geopolitisches Risiko", decimals: 0}
+  milex: {title: "Militärausgaben", decimals: 1}
+  cinc: {title: "Deutschlands Anteil an den Machtmitteln der Welt", decimals: 1}
+  ukraine_aid: {title: "Hilfe Deutschlands für die Ukraine", decimals: 1}
+  trade_harm: {title: "Schädliche Handelseingriffe gegen deutsche Interessen", decimals: 0}
+  arms_prod: {title: "Produktion von Waffen und Munition", decimals: 0}
+  milex_gov: {title: "Militärausgaben im Staatshaushalt", decimals: 1}
+  def_use: {title: "Wofür der Staat Verteidigungsgeld ausgibt", decimals: 1}
+  orders_origin: {title: "Rüstungsaufträge nach Sitz des Auftragnehmers", decimals: 1}
+  arms_cycle: {title: "Rüstung: Aufträge und Produktion", decimals: 0}
+  arms_turnover: {title: "Umsatz der Hersteller von Waffen und Munition", decimals: 1}
+  arms_employment: {title: "Beschäftigte der Hersteller von Waffen und Munition", decimals: 0}
+  arms_overview: {title: "Rüstungsgeld in Deutschland: vom Haushalt in die Fabrik", decimals: 1}
+  milex_eu_ru: {title: "Militärausgaben Europas und Russlands", decimals: 0}
+  trade_ru: {title: "Exporte nach Russland und in Nachbarländer", decimals: 1}
   pipeline_core: {title: "Vorstufenpreise ohne Energie und Agrarpreise", decimals: 1}
   price_exp: {title: "Preiserwartungen von Unternehmen und Verbrauchern", decimals: 0}
   gdp_use: {title: "Verwendung der Wirtschaftsleistung im letzten Quartal", decimals: 1}
@@ -195,6 +198,8 @@ charts:
   ecb_rates: {title: "Leitzinsen der EZB", decimals: 2}
   ecb_bs: {title: "Bilanz des Eurosystems", decimals: 2}
   spreads: {title: "Renditeabstand zu Bundesanleihen", decimals: 2}
+  fr_stress: {title: "Finanzstress in Frankreich und Nachbarländern", decimals: 2}
+  fr_exports: {title: "Frankreichs Anteil an den deutschen Exporten", decimals: 1}
   qe_prog: {title: "Anleihebestände der EZB nach Programm", decimals: 0}
   qe_land: {title: "Käufe von Staatsanleihen nach Land", decimals: 0}
   zinskurven: {title: "Zinskurven von Staatsanleihen", decimals: 2}
@@ -314,6 +319,16 @@ series:
     adjustment: preis-, saison- und kalenderbereinigt
     chart: gdp_level
     label: BIP
+
+  - id: de_gdp_index_nsa
+    block: wachstum
+    source: eurostat
+    key: namq_10_gdp
+    params: {geo: DE, na_item: B1GQ, unit: CLV_I20, s_adj: NSA}
+    title: BIP real, Index 2020 = 100 (Ursprungswerte)
+    unit: Index 2020=100
+    frequency: Q
+    adjustment: preisbereinigt, nicht saison- und kalenderbereinigt
 
   - id: de_gdp_contrib
     expand: {item: [P31_S14_S15, P3_S13, P51G, P52_P53, P6, P7]}
@@ -1928,6 +1943,95 @@ series:
     chart: curve_slope
     label: "Spanien"
 
+  - id: ciss_fr
+    block: finanzen
+    source: ecb
+    key: CISS/D.FR.Z0Z.4F.EC.SS_CIN.IDX
+    params: {aggregate: monthly_mean}
+    title: "Finanzstress-Index der EZB (CISS), Frankreich, Monatsmittel"
+    unit: "Punkte, Skala 0 bis 1"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    chart: fr_stress
+    label: "Frankreich"
+
+  - id: ciss_de
+    block: finanzen
+    source: ecb
+    key: CISS/D.DE.Z0Z.4F.EC.SS_CIN.IDX
+    params: {aggregate: monthly_mean}
+    title: "Finanzstress-Index der EZB (CISS), Deutschland, Monatsmittel"
+    unit: "Punkte, Skala 0 bis 1"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    chart: fr_stress
+    label: "Deutschland"
+
+  - id: ciss_it
+    block: finanzen
+    source: ecb
+    key: CISS/D.IT.Z0Z.4F.EC.SS_CIN.IDX
+    params: {aggregate: monthly_mean}
+    title: "Finanzstress-Index der EZB (CISS), Italien, Monatsmittel"
+    unit: "Punkte, Skala 0 bis 1"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    chart: fr_stress
+    label: "Italien"
+
+  - id: ciss_es
+    block: finanzen
+    source: ecb
+    key: CISS/D.ES.Z0Z.4F.EC.SS_CIN.IDX
+    params: {aggregate: monthly_mean}
+    title: "Finanzstress-Index der EZB (CISS), Spanien, Monatsmittel"
+    unit: "Punkte, Skala 0 bis 1"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2005-01-01"
+    chart: fr_stress
+    label: "Spanien"
+
+  - id: fr_deficit
+    block: staat
+    source: eurostat
+    key: gov_10dd_edpt1
+    params: {geo: FR, sector: S13, unit: PC_GDP, na_item: B9}
+    title: "Finanzierungssaldo des Staates, Frankreich"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2000-01-01"
+    stale_after_months: 24
+
+  - id: fr_debt
+    block: staat
+    source: eurostat
+    key: gov_10dd_edpt1
+    params: {geo: FR, sector: S13, unit: PC_GDP, na_item: GD}
+    title: "Bruttoschulden des Staates, Frankreich"
+    unit: "% des BIP"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2000-01-01"
+    stale_after_months: 24
+
+  - id: de_exp_share_fr
+    block: export
+    source: static
+    key: de_exp_share_fr
+    params: {source_name: "Deutsche Bundesbank, Außenhandel nach Ländern (eigene Berechnung)"}
+    license: "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)"
+    title: "Anteil Frankreichs an den deutschen Warenexporten, Summe der letzten zwölf Monate"
+    unit: "%"
+    frequency: M
+    adjustment: nicht bereinigt
+    chart: fr_exports
+    label: "Anteil Frankreichs"
+
   - id: lt_de
     block: finanzen
     source: ecb
@@ -2360,7 +2464,7 @@ series:
     key: smard_price
     params: {source_name: "Bundesnetzagentur | SMARD.de"}
     license: "CC BY 4.0 (Bundesnetzagentur | SMARD.de)"
-    title: "Großhandelspreis Strom (Day-Ahead, DE/LU), Monatsmittel"
+    title: "Großhandelspreis Strom (Day-Ahead, DE/LU, bis September 2018 DE/AT/LU), Monatsmittel"
     unit: "€ je MWh"
     frequency: M
     adjustment: nicht bereinigt
@@ -5989,3 +6093,48 @@ series:
     label: "Produktion"
     license: "Eurostat: Wiederverwendung mit Quellenangabe"
     note: "Gleitender Durchschnitt über zwölf Monate, Jahresmittel 2021 = 100; werktäglich abgerufen."
+
+  - id: de_arms_turnover
+    block: geopolitik
+    source: genesis
+    key: 42111-0024
+    params: {query: {classifyingvariable1: WZ08X4, classifyingkey1: WZ08-2540}, value_variable: UMS002, filters: {WZ08X4: WZ08-2540}, scale: 1e-06}
+    title: "Umsatz der fachlichen Betriebsteile in der Herstellung von Waffen und Munition (WZ 25.40)"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2019-01-01"
+    stale_after_months: 6
+    chart: arms_turnover
+    label: "Umsatz insgesamt"
+    note: "Umsatz der fachlichen Betriebsteile (Werke und Werksteile, die Waffen und Munition herstellen), Betriebe ab 50 Beschäftigten; Tabelle 42111-0024 des Statistischen Bundesamts."
+
+  - id: de_arms_turnover_abroad
+    block: geopolitik
+    source: genesis
+    key: 42111-0024
+    params: {query: {classifyingvariable1: WZ08X4, classifyingkey1: WZ08-2540}, value_variable: UMSN3, filters: {WZ08X4: WZ08-2540}, scale: 1e-06}
+    title: "Auslandsumsatz der fachlichen Betriebsteile in der Herstellung von Waffen und Munition (WZ 25.40)"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2019-01-01"
+    stale_after_months: 6
+    chart: arms_turnover
+    label: "davon im Ausland"
+    note: "Umsatz mit Kunden außerhalb Deutschlands; sonst wie der Umsatz insgesamt."
+
+  - id: de_arms_employment
+    block: geopolitik
+    source: genesis
+    key: 42111-0024
+    params: {query: {classifyingvariable1: WZ08X4, classifyingkey1: WZ08-2540}, value_variable: ERW012, filters: {WZ08X4: WZ08-2540}}
+    title: "Beschäftigte der fachlichen Betriebsteile in der Herstellung von Waffen und Munition (WZ 25.40)"
+    unit: "Personen"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2019-01-01"
+    stale_after_months: 6
+    chart: arms_employment
+    label: "Beschäftigte"
+    note: "Tätige Personen am Monatsende; sonst wie der Umsatz insgesamt."
