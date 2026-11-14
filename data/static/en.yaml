@@ -452,15 +452,23 @@ charts:
   fr_gauge:
     title: "How close is France to the euro crisis?"
     ask: "How close is France to the 2011 euro crisis?"
-    caption: "Each row shows how far an indicator has moved from its normal level (0%, the 2015–2019 average) towards its worst value in the euro crisis (100%, July 2011 to December 2012). Solid dot: latest value; hollow dot: a year earlier. Above 100% a value is worse than in the euro crisis. The spread is the ten-year government bond yield minus Germany's (ECB). The budget deficit is the general government balance in the latest year (Eurostat). Financial market stress is the ECB's Composite Indicator of Systemic Stress (CISS), which condenses volatility and risk premia in equity, bond, money and foreign exchange markets into a number between 0 and 1. The debt ratio is left out because it was lower in 2011/12 than later; it is now about 116% of GDP against about 92% in 2012. The chart shows the distance to a past crisis, not the probability of a new one. For Germany what matters most is whether stress spreads to other countries; the lower group measures that."
+    caption: "Each row shows how far a value has moved from its normal level (0%, the 2015–2019 average) towards its worst value in the euro crisis (100%, July 2011 to December 2012); the arrow shows the movement over the past year. Below each name are the value itself, the crisis peak and the date. At the top are the slow-moving values: the risk premium, i.e. the ten-year government bond yield minus Germany's (ECB, in basis points; one basis point is a hundredth of a percentage point), and the budget deficit (Eurostat, annual). In the middle is acute market stress: the ECB's Composite Indicator of Systemic Stress (CISS), which condenses volatility and risk premia in equity, bond, money and foreign exchange markets into a number between 0 and 1. At the bottom is whether stress spreads to other countries; for Germany that is the most important channel. The title follows fixed thresholds: from 75% a value counts as close to crisis levels, from 50% markets count as nervous. Two caveats: the 2015–2019 normal level falls into the years of ECB bond purchases, which depressed risk premia. The debt ratio is left out because it was lower in 2011/12 than later; it is now about 116% of GDP against about 92% in 2012. The chart shows the distance to a past crisis, not the probability of a new one. Whether the ECB could support France with the TPI is shown in the table in the monetary policy section."
   fr_stress:
     title: "Financial stress in France and neighbouring countries"
     ask: "Is stress rising in France's financial markets?"
     caption: "The lines show the European Central Bank's Composite Indicator of Systemic Stress (CISS) for France, Germany, Italy and Spain, as monthly averages. The index condenses volatility and risk premia in equity, bond, money and foreign exchange markets into a number between 0 and 1; 1 is maximum stress. If the lines rise together, stress spreads from one country to others, as in 2008 and 2011. The “Events” switch shows key monetary policy decisions."
   fr_exports:
-    title: "France's share of German exports"
-    ask: "How important is France for German exports?"
-    caption: "The line shows France's share of all German goods exports, calculated over the latest twelve months, in per cent. A crisis in France would hit Germany first through this trade: if demand there falls, German exports fall. Losses for banks and investors holding French bonds would come on top; no freely usable monthly data exist for that. Source: Deutsche Bundesbank foreign trade statistics, not adjusted; the share is our own calculation."
+    title: "German exports to France"
+    ask: "What is at stake for Germany in trade with France?"
+    caption: "The line shows the value of German goods exports to France over the latest twelve months, in billions of euros. A crisis in France would hit Germany first through this trade: if demand there falls, German exports fall. Losses for banks, insurers and funds holding French bonds would come on top; no freely usable monthly data exist for that. Source: Deutsche Bundesbank foreign trade statistics, not adjusted; sum and share are our own calculation."
+  fr_rank:
+    title: "Risk premium over Bunds by country"
+    ask: "Does France already pay a higher risk premium than southern Europe?"
+    caption: "The chart shows, for eight euro countries, the risk premium of ten-year government bonds over Bunds in basis points (one basis point is a hundredth of a percentage point). The hollow dot shows the level a year ago, the solid dot the latest month. France is highlighted. Yields come from the European Central Bank's statistics on the interest-rate convergence criterion, as monthly averages."
+  fr_yields:
+    title: "Ten-year yields: France, Italy, Germany"
+    ask: "Are investors fleeing France for Bunds?"
+    caption: "The lines show the ten-year government bond yields of France, Italy and Germany as monthly averages (ECB). If the French yield rises while the German one falls, investors are fleeing into Bunds as a safe haven, as in 2011 and 2012. If both rise, it is more a general rise in rates. The “Events” switch shows changes of government and downgrades in France as well as monetary policy turning points."
   spreads:
     title: "Yield spread over Bunds"
     ask: "How much more do other euro countries pay than Germany?"
@@ -998,6 +1006,8 @@ series:
   ciss_es: {title: "ECB Composite Indicator of Systemic Stress (CISS), Spain, monthly average", label: "Spain", unit: "points, scale 0 to 1", adjustment: "not adjusted"}
   fr_deficit: {title: "General government balance, France", unit: "% of GDP", adjustment: "annual"}
   fr_debt: {title: "General government gross debt, France", unit: "% of GDP", adjustment: "annual"}
+  de_exp_fr_eur: {title: "German goods exports to France, sum of the last twelve months", label: "Exports to France", unit: "€bn", adjustment: "not adjusted"}
+  de_gdp_nom: {title: "Gross domestic product, nominal, Germany", unit: "€m", adjustment: "annual"}
   de_exp_share_fr: {title: "France's share of German goods exports, sum of the last twelve months", label: "France's share", unit: "%", adjustment: "not adjusted"}
   fx_usd: {title: "ECB reference rate: US dollars per euro", label: "US dollar", unit: "US$ per €", adjustment: "not adjusted"}
   fx_usd_m: {title: "ECB reference rate: US dollars per euro", label: "US dollar", unit: "US$ per €", adjustment: "not adjusted"}
@@ -1308,6 +1318,7 @@ strings:
   "Mrd. US-Dollar": "US$bn"
   "Mrd. €": "€bn"
   "Bio. €": "€tn"
+  "Basispunkte": "basis points"
   "Punkte, Skala 0 bis 1": "points, scale 0 to 1"
   "Saldo in %": "net balance in %"
   "Personen": "people"
@@ -1433,6 +1444,9 @@ names:
     "16": "Thuringia"
 # Feste Beschriftungen und Kalendertermine (deutsch: englisch), für Grafiken, Kalender und Gruppen
 labels:
+  "Griechenland": "Greece"
+  "Belgien": "Belgium"
+  "die Niederlande": "the Netherlands"
   "Anleihekäufe (APP, PEPP)": "Bond purchases (APP, PEPP)"
   "Kredite an Banken": "Loans to banks"
   "Sonstige Wertpapiere": "Other securities"

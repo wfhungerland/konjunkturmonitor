@@ -1037,7 +1037,7 @@ def chart_sentences(c: dict) -> list[str]:
             if len(pts) > 1:
                 (lh, vh), (ll, vl) = max(pts, key=lambda p: p[1]), min(pts, key=lambda p: p[1])
                 spread = f"Am stärksten stiegen die Preise für {lh} ({num(vh, d, True)} %), " + (f"am schwächsten für {ll} ({num(vl, d, True)} %)." if vl > 0 else f"für {ll} sanken sie ({num(vl, d, True)} %).")
-        if c.get("emphasis"):
+        if c.get("emphasis") and not isinstance(c.get("combine"), dict):  # Sätze mit allen Reihen behalten alle
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         if c.get("tpl"):  # ganze Sätze aus monitor.yaml mit Werten mehrerer Reihen, etwa {v[id]}; Stichtag ist der jüngste Zeitpunkt, den alle Reihen haben
             last = min(s["x"][-1] for s in series)
@@ -1116,7 +1116,7 @@ def chart_sentences(c: dict) -> list[str]:
                         h = head.split(" um ")[0]
                         out += f"; {h} {verb_sie[g]}{head[len(h):]}" + "".join(", " + x for x in more)
                 return [out + "."]
-            items = [f"{cb.get('pre', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))} {sym}".strip() for s in series if at(s) is not None]
+            items = [f"{cb.get('pre', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))} {'' if cb.get('bare') else sym}".strip() for s in series if at(s) is not None]  # bare: Einheit steht im Satzanfang
             if items:
                 out = [f"{_when(last, freq)} {cb['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0]) + "."]
                 if cb.get("mom"):  # stärkste Veränderung ggü. dem Vormonat
@@ -1614,8 +1614,10 @@ def build_payload(root: Path = ROOT) -> dict:
             entry = dict(c, type=typ, title=(charts_cfg.get(c["chart"], {}) or {}).get("title", c.get("title", "")),
                          decimals=c.get("decimals", (charts_cfg.get(c["chart"], {}) or {}).get("decimals", 1)))
             if c.get("events"):  # geldpolitische Ereignisse zum Einblenden (data/static/ereignisse_geld.yaml)
-                ev = yaml.safe_load((root / "data" / "static" / "ereignisse_geld.yaml").read_text(encoding="utf-8")).get("events") or []
-                entry["events"] = [{k: str(v) for k, v in e.items()} for e in ev]
+                ev = []
+                for nm in (c["events"] if isinstance(c["events"], list) else ["geld"]):  # etwa [geld, fr]: Geldpolitik und französische Politik
+                    ev += yaml.safe_load((root / "data" / "static" / f"ereignisse_{nm}.yaml").read_text(encoding="utf-8")).get("events") or []
+                entry["events"] = sorted(({k: str(v) for k, v in e.items()} for e in ev), key=lambda e: e["date"])
             if c.get("attach"):  # Zusatzdaten aus data/static, etwa Sätze und Fundstellen für den Tooltip
                 entry["attach"] = json.loads((root / "data" / "static" / c["attach"]).read_text(encoding="utf-8"))
             if typ == "clock":
@@ -1808,7 +1810,8 @@ def build_payload(root: Path = ROOT) -> dict:
                                      phrase=r.get("phrase", r["label"]), phrase_en=r.get("phrase_en", r.get("label_en", r["label"])), unit=r.get("unit", m.unit), unit_en=r.get("unit_en", r.get("unit", m.unit)),
                                      freq=m.frequency, now=round(float(sr.iloc[-1]), 3), now_date=now_at.strftime("%Y-%m-%d"), now_pct=pct(float(sr.iloc[-1])),
                                      ago=round(float(prev.iloc[-1]), 3) if len(prev) else None, ago_date=prev.index[-1].strftime("%Y-%m-%d") if len(prev) else None,
-                                     ago_pct=pct(float(prev.iloc[-1])) if len(prev) else None, base=round(base, 3), peak=round(pk, 3), peak_date=pk_at.strftime("%Y-%m-%d"), decimals=r.get("decimals", 2)))
+                                     ago_pct=pct(float(prev.iloc[-1])) if len(prev) else None, base=round(base, 3), peak=round(pk, 3), peak_date=pk_at.strftime("%Y-%m-%d"), decimals=r.get("decimals", 2),
+                                     role=r.get("role", "fund"), factor=r.get("factor", 1), show_decimals=r.get("show_decimals", r.get("decimals", 2))))
                 if not rows:
                     continue
                 specs_g = [meta[r["id"]] for r in rows]
@@ -1816,23 +1819,58 @@ def build_payload(root: Path = ROOT) -> dict:
                              sources=sorted({_source_name(x) for x in specs_g}), licenses=sorted({lic for x in specs_g if (lic := _license(x))}))
                 und = lambda xs: ", ".join(xs[:-1]) + " und " + xs[-1] if len(xs) > 1 else (xs[0] if xs else "")
                 and_ = lambda xs: ", ".join(xs[:-1]) + " and " + xs[-1] if len(xs) > 1 else (xs[0] if xs else "")
-                groups = list(dict.fromkeys(r["group"] for r in rows))
-                g1 = [r for r in rows if r["group"] == groups[0]]
                 pc = lambda v: f"{v:.0f}".replace("-", "−")
-                entry["say"] = [f"Vom Normalniveau 2015 bis 2019 zum Höchststand der Eurokrise 2011/12 hat {c.get('who', 'das Land')} zuletzt "
-                                + und([f"{r['phrase']} {pc(r['now_pct'])} %" for r in g1]) + " des Wegs zurückgelegt."]
-                entry["say_en"] = [f"Measured from the 2015–2019 normal level to the 2011/12 euro-crisis peak, {c.get('who_en', 'the country')} has recently moved "
-                                   + and_([f"{pc(r['now_pct'])}% of the way {r['phrase_en']}" for r in g1]) + "."]
-                for g in groups[1:]:
-                    gr = [r for r in rows if r["group"] == g]
-                    if all(r["now_pct"] <= 10 for r in gr):
-                        entry["say"].append(f"{c.get('calm', 'Ein Übergreifen ist bisher nicht zu sehen')}: " + _cap(und([r["phrase"] for r in gr])) + " liegen auf oder unter dem Normalniveau.")
-                        entry["say_en"].append(f"{c.get('calm_en', 'There is no sign of contagion so far')}: " + and_([r["phrase_en"] for r in gr]) + " are at or below normal levels.")
-                    else:
-                        entry["say"].append(f"{g}: " + und([f"{r['label']} {pc(r['now_pct'])} %" for r in gr]) + " des Wegs.")
-                        entry["say_en"].append(f"{gr[0]['group_en']}: " + and_([f"{r['label_en']} {pc(r['now_pct'])}%" for r in gr]) + " of the way.")
-                if c.get("note"):
-                    entry["say"].append(c["note"]); entry["say_en"].append(c.get("note_en", c["note"]))
+                nd = lambda v, k=0: f"{v:,.{k}f}".replace(",", "X").replace(".", ",").replace("X", ".").replace("-", "−")
+                ne = lambda v, k=0: f"{v:,.{k}f}".replace("-", "−")
+                by_role = lambda role: [r for r in rows if r["role"] == role]
+                top = lambda role: max((r["now_pct"] for r in by_role(role)), default=None)
+                fund, panic, cont = top("fund"), top("panic"), top("cont")
+                for rule in c.get("headline") or []:  # Titel als Botschaft: erste passende Regel nach den Schwellen je Gruppe
+                    ok = all(v is not None and (lo is None or v >= lo) and (hi is None or v < hi)
+                             for v, lo, hi in ((fund, rule.get("fund_min"), rule.get("fund_max")), (panic, rule.get("panic_min"), rule.get("panic_max")),
+                                               (cont, rule.get("cont_min"), rule.get("cont_max"))))
+                    if ok:
+                        entry["title"], entry["title_en"] = rule["de"], rule["en"]
+                        break
+                g1, g2 = by_role("fund"), by_role("panic")
+                val = lambda r, en=False: (ne if en else nd)(r["now"] * r.get("factor", 1), r["show_decimals"]) + ("" if en and r["unit_en"].startswith("%") else " ") + (r["unit_en"] if en else r["unit"])
+                entry["say"] = [f"Vom Normalniveau {b0} bis {b1} zum Höchststand der Eurokrise 2011/12 hat {c.get('who', 'das Land')} "
+                                + und([f"{r['phrase']} ({val(r)}) {pc(r['now_pct'])} %" for r in g1]) + " des Wegs zurückgelegt"
+                                + (f", {und([r['phrase'] for r in g2])} erst {und([pc(r['now_pct']) + ' %' for r in g2])}." if g2 else ".")]
+                entry["say_en"] = [f"Measured from the {b0}–{b1} normal level to the 2011/12 euro-crisis peak, {c.get('who_en', 'the country')} has moved "
+                                   + and_([f"{pc(r['now_pct'])}% of the way {r['phrase_en']} ({val(r, True)})" for r in g1])
+                                   + (f", but only {and_([pc(r['now_pct']) + '% ' + r['phrase_en'] for r in g2])}." if g2 else ".")]
+                cmp = c.get("compare") or {}
+                if cmp.get("self") in data and cmp.get("others"):  # Rangfolge der Risikoaufschläge: wer zahlt mehr, wer weniger
+                    me = float(data[cmp["self"]].dropna().iloc[-1]) * 100
+                    oth = [(nm, nm_en, float(data[k].dropna().iloc[-1]) * 100) for k, (nm, nm_en) in cmp["others"].items() if k in data]
+                    below = [o for o in oth if o[2] < me]
+                    above = sorted([o for o in oth if o[2] >= me], key=lambda o: -o[2])
+                    if below:
+                        bs = sorted(below, key=lambda o: -o[2])
+                        st = f"{c.get('who', 'Das Land')} zahlt damit mehr Risikoaufschlag als " + und([f"{o[0]} ({nd(o[2])}{' Basispunkte' if k == 0 else ''})" for k, o in enumerate(bs)])
+                        st_en = f"{c.get('who_en', 'The country')} thus pays a higher risk premium than " + and_([f"{o[1]} ({ne(o[2])}{' basis points' if k == 0 else ''})" for k, o in enumerate(bs)])
+                        st += f"; mehr zahlt nur {und([f'{o[0]} ({nd(o[2])})' for o in above])}." if above else "; kein anderes Land zahlt mehr."
+                        st_en += f"; only {and_([f'{o[1]} ({ne(o[2])})' for o in above])} pay{'s' if len(above) == 1 else ''} more." if above else "; no other country pays more."
+                        entry["say"].append(st)
+                        entry["say_en"].append(st_en)
+                tp = root / "data" / "static" / "tpi.json"
+                if c.get("tpi_geo") and tp.exists():  # Stützung durch die EZB: läuft ein Defizitverfahren, ist das TPI nicht sicher
+                    trow = next((x for x in json.loads(tp.read_text(encoding="utf-8")).get("rows", []) if x["geo"] == c["tpi_geo"]), None)
+                    if trow and trow.get("edp"):
+                        entry["say"].append(f"Gegen {c.get('who', 'das Land')} läuft ein Defizitverfahren der EU; ob die EZB dann mit dem TPI Anleihen kaufen würde, entscheidet sie im Einzelfall.")
+                        entry["say_en"].append(f"{c.get('who_en', 'The country')} is in an EU excessive deficit procedure; whether the ECB would then buy its bonds under the TPI is decided case by case.")
+                    elif trow:
+                        entry["say"].append(f"Gegen {c.get('who', 'das Land')} läuft kein Defizitverfahren der EU; eine Bedingung für Käufe der EZB über das TPI ist damit erfüllt.")
+                        entry["say_en"].append(f"{c.get('who_en', 'The country')} is not in an EU excessive deficit procedure, so one condition for ECB purchases under the TPI is met.")
+                gc = by_role("cont")
+                if gc and all(r["now_pct"] <= 10 for r in gc):
+                    entry["say"].append(f"{c.get('calm', 'Ein Übergreifen ist bisher nicht zu sehen')}: " + _cap(und([r["phrase"] for r in gc])) + " liegen auf oder unter dem Normalniveau.")
+                    entry["say_en"].append(f"{c.get('calm_en', 'There is no sign of contagion so far')}: " + and_([r["phrase_en"] for r in gc]) + " are at or below normal levels.")
+                elif gc:
+                    hot = [r for r in gc if r["now_pct"] > 10]
+                    entry["say"].append("Erste Anzeichen von Übergreifen: " + und([f"{r['phrase']} {pc(r['now_pct'])} %" for r in hot]) + " des Wegs zum Krisenhoch.")
+                    entry["say_en"].append("First signs of contagion: " + and_([f"{r['phrase_en']} {pc(r['now_pct'])}%" for r in hot]) + " of the way to the crisis peak.")
             elif typ == "curve":  # Zinskurven je Land, Daten aus data/static/zinskurven.json (werktäglich, monitor/geldpolitik.py)
                 from .answers import MONTHS as MONTHS_DE
                 K = (entry.get("attach") or {}).get("countries") or []
@@ -1937,7 +1975,7 @@ def build_payload(root: Path = ROOT) -> dict:
                                        **_xy(data[s.id], c.get("years"), c.get("x_start"))))
                 if not series:
                     continue
-                if full:
+                if full and typ != "dumbbell":  # Hantel: Vergleich heute gegen Anfang des Fensters, keine ganze Reihe
                     entry["_full"] = full
                 if c.get("ref_mean"):  # Mittel eines Zeitraums als graue Referenzlinie
                     a0, a1 = c["ref_mean"]
@@ -1996,6 +2034,23 @@ def build_payload(root: Path = ROOT) -> dict:
                 entry["licenses"] = sorted({lic for s in specs_used if (lic := _license(s))})
                 if any(_base(s).source == "gmd" for s in specs_used):  # Global Macro Database: Abbildung und Download unter CC BY-NC-SA 4.0
                     entry["content_license"] = "CC BY-NC-SA 4.0"
+                if c.get("exp_context") and series:  # Exporte in ein Land: Betrag, Anteil an allen Exporten, Anteil am BIP
+                    from .answers import MONTHS as MONTHS_DE
+                    xc = c["exp_context"]
+                    v, d0 = series[0]["y"][-1], pd.Timestamp(series[0]["x"][-1])
+                    sh = data[xc["share"]].dropna() if xc.get("share") in data else None
+                    gdp = data[xc["gdp"]].dropna() if xc.get("gdp") in data else None
+                    share = float(sh[sh.index <= d0].iloc[-1]) if sh is not None and len(sh[sh.index <= d0]) else None
+                    gp = v / (float(gdp.iloc[-1]) / 1000) * 100 if gdp is not None and len(gdp) else None
+                    de = f"In den zwölf Monaten bis {MONTHS_DE[d0.month - 1]} {d0.year} exportierte Deutschland Waren für {v:.0f} Mrd. € nach Frankreich"
+                    en = f"In the twelve months to {d0.strftime('%B %Y')}, Germany exported goods worth €{v:.0f}bn to France"
+                    if share is not None:
+                        de += f", {share:.1f} % aller Warenexporte".replace(".", ",")
+                        en += f", {share:.1f}% of all goods exports"
+                    if gp is not None:
+                        de += f" und rund {gp:.1f} % der deutschen Wirtschaftsleistung {gdp.index[-1].year}".replace(".", ",")
+                        en += f" and about {gp:.1f}% of German GDP in {gdp.index[-1].year}"
+                    entry["say"], entry["say_en"] = [de + "."], [en + "."]
                 if c.get("crises") and c["crises"] in data:  # Bankenkrisen als Hintergrundbänder
                     cs = data[c["crises"]].dropna()
                     x0 = min(s["x"][0] for s in series)

@@ -149,3 +149,5 @@ curve_slope;Abstand lange kurze Zinsen;2026-11-13;
 fr_gauge;Krisenthermometer Frankreich;2026-11-13;
 fr_stress;Finanzstress Frankreich;2026-11-13;
 fr_exports;Exportanteil Frankreich;2026-11-13;
+fr_rank;Risikoaufschlag Laender;2026-11-14;
+fr_yields;Renditen Frankreich Deutschland;2026-11-14;

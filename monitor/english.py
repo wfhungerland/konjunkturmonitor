@@ -620,7 +620,7 @@ def chart_sentences_en(c: dict) -> list[str]:
         series = [s for s in c["series"] if s.get("y")]
         norm = next((s for s in series if s.get("style") == "norm"), None)
         series = [s for s in series if s.get("style") != "norm"]
-        if c.get("emphasis"):
+        if c.get("emphasis") and not isinstance(c.get("combine"), dict):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         freq = c.get("freq", "M")
         if c.get("combine") and not isinstance(c.get("combine"), dict) and (c.get("unit_de") or "").startswith("Index"):  # gleich gebaute Reihen in einem Satz
@@ -653,7 +653,7 @@ def chart_sentences_en(c: dict) -> list[str]:
             sym = "%" if su0.startswith("%") else " pp" if su0.startswith(("Pp", "Saldo")) else "" if su0.startswith("Index") else " " + (c.get("unit") or "").split(",")[0]
             last_c = min(s["x"][-1] for s in series) if cb.get("common") else last
             at = lambda s: s["y"][s["x"].index(last_c)] if last_c in s["x"] else None
-            items = [f"{cb.get('pre_en', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))}{sym}" for s in series if at(s) is not None]
+            items = [f"{cb.get('pre_en', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))}{'' if cb.get('bare') else sym}" for s in series if at(s) is not None]
             if items:
                 return [f"{when(last_c, freq) if cb.get('common') else w}, {cb['lead_en']} " + (", ".join(items[:-1]) + " and " + items[-1] if len(items) > 1 else items[0]) + "."]
         mig = {"de_netmig_de": "Germans", "de_netmig_eu": "people from other EU countries", "de_netmig_neu": "people from outside the EU"}
@@ -803,6 +803,8 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
             for f in ("title", "ask", "caption", "what", "rail", "votes_label", "kommentar"):
                 if c.get(f):
                     c[f] = tr.get("charts", cid, f, c[f])
+            if c.get("title_en"):  # Titel als Botschaft, aus den Daten gesetzt (etwa Krisenmonitor)
+                c["title"] = c["title_en"]
             c["unit_de"] = c.get("unit")
             lab_map = {}
             if c.get("unit"):
