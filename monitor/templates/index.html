@@ -543,7 +543,7 @@
 const DATA = /*__DATA__*/null;
 // Feste Kurzzeichen je Abbildung („Preise-3“) und Anker („preise-3“); alte Links #abb-12 werden umgelenkt
 const BYNO = {}; ((DATA && DATA.topics) || []).forEach(t => (t.charts || []).forEach(c => { if (c.no != null) BYNO[c.no] = c; }));
-const FC = n => (BYNO[n] || {}).code || "Abb. " + n, FA = n => (BYNO[n] || {}).anchor || "abb-" + n;
+const FC = n => (BYNO[n] || {}).code ?? "Abb. " + n, FA = n => (BYNO[n] || {}).anchor || "abb-" + n;
 // Grafikstandard: Farben, Jahresbänder, Gitter, Nulllinie, Schrift
 const PAL = ["#002060", "#0070C0", "#00B0F0", "#51154A", "#7030A0", "#D86DCD", "#47D359"];
 let YEAR_BANDS = (DATA.layout || {}).year_bands === true;  // helle Flächen je zweites Kalenderjahr: Standard aus, weil sie am Rand wie eine Rezession wirkten; Schalter unter den Kennzahlen

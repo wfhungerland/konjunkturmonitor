@@ -824,10 +824,16 @@ def clean_title(title: str) -> str:
 
 
 def file_stem(c: dict, date: str, width: int, shorts: dict) -> str:
-    kind = "Tab." if c.get("type") in ("heat", "calendar", "tpi") else "Abb."
-    title = clean_title(shorts.get(c["chart"]) or c.get("title", ""))
-    code = c.get("code") or f"{kind} {c['no']:0{width}d}"  # festes Kurzzeichen, etwa „Preise-3“
-    return f"Konjunkturmonitor ({date}, {code}) {title}"[:79]
+    """Konjunkturmonitor (Datum, Abb. Kapitel.Platz) Kurztitel; beide zweistellig, damit der Ordner nach Seite sortiert.
+    Ohne Kapitel (Kalender): nur Datum. Zu lange Namen werden an der Wortgrenze gekürzt, nie im Wort."""
+    short = shorts.get(c["chart"])  # gepflegter Kurztitel gilt wörtlich, nur Zeichen werden bereinigt
+    title = " ".join(re.sub(r"[^A-Za-z0-9 -]", " ", short.translate(_TRANS)).split()) if short else clean_title(c.get("title", ""))
+    m = re.match(r"(Abb\.|Tab\.) (\d+)\.(\d+)$", c.get("code") or "")
+    head = f"Konjunkturmonitor ({date}, {m[1]} {int(m[2]):02d}.{int(m[3]):02d})" if m else f"Konjunkturmonitor ({date})"
+    words = title.split()
+    while words and len(f"{head} {' '.join(words)}") > 79:
+        words.pop()
+    return f"{head} {' '.join(words) or 'Abbildung'}"
 
 
 # ---------------------------------------------------------------------------
@@ -880,7 +886,7 @@ def write_all(payload: dict, out: Path, root: Path | None = None) -> None:
             df, plan = chart_table(c)
             stem = file_stem(c, date, width, shorts)
             c["_stem"] = stem
-            c["_sheet"] = stem.split(", ", 1)[1].split(")")[0][:31]  # etwa „Preise-3“
+            c["_sheet"] = (stem.split(", ", 1)[1].split(")")[0] if ", " in stem else "Daten")[:31]  # etwa „Abb. 07.03“
             xs = [x for s in (c.get("series") or []) if isinstance(s, dict) for x in s.get("x", [])]
             c["datenstand"] = max(xs) if xs else ""
             files = {}

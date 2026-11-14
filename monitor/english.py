@@ -758,10 +758,9 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
     ans = {}
     for t in p["topics"]:
         t["title"] = tr.get("topics", t["id"], "title", t["title"])
-        lab = tr.get("topics", t["id"], "code", "") or t["title"].split()[0]  # Kurzzeichen englisch, Anker bleiben gleich
-        for c in t.get("charts", []):
-            if c.get("k"):
-                c["code"] = f"{lab}-{c['k']}"
+        for c in t.get("charts", []):  # Nummer englisch: „Abb. 8.1“ wird „Fig. 8.1“, Anker bleiben gleich
+            if c.get("code"):
+                c["code"] = c["code"].replace("Abb.", "Fig.").replace("Tab.", "Table")
         if t.get("ask"):
             t["ask"] = tr.get("topics", t["id"], "ask", t["ask"])
         q = t.get("question")
