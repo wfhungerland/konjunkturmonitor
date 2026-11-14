@@ -213,7 +213,7 @@ def _smard(filt: int, region: str, res: str = "month", since: pd.Timestamp | Non
 
 def update_smard(static: Path) -> None:
     """Stromverbrauch (Netzlast) und Großhandelspreis Day-Ahead DE/LU (bis September 2018 DE/AT/LU), Lizenz CC BY 4.0.
-    Monatswerte (TWh, €/MWh) seit 2015 und Tageswerte (GWh, €/MWh) der letzten drei Jahre."""
+    Monats- und Tageswerte (TWh bzw. GWh, €/MWh) seit 2015, dem Beginn der Daten. SMARD legt je Jahr eine Datei ab."""
     load = _smard(410, "DE") / 1e6
     _write(static / "smard_load.csv", load)
     price = _smard(4169, "DE-LU")
@@ -223,10 +223,14 @@ def update_smard(static: Path) -> None:
     except Exception as e:
         log.warning("SMARD Preiszone DE/AT/LU nicht geladen: %s", e)
     _write(static / "smard_price.csv", price)
-    since = pd.Timestamp.now().normalize() - pd.DateOffset(years=3)
-    load_d = _smard(410, "DE", "day", since) / 1e3
+    load_d = _smard(410, "DE", "day") / 1e3
     _write(static / "smard_load_d.csv", load_d)
-    price_d = _smard(4169, "DE-LU", "day", since)
+    price_d = _smard(4169, "DE-LU", "day")
+    try:
+        old = _smard(4996, "DE", "day")
+        price_d = pd.concat([old[old.index < price_d.index[0]], price_d])
+    except Exception as e:
+        log.warning("SMARD Preiszone DE/AT/LU (Tageswerte) nicht geladen: %s", e)
     _write(static / "smard_price_d.csv", price_d)
     log.info("SMARD: %d Monate Verbrauch, %d Monate Preis, %d Tage Verbrauch, %d Tage Preis", len(load), len(price), len(load_d), len(price_d))
 
@@ -260,7 +264,7 @@ def update_gas_storage(static: Path) -> None:
     vals, page, last = {}, 1, 1
     to = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     while page <= last:
-        req = urllib.request.Request(f"https://agsi.gie.eu/api?country=de&from=2015-01-01&to={to}&size=300&page={page}",
+        req = urllib.request.Request(f"https://agsi.gie.eu/api?country=de&from=2011-01-01&to={to}&size=300&page={page}",
                                      headers={"User-Agent": "Konjunkturmonitor/1.0", "x-key": key})
         with urllib.request.urlopen(req, timeout=120) as r:
             j = json.loads(r.read().decode("utf-8"))

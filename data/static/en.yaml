@@ -545,7 +545,7 @@ charts:
   gas:
     title: "Natural gas price in Europe"
     ask: "How expensive is natural gas?"
-    caption: "The chart shows the wholesale price of natural gas in Europe at the TTF trading hub as a monthly average. The International Monetary Fund reports the price in US dollars per MMBtu, an energy unit common in the United States. Here it is converted into euros per megawatt hour, the unit customary in Europe, using the monthly average of the European Central Bank's reference rate (1 MMBtu = 0.293071 megawatt hours)."
+    caption: "The chart shows the wholesale price of natural gas in Europe at the TTF trading hub as a monthly average. The International Monetary Fund reports the price in US dollars per MMBtu, an energy unit common in the United States. Here it is converted into euros per megawatt hour, the unit customary in Europe, using the monthly average of the European Central Bank's reference rate (1 MMBtu = 0.293071 megawatt hours). The full series starts in 1999 with the euro."
   diffusion:
     title: "Breadth: share of manufacturing industries growing"
     ask: "Is industry growing across the board or only in a few industries?"

@@ -2317,7 +2317,7 @@ series:
     unit: "US-$ je €"
     frequency: D
     adjustment: "nicht bereinigt"
-    start: "2015-01-01"  # 2015–19 nötig für die Bänder von Rohöl und Erdgas in Euro (lage.py)
+    start: "1999-01-01"  # Beginn des Euro: Erdgas in Euro ab 1999 (Energie, „Ganze Reihe“); 2015–19 für die Bänder in lage.py
     stale_after_months: 1
     chart: fx_usd
     label: "US-Dollar"
@@ -2715,7 +2715,7 @@ series:
     unit: "% der Speicherkapazität"
     frequency: D
     adjustment: nicht bereinigt
-    start: "2015-01-01"
+    start: "2011-01-01"
     stale_after_months: 1
     chart: gas_storage
     label: "Füllstand"
@@ -2729,6 +2729,7 @@ series:
     unit: "US-Dollar je Barrel"
     frequency: M
     adjustment: nicht bereinigt
+    start: "1987-05-01"
     chart: oil
     label: "Brent"
     license: "Gemeinfrei (U.S. EIA); Quellenangabe"
@@ -2742,7 +2743,7 @@ series:
     unit: "US-Dollar je Barrel"
     frequency: D
     adjustment: nicht bereinigt
-    start: "2019-01-01"
+    start: "1987-05-01"
     stale_after_months: 1
     chart: oil_d
     label: "Brent"
@@ -2758,7 +2759,7 @@ series:
     unit: "€ je Liter"
     frequency: D
     adjustment: nicht bereinigt
-    start: "2015-01-01"
+    start: "2005-01-01"
     stale_after_months: 1
     chart: fuel
     label: "Super 95"
@@ -2773,7 +2774,7 @@ series:
     unit: "€ je Liter"
     frequency: D
     adjustment: nicht bereinigt
-    start: "2015-01-01"
+    start: "2005-01-01"
     stale_after_months: 1
     chart: fuel
     label: "Diesel"
@@ -2788,7 +2789,7 @@ series:
     unit: "€ je Liter"
     frequency: D
     adjustment: nicht bereinigt
-    start: "2015-01-01"
+    start: "2005-01-01"
     stale_after_months: 1
     chart: fuel
     label: "Heizöl"
@@ -2802,6 +2803,7 @@ series:
     unit: "US-Dollar je MMBtu"
     frequency: M
     adjustment: nicht bereinigt
+    start: "1992-01-01"
     chart: gas
     label: "Erdgas Europa (TTF)"
     license: "IWF-Daten, Wiederverwendung mit Quellenangabe"
