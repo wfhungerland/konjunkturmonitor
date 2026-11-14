@@ -1020,7 +1020,7 @@ def chart_sentences(c: dict) -> list[str]:
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         if c.get("tpl"):  # ganze Sätze aus monitor.yaml mit Werten mehrerer Reihen, etwa {v[id]}; Stichtag ist der jüngste Zeitpunkt, den alle Reihen haben
             last = min(s["x"][-1] for s in series)
-            F = {k: {} for k in ("v", "n", "full", "chg", "pabs", "mehr", "ueber", "abs100", "ueber100", "abs", "sg", "up_pl", "trend_pl", "streak")}
+            F = {k: {} for k in ("v", "n", "full", "chg", "pabs", "mehr", "ueber", "abs100", "ueber100", "abs", "sg", "up_pl", "trend_pl", "streak", "m3", "m3y_abs", "m3y_mehr")}
             noun = {"Q": ("Quartal", "Quartalen"), "M": ("Monat", "Monaten")}.get(freq, ("Jahr", "Jahren"))
             vals, vals0 = {}, {}
             for s in series:
@@ -1040,6 +1040,11 @@ def chart_sentences(c: dict) -> list[str]:
                 ys = [y for y in s["y"][:i + 1] if y is not None]
                 k = next((j for j, y in enumerate(reversed(ys)) if (y > 0) != (v > 0)), len(ys))  # Perioden in Folge mit gleichem Vorzeichen
                 F["streak"][sid] = f"einem {noun[0]}" if k == 1 else f"{ZAHLWORT.get(k, k)} {noun[1]}"
+                w = s["y"][max(0, i - 14):i + 1]
+                if len(w) == 15 and None not in w:  # drei Monate ggü. den drei Monaten davor und ggü. denselben drei Monaten ein Jahr zuvor
+                    F["m3"][sid] = num((sum(w[-3:]) / sum(w[-6:-3]) - 1) * 100, 1, True) + " %"
+                    py = (sum(w[-3:]) / sum(w[:3]) - 1) * 100
+                    F["m3y_abs"][sid], F["m3y_mehr"][sid] = num(abs(py), 1), "mehr" if py > 0 else "weniger"
                 if y0:
                     pc = (v / y0 - 1) * 100
                     F["chg"][sid], F["pabs"][sid] = num(pc, 1, True) + " %", num(abs(pc), 1)
@@ -1049,7 +1054,7 @@ def chart_sentences(c: dict) -> list[str]:
                         for a in vals for b in vals if a != b}
             F["q0"] = {f"{a}/{b}": num(vals0[a] / vals0[b], 1) for a in vals0 for b in vals0 if a != b and vals0[a] is not None and vals0[b]}
             try:
-                return [t.format(when=_when(last, freq), **F) for t in c["tpl"]]
+                return [t.format(when=_when(last, freq), per=_per(last, freq), **F) for t in c["tpl"]]
             except KeyError:
                 return []
         if c.get("brief"):  # ein Satz je Vergleich: ggü. Vorjahresmonat und drei Monate ggü. den drei Monaten davor
