@@ -572,6 +572,8 @@ def _last_x(c: dict) -> str | None:
         return max((x for x, y in zip(c["x"], c["y"]) if y is not None), default=None)
     if c.get("type") in ("heat", "heatbars"):
         return c["heat"]["cols"][-1]
+    if c.get("type") == "gauge" and (c.get("gauge") or {}).get("rows"):
+        return max(r["now_date"] for r in c["gauge"]["rows"])
     if c.get("type") == "curve" and (c.get("attach") or {}).get("countries"):
         return max(k["now"]["date"] for k in c["attach"]["countries"])
     if c.get("type") == "tpi" and (c.get("attach") or {}).get("month"):
@@ -776,10 +778,15 @@ def chart_sentences(c: dict) -> list[str]:
             w = c["tiles"]
             loc = lambda n: {"Saarland": "im Saarland"}.get(n, "in " + n)
             hi, lo = max(w["rows"], key=lambda r: r["level"]), min(w["rows"], key=lambda r: r["level"])
-            up = max(w["rows"], key=lambda r: r["change"])
+            up, dn = max(w["rows"], key=lambda r: r["change"]), min(w["rows"], key=lambda r: r["change"])
             out = [f"Im Jahr {w['span']} war die {c.get('what') or 'Quote'} {loc(hi['name'])} mit {num(hi['level'], 1)} % am höchsten und {loc(lo['name'])} mit {num(lo['level'], 1)} % am niedrigsten."]
-            if up["change"] > 0:
-                out.append(f"Am stärksten gestiegen ist sie im Jahr {w['span']} {loc(up['name'])}: um {num(up['change'], 1)} Pp ggü. dem Vorjahr.")
+            n, n_up = len(w["rows"]), sum(1 for r in w["rows"] if round(r["change"], 1) > 0)
+            n_dn = sum(1 for r in w["rows"] if round(r["change"], 1) < 0)
+            cnt = lambda k: f"allen {ZAHLWORT.get(n, n)}" if k == n else f"{ZAHLWORT.get(k, k)} von {ZAHLWORT[n]}" if n in ZAHLWORT else f"{k} von {n}"  # Zahlwort nur, wenn beide Zahlen eins haben
+            if n_up:  # Breite: in wie vielen Ländern die Quote stieg, und wo am stärksten
+                out.append(f"In {cnt(n_up)} Ländern stieg sie ggü. dem Vorjahr, am stärksten {loc(up['name'])} ({num(up['change'], 1, True)} Pp).")
+            elif n_dn:
+                out.append(f"In {cnt(n_dn)} Ländern sank sie ggü. dem Vorjahr, am stärksten {loc(dn['name'])} ({num(dn['change'], 1, True)} Pp).")
             return out
         if typ == "tiles":
             w = c["tiles"]
@@ -1011,6 +1018,45 @@ def chart_sentences(c: dict) -> list[str]:
         series = [s for s in series if s.get("style") != "norm"]
         if c.get("emphasis"):
             series = [s for s in series if s["id"] == c["emphasis"]] or series
+        if c.get("tpl"):  # ganze Sätze aus monitor.yaml mit Werten mehrerer Reihen, etwa {v[id]}; Stichtag ist der jüngste Zeitpunkt, den alle Reihen haben
+            last = min(s["x"][-1] for s in series)
+            F = {k: {} for k in ("v", "n", "full", "chg", "pabs", "mehr", "ueber", "abs100", "ueber100", "abs", "sg", "up_pl", "trend_pl", "streak", "m3", "m3y_abs", "m3y_mehr")}
+            noun = {"Q": ("Quartal", "Quartalen"), "M": ("Monat", "Monaten")}.get(freq, ("Jahr", "Jahren"))
+            vals, vals0 = {}, {}
+            for s in series:
+                if last not in s["x"] or s["y"][s["x"].index(last)] is None:
+                    continue
+                i, sid = s["x"].index(last), s["id"]
+                v = s["y"][i]
+                ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
+                k = max((j for j, x in enumerate(s["x"]) if x <= ago), default=None)
+                y0 = s["y"][k] if k is not None else None
+                vals[sid], vals0[sid] = v, y0
+                F["v"][sid], F["n"][sid] = val(v), num(v, d)
+                F["full"][sid] = f"{int(round(v)) * 1000:,}".replace(",", ".")
+                F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
+                F["abs"][sid], F["sg"][sid] = num(abs(v), d), num(v, d, True)
+                F["up_pl"][sid], F["trend_pl"][sid] = ("stiegen", "steigen") if v > 0 else ("sanken", "sinken")
+                ys = [y for y in s["y"][:i + 1] if y is not None]
+                k = next((j for j, y in enumerate(reversed(ys)) if (y > 0) != (v > 0)), len(ys))  # Perioden in Folge mit gleichem Vorzeichen
+                F["streak"][sid] = f"einem {noun[0]}" if k == 1 else f"{ZAHLWORT.get(k, k)} {noun[1]}"
+                w = s["y"][max(0, i - 14):i + 1]
+                if len(w) == 15 and None not in w:  # drei Monate ggü. den drei Monaten davor und ggü. denselben drei Monaten ein Jahr zuvor
+                    F["m3"][sid] = num((sum(w[-3:]) / sum(w[-6:-3]) - 1) * 100, 1, True) + " %"
+                    py = (sum(w[-3:]) / sum(w[:3]) - 1) * 100
+                    F["m3y_abs"][sid], F["m3y_mehr"][sid] = num(abs(py), 1), "mehr" if py > 0 else "weniger"
+                if y0:
+                    pc = (v / y0 - 1) * 100
+                    F["chg"][sid], F["pabs"][sid] = num(pc, 1, True) + " %", num(abs(pc), 1)
+                    F["mehr"][sid], F["ueber"][sid] = ("mehr" if pc > 0 else "weniger"), ("über" if pc > 0 else "unter")
+            F["q"] = {f"{a}/{b}": num(vals[a] / vals[b], 1) for a in vals for b in vals if a != b and vals[b]}
+            F["cmp"] = {f"{a}-{b}": "so schnell wie" if round(vals[a] - vals[b], d) == 0 else f"{num(abs(vals[a] - vals[b]), d)} Pp {'schneller' if vals[a] > vals[b] else 'langsamer'} als"
+                        for a in vals for b in vals if a != b}
+            F["q0"] = {f"{a}/{b}": num(vals0[a] / vals0[b], 1) for a in vals0 for b in vals0 if a != b and vals0[a] is not None and vals0[b]}
+            try:
+                return [t.format(when=_when(last, freq), per=_per(last, freq), **F) for t in c["tpl"]]
+            except KeyError:
+                return []
         if c.get("brief"):  # ein Satz je Vergleich: ggü. Vorjahresmonat und drei Monate ggü. den drei Monaten davor
             nm, last = c["brief"], max(s["x"][-1] for s in series)
             ss = [s for s in series if s["x"][-1] == last and s.get("id") in nm and len(s["y"]) > 13]
@@ -1027,6 +1073,22 @@ def chart_sentences(c: dict) -> list[str]:
             last = min(s["x"][-1] for s in series) if cb.get("common") else max(s["x"][-1] for s in series)  # common: jüngster Zeitraum, den alle haben
             sym = "%" if unit.startswith("%") else "Pp" if unit.startswith(("Pp", "Saldo")) else u
             at = lambda s: s["y"][s["x"].index(last)] if last in s["x"] else None
+            if cb.get("where") and series and at(series[0]) is not None and unit.startswith("%"):  # Verb vorn: Gesamtgröße, dann Bereiche mit gleicher und mit anderer Richtung
+                sg = lambda v: (round(v, d) > 0) - (round(v, d) < 0)
+                verb = {1: "stiegen", -1: "sanken", 0: "veränderten sich kaum"} if cb.get("pl") else {1: "stieg", -1: "sank", 0: "veränderte sich kaum"}
+                verb_sie = {1: "stiegen sie", -1: "sanken sie", 0: "veränderten sie sich kaum"} if cb.get("pl") else {1: "stieg sie", -1: "sank sie", 0: "veränderte sie sich kaum"}
+                tot, rest = series[0], [s for s in series[1:] if at(s) is not None]
+                amt = lambda v: f" um {num(abs(v), d)} {sym}" if sg(v) else ""
+                g0 = sg(at(tot))
+                same = [f"{cb['where'].get(s['label'], s['label'])}{amt(at(s))}" for s in rest if sg(at(s)) == g0]
+                out = f"{_when(last, freq)} {verb[g0]} {cb['subj']}{amt(at(tot))} ggü. dem {yoy_word}" + "".join(", " + x for x in same)
+                for g in (1, -1, 0):
+                    xs = [f"{cb['where'].get(s['label'], s['label'])}{amt(at(s))}" for s in rest if sg(at(s)) == g and g != g0]
+                    if xs:
+                        head, *more = xs
+                        h = head.split(" um ")[0]
+                        out += f"; {h} {verb_sie[g]}{head[len(h):]}" + "".join(", " + x for x in more)
+                return [out + "."]
             items = [f"{cb.get('pre', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))} {sym}".strip() for s in series if at(s) is not None]
             if items:
                 return [f"{_when(last, freq)} {cb['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0]) + "."]
@@ -1063,7 +1125,7 @@ def chart_sentences(c: dict) -> list[str]:
                 ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
                 k = max((i for i, x in enumerate(s["x"]) if x <= ago), default=None)
                 yago = s["y"][k] if k is not None else None
-            su = s.get("unit") if c.get("own_scale") else unit
+            su = s.get("unit") if c.get("own_scale") or (c.get("each_last") and (s.get("unit") or "").startswith(("% des", "% der"))) else unit
             su = (su or "").split(",")[0]
             su = "Pp" if su.startswith("Prozentpunkte") else su
             uu = su if su.startswith(("% des", "% der")) else "%" if su.startswith("%") else "Pp" if su.startswith(("Pp", "Saldo")) else "" if su.startswith("Index") else su
@@ -1135,6 +1197,16 @@ def chart_sentences(c: dict) -> list[str]:
         if typ == "threshold" and c.get("threshold") is not None and out and series and series[0]["y"][-1] is not None:
             th = float(c["threshold"])
             out.append("Ein Rezessionssignal liegt damit vor." if series[0]["y"][-1] >= th else "Ein Rezessionssignal liegt damit nicht vor.")
+        if c.get("ref_year") and out and series and series[0]["y"][-1] is not None:  # Bezug zum Mittel eines Jahres, etwa 2019 vor der Pandemie
+            ry = str(c["ref_year"])
+            r = [y for x, y in zip(series[0]["x"], series[0]["y"]) if x[:4] == ry and y is not None]
+            if r:
+                m, v = sum(r) / len(r), series[0]["y"][-1]
+                if unit.startswith("Index"):
+                    pc = (v / m - 1) * 100
+                    out.append(f"Das sind {num(abs(pc), 1)} % {'mehr' if pc > 0 else 'weniger'} als im Mittel des Jahres {ry}." if round(pc, 1) else f"Das ist so viel wie im Mittel des Jahres {ry}.")
+                else:
+                    out.append(f"Im Mittel des Jahres {ry} waren es {num(m, d)} {'%' if unit.startswith('%') else u}.".replace(" .", "."))
         if norm and out and norm["x"][-1] == last and series and series[0]["y"][-1] is not None and norm["y"][-1]:
             v, m = series[0]["y"][-1], norm["y"][-1]
             a0, a1 = c.get("norm") or ("", "")
@@ -1644,6 +1716,54 @@ def build_payload(root: Path = ROOT) -> dict:
                     continue
                 entry.update(sources=list(c.get("sources") or []), licenses=list(c.get("licenses") or []), freq="A",
                              unit=c.get("unit", entry["attach"].get("unit", "")))
+            elif typ == "gauge":  # Krisenthermometer: je Reihe der Weg vom Normalniveau (Mittel der Basisjahre = 0 %) zum Krisenhoch (= 100 %)
+                from .answers import MONTHS as MONTHS_DE
+                b0, b1 = c.get("base", [2015, 2019])
+                p0, p1 = c.get("peak", ["2011-07-01", "2012-12-31"])
+                rows = []
+                for r in c["rows"]:
+                    if r["id"] not in data:
+                        continue
+                    sr = data[r["id"]].dropna().sort_index()
+                    base = float(sr[(sr.index.year >= b0) & (sr.index.year <= b1)].mean())
+                    win = sr[(sr.index >= p0) & (sr.index <= p1)]
+                    pk_at = win.idxmin() if r.get("invert") else win.idxmax()
+                    pk = float(win[pk_at])
+                    if abs(pk - base) < 1e-9:
+                        continue
+                    now_at = sr.index[-1]
+                    prev = sr[sr.index <= now_at - pd.DateOffset(years=1)]
+                    pct = lambda v: round((v - base) / (pk - base) * 100, 1)
+                    m = meta[r["id"]]
+                    rows.append(dict(id=r["id"], label=r["label"], label_en=r.get("label_en", r["label"]), group=r.get("group", ""), group_en=r.get("group_en", r.get("group", "")),
+                                     phrase=r.get("phrase", r["label"]), phrase_en=r.get("phrase_en", r.get("label_en", r["label"])), unit=r.get("unit", m.unit), unit_en=r.get("unit_en", r.get("unit", m.unit)),
+                                     freq=m.frequency, now=round(float(sr.iloc[-1]), 3), now_date=now_at.strftime("%Y-%m-%d"), now_pct=pct(float(sr.iloc[-1])),
+                                     ago=round(float(prev.iloc[-1]), 3) if len(prev) else None, ago_date=prev.index[-1].strftime("%Y-%m-%d") if len(prev) else None,
+                                     ago_pct=pct(float(prev.iloc[-1])) if len(prev) else None, base=round(base, 3), peak=round(pk, 3), peak_date=pk_at.strftime("%Y-%m-%d"), decimals=r.get("decimals", 2)))
+                if not rows:
+                    continue
+                specs_g = [meta[r["id"]] for r in rows]
+                entry.update(gauge={"rows": rows, "base": [b0, b1], "peak": [p0, p1]}, freq="M", unit="",
+                             sources=sorted({_source_name(x) for x in specs_g}), licenses=sorted({lic for x in specs_g if (lic := _license(x))}))
+                und = lambda xs: ", ".join(xs[:-1]) + " und " + xs[-1] if len(xs) > 1 else (xs[0] if xs else "")
+                and_ = lambda xs: ", ".join(xs[:-1]) + " and " + xs[-1] if len(xs) > 1 else (xs[0] if xs else "")
+                groups = list(dict.fromkeys(r["group"] for r in rows))
+                g1 = [r for r in rows if r["group"] == groups[0]]
+                pc = lambda v: f"{v:.0f}".replace("-", "−")
+                entry["say"] = [f"Vom Normalniveau 2015 bis 2019 zum Höchststand der Eurokrise 2011/12 hat {c.get('who', 'das Land')} zuletzt "
+                                + und([f"{r['phrase']} {pc(r['now_pct'])} %" for r in g1]) + " des Wegs zurückgelegt."]
+                entry["say_en"] = [f"Measured from the 2015–2019 normal level to the 2011/12 euro-crisis peak, {c.get('who_en', 'the country')} has recently moved "
+                                   + and_([f"{pc(r['now_pct'])}% of the way {r['phrase_en']}" for r in g1]) + "."]
+                for g in groups[1:]:
+                    gr = [r for r in rows if r["group"] == g]
+                    if all(r["now_pct"] <= 10 for r in gr):
+                        entry["say"].append(f"{c.get('calm', 'Ein Übergreifen ist bisher nicht zu sehen')}: " + _cap(und([r["phrase"] for r in gr])) + " liegen auf oder unter dem Normalniveau.")
+                        entry["say_en"].append(f"{c.get('calm_en', 'There is no sign of contagion so far')}: " + and_([r["phrase_en"] for r in gr]) + " are at or below normal levels.")
+                    else:
+                        entry["say"].append(f"{g}: " + und([f"{r['label']} {pc(r['now_pct'])} %" for r in gr]) + " des Wegs.")
+                        entry["say_en"].append(f"{gr[0]['group_en']}: " + and_([f"{r['label_en']} {pc(r['now_pct'])}%" for r in gr]) + " of the way.")
+                if c.get("note"):
+                    entry["say"].append(c["note"]); entry["say_en"].append(c.get("note_en", c["note"]))
             elif typ == "curve":  # Zinskurven je Land, Daten aus data/static/zinskurven.json (werktäglich, monitor/geldpolitik.py)
                 from .answers import MONTHS as MONTHS_DE
                 K = (entry.get("attach") or {}).get("countries") or []

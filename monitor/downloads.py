@@ -184,6 +184,12 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
             tab[A["rows"][q["r"]]][q["y"]] = q["v"] if A.get("mode") == "share" else _plain(q["t"])
         df = pd.DataFrame([{"Zeile": r, **{str(y): tab[r].get(y) for y in A["years"]}} for r in A["rows"]])
         return df.iloc[::-1].reset_index(drop=True), {"kind": "list"}
+    if typ == "gauge" and c.get("gauge"):  # Krisenthermometer: je Indikator eine Zeile
+        G = c["gauge"]
+        df = pd.DataFrame([{"Gruppe": r["group"], "Indikator": r["label"], "Einheit": r["unit"], "Jüngster Wert": r["now"], "Stand": r["now_date"][:7],
+                            f"Normalniveau (Mittel {G['base'][0]}–{G['base'][1]})": r["base"], "Krisenhoch": r["peak"], "Krisenhoch am": r["peak_date"][:7],
+                            "Weg zum Krisenhoch heute, %": r["now_pct"], "Weg zum Krisenhoch vor einem Jahr, %": r["ago_pct"]} for r in G["rows"]])
+        return df, {"kind": "list"}
     if typ == "curve" and c.get("attach"):  # Zinskurven: je Land und Laufzeit eine Zeile
         rows = []
         for k in c["attach"].get("countries") or []:

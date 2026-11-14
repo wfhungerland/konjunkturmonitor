@@ -10,7 +10,7 @@ Eine lange Seite, deutsch unter `/` und englisch unter `/en/` (Sprachschalter un
 
 - **Kopfzeile (fixiert):** Titel, Sprachschalter und Stand; alle Themen als Links; Suche mit Vorschlägen (Taste `/`); Knopf zum Aus- und Einklappen aller Abbildungen.
 - **Start:** zwei bis drei Sätze zur Gesamtlage, „Heute neu“, sechs Kennzahl-Kacheln mit Fünfjahresverlauf, alle Kennzahlen als Tabelle (aufklappbar).
-- **Teil I Konjunktur, Teil II Analysen, Teil III Geopolitik, Teil IV Struktur, Teil V Anhang, Termine:** je Abschnitt eine Frage als Überschrift, ein Antwortsatz aus den Daten mit Erläuterung, eine Leitabbildung und weitere Abbildungen zum Aufklappen. Ab 1240 px Breite läuft links die Liste der Abbildungen des Abschnitts mit.
+- **Teil I Konjunktur, Teil II Geld und Staat, Teil III Struktur, Teil IV Geopolitik, Teil V Analysen, Teil VI Expertisen, Termine:** je Abschnitt eine Frage als Überschrift, ein Antwortsatz aus den Daten mit Erläuterung, eine Leitabbildung und weitere Abbildungen zum Aufklappen. Ab 1240 px Breite läuft links die Liste der Abbildungen des Abschnitts mit.
 - **Diese Woche neu:** Abbildungen mit neuen Daten in den letzten sieben Tagen.
 - **Quellen und Hinweise:** Methodik, Quellen und Lizenzen, fehlende Indikatoren, Gesamtdownloads, Abrufstatus, Zitiervorschlag.
 
@@ -30,6 +30,7 @@ Jede Abbildung hat Nummer, Unterfrage, Sätze zum jüngsten Stand, Titel, Erläu
 | Insolvenzen | Destatis GENESIS `52411`, `52311` |
 | Zinsen und Energie | Bundesbank `BBSIS` (Zinsstruktur), FRED (`MCOILBRENTEU` der U.S. EIA, `PNGASEUUSDM` des IWF) |
 | Geldpolitik | EZB Data Portal: `FM` (Leitzinsen), `EST` (€STR), `ILM` (Wochenausweis des Eurosystems), `IRS` (zehnjährige Renditen je Land), `MIR`, `BSI`, `BLS` (Bank Lending Survey); EZB-Website: Anleihekäufe je Programm und Land (APP, PSPP, PEPP, CSV); Bundesbank `BBSIS` (Zinsstruktur, Umlaufsrenditen); Banca d'Italia `BMK0100` und Banco de España Tabelle 1.3 (Zinskurven); Eurostat `gov_10dd_edpt1` und Übersicht der EU-Kommission zu Defizitverfahren (TPI-Tabelle). Abruf werktäglich über `monitor/geldpolitik.py`; Ereignisse von Hand in `data/static/ereignisse_geld.yaml` |
+| Krisenmonitor Frankreich | EZB `CISS` (Finanzstress-Index je Land, täglich), `IRS` (Renditeabstand), Eurostat `gov_10dd_edpt1` (Staatsdefizit), Bundesbank `BBDA1` (Exporte nach Frankreich, Anteil eigene Berechnung) |
 | Aktivitätsindex | Bundesbank `BBDE1` (Wochenreihe WAI) |
 | Struktur | Eurostat (`nama_10_gdp`, `namq_10_lp_ulc`, `namq_10_a10_e`, `demo_gind`); AMECO-Produktionspotenzial (über DBnomics) und OECD-Körperschaftsteuersätze als statische Dateien, von Hand zu aktualisieren |
 | Geopolitik | Geopolitical Risk Index (Caldara und Iacoviello), werktäglich; von Hand nach neuen Ausgaben (`python -m monitor.geopolitik <quelle> <datei>`, Quelle leiden, sipri, cow, kiel, gta oder kmpt); werktäglich: Exporte nach Russland und Nachbarländern (Eurostat Comext), Produktion von Waffen und Munition (Eurostat `sts_inpr_m`, C254): Universität Leiden, Russian Operations Against Europe Dataset (CC BY 4.0), SIPRI Military Expenditure Database, Correlates of War National Material Capabilities v7.0, Kiel Ukraine Support Tracker, Global Trade Alert (Export aller Eingriffe), Kiel Military Procurement Tracker |
