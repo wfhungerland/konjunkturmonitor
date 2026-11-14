@@ -383,7 +383,8 @@
   .navpanel .nvh { font: 600 13px var(--ff); color: var(--dark); text-transform: uppercase; letter-spacing: .06em; margin: 0 0 10px; }
   .navpanel .nvh span { color: var(--grey); margin-right: 8px; }
   .navpanel .nvgroups { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 14px 28px; }
-  @media (min-width: 1240px) { .navpanel .nvgroups { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
+  @media (min-width: 1000px) { .navpanel .nvgroups { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px 22px; } }  /* sechs Spalten: Teil I hat sechs Gruppen, Teile II bis VI stehen in einer Reihe */
+  .navpanel .nvg a span { hyphens: auto; overflow-wrap: anywhere; }  /* lange Kapitelnamen trennen statt in die Nachbarspalte zu laufen */
   .navpanel .nvgh { font: 12px/1.3 var(--ff); color: var(--grey); border-top: 2px solid var(--dark); padding-top: 6px; margin: 0 0 4px; }
   .navpanel .nvgh.nvph { font: 600 13px/1.3 var(--ff); color: var(--dark); text-transform: uppercase; letter-spacing: .06em; } .navpanel .nvgh.nvph span { color: var(--grey); margin-right: 4px; }
   .navpanel a { display: flex; gap: 8px; color: var(--text); padding: 3px 0; font: 15px/1.3 var(--ff); }
