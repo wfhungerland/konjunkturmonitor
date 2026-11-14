@@ -19,7 +19,9 @@ Fortschreibung (Markov-Kette): Eine frühere Ausgabe der Statistik liegt aus dem
 
 Lesart: Das heutige Tempo hält den Anteil schlechter Brückenfläche gerade stabil. Ohne Erneuerung verdoppelt er sich bis 2035. Die Differenz ist der Erneuerungsbedarf: bis 2035 rund 7,4 Mio. m² Brückenfläche, die ohne Eingriff auf Note 3,0 oder schlechter fiele. Je 1.000 Einwohner am höchsten in Passau, Koblenz, Trier-Saarburg und Ahrweiler (750 bis 790 m²), danach Lahn-Dill-Kreis und Siegen-Wittgenstein. Spalten je Kreis: `anteil_ab_3_0_2030_trend` bis `anteil_ab_3_0_2035_ohne_erneuerung`.
 
-Grenzen: Ein Jahr Übergänge; Prüfungen finden alle drei bis sechs Jahre statt, ein einzelnes Jahr kann zufällig ausfallen. Eine dritte Ausgabe (Archivfassung vom Januar 2026, andere Spaltennamen) würde den Test unabhängig machen. Die Querschnittskurve (Spalten `flaeche_note_ab_3_0_2030_m2` und `_2035_m2`) unterschätzt die Alterung und ist überholt.
+Test außerhalb der Schätzdaten: Die Archivfassung vom Januar 2026 (Stand 1. September 2025, nur Notenklassen) teilt das Jahr. Mit den Übergängen von März bis September 2025 sagt das Modell für März 2026 einen Anteil von 10,93 % voraus, beobachtet sind 10,98 % (März 2025: 11,08 %, September 2025: 11,01 %). Je Halbjahr wechseln 3,6 bzw. 4,6 % der Bauwerke die Notenklasse, 2,3 bzw. 2,9 % zum Schlechteren; beide Halbjahre verhalten sich ähnlich.
+
+Grenzen: Die Übergänge stammen aus einem Jahr; Prüfungen finden alle drei bis sechs Jahre statt. Die Stände der Archivfassungen sind aus dem Veröffentlichungsrhythmus der BASt geschlossen (Daten zum 1. März und 1. September). Die Querschnittskurve (Spalten `flaeche_note_ab_3_0_2030_m2` und `_2035_m2`) unterschätzt die Alterung und ist überholt.
 
 ## Baustein Kommunalinvestitionen
 

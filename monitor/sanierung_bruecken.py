@@ -181,18 +181,28 @@ def wahrscheinlichkeit_schlecht(b: dict, matrizen: dict, bis: int) -> float:
     return sum(v[_klasse(SCHLECHT):])
 
 
+def _note(text: str) -> float:
+    """Note oder Notenklasse („2.0  -  2.4“, so in manchen Ausgaben) als Zahl; bei Klassen die Untergrenze."""
+    text = text.strip()
+    return float(text.split("-")[0]) if "-" in text else float(text)
+
+
 def _staende(datei: Path) -> tuple[dict, int]:
-    """Frühere Ausgabe aus brueckenstatistik_staende.csv.gz (monitor.bruecken_archiv); Stand = Abrufjahr des Archivs
-    (Fassung vom August 2025 = Stand 1. März 2025)."""
+    """Frühere Ausgaben aus brueckenstatistik_staende.csv.gz (monitor.bruecken_archiv), je Archivabruf ein Stand.
+
+    Für die Fortschreibung zählt der Stand, der genau ein Jahr vor dem aktuellen liegt: die Archivfassung vom
+    August 2025 (Stand 1. März 2025). Die Fassung vom Januar 2026 (Stand 1. September 2025, nur Notenklassen) dient
+    dem Test außerhalb der Schätzdaten (docs/sanierung.md)."""
     import gzip
-    out, jahr = {}, None
+    je = defaultdict(dict)
     for r in csv.DictReader(gzip.open(datei, "rt", encoding="utf-8")):
         try:
-            out[(r["bwnr"].strip(), r["tbwnr"].strip())] = (float(r["zustandsnote"]), float(r["flaeche"] or 0), int(r["baujahr"]))
-            jahr = int(r["stand"][:4])
+            je[r["stand"]][(r["bwnr"].strip(), r["tbwnr"].strip())] = (_note(r["zustandsnote"]), float(r["flaeche"] or 0),
+                                                                       int(r["baujahr"]))
         except (ValueError, KeyError):
             continue
-    return out, jahr
+    ziel = min(je, key=lambda s: abs((STAND - 1) * 10000 + 301 - int(s)))  # am nächsten am 1. März des Vorjahres
+    return je[ziel], int(ziel[:4])
 
 
 def auswerten(ordner: Path, ziel: Path) -> None:
