@@ -2611,8 +2611,13 @@ function lageView() {
     + `<div>${term ? `<h3>${LAGETXT.term}</h3><ul>${term}</ul>` : ""}</div></div>`;
   box.hidden = false;
   { const sv = box.querySelector(".lsl svg"); if (sv) { const hl = k => { sv.classList.toggle("hov", !!k); sv.querySelectorAll("[data-k]").forEach(e => e.classList.toggle("on", e.dataset.k === k)); };
-    sv.addEventListener("mouseover", e => { const t = e.target.closest("[data-k]"); hl(t ? t.dataset.k : null); });
-    sv.addEventListener("mouseleave", () => hl(null)); sv.addEventListener("focusin", e => { const t = e.target.closest("[data-k]"); hl(t ? t.dataset.k : null); }); sv.addEventListener("focusout", () => hl(null)); } }
+    // Geräte ohne Überfahren (Handy): erstes Tippen hebt hervor und zeigt den Fachbegriff, zweites Tippen öffnet das Kapitel
+    const touch = matchMedia("(hover: none)").matches; let act = null;
+    if (touch) addEventListener("click", e => { if (!sv.contains(e.target)) { if (act) { act = null; hl(null); } return; }
+        const t = e.target.closest("[data-k]"); if (!t) { act = null; hl(null); return; }
+        if (act !== t.dataset.k) { e.preventDefault(); e.stopPropagation(); act = t.dataset.k; hl(act); } }, true);
+    sv.addEventListener("mouseover", e => { if (touch) return; const t = e.target.closest("[data-k]"); hl(t ? t.dataset.k : null); });
+    sv.addEventListener("mouseleave", () => { if (!touch) hl(null); }); sv.addEventListener("focusin", e => { if (touch) return; const t = e.target.closest("[data-k]"); hl(t ? t.dataset.k : null); }); sv.addEventListener("focusout", () => { if (!touch) hl(null); }); } }
   const kb = box.querySelector(".lk"), setK = on => { document.body.classList.toggle("lagek", on); kb.setAttribute("aria-pressed", String(on)); try { localStorage.setItem("km_lagek", on ? "1" : "0"); } catch (e) {} };
   let k0 = false; try { k0 = localStorage.getItem("km_lagek") === "1"; } catch (e) {}
   setK(k0); kb.onclick = () => setK(!document.body.classList.contains("lagek"));
