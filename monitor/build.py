@@ -1087,8 +1087,12 @@ def chart_sentences(c: dict) -> list[str]:
                     F["n0"][sid], F["dabs"][sid], F["dmehr"][sid] = num(y0, d), num(abs(v - y0), d), "mehr" if v > y0 else "weniger"
                     F.setdefault("hoeher", {})[sid] = "höher" if v > y0 else "niedriger"
                     F.setdefault("dsg", {})[sid] = num(v - y0, d, True)
+                    F.setdefault("hoeher_inv", {})[sid] = "höher" if v < y0 else "niedriger"  # etwa Defizit: niedrigerer Saldo heißt höheres Defizit
                 F.setdefault("sw", {})[sid] = "der Überschuss" if v >= 0 else "das Defizit"  # Saldo mit Artikel
                 F.setdefault("x100", {})[sid] = num(v / 100, 1)  # Vielfaches eines Index mit Mittel = 100
+                if c.get("tpl_mark") is not None:  # über oder unter einer Marke, etwa 60 % Schuldenstand; tpl_mark_abs: Betrag, etwa beim Defizit
+                    vm = abs(v) if c.get("tpl_mark_abs") else v
+                    F.setdefault("um", {})[sid] = "über" if vm > c["tpl_mark"] else "unter" if vm < c["tpl_mark"] else "auf"
                 F["v"][sid], F["n"][sid] = val(v), num(v, int(c.get("tpl_decimals", d)))  # tpl_decimals: eigene Rundung nur für den Satz
                 F["full"][sid] = f"{int(round(v)) * 1000:,}".replace(",", ".")
                 F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
