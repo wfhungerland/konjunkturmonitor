@@ -80,7 +80,7 @@ def _rates(data: dict) -> list:
         ("dfr", "Einlagesatz der EZB", "ECB deposit rate", _s(data, "ecb_dfr"), False, "geldpolitik", "Leitzins", "Key interest rate"),
         ("tarif", "Tariflöhne, ggü. Vorjahr", "Negotiated wages, year on year", _s(data, "de_tarif_yoy"), True, "einkommen", "Lohnplus laut Tarif, zum Vorjahr", "Pay rises agreed by unions, on a year earlier"),
         ("gdp", "Wirtschaftsleistung, ggü. Vorjahr", "GDP, year on year", _s(data, "de_gdp_yoy"), True, "wachstum", "Wachstum, zum Vorjahr", "Growth, on a year earlier"),
-        ("ret", "Einzelhandel real, ggü. Vorjahr", "Retail sales, real, year on year", _yoy(_s(data, "de_retail")), True, "konsum", "Umsatz im Einzelhandel ohne Preiseffekte, zum Vorjahr", "Shop sales without price effects, on a year earlier"),
+        ("ret", "Einzelhandel real, ggü. Vorjahr", "Retail sales, real, year on year", _yoy(_s(data, "de_retail")), True, "konsum", "Einzelhandel ohne Preiseffekte, zum Vorjahr", "Shop sales without price effects, on a year earlier"),
         ("exp", "Exporte, ggü. Vorjahr", "Exports, year on year", _yoy(_s(data, "de_exports")), True, "export", "Exporte, zum Vorjahr", "Exports, on a year earlier"),
         ("ip", "Industrieproduktion, ggü. Vorjahr", "Industrial production, year on year", _yoy(_s(data, "de_ip")), True, "industrie", "Produktion der Industrie, zum Vorjahr", "Factory output, on a year earlier"),
         ("bau", "Bauzinsen, neue Wohnungsbaukredite", "Mortgage rates, new housing loans", _s(data, "de_rate_house"), False, "zinsen", "Zins für Baukredite", "Interest on home loans"),
