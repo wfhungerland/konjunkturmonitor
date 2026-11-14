@@ -1065,6 +1065,7 @@ def chart_sentences(c: dict) -> list[str]:
         if c.get("emphasis") and not isinstance(c.get("combine"), dict):  # Sätze mit allen Reihen behalten alle
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         if c.get("tpl"):  # ganze Sätze aus monitor.yaml mit Werten mehrerer Reihen, etwa {v[id]}; Stichtag ist der jüngste Zeitpunkt, den alle Reihen haben
+            series = [s for s in c["series"] if s.get("y") and s.get("style") != "norm"]  # alle Reihen, auch neben einer hervorgehobenen
             last = min(s["x"][-1] for s in series)
             F = {k: {} for k in ("v", "n", "full", "chg", "pabs", "mehr", "ueber", "abs100", "ueber100", "abs", "sg", "up_pl", "trend_pl", "streak", "m3", "m3y_abs", "m3y_mehr",
                                  "w", "p", "n0", "dabs", "dmehr")}
@@ -1109,6 +1110,7 @@ def chart_sentences(c: dict) -> list[str]:
                     F["chg"][sid], F["pabs"][sid] = num(pc, 1, True) + " %", num(abs(pc), 1)
                     F["mehr"][sid], F["ueber"][sid] = ("mehr" if pc > 0 else "weniger"), ("über" if pc > 0 else "unter")
             F["q"] = {f"{a}/{b}": num(vals[a] / vals[b], 1) for a in vals for b in vals if a != b and vals[b]}
+            F["mw"] = {f"{a}-{b}": "mehr" if vals[a] > vals[b] else "weniger" for a in vals for b in vals if a != b}
             F["cmp"] = {f"{a}-{b}": "so schnell wie" if round(vals[a] - vals[b], d) == 0 else f"{num(abs(vals[a] - vals[b]), d)} Pp {'schneller' if vals[a] > vals[b] else 'langsamer'} als"
                         for a in vals for b in vals if a != b}
             F["q0"] = {f"{a}/{b}": num(vals0[a] / vals0[b], 1) for a in vals0 for b in vals0 if a != b and vals0[a] is not None and vals0[b]}
@@ -1151,6 +1153,11 @@ def chart_sentences(c: dict) -> list[str]:
                         h = head.split(" um ")[0]
                         out += f"; {h} {verb_sie[g]}{head[len(h):]}" + "".join(", " + x for x in more)
                 return [out + "."]
+            if cb.get("ends"):  # nur höchster und niedrigster Wert, etwa wenn ein anderer Satz die ganze Liste schon nennt
+                pts = [(cb.get("names", {}).get(s.get("label"), cb.get("pre", "") + s.get("label", "")), at(s)) for s in series if at(s) is not None]
+                if len(pts) > 1:
+                    hi, lo = max(pts, key=lambda p: p[1]), min(pts, key=lambda p: p[1])
+                    return [f"{_when(last, freq)} {cb['ends']} {hi[0]} am höchsten ({num(hi[1], d)} {sym}), {lo[0]} am niedrigsten ({num(lo[1], d)})."]
             mid = cb.get("mid", "")  # etwa „ bei“ zwischen Land und Wert
             items = [f"{cb.get('pre', '')}{s.get('label', '')}{mid} {num(at(s), d, cb.get('sign', True))} {'' if cb.get('bare') else sym}".strip() for s in series if at(s) is not None]  # bare: Einheit steht im Satzanfang
             late = [s for s in series if at(s) is None and s.get("y") and s["y"][-1] is not None] if cb.get("each_month") else []
