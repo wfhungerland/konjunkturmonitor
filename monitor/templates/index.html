@@ -2078,9 +2078,13 @@ function searchBox() {
     items.push({ href: "#" + t.id, label: t.title, sub: head !== t.title ? head : "Abschnitt", key: norm([t.title, head].join(" ")), w: 3 });
     t.charts.forEach(c => { if (c.no == null) return;
       const ser = Array.isArray(c.series) ? c.series.map(s => s.label) : [];
-      items.push({ href: "#" + FA(c.no), label: `${c.title || ""}`, sub: t.title + (c.ask ? " · " + c.ask : ""),
-        key: norm([c.title, c.ask, t.title, ...ser].join(" ")), w: 2 }); });
+      items.push({ href: "#" + FA(c.no), label: `${c.title || ""}`, sub: (c.code ? c.code + " · " : "") + t.title + (c.ask ? " · " + c.ask : ""),
+        key: norm([c.title, c.ask, t.title, c.code, ...ser].join(" ")), w: 2 }); });
   });
+  // Gleichbedeutende Begriffe: wer das eine sucht, findet auch das andere
+  const SYN = [["bip", "bruttoinlandsprodukt wirtschaftsleistung"], ["wirtschaftsleistung", "bip bruttoinlandsprodukt"], ["vpi", "verbraucherpreise inflation"],
+    ["hvpi", "verbraucherpreise inflation"], ["oelpreis", "rohoel brent"], ["ezb", "zentralbank"], ["arbeitslos", "arbeitslosigkeit"], ["loehne", "lohn gehalt"]];
+  items.forEach(it => SYN.forEach(([a, b]) => { if (it.key.includes(a)) it.key += " " + b; }));
   const box = document.createElement("div"); box.className = "search"; box.setAttribute("role", "search");
   box.innerHTML = `<button type="button" class="lupe" aria-label="Suchen" title="Suchen (Taste /)"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="10.2" y1="10.2" x2="15" y2="15" stroke="currentColor" stroke-width="1.6"/></svg></button><input type="search" placeholder="Suchen, z. B. Inflation" aria-label="Abbildungen und Themen durchsuchen" autocomplete="off"><ul hidden role="listbox"></ul>`;
   const inp = box.querySelector("input"), ul = box.querySelector("ul"); let hits = [], sel = 0;
@@ -2089,7 +2093,8 @@ function searchBox() {
   box.querySelector(".lupe").onclick = () => { closeNav(); box.classList.add("open"); inp.focus(); };
   inp.addEventListener("focus", () => { closeNav(); box.classList.add("open"); });
   inp.addEventListener("blur", () => setTimeout(() => { if (!inp.value && document.activeElement !== inp) box.classList.remove("open"); }, 200));
-  const mark = (s, ws) => { let h = esc(s); ws.forEach(w => { const i = norm(h).indexOf(w); if (i >= 0 && norm(h).length === h.length) h = h.slice(0, i) + "<mark>" + h.slice(i, i + w.length) + "</mark>" + h.slice(i + w.length); }); return h; };
+  const pat = w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/ae/g, "(?:ae|ä)").replace(/oe/g, "(?:oe|ö)").replace(/ue/g, "(?:ue|ü)").replace(/ss/g, "(?:ss|ß)");
+  const mark = (s, ws) => { let h = esc(s); ws.forEach(w => { try { h = h.replace(new RegExp(pat(w), "i"), m => "<mark>" + m + "</mark>"); } catch (e) {} }); return h; };  // Umlaute: „oel“ markiert „Öl“
   const show = () => {
     const ws = norm(inp.value).split(/\s+/).filter(Boolean);
     if (!ws.length) { ul.hidden = true; return; }
@@ -2103,8 +2108,14 @@ function searchBox() {
   };
   const go = it => { if (!it) return; ul.hidden = true; inp.value = ""; inp.blur();
     const el = document.querySelector(it.href); if (!el) return;
+    if (el.offsetParent === null && window.kmShowAll) kmShowAll();  // Kurzfassung blendet das Ziel aus: erst alles zeigen
     const d = el.closest("details"); if (d) d.open = true;
-    history.replaceState(null, "", it.href); el.scrollIntoView(); scrollBy(0, -70); };
+    history.replaceState(null, "", it.href);
+    // Springen und kurz nachführen: Abbildungen darüber bauen sich auf und schieben das Ziel; wer selbst scrollt, behält die Hand
+    let own = false; const mine = () => { own = true; };
+    setTimeout(() => ["wheel", "touchstart", "keydown"].forEach(ev => addEventListener(ev, mine, { once: true, passive: true })), 0);  // erst nach dem auslösenden Enter
+    const jump = () => { if (!own) scrollTo(0, el.getBoundingClientRect().top + scrollY - (document.querySelector("header")?.offsetHeight || 70)); };
+    requestAnimationFrame(jump); [300, 800, 1600].forEach(t => setTimeout(jump, t)); };
   inp.addEventListener("input", show);
   inp.addEventListener("keydown", e => {
     if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); if (!hits.length) return; sel = (sel + (e.key === "ArrowDown" ? 1 : hits.length - 1)) % hits.length;
@@ -2257,6 +2268,7 @@ function build() {
   });
   // Kurzfassung: nur die Leitabbildungen der wichtigsten Abschnitte
   const setBrief = on => { document.body.classList.toggle("brief", on); bb.textContent = on ? NAVTXT.all : NAVTXT.brief; bb.setAttribute("aria-pressed", String(on)); };
+  window.kmShowAll = () => setBrief(false);  // für die Suche
   const bb = document.createElement("button"); bb.type = "button"; bb.className = "btn briefbtn"; bb.onclick = () => { setBrief(!document.body.classList.contains("brief")); scrollTo(0, 0); };
   // Standard: „Das Wichtigste“; ?alles=1 oder ein Sprungziel außerhalb der Kurzfassung zeigt alles
   setBrief(!DATA.embed && !/[?&]alles=1/.test(location.search));  // Einbettseiten zeigen immer ihre Abbildung
