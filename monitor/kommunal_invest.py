@@ -64,13 +64,18 @@ def abruf(ordner: Path) -> None:
     kopf = {"username": nutzer, "password": getpass.getpass("Passwort (wird nicht angezeigt): ")}
     # Erstanmeldung: Die Regionaldatenbank verlangt ein neues Passwort; die Schnittstelle kann es setzen
     # (profile/password, GENESIS-Webservices, Abschnitt 2.7.1)
-    if input("Passwort jetzt ändern? Bei der ersten Anmeldung nötig (j/n): ").strip().lower().startswith("j"):
+    if input("Passwort über die Schnittstelle ändern? Meist nicht nötig (j/n): ").strip().lower().startswith("j"):
         while True:
             neu = getpass.getpass("Neues Passwort (10 bis 20 Zeichen, 3 von: klein, GROSS, Ziffer, Sonderzeichen): ")
             if neu == getpass.getpass("Neues Passwort wiederholen: "):
                 break
             print("Die beiden Eingaben stimmen nicht überein, bitte noch einmal.")
-        antwort = _meldung(_post("profile/password", kopf, {"new": neu, "repeat": neu, "language": "de"})) or {}
+        try:
+            antwort = _meldung(_post("profile/password", kopf, {"new": neu, "repeat": neu, "language": "de"})) or {}
+        except urllib.error.HTTPError as e:
+            print(f"Die Regionaldatenbank bietet die Passwortänderung über die Schnittstelle nicht an ({e.code}). "
+                  "Weiter mit dem bisherigen Passwort.")
+            antwort, neu = {"Status": {"Code": 0, "Content": "nicht geändert"}}, kopf["password"]
         status = antwort.get("Status") or antwort
         print("Passwortänderung:", status.get("Content", status) if isinstance(status, dict) else status)
         if isinstance(status, dict) and str(status.get("Code")) not in ("0", "None"):
@@ -78,7 +83,7 @@ def abruf(ordner: Path) -> None:
             sys.exit(1)
         kopf["password"] = neu
     try:  # nur zur Auskunft; manche Server beantworten die Prüfung mit 400, der Abruf klappt trotzdem
-        probe = _meldung(_post("helloworld/logincheck", kopf, {}))
+        probe = _meldung(_post("helloworld/logincheck", kopf, {"language": "de"}))
         print("Anmeldung:", (probe or {}).get("Status", probe))
     except urllib.error.HTTPError as e:
         print(f"Anmeldeprüfung nicht möglich ({e.code}); weiter mit dem Abruf")
