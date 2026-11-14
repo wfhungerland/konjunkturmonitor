@@ -58,7 +58,9 @@ Befund: Großstädte schöpfen aus dem Umland (München und Hamburg je 148, Fran
 
 Gegenprobe Bauberufe: Der Index korreliert mit dem nach WZ F zu 0,98. Mit Bauberufen liegen Großstädte höher (Stuttgart 140 statt 131, Köln 131 statt 123), weil dort viele Bauberufe außerhalb des Baugewerbes arbeiten; Niederbayern liegt niedriger (Deggendorf 93 statt 123, Cham 98 statt 113).
 
-Prüfung an den TED-Zuschlägen regionaler Firmen: Vorhergesagt bleiben 20 % der Aufträge im eigenen Kreis, beobachtet ebenfalls 20 % (Korrelation über die Kreise 0,45); die vorhergesagten Zuflüsse je Zielkreis korrelieren mit den beobachteten zu 0,88. Firmen aus Pinneberg arbeiten zu 59 % in Hamburg (Modell: 31 %), der Sog der Großstadt ist eher unterschätzt. Grenzen: Firmen und Nachfrage jenseits der Grenze fehlen, das drückt Grenzkreise; die Bevölkerung ist nur ein Näherungswert für die Baunachfrage.
+Karte: `docs/aufnahme_karte.html` (zwei Karten mit Hover: im Kreis und im Einzugsgebiet), als Bild `docs/aufnahme_karte.png`; erzeugt mit `python -m monitor.aufnahme_karte`. Im Einzugsgebiet liegt der größte Teil der Fläche unter dem Bundeswert, weil dieser nach Einwohnern gewichtet ist und die Ballungsräume Kapazität aus dem Umland binden.
+
+Prüfung an den TED-Zuschlägen regionaler Firmen: Vorhergesagt bleiben 20 % der Aufträge im eigenen Kreis, beobachtet ebenfalls 20 % (Korrelation über die Kreise 0,45); die vorhergesagten Zuflüsse je Zielkreis korrelieren mit den beobachteten zu 0,88. Firmen aus Pinneberg arbeiten zu 59 % in Hamburg (Modell: 31 %), der Sog der Großstadt ist eher unterschätzt. Nach Siedlungsdichte: In dünn besiedelten Kreisen (unter 150 Einwohner je km²) bleiben beobachtet 19 % im eigenen Kreis, vorhergesagt 22 %; die Zuflüsse in Großstädte (ab 1.000 je km²) sind beobachtet 1,11-mal so hoch wie vorhergesagt. Das Modell überzeichnet den Sog der Städte also nicht. Offen bleibt, ob private Bauaufträge, die TED nicht erfasst, örtlicher vergeben werden. Grenzen: Firmen und Nachfrage jenseits der Grenze fehlen, das drückt Grenzkreise; die Bevölkerung ist nur ein Näherungswert für die Baunachfrage.
 
 ## Kreisreihen von BA und Regionalstatistik
 
