@@ -34,18 +34,34 @@ TABELLEN = [
 ]
 
 
+def _text(inhalt: bytes) -> str:
+    """Lesbarer Kern einer Fehlerseite (HTML ohne Auszeichnung, gekürzt)."""
+    import re
+    t = inhalt.decode("utf-8", "replace")
+    t = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", t)
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", t)).strip()[:600]
+
+
 def _post(pfad: str, kopf: dict, felder: dict, zeit: int = 600) -> bytes:
-    req = urllib.request.Request(API + pfad, data=urllib.parse.urlencode(felder).encode(), method="POST",
-                                 headers={**kopf, "Content-Type": "application/x-www-form-urlencoded",
-                                          "User-Agent": "konjunkturmonitor (Sanierungsbedarf)"})
-    try:
-        with urllib.request.urlopen(req, timeout=zeit) as r:
-            return r.read()
-    except urllib.error.HTTPError as e:  # der Server meldet Fehler und Aufträge teils mit Fehlercode und JSON
-        inhalt = e.read()
-        if inhalt[:1] == b"{":
-            return inhalt
-        raise
+    """POST mit Zugangsdaten im Kopf; lehnt der Server das ab (400), noch einmal mit Zugangsdaten im Inhalt."""
+    letzter = None
+    for im_inhalt in (False, True):
+        daten = dict(felder, **kopf) if im_inhalt else felder
+        req = urllib.request.Request(API + pfad, data=urllib.parse.urlencode(daten).encode(), method="POST",
+                                     headers={**kopf, "Content-Type": "application/x-www-form-urlencoded",
+                                              "User-Agent": "konjunkturmonitor (Sanierungsbedarf)"})
+        try:
+            with urllib.request.urlopen(req, timeout=zeit) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:  # der Server meldet Fehler und Aufträge teils mit Fehlercode und JSON
+            inhalt = e.read()
+            if inhalt[:1] == b"{":
+                return inhalt
+            letzter = (e.code, _text(inhalt))
+            if e.code != 400:
+                break
+    print(f"  Server antwortet {letzter[0]}: {letzter[1]}")
+    raise urllib.error.HTTPError(API + pfad, letzter[0], letzter[1], None, None)
 
 
 def _meldung(daten: bytes) -> dict | None:
