@@ -25,8 +25,18 @@ Grenzen: Die Übergänge stammen aus einem Jahr; Prüfungen finden alle drei bis
 
 ## Baustein Kommunalinvestitionen
 
-Abruf aus der Regionaldatenbank nur mit Konto, auf dem Rechner: `tools/Kommunalinvestitionen abrufen.bat` (`monitor/kommunal_invest.py`). Tabellen 71717-Z-05 (2018 bis 2025, Auszahlungen aus Investitionstätigkeit der Gemeinden und Gemeindeverbände) und 71517-02-03-4 sowie 71517-04-02-4 (1995 bis 2014, Kassenstatistik je Kreis). Die Schnittstelle nimmt keine Basic-Anmeldung an; ein in der Cloud-Umgebung gespeichertes Zugangsdatum hilft deshalb nicht.
+Abruf aus der Regionaldatenbank mit Konto (`monitor/kommunal_invest.py`, `tools/Kommunalinvestitionen abrufen.bat`). Die Schnittstelle erwartet Benutzername und Passwort im Kopf der Anfrage; Sonderzeichen wie § kommen nur in Latin-1-Kodierung an (sonst Fehlerseite 400). Die große Tabelle 71717-Z-05 lieferte als Ganzes kein Ergebnis; Jahr für Jahr mit `contents=AINVD78,DOPIN02,FINBEV` klappt der Abruf.
+
+Daten: 1995 bis 2014 Kassenstatistik (71517-02-03-4 Gemeinden, 71517-04-02-4 Kreise), „Ausgaben für Sachinvestitionen“ je Kreis; 2018 bis 2025 Rechnungsergebnisse (71717-Z-05), Kreisebene mit allen Gemeinden, Gemeindeverbänden und dem Kreis, „Sachinvestitionen“ (2023: 42,8 Mrd. € in den Flächenländern). 2015 bis 2017 fehlen. Die Kreise früherer Jahre sind mit den bevölkerungsproportionalen Umsteigeschlüsseln des BBSR auf den Stand 31.12.2024 umgerechnet, die Einwohner 1995 bis 2014 stammen aus denselben BBSR-Blättern. Berlin, Hamburg und Bremen fehlen (keine Kommunalhaushalte), höhere Kommunalverbände sind herausgenommen. Auswertung: `python -m monitor.sanierung_kommunal <ordner> --ziel data/static`; Ergebnis `data/static/sanierung_kommunal.csv` (Langformat) und `data/static/sanierung_kommunal_luecke.csv` (je Kreis).
+
+Maß: Weil 1995 bis 2014 nur Gemeinden und Kreise, ab 2018 auch Ämter, Verbands- und Samtgemeinden erfasst sind, passen die Niveaus nicht zusammen. Verglichen wird deshalb je Jahr mit dem Schnitt aller Kreise: Die Investitionslücke ist die Summe der jährlichen Abstände der Sachinvestitionen je Einwohner zum Schnitt, in Euro je Einwohner, nominal (positiv: weniger investiert). Dazu der mittlere Index je Zeitraum (Schnitt = 100). Die beiden Zeiträume korrelieren über die Kreise zu 0,63; wer früher wenig investierte, tut es meist auch heute.
+
+Befund (396 Kreise, 28 Jahre): Die größte Lücke haben kreisfreie Städte im Westen, vor allem Bielefeld, Wilhelmshaven, Wuppertal, Salzgitter, Krefeld, Jena, Solingen, Duisburg, Gelsenkirchen und der Regionalverband Saarbrücken (5.400 bis 6.700 € je Einwohner unter dem Schnitt). Am meisten über dem Schnitt investierten bayerische Landkreise wie Dingolfing-Landau, Landshut, Tirschenreuth und der Landkreis München sowie Mayen-Koblenz (10.000 bis 12.800 € darüber).
+
+Grenzen: Gezählt sind nur die Kernhaushalte. Wo Städte Investitionen in Eigenbetriebe oder Gesellschaften ausgelagert haben (Abwasser, Bäder, Wohnungen, Nahverkehr), erscheint das als Lücke, ohne eine zu sein; Solingen mit 13 % des Schnitts 1995 bis 2014 ist dafür ein Kandidat. Nominale Werte ohne Baupreisbereinigung; die Lücke ist relativ zum Schnitt, kein absoluter Rückstand.
 
 ## Offen
+
+Bahnhöfe: DB veröffentlicht die Bahnhofsnote des Zustandsberichts nur je Land (2025: 2,96), nicht je Station. Stationsdaten mit Stufenfreiheit gibt es über die DB-Schnittstelle StaDa (Schlüssel nötig); der frühere Download-Server von DB ist aus der Cloud nicht erreichbar.
 
 Eisenbahnbrücken (StreckeDB, BKG), Alter der Siedlungsnetze (Zensus 2022), Abgleich mit TED-Ausschreibungen für Brücken- und Straßenerneuerung, Zusammenführung und Verhältnis zur Baukapazität.
