@@ -1940,6 +1940,28 @@ def build_payload(root: Path = ROOT) -> dict:
                     m = pd.Timestamp(T["month"] + "-01")
                     entry["say"].append(f"Den höchsten Renditeabstand zu Bundesanleihen hatte im {MONTHS_DE[m.month - 1]} {m.year} {top['name']} mit {str(round(top['spread'], 2)).replace('.', ',')} Pp.")
                     entry["say_en"].append(f"In {m.strftime('%B %Y')}, {top['name_en']} had the widest spread over Bunds at {round(top['spread'], 2)} pp.")
+            elif typ == "kreise":  # Kreiskarte der Baukapazität, Daten aus data/static (monitor.aufnahme_karte), von Hand aktualisiert
+                K = (entry.get("attach") or {}).get("kreise") or []
+                if not K:
+                    continue
+                A = entry["attach"]
+                entry.update(sources=list(c.get("sources") or []), licenses=list(c.get("licenses") or []), freq="A",
+                             unit=A.get("unit", ""), unit_en=A.get("unit_en", ""))
+                basis = lambda n: n.split(",")[0]
+                doppelt = {b for b in map(basis, (k["name"] for k in K)) if sum(basis(x["name"]) == b for x in K) > 1}
+                def kurz(n, en=False):  # gleichnamige Stadt und Landkreis unterscheiden, etwa München
+                    b = basis(n)
+                    if b not in doppelt:
+                        return b
+                    return f"{b} ({'city' if en else 'Stadt'})" if "," in n else (f"{b} (district)" if en else f"Landkreis {b}")
+                tief = sorted(K, key=lambda k: k["einzug"])[:3]
+                hoch = sorted(K, key=lambda k: -k["einzug"])[:3]
+                unter = sum(k["einzug"] < 80 for k in K)
+                liste = lambda ks, en=False: ", ".join(f"{kurz(k['name'], en)} {k['einzug']:.0f}" for k in ks)
+                entry["say"] = [f"Geringste Baukapazität im Einzugsgebiet (Bund = 100): {liste(tief)}.",
+                                f"Höchste: {liste(hoch)}. {unter} von {len(K)} Kreisen liegen unter 80."]
+                entry["say_en"] = [f"Lowest construction capacity in the catchment area (Germany = 100): {liste(tief, True)}.",
+                                   f"Highest: {liste(hoch, True)}. {unter} of {len(K)} districts are below 80."]
             elif typ == "treemap":  # Grundriss: Daten ganz aus data/static (attach), von Hand aktualisiert
                 if not entry.get("attach"):
                     continue

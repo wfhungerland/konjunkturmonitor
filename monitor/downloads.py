@@ -203,6 +203,12 @@ def chart_table(c: dict) -> tuple[pd.DataFrame, dict]:
                             "Laufendes Defizitverfahren": "ja" if r["edp"] else "nein", f"Rendite 10 Jahre {T['month']}, %": r.get("yield"),
                             f"Abstand zu Deutschland {T['month']}, Pp": r["spread"]} for r in T["rows"]])
         return df, {"kind": "list"}
+    if typ == "kreise" and c.get("attach"):  # Kreiskarte: je Kreis eine Zeile
+        rows = [{"NUTS 3": k["id"], "Kreis": k["name"], "Index im Kreis (Bund = 100)": k["kreis"],
+                 "Index im Einzugsgebiet (Bund = 100)": k["einzug"], "Beschäftigte im Baugewerbe je 1.000 Einwohner, im Kreis": k["je_kreis"],
+                 "Beschäftigte im Baugewerbe je 1.000 Einwohner, im Einzugsgebiet": k["je_einzug"],
+                 "Kreiswert geschätzt (BA-Sperre)": "ja" if k.get("geschaetzt") else ""} for k in c["attach"]["kreise"]]
+        return pd.DataFrame(rows), {"kind": "list"}
     if typ == "treemap" and c.get("attach") and c["attach"].get("views"):  # mehrere Gliederungen untereinander
         T0 = c["attach"]
         parts = []

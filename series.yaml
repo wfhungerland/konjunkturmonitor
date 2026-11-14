@@ -276,6 +276,7 @@ charts:
   stx_share_gdp: {title: "Staatsausgaben nach Aufgaben, in % des BIP", decimals: 1}
   stx_levels: {title: "Ausgaben von Bund, Ländern, Gemeinden und Sozialversicherung", decimals: 1}
   stx_tree: {title: "Grundriss der Staatsausgaben", decimals: 1}
+  aufnahme_karte: {title: "Beschäftigte im Baugewerbe je Einwohner, im Kreis und im Einzugsgebiet", decimals: 0}
   bund_tree: {title: "Grundriss des Bundeshaushalts", decimals: 1}
   long_growth: {title: "Wachstum je Einwohner seit 1871, Zehnjahresdurchschnitt", decimals: 1}
   long_inv: {title: "Investitionsquote seit 1871", decimals: 1}

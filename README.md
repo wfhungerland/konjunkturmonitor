@@ -38,6 +38,7 @@ Jede Abbildung hat Nummer, Unterfrage, Sätze zum jüngsten Stand, Titel, Erläu
 | Prognosen | `data/static/prognosen.yaml`, nur veröffentlichte Werte mit Link |
 | Gemeinschaftsdiagnose | `data/static/gd_prognosen.csv`: Prognosen der Wirtschaftsforschungsinstitute 1950 bis Frühjahr 2026 mit Fundstelle je Wert, abgeleitet aus den Gutachten; die Reihen der Abbildungen erzeugt `python -m monitor.gd` |
 | Karten | Ländergrenzen © GeoBasis-DE / BKG (VG2500), Datenlizenz Deutschland – Namensnennung 2.0, vereinfacht (`data/static/vg2500_laender.json`) |
+| Baukapazität der Kreise | BA-Regionalreport über Beschäftigte, Destatis-Bevölkerung, TED-Bauzuschläge, Fahrzeiten OSRM/OpenStreetMap; Kreisgrenzen GISCO NUTS 2024 (© EuroGeographics), vereinfacht. Von Hand: `python -m monitor.aufnahme_einzug`, dann `python -m monitor.aufnahme_karte` schreibt `data/static/aufnahme_karte.json` (Abbildungstyp `kreise`); Methode `docs/aufnahme.md` |
 
 Lizenzpflichtige Reihen bleiben draußen, etwa Macrobond, die PMI von S&P Global, GfK-Detailreihen und Terminpreise. Die ifo-Zeitreihen setzen eine Anmeldung voraus. Die Stimmung kommt deshalb aus den offenen EU-Umfragen.
 
