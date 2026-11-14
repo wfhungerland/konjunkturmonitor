@@ -128,7 +128,14 @@ def saetze(c: dict, lang: str = "de") -> list[str]:
             m = dict(mn).get(x)
             w = _when(x, "Q", lang)
             if de:
-                return [f"{w[0].upper() + w[1:]} besaß der Haushalt in der Mitte netto rund {k(v)}, der Durchschnitt aller Haushalte {k(m)}."]
+                x0, v0 = md[0]
+                out = [f"{w[0].upper() + w[1:]} besaß der Haushalt in der Mitte netto rund {k(v)}, der Durchschnitt aller Haushalte {k(m)}."]
+                if v:
+                    out.append(f"Der Durchschnitt liegt beim {num(m / v, 1)}-Fachen der Mitte.")
+                if x0 != x:
+                    w0 = _when(x0, "Q", lang)
+                    out.append(f"{w0[0].upper() + w0[1:]} besaß der Haushalt in der Mitte netto {k(v0)} (nominal, ohne Abzug der Preissteigerung).")
+                return out
             return [f"{w[0].upper() + w[1:]}, the household in the middle had net wealth of about {k(v)}, the average across all households {k(m)}."]
         if ch == "hh_balance":
             ids = [("hh_q3_nun", "Immobilien", "property"), ("hh_q3_f2m", "Bargeld und Einlagen", "cash and deposits"), ("hh_q3_f62", "Lebensversicherungen und Renten", "life insurance and pensions")]
@@ -138,7 +145,7 @@ def saetze(c: dict, lang: str = "de") -> list[str]:
             parts = [(dict(_last(c, i)).get(x, 0), a, b) for i, a, b in ids]
             w = _when(x, "Q", lang)
             if de:
-                return [f"{w[0].upper() + w[1:]} besaß ein Haushalt im mittleren Fünftel Immobilien für {k(parts[0][0])} und Einlagen von {k(parts[1][0])}; "
+                return [f"{w[0].upper() + w[1:]} besaßen die Haushalte im mittleren Fünftel im Durchschnitt Immobilien für {k(parts[0][0])} und Einlagen von {k(parts[1][0])}; "
                         f"dem standen Kredite von {k(abs(debt))} gegenüber. Netto blieben {k(v)}."]
             return [f"{w[0].upper() + w[1:]}, a household in the middle fifth owned property worth {k(parts[0][0])} and deposits of {k(parts[1][0])}, "
                     f"against loans of {k(abs(debt))}. Net wealth was {k(v)}."]
@@ -158,7 +165,13 @@ def saetze(c: dict, lang: str = "de") -> list[str]:
             vb = dict(b).get(x)
             w = _when(x, "Q", lang)
             if de:
-                return [f"{w[0].upper() + w[1:]} besaßen die reichsten 10\u00a0% der Haushalte {pc(vt)} des gesamten Nettovermögens, die ärmere Hälfte {pc(vb)}."]
+                out = [f"{w[0].upper() + w[1:]} besaßen die reichsten 10\u00a0% der Haushalte {pc(vt)} des gesamten Nettovermögens, die ärmere Hälfte {pc(vb)}."]
+                x0, t0 = t[0]
+                b0 = dict(b).get(x0)
+                if x0 != x and b0 is not None:
+                    w0 = _when(x0, "Q", lang)
+                    out.append(f"{w0[0].upper() + w0[1:]} waren es {pc(t0)} und {pc(b0)}.")
+                return out
             return [f"{w[0].upper() + w[1:]}, the richest 10% of households held {pc(vt)} of total net wealth, the poorer half {pc(vb)}."]
     except (KeyError, IndexError, ValueError, ZeroDivisionError, TypeError):
         return []
