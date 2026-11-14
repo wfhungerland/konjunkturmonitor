@@ -5,7 +5,8 @@ selbst, rechts im Einzugsgebiet (monitor.aufnahme_einzug). Kreisgrenzen: GISCO N
 
     python -m monitor.aufnahme_karte [--cache <ordner>] [--ziel docs]
 
-Schreibt aufnahme_karte.html (SVG mit Hover, heller und dunkler Modus). Nur Standardbibliothek.
+Schreibt aufnahme_karte.html (SVG mit Hover, heller und dunkler Modus) und für die Monitor-Seite
+data/static/aufnahme_karte.json (vereinfachte Kreisgrenzen und Werte, Abbildungstyp „kreise“). Nur Standardbibliothek.
 """
 from __future__ import annotations
 
@@ -58,6 +59,70 @@ def _pfad(geom: dict, abb) -> str:
         if len(punkte) >= 3:
             teile.append("M" + "L".join(f"{a:.1f},{b:.1f}" for a, b in punkte) + "Z")
     return "".join(teile)
+
+
+def _vereinfachen(punkte: list, toleranz: float) -> list:
+    """Douglas-Peucker ohne Rekursion; behält Anfang und Ende."""
+    if len(punkte) < 4:
+        return punkte
+    behalten = [False] * len(punkte)
+    behalten[0] = behalten[-1] = True
+    stapel = [(0, len(punkte) - 1)]
+    while stapel:
+        a, b = stapel.pop()
+        (x1, y1), (x2, y2) = punkte[a], punkte[b]
+        dx, dy = x2 - x1, y2 - y1
+        n2 = dx * dx + dy * dy
+        best, idx = -1.0, None
+        for i in range(a + 1, b):
+            px, py = punkte[i]
+            if n2 == 0:
+                d = (px - x1) ** 2 + (py - y1) ** 2
+            else:
+                t = max(0.0, min(1.0, ((px - x1) * dx + (py - y1) * dy) / n2))
+                d = (px - x1 - t * dx) ** 2 + (py - y1 - t * dy) ** 2
+            if d > best:
+                best, idx = d, i
+        if idx is not None and best > toleranz * toleranz:
+            behalten[idx] = True
+            stapel += [(a, idx), (idx, b)]
+    return [p for p, k in zip(punkte, behalten) if k]
+
+
+def monitor_json(cache: Path, ziel: Path, breite: int = 1000, toleranz: float = 0.6) -> None:
+    """Kreisgrenzen (vereinfacht, ganzzahlig auf 1.000 Einheiten Breite) und Werte für die Monitor-Seite."""
+    werte = {r["nuts3"]: r for r in csv.DictReader((DATEN / "aufnahme_einzug.csv").open(encoding="utf-8"))}
+    bund = sum(float(r["svb_wz_f_baugewerbe_kreis"]) for r in werte.values()) * 1000 / \
+        sum(float(r["bevoelkerung"]) for r in werte.values())
+    kreise = [f for f in _geo(cache, 3)["features"] if f["properties"]["CNTR_CODE"] == "DE"]
+    xs = [x for f in kreise for ring in _ringe(f["geometry"]) for x, _ in ring]
+    ys = [y for f in kreise for ring in _ringe(f["geometry"]) for _, y in ring]
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    m = breite / (x1 - x0)
+
+    def pfad(geom) -> str:
+        teile = []
+        for ring in _ringe(geom):
+            pk = _vereinfachen([((x - x0) * m, (y1 - y) * m) for x, y in ring], toleranz)
+            pk = [(round(a), round(b)) for a, b in pk]
+            pk = [p for i, p in enumerate(pk) if i == 0 or p != pk[i - 1]]
+            if len(pk) >= 4:
+                teile.append("M" + "L".join(f"{a},{b}" for a, b in pk) + "Z")
+        return "".join(teile)
+
+    aus = []
+    for f in sorted(kreise, key=lambda f: f["properties"]["NUTS_ID"]):
+        r = werte.get(f["properties"]["NUTS_ID"])
+        if not r:
+            continue
+        aus.append({"id": r["nuts3"], "name": r["name"], "d": pfad(f["geometry"]),
+                    "kreis": round(100 * float(r["je_1000_kreis"]) / bund, 1), "einzug": float(r["index_einzug_bund_100"]),
+                    "je_kreis": float(r["je_1000_kreis"]), "je_einzug": float(r["je_1000_einzug"]),
+                    "geschaetzt": r.get("kreiswert_geschaetzt") == "1"})
+    daten = {"breite": breite, "hoehe": round((y1 - y0) * m), "bund": round(bund, 1), "stichtag": "2026-03",
+             "halbwertszeit": 28, "unit": "Index, Bund = 100", "unit_en": "Index, Germany = 100", "kreise": aus}
+    ziel.write_text(json.dumps(daten, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"{len(aus)} Kreise, {ziel.stat().st_size / 1e6:.2f} MB")
 
 
 def _klasse(wert: float) -> int:
@@ -188,6 +253,7 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--ziel", type=Path, default=Path("docs"))
     a = ap.parse_args(argv)
     zeichnen(a.cache, a.ziel)
+    monitor_json(a.cache, DATEN / "aufnahme_karte.json")
 
 
 if __name__ == "__main__":

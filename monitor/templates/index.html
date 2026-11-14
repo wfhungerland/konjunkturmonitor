@@ -437,6 +437,13 @@
   .tside { flex: 0 1 260px; } .tside .tlegend { justify-content: flex-start; margin-bottom: 6px; }
   .tlist { list-style: none; padding: 0; margin: 4px 0; columns: 1; font-size: 13.5px; }
   .tlist li { display: flex; justify-content: space-between; gap: 8px; break-inside: avoid; white-space: nowrap; }
+  .kbox { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 24px; }
+  .kmap { margin: 0; } .kmap figcaption { font: 600 13.5px var(--ff); margin-bottom: 4px; }
+  .kmap svg { width: 100%; height: auto; display: block; }
+  .kmap path { stroke: #fff; stroke-width: 0.8; stroke-linejoin: round; }
+  .kmap path.an, .kmap path:hover { stroke: #000; stroke-width: 2; paint-order: stroke; }
+  .kinfo { min-height: 1.4em; font-size: 13.5px; margin: 6px 0; font-variant-numeric: tabular-nums; }
+  .klists { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 24px; font-size: 13.5px; }
   .gut .pin { font: 17px/1.5 var(--ff); background: none; border: 0; color: #0070C0; cursor: pointer; padding: 0; }
   .gut .pin[aria-pressed="true"] { color: #0070C0; }  /* royalblau wie die Pfeile nach oben */
   .collection:empty { display: none; }
@@ -1426,6 +1433,38 @@ function geoSvg(w, m) {
   });
   return svg;
 }
+// Kreiskarte (Baukapazität): zwei Karten mit gleicher Farbskala, im Kreis und im Einzugsgebiet; orange = weniger als der Bund
+function kreiseChart(el, c) {
+  const A = c.attach || {}, K = A.kreise || [], en = TM_TXT.lang === "en", W = A.breite, H = A.hoehe;
+  const T = en ? { a: "In the district", b: "In the catchment area", hint: "Hover over or tap a district.", lo: "fewer than Germany", mid: "about Germany", hi: "more than Germany",
+                   low: "Least in the catchment area", high: "Most in the catchment area", per: "per 1,000 inhabitants", est: "district value estimated" }
+                 : { a: "Im Kreis", b: "Im Einzugsgebiet", hint: "Kreis berühren oder antippen für Werte.", lo: "weniger als Bund", mid: "etwa Bund", hi: "mehr als Bund",
+                   low: "Am wenigsten im Einzugsgebiet", high: "Am meisten im Einzugsgebiet", per: "je 1.000 Einwohner", est: "Kreiswert geschätzt" };
+  const col = v => tileColor(100 - v, 50).bg;
+  const tip = k => `${k.name}: ${T.a} ${fmt(k.kreis, 0)} (${fmt(k.je_kreis, 1)} ${T.per}), ${T.b} ${fmt(k.einzug, 0)} (${fmt(k.je_einzug, 1)})${k.geschaetzt ? "; " + T.est : ""}`;
+  const map = (key, titel) => `<figure class="kmap"><figcaption>${esc(titel)}</figcaption><svg viewBox="-4 -4 ${W + 8} ${H + 8}" role="img" aria-label="${esc(titel)}">`
+    + K.map(k => `<path d="${k.d}" fill="${col(k[key])}" data-id="${k.id}"><title>${esc(tip(k))}</title></path>`).join("") + `</svg></figure>`;
+  const base = n => n.split(",")[0], dup = new Set(K.map(k => base(k.name)).filter((b, i, a) => a.indexOf(b) !== i));
+  const kurz = n => !dup.has(base(n)) ? base(n) : n.includes(",") ? `${base(n)} (${en ? "city" : "Stadt"})` : en ? `${base(n)} (district)` : `Landkreis ${base(n)}`;
+  const ord = K.slice().sort((p, q) => p.einzug - q.einzug), li = k => `<li><span>${esc(kurz(k.name))}</span><span>${fmt(k.einzug, 0)}</span></li>`;
+  el.style.width = "100%"; el.style.marginLeft = "0"; el.style.height = "auto"; el.style.minHeight = "0"; el.style.maxHeight = "none"; el.style.aspectRatio = "auto"; el.style.overflow = "visible";
+  el.innerHTML = `<div class="kbox">${map("kreis", T.a)}${map("einzug", T.b)}</div>`
+    + `<div class="tlegend"><span><i style="background:${col(50)}"></i>${T.lo}</span><span><i style="background:${col(100)};border:1px solid #ccc"></i>${T.mid}</span><span><i style="background:${col(150)}"></i>${T.hi}</span></div>`
+    + `<div class="kinfo" aria-live="polite">${T.hint}</div>`
+    + `<div class="klists"><div><b>${T.low}</b><ol class="tlist">${ord.slice(0, 5).map(li).join("")}</ol></div><div><b>${T.high}</b><ol class="tlist">${ord.slice(-5).reverse().map(li).join("")}</ol></div></div>`;
+  const info = el.querySelector(".kinfo"), byId = Object.fromEntries(K.map(k => [k.id, k]));
+  el.querySelectorAll(".kmap path").forEach(p => {
+    const show = () => { info.textContent = tip(byId[p.dataset.id]); el.querySelectorAll(`.kmap path[data-id="${p.dataset.id}"]`).forEach(q => q.classList.add("an")); };
+    p.addEventListener("mouseenter", show); p.addEventListener("click", show);
+    p.addEventListener("mouseleave", () => el.querySelectorAll(".kmap path.an").forEach(q => q.classList.remove("an")));
+  });
+  // für den PNG-Download: beide Karten nebeneinander als ein SVG
+  el._kexport = () => { const gap = 40, ns = "http://www.w3.org/2000/svg";
+    const g = (key, dx, titel) => `<g transform="translate(${dx},40)"><text x="0" y="-14" font-size="26" font-weight="600" font-family="Arial">${esc(titel)}</text>`
+      + K.map(k => `<path d="${k.d}" fill="${col(k[key])}" stroke="#fff" stroke-width="0.8"/>`).join("") + "</g>";
+    const leg = [[50, T.lo], [100, T.mid], [150, T.hi]].map(([v, t], i) => `<g transform="translate(${i * 300},${H + 70})"><rect width="26" height="20" rx="3" fill="${col(v)}" stroke="#ccc"/><text x="36" y="17" font-size="22" font-family="Arial">${esc(t)}</text></g>`).join("");
+    return `<svg xmlns="${ns}" width="${2 * W + gap}" height="${H + 100}" viewBox="0 0 ${2 * W + gap} ${H + 100}">${g("kreis", 0, T.a)}${g("einzug", W + gap, T.b)}${leg}</svg>`; };
+}
 function tilesChart(el, c) {
   const sets = [c.tiles, c.tiles6].filter(Boolean);
   const box = document.createElement("div"); el.appendChild(box);
@@ -1480,6 +1519,9 @@ async function pngDownload(el, ch, c, no, sub, unit) {
     const svg = ch.querySelector("svg"), clone = svg.cloneNode(true); clone.setAttribute("width", 520); clone.setAttribute("height", 560); clone.removeAttribute("style");
     const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(clone));
     img = new Image(); img.src = url; await img.decode(); plotH = 560;
+  } else if (c.type === "kreise" && ch._kexport) {
+    const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(ch._kexport());
+    img = new Image(); img.src = url; await img.decode(); plotH = Math.round((W - 2 * pad) * img.height / img.width);
   } else if (c.type === "tiles") plotH = 5 * 74 + 60;
   else { let src_el = ch;
     if (ch.classList.contains("multi")) { src_el = document.createElement("div"); src_el.style.cssText = "position:absolute;left:-9999px;width:1100px;height:520px"; document.body.appendChild(src_el); timeChart(src_el, c); }
@@ -1526,6 +1568,7 @@ function card(c, no) {
   if (c.multiples && (DATA.layout || {}).small_multiples && (c.series || []).length > 2) { if (c.own_scale == null) c.own_scale = true; c.scale_toggle = true; }  // Standard: eigene Skala je Feld, gemeinsam per Schalter
   const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = FA(no); if (c.chart) el.dataset.chart = c.chart;
   const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
+    : c.type === "kreise" ? (c.attach && c.attach.stichtag ? (TM_TXT.lang === "en" ? "Employment as of " : "Beschäftigte am Stichtag ") + c.attach.stichtag.split("-").reverse().join("/") : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? (c.all_days ? "Täglich" : "Täglich (Arbeitstage)") : c.freq === "S" ? "Halbjährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Pp, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% ggü. Vorjahr"
     : c.type === "tiles" ? "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
@@ -1721,6 +1764,7 @@ function render(ch) {
   else if (c.type === "enso_comm") ensoCommChart(ch, c);
   else if (c.type === "calendar") calendarChart(ch, c);
   else if (c.type === "treemap") treemapChart(ch, c);
+  else if (c.type === "kreise") kreiseChart(ch, c);
   else if (c.type === "seasonal") seasonalChart(ch, c); else if (c.type === "tiles") tilesChart(ch, c);
   else if (c.multiples && (DATA.layout || {}).small_multiples && c.series && (c.series.length > 2 || c.own_scale)) multiplesChart(ch, c);
   else timeChart(ch, c);
