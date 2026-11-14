@@ -62,6 +62,21 @@ def abruf(ordner: Path) -> None:
     ordner.mkdir(parents=True, exist_ok=True)
     nutzer = input("Benutzername Regionaldatenbank: ").strip()
     kopf = {"username": nutzer, "password": getpass.getpass("Passwort (wird nicht angezeigt): ")}
+    # Erstanmeldung: Die Regionaldatenbank verlangt ein neues Passwort; die Schnittstelle kann es setzen
+    # (profile/password, GENESIS-Webservices, Abschnitt 2.7.1)
+    if input("Passwort jetzt ändern? Bei der ersten Anmeldung nötig (j/n): ").strip().lower().startswith("j"):
+        while True:
+            neu = getpass.getpass("Neues Passwort (10 bis 20 Zeichen, 3 von: klein, GROSS, Ziffer, Sonderzeichen): ")
+            if neu == getpass.getpass("Neues Passwort wiederholen: "):
+                break
+            print("Die beiden Eingaben stimmen nicht überein, bitte noch einmal.")
+        antwort = _meldung(_post("profile/password", kopf, {"new": neu, "repeat": neu, "language": "de"})) or {}
+        status = antwort.get("Status") or antwort
+        print("Passwortänderung:", status.get("Content", status) if isinstance(status, dict) else status)
+        if isinstance(status, dict) and str(status.get("Code")) not in ("0", "None"):
+            print("Das Passwort wurde nicht geändert. Bitte die Meldung prüfen und neu starten.")
+            sys.exit(1)
+        kopf["password"] = neu
     try:  # nur zur Auskunft; manche Server beantworten die Prüfung mit 400, der Abruf klappt trotzdem
         probe = _meldung(_post("helloworld/logincheck", kopf, {}))
         print("Anmeldung:", (probe or {}).get("Status", probe))
