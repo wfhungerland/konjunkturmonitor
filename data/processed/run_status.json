@@ -2,7 +2,7 @@
  "started_at": "2026-11-14T09:33:47Z",
  "finished_at": "2026-11-14T09:39:12Z",
  "counts": {
-  "ok": 580
+  "ok": 592
  },
  "outdated": [],
  "series": [
@@ -6964,6 +6964,150 @@
    "retrieved_at": "2026-11-14T09:39:12Z",
    "api_url": "",
    "message": "berechnet aus gd_alo_prog minus gd_alo_ist",
+   "outdated": false
+  },
+  {
+   "series_id": "lt_pt",
+   "status": "ok",
+   "n_obs": 334,
+   "first": "1999-01",
+   "last": "2026-10",
+   "last_value": 3.917,
+   "retrieved_at": "2026-11-14T08:34:05Z",
+   "api_url": "https://data-api.ecb.europa.eu/service/data/IRS/M.PT.L.L40.CI.0000.EUR.N.Z?startPeriod=1999-01&format=csvdata&detail=dataonly",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "spread_pt",
+   "status": "ok",
+   "n_obs": 334,
+   "first": "1999-01",
+   "last": "2026-10",
+   "last_value": 0.5009999999999999,
+   "retrieved_at": "2026-11-14T08:34:11Z",
+   "api_url": "",
+   "message": "berechnet aus lt_pt minus lt_de",
+   "outdated": false
+  },
+  {
+   "series_id": "lt_be",
+   "status": "ok",
+   "n_obs": 334,
+   "first": "1999-01",
+   "last": "2026-10",
+   "last_value": 4.38,
+   "retrieved_at": "2026-11-14T08:34:06Z",
+   "api_url": "https://data-api.ecb.europa.eu/service/data/IRS/M.BE.L.L40.CI.0000.EUR.N.Z?startPeriod=1999-01&format=csvdata&detail=dataonly",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "spread_be",
+   "status": "ok",
+   "n_obs": 334,
+   "first": "1999-01",
+   "last": "2026-10",
+   "last_value": 0.964,
+   "retrieved_at": "2026-11-14T08:34:11Z",
+   "api_url": "",
+   "message": "berechnet aus lt_be minus lt_de",
+   "outdated": false
+  },
+  {
+   "series_id": "lt_gr",
+   "status": "ok",
+   "n_obs": 333,
+   "first": "1999-01",
+   "last": "2026-10",
+   "last_value": 4.41,
+   "retrieved_at": "2026-11-14T08:34:07Z",
+   "api_url": "https://data-api.ecb.europa.eu/service/data/IRS/M.GR.L.L40.CI.0000.EUR.N.Z?startPeriod=1999-01&format=csvdata&detail=dataonly",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "spread_gr",
+   "status": "ok",
+   "n_obs": 333,
+   "first": "1999-01",
+   "last": "2026-10",
+   "last_value": 0.9940000000000002,
+   "retrieved_at": "2026-11-14T08:34:11Z",
+   "api_url": "",
+   "message": "berechnet aus lt_gr minus lt_de",
+   "outdated": false
+  },
+  {
+   "series_id": "lt_at",
+   "status": "ok",
+   "n_obs": 334,
+   "first": "1999-01",
+   "last": "2026-10",
+   "last_value": 3.6898,
+   "retrieved_at": "2026-11-14T08:34:10Z",
+   "api_url": "https://data-api.ecb.europa.eu/service/data/IRS/M.AT.L.L40.CI.0000.EUR.N.Z?startPeriod=1999-01&format=csvdata&detail=dataonly",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "spread_at",
+   "status": "ok",
+   "n_obs": 334,
+   "first": "1999-01",
+   "last": "2026-10",
+   "last_value": 0.27380000000000004,
+   "retrieved_at": "2026-11-14T08:34:11Z",
+   "api_url": "",
+   "message": "berechnet aus lt_at minus lt_de",
+   "outdated": false
+  },
+  {
+   "series_id": "lt_nl",
+   "status": "ok",
+   "n_obs": 334,
+   "first": "1999-01",
+   "last": "2026-10",
+   "last_value": 3.535,
+   "retrieved_at": "2026-11-14T08:34:11Z",
+   "api_url": "https://data-api.ecb.europa.eu/service/data/IRS/M.NL.L.L40.CI.0000.EUR.N.Z?startPeriod=1999-01&format=csvdata&detail=dataonly",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "spread_nl",
+   "status": "ok",
+   "n_obs": 334,
+   "first": "1999-01",
+   "last": "2026-10",
+   "last_value": 0.11900000000000022,
+   "retrieved_at": "2026-11-14T08:34:11Z",
+   "api_url": "",
+   "message": "berechnet aus lt_nl minus lt_de",
+   "outdated": false
+  },
+  {
+   "series_id": "de_exp_fr_eur",
+   "status": "ok",
+   "n_obs": 261,
+   "first": "2005-01",
+   "last": "2026-09",
+   "last_value": 124.1416,
+   "retrieved_at": "2026-11-14T08:34:24Z",
+   "api_url": "https://github.com/wfhungerland/konjunkturwolf/blob/main/data/static/de_exp_fr_eur.csv",
+   "message": "",
+   "outdated": false
+  },
+  {
+   "series_id": "de_gdp_nom",
+   "status": "ok",
+   "n_obs": 26,
+   "first": "2000",
+   "last": "2025",
+   "last_value": 4529710.0,
+   "retrieved_at": "2026-11-14T08:34:37Z",
+   "api_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nama_10_gdp?format=JSON&lang=en&geo=DE&unit=CP_MEUR&na_item=B1GQ",
+   "message": "",
    "outdated": false
   }
  ]

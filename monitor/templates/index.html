@@ -948,13 +948,14 @@ function heatChart(el, c) {
 
 // Krisenthermometer: je Zeile ein Indikator auf gemeinsamer Skala, 0 % = Normalniveau (Mittel der Basisjahre), 100 % = Krisenhoch;
 // voller Punkt heute, hohler Punkt vor einem Jahr; jenseits von 100 % rot hinterlegt. Gruppen als fette Zwischenzeilen.
-const GAUGE_TXT = { normal: "normal", crisis: "Eurokrise", now: "jüngster Wert", ago: "vor einem Jahr", lang: "de" };
+const GAUGE_TXT = { normal: "normal", crisis: "Eurokrise", now: "jüngster Wert", ago: "vor einem Jahr", peak: "Krisenhoch", year: "Jahreswert", lang: "de" };
 function gaugeChart(el, c) {
   const G = c.gauge || {}, en = GAUGE_TXT.lang === "en", R = G.rows || [], lines = [];
   let g0 = null; R.forEach(r => { const g = en ? r.group_en : r.group; if (g && g !== g0) { lines.push({ head: g }); g0 = g; } lines.push(r); });
   const n = lines.length, yv = i => n - 1 - i, lab = r => en ? r.label_en : r.label, un = r => en ? r.unit_en : r.unit;
   const pts = R.flatMap(r => [r.now_pct, r.ago_pct]).filter(v => v != null), lo = Math.min(-25, ...pts) - 8, hi = Math.max(125, ...pts) + 28;
-  const red = "#C00000", per = r => perLong(r.now_date, r.freq), perA = r => r.ago_date ? perLong(r.ago_date, r.freq) : "";
+  const red = "#C00000", per = r => r.freq === "A" ? `${GAUGE_TXT.year} ${r.now_date.slice(0, 4)}` : perLong(r.now_date, r.freq), perA = r => r.ago_date ? perLong(r.ago_date, r.freq) : "";
+  const fv = (r, v) => fmt(v * (r.factor || 1), r.show_decimals ?? r.decimals);  // Anzeige in eigener Einheit, etwa Basispunkte
   const traces = [], shapes = [
     { type: "rect", xref: "x", yref: "paper", x0: 100, x1: hi, y0: 0, y1: 1, fillcolor: "rgba(192,0,0,0.07)", line: { width: 0 }, layer: "below" },
     { type: "line", xref: "x", yref: "paper", x0: 0, x1: 0, y0: 0, y1: 1, line: { color: "#7f7f7f", width: 1 } },
@@ -963,12 +964,13 @@ function gaugeChart(el, c) {
     { xref: "x", yref: "paper", x: 100, y: 1, yanchor: "bottom", showarrow: false, text: `${GAUGE_TXT.crisis} ${G.peak[0].slice(0, 4)}/${G.peak[1].slice(2, 4)}`, font: { family: HS.font, size: 12, color: red } }];
   lines.forEach((r, i) => { if (r.head) return;
     const hot = r.now_pct >= 100, col = hot ? red : r.now_pct >= 50 ? "#C55A11" : PAL[0];
-    if (r.ago_pct != null) shapes.push({ type: "line", xref: "x", yref: "y", x0: r.ago_pct, x1: r.now_pct, y0: yv(i), y1: yv(i), line: { color: "#bfbfbf", width: 2 }, layer: "below" });
+    if (r.ago_pct != null && Math.abs(r.now_pct - r.ago_pct) > 3) ann.push({ xref: "x", yref: "y", axref: "x", ayref: "y", x: r.now_pct, y: yv(i), ax: r.ago_pct, ay: yv(i), text: "", showarrow: true,
+      arrowhead: 2, arrowsize: 1.1, arrowwidth: 1.6, arrowcolor: "#9e9e9e", standoff: 8, startstandoff: 7 });  // Pfeil: Richtung der Bewegung im letzten Jahr
     traces.push({ type: "scatter", mode: "markers", x: [r.ago_pct], y: [yv(i)], showlegend: false, marker: { symbol: "circle-open", size: 11, color: "#7f7f7f", line: { width: 2 } },
-      hovertemplate: `${esc(lab(r))}, ${esc(perA(r))}: ${fmt(r.ago, r.decimals)} ${esc(un(r))} (%{x:.0f} %)<extra></extra>` });
+      hovertemplate: `${esc(lab(r))}, ${esc(perA(r))}: ${fmt(r.ago * (r.factor || 1), r.show_decimals ?? r.decimals)} ${esc(un(r))} (%{x:.0f} %)<extra></extra>` });
     traces.push({ type: "scatter", mode: "markers+text", x: [r.now_pct], y: [yv(i)], showlegend: false, marker: { size: 13, color: col },
-      text: [`${fmt(Math.round(r.now_pct), 0).replace("-", "−")} %`], textposition: "middle right", textfont: { family: HS.font, size: 12, color: col },
-      hovertemplate: `${esc(lab(r))}, ${esc(per(r))}: ${fmt(r.now, r.decimals)} ${esc(un(r))}<br>${GAUGE_TXT.normal}: ${fmt(r.base, r.decimals)}, ${GAUGE_TXT.crisis}: ${fmt(r.peak, r.decimals)} (${esc(perLong(r.peak_date, r.freq))})<extra></extra>` }); });
+      text: [`${fmt(Math.round(r.now_pct), 0).replace("-", "−")} %`], textposition: r.ago_pct != null && r.ago_pct > r.now_pct + 3 ? "middle left" : "middle right",  // Zahl nicht auf den Pfeil setzen textfont: { family: HS.font, size: 12, color: col },
+      hovertemplate: `${esc(lab(r))}, ${esc(per(r))}: ${fv(r, r.now)} ${esc(un(r))}<br>${GAUGE_TXT.normal}: ${fv(r, r.base)}, ${GAUGE_TXT.crisis}: ${fv(r, r.peak)} (${esc(perLong(r.peak_date, r.freq))})<extra></extra>` }); });
   traces.push({ type: "scatter", mode: "markers", x: [null], y: [null], name: GAUGE_TXT.now, marker: { size: 12, color: PAL[0] } },
               { type: "scatter", mode: "markers", x: [null], y: [null], name: GAUGE_TXT.ago, marker: { symbol: "circle-open", size: 11, color: "#7f7f7f", line: { width: 2 } } });
   const L = baseLayout(el), narrow = (el.clientWidth || 600) < 560;
@@ -976,7 +978,7 @@ function gaugeChart(el, c) {
     legend: { orientation: "h", x: 0, y: -0.03, yanchor: "top", font: { size: 12 }, itemclick: false, itemdoubleclick: false },
     xaxis: { range: [lo, hi], tickvals: [0, 25, 50, 75, 100], ticktext: ["0 %", "25 %", "50 %", "75 %", "100 %"], showgrid: true, gridcolor: HS.gridH, zeroline: false, fixedrange: true },
     yaxis: { range: [-0.7, n - 0.3], tickmode: "array", tickvals: lines.map((r, i) => yv(i)),
-      ticktext: lines.map(r => r.head ? `<b>${esc(r.head)}</b>` : esc(lab(r)) + (narrow ? "" : `<br><span style="font-size:11px;color:#595959">${fmt(r.now, r.decimals)} ${esc(un(r))}, ${esc(per(r))}</span>`)),
+      ticktext: lines.map(r => r.head ? `<b>${esc(r.head)}</b>` : esc(lab(r)) + (narrow ? "" : `<br><span style="font-size:11px;color:#595959">${fv(r, r.now)} ${esc(un(r))} · ${GAUGE_TXT.peak} ${fv(r, r.peak)} · ${esc(per(r))}</span>`)),
       automargin: true, fixedrange: true, ticks: "", showgrid: false, zeroline: false } });
   el.style.aspectRatio = "auto"; el.style.height = L.height + "px"; el.style.maxHeight = "none";  // höher als die übliche Grenze von 440 px
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
@@ -1315,15 +1317,15 @@ function dumbbellChart(el, c) {
   const shapes = rows.map((r, i) => ({ type: "line", xref: "x", yref: "y", x0: r.a[1], x1: r.b[1], y0: i, y1: i, line: { color: emph(r) ? PAL[0] : "#bfbfbf", width: emph(r) ? 2.5 : 1.5 }, layer: "below" }));
   const traces = [
     { type: "scatter", mode: "markers", x: rows.map(r => r.a[1]), y: rows.map((_, i) => i), name: A || "erstes Jahr", customdata: rows.map((r, i) => `${esc(lab[i])} ${y0[i]}`),
-      marker: { symbol: "circle-open", size: 10, color: rows.map(col), line: { width: 2 } }, hovertemplate: "%{customdata}: %{x:,.1f} %<extra></extra>" },
+      marker: { symbol: "circle-open", size: 10, color: rows.map(col), line: { width: 2 } }, hovertemplate: `%{customdata}: %{x:,.${c.suffix != null ? 0 : 1}f}${c.suffix != null ? c.suffix : " %"}<extra></extra>` },
     { type: "scatter", mode: "markers+text", x: rows.map(r => r.b[1]), y: rows.map((_, i) => i), name: B || "jüngstes Jahr", customdata: rows.map((r, i) => `${esc(lab[i])} ${y1[i]}`),
-      text: rows.map(r => fmt(r.b[1], 1)), textposition: rows.map(r => r.b[1] >= r.a[1] ? "middle right" : "middle left"), textfont: { family: HS.font, size: 12, color: rows.map(col) },
-      marker: { size: 10, color: rows.map(col) }, hovertemplate: "%{customdata}: %{x:,.1f} %<extra></extra>" }];
+      text: rows.map(r => fmt(r.b[1], c.suffix != null ? 0 : 1)), textposition: rows.map(r => r.b[1] >= r.a[1] ? "middle right" : "middle left"), textfont: { family: HS.font, size: 12, color: rows.map(col) },
+      marker: { size: 10, color: rows.map(col) }, hovertemplate: `%{customdata}: %{x:,.${c.suffix != null ? 0 : 1}f}${c.suffix != null ? c.suffix : " %"}<extra></extra>` }];
   const v = rows.flatMap(r => [r.a[1], r.b[1]]), lo = Math.min(...v), hi = Math.max(...v), p = (hi - lo) * 0.08;
   const L = baseLayout(el);
   Object.assign(L, { height: Math.max(260, 30 * rows.length + 80), hovermode: "closest", showlegend: true, shapes, margin: { l: 6, r: 16, t: 34, b: 30 },
     legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { size: 12 }, itemclick: false, itemdoubleclick: false },
-    xaxis: { range: [Math.max(0, lo - p * 3.5), hi + p * 2], showgrid: true, gridcolor: HS.gridH, zeroline: true, zerolinecolor: HS.zero, fixedrange: true, ticksuffix: "\u202f%" },
+    xaxis: { range: [Math.max(0, lo - p * 3.5), hi + p * 2], showgrid: true, gridcolor: HS.gridH, zeroline: true, zerolinecolor: HS.zero, fixedrange: true, ticksuffix: c.suffix != null ? c.suffix : "\u202f%" },
     yaxis: { tickmode: "array", tickvals: rows.map((_, i) => i), ticktext: rows.map((r, i) => emph(r) ? `<b>${esc(lab[i])}</b>` : esc(lab[i])), range: [-0.7, rows.length - 0.3], automargin: true, fixedrange: true, ticks: "", showgrid: false, zeroline: false } });
   el.style.aspectRatio = "auto"; el.style.height = L.height + "px";
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";  // Einheit steht an der Achse

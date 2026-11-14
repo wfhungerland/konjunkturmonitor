@@ -185,3 +185,5 @@ trade_ru;Exporte Russland Nachbarlaender;2026-11-14;
 infl_hist;Inflationsschuebe seit 1945;2026-11-14;
 svr_treff;Prognoseguete Sachverstaendigenrat;2026-11-14;
 gd_treff;Prognoseguete Gemeinschaftsdiagnose;2026-11-14;
+fr_rank;Risikoaufschlag Laender;2026-11-14;
+fr_yields;Renditen Frankreich Deutschland;2026-11-14;
