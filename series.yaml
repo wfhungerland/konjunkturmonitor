@@ -2195,7 +2195,7 @@ series:
     unit: "US-$ je €"
     frequency: D
     adjustment: "nicht bereinigt"
-    start: "2019-01-01"
+    start: "2015-01-01"  # 2015–19 nötig für die Bänder von Rohöl und Erdgas in Euro (lage.py)
     stale_after_months: 1
     chart: fx_usd
     label: "US-Dollar"
