@@ -1,3 +1,9 @@
 {
- "angehalten": []
+ "angehalten": [
+  {
+   "series_id": "de_gas_storage",
+   "grund": "93% der bisherigen Werte fehlen",
+   "seit": "2026-11-14"
+  }
+ ]
 }
