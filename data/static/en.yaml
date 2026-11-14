@@ -745,9 +745,9 @@ charts:
     ask: "How much do makers of weapons and ammunition sell?"
     caption: "Turnover of plants making weapons and ammunition, summed over the previous twelve months, in billion euros; establishments with 50 or more employees. Counted per plant, not per company, so a reclassification of companies does not shift the figures. Tanks and other fighting vehicles are missing because the Federal Statistical Office keeps their data confidential. Foreign turnover covers deliveries to customers outside Germany."
   arms_overview:
-    title: "Defence in Germany since 2021: from budget to factory"
-    ask: "How does defence money reach the factory?"
-    caption: "Each row compares the latest level with 2021. The small lines show the course since 2015 on the same time axis; the dot marks the latest value. Spending and orders in euros, production as volume. Orders also include tanks, aircraft and ships, production only weapons and ammunition. The dates differ because the sources report at different speeds."
+    title: "Defence money in Germany: from budget to factory"
+    ask: "How much money flows into defence, and what reaches the factory?"
+    caption: "The table follows defence money from the budget through orders to the factory, in billion euros per year. The column on the right shows the change since 2021, the bar the multiple. Government spending from Eurostat is available up to 2024. Orders by the contractor's seat; about €31 bn of unclear origin are missing. Makers cover only weapons and ammunition, because the Federal Statistical Office keeps tanks and other fighting vehicles confidential. The federal plan covers only the federal level and is therefore not comparable with government spending."
   arms_cycle:
     title: "Defence: orders and production"
     ask: "Is production keeping up with defence orders?"

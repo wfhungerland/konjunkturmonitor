@@ -1780,6 +1780,53 @@ def build_payload(root: Path = ROOT) -> dict:
                         de += "; " + "; ".join(r["tail"].format(f=fx(r["factor"])) for r in tails)
                         en += "; " + "; ".join(r["tail_en"].format(f=f"{r['factor']:.1f}") for r in tails)
                     entry["say"], entry["say_en"] = [de + "."], [en + "."]
+            elif typ == "numtable":  # Zahlentafel: Jahreswerte je Zeile, Veränderung seit dem ersten Jahr, Faktor als Balken; dazu Planwerte
+                y0, y1 = (int(v) for v in c.get("span", [2021, 2025]))
+                years, blocks, used, said = list(range(y0, y1 + 1)), [], [], []
+                for b in c.get("blocks") or []:
+                    rows = []
+                    for r in b.get("rows") or []:
+                        parts = [data[i].dropna() for i in r["ids"] if i in data]
+                        if len(parts) != len(r["ids"]):
+                            continue
+                        s = pd.concat(parts, axis=1).dropna().sum(axis=1) if len(parts) > 1 else parts[0]
+                        if meta[r["ids"][0]].frequency != "A":  # nur volle Kalenderjahre
+                            g = s.groupby(s.index.year)
+                            s = (g.mean() if r.get("agg") == "mean" else g.sum())[g.count() >= 12]
+                        else:
+                            s = s.groupby(s.index.year).last()
+                        s = s * float(r.get("scale", 1))
+                        vals = {y: round(float(s[y]), 3) for y in years if y in s.index}
+                        if y0 not in vals or len(vals) < 2:
+                            continue
+                        last = max(vals)
+                        rows.append(dict(label=r["label"], label_en=r.get("label_en", r["label"]), sub=bool(r.get("sub")), d=int(r.get("decimals", 1)),
+                                         pp=bool(r.get("pp")), values=vals, last=last, change=round(vals[last] - vals[y0], 3),
+                                         factor=round(vals[last] / vals[y0], 3) if vals[y0] > 0.5 else None))
+                        used += [meta[i] for i in r["ids"]]
+                        if r.get("say"):
+                            said.append((r, rows[-1]))
+                    if rows:
+                        blocks.append(dict(label=b["label"], label_en=b.get("label_en", b["label"]), rows=rows))
+                if not blocks:
+                    continue
+                plan = c.get("plan")
+                if plan:
+                    plan = dict(plan, rows=[dict(r, values={int(k): v for k, v in r["values"].items()}) for r in plan["rows"]])
+                entry.update(numtable=dict(years=years, blocks=blocks, plan=plan), freq="A", unit=c.get("unit", "Mrd. €"),
+                             sources=list(c.get("sources") or sorted({_source_name(s) for s in used})) + ["eigene Berechnung"],
+                             licenses=sorted({_license(s) for s in used}),
+                             series=[dict(id=f"row{i}", label=r["label"], unit=c.get("unit", "Mrd. €"), freq="A", style="line",
+                                          x=[f"{y}-01-01" for y in r["values"]], y=list(r["values"].values()))
+                                     for i, r in enumerate(r for b in blocks for r in b["rows"])])
+                fx = lambda v: f"{v:,.1f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                if said:  # „say“: Satzgegenstand, Veränderung in Mrd. € seit dem ersten Jahr
+                    de = [f"{r['say']} bis {x['last']} um {fx(abs(x['change']))} Mrd. Euro" for r, x in said]
+                    en = [f"{r['say_en']} rose by €{abs(x['change']):,.1f} bn by {x['last']}" for r, x in said]
+                    entry["say"] = [f"Gegenüber {y0} stiegen " + _und(de) + "."]
+                    entry["say_en"] = [f"Compared with {y0}, " + (", ".join(en[:-1]) + " and " if len(en) > 1 else "") + en[-1] + "."]
+                    if plan and plan.get("say"):
+                        entry["say"].append(plan["say"]); entry["say_en"].append(plan.get("say_en", plan["say"]))
             elif typ == "cellgrid":  # Raster je Zeile und Jahr, Daten ganz aus data/static (attach), etwa Themen der Gemeinschaftsdiagnose
                 if not entry.get("attach"):
                     continue

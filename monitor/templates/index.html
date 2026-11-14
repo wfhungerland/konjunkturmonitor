@@ -498,6 +498,23 @@
   .spk-line { fill: none; stroke: #002060; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
   .spk-dot { stroke: #002060; stroke-width: 6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
   .spk-war { stroke: #C00000; stroke-width: 1; stroke-dasharray: 2 2; vector-effect: non-scaling-stroke; }
+  .numtab { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; }
+  .numtab th { font-weight: 400; font-size: 12px; color: #595959; text-align: right; padding: 0 0 4px 6px; white-space: nowrap; vertical-align: bottom; }
+  .numtab th small { display: block; font-size: 11px; }
+  .numtab td { padding: 4px 0 4px 6px; text-align: right; white-space: nowrap; }
+  .numtab td.l { text-align: left; white-space: normal; padding-left: 0; font-weight: 600; }
+  .numtab tr.nt-sub td.l { padding-left: 14px; font-weight: 400; }
+  .numtab tr.nt-sub td { font-weight: 400; }
+  .numtab tr.nt-main td.last, .numtab td.ch { font-weight: 700; }
+  .numtab td.ch { color: #002060; }
+  .numtab td.p { color: #002060; }
+  .numtab tr.nt-head td { text-align: left; font-weight: 700; padding-top: 14px; border-bottom: 1px solid #e6e6e6; }
+  .numtab td.nt-bar { width: 100px; text-align: left; white-space: nowrap; }
+  .numtab td.nt-bar svg { display: inline-block; width: 60px; height: 10px; vertical-align: middle; }
+  .numtab td.nt-bar small { display: inline; font-size: 11px; color: #595959; margin-left: 4px; }
+  .numtab .nb { fill: #002060; } .numtab .nbg { fill: #d9dde8; }
+  .numnote { font-size: 12px; color: #595959; margin: 4px 0 0 14px; }
+  @media (max-width: 600px) { .numtab { font-size: 12.5px; } .numtab .mid { display: none; } .numtab td.nt-bar, .numtab th.nt-bar { display: none; } }
   .spknote { font-size: 12px; color: #595959; margin: 6px 0 0; }
   @media (max-width: 560px) { .spktab td.g { min-width: 80px; width: 30%; } .spktab td.f { font-size: 15px; } }
 </style>
@@ -1216,6 +1233,41 @@ function cellChart(el, c) {
   const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl && A.mode !== "bar") uEl.style.display = "none";
   Plotly.react(el, traces, L, CFG);
 }
+// Zahlentafel: Jahreswerte je Zeile, Veränderung seit dem ersten Jahr, Vielfaches als Balken; darunter Planwerte des Bundes
+function numChart(el, c) {
+  const N = c.numtable, en = DATA.lang === "en", Y = N.years, y0 = Y[0];
+  const fx = (v, d) => v == null ? "" : en ? v.toLocaleString("en-GB", { minimumFractionDigits: d, maximumFractionDigits: d }) : fmt(v, d);
+  const sg = (v, d) => (v >= 0 ? "+" : "−") + fx(Math.abs(v), d);
+  const bar = f => { if (f == null) return ""; const w = Math.min(f, 4) / 4 * 60;
+    return `<svg viewBox="0 0 60 10" aria-hidden="true"><rect class="nbg" x="0" y="0" width="15" height="10"/><rect class="nb" x="0" y="0" width="${w.toFixed(1)}" height="10"/></svg><small>×${fx(f, 1)}</small>`; };
+  // auf dem Handy ausgeblendete Jahre: in der Tafel die mittleren, im Plan die späten Finanzplanjahre vor dem letzten
+  const mid = (y, ys) => (ys === Y ? y !== ys[0] && y < ys[ys.length - 2] : y > ys[2] && y !== ys[ys.length - 1]) ? ' class="mid"' : "";
+  const ncol = Y.length + 3, T = en ? { since: "Since " + y0, pp: " pp" } : { since: "seit " + y0, pp: " Pp." };
+  let h = `<table class="numtab"><thead><tr><th></th>${Y.map(y => `<th${mid(y, Y)}>${y}</th>`).join("")}<th>${T.since}</th><th class="nt-bar"></th></tr></thead><tbody>`;
+  for (const b of N.blocks) {
+    h += `<tr class="nt-head"><td colspan="${ncol}">${esc(en ? b.label_en : b.label)}</td></tr>`;
+    for (const r of b.rows) {
+      h += `<tr class="${r.sub ? "nt-sub" : "nt-main"}"><td class="l">${esc(en ? r.label_en : r.label)}</td>`
+        + Y.map(y => { const v = r.values[y]; const cl = (y === r.last ? "last" : "") + (mid(y, Y) ? " mid" : ""); return `<td class="${cl.trim()}">${fx(v, r.d)}</td>`; }).join("")
+        + `<td class="ch">${sg(r.change, r.d)}${r.pp ? T.pp : ""}</td><td class="nt-bar">${bar(r.factor)}</td></tr>`;
+    }
+  }
+  const P = N.plan;
+  if (P) {
+    const PY = P.years, st = en ? P.status_en : P.status;
+    h += `</tbody></table><table class="numtab"><thead><tr class="nt-head"><td colspan="${PY.length + 3}">${esc(en ? P.label_en : P.label)}</td></tr>`
+      + `<tr><th></th>${PY.map(y => `<th${mid(y, PY)}>${y}${st[y] ? `<small>${esc(st[y])}</small>` : ""}</th>`).join("")}<th>${en ? "Since " : "seit "}${PY[0]}</th><th class="nt-bar"></th></tr></thead><tbody>`;
+    for (const r of P.rows) {
+      const v0 = r.values[PY[0]], vl = r.values[PY[PY.length - 1]];
+      h += `<tr class="${r.sub ? "nt-sub" : "nt-main"}"><td class="l">${esc(en ? r.label_en : r.label)}</td>`
+        + PY.map(y => `<td class="${y > PY[0] ? "p" : ""}${mid(y, PY) ? " mid" : ""}">${fx(r.values[y], 1)}</td>`).join("")
+        + `<td class="ch">${v0 != null && vl != null ? sg(vl - v0, 1) : ""}</td><td class="nt-bar">${v0 != null && vl != null ? bar(vl / v0) : ""}</td></tr>`;
+    }
+    h += `</tbody></table>` + (P.note ? `<p class="numnote">${esc(en ? P.note_en : P.note)}</p>` : "");
+  } else h += `</tbody></table>`;
+  el.innerHTML = h;
+  const uEl = el.closest(".card") && el.closest(".card").querySelector(".unit"); if (uEl) uEl.style.display = "none";
+}
 // Tabelle mit Wortgrafiken nach Tufte: je Zeile Verlauf auf gemeinsamer Zeitachse, Stand 2021, jüngster Stand, Faktor
 function sparkChart(el, c) {
   const R = c.sparktable || [], en = DATA.lang === "en", t0 = Math.min(...R.map(r => Date.parse(r.x[0]))), t1 = Math.max(...R.map(r => Date.parse(r.x[r.x.length - 1])));
@@ -1627,7 +1679,7 @@ function card(c, no) {
   const ownCfg = c.own_scale;  // so in monitor.yaml gesetzt (dann fehlt die gemeinsame Einheit über der Grafik)
   if (c.multiples && (DATA.layout || {}).small_multiples && (c.series || []).length > 2) { if (c.own_scale == null) c.own_scale = true; c.scale_toggle = true; }  // Standard: eigene Skala je Feld, gemeinsam per Schalter
   const el = document.createElement("div"); el.className = "card" + (c.type === "calendar" ? " calcard" : "") + (c.type === "heat" || c.type === "calendar" ? " full" : ""); el.id = FA(no); if (c.chart) el.dataset.chart = c.chart;
-  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" || c.type === "sparktable" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
+  const sub = c.type === "clock" || c.type === "forecast" || c.type === "calendar" || c.type === "sparktable" || c.type === "numtable" ? "" : c.type === "tiles" ? (c.tiles ? "Summe " + c.tiles.span : "")
     : [c.freq === "Q" ? "Vierteljährlich" : c.freq === "A" ? "Jährlich" : c.freq === "D" ? "Wöchentlich" : c.freq === "B" ? (c.all_days ? "Täglich" : "Täglich (Arbeitstage)") : c.freq === "S" ? "Halbjährlich" : "Monatlich", c.adjustment].filter(Boolean).join(" · ");
   const unit = c.type === "clock" ? "Saldo in Pp, Abstand zum Mittel 2005 bis 2019" : c.type === "forecast" ? "% ggü. Vorjahr"
     : c.type === "tiles" ? "Veränderung ggü. denselben 12 Monaten ein Jahr zuvor, %" : c.type === "calendar" ? "" : unitLabel(c.unit);
@@ -1646,7 +1698,7 @@ function card(c, no) {
   const main = document.createElement("div"); main.className = "cmain"; body.appendChild(main);
   main.insertAdjacentHTML("beforeend", `<div class="unit">${ownCfg ? "" : esc(unit)}</div>`);
   const box = document.createElement("div"); box.className = "chartbox"; main.appendChild(box);
-  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar", "tpi", "sparktable"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
+  const ch = document.createElement("div"); ch.className = ["tiles", "heat", "heatbars", "calendar", "tpi", "sparktable", "numtable"].includes(c.type) ? "tilewrap" : "chart" + (c.type === "clock" ? " square" : ""); box.appendChild(ch);
   // Spalte rechts: Erläuterung, auf Klick Ausschläge und Sondereffekte
   const side = document.createElement("aside"); side.className = "cside"; el.querySelector(".cgrid").appendChild(side);
   const capx = (c.caption || "") + ((c.notes || []).length ? " Über „Ausschläge und Sondereffekte“ erscheinen nummerierte, gepunktete Linien an den betroffenen Monaten." : "");
@@ -1821,6 +1873,7 @@ function render(ch) {
   else if (c.type === "stance") stanceChart(ch, c);
   else if (c.type === "cellgrid") cellChart(ch, c);
   else if (c.type === "sparktable") sparkChart(ch, c);
+  else if (c.type === "numtable") numChart(ch, c);
   else if (c.type === "stance_bars") stanceBarsChart(ch, c);
   else if (c.type === "heat") heatChart(ch, c);
   else if (c.type === "tpi") tpiChart(ch, c);
