@@ -10,7 +10,16 @@ Lage: Die Statistik nennt keine Koordinaten. Die ersten vier Ziffern der Bauwerk
 
 Befund: 11,0 % der Brückenfläche haben heute die Note 3,0 oder schlechter. Am höchsten ist der Anteil in Trier-Saarburg (53 %), Trier (50 %), Tuttlingen (49 %), Freudenstadt (47 %) und Mayen-Koblenz (47 %), jeweils Kreise mit mindestens 2 ha Brückenfläche. Der Anteil der Fläche, die mindestens 60 Jahre alt ist, steigt von 10 % heute auf 33 % im Jahr 2035; in Mülheim an der Ruhr, Cochem-Zell, Krefeld und Bremerhaven auf über 90 %.
 
-Fortschreibung: Die Note je Brücke mit einer Alterungskurve aus dem Querschnitt fortzuschreiben, unterschätzt die Alterung stark (im Mittel steigt die Note nur um rund 0,01 je Jahr, weil schlechte alte Brücken schon ersetzt sind): 11,0 % heute, 11,7 % im Jahr 2035 ohne Erneuerung. Bis eine zweite Ausgabe der Statistik vorliegt, mit der sich die Veränderung je Brücke messen lässt, ist die Altersgröße die robustere Prognose. Ältere Ausgaben bietet die BASt nicht zum Abruf an (die Versionsnummern der Datei liefern denselben Stand).
+Fortschreibung (Markov-Kette): Eine frühere Ausgabe der Statistik liegt aus dem Internet Archive vor (abgerufen August 2025, Stand 01.03.2025; `tools/Brueckenarchiv abrufen.bat`, `monitor/bruecken_archiv.py`, lokal, weil die Cloud-Umgebung das Archiv nicht erreicht). Von 52.196 Teilbauwerken in beiden Ständen hat sich binnen eines Jahres bei 10,1 % die Note verschlechtert (im Mittel um 0,31), bei 5,6 % verbessert; 390 sind abgegangen (zu 42 % mit Note ab 3,0), 429 neu (zu 6 %). Daraus entstehen jährliche Übergangsmatrizen zwischen sechs Notenklassen je Altersgruppe (unter 30, 30 bis 49, ab 50 Jahre), flächengewichtet, in zwei Szenarien: „Trend“ mit allen Übergängen und Ersatzneubauten im heutigen Tempo, „ohne Erneuerung“ ohne Verbesserungen und Ersatz. Rücktest auf den Schätzdaten: 2025 11,1 %, vorhergesagt 2026 11,0 %, beobachtet 11,0 %.
+
+| Fläche mit Note ab 3,0 | 2026 | 2030 | 2035 |
+|---|---:|---:|---:|
+| Trend (heutiges Erneuerungstempo) | 11,0 % | 10,8 % | 11,0 % |
+| ohne Erneuerung | 11,0 % | 16,2 % | 23,4 % |
+
+Lesart: Das heutige Tempo hält den Anteil schlechter Brückenfläche gerade stabil. Ohne Erneuerung verdoppelt er sich bis 2035. Die Differenz ist der Erneuerungsbedarf: bis 2035 rund 7,4 Mio. m² Brückenfläche, die ohne Eingriff auf Note 3,0 oder schlechter fiele. Je 1.000 Einwohner am höchsten in Passau, Koblenz, Trier-Saarburg und Ahrweiler (750 bis 790 m²), danach Lahn-Dill-Kreis und Siegen-Wittgenstein. Spalten je Kreis: `anteil_ab_3_0_2030_trend` bis `anteil_ab_3_0_2035_ohne_erneuerung`.
+
+Grenzen: Ein Jahr Übergänge; Prüfungen finden alle drei bis sechs Jahre statt, ein einzelnes Jahr kann zufällig ausfallen. Eine dritte Ausgabe (Archivfassung vom Januar 2026, andere Spaltennamen) würde den Test unabhängig machen. Die Querschnittskurve (Spalten `flaeche_note_ab_3_0_2030_m2` und `_2035_m2`) unterschätzt die Alterung und ist überholt.
 
 ## Baustein Kommunalinvestitionen
 

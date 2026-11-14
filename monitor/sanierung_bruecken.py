@@ -121,6 +121,80 @@ def fortschreiben(b: dict, kurven: dict, jahre: int) -> float:
     return min(4.0, b["note"] + (kurve[a2] - kurve[a]))
 
 
+# ---------------------------------------------------------------- Fortschreibung mit zwei Ständen (Markov-Kette)
+
+KLASSEN = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5]          # Notenklassen der BASt: 1,0-1,4 ... 3,5-4,0
+ALTER = [(0, 30), (30, 50), (50, 200)]           # Altersgruppen für die Übergänge
+
+
+def _klasse(note: float) -> int:
+    return max(i for i, g in enumerate(KLASSEN) if note >= g - 1e-9)
+
+
+def _altersgruppe(alter: int) -> int:
+    return next(i for i, (lo, hi) in enumerate(ALTER) if lo <= min(alter, 199) < hi)
+
+
+def uebergaenge(frueher: dict, heute: dict, stand_frueher: int) -> dict:
+    """Jährliche Übergangsmatrizen der Notenklassen je Altersgruppe, flächengewichtet.
+
+    frueher, heute: {(bwnr, tbwnr): (note, flaeche, baujahr)}. Zwei Szenarien: „trend“ mit allen beobachteten
+    Übergängen (Verbesserungen = heutiges Erneuerungstempo), „ohne“ ohne Verbesserungen (bleibt in der Klasse).
+    """
+    n = len(KLASSEN)
+    zahl = {g: [[0.0] * n for _ in range(n)] for g in range(len(ALTER))}
+    ersatz = {g: [[0.0] * n for _ in range(n)] for g in range(len(ALTER))}
+    neu = [0.0] * n  # Notenverteilung der neu aufgenommenen Bauwerke (Ersatzneubauten)
+    for k, (note1, fl, _) in heute.items():
+        if k not in frueher:
+            neu[_klasse(note1)] += max(fl, 1.0)
+    neu = [v / (sum(neu) or 1) for v in neu]
+    for k, (note0, fl, bj) in frueher.items():
+        g = _altersgruppe(max(0, stand_frueher - bj))
+        if k in heute:
+            zahl[g][_klasse(note0)][_klasse(heute[k][0])] += max(fl, 1.0)
+        else:  # abgegangen: im Trend durch einen Neubau mit der Notenverteilung der neuen Bauwerke ersetzt
+            for j in range(n):
+                ersatz[g][_klasse(note0)][j] += max(fl, 1.0) * neu[j]
+    aus = {"trend": {}, "ohne": {}}
+    for g, m in zahl.items():
+        for szen in aus:
+            M = []
+            for i, zeile in enumerate(m):
+                z = [v + (ersatz[g][i][j] if szen == "trend" else 0.0) for j, v in enumerate(zeile)]
+                if szen == "ohne":
+                    z[i] += sum(z[:i])
+                    z[:i] = [0.0] * i
+                summe = sum(z)
+                M.append([v / summe for v in z] if summe else [1.0 if j == i else 0.0 for j in range(n)])
+            aus[szen][g] = M
+    return aus
+
+
+def wahrscheinlichkeit_schlecht(b: dict, matrizen: dict, bis: int) -> float:
+    """Wahrscheinlichkeit, dass die Brücke im Jahr bis die Note 3,0 oder schlechter hat (Markov, jährlich)."""
+    v = [0.0] * len(KLASSEN)
+    v[_klasse(b["note"])] = 1.0
+    for jahr in range(STAND, bis):
+        M = matrizen[_altersgruppe(max(0, jahr - b["baujahr"]))]
+        v = [sum(v[i] * M[i][j] for i in range(len(v))) for j in range(len(v))]
+    return sum(v[_klasse(SCHLECHT):])
+
+
+def _staende(datei: Path) -> tuple[dict, int]:
+    """Frühere Ausgabe aus brueckenstatistik_staende.csv.gz (monitor.bruecken_archiv); Stand = Abrufjahr des Archivs
+    (Fassung vom August 2025 = Stand 1. März 2025)."""
+    import gzip
+    out, jahr = {}, None
+    for r in csv.DictReader(gzip.open(datei, "rt", encoding="utf-8")):
+        try:
+            out[(r["bwnr"].strip(), r["tbwnr"].strip())] = (float(r["zustandsnote"]), float(r["flaeche"] or 0), int(r["baujahr"]))
+            jahr = int(r["stand"][:4])
+        except (ValueError, KeyError):
+            continue
+    return out, jahr
+
+
 def auswerten(ordner: Path, ziel: Path) -> None:
     csv_datei = _laden(BAST, ordner / "brueckenstatistik.csv")
     kreise = Kreise(_laden(GISCO, ordner / "nuts3_rg_03m_2024_4326.geojson"))
@@ -129,7 +203,7 @@ def auswerten(ordner: Path, ziel: Path) -> None:
         lage = tk25_mitte(r["bwnr"].strip())
         kreis = kreise.finde(*lage) if lage else None
         try:
-            b = {"kreis": kreis, "baujahr": int(r["baujahr"]), "flaeche": float(r["flaeche"] or 0),
+            b = {"id": (r["bwnr"].strip(), r["tbwnr"].strip()), "kreis": kreis, "baujahr": int(r["baujahr"]), "flaeche": float(r["flaeche"] or 0),
                  "note": float(r["zustandsnote"]), "traglast": r["trag_l_idx"].strip(),
                  "baustoff": r["baustoffklasse"].strip(), "planung": "Erneuerung/Ersatzneubau" in r["stadium_text"]}
         except ValueError:
@@ -138,6 +212,15 @@ def auswerten(ordner: Path, ziel: Path) -> None:
             ohne += 1
         brucken.append(b)
     kurven = alterungskurven(brucken)
+    matrizen = None
+    if (ordner / "brueckenstatistik_staende.csv.gz").exists():
+        frueher, jahr = _staende(ordner / "brueckenstatistik_staende.csv.gz")
+        heute = {b["id"]: (b["note"], b["flaeche"], b["baujahr"]) for b in brucken}
+        matrizen = uebergaenge(frueher, heute, jahr)
+        for b in brucken:
+            for szen in ("trend", "ohne"):
+                for bis in (2030, 2035):
+                    b[f"p_{szen}_{bis}"] = wahrscheinlichkeit_schlecht(b, matrizen[szen], bis)
     je = defaultdict(lambda: defaultdict(float))
     for b in brucken:
         if not b["kreis"]:
@@ -155,10 +238,16 @@ def auswerten(ordner: Path, ziel: Path) -> None:
         k["alt60_heute"] += f * (STAND - b["baujahr"] >= 60)
         k["alt60_2035"] += f * (2035 - b["baujahr"] >= 60)
         k["spann_vor1980"] += f * (b["baustoff"] == "Spannbeton" and b["baujahr"] < 1980)
+        if matrizen:
+            for szen in ("trend", "ohne"):
+                for bis in (2030, 2035):
+                    k[f"m_{szen}_{bis}"] += f * b[f"p_{szen}_{bis}"]
     ziel.mkdir(parents=True, exist_ok=True)
     spalten = ["nuts3", "bauwerke", "flaeche_m2", "mittleres_baujahr", "anteil_note_ab_3_0", "anteil_note_ab_2_5",
                "anteil_traglast_iv_v", "anteil_ersatz_geplant", "flaeche_note_ab_3_0_m2", "flaeche_note_ab_3_0_2030_m2",
-               "flaeche_note_ab_3_0_2035_m2", "anteil_60_jahre_heute", "anteil_60_jahre_2035", "anteil_spannbeton_vor_1980"]
+               "flaeche_note_ab_3_0_2035_m2", "anteil_60_jahre_heute", "anteil_60_jahre_2035", "anteil_spannbeton_vor_1980",
+               "anteil_ab_3_0_2030_trend", "anteil_ab_3_0_2035_trend", "anteil_ab_3_0_2030_ohne_erneuerung",
+               "anteil_ab_3_0_2035_ohne_erneuerung"]
     with (ziel / "sanierung_bruecken.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(spalten)
@@ -168,11 +257,17 @@ def auswerten(ordner: Path, ziel: Path) -> None:
             w.writerow([kid, int(k["anzahl"]), round(k["flaeche"]), round(k["baujahr_f"] / fl), round(k["ab30"] / fl, 3),
                         round(k["ab25"] / fl, 3), round(k["traglast_iv_v"] / fl, 3), round(k["ersatz_geplant"] / fl, 3),
                         round(k["ab30"]), round(k["ab30_2030"]), round(k["ab30_2035"]), round(k["alt60_heute"] / fl, 3),
-                        round(k["alt60_2035"] / fl, 3), round(k["spann_vor1980"] / fl, 3)])
+                        round(k["alt60_2035"] / fl, 3), round(k["spann_vor1980"] / fl, 3)]
+                       + [round(k[f"m_{s}_{j}"] / fl, 3) if matrizen else "" for s in ("trend", "ohne") for j in (2030, 2035)])
     gesamt = sum(b["flaeche"] for b in brucken)
     heute = sum(b["flaeche"] for b in brucken if b["note"] >= SCHLECHT)
     p30 = sum(b["flaeche"] for b in brucken if fortschreiben(b, kurven, 2030 - STAND) >= SCHLECHT)
     p35 = sum(b["flaeche"] for b in brucken if fortschreiben(b, kurven, 2035 - STAND) >= SCHLECHT)
+    if matrizen:
+        for szen in ("trend", "ohne"):
+            print(f"Markov {szen}: Fläche ab 3,0 2030 "
+                  f"{100 * sum(b['flaeche'] * b[f'p_{szen}_2030'] for b in brucken) / gesamt:.1f} %, 2035 "
+                  f"{100 * sum(b['flaeche'] * b[f'p_{szen}_2035'] for b in brucken) / gesamt:.1f} %")
     print(f"{len(brucken)} Teilbauwerke, ohne Kreis {ohne}; Fläche mit Note ab 3,0: heute {100 * heute / gesamt:.1f} %, "
           f"2030 {100 * p30 / gesamt:.1f} %, 2035 {100 * p35 / gesamt:.1f} % (ohne Erneuerung); "
           f"{len(je)} Kreise mit Brücken; Stand {dt.date.today():%d.%m.%Y}")
