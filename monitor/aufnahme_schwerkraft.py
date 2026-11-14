@@ -10,7 +10,10 @@ Likelihood: Bei gegebenem β treffen die festen Effekte Zeilen-, Spalten- und Di
 Anpassung); β löst die Bedingung, dass beobachtete und geschätzte Summe von F·t übereinstimmen (Bisektion).
 Halbwertszeit = ln 2 / β: nach dieser Fahrzeit halbiert sich der Strom bei gegebenem Angebot und Nachfrage.
 
-    python -m monitor.aufnahme_schwerkraft <ted-ordner> [--ziel docs]
+    python -m monitor.aufnahme_schwerkraft <ted-ordner> [--ziel docs] [--bootstrap 100]
+
+Unsicherheit: Bootstrap über Firmen. Gezogen werden ganze Auftragnehmer mit allen ihren Zuschlägen (Zuschläge
+ohne eindeutigen Auftragnehmer einzeln), weil die Zuschläge derselben Firma nicht unabhängig sind.
 
 Braucht im Ordner die TED-Rohdaten, nuts3_de.csv und fahrzeiten_nuts3.csv (siehe monitor.aufnahme).
 """
@@ -80,6 +83,26 @@ def schaetzen(F: np.ndarray, T: np.ndarray, tol: float = 1e-7) -> dict:
             "zuschlaege": int(F.sum()), "devianz_erklaert": 1 - devianz(Fh) / devianz(Fh0)}
 
 
+def bootstrap(gruppe: list[dict], idx: dict, T: np.ndarray, wiederholungen: int, seed: int = 20261114) -> dict:
+    """Standardfehler und 90-%-Intervall von Halbwertszeit und Faktor eigener Kreis, Ziehen ganzer Firmen."""
+    n = len(idx)
+    cluster: dict[str, list[int]] = {}
+    for z in gruppe:
+        cluster.setdefault(z["firma"] or f"nr:{z['nr']}", []).append(idx[z["sitz"][0]] * n + idx[z["ort"][0]])
+    zellen = [np.array(v) for v in cluster.values()]
+    rng = np.random.default_rng(seed)
+    halb, diag = [], []
+    for _ in range(wiederholungen):
+        auswahl = rng.integers(0, len(zellen), len(zellen))
+        F = np.bincount(np.concatenate([zellen[k] for k in auswahl]), minlength=n * n).reshape(n, n).astype(float)
+        e = schaetzen(F, T)
+        halb.append(e["halbwert"])
+        diag.append(e["diagonal"])
+    halb, diag = np.array(halb), np.array(diag)
+    return {"cluster": len(zellen), "halbwert_se": halb.std(ddof=1), "halbwert_p05": np.percentile(halb, 5),
+            "halbwert_p95": np.percentile(halb, 95), "diagonal_se": diag.std(ddof=1)}
+
+
 def _matrizen(ordner: Path):
     kreise = [r["nuts3"] for r in csv.DictReader((ordner / "nuts3_de.csv").open(encoding="utf-8"))]
     lage = {r["nuts3"]: (float(r["lat"]), float(r["lon"]))
@@ -95,7 +118,7 @@ def _matrizen(ordner: Path):
     return kreise, idx, T, D
 
 
-def auswerten(ordner: Path, ziel: Path) -> None:
+def auswerten(ordner: Path, ziel: Path, wiederholungen: int = 0) -> None:
     kreise, idx, T, D = _matrizen(ordner)
     zeilen = au.datensatz(ordner)
     typ = au.firmentypen(zeilen)
@@ -122,32 +145,43 @@ def auswerten(ordner: Path, ziel: Path) -> None:
     for name, gruppe in gruppen:
         F = matrix(gruppe)
         m, k = schaetzen(F, T), schaetzen(F, D)
+        bs = bootstrap(gruppe, idx, T, wiederholungen) if wiederholungen else {}
         erg.append({"gruppe": name, **{f"{x}_min": v for x, v in m.items()},
-                    "beta_km": k["beta"], "halbwert_km": k["halbwert"]})
-        print(f"{name}: Halbwertszeit {m['halbwert']:.0f} min, {k['halbwert']:.0f} km", flush=True)
+                    "beta_km": k["beta"], "halbwert_km": k["halbwert"], **bs})
+        extra = (f" (SE {bs['halbwert_se']:.1f}, 90 %: {bs['halbwert_p05']:.0f}-{bs['halbwert_p95']:.0f})"
+                 if bs else "")
+        print(f"{name}: Halbwertszeit {m['halbwert']:.0f} min{extra}, {k['halbwert']:.0f} km", flush=True)
 
     ziel.mkdir(parents=True, exist_ok=True)
     with (ziel / "aufnahme_schwerkraft.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["gruppe", "zuschlaege", "beta_je_minute", "halbwertszeit_min", "faktor_eigener_kreis",
+        w.writerow(["gruppe", "zuschlaege", "firmen", "beta_je_minute", "halbwertszeit_min", "halbwertszeit_se",
+                    "halbwertszeit_p05", "halbwertszeit_p95", "faktor_eigener_kreis", "faktor_se",
                     "devianz_erklaert", "beta_je_km", "halbwertsdistanz_km"])
         for e in erg:
-            w.writerow([e["gruppe"], e["zuschlaege_min"], f"{e['beta_min']:.5f}", f"{e['halbwert_min']:.1f}",
-                        f"{e['diagonal_min']:.2f}", f"{e['devianz_erklaert_min']:.3f}", f"{e['beta_km']:.5f}",
-                        f"{e['halbwert_km']:.1f}"])
+            f1 = lambda x: f"{e[x]:.1f}" if x in e else ""
+            w.writerow([e["gruppe"], e["zuschlaege_min"], e.get("cluster", ""), f"{e['beta_min']:.5f}",
+                        f"{e['halbwert_min']:.1f}", f1("halbwert_se"), f1("halbwert_p05"), f1("halbwert_p95"),
+                        f"{e['diagonal_min']:.2f}", f"{e['diagonal_se']:.2f}" if "diagonal_se" in e else "",
+                        f"{e['devianz_erklaert_min']:.3f}", f"{e['beta_km']:.5f}", f"{e['halbwert_km']:.1f}"])
     text = [f"## Schwerkraftmodell der Bauzuschläge vom {dt.date.today():%d.%m.%Y}", "",
             "Poisson-Schätzung mit festen Effekten für Sitz- und Leistungskreis und einem Aufschlag für den eigenen "
             "Kreis. Halbwertszeit: Fahrzeit, nach der sich der Strom der Zuschläge zwischen zwei Kreisen bei "
             "gegebenem Angebot und gegebener Nachfrage halbiert. Faktor eigener Kreis: wie viel mehr Zuschläge im "
             "eigenen Kreis bleiben, als die Fahrzeit null allein erwarten ließe. Erklärte Devianz: Anteil, den die "
             "Entfernung über die festen Effekte hinaus erklärt.", "",
-            "| Gruppe | Zuschläge | Halbwertszeit min | Faktor eigener Kreis | erklärte Devianz | "
-            "Halbwertsdistanz km (Luftlinie) |", "|---|---:|---:|---:|---:|---:|"]
+            "| Gruppe | Zuschläge | Firmen | Halbwertszeit min | 90-%-Intervall min | Faktor eigener Kreis | "
+            "erklärte Devianz | Halbwertsdistanz km (Luftlinie) |", "|---|---:|---:|---:|---:|---:|---:|---:|"]
     for e in erg:
-        text.append(f"| {e['gruppe']} | {e['zuschlaege_min']} | {e['halbwert_min']:.0f} | {e['diagonal_min']:.1f} | "
-                    f"{100 * e['devianz_erklaert_min']:.0f} % | {e['halbwert_km']:.0f} |")
-    text += ["", "Gewerke nur mit mindestens 500 Zuschlägen regionaler Firmen. Parameter: "
-             "data/static/aufnahme_schwerkraft.csv."]
+        iv = f"{e['halbwert_p05']:.0f}-{e['halbwert_p95']:.0f}" if "halbwert_p05" in e else "-"
+        fk = f"{e['diagonal_min']:.1f}" + (f" ± {e['diagonal_se']:.1f}" if "diagonal_se" in e else "")
+        text.append(f"| {e['gruppe']} | {e['zuschlaege_min']} | {e.get('cluster', '-')} | {e['halbwert_min']:.0f} | "
+                    f"{iv} | {fk} | {100 * e['devianz_erklaert_min']:.0f} % | {e['halbwert_km']:.0f} |")
+    text += ["", "Gewerke nur mit mindestens 500 Zuschlägen regionaler Firmen. "
+             + (f"Unsicherheit: Bootstrap über Firmen mit {wiederholungen} Wiederholungen (ganze Auftragnehmer "
+                "gezogen); Intervall aus 5. und 95. Perzentil, beim Faktor ± ein Standardfehler. "
+                if wiederholungen else "")
+             + "Parameter: data/static/aufnahme_schwerkraft.csv."]
     (ziel / "aufnahme_schwerkraft.md").write_text("\n".join(text) + "\n", encoding="utf-8")
 
 
@@ -155,8 +189,9 @@ def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(prog="python -m monitor.aufnahme_schwerkraft")
     ap.add_argument("ordner", type=Path)
     ap.add_argument("--ziel", type=Path, default=None)
+    ap.add_argument("--bootstrap", type=int, default=0, help="Wiederholungen des Bootstraps über Firmen")
     a = ap.parse_args(argv)
-    auswerten(a.ordner, a.ziel or a.ordner)
+    auswerten(a.ordner, a.ziel or a.ordner, a.bootstrap)
 
 
 if __name__ == "__main__":
