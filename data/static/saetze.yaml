@@ -14,6 +14,8 @@ series:
   kiel_de_other: {tpl: "{when} kamen finanzielle und humanitäre Hilfe im Wert von {v} hinzu."}
   kmpt_de_orders_idx: {tpl: "{when} lagen die Rüstungsaufträge der letzten zwölf Monate bei {n} Punkten (2021 = 100)."}
   arms_prod_12m: {tpl: "{when} lag die Produktion von Waffen und Munition bei {n} Punkten."}
+  de_arms_turnover: {tpl: "{when} setzten die Hersteller von Waffen und Munition über zwölf Monate {v} um."}
+  de_arms_turnover_abroad: {tpl: "Davon kamen {v} von Kunden im Ausland."}
   def_staff: {tpl: "{when} gab der Staat für das Personal der Streitkräfte {v} aus."}
   def_material: {tpl: "Für Material, Wartung und Betrieb waren es {v}, {chg} ggü. dem Vorjahr."}
   def_invest: {tpl: "In neue Waffensysteme und Bauten flossen {v}."}

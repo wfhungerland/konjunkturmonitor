@@ -1711,6 +1711,8 @@ def build_payload(root: Path = ROOT) -> dict:
                     if len(parts) != len(r["ids"]):
                         continue
                     s = pd.concat(parts, axis=1).dropna().sum(axis=1) if len(parts) > 1 else parts[0].dropna()
+                    if r.get("sum12"):  # Summe der letzten zwölf Monate, etwa Umsatz
+                        s = (s.rolling(12).sum() * float(r.get("scale", 1))).dropna()
                     if r.get("mean12"):  # gleitender Zwölfmonatsdurchschnitt, Jahresmittel 2021 = 100
                         s = (s.rolling(12).mean() / s[s.index.year == 2021].mean() * 100).dropna()
                     s = s[s.index >= pd.Timestamp(c.get("x_start", "2015-01-01"))]

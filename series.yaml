@@ -172,6 +172,8 @@ charts:
   def_use: {title: "Wofür der Staat Verteidigungsgeld ausgibt", decimals: 1}
   orders_origin: {title: "Rüstungsaufträge nach Sitz des Auftragnehmers", decimals: 1}
   arms_cycle: {title: "Rüstung: Aufträge und Produktion", decimals: 0}
+  arms_turnover: {title: "Umsatz der Hersteller von Waffen und Munition", decimals: 1}
+  arms_employment: {title: "Beschäftigte der Hersteller von Waffen und Munition", decimals: 0}
   arms_overview: {title: "Rüstung in Deutschland seit 2021: vom Haushalt in die Fabrik", decimals: 1}
   milex_eu_ru: {title: "Militärausgaben Europas und Russlands", decimals: 0}
   trade_ru: {title: "Exporte nach Russland und in Nachbarländer", decimals: 1}
@@ -6090,3 +6092,48 @@ series:
     label: "Produktion"
     license: "Eurostat: Wiederverwendung mit Quellenangabe"
     note: "Gleitender Durchschnitt über zwölf Monate, Jahresmittel 2021 = 100; werktäglich abgerufen."
+
+  - id: de_arms_turnover
+    block: geopolitik
+    source: genesis
+    key: 42111-0024
+    params: {query: {classifyingvariable1: WZ08X4, classifyingkey1: WZ08-2540}, value_variable: UMS002, filters: {WZ08X4: WZ08-2540}, scale: 1e-06}
+    title: "Umsatz der fachlichen Betriebsteile in der Herstellung von Waffen und Munition (WZ 25.40)"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2019-01-01"
+    stale_after_months: 6
+    chart: arms_turnover
+    label: "Umsatz insgesamt"
+    note: "Umsatz der fachlichen Betriebsteile (Werke und Werksteile, die Waffen und Munition herstellen), Betriebe ab 50 Beschäftigten; Tabelle 42111-0024 des Statistischen Bundesamts."
+
+  - id: de_arms_turnover_abroad
+    block: geopolitik
+    source: genesis
+    key: 42111-0024
+    params: {query: {classifyingvariable1: WZ08X4, classifyingkey1: WZ08-2540}, value_variable: UMSN3, filters: {WZ08X4: WZ08-2540}, scale: 1e-06}
+    title: "Auslandsumsatz der fachlichen Betriebsteile in der Herstellung von Waffen und Munition (WZ 25.40)"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2019-01-01"
+    stale_after_months: 6
+    chart: arms_turnover
+    label: "davon im Ausland"
+    note: "Umsatz mit Kunden außerhalb Deutschlands; sonst wie der Umsatz insgesamt."
+
+  - id: de_arms_employment
+    block: geopolitik
+    source: genesis
+    key: 42111-0024
+    params: {query: {classifyingvariable1: WZ08X4, classifyingkey1: WZ08-2540}, value_variable: ERW012, filters: {WZ08X4: WZ08-2540}}
+    title: "Beschäftigte der fachlichen Betriebsteile in der Herstellung von Waffen und Munition (WZ 25.40)"
+    unit: "Personen"
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "2019-01-01"
+    stale_after_months: 6
+    chart: arms_employment
+    label: "Beschäftigte"
+    note: "Tätige Personen am Monatsende; sonst wie der Umsatz insgesamt."
