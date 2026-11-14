@@ -18,5 +18,14 @@ Poisson-Schätzung mit festen Effekten für Sitz- und Leistungskreis und einem A
 | regional: Sanitär, Heizung | 2737 | 1353 | 17 | 16-18 | 1.1 ± 0.2 | 55 % | 22 |
 | regional: Straßen, Schiene, Leitungen | 1760 | 1259 | 29 | 27-31 | 2.9 ± 0.4 | 34 % | 38 |
 | regional: sonstiges | 4081 | 3177 | 29 | 28-30 | 2.3 ± 0.2 | 42 % | 39 |
+| alle: Auftragswert unter 1 Mio. | 23520 | 10580 | 37 | 36-39 | 2.9 ± 0.1 | 45 % | 51 |
+| alle: Auftragswert 1-5 Mio. | 4235 | 2678 | 36 | 35-39 | 3.2 ± 0.3 | 34 % | 49 |
+| alle: Auftragswert 5-25 Mio. | 867 | 596 | 44 | 40-48 | 3.7 ± 0.7 | 22 % | 61 |
+| alle: Auftragswert über 25 Mio. | 153 | 123 | 44 | 34-53 | 3.1 ± 2.2 | 22 % | 62 |
+| alle: Auftragswert ohne Wert | 9277 | 5240 | 42 | 40-43 | 3.1 ± 0.2 | 34 % | 57 |
+| regional: Auftragswert unter 1 Mio. | 18282 | 10001 | 27 | 26-27 | 1.8 ± 0.1 | 56 % | 35 |
+| regional: Auftragswert 1-5 Mio. | 3305 | 2383 | 28 | 26-29 | 2.2 ± 0.2 | 41 % | 37 |
+| regional: Auftragswert 5-25 Mio. | 573 | 475 | 37 | 32-41 | 3.0 ± 0.7 | 26 % | 52 |
+| regional: Auftragswert ohne Wert | 6668 | 4616 | 29 | 28-30 | 2.0 ± 0.1 | 45 % | 38 |
 
-Gewerke nur mit mindestens 500 Zuschlägen regionaler Firmen. Unsicherheit: Bootstrap über Firmen mit 200 Wiederholungen (ganze Auftragnehmer gezogen); Intervall aus 5. und 95. Perzentil, beim Faktor ± ein Standardfehler. Parameter: data/static/aufnahme_schwerkraft.csv.
+Gewerke nur mit mindestens 500, Größenklassen mit mindestens 150 Zuschlägen. Unsicherheit: Bootstrap über Firmen mit 200 Wiederholungen (ganze Auftragnehmer gezogen); Intervall aus 5. und 95. Perzentil, beim Faktor ± ein Standardfehler. Parameter: data/static/aufnahme_schwerkraft.csv.
