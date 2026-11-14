@@ -262,7 +262,7 @@ def _merge_toggles(topics: list[dict]) -> None:
             src["charts"].remove(o)
             c["variant"] = o
             if tg.get("tpl"):  # Sätze über beide Ansichten zugleich, etwa insgesamt und ohne Energie in einem Satz
-                c["texts"] = chart_sentences({k: v for k, v in c.items() if k != "toggle"} | {"series": list(c.get("series") or []) + list(o.get("series") or []), "tpl": tg["tpl"]})
+                c["texts"] = chart_sentences({k: v for k, v in c.items() if k != "toggle"} | {"series": list(c.get("series") or []) + list(o.get("series") or []), "tpl": tg["tpl"], "tpl_own": tg.get("tpl_own")})
             else:
                 c["texts"] = list(c.get("texts") or []) + list(o.get("texts") or [])
             c["text"] = " ".join(c["texts"])
@@ -1041,18 +1041,24 @@ def chart_sentences(c: dict) -> list[str]:
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         if c.get("tpl"):  # ganze Sätze aus monitor.yaml mit Werten mehrerer Reihen, etwa {v[id]}; Stichtag ist der jüngste Zeitpunkt, den alle Reihen haben
             last = min(s["x"][-1] for s in series)
-            F = {k: {} for k in ("v", "n", "full", "chg", "pabs", "mehr", "ueber", "abs100", "ueber100", "abs", "sg", "up_pl", "trend_pl", "streak", "m3", "m3y_abs", "m3y_mehr")}
+            F = {k: {} for k in ("v", "n", "full", "chg", "pabs", "mehr", "ueber", "abs100", "ueber100", "abs", "sg", "up_pl", "trend_pl", "streak", "m3", "m3y_abs", "m3y_mehr",
+                                 "w", "p", "n0", "dabs", "dmehr")}
             noun = {"Q": ("Quartal", "Quartalen"), "M": ("Monat", "Monaten")}.get(freq, ("Jahr", "Jahren"))
             vals, vals0 = {}, {}
             for s in series:
-                if last not in s["x"] or s["y"][s["x"].index(last)] is None:
+                lx = s["x"][-1] if c.get("tpl_own") else last  # tpl_own: jede Reihe mit ihrem jüngsten Stand, Zeitangabe über {w[id]} und {p[id]}
+                if lx not in s["x"] or s["y"][s["x"].index(lx)] is None:
                     continue
-                i, sid = s["x"].index(last), s["id"]
+                i, sid = s["x"].index(lx), s["id"]
                 v = s["y"][i]
-                ago = (pd.Timestamp(last) - pd.DateOffset(years=1)).strftime("%Y-%m-%d")
-                k = max((j for j, x in enumerate(s["x"]) if x <= ago), default=None)
+                ago = pd.Timestamp(lx) - pd.DateOffset(years=1)
+                cand = [(abs((pd.Timestamp(x) - ago).days), j) for j, x in enumerate(s["x"][:i]) if s["y"][j] is not None]
+                k = min(cand)[1] if cand and min(cand)[0] <= 7 else None  # Wert ein Jahr zuvor, bei Wochenwerten der nächstgelegene Tag
                 y0 = s["y"][k] if k is not None else None
                 vals[sid], vals0[sid] = v, y0
+                F["w"][sid], F["p"][sid] = _when(lx, s.get("freq", freq)), _per(lx, s.get("freq", freq))
+                if y0 is not None:
+                    F["n0"][sid], F["dabs"][sid], F["dmehr"][sid] = num(y0, d), num(abs(v - y0), d), "mehr" if v > y0 else "weniger"
                 F["v"][sid], F["n"][sid] = val(v), num(v, d)
                 F["full"][sid] = f"{int(round(v)) * 1000:,}".replace(",", ".")
                 F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
@@ -1125,6 +1131,27 @@ def chart_sentences(c: dict) -> list[str]:
                             w = min(dns, key=lambda x: x[1])
                             out.append(f"Ggü. dem {prev_word} sanken sie am stärksten {w[0]} ({num(w[1], d, True)} {sym}).")
                 return out
+        if c.get("vs_year") and unit.startswith("Index"):  # gleich gebaute Reihen gegen das Mittel eines Basisjahres
+            vy = c["vs_year"]
+            last = max(s["x"][-1] for s in series)
+            parts = []
+            for s in series:
+                base = [y for x, y in zip(s["x"], s["y"]) if x[:4] == str(vy["year"]) and y is not None]
+                if s["x"][-1] == last and base and s["y"][-1] is not None:
+                    lab = re.sub(r"^\d+\s+", "", s.get("label", ""))
+                    parts.append((vy.get("names", {}).get(lab, "in " + lab), (s["y"][-1] / (sum(base) / len(base)) - 1) * 100))
+            if parts:
+                n, below = len(parts), sum(1 for _, p in parts if round(p, 1) < 0)
+                lo, hi = min(parts, key=lambda p: p[1]), max(parts, key=lambda p: p[1])
+                ref = f"dem Mittel des Jahres {vy['year']}"
+                if below == n:
+                    txt = f"in allen {ZAHLWORT.get(n, n)} {vy['what']} unter {ref}, am weitesten {lo[0]} ({num(lo[1], 1, True)} %)"
+                elif below == 0:
+                    txt = f"in allen {ZAHLWORT.get(n, n)} {vy['what']} über {ref}, am weitesten {hi[0]} ({num(hi[1], 1, True)} %)"
+                else:
+                    txt = (f"in {ZAHLWORT.get(below, below)} von {ZAHLWORT.get(n, n)} {vy['what']} unter {ref}, am weitesten {lo[0]} ({num(lo[1], 1, True)} %); "
+                           f"am weitesten darüber lag sie {hi[0]} ({num(hi[1], 1, True)} %)")
+                return [f"{_when(last, freq)} lag die Produktion {txt}."]
         if c.get("combine") and unit.startswith("Index"):  # gleich gebaute Reihen, etwa Branchen: ein Satz mit allen Werten
             last = max(s["x"][-1] for s in series)
             parts = []
@@ -1245,7 +1272,12 @@ def chart_sentences(c: dict) -> list[str]:
         if norm and out and norm["x"][-1] == last and series and series[0]["y"][-1] is not None and norm["y"][-1]:
             v, m = series[0]["y"][-1], norm["y"][-1]
             a0, a1 = c.get("norm") or ("", "")
-            out.append(f"Das sind {num(v / m * 100, 0)} % des Mittels desselben Monats {a0} bis {a1} ({num(m, d)}).")
+            if c.get("norm_one"):  # in den Satz davor: Abstand zum Mittel
+                pc = (v / m - 1) * 100
+                out[-1] = out[-1].rstrip(".") + (f", so viel wie im Mittel desselben Monats {a0} bis {a1}." if round(pc) == 0 else
+                                                 f", {num(abs(pc), 0)} % {'über' if pc > 0 else 'unter'} dem Mittel desselben Monats {a0} bis {a1} ({num(m, d)}).")
+            else:
+                out.append(f"Das sind {num(v / m * 100, 0)} % des Mittels desselben Monats {a0} bis {a1} ({num(m, d)}).")
         return out
     except (KeyError, IndexError, ValueError, TypeError, ZeroDivisionError):
         return []
