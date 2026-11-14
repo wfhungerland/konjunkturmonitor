@@ -81,12 +81,13 @@ _RULES = [
     (r"\bje MMBtu\b", "je Million British Thermal Units"),
     (r"\b(bei|von|mit|in) ((?:[+\-−]?[\d.,]+ )?)Pp\b", r"\1 \2Prozentpunkten"),
     (r"(?<![\d,])1 Pp\b", "1 Prozentpunkt"),
+    (r"\b(bei|von|mit) ([+\-−]?[\d.,]+ )Punkte\b", r"\1 \2Punkten"),  # Dativ, etwa „bei 0,10 Punkten“
     (r"\bPp\b", "Prozentpunkte"),
     (r"(?<= )Mrd\.(?=\s)", "Milliarden"),
     (r"(?<= )Mio\.(?=\s)", "Millionen"),
     (r"(\d{1,3}(?:\.\d{3})+) Tsd\.", lambda m: f"{int(m.group(1).replace('.', '')) / 1000:.2f}".replace(".", ",") + " Millionen"),
     (r"\bTsd\.", "Tausend"),
-    (r"(\d) (cm|mm|°C|Tage|Tagen|Punkte|Prozentpunkten?|Prozentpunkt)\b", r"\1" + _NBSP + r"\2"),  # Zahl und Einheit bleiben in einer Zeile
+    (r"(\d) (cm|mm|°C|Tage|Tagen|Punkten|Punkte|Prozentpunkten?|Prozentpunkt)\b", r"\1" + _NBSP + r"\2"),  # Zahl und Einheit bleiben in einer Zeile
 ]
 _COMPILED = [(re.compile(a), b) for a, b in _RULES]
 
