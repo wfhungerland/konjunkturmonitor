@@ -1062,7 +1062,9 @@ def chart_sentences(c: dict) -> list[str]:
                 F["w"][sid], F["p"][sid] = _when(lx, s.get("freq", freq)), _per(lx, s.get("freq", freq))
                 if y0 is not None:
                     F["n0"][sid], F["dabs"][sid], F["dmehr"][sid] = num(y0, d), num(abs(v - y0), d), "mehr" if v > y0 else "weniger"
+                    F.setdefault("hoeher", {})[sid] = "höher" if v > y0 else "niedriger"
                 F.setdefault("sw", {})[sid] = "der Überschuss" if v >= 0 else "das Defizit"  # Saldo mit Artikel
+                F.setdefault("x100", {})[sid] = num(v / 100, 1)  # Vielfaches eines Index mit Mittel = 100
                 F["v"][sid], F["n"][sid] = val(v), num(v, int(c.get("tpl_decimals", d)))  # tpl_decimals: eigene Rundung nur für den Satz
                 F["full"][sid] = f"{int(round(v)) * 1000:,}".replace(",", ".")
                 F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
@@ -1084,8 +1086,9 @@ def chart_sentences(c: dict) -> list[str]:
             F["cmp"] = {f"{a}-{b}": "so schnell wie" if round(vals[a] - vals[b], d) == 0 else f"{num(abs(vals[a] - vals[b]), d)} Pp {'schneller' if vals[a] > vals[b] else 'langsamer'} als"
                         for a in vals for b in vals if a != b}
             F["q0"] = {f"{a}/{b}": num(vals0[a] / vals0[b], 1) for a in vals0 for b in vals0 if a != b and vals0[a] is not None and vals0[b]}
+            ref = num(c["refs"][-1]["y"], 1) if c.get("refs") else ""  # graue Referenzlinie, etwa ein langjähriges Mittel
             try:
-                return [t.format(when=_when(last, freq), per=_per(last, freq), **F) for t in c["tpl"]]
+                return [t.format(when=_when(last, freq), per=_per(last, freq), ref=ref, **F) for t in c["tpl"]]
             except KeyError:
                 return []
         if c.get("brief"):  # ein Satz je Vergleich: ggü. Vorjahresmonat und drei Monate ggü. den drei Monaten davor
