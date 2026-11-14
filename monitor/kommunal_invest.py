@@ -62,8 +62,11 @@ def abruf(ordner: Path) -> None:
     ordner.mkdir(parents=True, exist_ok=True)
     nutzer = input("Benutzername Regionaldatenbank: ").strip()
     kopf = {"username": nutzer, "password": getpass.getpass("Passwort (wird nicht angezeigt): ")}
-    probe = _meldung(_post("helloworld/logincheck", kopf, {}))
-    print("Anmeldung:", (probe or {}).get("Status", probe))
+    try:  # nur zur Auskunft; manche Server beantworten die Prüfung mit 400, der Abruf klappt trotzdem
+        probe = _meldung(_post("helloworld/logincheck", kopf, {}))
+        print("Anmeldung:", (probe or {}).get("Status", probe))
+    except urllib.error.HTTPError as e:
+        print(f"Anmeldeprüfung nicht möglich ({e.code}); weiter mit dem Abruf")
     for name, von, bis in TABELLEN:
         ziel = ordner / f"{name}.csv"
         if ziel.exists() and ziel.stat().st_size > 1000:
