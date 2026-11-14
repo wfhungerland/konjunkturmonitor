@@ -1059,6 +1059,7 @@ def chart_sentences(c: dict) -> list[str]:
                 F["w"][sid], F["p"][sid] = _when(lx, s.get("freq", freq)), _per(lx, s.get("freq", freq))
                 if y0 is not None:
                     F["n0"][sid], F["dabs"][sid], F["dmehr"][sid] = num(y0, d), num(abs(v - y0), d), "mehr" if v > y0 else "weniger"
+                F.setdefault("sw", {})[sid] = "der Überschuss" if v >= 0 else "das Defizit"  # Saldo mit Artikel
                 F["v"][sid], F["n"][sid] = val(v), num(v, d)
                 F["full"][sid] = f"{int(round(v)) * 1000:,}".replace(",", ".")
                 F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
@@ -1251,9 +1252,11 @@ def chart_sentences(c: dict) -> list[str]:
             parts = [(s.get("label", ""), [v for x, v in zip(s["x"], s["y"]) if v is not None and not skip(x)]) for s in series if s.get("y")]
             parts = [(lab, v) for lab, v in parts if v]
             if parts:
-                many = len(parts) > 1
-                out.append(f"Zum Vergleich, Durchschnitt {series[0]['x'][0][:4]} bis {series[0]['x'][-1][:4]} {c.get('mean_note', 'ohne Kriegsjahre')}: "
-                           + "; ".join(f"{lab + ' ' if many else ''}{num(sum(v) / len(v), d)} {u0}".strip() for lab, v in parts) + ".")
+                ms = [num(sum(v) / len(v), d) for _, v in parts]  # Reihenfolge wie in den Sätzen davor; Einheit nur am Ende
+                short = "%" if u0.startswith("%") else u0
+                vals_txt = " und ".join([f"{m} {short}".strip() for m in ms[:-1]] + [f"{ms[-1]} {u0}".strip()])
+                note = c.get("mean_note", "ohne Kriegsjahre")
+                out.append(f"Im Mittel der Jahre {series[0]['x'][0][:4]} bis {series[0]['x'][-1][:4]}{' ' + note if note else ''} waren es {vals_txt}.")
         if typ == "threshold" and c.get("threshold") is not None and out and series and series[0]["y"][-1] is not None:
             th = float(c["threshold"])
             out.append("Ein Rezessionssignal liegt damit vor." if series[0]["y"][-1] >= th else "Ein Rezessionssignal liegt damit nicht vor.")
