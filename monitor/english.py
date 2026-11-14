@@ -763,6 +763,8 @@ def english_payload(payload: dict, data: dict, root: Path) -> dict:
                 c["code"] = c["code"].replace("Abb.", "Fig.").replace("Tab.", "Table")
         if t.get("ask"):
             t["ask"] = tr.get("topics", t["id"], "ask", t["ask"])
+        if t.get("kommentar"):  # Kommentar zum Kapitel
+            t["kommentar"] = tr.get("topics", t["id"], "kommentar", t["kommentar"])
         q = t.get("question")
         if q:
             q["ask"] = tr.get("questions", q["id"], "ask", q["ask"])

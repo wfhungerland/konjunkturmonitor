@@ -2205,6 +2205,8 @@ def build_payload(root: Path = ROOT) -> dict:
         a = q["answer"]
         a["head"], a["more"], q["explain"] = spell(a["head"]), [spell(m) for m in a["more"]], spell(q.get("explain", ""))
     for tp in topics:
+        if tp.get("kommentar"):  # eigene Einschätzung je Kapitel (monitor.yaml, Feld kommentar am Kapitel), auf Klick unter der Einleitung
+            tp["kommentar"] = spell(tp["kommentar"])
         for c in tp["charts"]:
             c["texts"] = [spell(x) for x in c["texts"]]
             c["text"] = " ".join(c["texts"])

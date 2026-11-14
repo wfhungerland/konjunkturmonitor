@@ -82,7 +82,8 @@
   .overview .fz { display: none; } body.fazit .overview .fz { display: block; border-left: 2px solid var(--text); padding-left: 14px; margin: 14px 0 4px; }
   .overview .fz .fzl { display: block; font: 600 11.5px/1 var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 3px 0 5px; }
   body:not(.fazit) .verdict { display: none !important; }
-  .fazitbtn[aria-pressed="true"] { font-weight: 700; }
+  .kmc { background: none; border: 0; padding: 0; font: 600 13px var(--ff); color: var(--muted); cursor: pointer; text-decoration: underline dotted #a6a6a6; text-underline-offset: 3px; }
+  .kmc[aria-expanded="true"] { color: #000; } .kmrow { margin: 6px 0 0; }
   abbr.ab { text-decoration: underline dotted #a6a6a6; text-underline-offset: 2px; cursor: help; }
   .abtip { position: absolute; z-index: 60; max-width: 280px; background: var(--dark, #262626); color: #fff; font: 13px/1.4 var(--ff); padding: 6px 9px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
   .verdict { display: inline-block; font: 13.5px var(--ff); color: var(--dark); background: var(--tint); border-radius: var(--r); padding: 1px 8px; }
@@ -580,7 +581,6 @@ const ABTXT = { close: "schließen" };
 const TOURTXT = { name: "Anleitung", ask: "Neu hier? Die Anleitung zeigt in einer Minute, wie die Seite funktioniert.", go: "Los geht’s", no: "Nein danke", next: "Weiter", prev: "Zurück", end: "Fertig", skip: "Beenden",
   steps: [
     ["#nav", "Hier ist das Inhaltsverzeichnis. Ein Klick zeigt alle Kapitel. Die Lupe daneben findet jede Grafik."],
-    [".fazitbtn", "Die Seite beschreibt nur, was die Zahlen zeigen. Wer eine Einschätzung lesen will, schaltet hier den Kommentar ein."],
     [".briefbtn", "Am Anfang sehen Sie nur das Wichtigste. Hier klappen Sie alle Kapitel auf."],
     ["#lage", "Die Lage auf einen Blick: links Raten heute, vor einem Jahr und 2019, rechts Verläufe seit 2019 gegen den Durchschnitt 2015–19. „Kommentar“ blendet eine Einschätzung mit Warnlampen ein."],
     ["#starttable", "Die wichtigsten Zahlen auf einen Blick. ▲ heißt gestiegen, ▼ gesunken, ● gleich geblieben. Rot heißt: eher ungünstig. Ein Klick führt zum Kapitel."],
@@ -588,7 +588,7 @@ const TOURTXT = { name: "Anleitung", ask: "Neu hier? Die Anleitung zeigt in eine
     ["@card .tools", "Mit diesen Schaltern sehen Sie mehr, etwa die ganze Geschichte einer Zahl oder frühere Krisen."],
     ["@card .cside", "Hier steht in wenigen Sätzen, was die Grafik zeigt. Wer es genau wissen will, klickt auf „Mehr zur Methode“."],
     ["@card .gut", "Alle Zahlen zum Mitnehmen: unter „Downloads“ als Excel-Tabelle oder Folie. Mit dem Stern merken Sie sich eine Grafik. Und über „Feedback“ erreicht Ihre Meinung zu einer Grafik direkt den Autor."]] };
-const KMTXT = { btn: "Kommentar", title: "Eigene Einschätzung zu dieser Grafik" };
+const KMTXT = { btn: "Kommentar", title: "Eigene Einschätzung zu dieser Grafik", ctitle: "Eigene Einschätzung zu diesem Kapitel" };
 const LAGETXT = { title: "Lage auf einen Blick", stand: "Stand", komm: "Kommentar", kommt: "Lage-Satz und Warnlampen: Einschätzung nach festen Regeln, automatisch erzeugt",
   warn: "Warnlampen", out: "Ausblick", grem: "Was die Gremien raten", neu: "Neu in den letzten sieben Tagen", term: "Nächste Termine (geschätzt)",
   mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", am: "Lage am", rates: "Raten, in %", since: "Verläufe seit 2019",
@@ -2087,7 +2087,8 @@ function build() {
   const S = DATA.site;
   const nw = document.getElementById("news");
   if (false && (DATA.news || []).length) nw.innerHTML = `<b>Heute neu:</b> ${DATA.news.map(n => `${esc(n.label)} (${esc(n.period)})`).join(" · ")} · <a href="feed.xml">Feed abonnieren</a>`; else nw.remove();  // vorerst ausgeblendet
-  const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = sentHtml(os.map(s => s.trim())) + (DATA.fazit ? `<span class="fz" title="${esc(FAZTXT.title)}"><span class="fzl">${FAZTXT.btn}</span>${esc(DATA.fazit)}</span>` : "");  /* Kommentar unter der Beschreibung */ bindCopies(ov, os.map(s => s.trim()), "Übersicht"); } else ov.remove();
+  const ov = document.getElementById("overview"); if ((DATA.layout || {}).overview && DATA.overview) { const os = DATA.overview.split(/(?<=[^\d]\.)\s+(?=[A-ZÄÖÜ])/); ov.innerHTML = sentHtml(os.map(s => s.trim())) + (DATA.fazit ? ` <button type="button" class="kmc" aria-expanded="false" title="${esc(FAZTXT.title)}">${FAZTXT.btn}</button><span class="fz"><span class="fzl">${FAZTXT.btn}</span>${esc(DATA.fazit)}</span>` : "");  /* Kommentar unter der Beschreibung, eigener Knopf */ bindCopies(ov, os.map(s => s.trim()), "Übersicht");
+    const ob = ov.querySelector("button.kmc"); if (ob) ob.onclick = () => { const on = !document.body.classList.contains("fazit"); document.body.classList.toggle("fazit", on); ob.setAttribute("aria-expanded", String(on)); }; } else ov.remove();
   if (DATA.has_en || DATA.lang === "en") document.getElementById("lang").innerHTML = DATA.lang === "en" ? `<a href="../" hreflang="de" lang="de" title="Deutsch">DE</a> <b>EN</b>` : `<b>DE</b> <a href="en/" hreflang="en" lang="en" title="English">EN</a>`;
   const d = new Date(DATA.generated_at); document.getElementById("stand").innerHTML = `Stand ${d.toLocaleDateString("de-DE")}`;
   const AS = DATA.all_series || {};
@@ -2137,7 +2138,10 @@ function build() {
     sec.innerHTML = `<h2>${chap ? `<span class="chno">${chap}</span>` : ""}${esc(t.title)}</h2>${(q ? q.ask : t.ask) ? `<p class="secask">${esc(q ? q.ask : t.ask)}</p>` : ""}`
       + (ans.length ? `<div class="intro"><div class="ansbox"><p class="answer"><b class="kern">${esc(ans[0])}</b> <button type="button" class="copy" title="Antwort und Sätze aller Abbildungen mit Quellenangabe kopieren" aria-label="Textbaustein kopieren">⧉</button></p>`
         + (ans.length > 1 ? `<details class="moretxt"><summary>${KERN.more}</summary><p>${sentHtml(ans.slice(1), " ", false)}</p></details>` : "") + `</div>`
-        + (q ? `<div class="explain">${esc(q.explain)}</div>` : "") + `</div>` : "");
+        + (q ? `<div class="explain">${esc(q.explain)}</div>` : "") + `</div>` : "")
+      + (t.kommentar ? `<p class="kmrow"><button type="button" class="kmc" aria-expanded="false" title="${KMTXT.ctitle}">${KMTXT.btn}</button></p><div class="kmtx" hidden><span class="fzl">${KMTXT.btn}</span>${esc(t.kommentar)}</div>` : "");
+    if (t.kommentar) { const kb = sec.querySelector(".kmc"), kx = kb.parentNode.nextElementSibling;  // Kommentar zum Kapitel: erst auf Klick, je Kapitel einzeln
+      kb.onclick = () => { kx.hidden = !kx.hidden; kb.setAttribute("aria-expanded", String(!kx.hidden)); }; }
     if (t.charts[0]) t.charts[0]._lead = true;
     // Textbaustein: Antwort und die Sätze aller Abbildungen des Abschnitts als ein zusammenhängender Text
     const allText = () => [ans.join(" "), ...t.charts.slice(1).map(x => (x.texts || []).length ? x.texts.join(" ") : "")].filter(Boolean).join(" ");
@@ -2247,22 +2251,15 @@ function build() {
     const want = parseFloat(getComputedStyle(rl).top) || 0, up = Math.max(0, want - rl.getBoundingClientRect().top);
     h.style.transform = up > 0.5 ? `translateY(${-up}px)` : ""; } };
   let wq = 0; addEventListener("scroll", () => { if (!wq) wq = requestAnimationFrame(() => { wq = 0; where(); freeze(); }); }, { passive: true }); where();
-  // Fazit: zeigt die regelbasierte Einordnung (Urteilssatz oben, Urteile an den Kacheln); ohne Knopf bleibt die Seite neutral
-  const fb = document.createElement("button"); fb.type = "button"; fb.className = "btn fazitbtn"; fb.textContent = FAZTXT.btn; fb.title = FAZTXT.title;
-  const setFazit = on => { document.body.classList.toggle("fazit", on); fb.setAttribute("aria-pressed", String(on)); try { localStorage.setItem("km_fazit", on ? "1" : "0"); } catch (e) {} };
-  let fz0 = false; try { fz0 = localStorage.getItem("km_fazit") === "1"; } catch (e) {}
-  setFazit(fz0 && !DATA.embed && !!DATA.fazit); fb.onclick = () => setFazit(!document.body.classList.contains("fazit"));
-  if (!DATA.fazit) fb.hidden = true;
+  // Kommentare gibt es nur je Grafik, je Kapitel und unter der Übersicht, jeweils mit eigenem Knopf; ein globaler Schalter entfällt
   const cl = document.createElement("a"); cl.className = "btn colllink"; cl.href = "#sammlung";
-  document.querySelector("header .bar").append(searchBox(), fb, bb, cl);
+  document.querySelector("header .bar").append(searchBox(), bb, cl);
   { const ft = document.querySelector("#navpanel .nvfoot"); if (ft) {  // Handy: die Knöpfe des Kopfs stehen im Menü
     const pb = document.createElement("a"); pb.href = "#top"; pb.className = "phonly"; const upd = () => pb.textContent = bb.textContent; upd();
     pb.onclick = e => { e.preventDefault(); bb.click(); upd(); };
     const pc = document.createElement("a"); pc.className = "colllink phonly"; pc.href = "#sammlung";
     const pm = document.createElement("span"); pm.className = "phonly nvmeta"; pm.innerHTML = document.querySelector(".brand .meta")?.innerHTML || "";
-    const pf = document.createElement("a"); pf.href = "#top"; pf.className = "phonly"; const updF = () => pf.textContent = FAZTXT.btn + (document.body.classList.contains("fazit") ? " ✓" : ""); updF();
-    pf.onclick = e => { e.preventDefault(); fb.click(); updF(); };
-    ft.append(pb, ...(DATA.fazit ? [pf] : []), pc, pm); new MutationObserver(upd).observe(bb, { childList: true }); } }
+    ft.append(pb, pc, pm); new MutationObserver(upd).observe(bb, { childList: true }); } }
   // Eigene Sammlung: gemerkte Abbildungen (Kennungen im Browser), eigene Ansicht und teilbarer Link #sammlung=a,b,c
   const COLKEY = "km.sammlung";
   const colLoad = () => { try { const a = JSON.parse(localStorage.getItem(COLKEY) || "[]"); return Array.isArray(a) ? a.filter(x => typeof x === "string") : []; } catch (e) { return []; } };
