@@ -66,11 +66,13 @@
   .lage .kom { display: none; } body.lagek .lage .kom { display: block; }
   .lage .say { font: 600 25px/1.3 var(--ff); margin: 16px 0 18px; max-width: 900px; } body.lagek .lage .nokom { display: none; }
   .lage .lg2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 28px; margin: 6px 0 10px; } .lage .lg2 h3 { font: 400 16px var(--ff); margin: 0 0 4px; text-transform: none; letter-spacing: 0; color: #000; }
-  .lage .lsl svg { width: 100%; height: auto; display: block; } .lage svg text { font-family: var(--ff); } .lage .sh { font-size: 12px; fill: #595959; } .lage .sv { font-size: 14.5px; font-weight: 700; fill: #000; } .lage .sn { font-size: 13px; } .lage .lsl a:hover tspan { text-decoration: underline; } .lage .sq { font-size: 9.5px; opacity: .85; } .lage .sv2 { font-weight: 700; fill: #000; }
+  .lage .lsl svg { width: 100%; height: auto; display: block; } .lage svg text { font-family: var(--ff); } .lage .sh { font-size: 12px; fill: #595959; } .lage .sv { font-size: 14.5px; font-weight: 700; fill: #000; } .lage .sn { font-size: 13px; } .lage .lsl a:hover tspan { text-decoration: underline; } .lage .sq { font-size: 9.5px; } .lage .sv2 { font-weight: 700; fill: #000; }
   .lage .lsl svg [data-k] { transition: opacity .12s; } .lage .lsl svg.hov [data-k] { opacity: .12; } .lage .lsl svg.hov [data-k].on { opacity: 1; }
-  .lage .lmode { font: 12px var(--ff); color: #7f7f7f; border: 0; background: none; padding: 0; cursor: pointer; margin-left: auto; text-decoration: underline dotted; text-underline-offset: 3px; } .lage .lmode:hover { color: #0070C0; } .lage .lmode[aria-pressed="true"] { color: #0070C0; text-decoration-style: solid; }
+  .lage .lsl .fa { display: none; } .lage .lsl svg.hov [data-k].on .pl { display: none; } .lage .lsl svg.hov [data-k].on .fa { display: inline; }
+  .lage .lsl svg.hov text.sq.on { font-size: 13px; font-weight: 700; } .lage .lsl svg.hov text.sv { transition: none; }
+  .lage .lmode { font: 12px var(--ff); color: #595959; border: 0; background: none; padding: 0; cursor: pointer; margin-left: auto; text-decoration: underline dotted; text-underline-offset: 3px; } .lage .lmode:hover { color: #0070C0; } .lage .lmode[aria-pressed="true"] { color: #0070C0; text-decoration-style: solid; }
   .lage .lkey { display: flex; flex-wrap: wrap; gap: 2px 16px; font: 13px var(--ff); color: #404040; margin: 0 0 10px; } .lage .lkey span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
-  .lage .lpg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 18px; } .lage .lp { display: block; color: #000; text-decoration: none; } .lage .lp b { display: block; font: 400 15px/1.25 var(--ff); } .lage .lp span { display: block; font: 12px/1.3 var(--ff); color: #7f7f7f; min-height: 2.6em; } .lage .lp:hover b { color: #0070C0; }
+  .lage .lpg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 18px; } .lage .lp { display: block; color: #000; text-decoration: none; } .lage .lp b { display: block; font: 400 15px/1.25 var(--ff); } .lage .lp span { display: block; font: 12px/1.3 var(--ff); color: #595959; min-height: 2.6em; } .lage .lp:hover b { color: #0070C0; }
   .lage .lp svg { width: 100%; height: auto; display: block; overflow: visible; } .lage .sx { font-size: 10px; fill: #595959; } .lage .sp { font-size: 10px; } .lage .se { font-size: 12px; font-weight: 700; } .lage .sm { font-size: 10px; } .lage .sl { font-size: 10.5px; }
   .lage .lsrc { display: inline-flex; margin-left: 14px; vertical-align: 1px; border: 1px solid #BFBFBF; border-radius: 3px; overflow: hidden; } .lage .lsrc button { font: 13px var(--ff); border: 0; background: #fff; color: #404040; padding: 2px 9px; cursor: pointer; }
   .lage .lsrc button[aria-pressed="true"] { background: #002060; color: #fff; } .lage .lsrc button:focus-visible { outline: 2px solid #0070C0; outline-offset: -2px; }
@@ -2503,10 +2505,10 @@ function lageView() {
     const FIX = { gdp: "#002060", ip: "#0070C0", ord: "#00B0F0", exp: "#1B7F79", ret: "#47D359", cpi: "#7030A0", tarif: "#D86DCD",
       alq: "#51154A", dfr: "#404040", bund: "#7F7F7F", frb: "#BF8F00", bau: "#843C0C" }, col = {};
     items.forEach(i => { col[i.key] = FIX[i.key] || "#7F7F7F"; });
-    // Schrift in der Farbe der Reihe, aber so weit abgedunkelt, dass sie auf Weiß gut lesbar bleibt (Kontrast mindestens 4,5 : 1)
+    // Schrift in der Farbe der Reihe, aber so weit abgedunkelt, dass sie auf Weiß gut lesbar bleibt (Kontrast mindestens 5,5 : 1)
     const ink = h => { let [r, gg, b] = [1, 3, 5].map(j => parseInt(h.slice(j, j + 2), 16) / 255);
       const L = (r, gg, b) => [r, gg, b].map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4).reduce((a, v, j) => a + v * [0.2126, 0.7152, 0.0722][j], 0);
-      while (1.05 / (L(r, gg, b) + 0.05) < 4.5) { r *= .94; gg *= .94; b *= .94; }
+      while (1.05 / (L(r, gg, b) + 0.05) < 5.5) { r *= .94; gg *= .94; b *= .94; }
       return "#" + [r, gg, b].map(v => Math.round(v * 255).toString(16).padStart(2, "0")).join(""); }, tc = {};
     Object.keys(col).forEach(q => tc[q] = ink(col[q]));
     let g = x.map(xx => `<line x1="${xx}" x2="${xx}" y1="${top - 6}" y2="${HP - 4}" stroke="#D9D9D9" stroke-width=".8"/>`).join("")
@@ -2521,7 +2523,8 @@ function lageView() {
       g += `<text x="${x[j] - 5}" y="${(y + 3.5).toFixed(1)}" text-anchor="end" class="sq" data-k="${i.key}" fill="${tc[i.key]}">${esc(i.txts ? i.txts[j] : "")}</text>`; }); });
     const lab = (q, y, names, i) => `<text x="${xn}" y="${(y + 5).toFixed(1)}" text-anchor="end" class="sv" style="fill:${tc[i.key]}">${esc(q)}</text>`
       + (names ? `<text x="${xl}" y="${(y + 5).toFixed(1)}" class="sn">${names}</text>` : "");
-    const nm = (i, sep) => `<a href="#${esc(i.topic)}"><tspan fill="${tc[i.key]}">${esc(i.label)}${sep || ""}</tspan></a>`;
+    // sichtbar der Name in einfacher Sprache; beim Überfahren der Fachbegriff
+    const nm = (i, sep) => `<a href="#${esc(i.topic)}"><tspan class="pl" fill="${tc[i.key]}">${esc(i.plain || i.label)}${sep || ""}</tspan><tspan class="fa" fill="${tc[i.key]}">${esc(i.label)}${sep || ""}</tspan></a>`;
     const lead = (i, y) => `<line x1="${x[2] + 5}" y1="${Y(i.v[2]).toFixed(1)}" x2="${xn - 34}" y2="${y.toFixed(1)}" stroke="#BFBFBF" stroke-width=".6" stroke-dasharray="1 2"/>`;
     // Rangliste: Etiketten in festem Abstand nach heutigem Wert, dünne Linie zum Punkt
     const o = items.slice().sort((a, b) => b.v[2] - a.v[2]), step = (HP - top - 10) / Math.max(1, o.length - 1);
@@ -2608,8 +2611,13 @@ function lageView() {
     + `<div>${term ? `<h3>${LAGETXT.term}</h3><ul>${term}</ul>` : ""}</div></div>`;
   box.hidden = false;
   { const sv = box.querySelector(".lsl svg"); if (sv) { const hl = k => { sv.classList.toggle("hov", !!k); sv.querySelectorAll("[data-k]").forEach(e => e.classList.toggle("on", e.dataset.k === k)); };
-    sv.addEventListener("mouseover", e => { const t = e.target.closest("[data-k]"); hl(t ? t.dataset.k : null); });
-    sv.addEventListener("mouseleave", () => hl(null)); sv.addEventListener("focusin", e => { const t = e.target.closest("[data-k]"); hl(t ? t.dataset.k : null); }); sv.addEventListener("focusout", () => hl(null)); } }
+    // Geräte ohne Überfahren (Handy): erstes Tippen hebt hervor und zeigt den Fachbegriff, zweites Tippen öffnet das Kapitel
+    const touch = matchMedia("(hover: none)").matches; let act = null;
+    if (touch) addEventListener("click", e => { if (!sv.contains(e.target)) { if (act) { act = null; hl(null); } return; }
+        const t = e.target.closest("[data-k]"); if (!t) { act = null; hl(null); return; }
+        if (act !== t.dataset.k) { e.preventDefault(); e.stopPropagation(); act = t.dataset.k; hl(act); } }, true);
+    sv.addEventListener("mouseover", e => { if (touch) return; const t = e.target.closest("[data-k]"); hl(t ? t.dataset.k : null); });
+    sv.addEventListener("mouseleave", () => { if (!touch) hl(null); }); sv.addEventListener("focusin", e => { if (touch) return; const t = e.target.closest("[data-k]"); hl(t ? t.dataset.k : null); }); sv.addEventListener("focusout", () => { if (!touch) hl(null); }); } }
   const kb = box.querySelector(".lk"), setK = on => { document.body.classList.toggle("lagek", on); kb.setAttribute("aria-pressed", String(on)); try { localStorage.setItem("km_lagek", on ? "1" : "0"); } catch (e) {} };
   let k0 = false; try { k0 = localStorage.getItem("km_lagek") === "1"; } catch (e) {}
   setK(k0); kb.onclick = () => setK(!document.body.classList.contains("lagek"));
