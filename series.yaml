@@ -112,6 +112,7 @@ charts:
   gdp_qoq: {title: "Wirtschaftsleistung, Veränderung gegenüber dem Vorquartal", decimals: 1}
   gdp_contrib: {title: "Woraus das Wachstum besteht", kind: stacked, decimals: 1}
   gdp_level: {title: "Wirtschaftsleistung, Niveau", decimals: 0}
+  prices_overview: {title: "Preise auf einen Blick", decimals: 1}
   cpi: {title: "Inflationsrate (VPI) und Bestandteile", decimals: 1}
   pipeline_prices: {title: "Preise auf den Vorstufen", decimals: 1}
   labour: {title: "Arbeitslosenquote", decimals: 1}
