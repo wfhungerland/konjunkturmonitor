@@ -71,6 +71,10 @@
   .lage .lkey { display: flex; flex-wrap: wrap; gap: 2px 16px; font: 13px var(--ff); color: #404040; margin: 0 0 10px; } .lage .lkey span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
   .lage .lpg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 18px; } .lage .lp { display: block; color: #000; text-decoration: none; } .lage .lp b { display: block; font: 400 15px/1.25 var(--ff); } .lage .lp span { display: block; font: 12px/1.3 var(--ff); color: #7f7f7f; min-height: 2.6em; } .lage .lp:hover b { color: #0070C0; }
   .lage .lp svg { width: 100%; height: auto; display: block; overflow: visible; } .lage .sx { font-size: 10px; fill: #595959; } .lage .sp { font-size: 10px; } .lage .se { font-size: 12px; font-weight: 700; } .lage .sm { font-size: 10px; } .lage .sl { font-size: 10.5px; }
+  .lage .lsrc { display: inline-flex; margin-left: 14px; vertical-align: 1px; border: 1px solid #BFBFBF; border-radius: 3px; overflow: hidden; } .lage .lsrc button { font: 13px var(--ff); border: 0; background: #fff; color: #404040; padding: 2px 9px; cursor: pointer; }
+  .lage .lsrc button[aria-pressed="true"] { background: #002060; color: #fff; } .lage .lsrc button:focus-visible { outline: 2px solid #0070C0; outline-offset: -2px; }
+  .lage .lp span i { font-style: normal; }
+  .lage .lempty { grid-column: 1 / -1; margin: 8px 0; font: 15px/1.4 var(--ff); color: #595959; } .lage .lmore { margin: 12px 0 0; font: 13.5px/1.5 var(--ff); color: #595959; } .lage .lmore:empty { display: none; } .lage .lmore a { color: #000; }
   .lage .lo { margin: 18px 0 0; font: 15.5px/1.4 var(--ff); max-width: 900px; }
   .lage .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; margin-top: 26px; max-width: 1100px; }
   .lage h3 { font: 600 12.5px var(--ff); letter-spacing: .08em; text-transform: uppercase; color: #8c8c8c; margin: 0 0 8px; }
@@ -592,7 +596,7 @@ const TOURTXT = { name: "Anleitung", ask: "Neu hier? Die Anleitung zeigt in eine
 const KMTXT = { btn: "Kommentar", title: "Eigene Einschätzung zu dieser Grafik", ctitle: "Eigene Einschätzung zu diesem Kapitel" };
 const LAGETXT = { title: "Lage auf einen Blick", stand: "Stand", komm: "Kommentar", kommt: "Lage-Satz und Warnlampen: Einschätzung nach festen Regeln, automatisch erzeugt",
   warn: "Warnlampen", out: "Ausblick", grem: "Was die Gremien raten", neu: "Neu in den letzten sieben Tagen", term: "Nächste Termine (geschätzt)",
-  mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", am: "Lage am", rates: "Raten, in %", since: "Verläufe seit 2019",
+  mine: "Mein Monitor", all: "Alle Kapitel", growth: "Wachstum", am: "Lage am", rates: "Raten, in %", since: "Verläufe seit 2019", srcstd: "Standard", srcmine: "Meine Lesezeichen", srcempty: "Noch keine Lesezeichen. Mit dem Stern ☆ an einer Grafik merken Sie sie hier vor.", srcmore: "Weitere Lesezeichen:",
   when: [["2019", "Jahresmittel,", "vor Corona"], ["vor einem", "Jahr"], ["heute"]], k: ["Hoch seit 2019", "Tief seit 2019", "letzter Wert", "Durchschnitt 2015–19", "Abstand dazu", "über dem Höchst- oder unter dem Tiefstwert 2015–19"], meanbtn: "Ø 2015–19", meant: "Abstand zum Durchschnitt 2015–19 zeigen", fuer: "für", wd: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"] };
 const FBTXT = { btn: "Feedback", ph: "Ihr Feedback", send: "Senden", ok: "Danke.", err: "Hat nicht geklappt. Bitte später noch einmal.", wait: "Bitte einen Moment warten.", note: "<a href=\"datenschutz.html\">Datenschutz</a>", close: "Schließen" };
 const PHASETXT = { to: "–", L: { "-1": "Lohnzurückhaltung", "0": "Löhne im Spielraum", "1": "kräftigere Löhne" }, G: { "-1": "straffer", "0": "beibehalten", "1": "lockerer" },
@@ -2280,7 +2284,7 @@ function build() {
     colSec.innerHTML = `<h2>${esc(COLTXT.title)}</h2><p class="tnote">${esc(shared ? COLTXT.shared : ids.length ? COLTXT.intro : COLTXT.empty)}${gone ? " " + esc(COLTXT.gone(gone)) : ""}</p><p class="colbar"></p><div class="charts collcharts"></div>`;
     const bar = colSec.querySelector(".colbar"), wrapC = colSec.querySelector(".collcharts");
     const btn = (txt, f) => { const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = txt; b.onclick = f; bar.appendChild(b); return b; };
-    if (shared && shared.some(id => !mine.includes(id))) btn(COLTXT.take, () => { mine = [...new Set([...mine, ...shared])]; colSave(mine); document.querySelectorAll(".gut .pin").forEach(pinLab); updCount(); location.hash = "#sammlung"; });
+    if (shared && shared.some(id => !mine.includes(id))) btn(COLTXT.take, () => { mine = [...new Set([...mine, ...shared])]; colSave(mine); document.dispatchEvent(new Event("kmsammlung")); document.querySelectorAll(".gut .pin").forEach(pinLab); updCount(); location.hash = "#sammlung"; });
     if (found.length) {
       const url = location.href.split("#")[0] + "#sammlung=" + found.map(cd => encodeURIComponent(cd.dataset.chart)).join(",");
       const lb = btn(COLTXT.link, () => (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => { lb.textContent = COLTXT.copied; }, () => prompt(COLTXT.link, url)));
@@ -2293,7 +2297,7 @@ function build() {
   };
   const hideColl = () => { restore(); colSec.innerHTML = ""; document.body.classList.remove("coll"); };
   document.querySelectorAll(".card[data-chart] .gut").forEach(h => { const b = document.createElement("button"); b.type = "button"; b.className = "pin"; b.dataset.chart = h.closest(".card").dataset.chart; pinLab(b);
-    b.onclick = () => { const id = b.dataset.chart; mine = mine.includes(id) ? mine.filter(x => x !== id) : [...mine, id]; colSave(mine);
+    b.onclick = () => { const id = b.dataset.chart; mine = mine.includes(id) ? mine.filter(x => x !== id) : [...mine, id]; colSave(mine); document.dispatchEvent(new Event("kmsammlung"));
       document.querySelectorAll(`.gut .pin[data-chart="${CSS.escape(id)}"]`).forEach(pinLab); updCount(); if (document.body.classList.contains("coll") && !shared) showColl(mine); };
     h.querySelector(".cno").after(b); });
   // Höhe der Kopfzeile für die stehenbleibenden Abschnittsfragen
@@ -2489,8 +2493,37 @@ function lageView() {
     return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(LAGETXT.rates)}">${g}</svg>`; };
   // Rechts: Verläufe seit 2019; Hoch rot, Tief blau, letzter Wert in Linienfarbe.
   // Ansicht „Spanne“ (Standard): hellblau, wo der Wert höher oder tiefer liegt als je 2015–19. Ansicht „Durchschnitt“: Abstand zum Mittel 2015–19.
-  const LC = ["#002060", "#0070C0"], RED = "#D64541", TB = "#0070C0", MC = "#5B8DB8", SH = "#DCEEF8";
+  const LC = ["#002060", "#0070C0", "#7030A0"], RED = "#D64541", TB = "#0070C0", MC = "#5B8DB8", SH = "#DCEEF8";
   let mode = "band"; try { mode = localStorage.getItem("km_lagev") === "mean" ? "mean" : "band"; } catch (e) {}
+  // Quelle rechts: „Standard“ (sechs feste Felder) oder „Meine Lesezeichen“ (gesternte Grafiken, km.sammlung), gemerkt in km_lagesrc
+  let src = "std"; try { src = localStorage.getItem("km_lagesrc") === "mine" ? "mine" : "std"; } catch (e) {}
+  const marks = () => { try { const a = JSON.parse(localStorage.getItem("km.sammlung") || "[]"); return Array.isArray(a) ? a.filter(x => typeof x === "string") : []; } catch (e) { return []; } };
+  const CH = {}; (DATA.topics || []).forEach(t => (t.charts || []).forEach(c => { if (c.chart) CH[c.chart] = c; }));
+  // umgerechnete, zusammengesetzte oder gefilterte Grafiken zeigt das Feld nicht, nur als Link
+  const LAGE_NO = ["multiples", "transform", "norm", "fx", "scale", "diff", "groups", "proj", "pick", "bilanz", "combine", "of", "daily", "series_ref"];
+  const drawable = c => c && c.type === "line" && (c.series || []).length >= 1 && c.series.length <= 3 && c.series.every(s => s.style === "line" && s.x && s.y)
+    && new Set(c.series.map(s => String(s.unit || "").split(" ")[0])).size === 1 && !LAGE_NO.some(k => c[k]);
+  const fullCache = {};
+  // Feld aus einer gemerkten Grafik: ganze Reihen (c.full) oder die Reihen der Grafik, Monatsmittel; Spanne und Mittel 2015–19 nur bei fast voller Abdeckung
+  const chartPanel = async c => { let full = null;
+    if (c.full) { try { full = fullCache[c.full] || (fullCache[c.full] = await (await fetch(c.full)).json()); } catch (e) { full = null; } }
+    const lines = c.series.map((s, j) => { const r = (full && full[s.id]) || s, by = {};
+      r.x.forEach((x, i) => { const v = r.y[i]; if (v == null || !isFinite(v)) return; const m = String(x).slice(0, 7); (by[m] = by[m] || []).push(+v); });
+      const ms = Object.keys(by).sort(), mv = ms.map(m => by[m].reduce((a, b) => a + b, 0) / by[m].length);
+      const gaps = ms.slice(1).map((m, i) => (+m.slice(0, 4) - +ms[i].slice(0, 4)) * 12 + (+m.slice(5) - +ms[i].slice(5))).sort((a, b) => a - b);
+      const step = Math.max(1, gaps.length ? gaps[gaps.length >> 1] : 1), ref = mv.filter((v, i) => ms[i] >= "2015" && ms[i] < "2020");
+      const ok = ref.length >= Math.ceil(0.9 * 60 / step), keep = ms.map((m, i) => i).filter(i => ms[i] >= "2019");
+      const first = c.series.length < 3 || j === 0;
+      return { name: c.series.length > 1 ? s.label : "", col: j, x: keep.map(i => ms[i]), y: keep.map(i => mv[i]), nomark: !first,
+        mean: ok && first ? ref.reduce((a, b) => a + b, 0) / ref.length : null, lo: ok && first ? Math.min(...ref) : null, hi: ok && first ? Math.max(...ref) : null }; }).filter(l => l.y.length > 1);
+    return lines.length ? { leg: true, title: c.title, unit: c.unit || "", topic: c.anchor || FA(c.no), d: c.decimals != null ? c.decimals : 1, cur: "", lines } : null; };
+  let cur = L.panels || [], others = [];
+  const loadMine = async () => { const cs = marks().map(id => CH[id]).filter(Boolean), ps = [];
+    others = [];
+    for (const c of cs) { const p = drawable(c) ? await chartPanel(c) : null; if (p) ps.push(p); else others.push(c); }
+    return ps; };
+  const srcHTML = () => { const n = marks().length;
+    return `<span class="lsrc" role="group"><button type="button" data-s="std" aria-pressed="${src === "std"}">${LAGETXT.srcstd}</button><button type="button" data-s="mine" aria-pressed="${src === "mine"}">${LAGETXT.srcmine}${n ? ` (${n})` : ""}</button></span>`; };
   const t0 = Date.UTC(2019, 0, 1), t1 = Date.UTC(2026, 11, 31), ms = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, 15);
   const panelSVG = p => { const W = 220, H = 150, x0 = 4, x1 = 150, y0 = 18, y1 = H - 22, mean = mode === "mean";
     const vals = p.lines.flatMap(l => l.y.concat(mean ? (l.mean != null ? [l.mean] : []) : [l.lo, l.hi].filter(v => v != null)));
@@ -2510,21 +2543,21 @@ function lageView() {
         lab.push({ y: Y(l.mean), t: "Ø " + f(l.mean), c: MC, b: 0 }); }
       g += `<polyline points="${P}" fill="none" stroke="${c}" stroke-width="1.4" stroke-linejoin="round"/>`;
       const n = l.y.length, iMax = l.y.indexOf(Math.max(...l.y)), iMin = l.y.indexOf(Math.min(...l.y));
-      [[iMax, RED, -5], [iMin, TB, 12]].forEach(([i, cc, dy]) => { if (i >= n - 3) return; const [px, py] = pts[i];
+      [[iMax, RED, -5], [iMin, TB, 12]].forEach(([i, cc, dy]) => { if (i >= n - 3 || l.nomark) return; const [px, py] = pts[i];
         g += `<line x1="${(px - 6).toFixed(1)}" x2="${(px + 6).toFixed(1)}" y1="${py.toFixed(1)}" y2="${py.toFixed(1)}" stroke="${cc}" stroke-width="1.1"/>`
           + `<text x="${px.toFixed(1)}" y="${(py + dy).toFixed(1)}" text-anchor="middle" class="sp" fill="${cc}">${f(l.y[i])}</text>`; });
       const [ex, ey] = pts[n - 1];
       g += `<line x1="${(ex - 6).toFixed(1)}" x2="${(ex + 6).toFixed(1)}" y1="${ey.toFixed(1)}" y2="${ey.toFixed(1)}" stroke="${c}" stroke-width="1.8"/>`;
       lab.push({ y: ey, t: f(l.y[n - 1]), c, b: 1 }); });
     spread(lab.map(q => q.y), 12).forEach((y, j) => { const q = lab[j]; g += `<text x="${x1 + 9}" y="${(y + 4).toFixed(1)}" class="${q.b ? "se" : "sm"}" fill="${q.c}">${esc(q.t)}</text>`; });
-    if (p.lines.length > 1) p.lines.forEach((l, j) => { const c = LC[l.col || 0], yy = Math.min(...l.y.map(Y)) - (j === 0 ? 6 : 14);
+    if (p.lines.length === 2 && !p.leg) p.lines.forEach((l, j) => { const c = LC[l.col || 0], yy = Math.min(...l.y.map(Y)) - (j === 0 ? 6 : 14);
       g += `<text x="${x0 + 2}" y="${Math.max(10, Math.min(H - 24, yy)).toFixed(1)}" class="sl" fill="${c}">${esc(l.name)}</text>`; });
-    return `<a class="lp" href="#${esc(p.topic)}"><b>${esc(p.title)}</b><span>${esc(p.unit)}</span><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(p.title)}">${g}</svg></a>`; };
+    return `<a class="lp" href="#${esc(p.topic)}"><b>${esc(p.title)}</b><span>${esc(p.unit)}${p.lines.length > 2 || (p.leg && p.lines.length > 1) ? "<br>" + p.lines.map(l => `<i style="color:${LC[l.col || 0]}">${esc(l.name)}</i>`).join(" · ") : ""}</span><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(p.title)}">${g}</svg></a>`; };
   const keyHTML = () => `<div class="lkey">` + [["p", LAGETXT.k[0]], ["t", LAGETXT.k[1]], ["c", LAGETXT.k[2]]].concat(mode === "mean" ? [["m", LAGETXT.k[3]], ["f", LAGETXT.k[4]]] : [["f", LAGETXT.k[5]]]).map(([t, l]) =>
     `<span><svg viewBox="0 0 18 10" width="18" height="10" aria-hidden="true">${t === "f" ? `<rect x="2" y="1" width="14" height="8" fill="${SH}"/>` : `<line x1="1" x2="17" y1="5" y2="5" stroke="${{ p: RED, t: TB, c: "#002060", m: MC }[t]}" stroke-width="${t === "c" ? 1.8 : 1.1}"${t === "m" ? ' stroke-dasharray="3 2"' : ""}/>`}</svg>${esc(l)}</span>`).join("")
     + `<button type="button" class="lmode" aria-pressed="${mode === "mean"}" title="${LAGETXT.meant}">${LAGETXT.meanbtn}</button></div>`;
   const kp = `<div class="lg2"><div class="lsl"><h3>${LAGETXT.rates}</h3>${slopeSVG(L.slope || [])}</div>`
-    + `<div class="lsm"><h3>${LAGETXT.since}</h3><div class="lkw">${keyHTML()}</div><div class="lpg">${(L.panels || []).map(panelSVG).join("")}</div></div></div>`;
+    + `<div class="lsm"><h3>${LAGETXT.since}<span class="lsrcw">${srcHTML()}</span></h3><div class="lkw">${keyHTML()}</div><div class="lpg">${cur.map(panelSVG).join("")}</div><p class="lmore"></p></div></div>`;
   const warn = (L.warn || []).map(w => `<li><span class="amp ${w.lvl}"></span><a href="#${esc(w.topic)}"><b>${esc(w.label)}:</b></a> ${esc(w.text)}</li>`).join("");
   const cal = (DATA.topics || []).flatMap(t => t.charts || []).find(c => c.type === "calendar"), today = new Date().toISOString().slice(0, 10);
   const term = ((cal && cal.calendar && cal.calendar.events) || []).filter(e => e.date >= today).slice(0, 3)
@@ -2541,9 +2574,18 @@ function lageView() {
   const kb = box.querySelector(".lk"), setK = on => { document.body.classList.toggle("lagek", on); kb.setAttribute("aria-pressed", String(on)); try { localStorage.setItem("km_lagek", on ? "1" : "0"); } catch (e) {} };
   let k0 = false; try { k0 = localStorage.getItem("km_lagek") === "1"; } catch (e) {}
   setK(k0); kb.onclick = () => setK(!document.body.classList.contains("lagek"));
-  const wire = () => { const mb = box.querySelector(".lmode"); if (mb) mb.onclick = () => { mode = mode === "mean" ? "band" : "mean"; try { localStorage.setItem("km_lagev", mode); } catch (e) {}
-    box.querySelector(".lkw").innerHTML = keyHTML(); box.querySelector(".lpg").innerHTML = (L.panels || []).map(panelSVG).join(""); wire(); }; };
+  const draw = () => { box.querySelector(".lkw").innerHTML = keyHTML(); box.querySelector(".lsrcw").innerHTML = srcHTML();
+    box.querySelector(".lpg").innerHTML = cur.map(panelSVG).join("") + (src === "mine" && !cur.length ? `<p class="lempty">${LAGETXT.srcempty}</p>` : "");
+    box.querySelector(".lmore").innerHTML = src === "mine" && others.length ? `${LAGETXT.srcmore} ` + others.map(c => `<a href="#${esc(c.anchor || FA(c.no))}">${esc(c.title)}</a>`).join(", ") : "";
+    wire(); };
+  let seq = 0;
+  const setSrc = async s => { src = s; try { localStorage.setItem("km_lagesrc", s); } catch (e) {} const my = ++seq;
+    const ps = s === "mine" ? await loadMine() : (others = [], L.panels || []); if (my !== seq) return; cur = ps; draw(); };
+  const wire = () => { const mb = box.querySelector(".lmode"); if (mb) mb.onclick = () => { mode = mode === "mean" ? "band" : "mean"; try { localStorage.setItem("km_lagev", mode); } catch (e) {} draw(); };
+    box.querySelectorAll(".lsrc button").forEach(b => b.onclick = () => { if (b.dataset.s !== src) setSrc(b.dataset.s); }); };
   wire();
+  if (src === "mine") setSrc("mine");
+  document.addEventListener("kmsammlung", () => { if (src === "mine") setSrc("mine"); else box.querySelector(".lsrcw").innerHTML = srcHTML(), wire(); });
 }
 // Rückmeldung: Knopf unten links öffnet ein Fenster mit einem Textfeld; Versand über den Formulardienst (site.feedback)
 (function feedback() {
