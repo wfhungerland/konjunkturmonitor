@@ -69,22 +69,23 @@ def _oil_eur(data: dict) -> pd.Series | None:
     return (b / fx.reindex(b.index)).dropna()
 
 
-# Raten links (Steigungsbild): Schlüssel, Name deutsch, Name englisch, Reihe, Veränderungsrate?, Kapitel
+# Raten links (Steigungsbild): Schlüssel, Name deutsch, Name englisch, Reihe, Veränderungsrate?, Kapitel,
+# Name in einfacher Sprache deutsch und englisch (sichtbar; der Fachbegriff erscheint beim Überfahren)
 def _rates(data: dict) -> list:
     od = _s(data, "de_orders")
     return [
-        ("alq", "Arbeitslosenquote", "Unemployment rate", _s(data, "de_alq_sa"), False, "arbeit"),
-        ("bund", "Rendite 10-jähriger Bundesanleihen", "10-year Bund yield", _s(data, "de_bund10"), False, "zinsen"),
-        ("cpi", "Inflation", "Inflation", _s(data, "de_cpi_yoy"), False, "preise"),
-        ("dfr", "Einlagesatz der EZB", "ECB deposit rate", _s(data, "ecb_dfr"), False, "geldpolitik"),
-        ("tarif", "Tariflöhne, ggü. Vorjahr", "Negotiated wages, year on year", _s(data, "de_tarif_yoy"), True, "einkommen"),
-        ("gdp", "Wirtschaftsleistung, ggü. Vorjahr", "GDP, year on year", _s(data, "de_gdp_yoy"), True, "wachstum"),
-        ("ret", "Einzelhandel real, ggü. Vorjahr", "Retail sales, real, year on year", _yoy(_s(data, "de_retail")), True, "konsum"),
-        ("exp", "Exporte, ggü. Vorjahr", "Exports, year on year", _yoy(_s(data, "de_exports")), True, "export"),
-        ("ip", "Industrieproduktion, ggü. Vorjahr", "Industrial production, year on year", _yoy(_s(data, "de_ip")), True, "industrie"),
-        ("bau", "Bauzinsen, neue Wohnungsbaukredite", "Mortgage rates, new housing loans", _s(data, "de_rate_house"), False, "zinsen"),
-        ("frb", "Rendite 10-jähriger Staatsanleihen Frankreichs", "10-year French government bond yield", _s(data, "lt_fr"), False, "zinsen"),
-        ("ord", "Auftragseingang Industrie, ggü. Vorjahr", "Industrial orders, year on year", _yoy(od.rolling(3).mean().dropna() if od is not None else None), True, "industrie"),
+        ("alq", "Arbeitslosenquote", "Unemployment rate", _s(data, "de_alq_sa"), False, "arbeit", "Arbeitslosigkeit", "Unemployment"),
+        ("bund", "Rendite 10-jähriger Bundesanleihen", "10-year Bund yield", _s(data, "de_bund10"), False, "zinsen", "Zins für deutsche Staatsschulden", "Interest on German government debt"),
+        ("cpi", "Inflation", "Inflation", _s(data, "de_cpi_yoy"), False, "preise", "Teuerung", "Rise in prices"),
+        ("dfr", "Einlagesatz der EZB", "ECB deposit rate", _s(data, "ecb_dfr"), False, "geldpolitik", "Leitzins", "Key interest rate"),
+        ("tarif", "Tariflöhne, ggü. Vorjahr", "Negotiated wages, year on year", _s(data, "de_tarif_yoy"), True, "einkommen", "Lohnplus laut Tarif, zum Vorjahr", "Pay rises agreed by unions, on a year earlier"),
+        ("gdp", "Wirtschaftsleistung, ggü. Vorjahr", "GDP, year on year", _s(data, "de_gdp_yoy"), True, "wachstum", "Wachstum, zum Vorjahr", "Growth, on a year earlier"),
+        ("ret", "Einzelhandel real, ggü. Vorjahr", "Retail sales, real, year on year", _yoy(_s(data, "de_retail")), True, "konsum", "Umsatz im Laden ohne Preisanstieg, zum Vorjahr", "Shop sales after prices, on a year earlier"),
+        ("exp", "Exporte, ggü. Vorjahr", "Exports, year on year", _yoy(_s(data, "de_exports")), True, "export", "Exporte, zum Vorjahr", "Exports, on a year earlier"),
+        ("ip", "Industrieproduktion, ggü. Vorjahr", "Industrial production, year on year", _yoy(_s(data, "de_ip")), True, "industrie", "Produktion der Industrie, zum Vorjahr", "Factory output, on a year earlier"),
+        ("bau", "Bauzinsen, neue Wohnungsbaukredite", "Mortgage rates, new housing loans", _s(data, "de_rate_house"), False, "zinsen", "Zins für Baukredite", "Interest on home loans"),
+        ("frb", "Rendite 10-jähriger Staatsanleihen Frankreichs", "10-year French government bond yield", _s(data, "lt_fr"), False, "zinsen", "Zins für französische Staatsschulden", "Interest on French government debt"),
+        ("ord", "Auftragseingang Industrie, ggü. Vorjahr", "Industrial orders, year on year", _yoy(od.rolling(3).mean().dropna() if od is not None else None), True, "industrie", "Neue Aufträge der Industrie, zum Vorjahr", "New factory orders, on a year earlier"),
     ]
 
 
@@ -127,7 +128,7 @@ def build(data: dict, forecasts: list[dict], lang: str = "de") -> dict:
     pc = lambda v, d=1, sign=False: f"{n(v, d, sign)}{NB}%" if de else f"{n(v, d, sign)}%"
     facts = {}
     slope = []
-    for key, lde, len_, ser, chg, topic in _rates(data):
+    for key, lde, len_, ser, chg, topic, pde, pen in _rates(data):
         if ser is None or len(ser) < 13:
             continue
         t = ser.index[-1]
@@ -136,7 +137,7 @@ def build(data: dict, forecasts: list[dict], lang: str = "de") -> dict:
         if not len(y19) or not len(ago):
             continue
         a, b, c = float(y19.mean()), float(ago.iloc[-1]), float(ser.iloc[-1])
-        slope.append({"key": key, "label": lde if de else len_, "topic": topic, "v": [round(a, 3), round(b, 3), round(c, 3)], "txt": n(c, 1, chg), "txts": [n(a, 1, chg), n(b, 1, chg)]})
+        slope.append({"key": key, "label": lde if de else len_, "plain": pde if de else pen, "topic": topic, "v": [round(a, 3), round(b, 3), round(c, 3)], "txt": n(c, 1, chg), "txts": [n(a, 1, chg), n(b, 1, chg)]})
 
     q = _s(data, "de_gdp_qoq")
     if q is not None and len(q) > 1:
