@@ -752,7 +752,7 @@ def chart_sentences(c: dict) -> list[str]:
                 return []
             y = max(full)
             now = _und([f"{num(sum(by.get(y, [0])), 0)} {ph}" for ph, by in sums])
-            out = f"Im Jahr {y} {ac['verb']} {now}"
+            out = f"{ac.get('lead', 'Im Jahr')} {y} {ac['verb']} {now}"
             if y - 1 in sums[0][1]:
                 out += ", nach " + _und([num(sum(by.get(y - 1, [0])), 0) for _, by in sums]) + f" im Jahr {y - 1}"
             return [out + "."]
