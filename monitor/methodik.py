@@ -32,9 +32,9 @@ FORM = {
     "seasonal": "Monatswerte (dünn), gleitendes Zwölfmonatsmittel (dick) und das übliche Niveau desselben Monats vor Corona (gestrichelt).",
     "calendar": "Kalender der nächsten Veröffentlichungen mit Verweis auf die betroffenen Abbildungen.",
     "dumbbell": "Hantelgrafik: je Land ein hohler Punkt für das erste und ein voller Punkt für das jüngste Jahr, verbunden durch eine Linie.",
-    "curve": "Zinskurven: Rendite über der Restlaufzeit (logarithmische Achse), je Land eine Farbe; durchgezogen der jüngste Monat, gepunktet derselbe Monat ein Jahr zuvor.",
+    "curve": "Renditen nach Laufzeit: Rendite über der Restlaufzeit (logarithmische Achse), je Land eine Farbe; durchgezogen der jüngste Monat, gepunktet derselbe Monat ein Jahr zuvor.",
     "gauge": "Krisenthermometer: je Indikator eine Zeile auf gemeinsamer Skala. 0 % ist das Mittel 2015 bis 2019, 100 % der Höchststand der Eurokrise (Juli 2011 bis Dezember 2012); Werte dazwischen sind linear eingeordnet, Werte unter 0 % liegen günstiger als normal. Voller Punkt: jüngster Wert, hohler Punkt: ein Jahr zuvor. Die Skala zeigt den Abstand zu einer früheren Krise, keine Wahrscheinlichkeit für eine neue.",
-    "tpi": "Tabelle je Euroland: Finanzierungssaldo und Schulden des Staates im jüngsten Jahr, laufendes Defizitverfahren und Renditeabstand zu Deutschland; rot sind ein laufendes Verfahren und Werte jenseits der Grenzen des Stabilitätspakts. Die Daten holt der werktägliche Lauf von Eurostat, der Seite der EU-Kommission und der EZB.",
+    "tpi": "Tabelle je Euroland: Finanzierungssaldo und Schulden des Staates im jüngsten Jahr, laufendes Defizitverfahren und Risikoaufschlag zu Deutschland; rot sind ein laufendes Verfahren und Werte jenseits der Grenzen des Stabilitätspakts. Die Daten holt der werktägliche Lauf von Eurostat, der Seite der EU-Kommission und der EZB.",
 }
 
 DERIVE = {

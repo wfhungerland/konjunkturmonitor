@@ -568,7 +568,7 @@ def tidy(s: str) -> str:
     s = re.sub(r"(?<![\w])(G|g)egenüber ", lambda m: m.group(1) + "gü. ", s)
     s = re.sub(r"Prozentpunkte[n]?", "Pp", s)
     s = re.sub(r"(\d) ?%", "\\1\u202f%", s)
-    s = re.sub(r"(?<![\w\-])-(?=\d)", "\u2212", s)  # Minuszeichen statt Bindestrich vor Zahlen
+    s = s.replace("\u2212", "-")  # Regel B14: Bindestrich als Minuszeichen
     return s
 
 
@@ -985,7 +985,7 @@ def chart_sentences(c: dict) -> list[str]:
                            else f"Diese Prognosen stammen von {m0} bis {MONTHS[d1.month - 1]} {d1.year}.")
             hv = [k.replace(" (HVPI)", "") for k in used if "(HVPI)" in k]
             if hv:
-                out.append(f"{_und(['Die ' + h if h == 'Bundesbank' else h for h in hv])} {'rechnet' if len(hv) == 1 else 'rechnen'} mit dem HVPI, die übrigen mit dem Verbraucherpreisindex.")
+                out.append(f"{_und(['Die ' + h if h == 'Bundesbank' else h for h in hv])} {'rechnet' if len(hv) == 1 else 'rechnen'} mit dem EU-weit harmonisierten Verbraucherpreisindex, die übrigen mit dem Verbraucherpreisindex.")
             return out
         if typ == "treemap" and c.get("attach"):  # Grundriss: Summe des jüngsten Schritts und größter Block
             A = c["attach"]
@@ -2057,10 +2057,10 @@ def build_payload(root: Path = ROOT) -> dict:
                 if c.get("tpi_geo") and tp.exists():  # Stützung durch die EZB: läuft ein Defizitverfahren, ist das TPI nicht sicher
                     trow = next((x for x in json.loads(tp.read_text(encoding="utf-8")).get("rows", []) if x["geo"] == c["tpi_geo"]), None)
                     if trow and trow.get("edp"):
-                        entry["say"].append(f"Gegen {c.get('who', 'das Land')} läuft ein Defizitverfahren der EU; ob die EZB dann mit dem TPI Anleihen kaufen würde, entscheidet sie im Einzelfall.")
+                        entry["say"].append(f"Gegen {c.get('who', 'das Land')} läuft ein Defizitverfahren der EU; ob die EZB dann mit ihrem Schutzinstrument für die Geldpolitik (Transmission Protection Instrument, TPI) Anleihen kaufen würde, entscheidet sie im Einzelfall.")
                         entry["say_en"].append(f"{c.get('who_en', 'The country')} is in an EU excessive deficit procedure; whether the ECB would then buy its bonds under the TPI is decided case by case.")
                     elif trow:
-                        entry["say"].append(f"Gegen {c.get('who', 'das Land')} läuft kein Defizitverfahren der EU; eine Bedingung für Käufe der EZB über das TPI ist damit erfüllt.")
+                        entry["say"].append(f"Gegen {c.get('who', 'das Land')} läuft kein Defizitverfahren der EU; eine Bedingung für Käufe der EZB über ihr Schutzinstrument für die Geldpolitik (Transmission Protection Instrument, TPI) ist damit erfüllt.")
                         entry["say_en"].append(f"{c.get('who_en', 'The country')} is not in an EU excessive deficit procedure, so one condition for ECB purchases under the TPI is met.")
                 gc = by_role("cont")
                 if gc and all(r["now_pct"] <= 10 for r in gc):
@@ -2107,7 +2107,7 @@ def build_payload(root: Path = ROOT) -> dict:
                                     f"{and_([r['name_en'] for r in edp])}.") if edp else "No euro country is in an EU excessive deficit procedure."]
                 if top:
                     m = pd.Timestamp(T["month"] + "-01")
-                    entry["say"].append(f"Den höchsten Renditeabstand zu Bundesanleihen hatte im {MONTHS_DE[m.month - 1]} {m.year} {top['name']} mit {str(round(top['spread'], 2)).replace('.', ',')} Pp.")
+                    entry["say"].append(f"Den höchsten Risikoaufschlag zu Bundesanleihen hatte im {MONTHS_DE[m.month - 1]} {m.year} {top['name']} mit {str(round(top['spread'], 2)).replace('.', ',')} Pp.")
                     entry["say_en"].append(f"In {m.strftime('%B %Y')}, {top['name_en']} had the widest spread over Bunds at {round(top['spread'], 2)} pp.")
             elif typ == "kreise":  # Kreiskarte der Baukapazität, Daten aus data/static (monitor.aufnahme_karte), von Hand aktualisiert
                 K = (entry.get("attach") or {}).get("kreise") or []
