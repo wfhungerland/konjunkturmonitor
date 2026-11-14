@@ -740,6 +740,10 @@ charts:
     title: "Military expenditure"
     ask: "How high is military spending by comparison?"
     caption: "Military expenditure in percent of economic output, as defined by the Stockholm International Peace Research Institute (SIPRI). It includes military pensions and military aid. NATO's targets of 2 percent and 3.5 percent by 2035 rest on a different definition. By NATO's count, Germany is usually somewhat higher. Germany is highlighted."
+  arms_turnover:
+    title: "Turnover of makers of weapons and ammunition"
+    ask: "How much do makers of weapons and ammunition sell?"
+    caption: "Turnover of plants making weapons and ammunition, summed over the previous twelve months, in billion euros; establishments with 50 or more employees. Counted per plant, not per company, so a reclassification of companies does not shift the figures. Tanks and other fighting vehicles are missing because the Federal Statistical Office keeps their data confidential. Foreign turnover covers deliveries to customers outside Germany."
   arms_overview:
     title: "Defence in Germany since 2021: from budget to factory"
     ask: "How does defence money reach the factory?"
@@ -1084,6 +1088,9 @@ series:
   kmpt_de_partner: {title: "German defence contracts to German and foreign companies jointly or with production in Germany", label: "German with partner", unit: "€ bn", adjustment: "year of announcement, current prices"}
   kmpt_eu: {title: "German defence contracts to companies in the rest of Europe", label: "rest of Europe", unit: "€ bn", adjustment: "year of announcement, current prices"}
   kmpt_noneu: {title: "German defence contracts to companies outside Europe", label: "outside Europe", unit: "€ bn", adjustment: "year of announcement, current prices"}
+  de_arms_turnover: {title: "Turnover of plants making weapons and ammunition (NACE 25.40)", label: "Turnover, total", unit: "€ bn", adjustment: "not adjusted"}
+  de_arms_turnover_abroad: {title: "Foreign turnover of plants making weapons and ammunition (NACE 25.40)", label: "of which abroad", unit: "€ bn", adjustment: "not adjusted"}
+  de_arms_employment: {title: "Employment in plants making weapons and ammunition (NACE 25.40)", label: "Employment", unit: "persons", adjustment: "not adjusted"}
   def_staff: {title: "Government defence spending: personnel (compensation of employees)", label: "Personnel", unit: "€ bn", adjustment: "annual, current prices"}
   def_material: {title: "Government defence spending: material, maintenance and operations (intermediate consumption)", label: "Material and operations", unit: "€ bn", adjustment: "annual, current prices"}
   def_invest: {title: "Government defence spending: weapon systems and buildings (gross fixed capital formation)", label: "Weapon systems and buildings", unit: "€ bn", adjustment: "annual, current prices"}
