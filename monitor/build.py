@@ -1065,6 +1065,7 @@ def chart_sentences(c: dict) -> list[str]:
         if c.get("emphasis") and not isinstance(c.get("combine"), dict):  # Sätze mit allen Reihen behalten alle
             series = [s for s in series if s["id"] == c["emphasis"]] or series
         if c.get("tpl"):  # ganze Sätze aus monitor.yaml mit Werten mehrerer Reihen, etwa {v[id]}; Stichtag ist der jüngste Zeitpunkt, den alle Reihen haben
+            series = [s for s in c["series"] if s.get("y") and s.get("style") != "norm"]  # alle Reihen, auch neben einer hervorgehobenen
             last = min(s["x"][-1] for s in series)
             F = {k: {} for k in ("v", "n", "full", "chg", "pabs", "mehr", "ueber", "abs100", "ueber100", "abs", "sg", "up_pl", "trend_pl", "streak", "m3", "m3y_abs", "m3y_mehr",
                                  "w", "p", "n0", "dabs", "dmehr")}
@@ -1109,6 +1110,7 @@ def chart_sentences(c: dict) -> list[str]:
                     F["chg"][sid], F["pabs"][sid] = num(pc, 1, True) + " %", num(abs(pc), 1)
                     F["mehr"][sid], F["ueber"][sid] = ("mehr" if pc > 0 else "weniger"), ("über" if pc > 0 else "unter")
             F["q"] = {f"{a}/{b}": num(vals[a] / vals[b], 1) for a in vals for b in vals if a != b and vals[b]}
+            F["mw"] = {f"{a}-{b}": "mehr" if vals[a] > vals[b] else "weniger" for a in vals for b in vals if a != b}
             F["cmp"] = {f"{a}-{b}": "so schnell wie" if round(vals[a] - vals[b], d) == 0 else f"{num(abs(vals[a] - vals[b]), d)} Pp {'schneller' if vals[a] > vals[b] else 'langsamer'} als"
                         for a in vals for b in vals if a != b}
             F["q0"] = {f"{a}/{b}": num(vals0[a] / vals0[b], 1) for a in vals0 for b in vals0 if a != b and vals0[a] is not None and vals0[b]}
@@ -1151,6 +1153,11 @@ def chart_sentences(c: dict) -> list[str]:
                         h = head.split(" um ")[0]
                         out += f"; {h} {verb_sie[g]}{head[len(h):]}" + "".join(", " + x for x in more)
                 return [out + "."]
+            if cb.get("ends"):  # nur höchster und niedrigster Wert, etwa wenn ein anderer Satz die ganze Liste schon nennt
+                pts = [(cb.get("names", {}).get(s.get("label"), cb.get("pre", "") + s.get("label", "")), at(s)) for s in series if at(s) is not None]
+                if len(pts) > 1:
+                    hi, lo = max(pts, key=lambda p: p[1]), min(pts, key=lambda p: p[1])
+                    return [f"{_when(last, freq)} {cb['ends']} {hi[0]} am höchsten ({num(hi[1], d)} {sym}), {lo[0]} am niedrigsten ({num(lo[1], d)})."]
             mid = cb.get("mid", "")  # etwa „ bei“ zwischen Land und Wert
             items = [f"{cb.get('pre', '')}{s.get('label', '')}{mid} {num(at(s), d, cb.get('sign', True))} {'' if cb.get('bare') else sym}".strip() for s in series if at(s) is not None]  # bare: Einheit steht im Satzanfang
             late = [s for s in series if at(s) is None and s.get("y") and s["y"][-1] is not None] if cb.get("each_month") else []
@@ -1806,6 +1813,45 @@ def build_payload(root: Path = ROOT) -> dict:
                              refs=[{"y": pj["target"], "x0": f"{pj['year']}-01-01", "label": f"{pj['round']}: {str(round(pj['target'], 1)).replace('.', ',')} %"}],
                              sources=["Eurostat (BIP des Statistischen Bundesamts)", f"Bundesregierung ({pj['round']})", "eigene Berechnung"],
                              licenses=[SOURCE_LICENSES["eurostat"]])
+            elif typ == "sparktable" and c.get("mode") == "level":  # Wortgrafik-Tafel: Verlauf, jüngster Wert, vor einem Jahr, Schnitt 2015 bis 2019
+                from .answers import MONTHS
+                rows, used, says, says_en = [], [], [], []
+                n0, n1 = (int(v) for v in c.get("norm", [2015, 2019]))
+                for r in c.get("rows") or []:
+                    if r["id"] not in data:
+                        continue
+                    full = data[r["id"]].dropna()
+                    if full.empty:
+                        continue
+                    m = meta[r["id"]]
+                    last = full.index[-1]
+                    prev = full[full.index <= last - pd.DateOffset(years=1)]
+                    prev = float(prev.iloc[-1]) if not prev.empty and (last - pd.DateOffset(years=1) - prev.index[-1]).days < 40 else None
+                    nb = full[(full.index.year >= n0) & (full.index.year <= n1)]
+                    norm = float(nb.mean()) if len(nb) and nb.index[0].year == n0 else None
+                    s = full[full.index > last - pd.DateOffset(years=int(c.get("years", 5)))]
+                    q = (last.month - 1) // 3 + 1
+                    when = str(last.year) if m.frequency == "A" else f"{q}. Quartal {last.year}" if m.frequency == "Q" else f"{MONTHS_SHORT[last.month - 1]} {last.year}"
+                    when_en = str(last.year) if m.frequency == "A" else f"Q{q} {last.year}" if m.frequency == "Q" else last.strftime("%b %Y")
+                    d = int(r.get("decimals", 1))
+                    rows.append(dict(label=r["label"], label_en=r.get("label_en", r["label"]), unit=r.get("unit", m.unit), unit_en=r.get("unit_en", r.get("unit", m.unit)),
+                                     sub=bool(r.get("sub")), d=d, last=round(float(full.iloc[-1]), 3), prev=None if prev is None else round(prev, 3),
+                                     norm=None if norm is None else round(norm, 3), when=when.replace(". Quartal ", ". Qu. "), when_en=when_en,
+                                     x=[t.strftime("%Y-%m-%d") for t in s.index], y=[round(float(v), 3) for v in s.values]))
+                    used.append(m)
+                    if r.get("say"):  # ganzer Satz mit {when}, {v}, {prev}, {norm}
+                        fd = lambda v: "" if v is None else f"{v:.{d}f}".replace(".", ",").replace("-", "−")
+                        fe = lambda v: "" if v is None else f"{v:.{d}f}"
+                        mon = f"{MONTHS[last.month - 1]} {last.year}" if m.frequency == "M" else when
+                        says.append(r["say"].format(when=mon, v=fd(rows[-1]["last"]), prev=fd(prev), norm=fd(norm)))
+                        says_en.append(r.get("say_en", "").format(when=last.strftime("%B %Y") if m.frequency == "M" else when_en, v=fe(rows[-1]["last"]), prev=fe(prev), norm=fe(norm)))
+                if not rows:
+                    continue
+                entry.update(sparktable=rows, spk_mode="level", norm=[n0, n1], freq="M", unit="",
+                             sources=list(c.get("sources") or sorted({_source_name(s) for s in used})), licenses=sorted({_license(s) for s in used}),
+                             series=[dict(id=f"row{i}", label=r["label"], unit=r["unit"], freq="M", style="line", x=r["x"], y=r["y"]) for i, r in enumerate(rows)])
+                if says:
+                    entry["say"], entry["say_en"] = says, says_en
             elif typ == "sparktable":  # Tabelle mit Wortgrafiken nach Tufte: je Zeile Verlauf, Stand 2021, jüngster Stand, Faktor
                 rows, used = [], []
                 for r in c.get("rows") or []:

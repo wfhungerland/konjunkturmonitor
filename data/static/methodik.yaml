@@ -124,6 +124,11 @@ charts:
       - "Die historische Arbeitslosenquote wechselt Quelle und Abgrenzung; vor 1950 ist sie nur grob vergleichbar."
       - "Der laufende Abschwung beruht auf anderen Quellen als die historischen Episoden."
       - "Die Global Macro Database steht unter CC BY-NC-SA 4.0; diese Abbildung und ihr Download deshalb ebenso."
+  prices_overview:
+    methode: "Wortgrafik-Tafel nach Edward Tufte. Je Zeile: Verlauf der letzten fünf Jahre als kleine Linie mit eigener Skala, jüngster Wert, Wert zwölf Monate (bei Quartalswerten vier Quartale) zuvor und Mittel der Jahre 2015 bis 2019. Die Raten sind Veränderungen gegenüber dem Vorjahresmonat; Quellen wie in den Einzelabbildungen des Abschnitts."
+    grenzen:
+      - "Die Zeilen enden in verschiedenen Monaten, weil die Quellen verschieden schnell melden."
+      - "Der Schnitt 2015 bis 2019 ist ein Vergleichsmaß für ruhige Jahre, kein Ziel; das Ziel der Europäischen Zentralbank liegt bei 2 %."
   cpi_contrib:
     methode: "Der Beitrag eines Bereichs zur Inflationsrate ist seine Preisveränderung, gewichtet mit seinem Anteil am Warenkorb des Verbraucherpreisindex. Der Monitor rechnet die Beiträge aus den Teilindizes und den Wägungsanteilen des Statistischen Bundesamts; Dienstleistungen und Mieten sind zusammengefasst. Die Summe der Beiträge ergibt bis auf eine kleine Restgröße die Inflationsrate."
     grenzen:
