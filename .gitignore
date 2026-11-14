@@ -5,3 +5,4 @@ site/
 .pytest_cache/
 .cache/
 node_modules/
+.cache_gisco/

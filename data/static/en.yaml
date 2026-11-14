@@ -59,6 +59,7 @@ topics:
   pruefung: {title: "Accuracy", code: "Forecasts", ask: "How reliable are the first figures and the projection?"}
   breite: {title: "Breadth and comparison", code: "Breadth", ask: "How broad is the development, and how unusual is it?"}
   wettbewerb: {title: "Competition", ask: "Who competes with Germany on world markets?"}
+  aufnahme: {title: "Construction capacity", ask: "Where can districts take on additional construction work?"}
   bedrohung: {title: "Threats", code: "Threats", ask: "How much is Germany being targeted?"}
   ruestung: {title: "Defence", code: "Defence", ask: "How much does Germany spend on defence?"}
   ukraine: {title: "Aid to Ukraine", code: "Ukraine-aid", ask: "How much does Germany help Ukraine?"}
@@ -644,6 +645,11 @@ charts:
     title: "Government spending by function, % of GDP"
     ask: "How much does the government spend on each function, measured against economic output?"
     caption: "The panels show government spending on each function as a percentage of economic output (gross domestic product)."
+  aufnahme_karte:
+    title: "Construction workers per inhabitant, in the district and in its catchment area"
+    ask: "Where are construction workers within reach scarce?"
+    unit: "Index, Germany = 100"
+    caption: "The maps show employees subject to social security contributions in construction (NACE section F) per 1,000 inhabitants as an index, Germany = 100, by place of work. On the left, only employees in the district itself count. On the right, the catchment area counts: construction firms also work in neighbouring districts, so each district's employees are spread over all districts they reach, in proportion to travel time and population. How strongly activity declines with travel time is estimated from some 38,000 public construction contracts above the EU threshold: between two districts the flow of contracts halves every 28 minutes of driving. Each employee counts only once. Orange means fewer than in Germany as a whole, blue more. Conurbations draw capacity from their surroundings; sparsely populated and border districts therefore often reach half the national level. Firms and demand across the border are missing. In 13 districts the Federal Employment Agency withholds the value; there it is estimated from construction occupations. The map is updated by hand; method: docs/aufnahme.md in the repository."
   stx_tree:
     title: "Floor plan of government spending"
     ask: "How is government spending divided up in detail?"
@@ -1266,6 +1272,16 @@ geo:
 
 strings:
   # units
+  "Index, Bund = 100": "Index, Germany = 100"
+  "Bundesagentur für Arbeit, Regionalreport über Beschäftigte (Arbeitsort, 31.03.2026)": "Federal Employment Agency, regional report on employees (place of work, 31 March 2026)"
+  "Statistisches Bundesamt (Bevölkerung 31.12.2024)": "Federal Statistical Office (population, 31 December 2024)"
+  "TED, Zuschlagsbekanntmachungen für Bauleistungen 2025 und 2026": "TED, contract award notices for construction works 2025 and 2026"
+  "Fahrzeiten: OSRM auf OpenStreetMap": "Travel times: OSRM on OpenStreetMap"
+  "Kreisgrenzen: GISCO, NUTS 2024": "District boundaries: GISCO, NUTS 2024"
+  "Statistik der Bundesagentur für Arbeit, mit Quellenangabe": "Statistics of the Federal Employment Agency, with attribution"
+  "CC BY 4.0 (Amt für Veröffentlichungen der EU, TED)": "CC BY 4.0 (Publications Office of the EU, TED)"
+  "ODbL (OpenStreetMap-Mitwirkende)": "ODbL (OpenStreetMap contributors)"
+  "© EuroGeographics für die Verwaltungsgrenzen": "© EuroGeographics for the administrative boundaries"
   "% der Staatsausgaben": "% of government expenditure"
   "Mrd. EUR, in Preisen von 2024": "EUR bn, 2024 prices"
   "Eurostat (gov_10a_exp, nama_10_gdp)": "Eurostat (gov_10a_exp, nama_10_gdp)"
