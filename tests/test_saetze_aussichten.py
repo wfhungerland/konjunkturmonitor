@@ -11,4 +11,4 @@ def test_forecast_span_without_government_median_age_and_hicp():
         "Die jüngsten Prognosen anderer Institutionen reichen für 2099 von 2,6 bis 2,9 % (drei Institutionen); für 2100 liegt nur eine vor (1,9 %).",
         "Im Mittel (Median) erwarten sie für 2099 2,8 %.",
         "Diese Prognosen stammen von Juni bis September 2099.",
-        "Die Bundesbank rechnet mit dem HVPI, die übrigen mit dem Verbraucherpreisindex."]
+        "Die Bundesbank rechnet mit dem EU-weit harmonisierten Verbraucherpreisindex, die übrigen mit dem Verbraucherpreisindex."]

@@ -198,17 +198,17 @@ charts:
   yields: {title: "Zinsen für Bundesanleihen", decimals: 1}
   ecb_rates: {title: "Leitzinsen der EZB", decimals: 2}
   ecb_bs: {title: "Bilanz des Eurosystems", decimals: 2}
-  spreads: {title: "Renditeabstand zu Bundesanleihen", decimals: 2}
+  spreads: {title: "Risikoaufschlag zu Bundesanleihen", decimals: 2}
   fr_stress: {title: "Finanzstress in Frankreich und Nachbarländern", decimals: 2}
   fr_exports: {title: "Deutsche Exporte nach Frankreich", decimals: 0}
   fr_rank: {title: "Risikoaufschlag gegenüber Bundesanleihen nach Land", decimals: 2}
   fr_yields: {title: "Rendite zehnjähriger Staatsanleihen: Frankreich, Italien, Deutschland", decimals: 2}
   qe_prog: {title: "Anleihebestände der EZB nach Programm", decimals: 0}
   qe_land: {title: "Käufe von Staatsanleihen nach Land", decimals: 0}
-  zinskurven: {title: "Zinskurven von Staatsanleihen", decimals: 2}
+  zinskurven: {title: "Renditen von Staatsanleihen nach Laufzeit", decimals: 2}
   curve_slope: {title: "Abstand langer zu kurzer Zinsen", decimals: 2}
   corp_yields: {title: "Renditen von Unternehmensanleihen", decimals: 2}
-  corp_spread: {title: "Renditeabstand der Unternehmensanleihen", decimals: 2}
+  corp_spread: {title: "Risikoaufschlag der Unternehmensanleihen", decimals: 2}
   bls_std: {title: "Kreditstandards der Banken", decimals: 0}
   bls_dem: {title: "Kreditnachfrage bei den Banken", decimals: 0}
   oil: {title: "Ölpreis", decimals: 0}
@@ -2049,7 +2049,7 @@ series:
     block: finanzen
     source: derived
     derive: {from: lt_pt, op: diff, minus: lt_de}
-    title: "Renditeabstand zehnjähriger Staatsanleihen Portugal minus Deutschland"
+    title: "Risikoaufschlag zehnjähriger Staatsanleihen Portugal gegenüber Deutschland"
     unit: "Prozentpunkte"
     frequency: M
     adjustment: nicht bereinigt
@@ -2068,7 +2068,7 @@ series:
     block: finanzen
     source: derived
     derive: {from: lt_be, op: diff, minus: lt_de}
-    title: "Renditeabstand zehnjähriger Staatsanleihen Belgien minus Deutschland"
+    title: "Risikoaufschlag zehnjähriger Staatsanleihen Belgien gegenüber Deutschland"
     unit: "Prozentpunkte"
     frequency: M
     adjustment: nicht bereinigt
@@ -2087,7 +2087,7 @@ series:
     block: finanzen
     source: derived
     derive: {from: lt_gr, op: diff, minus: lt_de}
-    title: "Renditeabstand zehnjähriger Staatsanleihen Griechenland minus Deutschland"
+    title: "Risikoaufschlag zehnjähriger Staatsanleihen Griechenland gegenüber Deutschland"
     unit: "Prozentpunkte"
     frequency: M
     adjustment: nicht bereinigt
@@ -2106,7 +2106,7 @@ series:
     block: finanzen
     source: derived
     derive: {from: lt_at, op: diff, minus: lt_de}
-    title: "Renditeabstand zehnjähriger Staatsanleihen Österreich minus Deutschland"
+    title: "Risikoaufschlag zehnjähriger Staatsanleihen Österreich gegenüber Deutschland"
     unit: "Prozentpunkte"
     frequency: M
     adjustment: nicht bereinigt
@@ -2125,7 +2125,7 @@ series:
     block: finanzen
     source: derived
     derive: {from: lt_nl, op: diff, minus: lt_de}
-    title: "Renditeabstand zehnjähriger Staatsanleihen Niederlande minus Deutschland"
+    title: "Risikoaufschlag zehnjähriger Staatsanleihen Niederlande gegenüber Deutschland"
     unit: "Prozentpunkte"
     frequency: M
     adjustment: nicht bereinigt
@@ -2197,7 +2197,7 @@ series:
     block: finanzen
     source: derived
     derive: {from: lt_it, op: diff, minus: lt_de}
-    title: "Renditeabstand zehnjähriger Staatsanleihen Italien minus Deutschland"
+    title: "Risikoaufschlag zehnjähriger Staatsanleihen Italien gegenüber Deutschland"
     unit: "Prozentpunkte"
     frequency: M
     adjustment: nicht bereinigt
@@ -2208,7 +2208,7 @@ series:
     block: finanzen
     source: derived
     derive: {from: lt_fr, op: diff, minus: lt_de}
-    title: "Renditeabstand zehnjähriger Staatsanleihen Frankreich minus Deutschland"
+    title: "Risikoaufschlag zehnjähriger Staatsanleihen Frankreich gegenüber Deutschland"
     unit: "Prozentpunkte"
     frequency: M
     adjustment: nicht bereinigt
@@ -2219,7 +2219,7 @@ series:
     block: finanzen
     source: derived
     derive: {from: lt_es, op: diff, minus: lt_de}
-    title: "Renditeabstand zehnjähriger Staatsanleihen Spanien minus Deutschland"
+    title: "Risikoaufschlag zehnjähriger Staatsanleihen Spanien gegenüber Deutschland"
     unit: "Prozentpunkte"
     frequency: M
     adjustment: nicht bereinigt
@@ -2254,7 +2254,7 @@ series:
     block: finanzen
     source: derived
     derive: {from: de_corp_yield, op: diff, minus: de_pub_yield}
-    title: "Renditeabstand der Unternehmensanleihen zu Anleihen der öffentlichen Hand"
+    title: "Risikoaufschlag der Unternehmensanleihen zu Anleihen der öffentlichen Hand"
     unit: "Prozentpunkte"
     frequency: M
     adjustment: nicht bereinigt
