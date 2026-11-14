@@ -215,6 +215,12 @@ charts:
     grenzen:
       - "Ohne den deutschen Anteil an der Hilfe der EU und ohne Kosten für Geflüchtete in Deutschland; die Bundesregierung nennt deshalb höhere Summen."
       - "Mehrjährige Pakete erscheinen im Monat der Festlegung; die Quartale schwanken deshalb stark."
+  arms_turnover:
+    methode: "Monatsbericht im Verarbeitenden Gewerbe des Statistischen Bundesamts, Tabelle 42111-0024: Umsatz und Beschäftigte der fachlichen Betriebsteile in der Klasse 25.40 (Herstellung von Waffen und Munition) der Wirtschaftszweigklassifikation 2008. Fachliche Betriebsteile sind die Teile eines Betriebs, die überwiegend eine Tätigkeit ausüben; die Zuordnung hängt deshalb an der Tätigkeit im Werk, nicht an der Firma. Erfasst sind Betriebe ab 50 tätigen Personen. Der Monitor summiert die Monatswerte über zwölf Monate und ruft sie werktäglich ab."
+    grenzen:
+      - "Militärische Kampffahrzeuge (Klasse 30.40) hält das Statistische Bundesamt geheim; sie fehlen ganz."
+      - "Kleine Betriebe unter der Abschneidegrenze fehlen; die Werte sind eine Untergrenze."
+      - "Die Strukturstatistik von Eurostat zählt je Firma und zeigt deshalb andere, durch Umbuchungen verzerrte Werte."
   arms_overview:
     methode: "Die Tabelle verdichtet die Abbildungen des Abschnitts nach dem Vorbild der Wortgrafiken von Edward Tufte. Je Zeile: Verlauf seit 2015 als kleine Linie auf gemeinsamer Zeitachse, Stand 2021, jüngster Stand und Faktor jüngster Stand geteilt durch 2021. Ausgaben: Staatsausgaben für Verteidigung nach Eurostat (COFOG 02), Summe und Posten Vorleistungen. Aufträge: Kiel Military Procurement Tracker, Summe über zwölf Monate (2021 = 100) und Jahressumme der Aufträge an Firmen mit Sitz in Deutschland, allein oder mit ausländischem Partner. Produktion: Produktionsindex von Eurostat für Waffen und Munition (Zweig 25.4) und für das Verarbeitende Gewerbe, jeweils gemittelt über zwölf Monate und auf das Jahresmittel 2021 bezogen."
     grenzen:
