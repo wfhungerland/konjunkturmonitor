@@ -466,7 +466,7 @@
   .gut .pin[aria-pressed="true"] { color: #0070C0; }  /* royalblau wie die Pfeile nach oben */
   .collection:empty { display: none; }
   .collection { margin: 8px 0 32px; } .collection .colbar { display: flex; flex-wrap: wrap; gap: 8px 16px; }
-  body.coll #overview, body.coll #news, body.coll #grid, body.coll #starttable, body.coll #legendhint, body.coll #topics, body.coll .weekrev, body.coll .fab { display: none !important; }
+  body.coll #overview, body.coll #lage, body.coll .briefmore, body.coll #news, body.coll #grid, body.coll #starttable, body.coll #legendhint, body.coll #topics, body.coll .weekrev, body.coll .fab { display: none !important; }
   @media print { .htools, .gut .pin, .gut .gopts, .collection .colbar { display: none; } }
   @media print {
     header, nav, .fab, .totop, details.dl, .rawtoggle, .btn, button.copy, button.copy1, .seg, .navmore { display: none !important; }
@@ -2186,7 +2186,7 @@ function build() {
     (document.getElementById("woche") || topics).insertAdjacentElement("beforebegin", bm); }
   // Link auf ein Kapitel oder eine Abbildung, die „Das Wichtigste“ gerade ausblendet: erst wieder alles zeigen, dann genau dorthin springen
   document.addEventListener("click", e => { const a = e.target.closest('a[href^="#"]'); if (!a || !document.body.classList.contains("brief")) return;
-    const h = a.getAttribute("href"); if (h === "#top" || h.length < 2) return; let el = null; try { el = document.querySelector(h); } catch (x) { return; }
+    const h = a.getAttribute("href"); if (h === "#top" || h.length < 2 || h.startsWith("#sammlung")) return; let el = null;  // Lesezeichen: eigene Ansicht über hashchange try { el = document.querySelector(h); } catch (x) { return; }
     if (!el || el.offsetParent !== null) return;
     e.preventDefault(); setBrief(false); const d = el.closest("details"); if (d) d.open = true;
     history.pushState(null, "", h); requestAnimationFrame(() => el.scrollIntoView()); }, true);
