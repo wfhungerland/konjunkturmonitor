@@ -89,9 +89,14 @@ def _rates(data: dict) -> list:
 
 
 def _line(s: pd.Series, name: str = "", col: int = 0) -> dict:
-    """Monatswerte seit 2019 und Durchschnitt 2015–19 für ein Feld rechts."""
+    """Monatswerte seit 2019 und Durchschnitt 2015–19 für ein Feld rechts.
+
+    Spanne und Mittel nur, wenn die Reihe 2015–19 fast vollständig abdeckt (mindestens 54 von 60 Monaten);
+    sonst entfällt das Band, statt eine zu schmale Spanne als Vergleich zu zeigen."""
     t = s[s.index >= "2019-01-01"]
     m = s[(s.index.year >= 2015) & (s.index.year <= 2019)]
+    if m.index.to_period("M").nunique() < 54:
+        m = m.iloc[:0]
     return {"name": name, "col": col, "x": [d.strftime("%Y-%m") for d in t.index], "y": [round(float(v), 3) for v in t.values],
             "mean": round(float(m.mean()), 3) if len(m) else None,
             "lo": round(float(m.min()), 3) if len(m) else None, "hi": round(float(m.max()), 3) if len(m) else None}

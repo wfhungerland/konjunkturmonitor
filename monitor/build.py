@@ -25,6 +25,9 @@ SOURCE_LICENSES = {"genesis": "Datenlizenz Deutschland – Namensnennung – Ver
 _META: dict = {}
 
 
+TABLE_TYPES = ("heat", "calendar", "tpi")  # Abbildungen, die als Tabelle zählen
+
+
 def _base(s):
     """Für abgeleitete Reihen die Ausgangsreihe (Quelle und Lizenz kommen von dort)."""
     seen = 0
@@ -1060,7 +1063,7 @@ def chart_sentences(c: dict) -> list[str]:
                 if y0 is not None:
                     F["n0"][sid], F["dabs"][sid], F["dmehr"][sid] = num(y0, d), num(abs(v - y0), d), "mehr" if v > y0 else "weniger"
                 F.setdefault("sw", {})[sid] = "der Überschuss" if v >= 0 else "das Defizit"  # Saldo mit Artikel
-                F["v"][sid], F["n"][sid] = val(v), num(v, d)
+                F["v"][sid], F["n"][sid] = val(v), num(v, int(c.get("tpl_decimals", d)))  # tpl_decimals: eigene Rundung nur für den Satz
                 F["full"][sid] = f"{int(round(v)) * 1000:,}".replace(",", ".")
                 F["abs100"][sid], F["ueber100"][sid] = num(abs(v - 100), 1), "über" if v >= 100 else "unter"
                 F["abs"][sid], F["sg"][sid] = num(abs(v), d), num(v, d, True)
@@ -2131,12 +2134,17 @@ def build_payload(root: Path = ROOT) -> dict:
             if c.get("ma3") or c.get("outliers"):
                 c["outliers"] = _outliers(c)
     _merge_toggles(topics)  # zwei Abbildungen mit Umschalter in einer Karte
-    no = 0
+    no = chap = 0
     for t in topics:
-        lab = t.get("code") or t["title"].split()[0]  # festes Kurzzeichen je Abbildung: Kapitel und Platz im Kapitel, etwa „Preise-3“
+        # Kapitelnummer wie im Menü (ohne Service-Teil); Nummer je Abbildung: Kapitel und Platz, etwa „Abb. 8.1“
+        if t.get("part") != "service" and (t["charts"] or t.get("question")):
+            chap += 1
+            t["chap"] = chap
         for k, c in enumerate(t["charts"], 1):
             no += 1
-            c["no"], c["k"], c["code"], c["anchor"] = no, k, f"{lab}-{k}", f"{t['id']}-{k}"
+            kind = "Tab." if c.get("type") in TABLE_TYPES else "Abb."
+            c["no"], c["k"], c["anchor"] = no, k, f"{t['id']}-{k}"
+            c["code"] = f"{kind} {t['chap']}.{k}" if t.get("chap") else ""
     # Nächste voraussichtliche Aktualisierung je Abbildung und Verweise vom Kalender auf die Abbildungen
     numbers = {c["chart"]: c["no"] for t in topics for c in t["charts"]}
     cal = next((c["calendar"] for t in topics for c in t["charts"] if c.get("type") == "calendar"), None)
