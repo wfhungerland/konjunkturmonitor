@@ -78,6 +78,21 @@ def abruf(ordner: Path) -> None:
     ordner.mkdir(parents=True, exist_ok=True)
     nutzer = input("Benutzername Regionaldatenbank: ").strip()
     kopf = {"username": nutzer, "password": getpass.getpass("Passwort (wird nicht angezeigt): ")}
+    # Prüfung 1: Sonderzeichen im Passwort, die im Kopf der Anfrage nicht sicher ankommen
+    fremd = sorted({z for z in kopf["password"] + nutzer if not (32 < ord(z) < 127)})
+    if fremd:
+        print(f"Hinweis: Passwort oder Name enthält {len(fremd)} Zeichen außerhalb von A-Z, 0-9 und üblichen "
+              "Sonderzeichen (etwa Umlaute, §, € oder Leerzeichen). Die Schnittstelle versteht sie womöglich nicht; "
+              "dann auf der Webseite ein Passwort ohne solche Zeichen setzen.")
+    # Prüfung 2: Verbindung mit erfundenen Zugangsdaten. Antwortet der Server hier normal, liegt ein Fehler beim
+    # echten Abruf am Konto oder Passwort, sonst an der Verbindung (Virenscanner, Proxy)
+    try:
+        test = _meldung(_post("helloworld/logincheck", {"username": "RE000000", "password": "Test123456"},
+                              {"language": "de"}))
+        print("Verbindungstest:", "in Ordnung" if test else "unerwartete Antwort")
+    except urllib.error.HTTPError as e:
+        print(f"Verbindungstest gescheitert ({e.code}): Die Verbindung von diesem Rechner wird verändert, "
+              "etwa durch Virenscanner oder Proxy.")
     # Erstanmeldung: Die Regionaldatenbank verlangt ein neues Passwort; die Schnittstelle kann es setzen
     # (profile/password, GENESIS-Webservices, Abschnitt 2.7.1)
     if input("Passwort über die Schnittstelle ändern? Meist nicht nötig (j/n): ").strip().lower().startswith("j"):
