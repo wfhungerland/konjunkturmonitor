@@ -281,6 +281,7 @@ def update_exports_fr(static: Path) -> None:
         win = ds[k - 11:k + 1]
         rows.append((ds[k], sum(fr[d] for d in win) / sum(w[d] for d in win) * 100))
     _write(static, "de_exp_share_fr", rows)
+    _write(static, "de_exp_fr_eur", [(ds[k], sum(fr[d] for d in ds[k - 11:k + 1]) / 1e6) for k in range(11, len(ds))])  # Tsd. € in Mrd. €
 
 
 def update_all(static: Path) -> None:

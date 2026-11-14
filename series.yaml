@@ -199,7 +199,9 @@ charts:
   ecb_bs: {title: "Bilanz des Eurosystems", decimals: 2}
   spreads: {title: "Renditeabstand zu Bundesanleihen", decimals: 2}
   fr_stress: {title: "Finanzstress in Frankreich und Nachbarländern", decimals: 2}
-  fr_exports: {title: "Frankreichs Anteil an den deutschen Exporten", decimals: 1}
+  fr_exports: {title: "Deutsche Exporte nach Frankreich", decimals: 0}
+  fr_rank: {title: "Risikoaufschlag gegenüber Bundesanleihen nach Land", decimals: 2}
+  fr_yields: {title: "Rendite zehnjähriger Staatsanleihen: Frankreich, Italien, Deutschland", decimals: 2}
   qe_prog: {title: "Anleihebestände der EZB nach Programm", decimals: 0}
   qe_land: {title: "Käufe von Staatsanleihen nach Land", decimals: 0}
   zinskurven: {title: "Zinskurven von Staatsanleihen", decimals: 2}
@@ -2031,6 +2033,124 @@ series:
     adjustment: nicht bereinigt
     chart: fr_exports
     label: "Anteil Frankreichs"
+
+  - id: lt_pt
+    block: finanzen
+    source: ecb
+    key: IRS/M.PT.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Portugal (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: spread_pt
+    block: finanzen
+    source: derived
+    derive: {from: lt_pt, op: diff, minus: lt_de}
+    title: "Renditeabstand zehnjähriger Staatsanleihen Portugal minus Deutschland"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: lt_be
+    block: finanzen
+    source: ecb
+    key: IRS/M.BE.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Belgien (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: spread_be
+    block: finanzen
+    source: derived
+    derive: {from: lt_be, op: diff, minus: lt_de}
+    title: "Renditeabstand zehnjähriger Staatsanleihen Belgien minus Deutschland"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: lt_gr
+    block: finanzen
+    source: ecb
+    key: IRS/M.GR.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Griechenland (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: spread_gr
+    block: finanzen
+    source: derived
+    derive: {from: lt_gr, op: diff, minus: lt_de}
+    title: "Renditeabstand zehnjähriger Staatsanleihen Griechenland minus Deutschland"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: lt_at
+    block: finanzen
+    source: ecb
+    key: IRS/M.AT.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Österreich (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: spread_at
+    block: finanzen
+    source: derived
+    derive: {from: lt_at, op: diff, minus: lt_de}
+    title: "Renditeabstand zehnjähriger Staatsanleihen Österreich minus Deutschland"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: lt_nl
+    block: finanzen
+    source: ecb
+    key: IRS/M.NL.L.L40.CI.0000.EUR.N.Z
+    title: "Rendite zehnjähriger Staatsanleihen, Niederlande (Konvergenzkriterium)"
+    unit: "% p. a."
+    frequency: M
+    adjustment: nicht bereinigt
+    start: "1999-01-01"
+
+  - id: spread_nl
+    block: finanzen
+    source: derived
+    derive: {from: lt_nl, op: diff, minus: lt_de}
+    title: "Renditeabstand zehnjähriger Staatsanleihen Niederlande minus Deutschland"
+    unit: "Prozentpunkte"
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_exp_fr_eur
+    block: export
+    source: static
+    key: de_exp_fr_eur
+    params: {source_name: "Deutsche Bundesbank, Außenhandel nach Ländern (eigene Berechnung)"}
+    license: "Wiederverwendung mit Quellenangabe (Deutsche Bundesbank)"
+    title: "Deutsche Warenexporte nach Frankreich, Summe der letzten zwölf Monate"
+    unit: "Mrd. €"
+    frequency: M
+    adjustment: nicht bereinigt
+
+  - id: de_gdp_nom
+    block: wachstum
+    source: eurostat
+    key: nama_10_gdp
+    params: {geo: DE, unit: CP_MEUR, na_item: B1GQ}
+    title: "Bruttoinlandsprodukt, nominal, Deutschland"
+    unit: "Mio. €"
+    frequency: A
+    adjustment: Jahreswerte
+    start: "2000-01-01"
+    stale_after_months: 24
 
   - id: lt_de
     block: finanzen
