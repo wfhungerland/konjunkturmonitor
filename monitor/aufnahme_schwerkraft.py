@@ -140,6 +140,11 @@ def auswerten(ordner: Path, ziel: Path, wiederholungen: int = 0) -> None:
         gruppe = [z for z in paare if z["typ"] == "regional" and z["gewerk"] == g]
         if len(gruppe) >= 500:
             gruppen.append((f"regional: {g}", gruppe))
+    for kreis in ("alle", "regional"):
+        for g in [n for *_, n in au.GROESSEN] + ["ohne Wert"]:
+            gruppe = [z for z in paare if z["groesse"] == g and (kreis == "alle" or z["typ"] == "regional")]
+            if len(gruppe) >= 150:  # große Aufträge sind selten; Unsicherheit zeigt der Bootstrap
+                gruppen.append((f"{kreis}: Auftragswert {g}", gruppe))
 
     erg = []
     for name, gruppe in gruppen:
@@ -177,7 +182,7 @@ def auswerten(ordner: Path, ziel: Path, wiederholungen: int = 0) -> None:
         fk = f"{e['diagonal_min']:.1f}" + (f" ± {e['diagonal_se']:.1f}" if "diagonal_se" in e else "")
         text.append(f"| {e['gruppe']} | {e['zuschlaege_min']} | {e.get('cluster', '-')} | {e['halbwert_min']:.0f} | "
                     f"{iv} | {fk} | {100 * e['devianz_erklaert_min']:.0f} % | {e['halbwert_km']:.0f} |")
-    text += ["", "Gewerke nur mit mindestens 500 Zuschlägen regionaler Firmen. "
+    text += ["", "Gewerke nur mit mindestens 500, Größenklassen mit mindestens 150 Zuschlägen. "
              + (f"Unsicherheit: Bootstrap über Firmen mit {wiederholungen} Wiederholungen (ganze Auftragnehmer "
                 "gezogen); Intervall aus 5. und 95. Perzentil, beim Faktor ± ein Standardfehler. "
                 if wiederholungen else "")

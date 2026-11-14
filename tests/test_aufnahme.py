@@ -88,3 +88,12 @@ def test_schwerkraft_simulation():
     F = rng.poisson(mu * 20000 / mu.sum()).astype(float)
     e = schaetzen(F, T)
     assert abs(e["beta"] - 0.02) < 0.002 and abs(e["diagonal"] - 3) < 0.5
+
+
+def test_einzug_erhaelt_kapazitaet():
+    import numpy as np
+    from monitor.aufnahme_einzug import verteilen
+    S, N = np.array([100.0, 0, 50]), np.array([1.0, 2, 1])
+    T = np.array([[0, 30, 60], [30, 0, 30], [60, 30, 0.0]])
+    K = verteilen(S, N, T, 0.025, 2)
+    assert abs(K.sum() - 150) < 1e-9 and K[1] > 0

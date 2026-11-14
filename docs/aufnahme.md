@@ -50,6 +50,14 @@ Die bereinigte Halbwertszeit ist kürzer als die rohe (65 Minuten bei regionalen
 
 Erster Lauf 13.11.2026 (Cloud): 56.734 Bauzuschläge seit Januar 2025, je Monat vollständig gegen die Trefferzahl von TED. Ergebnis: `docs/aufnahme_ted.md`, Kantenliste `data/static/aufnahme_kanten.csv`. Die Antwortfelder kommen als Listen oder Sprach-Wörterbücher; `tender-value` ist eine Liste von Texten, fehlende Werte stehen als -1. TED meldet Thüringer Kreise teils mit NUTS-2021-Codes; das Skript schlüsselt sie auf NUTS 2024 um. Für die Rohdaten unter `C:\Daten\TED` den Abzug dort wiederholen (`TED abrufen.bat`).
 
+## Baukapazität je Einzugsgebiet
+
+`python -m monitor.aufnahme_einzug` verteilt die Bauberufe (BA, Arbeitsort, März 2026) jedes Kreises auf die erreichbaren Kreise, im Verhältnis von Fahrzeitgewicht exp(−β·t) und Nachfrage (Bevölkerung); im eigenen Kreis zählt das Gewicht mal δ. β und δ stammen aus dem Schwerkraftmodell der regionalen Firmen (Halbwertszeit 28 Minuten, Faktor 1,9). Jede Fachkraft zählt einmal. Ergebnis: `docs/aufnahme_einzug.md`, alle Kreise in `data/static/aufnahme_einzug.csv`.
+
+Befund: Großstädte schöpfen aus dem Umland (Hamburg 153, München 152, Frankfurt 148; Bund = 100), dünn besiedelte Kreise und Grenzkreise liegen bei etwa der Hälfte (Eifelkreis Bitburg-Prüm 42, Kyffhäuserkreis 47, Frankfurt (Oder) 48). Die Kapazität im eigenen Kreis sagt darüber wenig: Die Korrelation beider Maße beträgt 0,11.
+
+Prüfung an den TED-Zuschlägen regionaler Firmen: Vorhergesagt bleiben 20 % der Aufträge im eigenen Kreis, beobachtet ebenfalls 20 % (Korrelation über die Kreise 0,45); die vorhergesagten Zuflüsse je Zielkreis korrelieren mit den beobachteten zu 0,88. Firmen aus Pinneberg arbeiten zu 59 % in Hamburg (Modell: 31 %), der Sog der Großstadt ist eher unterschätzt. Grenzen: Firmen und Nachfrage jenseits der Grenze fehlen, das drückt Grenzkreise; die Bevölkerung ist nur ein Näherungswert für die Baunachfrage.
+
 ## Kreisreihen von BA und Regionalstatistik
 
 Abruf: `python -m monitor.aufnahme_kreise kreise <ordner>` (Kreisliste von Destatis mit NUTS 3, Fläche, Bevölkerung) und `python -m monitor.aufnahme_kreise ba <ordner> --stichtag 202603 --ziel data/static`. Nur Standardbibliothek. Ergebnis: `data/static/aufnahme_ba_kreise.csv` im Langformat (ags, nuts3, stichtag, merkmal, wert).
