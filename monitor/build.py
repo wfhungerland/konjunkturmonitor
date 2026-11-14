@@ -1098,7 +1098,7 @@ def chart_sentences(c: dict) -> list[str]:
                 return out
         cb = c.get("combine")
         if isinstance(cb, dict):  # gleich gebaute Reihen in einem Satz, etwa Länder oder Bereiche
-            last = min(s["x"][-1] for s in series) if cb.get("common") else max(s["x"][-1] for s in series)  # common: jüngster Zeitraum, den alle haben
+            last = min(s["x"][-1] for s in series) if cb.get("common") and not cb.get("each_month") else max(s["x"][-1] for s in series)  # common: jüngster Zeitraum, den alle haben
             sym = "%" if unit.startswith("%") else "Pp" if unit.startswith(("Pp", "Saldo")) else u
             at = lambda s: s["y"][s["x"].index(last)] if last in s["x"] else None
             if cb.get("where") and series and at(series[0]) is not None and unit.startswith("%"):  # Verb vorn: Gesamtgröße, dann Bereiche mit gleicher und mit anderer Richtung
@@ -1117,9 +1117,24 @@ def chart_sentences(c: dict) -> list[str]:
                         h = head.split(" um ")[0]
                         out += f"; {h} {verb_sie[g]}{head[len(h):]}" + "".join(", " + x for x in more)
                 return [out + "."]
-            items = [f"{cb.get('pre', '')}{s.get('label', '')} {num(at(s), d, cb.get('sign', True))} {sym}".strip() for s in series if at(s) is not None]
+            mid = cb.get("mid", "")  # etwa „ bei“ zwischen Land und Wert
+            items = [f"{cb.get('pre', '')}{s.get('label', '')}{mid} {num(at(s), d, cb.get('sign', True))} {sym}".strip() for s in series if at(s) is not None]
+            late = [s for s in series if at(s) is None and s.get("y") and s["y"][-1] is not None] if cb.get("each_month") else []
             if items:
-                out = [f"{_when(last, freq)} {cb['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0]) + "."]
+                out = [f"{_when(last, freq)} {cb['lead']} " + (", ".join(items[:-1]) + " und " + items[-1] if len(items) > 1 else items[0])
+                       + "".join(f"; {cb.get('pre', '')}{s.get('label', '')} im {_per(s['x'][-1], freq)}{mid} {num(s['y'][-1], d, cb.get('sign', True))} {sym}".rstrip() for s in late) + "."]
+                if cb.get("above") is not None:  # welche Länder über einer Marke liegen, etwa dem langjährigen Durchschnitt
+                    lim, agg = cb["above"], set(cb.get("agg") or [])
+                    ctry = [s for s in series if s.get("label") not in agg and at(s) is not None]
+                    up = [s["label"] for s in ctry if round(at(s), d) > lim]
+                    mark = cb.get("above_word", f"der Marke von {num(lim, 0)}")
+                    if not up:
+                        tail = f"kein Land lag über {mark}"
+                    elif len(up) == len(ctry):
+                        tail = f"alle Länder lagen über {mark}"
+                    else:
+                        tail = f"über {mark} {'lag' if len(up) == 1 else 'lagen'} nur {_und(up)}"
+                    out[0] = out[0][:-1] + f"; {tail}."
                 if cb.get("mom"):  # stärkste Veränderung ggü. dem Vormonat
                     ch = [(cb["mom"].get(s.get("label"), s.get("label")), s["y"][-1] - s["y"][-2]) for s in series
                           if s["x"][-1] == last and len(s["y"]) > 1 and None not in s["y"][-2:]]
