@@ -3,7 +3,7 @@
 Jeder Satz muss vier Regeln bestehen. Fällt er durch, entfällt er, und der Bau vermerkt den Grund;
 der Workflow meldet die Funde im Ticket „Automatische Sätze: Auffälligkeiten“.
 1. Keine Platzhalter oder Rechenreste (nan, None, inf, geschweifte Klammern, doppelte Leerzeichen).
-2. Kein Zeitraum nach dem jüngsten Wert der Abbildung (außer bei Prognosen und Projektionen).
+2. Kein Zeitraum nach dem jüngsten Wert der Abbildung (außer bei Prognosen, Projektionen und Planwerten).
 3. Richtungswort und Vorzeichen passen zusammen („stieg um -0,3 %“ oder „-0,3 Pp höher“ fallen durch).
 4. Bei Linien: ein Wert nach „lag … bei“ muss einem jüngsten Wert der gezeigten Reihen entsprechen.
 """
@@ -45,7 +45,7 @@ def check(c: dict, text: str) -> str | None:
         return "Platzhalter oder Rechenrest"
     v = c.get("variant") or {}
     last = max((c.get("last_x") or "")[:7], (v.get("last_x") or "")[:7])
-    if last and c.get("chart") not in FORWARD and not c.get("forecast_after_bars"):
+    if last and c.get("chart") not in FORWARD and not c.get("forecast_after_bars") and not (c.get("numtable") or {}).get("plan"):  # Planjahre des Bundes
         late = [p for p in _periods(text) if p > last]
         if late:
             return f"Zeitraum {late[0]} liegt nach dem jüngsten Wert ({last})"
