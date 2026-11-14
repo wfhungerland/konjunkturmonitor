@@ -38,8 +38,14 @@ def _post(pfad: str, kopf: dict, felder: dict, zeit: int = 600) -> bytes:
     req = urllib.request.Request(API + pfad, data=urllib.parse.urlencode(felder).encode(), method="POST",
                                  headers={**kopf, "Content-Type": "application/x-www-form-urlencoded",
                                           "User-Agent": "konjunkturmonitor (Sanierungsbedarf)"})
-    with urllib.request.urlopen(req, timeout=zeit) as r:
-        return r.read()
+    try:
+        with urllib.request.urlopen(req, timeout=zeit) as r:
+            return r.read()
+    except urllib.error.HTTPError as e:  # der Server meldet Fehler und Aufträge teils mit Fehlercode und JSON
+        inhalt = e.read()
+        if inhalt[:1] == b"{":
+            return inhalt
+        raise
 
 
 def _meldung(daten: bytes) -> dict | None:
